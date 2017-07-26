@@ -1,8 +1,11 @@
 <?php
 use Illuminate\Routing\Router;
 
-// 基础路由，无需登录
-$router->group(['prefix' =>'/','module'=>'core'], function (Router $router) {
+// Core 模块后台路由
+$router->group(['prefix' =>'/', 'module'=>'core'], function (Router $router) {
+
+    // 首页
+    $router->get('/','IndexController@index')->name('admin.index')->middleware('allow:admin.index');
 
     // 登录
     $router->get('/login', 'AuthController@showLoginForm')->name('admin.login');
@@ -15,16 +18,8 @@ $router->group(['prefix' =>'/','module'=>'core'], function (Router $router) {
     
 });
 
-// 后台页面，需要登录后台才能访问
-$router->group(['prefix' =>'/','middleware'=>'admin','module'=>'core'], function (Router $router) {
-
-    // 首页
-    $router->get('/','IndexController@index')->name('admin.index')->middleware('allow:admin.index');
-    
-});
-
 // Core 模块后台路由
-$router->group(['prefix' =>'/core','middleware'=>'admin','module'=>'core'], function (Router $router) {
+$router->group(['prefix' =>'/core', 'module'=>'core'], function (Router $router) {
 
     // 个人管理
     $router->group(['prefix' =>'/mine'], function (Router $router) {       

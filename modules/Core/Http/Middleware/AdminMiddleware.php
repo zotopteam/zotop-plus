@@ -5,6 +5,7 @@ namespace Modules\Core\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Route;
 
 class AdminMiddleware
 {
@@ -18,15 +19,17 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check() OR !Auth::user()->isAdmin()) {
-            
-            if ($request->ajax()) {
-                return response('Unauthorized.', 401);
-            } else {
-                return redirect()->guest(route('admin.login'));
-            }
+        // 管理员已经或者登录页面运行继续运行
+        if ( Route::is('admin.login','admin.login.post') || (Auth::check() && Auth::user()->isAdmin()) ) {
+            return $next($request);
         }
-
-        return $next($request);
+        
+        // Ajax 禁止    
+        if ($request->ajax()) {
+            return response('Unauthorized.', 401);
+        }
+        
+        // 转向登录页面
+        return redirect()->guest(route('admin.login'));
     }
 }
