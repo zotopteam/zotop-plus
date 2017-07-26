@@ -4,6 +4,44 @@ All Notable changes to `laravel-modules` will be documented in this file.
 
 ## Next
 
+## 1.27.0 - 2017-07-19
+
+### Added
+
+- Laravel Lumen support
+
+### Changed
+
+- Update dev dependencies grumphp and phpcsfixer to latest versions
+- The `make:model` command with the `-m` flag to create the associated migration is now using a current migration file name
+
+## 1.26.0 - 2017-07-06
+
+### Changed
+
+- Throw an exception if asset name structure was not correct when using `{!! Module::asset() !!}`
+- Create the module used file if non existent. Will provide for a better error message if module is omitted in console commands without a module:use.
+
+## 1.25.1 - 2017-06-29
+
+### Changed
+
+- More flexibility to the `json()` method, while keeping the performance improvements.
+
+## 1.25.0 - 2017-06-29
+
+### Changed
+
+- Improving performance by only instantiating Json class for the module.json file once
+- Added support for generic git hosts
+
+## 1.24.0 - 2017-06-12
+
+### Changed
+
+- Using `resource_path` to register module views
+- Changed the method to load additional eloquent factory paths
+
 ## 1.23.0 - 2017-06-09
 
 ## Added
@@ -12,7 +50,7 @@ All Notable changes to `laravel-modules` will be documented in this file.
 - Factories are now also defined in the master service providers. This is used in the `module:make` command without the `--plain` flag, or using `module:make-provider` with the `--master` flag.
 - `module_path()` helper function.
 
-## Changed
+### Changed
 
 - The default location of event listeners is now in `Listeners/`, from `Events/Handlers`
 
@@ -66,7 +104,7 @@ All Notable changes to `laravel-modules` will be documented in this file.
 ## 1.17.0 - 2017-02-27
 
 ### Changed
- 
+
 - Add checking for failure to parse module JSON
 
 ## 1.16.0 - 2017-01-24

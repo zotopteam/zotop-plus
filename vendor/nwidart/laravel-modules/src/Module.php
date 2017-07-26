@@ -2,8 +2,8 @@
 
 namespace Nwidart\Modules;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
@@ -13,7 +13,7 @@ class Module extends ServiceProvider
     use Macroable;
 
     /**
-     * The laravel application instance.
+     * The laravel|lumen application instance.
      *
      * @var Application
      */
@@ -27,11 +27,16 @@ class Module extends ServiceProvider
     protected $name;
 
     /**
-     * The module path,.
+     * The module path.
      *
      * @var string
      */
     protected $path;
+
+    /**
+     * @var array of cached Json objects, keyed by filename
+     */
+    protected $moduleJson = [];
 
     /**
      * The constructor.
@@ -50,7 +55,7 @@ class Module extends ServiceProvider
     /**
      * Get laravel instance.
      *
-     * @return \Illuminate\Foundation\Application
+     * @return Application
      */
     public function getLaravel()
     {
@@ -180,7 +185,7 @@ class Module extends ServiceProvider
     }
 
     /**
-     * Get json contents.
+     * Get json contents from the cache, setting as needed.
      *
      * @param $file
      *
@@ -188,11 +193,13 @@ class Module extends ServiceProvider
      */
     public function json($file = null)
     {
-        if (is_null($file)) {
+        if ($file === null) {
             $file = 'module.json';
         }
 
-        return new Json($this->getPath() . '/' . $file, $this->app['files']);
+        return array_get($this->moduleJson, $file, function () use ($file) {
+            return $this->moduleJson[$file] = new Json($this->getPath() . '/' . $file, $this->app['files']);
+        });
     }
 
     /**

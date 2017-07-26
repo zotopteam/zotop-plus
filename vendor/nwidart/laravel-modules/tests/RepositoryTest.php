@@ -4,6 +4,7 @@ namespace Nwidart\Modules\tests;
 
 use Illuminate\Filesystem\Filesystem;
 use Nwidart\Modules\Collection;
+use Nwidart\Modules\Exceptions\InvalidAssetPath;
 use Nwidart\Modules\Exceptions\ModuleNotFoundException;
 use Nwidart\Modules\Module;
 use Nwidart\Modules\Repository;
@@ -144,6 +145,15 @@ class RepositoryTest extends BaseTestCase
     }
 
     /** @test */
+    public function it_throws_exception_if_module_is_omitted()
+    {
+        $this->expectException(InvalidAssetPath::class);
+        $this->expectExceptionMessage('Module name was not specified in asset [test.js].');
+
+        $this->repository->asset('test.js');
+    }
+
+    /** @test */
     public function it_can_detect_if_module_is_active()
     {
         $this->repository->addLocation(__DIR__ . '/stubs/Recipe');
@@ -226,7 +236,8 @@ class RepositoryTest extends BaseTestCase
     /** @test */
     public function it_can_register_macros()
     {
-        Module::macro('registeredMacro', function () {});
+        Module::macro('registeredMacro', function () {
+        });
 
         $this->assertTrue(Module::hasMacro('registeredMacro'));
     }

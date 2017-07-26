@@ -2,6 +2,7 @@
 
 namespace Nwidart\Modules\Migrations;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Collection;
 use Nwidart\Modules\Module;
 
@@ -17,7 +18,7 @@ class Migrator
     /**
      * Laravel Application instance.
      *
-     * @var \Illuminate\Foundation\Application.
+     * @var Application.
      */
     protected $laravel;
 
@@ -96,7 +97,6 @@ class Migrator
 
         $files = array_map(function ($file) {
             return str_replace('.php', '', basename($file));
-
         }, $files);
 
         // Once we have all of the formatted file names we will sort them and since

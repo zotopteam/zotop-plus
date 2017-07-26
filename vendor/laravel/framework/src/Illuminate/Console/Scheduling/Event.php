@@ -65,6 +65,13 @@ class Event
     public $withoutOverlapping = false;
 
     /**
+     * The amount of time the mutex should be valid.
+     *
+     * @var int
+     */
+    public $expiresAt = 1440;
+
+    /**
      * Indicates if the command should run in background.
      *
      * @var bool
@@ -363,7 +370,7 @@ class Event
     {
         $this->ensureOutputIsBeingCapturedForEmail();
 
-        $addresses = is_array($addresses) ? $addresses : func_get_args();
+        $addresses = is_array($addresses) ? $addresses : [$addresses];
 
         return $this->then(function (Mailer $mailer) use ($addresses, $onlyIfOutputExists) {
             $this->emailOutput($mailer, $addresses, $onlyIfOutputExists);
