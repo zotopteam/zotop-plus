@@ -1,0 +1,6 @@
+<?php
+use Illuminate\Routing\Router;
+
+$router->group(['prefix' =>'/$LOWERCASE_MODULE_NAME$','module'=>'$LOWERCASE_MODULE_NAME$'], function (Router $router) {
+    // append
+});

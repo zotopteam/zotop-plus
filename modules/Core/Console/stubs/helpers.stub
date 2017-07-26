@@ -1,0 +1,11 @@
+<?php
+
+// 创建一个助手函数 test()
+if (! function_exists('test')) {
+
+    function test()
+    {
+        return 'test';
+    }
+
+}

@@ -1,0 +1,23 @@
+<?php
+use Illuminate\Routing\Router;
+
+// $MODULE_NAME$ 模块后台路由
+$router->group(['prefix' =>'/$LOWERCASE_MODULE_NAME$','middleware'=>'admin','module'=>'$LOWERCASE_MODULE_NAME$'], function (Router $router) {
+    
+    // 首页
+    $router->get('/', 'IndexController@index')->name('$LOWERCASE_MODULE_NAME$.index')->middleware('allow:$LOWERCASE_MODULE_NAME$.index');
+
+    // 单个路由示例
+    // $router->get('/test2', 'IndexController@test2')->name('$LOWERCASE_MODULE_NAME$.test2')->middleware('allow:$LOWERCASE_MODULE_NAME$.test2');
+
+    // 群组路由示例
+    // $router->group(['prefix' =>'/example'], function (Router $router) {
+    //    $router->get('/index','ExampleController@index')->name('$LOWERCASE_MODULE_NAME$.example.index')->middleware('allow:$LOWERCASE_MODULE_NAME$.example.index');
+    //    $router->get('/create','ExampleController@create')->name('$LOWERCASE_MODULE_NAME$.example.create')->middleware('allow:$LOWERCASE_MODULE_NAME$.example.create');
+    //    $router->post('/store','ExampleController@store')->name('$LOWERCASE_MODULE_NAME$.example.store')->middleware('allow:$LOWERCASE_MODULE_NAME$.example.store');    
+    //    $router->get('/edit/{id}','AdministratorController@edit')->name('$LOWERCASE_MODULE_NAME$.example.edit')->middleware('allow:$LOWERCASE_MODULE_NAME$.example.edit');
+    //    $router->put('/update/{id}','AdministratorController@update')->name('$LOWERCASE_MODULE_NAME$.example.update')->middleware('allow:$LOWERCASE_MODULE_NAME$.example.update');
+    //    $router->delete('/destroy/{id}','AdministratorController@destroy')->name('$LOWERCASE_MODULE_NAME$.example.destroy')->middleware('allow:$LOWERCASE_MODULE_NAME$.example.destroy');                 
+    // });    
+    
+});

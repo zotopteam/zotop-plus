@@ -1,0 +1,21 @@
+{
+    "name": "Developer",
+    "alias": "developer",
+    "title": "developer::module.title",
+    "description": "developer::module.description",
+    "keywords": [],
+    "version": "1.1.5",
+    "active": 1,
+    "installed": 1,
+    "order": 10,
+    "author": "Hankx.Chen",
+    "email": "hankx_chen@qq.com",
+    "homepage": "http:\/\/www.zotop.com",
+    "providers": [
+        "Modules\\Developer\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": [],
+    "files": [
+        "start.php"
+    ]
+}

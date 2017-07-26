@@ -1,0 +1,10 @@
+{
+    "name": "$THEME_NAME$",
+    "title": "$THEME_NAME$",
+    "description": "$THEME_DESCRIPTION$",
+    "version": "1.0.0",
+    "type": "$THEME_TYPE$",
+    "author":"zotop",
+    "email":"it@zotop.com",
+    "homepage":"http://www.zotop.com"   
+}

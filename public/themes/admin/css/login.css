@@ -1,0 +1,71 @@
+/*!
+ * CMS login css
+ * Copyright 2011-2017 zotop, Inc.
+ */
+
+
+body{
+    /*background: #18181A;  for IE9 */
+    /*background: linear-gradient(to bottom, #101012, #1A1A1C, #151517);*/
+    /*background: #f8fcff;*/
+    background-color: linear-gradient(to bottom, #f8fcff, #f8fcff, #f8fcff);
+    background-image: url(../img/wallpaper.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;    
+    position: relative;
+}
+
+
+.card-login{
+    padding:0.25rem;
+    width:40rem;
+    max-width:40rem;
+    background: #fff;
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border:0 none;
+    overflow: hidden;
+}
+
+.card-login::before {
+    background: url(../img/wallpaper.jpg) 0/cover fixed;
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: -30px;
+    z-index: -1;
+    -webkit-filter: blur(20px);
+    filter: blur(20px);    
+}
+
+.card-login .card-header{
+    color: #0275d8;
+    border: 0 none;
+    padding:4rem 2rem;
+    font-size: 2.5rem;
+}
+
+.card-login .animation-wave{height:2rem;}
+
+.card-login .card-title{
+    margin-bottom:0;
+}
+
+.card-login .card-block{
+    padding-left:2rem;
+    padding-right:2rem;
+}
+
+.card-login .form-tips{
+    padding-top:0.25rem;
+    padding-bottom:0.25rem;
+    font-size: .875rem;
+}
+
+.card-login .form-group:hover{
+    background:transparent;border:0 none;
+}

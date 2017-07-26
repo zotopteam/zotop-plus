@@ -1,0 +1,72 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Modules\Core\Base\AdminController;
+
+class $CLASS$ extends AdminController
+{
+    /**
+     * 首页
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        return $this->view();
+    }
+
+    /**
+     * 新建
+     * 
+     * @return Response
+     */
+    public function create()
+    {
+        return $this->view();
+    }
+
+    /**
+     * 保存
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * 编辑
+     *
+     * @return Response
+     */
+    public function edit()
+    {
+        return $this->view();
+    }
+
+    /**
+     * 更新
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function update(Request $request)
+    {
+        //
+    }
+
+    /**
+     * 删除
+     *
+     * @return Response
+     */
+    public function destroy()
+    {
+        //
+    }
+}

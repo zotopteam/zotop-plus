@@ -1,0 +1,32 @@
+<?php
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\ViewErrorBag;
+
+/*
+ * Add an input field
+ *
+ * @param string $name The field name
+ * @param string $title The field title
+ * @param object $errors The laravel errors object
+ * @param null|object $object The entity of the field
+ *
+ * @return HtmlString
+ */
+Form::macro('input', function ($name, $title, ViewErrorBag $errors, $object = null, array $options = []) {
+    $options = array_merge(['class' => 'form-control', 'placeholder' => $title], $options);
+
+    $string = "<div class='form-group " . ($errors->has($name) ? ' has-error' : '') . "'>";
+    $string .= Form::label($name, $title);
+
+    if (is_object($object)) {
+        $currentData = isset($object->{$name}) ? $object->{$name} : '';
+    } else {
+        $currentData = null;
+    }
+
+    $string .= Form::text($name, old($name, $currentData), $options);
+    $string .= $errors->first($name, '<span class="help-block">:message</span>');
+    $string .= '</div>';
+
+    return new HtmlString($string);
+});

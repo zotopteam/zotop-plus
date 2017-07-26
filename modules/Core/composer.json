@@ -1,0 +1,15 @@
+{
+    "name": "zotop/core",
+    "description": "zotop cms core modules",
+    "authors": [
+        {
+            "name": "zotop team",
+            "email": "hankx_chen@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Modules\\Core\\": ""
+        }
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "name": "$STUDLY_MODULE_NAME$",
+    "alias": "$LOWERCASE_MODULE_NAME$",
+    "title": "$LOWERCASE_MODULE_NAME$::module.title",
+    "description": "$LOWERCASE_MODULE_NAME$::module.description",
+    "keywords": [],
+    "version": "1.0.0",
+    "active": 0,
+    "installed": 0,
+    "order": 10,
+    "author":"zotop",
+    "email":"it@zotop.com",
+    "homepage":"http://www.zotop.com",       
+    "providers": [
+        "Modules\\$STUDLY_MODULE_NAME$\\Providers\\RouteServiceProvider"
+    ],
+    "aliases":{},
+    "files": [
+        "start.php"
+    ]
+}

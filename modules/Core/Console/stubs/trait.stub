@@ -1,0 +1,16 @@
+<?php
+
+namespace $NAMESPACE$;
+
+trait $CLASS$
+{
+    /**
+     * trait 函数示例
+     *
+     * @return mixed
+     */
+    public function test()
+    {
+        //
+    }
+}

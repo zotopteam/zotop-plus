@@ -1,0 +1,15 @@
+{
+    "name": "zotop/developer",
+    "description": "",
+    "authors": [
+        {
+            "name": "zotop team",
+            "email": "hankx_chen@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Modules\\Developer\\": ""
+        }
+    }
+}
