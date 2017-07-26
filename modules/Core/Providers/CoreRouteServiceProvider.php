@@ -61,21 +61,6 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        // // Api路由
-        // $router->group([
-        //     'namespace' => $this->namespace
-        // ], function (Router $router) {
-            
-        // });
-
-        // // web路由，分为前端和后端两组独立加载
-        // $router->group([
-        //     'namespace' => $this->namespace,
-        //     'middleware' => ['web'],
-        // ], function (Router $router) {
-           
-        // });
-
         $this->mapApiRoutes($router);
         $this->mapFrontRoutes($router);
         $this->mapAdminRoutes($router);         
@@ -118,6 +103,7 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
         if ($frontRouteFile && file_exists($frontRouteFile)) {
             $router->group([
                 'type'       => 'front',
+                'namespace' => $this->namespace,
                 'middleware' => ['web'],                
             ], function (Router $router) use ($frontRouteFile) {
                 require $frontRouteFile;
