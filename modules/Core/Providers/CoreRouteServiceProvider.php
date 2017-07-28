@@ -103,7 +103,7 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
         if ($frontRouteFile && file_exists($frontRouteFile)) {
             $router->group([
                 'type'       => 'front',
-                'namespace' => $this->namespace,
+                'namespace'  => $this->namespace,
                 'middleware' => ['web'],                
             ], function (Router $router) use ($frontRouteFile) {
                 require $frontRouteFile;
@@ -125,9 +125,9 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
         if ($adminRouteFile && file_exists($adminRouteFile)) {
 
             $router->group([
-                'type'      => 'admin',
-                'namespace' => $this->namespace.'\Admin',
-                'prefix'    => 'admin',
+                'type'       => 'admin',
+                'namespace'  => $this->namespace.'\Admin',
+                'prefix'     => config('app.admin_prefix','admin'),
                 'middleware' => ['web','admin'],               
             ], function (Router $router) use ($adminRouteFile) {
                 require $adminRouteFile;

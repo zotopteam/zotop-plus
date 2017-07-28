@@ -75,18 +75,18 @@ class CoreServiceProvider extends ServiceProvider
     protected function registerConfig(Module $module)
     {
         $moduleName = $module->getLowerName();
-        $modulePath = $module->getPath().'/Config';
+        $configPath = $module->getPath().'/Config';
+        $configFile = $module->getPath().'/config.php';
 
-        foreach ($this->app['files']->files($modulePath) as $configFile) {
+        // 注册模块根目录下的配置
+        $this->mergeConfigFrom($configFile, strtolower("module.$moduleName"));
+
+        // 注册模块Config目录下的配置
+        foreach ($this->app['files']->files($configPath) as $configFile) {
 
             $fileName = basename($configFile,'.php');
 
-            $this->mergeConfigFrom($configFile, strtolower("cms.modules.$moduleName.$fileName"));
-
-            // 不再publish config ，而是由后台修改配置时候自动发布
-            // $this->publishes([
-            //     $configFile => config_path(strtolower("cms/modules/$moduleName/$fileName.php")),
-            // ], 'config');
+            $this->mergeConfigFrom($configFile, strtolower("module.$moduleName.$fileName"));
         }
     }
 

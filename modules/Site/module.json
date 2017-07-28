@@ -1,0 +1,21 @@
+{
+    "name": "Site",
+    "alias": "site",
+    "title": "site::module.title",
+    "description": "site::module.description",
+    "keywords": [],
+    "version": "1.0.0",
+    "active": 1,
+    "installed": 1,
+    "order": 2,
+    "author": "Hankx.Chen",
+    "email": "",
+    "homepage": "",
+    "providers": [
+        "Modules\\Site\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": [],
+    "files": [
+        "start.php"
+    ]
+}

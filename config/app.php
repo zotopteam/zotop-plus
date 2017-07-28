@@ -22,7 +22,7 @@ return [
     | This value is the version of your application..
     */
 
-    'version' => '1.2.0515',
+    'version' => '1.2.0728',
 
 
     /*
@@ -33,7 +33,7 @@ return [
     | This value is the release of your application. 
     */
 
-    'release' => '20170515',
+    'release' => '20170728',
 
     /*
     |--------------------------------------------------------------------------
@@ -103,6 +103,20 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Admin Prefix
+    |--------------------------------------------------------------------------
+    |
+    | This Prefix is used by the admin url: http://localhost/[admin_prefix]
+    | The default admin prefix is "admin", and the admin url : http://localhost/admin
+    | You can change it for yours cms safer
+    |
+    */    
+
+    'admin_prefix' => env('APP_ADMIN_PREFIX', 'admin'),
 
     /*
     |--------------------------------------------------------------------------

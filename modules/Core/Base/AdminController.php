@@ -13,6 +13,6 @@ class AdminController extends BaseController
         parent::__init();
 
         // 默认为admin主题
-        $this->theme = config('cms.modules.core.admin.theme','admin');
+        $this->theme = config('module.core.theme','admin');
     }
 }

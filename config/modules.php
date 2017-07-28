@@ -180,5 +180,6 @@ return [
     */
     'cores' => [
         'core',
+        'site',
     ],
 ];

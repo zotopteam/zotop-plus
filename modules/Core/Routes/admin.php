@@ -44,8 +44,6 @@ $router->group(['prefix' =>'/core', 'module'=>'core'], function (Router $router)
 
     // 系统设置
     $router->group(['prefix' =>'/config'], function (Router $router) {
-        $router->any('/site/base','ConfigController@base')->name('core.config.site.base')->middleware('allow:core.config.site.base');
-        $router->any('/site/seo','ConfigController@seo')->name('core.config.site.seo')->middleware('allow:core.config.site.seo');
         $router->any('/core/upload','ConfigController@upload')->name('core.config.core.upload')->middleware('allow:core.config.core.upload');         
     });    
 
@@ -70,7 +68,7 @@ $router->group(['prefix' =>'/core', 'module'=>'core'], function (Router $router)
     $router->group(['prefix' =>'/plupload'], function (Router $router) {
         
         // 图片上传
-        $router->post('/plupload/image', 'PluploadController@image')->name('core.plupload.image')->middleware('allow:core.upload.image');  
+        $router->post('/image', 'PluploadController@image')->name('core.plupload.image')->middleware('allow:core.upload.image');  
         
     });   
 

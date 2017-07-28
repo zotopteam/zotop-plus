@@ -48,6 +48,7 @@ class CreateCommand extends Command
         'Providers/$STUDLY_MODULE_NAME$ServiceProvider.php',
         'Resources/views/index.blade.php',
         'Resources/views/layouts/master.blade.php',
+        'Config/config.php',
     ];
 
     /**
@@ -66,12 +67,13 @@ class CreateCommand extends Command
      */
     protected $createFiles = [
         'start.stub'              => 'start.php',
+        'config.stub'             => 'config.php',
+        'modulejson.stub'         => 'module.json',
+        'module.png'              => 'Assets/module.png',        
         'routes-front.stub'       => 'Routes/front.php',
         'routes-admin.stub'       => 'Routes/admin.php',
         'routes-api.stub'         => 'Routes/api.php',
         'route-provider.stub'     => 'Providers/RouteServiceProvider.php',
-        'modulejson.stub'         => 'module.json',
-        'module.png'              => 'Assets/module.png',
         'lang/en/module.php'      => 'Resources/lang/en/module.php',
         'lang/zh-Hans/module.php' => 'Resources/lang/zh-Hans/module.php',
         'lang/zh-Hant/module.php' => 'Resources/lang/zh-Hant/module.php',

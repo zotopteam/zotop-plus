@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf_token" content="{{ csrf_token() }}"/>
-    <title>{{config('cms.modules.core.site.name')}} {{$title or ''}} {{config('app.name')}} </title>
+    <title>{{config('module.site.name')}} {{$title or ''}} {{config('app.name')}} </title>
     <link href="{{theme::asset('favicon.ico')}}" rel="shortcut icon" type="image/x-icon">
     <link rel="stylesheet" href="{{theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{theme::asset('css/font-awesome.min.css')}}" rel="stylesheet">
@@ -55,7 +55,7 @@
             <div class="col-sm-6 col-md-4 col-lg-3">
                 <ul class="nav global-navbar float-right">
                     <li class="viewsite">
-                        <a href="{{config('cms.modules.core.site.url') ?: route('index')}}" title="{{trans('core::master.viewsite.description',[config('cms.modules.core.site.name')])}}" target="_blank">
+                        <a href="{{config('module.site.url') ?: route('index')}}" title="{{trans('core::master.viewsite.description',[config('module.site.name')])}}" target="_blank">
                             <i class="fa fa-home fa-fw"></i> <span class="hidden-md-down">{{trans('core::master.viewsite')}}</span>
                         </a>
                     </li>

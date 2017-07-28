@@ -150,7 +150,8 @@ class ModulesController extends AdminController
         Artisan::call('module:migrate-reset', ['module' => $name]);
 
         // 删除发布的配置和assets文件
-        app('files')->deleteDirectory(config_path('cms/modules/'.strtolower($name)));
+        app('files')->delete(config_path('module/'.strtolower($name).'.php'));
+        app('files')->deleteDirectory(config_path('module/'.strtolower($name)));
         app('files')->deleteDirectory(Module::assetPath($name));
         
         // update module.json

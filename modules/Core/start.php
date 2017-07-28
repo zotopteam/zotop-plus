@@ -13,15 +13,7 @@
  * 全局导航
  */
 \Filter::listen('global.navbar',function($navbar){
-    
-    // 站点名称
-    $navbar['core.sitename'] = [
-        'text'   => config('cms.modules.core.site.name'),
-        'href'   => route('core.config.site.base'),
-        'class'  => 'sitename',
-        'active' => Request::is('*/config/site/*')
-    ];
-    
+        
     // 主页
     $navbar['core.index'] = [
         'text'   => trans('core::master.index'),
@@ -31,21 +23,13 @@
     ];
 
     return $navbar;
-});
+},1);
 
 /**
  * 快捷方式
  */
 \Filter::listen('global.start',function($navbar){
     
-    //站点设置
-    $navbar['config-site'] = [
-        'text' => trans('core::config.site.title'),
-        'href' => route('core.config.site.base'),
-        'icon' => 'fa fa-cog bg-success text-white',
-        'tips' => trans('core::config.site.description'),
-    ];
-
     //编辑我的资料
     $navbar['mine-edit'] = [
         'text' => trans('core::mine.edit'),
@@ -135,10 +119,10 @@
 
     // 图片缩放
     $resize = $this->options_pull($attrs,'resize',[
-        'width'   => config('cms.modules.core.upload.resize.width',1920),
-        'height'  => config('cms.modules.core.upload.resize.height',1920),
-        'quality' => config('cms.modules.core.upload.resize.quality',100),
-        'crop'    => config('cms.modules.core.upload.resize.crop', false)
+        'width'   => config('module.core.upload.resize.width',1920),
+        'height'  => config('module.core.upload.resize.height',1920),
+        'quality' => config('module.core.upload.resize.quality',100),
+        'crop'    => config('module.core.upload.resize.crop', false)
     ]);
 
     // 附加参数

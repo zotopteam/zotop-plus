@@ -14,7 +14,7 @@
 
 ::selection {background:#0072C6;color:#fff;}
 
-html,body {width:100%;height:100%;overflow:hidden;padding:0;margin:0;}
+html,body {width:100%;height:100%;overflow:hidden;padding:0;margin:0;/*font-size:14px;*/}
 body {font-family:"Helvetica Neue",Helvetica,Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;padding-top:3rem;}
 body.dialog{padding:0;}
 

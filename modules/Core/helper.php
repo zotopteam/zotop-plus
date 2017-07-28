@@ -3,8 +3,8 @@
 /**
  * 预览图片
  * 
- * @param  [type] $path [description]
- * @return [type]       [description]
+ * @param  string $path 图片路径
+ * @return string 临时图片URL
  */
 function preview($path)
 {

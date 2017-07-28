@@ -1,8 +1,4 @@
 <?php
-/*
- * 模型自动包含文件
- */
-
 /**
  * 扩展后台全局导航
  */
@@ -31,3 +27,12 @@
     
     return $navbar;
 },80);
+
+
+/**
+ * 一键刷新
+ */
+\Action::listen('system.refresh', function(){
+    \Artisan::call('module:publish');
+    \Artisan::call('theme:publish');
+});

@@ -31,9 +31,13 @@
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
-        <span class="footer-text">
+        <span class="footer-text mr-auto">
             {{trans('core::master.thanks',[config('app.name')])}}
         </span>
+
+        <span class="footer-text">
+            v{{config('app.version')}}
+        </span>        
     </div>
 </div>
 
