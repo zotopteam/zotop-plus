@@ -14,7 +14,9 @@
         <div class="card mb-3">
             <div class="card-header">
                 {{trans('core::system.environment.server')}}
-                <p>{{trans('core::system.environment.server')}}</p>
+                <p class="card-text text-muted">
+                    {{trans('core::system.environment.server.description')}}
+                </p>
             </div>
             <div class="card-block">
                 {{trans('core::system.environment.server')}}
@@ -24,6 +26,9 @@
         <div class="card">
             <div class="card-header">
                 {{trans('core::system.environment.files')}}
+                <p class="card-text text-muted">
+                    {{trans('core::system.environment.files.description')}}
+                </p>                
             </div>
             <div class="card-block">
                 {{trans('core::system.environment.files')}}

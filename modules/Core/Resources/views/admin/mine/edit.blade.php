@@ -23,7 +23,7 @@
 
             <div class="form-group row">
                 <label for="nickname" class="col-2 col-form-label required">{{trans('core::mine.nickname.label')}}</label>
-                <div class="col-2">
+                <div class="col-4">
                     {field type="text" name="nickname" required="required"}
                     
                     @if ($errors->has('nickname'))

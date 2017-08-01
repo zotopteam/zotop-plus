@@ -40,6 +40,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .bg-transparent{background-color:transparent!important;}
 
 .card-cell{margin-bottom:15px;}
+.card-header>p{font-size:.75rem;}
 
 .pagination>li>a,.pagination>li>span{color:#0064ae;background-color:#fff;border:1px solid #efefef;}
 .pagination>.active>a,.pagination>.active>span,.pagination>.active>a:hover,.pagination>.active>span:hover,.pagination>.active>a:focus,.pagination>.active>span:focus{background-color:#0064ae;border-color:#0064ae;}
