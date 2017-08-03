@@ -32,6 +32,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 
 .scrollable{overflow:auto;outline:none;}
 .nicescroll-cursors{background:#000!important;border:0px solid rgba(255,255,255,0.5)!important;opacity:0.5;}
+.bootstrap-maxlength{font:normal 12px/1 sans-serif!important;padding:0.25rem 0.35rem!important;opacity:0.8;}
 
 .bg-primary{background-color:#0072c6!important;}
 .bg-success{background-color:#00bc3e!important;}
@@ -84,7 +85,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .text-md{font-size:1rem;}
 .text-lg{font-size:1.25rem;}
 
-.label{display:inline;padding:.25rem .75rem;font-size:85%;color:#ffffff;text-align:center;white-space:nowrap;border-radius:.25rem;}
+.label{display:inline;padding:.25rem .75rem;font-size:85%;font-weight: normal;color:#ffffff;text-align:center;white-space:nowrap;border-radius:.25rem;}
 .label.label-xs{padding:0.25rem 0.25rem;font-size:75%;}
 .label.label-sm{padding:0.25rem 0.5rem;font-size:75%;}
 .label.label-lg{padding:0.5rem 1rem;font-size:95%;}

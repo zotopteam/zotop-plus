@@ -1,10 +1,6 @@
 /*! Global js */
 
-$(function(){
-    $(document).tooltip({placement:function(tip, element){
-        return $(element).data('placement') ? $(element).data('placement') : 'bottom';
-    },selector:'[data-toggle="tooltip"],a[title]',html:true,trigger:'hover'});   
-})
+
 
 // Laravel的VerifyCsrfToken验证
 $(function(){
@@ -13,6 +9,25 @@ $(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
         }
     });
+});
+
+
+$(function(){
+    
+    // tooltip
+    $(document).tooltip({placement:function(tip, element){
+        return $(element).data('placement') ? $(element).data('placement') : 'bottom';
+    },selector:'[data-toggle="tooltip"],a[title]',html:true,trigger:'hover'});   
+ 
+    // niceScroll
+    $('.scrollable').niceScroll();
+
+    // maxlength
+    $('input[maxlength],textarea[maxlength]').maxlength({alwaysShow:true,appendToParent:true,threshold:10,separator:'/',placement:'bottom-right-inside'});  
+
+    $('textarea[maxlength]').on('autosize.resized', function() {
+        $(this).trigger('maxlength.reposition');
+    });    
 });
 
 // Validation 扩展

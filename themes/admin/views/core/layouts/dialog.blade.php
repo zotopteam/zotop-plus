@@ -14,13 +14,14 @@
     @stack('css')
 </head>
 <body class="dialog {{app('current.module')}}-{{app('current.controller')}}-{{app('current.action')}}">
-    <section class="global-body scrollable">
+    <section class="global-body">
         @yield('content')
     </section>
     <script src="{{theme::asset('js/jquery.min.js')}}"></script>
     <script src="{{theme::asset('js/tether.min.js')}}"></script>    
     <script src="{{theme::asset('js/bootstrap.min.js')}}"></script>
     <script src="{{theme::asset('js/jquery.validate.min.js')}}"></script>
+    <script src="{{theme::asset('js/jquery.nicescroll.min.js')}}"></script> 
     <script src="{{theme::asset('js/jquery.dialog.js')}}"></script>
     <script src="{{theme::asset('js/cms.js')}}"></script>
     <script src="{{theme::asset('js/global.js')}}"></script>

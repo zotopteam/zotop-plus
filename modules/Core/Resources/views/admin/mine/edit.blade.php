@@ -24,7 +24,7 @@
             <div class="form-group row">
                 <label for="nickname" class="col-2 col-form-label required">{{trans('core::mine.nickname.label')}}</label>
                 <div class="col-4">
-                    {field type="text" name="nickname" required="required"}
+                    {field type="text" name="nickname" required="required" maxlength="100"}
                     
                     @if ($errors->has('nickname'))
                     <span class="form-help text-error">{{ $errors->first('nickname') }}</span>
@@ -57,7 +57,7 @@
             <div class="form-group row">
                 <label for="sign" class="col-2 col-form-label">{{trans('core::mine.sign.label')}}</label>
                 <div class="col-6">
-                    {field type="textarea" name="sign" rows="3"}
+                    {field type="textarea" name="sign" rows="3" maxlength="255"}
 
                     @if ($errors->has('sign'))
                     <span class="form-help text-error">{{ $errors->first('sign') }}</span>
