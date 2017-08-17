@@ -31,3 +31,20 @@
     return $navbar;
 
 },99);
+
+/**
+ * 全局工具
+ */
+\Filter::listen('global.tools',function($tools){
+        
+    // 网站首页
+    $tools['viewsite'] = [
+        'icon'   => 'fa fa-home',
+        'text'   => trans('core::master.viewsite'),
+        'title'  => trans('core::master.viewsite.description', [config('module.site.name')]),
+        'href'   => config('module.site.url') ?: route('index'),
+        'target' => '_blank',
+    ];
+
+    return $tools;
+},1);

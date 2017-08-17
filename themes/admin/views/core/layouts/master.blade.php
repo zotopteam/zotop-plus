@@ -53,17 +53,17 @@
                 </ul>
             </div>
             <div class="col-sm-6 col-md-4 col-lg-3">
-                <ul class="nav global-navbar float-right">
-                    <li class="viewsite">
-                        <a href="{{config('module.site.url') ?: route('index')}}" title="{{trans('core::master.viewsite.description',[config('module.site.name')])}}" target="_blank">
-                            <i class="fa fa-home fa-fw"></i> <span class="hidden-md-down">{{trans('core::master.viewsite')}}</span>
+                <ul class="nav global-navbar global-tools float-right">
+                    
+                    @foreach(filter::fire('global.tools',[]) as $tools)                    
+                    <li>
+                        <a {!!Html::attributes(array_only($tools,['href','class','title','target']))!!}>
+                            @if(isset($tools['icon']))<i class="{{$tools['icon']}} fa-fw"></i>@endif
+                            @if(isset($tools['text']))<span class="hidden-lg-down">{{$tools['text']}}</span>@endif
                         </a>
                     </li>
-                    <li class="refresh">
-                        <a class="js-post" href="{{route('core.system.refresh')}}" title="{{trans('core::master.refresh.description')}}">
-                            <i class="fa fa-magic fa-fw"></i> <span class="hidden-md-down">{{trans('core::master.refresh')}}</span>
-                        </a>
-                    </li>
+                    @endforeach
+                    
                     <li class="dropdown hidden-xs">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user-circle"></i> <span class="hidden-md-down">{{Auth::user()->username}}</span>

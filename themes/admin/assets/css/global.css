@@ -269,7 +269,7 @@ textarea{resize:none;}
 .global-navbar .dropdown-menu-right:after{left:auto;right:1rem;}
 .global-navbar .dropdown-start .shortcuts {width:40rem;max-height:26.5rem;padding:0.25rem;}
 
-.global-navbar.pull-right>li>a{font-size:0.875rem;}
+.global-tools>li>a{padding:0.75rem 1rem;}
 
 
 /* 侧边区域 side*/

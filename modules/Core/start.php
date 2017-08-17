@@ -88,7 +88,22 @@
     return $navbar;
 },100);
 
+/**
+ * 全局工具
+ */
+\Filter::listen('global.tools',function($tools){
+        
+    // 一键刷新
+    $tools['refresh'] = [
+        'icon'  => 'fa fa-magic',
+        'text'  => trans('core::master.refresh'),
+        'title' => trans('core::master.refresh.description'),
+        'href'  => route('core.system.refresh'),
+        'class' => 'refresh js-post',
+    ];
 
+    return $tools;
+});
 
 
 /**
