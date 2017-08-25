@@ -9,7 +9,7 @@
         'text'   => config('module.site.name'),
         'href'   => route('site.config.base'),
         'class'  => 'sitename',
-        'active' => Request::is('*/site/*')
+        'active' => Route::is('site.*')
     ];
 
     return $navbar;

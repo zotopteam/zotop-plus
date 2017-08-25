@@ -7,7 +7,7 @@
     $navbar['developer'] = [
         'text'   => trans('developer::module.title'),
         'href'   => route('developer.index'),
-        'active' => Request::is('*/developer/*')
+        'active' => Route::is('developer.*')
     ];
 
     return $navbar;

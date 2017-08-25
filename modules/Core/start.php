@@ -9,6 +9,16 @@
     return $referer;
 });
 
+
+/**
+ * 扩展 Route:active 如果是当前route，则返回 active
+ */
+\Route::macro('active',function($route, $active="active", $normal=''){
+
+    return Route::is($route) ? $active : $normal;
+});
+
+
 /**
  * 全局导航
  */
@@ -19,7 +29,7 @@
         'text'   => trans('core::master.index'),
         'href'   => route('admin.index'),
         'class'  => 'index',
-        'active' => Request::is('admin')
+        'active' => Route::is('admin.index')
     ];
 
     return $navbar;

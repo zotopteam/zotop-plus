@@ -6,12 +6,12 @@
     <div class="side-body scrollable">
         <ul class="nav nav-pills nav-side">
             <li class="nav-item">
-                <a class="nav-link {{Request::is('*/show/*') ? 'active' : 'normal'}}" href="{{route('developer.module.show',$module->name)}}">
+                <a class="nav-link {{Route::active('developer.module.show')}}" href="{{route('developer.module.show',$module->name)}}">
                     <i class="fa fa-info-circle fa-fw"></i> {{trans('developer::module.show')}}
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{Request::is('*/controller/*') ? 'active' : 'normal'}}" href="{{route('developer.module.controller',[$module->name,'admin'])}}">
+                <a class="nav-link {{Route::active('developer.module.controller')}}" href="{{route('developer.module.controller',[$module->name,'admin'])}}">
                     <i class="fa fa-sitemap fa-fw"></i> {{trans('developer::module.controller')}}
                 </a>
             </li>                       
