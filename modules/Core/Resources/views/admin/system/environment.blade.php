@@ -18,7 +18,7 @@
                     {{trans('core::system.environment.server.description')}}
                 </p>
             </div>
-            <div class="card-block">
+            <div class="card-body">
                 {{trans('core::system.environment.server')}}
             </div>
         </div>
@@ -30,7 +30,7 @@
                     {{trans('core::system.environment.files.description')}}
                 </p>                
             </div>
-            <div class="card-block">
+            <div class="card-body">
                 {{trans('core::system.environment.files')}}
             </div>
         </div>        

@@ -57,7 +57,7 @@
                                     <div class="image">
                                         <img class="card-img-top img-fluid" src="{{Theme::asset('img/placeholder.png')}}" style="background-image:url({{Theme::asset($theme->name.':theme.jpg')}});background-size:cover">
                                     </div>
-                                    <div class="card-block p-2 text-center text-overflow">
+                                    <div class="card-body p-2 text-center text-overflow">
                                         {{$theme->name}}                                        
                                     </div>
                                 </div>

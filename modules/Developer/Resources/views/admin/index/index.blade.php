@@ -14,7 +14,7 @@
                     <div class="card-icon bg-primary text-white d-flex justify-content-center align-items-center">
                         <i class="fa fa-puzzle-piece"></i>
                     </div>
-                    <div class="card-block">
+                    <div class="card-body">
                         <a href="{{route('developer.module.index')}}"> {{trans('developer::module.develop')}}</a>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                     <div class="card-icon bg-success text-white d-flex justify-content-center align-items-center">
                         <i class="fa fa-diamond"></i>
                     </div>
-                    <div class="card-block">
+                    <div class="card-body">
                         <a href="{{route('developer.theme.index')}}"> {{trans('developer::theme.develop')}}</a>
                     </div>                    
                 </div>             

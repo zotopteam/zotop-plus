@@ -16,7 +16,7 @@
 <body class="{{app('current.module')}}-{{app('current.controller')}}-{{app('current.action')}}">
     <header class="global-header">
         <nav class="row" role="navigation">
-            <div class="col-sm-6 col-md-8 col-lg-9">
+            <div class="col-sm-6 col-md-7 col-lg-8">
                 <ul class="nav global-navbar tabdropable">
                     <li class="brand dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CMS</a>
@@ -52,29 +52,45 @@
                     @endforeach
                 </ul>
             </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="col-sm-6 col-md-5 col-lg-4">
                 <ul class="nav global-navbar global-tools float-right">
                     
                     @foreach(filter::fire('global.tools',[]) as $tools)                    
                     <li>
                         <a {!!Html::attributes(array_only($tools,['href','class','title','target']))!!}>
                             @if(isset($tools['icon']))<i class="{{$tools['icon']}} fa-fw"></i>@endif
-                            @if(isset($tools['text']))<span class="hidden-lg-down">{{$tools['text']}}</span>@endif
+                            @if(isset($tools['text']))<span class="d-none d-xl-inline-block">{{$tools['text']}}</span>@endif
                         </a>
                     </li>
                     @endforeach
                     
-                    <li class="dropdown hidden-xs">
+                    <li class="dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user-circle"></i> <span class="hidden-md-down">{{Auth::user()->username}}</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="{{route('core.mine.edit')}}"><i class="fa fa-user fa-fw"></i> {{trans('core::mine.edit')}}</a></li>
-                            <li><a href="{{route('core.mine.password')}}"><i class="fa fa-edit fa-fw"></i> {{trans('core::mine.password')}}</a></li>
-                            <li style="display:none;"><a href="{{route('core.mine.permission')}}"><i class="fa fa-sitemap fa-fw"></i> {{trans('core::mine.permission')}}</a></li>
-                            <li style="display:none;"><a href="{{route('core.mine.log')}}"><i class="fa fa-flag fa-fw"></i> {{trans('core::mine.log')}}</a></li>
-                            <li><a href="{{route('admin.logout')}}" class="js-confirm" data-confirm="{{trans('core::auth.logout.confirm')}}"><i class="fa fa-sign-out fa-fw"></i> {{trans('core::auth.logout')}}</a></li>
-                        </ul>
+                        <div class="dropdown-menu dropdown-menu-primary dropdown-menu-right">
+                            <a class="dropdown-item" href="{{route('core.mine.edit')}}">
+                                <i class="dropdown-item-icon fa fa-user fa-fw"></i>
+                                <b class="dropdown-item-text">{{trans('core::mine.edit')}}</b>
+                            </a>
+                            <a class="dropdown-item" href="{{route('core.mine.password')}}">
+                                <i class="dropdown-item-icon fa fa-key fa-fw"></i>
+                                <b class="dropdown-item-text">{{trans('core::mine.password')}}</b>
+                            </a>
+                            <a class="dropdown-item d-none" href="{{route('core.mine.permission')}}">
+                                <i class="dropdown-item-icon fa fa-sitemap fa-fw"></i>
+                                <b class="dropdown-item-text">{{trans('core::mine.permission')}}</b>
+                            </a>
+                            <a class="dropdown-item d-none" href="{{route('core.mine.log')}}">
+                                <i class="dropdown-item-icon fa fa-flag fa-fw"></i>
+                                <b class="dropdown-item-text">{{trans('core::mine.log')}}</b>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item js-confirm" href="{{route('admin.logout')}}" data-confirm="{{trans('core::auth.logout.confirm')}}">
+                                <i class="dropdown-item-icon fa fa-sign-out fa-fw"></i>
+                                <b class="dropdown-item-text">{{trans('core::auth.logout')}}</b>
+                            </a>
+                        </div>
                     </li>                       
                 </ul>                
             </div>
@@ -87,7 +103,7 @@
     </footer>
 
     <script src="{{theme::asset('js/jquery.min.js')}}"></script>
-    <script src="{{theme::asset('js/tether.min.js')}}"></script>    
+    <script src="{{theme::asset('js/popper.min.js')}}"></script>    
     <script src="{{theme::asset('js/bootstrap.min.js')}}"></script>
     <script src="{{theme::asset('js/jquery.validate.min.js')}}"></script>
     <script src="{{theme::asset('js/jquery.nicescroll.min.js')}}"></script>    

@@ -153,10 +153,19 @@
     ]);
 
     // 按钮文字
-    $button   = $this->options_pull($attrs,'button',trans('core::field.upload.image.button')); 
+    $button   = $this->options_pull($attrs,'button',trans('core::field.upload.image.button'));
+
+    // 高级上传及工具
+    $tools = $this->options_pull($attrs,'tools',\Filter::fire('upload_image.tools',[
+        'select'   => ['text'=>trans('core::field.upload.image.select'),'icon'=>'fa-cloud','herf'=>'','class'=>'js-open'],
+        'libarary' => ['text'=>trans('core::field.upload.image.library'),'icon'=>'fa-database','herf'=>'','class'=>'js-open'],
+        'dir'      => ['text'=>trans('core::field.upload.image.select'),'icon'=>'fa-folder','herf'=>'','class'=>'js-open'],
+    ]));
 
     return $this->toHtmlString(
-        $this->view->make('core::field.upload_image')->with('name',$name)->with('value',$value)->with('attrs',$attrs)->with('options',$options)->with('button',$button)->render()
+        $this->view->make('core::field.upload_image')
+            ->with('name',$name)->with('value',$value)->with('attrs',$attrs)->with('options',$options)->with('button',$button)->with('tools',$tools)
+            ->render()
     );
 });
 

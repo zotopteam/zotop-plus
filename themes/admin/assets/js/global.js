@@ -1,7 +1,5 @@
 /*! Global js */
 
-
-
 // Laravel的VerifyCsrfToken验证
 $(function(){
     $.ajaxSetup({
@@ -74,7 +72,7 @@ $(function(){
                     placement: function(tip, element){
                         return $(element).data('placement') ? $(element).data('placement') : 'bottom';
                     },              
-                    template: '<div class="tooltip tooltip-error" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+                    template: '<div class="tooltip tooltip-error" role="tooltip"><div class="tooltip-arrow arrow"></div><div class="tooltip-inner"></div></div>'
                 });
 
                 //tooltip.data("bs.tooltip").options.title = value.message;
@@ -235,28 +233,24 @@ $(function(){
 //表格行排序 sortable
 $(function(){
 
-    $("table.sortable").each(function(index,table){
-        table.sortable({
+    $("table.table-sortable").each(function(index,table){
+        $(table).sortable({
             items: "tbody > tr",
             handle: "td.drag",
             axis: "y",
             placeholder:"ui-sortable-placeholder",
             helper: function(e,tr){
-                tr.children().each(function(){
-                    $(this).width($(this).width());
-                });
+                // tr.children().each(function(){
+                //     $(this).width($(this).width());
+                // });
                 return tr;
             },
             update:function(){
                 var action = $(this).parents('form').attr('action');
-                var data = $(this).parents('form').serialize();
+                var data   = $(this).parents('form').serialize();
 
                 $.post(action, data, function(msg){
-                    if ( msg.status == 1 ){
-                        //window.location.reload();
-                    }else{
-                        alert(msg.tip);
-                    }
+                    $.msg(msg);
                 },'json');
             }
         });        
