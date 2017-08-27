@@ -10,9 +10,11 @@
             {{$title}}
         </div>
     </div>
-    {form model="$user" route="core.administrator.store" method="post" autocomplete="off"}
+    
     <div class="main-body scrollable">
         <div class="container-fluid">
+
+            {form model="$user" route="core.administrator.store" method="post" id="administrator" autocomplete="off"}
 
             <div class="form-title row">{{trans('core::administrator.form.base')}}</div>
 
@@ -101,16 +103,17 @@
                     <span class="form-help text-error">{{ $errors->first('sign') }}</span>
                     @endif                          
                 </div>
-            </div>                                                 
-                       
+            </div>
+
+            {/form}
+
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
-            {field type="submit" value="trans('core::master.save')" class="btn btn-primary"}
+            {field type="submit" form="administrator" value="trans('core::master.save')" class="btn btn-primary"}
         </div>
     </div>
-    {/form}
 </div>
 
 

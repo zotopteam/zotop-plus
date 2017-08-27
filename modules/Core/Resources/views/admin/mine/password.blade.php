@@ -10,10 +10,10 @@
             {{$title}}
         </div>
     </div>
-    {form model="$user" route="core.mine.password.update" method="put" autocomplete="off"}
+    
     <div class="main-body scrollable">
         <div class="container-fluid">
-
+            {form model="$user" route="core.mine.password.update" method="put" autocomplete="off"}
             <div class="form-group row">
                 <label for="username" class="col-2 col-form-label required">{{trans('core::mine.username.label')}}</label>
                 <div class="col-4">
@@ -58,16 +58,15 @@
                     <span class="form-help">{{trans('core::mine.password_confirm.help')}}</span>                    
                     @endif                          
                 </div>
-            </div>                                               
-                       
+            </div>
+            <div class="form-group form-footer row">
+                <div class="col-4">
+                    {field type="submit" value="trans('core::master.save')" class="btn btn-primary"}
+                </div>
+            </div>                                          
+            {/form}           
         </div>
-    </div><!-- main-body -->
-    <div class="main-footer">
-        <div class="mr-auto">
-            {field type="submit" value="trans('core::master.save')" class="btn btn-primary"}
-        </div>
-    </div>
-    {/form}
+    </div><!-- main-body -->    
 </div>
 
 

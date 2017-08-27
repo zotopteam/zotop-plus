@@ -9,12 +9,11 @@
         <div class="main-title mr-auto">
             {{$title}}
         </div>
-    </div>
-    {form model="config('module.site')" route="site.config.base" method="post" autocomplete="off"}
+    </div> 
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-
+            {form model="config('module.site')" route="site.config.base" method="post" id="config" autocomplete="off"}
             <div class="form-title row">{{trans('site::config.base.info.title')}}</div>
 
             <div class="form-group row">
@@ -131,15 +130,15 @@
                     @endif
                 </div>
             </div>
-                       
+            {/form}           
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
-            {field type="submit" value="trans('core::master.save')" class="btn btn-primary"}
+            {field type="submit" form="config" value="trans('core::master.save')" class="btn btn-primary"}
         </div>
     </div>
-    {/form}
+    
 </div>
 
 @endsection

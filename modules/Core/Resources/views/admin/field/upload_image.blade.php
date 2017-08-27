@@ -12,7 +12,7 @@
         <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="sr-only">Toggle Dropdown</span>
         </button>
-        <div class="dropdown-menu dropdown-menu-right">
+        <div class="dropdown-menu dropdown-menu-primary dropdown-menu-right">
             @foreach($tools as $tool)
             <a class="dropdown-item" href="#">
                 <i class="dropdown-item-icon fa fa-fw {{$tool['icon'] or ''}}"></i>

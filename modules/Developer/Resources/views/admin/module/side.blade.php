@@ -17,4 +17,7 @@
             </li>                       
         </ul>        
     </div>
+    <div class="side-footer">
+        
+    </div>
 </div>
