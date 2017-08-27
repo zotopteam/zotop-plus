@@ -16,14 +16,14 @@
             {form model="$user" route="core.mine.update" method="put" id="form" autocomplete="off"}
                 <div class="form-group row">
                     <label for="username" class="col-2 col-form-label required">{{trans('core::mine.username.label')}}</label>
-                    <div class="col-4">
+                    <div class="col-4 col-md-6">
                         {field type="static" name="username"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="nickname" class="col-2 col-form-label required">{{trans('core::mine.nickname.label')}}</label>
-                    <div class="col-4">
+                    <div class="col-4 col-md-6">
                         {field type="text" name="nickname" required="required" maxlength="100"}
                         
                         @if ($errors->has('nickname'))
@@ -34,7 +34,7 @@
 
                 <div class="form-group row">
                     <label for="email" class="col-2 col-form-label required">{{trans('core::mine.email.label')}}</label>
-                    <div class="col-4">
+                    <div class="col-4 col-md-6">
                         {field type="email" name="email" required="required" placeholder="trans('core::mine.email.placeholder')" data-msg-required="trans('core::mine.email.required')"}
                         
                         @if ($errors->has('email'))
@@ -45,7 +45,7 @@
 
                 <div class="form-group row">
                     <label for="email" class="col-2 col-form-label required">{{trans('core::mine.mobile.label')}}</label>
-                    <div class="col-4">
+                    <div class="col-4 col-md-6">
                         {field type="mobile" name="mobile" required="required"}
 
                         @if ($errors->has('mobile'))
@@ -67,35 +67,35 @@
 
                 <div class="form-group row">
                     <label for="login_times" class="col-2 col-form-label">{{trans('core::mine.login_times.label')}}</label>
-                    <div class="col-4">
+                    <div class="col-4 col-md-6">
                         {field type="static" name="login_times"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="login_ip" class="col-2 col-form-label">{{trans('core::mine.login_ip.label')}}</label>
-                    <div class="col-4">
+                    <div class="col-4 col-md-6">
                         {field type="static" name="login_ip"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="login_at" class="col-2 col-form-label">{{trans('core::mine.login_at.label')}}</label>
-                    <div class="col-4">
+                    <div class="col-4 col-md-6">
                         {field type="static" name="login_at"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="created_at" class="col-2 col-form-label">{{trans('core::mine.created_at.label')}}</label>
-                    <div class="col-4">
+                    <div class="col-4 col-md-6">
                         {field type="static" name="created_at"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="updated_at" class="col-2 col-form-label">{{trans('core::mine.updated_at.label')}}</label>
-                    <div class="col-4">
+                    <div class="col-4 col-md-6">
                         {field type="static" name="updated_at"}
                     </div>
                 </div>                                                  

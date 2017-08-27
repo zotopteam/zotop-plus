@@ -124,7 +124,7 @@
  */
 \Form::macro('static',function($attrs){
     $value = $this->getValue($attrs);
-    return '<p class="form-control-static">'.$value.'</p>';
+    return '<p class="form-control-plaintext">'.$value.'</p>';
 });
 
 /**
