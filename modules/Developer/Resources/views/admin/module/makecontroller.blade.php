@@ -64,7 +64,7 @@
                     $.msg(msg);
 
                 },'json').fail(function(jqXHR){
-                    return validator.showErrors(jqXHR.responseJSON);
+                    return validator.showErrors(jqXHR.responseJSON.errors);
                 });
             }            
         });

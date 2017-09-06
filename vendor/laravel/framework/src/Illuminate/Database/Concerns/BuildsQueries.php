@@ -36,9 +36,11 @@ trait BuildsQueries
             // On each chunk result set, we will pass them to the callback and then let the
             // developer take care of everything within the callback, which allows us to
             // keep the memory low for spinning through large result sets for working.
-            if ($callback($results) === false) {
+            if ($callback($results, $page) === false) {
                 return false;
             }
+
+            unset($results);
 
             $page++;
         } while ($countResults == $count);
@@ -68,7 +70,7 @@ trait BuildsQueries
      * Execute the query and get the first result.
      *
      * @param  array  $columns
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Model|static|null
      */
     public function first($columns = ['*'])
     {
@@ -92,6 +94,17 @@ trait BuildsQueries
         }
 
         return $this;
+    }
+
+    /**
+     * Pass the query to a given callback.
+     *
+     * @param  \Closure  $callback
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function tap($callback)
+    {
+        return $this->when(true, $callback);
     }
 
     /**

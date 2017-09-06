@@ -142,7 +142,7 @@
                 },'json').fail(function(jqXHR){
                     
                     $('.form-submit').prop('disabled',false);
-                    return validator.showErrors(jqXHR.responseJSON);
+                    return validator.showErrors(jqXHR.responseJSON.errors);
                 });
             }            
         });

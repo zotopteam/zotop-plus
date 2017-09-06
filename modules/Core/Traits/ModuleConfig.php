@@ -17,7 +17,7 @@ trait ModuleConfig
     public function save($namespace, array $config)
     {
         // 当前配置
-        $current = config($namespace, []);        
+        $current = config($namespace, []);
 
         // 合并配置，只合并已经存在的值
         $config = array_merge($current, array_only($config, array_keys($current)));

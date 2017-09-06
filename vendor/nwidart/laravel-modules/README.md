@@ -8,6 +8,10 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/nWidart/laravel-modules.svg?style=flat-square)](https://scrutinizer-ci.com/g/nWidart/laravel-modules)
 [![Total Downloads](https://img.shields.io/packagist/dt/nwidart/laravel-modules.svg?style=flat-square)](https://packagist.org/packages/nwidart/laravel-modules)
 
+| **Laravel**  |  **laravel-modules** |
+|---|---|
+| 5.4  | ^1.0  |
+| 5.5  | ^2.0  |
 
 `nwidart/laravel-modules` is a Laravel package which created to manage your large Laravel app using modules. Module is like a Laravel package, it has some views, controllers or models. This package is supported and tested in Laravel 5.
 
@@ -63,6 +67,8 @@ By default the module classes are not loaded automatically. You can autoload you
   }
 }
 ```
+
+**Tip: don't forget to run `composer dump-autoload` afterwards**
 
 ## Documentation
 

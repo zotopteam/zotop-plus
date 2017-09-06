@@ -2,7 +2,7 @@
 return array (
   'name' => '逐涛网',
   'theme' => 'default',
-  'url' => '',
+  'url' => 'http://www.zotop.comq',
   'logo' => '/uploads/2017/07/28/201707281606120000007880.png',
   'favicon' => '',
   'slogan' => '',

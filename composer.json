@@ -6,10 +6,10 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "5.4.*",
-        "barryvdh/laravel-debugbar": "^2.3",
-        "nwidart/laravel-modules": "^1.14",
-        "laravelcollective/html": "^5.3.0",
+        "laravel/framework": "5.5.*",
+        "barryvdh/laravel-debugbar": "^3.0.1",
+        "nwidart/laravel-modules": "^2.0",
+        "laravelcollective/html": "^5.4.0",
         "doctrine/dbal": "^2.5",
         "jildertmiedema/laravel-plupload": "^0.4.1",
         "maatwebsite/excel": "~2.1.0",
@@ -18,7 +18,7 @@
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.0",
+        "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "3.1.*",
         "symfony/dom-crawler": "3.1.*"
     },

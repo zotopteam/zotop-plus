@@ -78,15 +78,22 @@ class CoreServiceProvider extends ServiceProvider
         $configPath = $module->getPath().'/Config';
         $configFile = $module->getPath().'/config.php';
 
+
+
         // 注册模块根目录下的配置
-        $this->mergeConfigFrom($configFile, strtolower("module.$moduleName"));
+        if ($this->app['files']->isFile($configFile)) {
+            $this->mergeConfigFrom($configFile, strtolower("module.$moduleName"));
+            $this->publishes([
+               $configFile => config_path(strtolower("module/$moduleName.php")),
+            ], 'config');     
+        }
 
         // 注册模块Config目录下的配置
-        foreach ($this->app['files']->files($configPath) as $configFile) {
-
-            $fileName = basename($configFile,'.php');
-
-            $this->mergeConfigFrom($configFile, strtolower("module.$moduleName.$fileName"));
+        if ($this->app['files']->isDirectory($configPath)) {
+            foreach ($this->app['files']->files($configPath) as $configFile) {
+                $fileName = basename($configFile,'.php');
+                $this->mergeConfigFrom($configFile, strtolower("module.$moduleName.$fileName"));
+            }
         }
     }
 
