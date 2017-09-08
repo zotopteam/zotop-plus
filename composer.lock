@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2dd95b408d1e736278c451a567e45d51",
+    "content-hash": "036622d85de5e851e085a31129ba7e6e",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -884,16 +884,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.2",
+            "version": "v5.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "65da63c8ad4836e2bcddcff75becd49c71c5041c"
+                "reference": "779a98d3b2ebed2128db1a668dcc10a65c9b01be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/laravel/framework/65da63c8ad4836e2bcddcff75becd49c71c5041c.zip",
-                "reference": "65da63c8ad4836e2bcddcff75becd49c71c5041c",
+                "url": "https://files.phpcomposer.com/files/laravel/framework/779a98d3b2ebed2128db1a668dcc10a65c9b01be.zip",
+                "reference": "779a98d3b2ebed2128db1a668dcc10a65c9b01be",
                 "shasum": ""
             },
             "require": {
@@ -1012,7 +1012,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-09-04T14:09:04+00:00"
+            "time": "2017-09-07T13:50:21+00:00"
         },
         {
             "name": "laravelcollective/html",
@@ -1976,6 +1976,62 @@
                 "uuid"
             ],
             "time": "2017-08-04T13:39:04+00:00"
+        },
+        {
+            "name": "sven/flex-env",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/svenluijten/flex-env.git",
+                "reference": "f2fc259e422be8586d0831d9122073d46d605aa7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/svenluijten/flex-env/f2fc259e422be8586d0831d9122073d46d605aa7.zip",
+                "reference": "f2fc259e422be8586d0831d9122073d46d605aa7",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.0",
+                "laravel/framework": "^5.0",
+                "php": "^5.5.9 || ^7.0"
+            },
+            "require-dev": {
+                "graham-campbell/testbench": "^3.1",
+                "phpunit/phpunit": "^4.8 || ^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sven\\FlexEnv\\FlexEnvServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sven\\FlexEnv\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sven Luijten",
+                    "email": "svenluijten1995@gmail.com",
+                    "homepage": "https://svenluijten.com"
+                }
+            ],
+            "description": "Edit your .env file in Laravel directly from the command line.",
+            "keywords": [
+                "Flexible",
+                "artisan",
+                "env",
+                "laravel"
+            ],
+            "time": "2017-06-19T10:40:09+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

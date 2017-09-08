@@ -19,7 +19,16 @@
                 </p>
             </div>
             <div class="card-body">
-                {{trans('core::system.environment.server')}}
+                <table class="table table-hover">
+                    <tbody>
+                    @foreach($server as $key=>$val)
+                    <tr>
+                        <td>{{trans("core::system.environment.server.{$key}")}}</td>
+                        <td>{{$val}}</td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                </table>                
             </div>
         </div>
 

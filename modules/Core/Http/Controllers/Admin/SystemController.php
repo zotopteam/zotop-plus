@@ -65,6 +65,28 @@ class SystemController extends AdminController
     public function environment()
     {
         $this->title = trans('core::system.environment.title');
+
+        $this->server = [
+            'php'                 => PHP_VERSION,
+            'os'                  => PHP_OS,
+            'server'              => $_SERVER['SERVER_SOFTWARE'],
+            'db'                  => config('database.default'),
+            
+            'root'                => $_SERVER['DOCUMENT_ROOT'],
+            'agent'               => $_SERVER['HTTP_USER_AGENT'],
+            'protocol'            => $_SERVER['SERVER_PROTOCOL'],
+            'laravel'             => app()::VERSION,
+            'upload_max_filesize' => ini_get('upload_max_filesize'),
+            'max_execution_time'  => ini_get('max_execution_time').'s',
+            'server_timezone'     => config('app.timezone'),
+            'server_datetime'     => date('Y-m-d H:i:s'),
+            // 'local_date'       => gmdate('Y年n月j日 H:i:s', time() + 8 * 3600),
+            'server_name'         => $_SERVER['SERVER_NAME'],
+            'port'                => $_SERVER['SERVER_PORT'],
+            'server_addr'         => $_SERVER['SERVER_ADDR'],
+            'remote_addr'         => $_SERVER['REMOTE_ADDR'],
+            'disk'                => round((disk_free_space('.') / (1024 * 1024)), 2).'M',
+        ];        
         
         return $this->view();
     }

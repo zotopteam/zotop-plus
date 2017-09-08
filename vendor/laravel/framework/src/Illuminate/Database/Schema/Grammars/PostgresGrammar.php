@@ -2,6 +2,7 @@
 
 namespace Illuminate\Database\Schema\Grammars;
 
+use Exception;
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Schema\Blueprint;
 
@@ -603,6 +604,103 @@ class PostgresGrammar extends Grammar
     protected function typeMacAddress(Fluent $column)
     {
         return 'macaddr';
+    }
+
+    /**
+     * Create the column definition for a geometry type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @throws \Exception
+     */
+    protected function typeGeometry(Fluent $column)
+    {
+        throw new Exception('Geometry data type not supported for current database engine.');
+    }
+
+    /**
+     * Create the column definition for a point type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typePoint(Fluent $column)
+    {
+        return $this->formatPostGisType('point');
+    }
+
+    /**
+     * Create the column definition for a linestring type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeLinestring(Fluent $column)
+    {
+        return $this->formatPostGisType('linestring');
+    }
+
+    /**
+     * Create the column definition for a polygon type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typePolygon(Fluent $column)
+    {
+        return $this->formatPostGisType('polygon');
+    }
+
+    /**
+     * Create the column definition for a geometrycollection type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeGeometrycollection(Fluent $column)
+    {
+        return $this->formatPostGisType('geometrycollection');
+    }
+
+    /**
+     * Create the column definition for a multipoint type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeMultipoint(Fluent $column)
+    {
+        return $this->formatPostGisType('multipoint');
+    }
+
+    /**
+     * Create the column definition for a multilinestring type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    public function typeMultilinestring(Fluent $column)
+    {
+        return $this->formatPostGisType('multilinestring');
+    }
+
+    /**
+     * Create the column definition for a multipolygon type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeMultipolygon(Fluent $column)
+    {
+        return $this->formatPostGisType('multipolygon');
+    }
+
+    /**
+     * @param  string  $type
+     * @return string
+     */
+    private function formatPostGisType(string $type)
+    {
+        return "geography({$type}, 4326)";
     }
 
     /**
