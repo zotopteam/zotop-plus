@@ -40,9 +40,9 @@ class FrontControllerCommand extends GeneratorCommand
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
-        parent::fire();
+        parent::handle();
 
         $this->createViews();
 

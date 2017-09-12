@@ -238,6 +238,12 @@
     $column  = $this->options_pull($attrs,'column',0);
     $class   = $this->options_pull($attrs,'class','radiogroup-default');
 
+    // 如果没有选择值，选择options的第一个
+    if ( is_null($value) && is_array($options) ) {
+        $value = array_keys($options);
+        $value = reset($value);
+    }
+
     return $this->toHtmlString(
         $this->view->make('core::field.radiogroup')->with('name',$name)->with('value',$value)->with('column',$column)->with('options',$options)->with('class',$class)->render()
     );

@@ -84,7 +84,7 @@ class CreateCommand extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         $this->moduleName = $this->argument('name');
         $this->modulePath = $this->modulePath();

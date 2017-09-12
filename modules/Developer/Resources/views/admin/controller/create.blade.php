@@ -3,7 +3,7 @@
 @section('content')
 <div class="main scrollable">
 
-    {form model="$controller" route="['developer.module.make.controller', $name, $type]" method="post" class="" autocomplete="off"}
+    {form model="$controller" route="['developer.module.controller.create', $name, $type]" method="post" class="" autocomplete="off"}
 
         <div class="container-fluid">
 
@@ -21,14 +21,14 @@
             </div>
 
             <div class="form-group row">
-                <label for="controller_plain" class="col-2 col-form-label required">{{trans('developer::module.controller_plain.label')}}</label>
+                <label for="controller_type" class="col-2 col-form-label required">{{trans('developer::module.controller_type.label')}}</label>
                 <div class="col-10">
-                    {field type="radiogroup" name="controller_plain" options="$plains" column="1" required="required"}
+                    {field type="radiogroup" name="controller_type" options="$types" column="1" required="required"}
 
-                    @if ($errors->has('type'))
-                    <span class="form-help text-error">{{ $errors->first('type') }}</span>
+                    @if ($errors->has('controller_type'))
+                    <span class="form-help text-error">{{ $errors->first('controller_type') }}</span>
                     @else
-                    <span class="form-help">{{trans('developer::module.controller_plain.help')}}</span>                     
+                    <span class="form-help">{{trans('developer::module.controller_type.help')}}</span>                     
                     @endif
                 </div>                     
             </div>                                             

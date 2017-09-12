@@ -2,7 +2,7 @@
     <div class="radiogroup-item">
         @foreach((array)$options as $k=>$v)
         <label class="radio">
-            {field type="radio" name="$name" value="$k" id="$name.'-'.$k"}
+            <input type="radio" id="{{$name}}-{{$k}}" class="form-control" name="{{$name}}" value="{{$k}}" {{($k==$value)?'checked':''}}/>
             <span class="radio-text">
                 {{$v}}
             </span>

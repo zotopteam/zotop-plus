@@ -67,7 +67,7 @@ class CreateThemeCommand extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         // 主题名称和路径
         $this->themeName = $this->argument('name');

@@ -19,14 +19,19 @@ class AdminControllerCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $argumentName = 'controller';
+    protected $argumentName = 'controller';    
 
     /**
-     * The console command name.
+     * The console command signature.
      *
      * @var string
      */
-    protected $name = 'module:make-admin-controller';
+    protected $signature = 'module:make-admin-controller 
+                            {controller : The name of the admin controller class.} 
+                            {module : The name of module will be used.} 
+                            {--type=resource : Generate a plain controller.} 
+                            {--force : Overwrite any existing files.}';
+
 
     /**
      * The console command description.
@@ -40,13 +45,11 @@ class AdminControllerCommand extends GeneratorCommand
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
-        parent::fire();
+        parent::handle();
 
         $this->createViews();
-
-        //$this->info('ok');
     }
 
     /**
@@ -62,11 +65,18 @@ class AdminControllerCommand extends GeneratorCommand
             // 获取view文件地址
             $path = $this->getViewPath($file);
 
+            // 如果不是强制生成，禁止覆盖已经存在的文件
+            if (!$this->option('force') && $this->laravel['files']->exists($path)) {
+                $this->info("File : {$path} already exists.");
+                continue;
+            }            
+
             // 如果不存在，尝试创建
             if (!$this->laravel['files']->isDirectory($dir = dirname($path))) {
                 $this->laravel['files']->makeDirectory($dir, 0775, true);
-            }
+            }          
 
+            // 写入文件
             $this->laravel['files']->put($path, $this->renderViewStub($stub));
 
             $this->info("Created : {$path}");
@@ -113,31 +123,6 @@ class AdminControllerCommand extends GeneratorCommand
         return $stub->render();
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return array(
-            array('controller', InputArgument::REQUIRED, 'The name of the admin controller class.'),
-            array('module', InputArgument::OPTIONAL, 'The name of module will be used.'),
-        );
-    }
-
-    /**
-     * Get the console command options.
-     * 
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['plain', 'p', InputOption::VALUE_NONE, 'Generate a plain controller', null],
-            ['force', 'f', InputOption::VALUE_NONE, 'Force the operation to run when controller already exist.'],
-        ];
-    }
 
     /**
      * 获取ControllerName
@@ -186,11 +171,9 @@ class AdminControllerCommand extends GeneratorCommand
      */
     private function getStubName()
     {
-        if ($this->option('plain') === true) {
-            return '/admin-controller-plain.stub';
-        }
+        $type = strtolower($this->option('type'));
 
-        return '/admin-controller.stub';
+        return "/admin-controller-{$type}.stub";
     }
 
     /**
@@ -200,17 +183,23 @@ class AdminControllerCommand extends GeneratorCommand
      */
     private function getViewFiles()
     {
-        if ($this->option('plain') === true) {
-            return [
-                'index.stub' => 'index.blade.php',
-            ];
+        $type = strtolower($this->option('type'));
+
+        $path = $this->laravel['modules']->getModulePath('core'). 'Console/stubs/views/admin-controller/'.$type;
+
+        $stubs = $this->laravel['files']->files($path);
+
+        $files = [];
+
+        foreach ($stubs as $stub) {
+
+            $stubName = $stub->getFileName();
+            $stubPath = $stub->getRealPath();
+            
+            $files[$stubPath] = basename($stubName,'.stub').'.blade.php';
         }
 
-        return [
-            'index.stub'  => 'index.blade.php',
-            'create.stub' => 'create.blade.php',
-            'edit.stub'   => 'edit.blade.php',
-        ];      
+        return $files;      
     }
 
     /**
@@ -236,11 +225,7 @@ class AdminControllerCommand extends GeneratorCommand
      */
     private function renderViewStub($stub)
     {
-        $path = $this->laravel['modules']->getModulePath('core');
-
-        $path = $path . 'Console/stubs/views/admin/'.$stub;
-
-        $stub = $this->laravel['files']->get($path);
+        $stub = $this->laravel['files']->get($stub);
 
         return str_replace(
             [

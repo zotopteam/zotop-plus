@@ -107,8 +107,9 @@ $(function(){
     $(document).on('click', 'a.js-post',function(event){
         event.preventDefault();
 
-        var icon   = $(this).find('.fa');
+        var icon = $(this).find('.fa');
         var href = $(this).data('url') || $(this).attr('href');
+        var data = $(this).data('post') || {};
 
         if ( icon.length > 0 ){
             icon.addClass('fa-spin fa-spinner');
@@ -116,7 +117,7 @@ $(function(){
             $.loading();
         }       
         
-        $.post(href,{},function(msg){
+        $.post(href, data, function(msg){
             $.msg(msg);
 
             if ( icon.length > 0 ){

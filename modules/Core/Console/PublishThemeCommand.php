@@ -27,7 +27,7 @@ class PublishThemeCommand extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         if ($name = $this->argument('theme')) {
             return $this->publish($name);

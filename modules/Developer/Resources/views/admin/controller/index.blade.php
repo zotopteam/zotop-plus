@@ -17,7 +17,7 @@
             </div>
         </div>        
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.module.make.controller',[$name,$type])}}" data-width="800" data-height="300">
+            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.module.controller.create',[$name,$type])}}" data-width="800" data-height="300">
                 <i class="fa fa-plus"></i> {{trans('core::master.create')}}
             </a>
         </div>
@@ -28,6 +28,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
+                    <td width="1%"></td>
                     <td>{{trans('developer::module.file.name')}}</td>
                     <td>{{trans('developer::module.file.path')}}</td>
                     <td>{{trans('developer::module.file.lastmodified')}}</td>
@@ -37,9 +38,17 @@
                 
                 @foreach($files as $file)
                 <tr>
-                    <td>{{File::name($file)}} </td>
-                    <td>{{realpath($file)}}</td>
-                    <td>{{date('Y-m-d H:i:s',File::lastModified($file))}}</td>
+                    <td><div class="fa fa-file fa-{{$file->getExtension()}} fa-2x text-primary"></div> </td>
+                    <td>
+                        {{$file->getFilename()}}
+                        <div class="manage">
+                            <a class="manage-item js-open" href="{{route('developer.module.controller.route',[$name,$type,basename($file,'.php')])}}" data-width="80%" data-height="60%">
+                                <i class="fa fa-fw fa-anchor"></i> 路由参考
+                            </a>
+                        </div>
+                    </td>
+                    <td>{{$file->getRealPath()}}</td>
+                    <td>{{date('Y-m-d H:i:s',$file->getMTime())}}</td>
                 </tr>
                 @endforeach
           

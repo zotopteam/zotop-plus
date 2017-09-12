@@ -57,7 +57,7 @@
                     
                     @foreach(filter::fire('global.tools',[]) as $tools)                    
                     <li>
-                        <a {!!Html::attributes(array_only($tools,['href','class','title','target']))!!}>
+                        <a {!!Html::attributes(array_except($tools,['icon','text']))!!}>
                             @if(isset($tools['icon']))<i class="{{$tools['icon']}} fa-fw"></i>@endif
                             @if(isset($tools['text']))<span class="d-none d-xl-inline-block">{{$tools['text']}}</span>@endif
                         </a>
