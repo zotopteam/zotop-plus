@@ -71,6 +71,14 @@
         'icon' => 'fa fa-cogs bg-primary text-white',
         'tips' => trans('core::config.core.description'),
     ];    
+
+    //模块管理
+    $navbar['themes'] = [
+        'text' => trans('core::themes.title'),
+        'href' => route('core.themes.index'),
+        'icon' => 'fa fa-universal-access bg-primary text-white',
+        'tips' => trans('core::themes.description'),
+    ];
       
     //模块管理
     $navbar['modules'] = [

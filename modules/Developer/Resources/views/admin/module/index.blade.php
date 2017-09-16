@@ -27,10 +27,10 @@
             <tbody>  
             @foreach($modules as $name=>$module)
                 <tr class="item {{$module->active?'active':'disabled'}}">
-                    <td width="2%">
+                    <td width="1%" class="icon icon-sm pr-2">
                         <img src="{{$module->icon}}" style="width:48px;">
                     </td>
-                    <td>
+                    <td class="pl-2">
                         <div class="title"> <b class="text-lg">{{$module->title}}</b> <span class="text-muted">{{$name}}</span></div>
                         <div class="manage">
                             @if($module->installed)

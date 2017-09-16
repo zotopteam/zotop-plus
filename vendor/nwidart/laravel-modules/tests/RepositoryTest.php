@@ -1,6 +1,6 @@
 <?php
 
-namespace Nwidart\Modules\tests;
+namespace Nwidart\Modules\Tests;
 
 use Illuminate\Filesystem\Filesystem;
 use Nwidart\Modules\Collection;
@@ -19,7 +19,7 @@ class RepositoryTest extends BaseTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->repository = new Repository($this->app);
+        $this->repository = new \Nwidart\Modules\Laravel\Repository($this->app);
     }
 
     /** @test */

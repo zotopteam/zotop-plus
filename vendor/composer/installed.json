@@ -437,62 +437,6 @@
         ]
     },
     {
-        "name": "phpdocumentor/reflection-common",
-        "version": "1.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-            "reference": "144c307535e82c8fdcaacbcfc1d6d8eeb896687c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/144c307535e82c8fdcaacbcfc1d6d8eeb896687c",
-            "reference": "144c307535e82c8fdcaacbcfc1d6d8eeb896687c",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.6"
-        },
-        "time": "2015-12-27T11:43:31+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "phpDocumentor\\Reflection\\": [
-                    "src"
-                ]
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Jaap van Otterdijk",
-                "email": "opensource@ijaap.nl"
-            }
-        ],
-        "description": "Common reflection classes used by phpdocumentor to reflect the code structure",
-        "homepage": "http://www.phpdoc.org",
-        "keywords": [
-            "FQSEN",
-            "phpDocumentor",
-            "phpdoc",
-            "reflection",
-            "static analysis"
-        ]
-    },
-    {
         "name": "nesbot/carbon",
         "version": "1.22.1",
         "version_normalized": "1.22.1.0",
@@ -4599,54 +4543,43 @@
         ]
     },
     {
-        "name": "nwidart/laravel-modules",
-        "version": "2.0.0",
-        "version_normalized": "2.0.0.0",
+        "name": "sven/flex-env",
+        "version": "2.1.1",
+        "version_normalized": "2.1.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/nWidart/laravel-modules.git",
-            "reference": "bb70bccf1c6909777d9ee748e84370a7417a1b3c"
+            "url": "https://github.com/svenluijten/flex-env.git",
+            "reference": "f2fc259e422be8586d0831d9122073d46d605aa7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/nWidart/laravel-modules/bb70bccf1c6909777d9ee748e84370a7417a1b3c.zip",
-            "reference": "bb70bccf1c6909777d9ee748e84370a7417a1b3c",
+            "url": "https://files.phpcomposer.com/files/svenluijten/flex-env/f2fc259e422be8586d0831d9122073d46d605aa7.zip",
+            "reference": "f2fc259e422be8586d0831d9122073d46d605aa7",
             "shasum": ""
         },
         "require": {
-            "laravel/framework": "5.5.*",
-            "php": ">=7.0"
+            "illuminate/support": "^5.0",
+            "laravel/framework": "^5.0",
+            "php": "^5.5.9 || ^7.0"
         },
         "require-dev": {
-            "friendsofphp/php-cs-fixer": "^2.4",
-            "mockery/mockery": "~0.9",
-            "orchestra/testbench": "^3.5",
-            "phpro/grumphp": "^0.11",
-            "phpunit/phpunit": "~6.0"
+            "graham-campbell/testbench": "^3.1",
+            "phpunit/phpunit": "^4.8 || ^5.0"
         },
-        "time": "2017-08-31T17:00:30+00:00",
+        "time": "2017-06-19T10:40:09+00:00",
         "type": "library",
         "extra": {
             "laravel": {
                 "providers": [
-                    "Nwidart\\Modules\\LaravelModulesServiceProvider"
-                ],
-                "aliases": {
-                    "Module": "Nwidart\\Modules\\Facades\\Module"
-                }
-            },
-            "branch-alias": {
-                "dev-master": "2.0-dev"
+                    "Sven\\FlexEnv\\FlexEnvServiceProvider"
+                ]
             }
         },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "Nwidart\\Modules\\": "src"
-            },
-            "files": [
-                "src/helpers.php"
-            ]
+                "Sven\\FlexEnv\\": "src/"
+            }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -4654,34 +4587,32 @@
         ],
         "authors": [
             {
-                "name": "Nicolas Widart",
-                "email": "n.widart@gmail.com",
-                "homepage": "https://nicolaswidart.com",
-                "role": "Developer"
+                "name": "Sven Luijten",
+                "email": "svenluijten1995@gmail.com",
+                "homepage": "https://svenluijten.com"
             }
         ],
-        "description": "Laravel Module management",
+        "description": "Edit your .env file in Laravel directly from the command line.",
         "keywords": [
-            "laravel",
-            "module",
-            "modules",
-            "nwidart",
-            "rad"
+            "Flexible",
+            "artisan",
+            "env",
+            "laravel"
         ]
     },
     {
         "name": "laravel/framework",
-        "version": "v5.5.3",
-        "version_normalized": "5.5.3.0",
+        "version": "v5.5.4",
+        "version_normalized": "5.5.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/laravel/framework.git",
-            "reference": "779a98d3b2ebed2128db1a668dcc10a65c9b01be"
+            "reference": "d3e0493bead126cf7fb9a005c64e6b58a9190e51"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/laravel/framework/779a98d3b2ebed2128db1a668dcc10a65c9b01be.zip",
-            "reference": "779a98d3b2ebed2128db1a668dcc10a65c9b01be",
+            "url": "https://files.phpcomposer.com/files/laravel/framework/d3e0493bead126cf7fb9a005c64e6b58a9190e51.zip",
+            "reference": "d3e0493bead126cf7fb9a005c64e6b58a9190e51",
             "shasum": ""
         },
         "require": {
@@ -4769,7 +4700,7 @@
             "symfony/dom-crawler": "Required to use most of the crawler integration testing tools (~3.3).",
             "symfony/psr-http-message-bridge": "Required to psr7 bridging features (~1.0)."
         },
-        "time": "2017-09-07T13:50:21+00:00",
+        "time": "2017-09-13T13:36:29+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4804,42 +4735,39 @@
         ]
     },
     {
-        "name": "sven/flex-env",
-        "version": "2.1.1",
-        "version_normalized": "2.1.1.0",
+        "name": "phpdocumentor/reflection-common",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/svenluijten/flex-env.git",
-            "reference": "f2fc259e422be8586d0831d9122073d46d605aa7"
+            "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
+            "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/svenluijten/flex-env/f2fc259e422be8586d0831d9122073d46d605aa7.zip",
-            "reference": "f2fc259e422be8586d0831d9122073d46d605aa7",
+            "url": "https://files.phpcomposer.com/files/phpDocumentor/ReflectionCommon/21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6.zip",
+            "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6",
             "shasum": ""
         },
         "require": {
-            "illuminate/support": "^5.0",
-            "laravel/framework": "^5.0",
-            "php": "^5.5.9 || ^7.0"
+            "php": ">=5.5"
         },
         "require-dev": {
-            "graham-campbell/testbench": "^3.1",
-            "phpunit/phpunit": "^4.8 || ^5.0"
+            "phpunit/phpunit": "^4.6"
         },
-        "time": "2017-06-19T10:40:09+00:00",
+        "time": "2017-09-11T18:02:19+00:00",
         "type": "library",
         "extra": {
-            "laravel": {
-                "providers": [
-                    "Sven\\FlexEnv\\FlexEnvServiceProvider"
-                ]
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
             }
         },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "Sven\\FlexEnv\\": "src/"
+                "phpDocumentor\\Reflection\\": [
+                    "src"
+                ]
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -4848,17 +4776,88 @@
         ],
         "authors": [
             {
-                "name": "Sven Luijten",
-                "email": "svenluijten1995@gmail.com",
-                "homepage": "https://svenluijten.com"
+                "name": "Jaap van Otterdijk",
+                "email": "opensource@ijaap.nl"
             }
         ],
-        "description": "Edit your .env file in Laravel directly from the command line.",
+        "description": "Common reflection classes used by phpdocumentor to reflect the code structure",
+        "homepage": "http://www.phpdoc.org",
         "keywords": [
-            "Flexible",
-            "artisan",
-            "env",
-            "laravel"
+            "FQSEN",
+            "phpDocumentor",
+            "phpdoc",
+            "reflection",
+            "static analysis"
+        ]
+    },
+    {
+        "name": "nwidart/laravel-modules",
+        "version": "2.2.1",
+        "version_normalized": "2.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nWidart/laravel-modules.git",
+            "reference": "08547c494f125ded5ffb67d51011ceca127d0888"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/nWidart/laravel-modules/08547c494f125ded5ffb67d51011ceca127d0888.zip",
+            "reference": "08547c494f125ded5ffb67d51011ceca127d0888",
+            "shasum": ""
+        },
+        "require": {
+            "laravel/framework": "5.5.*",
+            "php": ">=7.0"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "^2.4",
+            "mockery/mockery": "~0.9",
+            "orchestra/testbench": "^3.5",
+            "phpunit/phpunit": "~6.0"
+        },
+        "time": "2017-09-14T18:30:46+00:00",
+        "type": "library",
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "Nwidart\\Modules\\LaravelModulesServiceProvider"
+                ],
+                "aliases": {
+                    "Module": "Nwidart\\Modules\\Facades\\Module"
+                }
+            },
+            "branch-alias": {
+                "dev-master": "2.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Nwidart\\Modules\\": "src"
+            },
+            "files": [
+                "src/helpers.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Widart",
+                "email": "n.widart@gmail.com",
+                "homepage": "https://nicolaswidart.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "Laravel Module management",
+        "keywords": [
+            "laravel",
+            "module",
+            "modules",
+            "nwidart",
+            "rad"
         ]
     }
 ]

@@ -26,9 +26,9 @@ class ControllerController extends AdminController
                 'name'    =>trans('developer::module.controller.admin'),
                 'path'    =>'Http/Controllers/Admin',
                 'artisan' =>'module:make-admin-controller',
-                'types'   => [
-                    'resource' => trans('developer::module.controller_type.resource'),
-                    'simple'   => trans('developer::module.controller_type.simple'),
+                'styles'   => [
+                    'resource' => trans('developer::module.controller_style.resource'),
+                    'simple'   => trans('developer::module.controller_style.simple'),
                 ],
                 'middleware' => 'allow:{allow}'
             ],
@@ -36,9 +36,9 @@ class ControllerController extends AdminController
                 'name'    => trans('developer::module.controller.front'),
                 'path'    => 'Http/Controllers',
                 'artisan' => 'module:make-front-controller',
-                'types'   => [
-                    'simple'   => trans('developer::module.controller_type.simple'),
-                    'resource' => trans('developer::module.controller_type.resource'),
+                'styles'   => [
+                    'simple'   => trans('developer::module.controller_style.simple'),
+                    'resource' => trans('developer::module.controller_style.resource'),
                 ],
                 'middleware' => ''                
             ],
@@ -57,9 +57,9 @@ class ControllerController extends AdminController
      * @param  string $action 方法名称
      * @return string
      */
-    private function routerMethod($action) {
+    private function verbs($action) {
         
-        $methods = Filter::fire('developer.controller.router.methods',[
+        $verbs = Filter::fire('developer.controller.router.verbs',[
             'index'   => 'get',
             'create'  => 'get',
             'store'   => 'post',
@@ -71,7 +71,7 @@ class ControllerController extends AdminController
 
         $action = strtolower($action);
 
-        return isset($methods[$action]) ? $methods[$action] : 'any';
+        return isset($verbs[$action]) ? $verbs[$action] : 'any';
     }
 
     /**
@@ -141,21 +141,23 @@ class ControllerController extends AdminController
      * 控制器
      * 
      * @param  Request $request
-     * @param  string $name 模型名称
-     * @param  string $name 模型名称
+     * @param  string $module 模型名称
+     * @param  string $module 模型名称
      * @return mixed
      */
-    public function index(Request $request, $name, $type)
+    public function index(Request $request, $module, $type)
     {
-        $this->title  = trans('developer::module.controller');
-
-        $this->name   = $name;
-        $this->type   = $type;
-        $this->module = module($name);
-        $this->types  = $this->types();
-        $this->path   = $this->types($type,'path');
-        $this->path   = $this->module->getExtraPath($this->path);
-        $this->files  = File::files($this->path);
+        $this->title   = trans('developer::module.controller');
+        
+        $this->name    = $module;
+        $this->type    = $type;
+        $this->module  = module($module);
+        $this->types   = $this->types();
+        $this->path    = $this->types($type,'path');
+        $this->path    = $this->module->getExtraPath($this->path);
+        $this->files   = File::files($this->path);
+        $this->artisan = $this->types($type,'artisan');
+        $this->styles  = $this->types($type,'styles');
 
         return $this->view();
     }
@@ -165,22 +167,23 @@ class ControllerController extends AdminController
      * 创建控制器
      * 
      * @param  Request $request
-     * @param  string $name 模型名称
+     * @param  string $module 模型名称
+     * @param  string $module 模型名称
      * @return mixed
      */
-    public function create(Request $request, $name, $type)
+    public function create(Request $request, $module, $type)
     {
-        $this->name   = $name;
+        $this->module = $module;
         $this->type   = $type;
 
         // 表单提交时
         if ($request->isMethod('POST')) {
             
-            $controller_name = $request->input('controller_name');
-            $controller_type = $request->input('controller_type');
+            $controller_name  = $request->input('controller_name');
+            $controller_style = $request->input('controller_style');
 
             // 判断是否已经存在
-            $path = $this->fullpath($name, $type, $controller_name);
+            $path = $this->fullpath($module, $type, $controller_name);
 
             if (File::exists($path)) {
                 return $this->error(trans('core::master.existed'));
@@ -189,20 +192,20 @@ class ControllerController extends AdminController
             $artisan = $this->types($type, 'artisan');
 
             Artisan::call($artisan, [
-                'module'     => $name,
+                'module'     => $module,
                 'controller' => $controller_name,
-                '--type'     => $controller_type,
+                '--style'    => $controller_style,
                 '--force'    => false,
             ]);
 
-            return $this->success(trans('core::master.saved'),route('developer.module.controller',[$name,$type]));
+            return $this->success(trans('core::master.saved'),route('developer.module.controller',[$module,$type]));
         }
 
 
-        $this->title = trans('developer::module.controller');
-        $this->types = $this->types($type,'types');
+        $this->title      = trans('developer::module.controller');
 
         $this->controller = [];
+        $this->controller_styles     = $this->types($type,'styles');
 
         return $this->view();
     }
@@ -260,7 +263,7 @@ class ControllerController extends AdminController
             $router[$m->name]['uri']        = implode('/', $uri);
             $router[$m->name]['action']     = $this->fullname($controller).'@'.$m->name;
             $router[$m->name]['name']       = strtolower($module).'.'.$this->realname($controller).'.'.$m->name;
-            $router[$m->name]['method']     = $this->routerMethod($m->name);
+            $router[$m->name]['verb']       = $this->verbs($m->name);
             $router[$m->name]['middleware'] = str_replace('{allow}',$router[$m->name]['name'],$this->types($type,'middleware'));            
          }
 

@@ -28,8 +28,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <td width="1%"></td>
-                    <td>{{trans('developer::module.file.name')}}</td>
+                    <td colspan="2">{{trans('developer::module.file.name')}}</td>
                     <td>{{trans('developer::module.file.path')}}</td>
                     <td>{{trans('developer::module.file.lastmodified')}}</td>
                 </tr>                
@@ -38,8 +37,8 @@
                 
                 @foreach($files as $file)
                 <tr>
-                    <td><div class="fa fa-file fa-{{$file->getExtension()}} fa-2x text-primary"></div> </td>
-                    <td>
+                    <td width="1%" class="icon icon-sm pr-2"><div class="fa fa-file fa-{{$file->getExtension()}} fa-2x text-primary"></div> </td>
+                    <td class="pl-2">
                         {{$file->getFilename()}}
                         <div class="manage">
                             <a class="manage-item js-open" href="{{route('developer.module.controller.route',[$name,$type,basename($file,'.php')])}}" data-width="80%" data-height="60%">
@@ -60,7 +59,12 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::module.path')}}: {{realpath($path)}}
+            {{trans('developer::module.controller.artisan')}}: php artisan {{$artisan}} {{$module}} $controller --style[{{implode('|', array_keys($styles))}}] --force
+        </div>
+    </div>    
+    <div class="main-footer">
+        <div class="footer-text mr-auto">
+            {{trans('developer::module.controller.path')}}: {{realpath($path)}}
         </div>
     </div>
 </div>

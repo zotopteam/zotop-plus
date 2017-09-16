@@ -56,13 +56,18 @@ $router->group(['prefix' =>'/core', 'module'=>'core'], function (Router $router)
 
     // 模块管理
     $router->group(['prefix' =>'/modules'], function (Router $router) {
-        $router->get('/','ModulesController@index')->name('core.modules.index')->middleware('allow:core.modules.index');
+        $router->get('/index','ModulesController@index')->name('core.modules.index')->middleware('allow:core.modules.index');
         $router->post('/enable/{name}','ModulesController@enable')->name('core.modules.enable')->middleware('allow:core.modules.enable');
         $router->post('/disable/{name}','ModulesController@disable')->name('core.modules.disable')->middleware('allow:core.modules.disable');
         $router->post('/install/{name}','ModulesController@install')->name('core.modules.install')->middleware('allow:core.modules.install');
         $router->post('/uninstall/{name}','ModulesController@uninstall')->name('core.modules.uninstall')->middleware('allow:core.modules.uninstall');
         $router->post('/delete/{name}','ModulesController@delete')->name('core.modules.delete')->middleware('allow:core.modules.delete');                 
-    }); 
+    });
+
+    // themes group example
+    $router->group(['prefix' =>'/themes'], function (Router $router) {
+        $router->get('/index','ThemesController@index')->name('core.themes.index')->middleware('allow:core.themes.index');
+    });    
 
     // Plupload 模块后台路由
     $router->group(['prefix' =>'/plupload'], function (Router $router) {

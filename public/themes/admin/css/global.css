@@ -139,6 +139,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .table>tbody>tr>td .description{font-size:12px;color:#999;margin-top:0.25rem;}
 .table>tbody>tr>td .manage{font-size:0.875rem;margin-top:0.25rem;}
 
+.table>tbody>tr>td.icon{width:1%;white-space:nowrap;}
 .table>tbody>tr>td.manage{font-size:0.875rem;}
 
 .table>tbody>tr>th.select,.table>tbody>tr>td.select{width:30.5rem;text-align:center;}

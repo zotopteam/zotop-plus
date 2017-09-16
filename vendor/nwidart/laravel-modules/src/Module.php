@@ -8,14 +8,14 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 
-class Module extends ServiceProvider
+abstract class Module extends ServiceProvider
 {
     use Macroable;
 
     /**
      * The laravel|lumen application instance.
      *
-     * @var Illuminate\Contracts\Foundation\Application|Laravel\Lumen\Application
+     * @var \Illuminate\Contracts\Foundation\Application|Laravel\Lumen\Application
      */
     protected $app;
 
@@ -55,7 +55,7 @@ class Module extends ServiceProvider
     /**
      * Get laravel instance.
      *
-     * @return Illuminate\Contracts\Foundation\Application|Laravel\Lumen\Application
+     * @return \Illuminate\Contracts\Foundation\Application|Laravel\Lumen\Application
      */
     public function getLaravel()
     {
@@ -90,6 +90,16 @@ class Module extends ServiceProvider
     public function getStudlyName()
     {
         return Str::studly($this->name);
+    }
+
+    /**
+     * Get name in snake case.
+     *
+     * @return string
+     */
+    public function getSnakeName()
+    {
+        return Str::snake($this->name);
     }
 
     /**
@@ -266,12 +276,14 @@ class Module extends ServiceProvider
     /**
      * Register the service providers from this module.
      */
-    protected function registerProviders()
-    {
-        foreach ($this->get('providers', []) as $provider) {
-            $this->app->register($provider);
-        }
-    }
+    abstract public function registerProviders();
+
+    /**
+     * Get the path to the cached *_module.php file.
+     *
+     * @return string
+     */
+    abstract public function getCachedServicesPath();
 
     /**
      * Register the files from this module.

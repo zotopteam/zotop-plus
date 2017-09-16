@@ -25,7 +25,6 @@
     "phpunit/phpunit": "~6.0",
     "mockery/mockery": "~0.9",
     "orchestra/testbench": "^3.5",
-    "phpro/grumphp": "^0.11",
     "friendsofphp/php-cs-fixer": "^2.4"
   },
   "autoload": {
@@ -38,7 +37,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Nwidart\\Modules\\Tests\\": "tests"
+      "Nwidart\\Modules\\Tests\\": "tests",
+      "Modules\\Recipe\\": "tests/stubs/Recipe"
     }
   },
   "extra": {

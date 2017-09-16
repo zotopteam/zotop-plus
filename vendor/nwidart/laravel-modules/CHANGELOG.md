@@ -4,6 +4,28 @@ All Notable changes to `laravel-modules` will be documented in this file.
 
 ## Next
 
+## 2.2.1 - 2017-09-14
+
+## Changed
+
+- Fixed class namespace to `Repository` in `ContractsServiceProvider`
+
+## 2.2.0 - 2017-09-14
+
+### Added
+
+- Lumen compatibility with new way to register providers
+
+
+## 2.1.0 - 2017-09-10
+
+### Changed
+
+- Register module migrations
+- Fixed issue with `module:migrate-refresh` command
+- Improved module loading of their service providers. Using laravel caching system. Allowing usage of deferred providers.
+- Fixed path to module factories
+
 ## 2.0.0 - 2017-08-31
 
 ### Added

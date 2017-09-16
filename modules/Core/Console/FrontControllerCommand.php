@@ -19,21 +19,26 @@ class FrontControllerCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $argumentName = 'controller';
+    protected $argumentName = 'controller';    
 
     /**
-     * The console command name.
+     * The console command signature.
      *
      * @var string
      */
-    protected $name = 'module:make-front-controller';
+    protected $signature = 'module:make-front-controller 
+                            {controller : The name of the front controller class.} 
+                            {module : The name of module will be used.} 
+                            {--style=resource : The style of controller.} 
+                            {--force : Overwrite any existing files.}';
+
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate new restful front controller for the module.';
+    protected $description = 'Generate new front controller for the module.';
 
     /**
      * Execute the console command.
@@ -45,8 +50,6 @@ class FrontControllerCommand extends GeneratorCommand
         parent::handle();
 
         $this->createViews();
-
-        //$this->info('ok');
     }
 
     /**
@@ -62,11 +65,18 @@ class FrontControllerCommand extends GeneratorCommand
             // 获取view文件地址
             $path = $this->getViewPath($file);
 
+            // 如果不是强制生成，禁止覆盖已经存在的文件
+            if (!$this->option('force') && $this->laravel['files']->exists($path)) {
+                $this->info("File : {$path} already exists.");
+                continue;
+            }            
+
             // 如果不存在，尝试创建
             if (!$this->laravel['files']->isDirectory($dir = dirname($path))) {
                 $this->laravel['files']->makeDirectory($dir, 0775, true);
-            }
+            }          
 
+            // 写入文件
             $this->laravel['files']->put($path, $this->renderViewStub($stub));
 
             $this->info("Created : {$path}");
@@ -113,31 +123,6 @@ class FrontControllerCommand extends GeneratorCommand
         return $stub->render();
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return array(
-            array('controller', InputArgument::REQUIRED, 'The name of the front controller class.'),
-            array('module', InputArgument::OPTIONAL, 'The name of module will be used.'),
-        );
-    }
-
-    /**
-     * Get the console command options.
-     * 
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['plain', 'p', InputOption::VALUE_NONE, 'Generate a plain controller', null],
-            ['force', 'f', InputOption::VALUE_NONE, 'Force the operation to run when controller already exist.'],
-        ];
-    }
 
     /**
      * 获取ControllerName
@@ -180,44 +165,48 @@ class FrontControllerCommand extends GeneratorCommand
 
     /**
      *
-     * 获取控制器stubName
+     * 获取对应风格的控制器stub文件
      * 
      * @return string
      */
     private function getStubName()
     {
-        if ($this->option('plain') === true) {
-            return '/front-controller-plain.stub';
-        }
+        $style = strtolower($this->option('style'));
 
-        return '/front-controller.stub';
+        return "/front-controller-{$style}.stub";
     }
 
     /**
      * 创建默认的 view 文件
      * 
-     * @return [type] [description]
+     * @return string 
      */
     private function getViewFiles()
     {
-        if ($this->option('plain') === true) {
-            return [
-                'index.stub' => 'index.blade.php',
-            ];
+        $style = strtolower($this->option('style'));
+
+        $path = $this->laravel['modules']->getModulePath('core'). 'Console/stubs/views/front-controller/'.$style;
+
+        $stubs = $this->laravel['files']->files($path);
+
+        $files = [];
+
+        foreach ($stubs as $stub) {
+
+            $stubName = $stub->getFileName();
+            $stubPath = $stub->getRealPath();
+            
+            $files[$stubPath] = basename($stubName,'.stub').'.blade.php';
         }
 
-        return [
-            'index.stub'  => 'index.blade.php',
-            'create.stub' => 'create.blade.php',
-            'edit.stub'   => 'edit.blade.php',
-        ];      
+        return $files;      
     }
 
     /**
      * 获取view文件路径
      * 
-     * @param  string $file [description]
-     * @return [type]       [description]
+     * @param  string $file 
+     * @return string       
      */
     private function getViewPath($file='')
     {
@@ -231,16 +220,12 @@ class FrontControllerCommand extends GeneratorCommand
     /**
      * 渲染viewstub
      * 
-     * @param  [type] $stub [description]
-     * @return [type]       [description]
+     * @param  string $stub 
+     * @return string       
      */
     private function renderViewStub($stub)
     {
-        $path = $this->laravel['modules']->getModulePath('core');
-
-        $path = $path . 'Console/stubs/views/front/'.$stub;
-
-        $stub = $this->laravel['files']->get($path);
+        $stub = $this->laravel['files']->get($stub);
 
         return str_replace(
             [

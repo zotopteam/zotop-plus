@@ -884,16 +884,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.3",
+            "version": "v5.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "779a98d3b2ebed2128db1a668dcc10a65c9b01be"
+                "reference": "d3e0493bead126cf7fb9a005c64e6b58a9190e51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/laravel/framework/779a98d3b2ebed2128db1a668dcc10a65c9b01be.zip",
-                "reference": "779a98d3b2ebed2128db1a668dcc10a65c9b01be",
+                "url": "https://files.phpcomposer.com/files/laravel/framework/d3e0493bead126cf7fb9a005c64e6b58a9190e51.zip",
+                "reference": "d3e0493bead126cf7fb9a005c64e6b58a9190e51",
                 "shasum": ""
             },
             "require": {
@@ -1012,7 +1012,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-09-07T13:50:21+00:00"
+            "time": "2017-09-13T13:36:29+00:00"
         },
         {
             "name": "laravelcollective/html",
@@ -1529,16 +1529,16 @@
         },
         {
             "name": "nwidart/laravel-modules",
-            "version": "2.0.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nWidart/laravel-modules.git",
-                "reference": "bb70bccf1c6909777d9ee748e84370a7417a1b3c"
+                "reference": "08547c494f125ded5ffb67d51011ceca127d0888"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/nWidart/laravel-modules/bb70bccf1c6909777d9ee748e84370a7417a1b3c.zip",
-                "reference": "bb70bccf1c6909777d9ee748e84370a7417a1b3c",
+                "url": "https://files.phpcomposer.com/files/nWidart/laravel-modules/08547c494f125ded5ffb67d51011ceca127d0888.zip",
+                "reference": "08547c494f125ded5ffb67d51011ceca127d0888",
                 "shasum": ""
             },
             "require": {
@@ -1549,7 +1549,6 @@
                 "friendsofphp/php-cs-fixer": "^2.4",
                 "mockery/mockery": "~0.9",
                 "orchestra/testbench": "^3.5",
-                "phpro/grumphp": "^0.11",
                 "phpunit/phpunit": "~6.0"
             },
             "type": "library",
@@ -1594,7 +1593,7 @@
                 "nwidart",
                 "rad"
             ],
-            "time": "2017-08-31T17:00:30+00:00"
+            "time": "2017-09-14T18:30:46+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -3403,16 +3402,16 @@
         },
         {
             "name": "phpdocumentor/reflection-common",
-            "version": "1.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-                "reference": "144c307535e82c8fdcaacbcfc1d6d8eeb896687c"
+                "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/144c307535e82c8fdcaacbcfc1d6d8eeb896687c",
-                "reference": "144c307535e82c8fdcaacbcfc1d6d8eeb896687c",
+                "url": "https://files.phpcomposer.com/files/phpDocumentor/ReflectionCommon/21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6.zip",
+                "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6",
                 "shasum": ""
             },
             "require": {
@@ -3453,7 +3452,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-12-27T11:43:31+00:00"
+            "time": "2017-09-11T18:02:19+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",

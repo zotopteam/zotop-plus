@@ -29,7 +29,7 @@ class AdminControllerCommand extends GeneratorCommand
     protected $signature = 'module:make-admin-controller 
                             {controller : The name of the admin controller class.} 
                             {module : The name of module will be used.} 
-                            {--type=resource : Generate a plain controller.} 
+                            {--style=resource : The style of controller.} 
                             {--force : Overwrite any existing files.}';
 
 
@@ -38,7 +38,7 @@ class AdminControllerCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Generate new restful admin controller for the module.';
+    protected $description = 'Generate new admin controller for the module.';
 
     /**
      * Execute the console command.
@@ -165,27 +165,27 @@ class AdminControllerCommand extends GeneratorCommand
 
     /**
      *
-     * 获取控制器stubName
+     * 获取对应风格的控制器stub文件
      * 
      * @return string
      */
     private function getStubName()
     {
-        $type = strtolower($this->option('type'));
+        $style = strtolower($this->option('style'));
 
-        return "/admin-controller-{$type}.stub";
+        return "/admin-controller-{$style}.stub";
     }
 
     /**
      * 创建默认的 view 文件
      * 
-     * @return [type] [description]
+     * @return string 
      */
     private function getViewFiles()
     {
-        $type = strtolower($this->option('type'));
+        $style = strtolower($this->option('style'));
 
-        $path = $this->laravel['modules']->getModulePath('core'). 'Console/stubs/views/admin-controller/'.$type;
+        $path = $this->laravel['modules']->getModulePath('core'). 'Console/stubs/views/admin-controller/'.$style;
 
         $stubs = $this->laravel['files']->files($path);
 
@@ -205,8 +205,8 @@ class AdminControllerCommand extends GeneratorCommand
     /**
      * 获取view文件路径
      * 
-     * @param  string $file [description]
-     * @return [type]       [description]
+     * @param  string $file 
+     * @return string       
      */
     private function getViewPath($file='')
     {
@@ -220,8 +220,8 @@ class AdminControllerCommand extends GeneratorCommand
     /**
      * 渲染viewstub
      * 
-     * @param  [type] $stub [description]
-     * @return [type]       [description]
+     * @param  string $stub 
+     * @return string       
      */
     private function renderViewStub($stub)
     {
