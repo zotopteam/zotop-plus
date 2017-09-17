@@ -1,5 +1,7 @@
 {
   "name": "default",
-  "description": "",
+  "title": "默认主题",
+  "description": "Laravel CMS 默认主题，采用Bootstrap v4 开发的响应式主题，兼容IE9+、Chrome、Firefox等主流浏览器，自适应手机和pc浏览器",
+  "version":"1.0.0",
   "type": "front"
 }

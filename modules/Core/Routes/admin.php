@@ -66,7 +66,10 @@ $router->group(['prefix' =>'/core', 'module'=>'core'], function (Router $router)
 
     // themes group example
     $router->group(['prefix' =>'/themes'], function (Router $router) {
-        $router->get('/index','ThemesController@index')->name('core.themes.index')->middleware('allow:core.themes.index');
+        $router->get('/index/{type?}','ThemesController@index')->name('core.themes.index')->middleware('allow:core.themes.index');
+        $router->get('/files/{name}','ThemesController@files')->name('core.themes.files')->middleware('allow:core.themes.files');
+        $router->any('/publish/{name?}','ThemesController@publish')->name('core.themes.publish')->middleware('allow:core.themes.publish');
+        $router->any('/upload','ThemesController@upload')->name('core.themes.upload')->middleware('allow:core.themes.upload');
     });    
 
     // Plupload 模块后台路由
