@@ -88,7 +88,7 @@
                     
                     $('.form-submit').prop('disabled',false);
 
-                    return validator.showErrors(jqXHR.responseJSON.errors);
+                    return validator.showErrors(jqXHR.responseJSON);
                 });
             }            
         });

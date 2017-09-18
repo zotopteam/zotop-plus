@@ -238,6 +238,10 @@ textarea{resize:none;}
 
 .btn-success .badge-danger{color:#5cb85c;background-color:#fff;}
 
+.breadcrumb{background:#f7f7f7;}
+.breadcrumb-item+.breadcrumb-item::before{font-family:fontawesome;content:'\f105'}
+.breadcrumb-extra+.breadcrumb-item::before{content:''}
+
 /*shortcut*/
 .shortcut{border:1px solid transparent;color:#666;background:transparent;margin:0;padding:0.5rem;display:block;overflow:hidden;zoom:1;border-radius:0.25rem;position:relative;text-align:left;}
 .shortcut:hover{border:1px solid #70c0e7;background:#e5f3fb;text-decoration:none;}

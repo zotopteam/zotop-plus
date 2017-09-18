@@ -7,9 +7,46 @@ use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Theme;
 use Artisan;
+use File;
 
 class ThemesController extends AdminController
 {
+
+    /**
+     * 将一个路径转化成名称-路径数组，用于生成position
+     *
+     *
+     * @param array $dir 路径
+     * @param string $s 分隔符
+     *
+     * @return array 包含全部路径的数组
+     */    
+    private function position($dir, $s='/')
+    {
+
+        $data = array();
+
+        if ($dir) {
+
+            $dirs = explode($s, $dir);
+
+            $path = '';
+
+            foreach($dirs as $d)
+            {   
+                if ($d == '.' || $d=='') {
+                    $path = $d;
+                } else {
+                    $path = $path.$s.$d;
+                }
+                
+                $data[$path] = $d;
+            }
+        }
+
+        return $data;
+    }
+
     /**
      * 首页
      *
@@ -30,14 +67,19 @@ class ThemesController extends AdminController
      *
      * @return Response
      */
-    public function files($name)
+    public function files(Request $request, $name)
     {
-        $this->title   = trans('core::themes.files');
+        $theme          = Theme::find($name);
         
-        $this->folders = [];
-        $this->files   = [];
+        $this->name     = $name;
+        $this->dir      = $request->input('dir');
+        $this->path     = $theme->path.DIRECTORY_SEPARATOR.$this->dir;
+        $this->position = $this->position($this->dir);       
+        $this->folders  = File::directories($this->path);
+        $this->files    = File::files($this->path);
+        $this->title    = trans('core::themes.files');
 
-        return $this->view()->with('theme',Theme::find($name));
+        return $this->view()->with('theme',$theme);
     }
 
     /**
