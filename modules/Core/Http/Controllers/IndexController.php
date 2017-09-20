@@ -10,7 +10,8 @@ use Modules\Core\Base\FrontController;
 class IndexController extends FrontController
 {
     /**
-     * Display a listing of the resource.
+     * 系统前台首页
+     * 
      * @return Response
      */
     public function index()

@@ -65,11 +65,11 @@
     ];
 
     //管理员快捷方式
-    $navbar['config-core'] = [
-        'text' => trans('core::config.core.title'),
-        'href' => route('core.config.core.upload'),
+    $navbar['core-config'] = [
+        'text' => trans('core::config.title'),
+        'href' => route('core.config.index'),
         'icon' => 'fa fa-cogs bg-primary text-white',
-        'tips' => trans('core::config.core.description'),
+        'tips' => trans('core::config.description'),
     ];    
 
     //模块管理

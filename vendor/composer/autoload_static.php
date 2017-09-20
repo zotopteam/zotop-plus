@@ -17,8 +17,8 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
-        '4a1f389d6ce373bda9e57857d3b61c84' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/helpers.php',
         '9f394da3192a168c4633675768d80428' => __DIR__ . '/..' . '/nwidart/laravel-modules/src/helpers.php',
+        '4a1f389d6ce373bda9e57857d3b61c84' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -51,6 +51,7 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
+            'Symfony\\Component\\ClassLoader\\' => 30,
             'Sven\\FlexEnv\\' => 13,
             'SuperClosure\\' => 13,
         ),
@@ -115,6 +116,7 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         ),
         'B' => 
         array (
+            'Barryvdh\\LaravelIdeHelper\\' => 26,
             'Barryvdh\\Debugbar\\' => 18,
         ),
         'A' => 
@@ -197,6 +199,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'Symfony\\Component\\ClassLoader\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/class-loader',
         ),
         'Sven\\FlexEnv\\' => 
         array (
@@ -310,6 +316,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
         ),
+        'Barryvdh\\LaravelIdeHelper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/barryvdh/laravel-ide-helper/src',
+        ),
         'Barryvdh\\Debugbar\\' => 
         array (
             0 => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src',
@@ -367,6 +377,13 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
             'Doctrine\\Common\\Collections\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/collections/lib',
+            ),
+        ),
+        'B' => 
+        array (
+            'Barryvdh' => 
+            array (
+                0 => __DIR__ . '/..' . '/barryvdh/reflection-docblock/src',
             ),
         ),
     );

@@ -36,34 +36,3 @@
     \Artisan::call('module:publish');
     \Artisan::call('theme:publish');
 });
-
-
-function getFun($str) {
-
-    //preg_match_all('#public\s+function\s+([a-zA-Z0-9_]+)\s*\([^\)]*\)\s*{([^{}]+({[^}]+})*[^}]+)}#', $file, $matches);
-    
-    //dd($matches);
-
-    $fun = array();
-    $of = 0;
-    while($sta = stripos($str, 'function', $of)){ 
-        $ob    = stripos($str, '(', $sta+=7);
-        $name  = substr($str, $sta+1, $ob-$sta-1);
-        $cb    = stripos($str, ')',$ob);
-        $param = substr($str, $ob+1, $cb-$ob-1);
-        $cnt   = 1;
-        $start = strpos($str, '{', $cb);
-        $ss    = $start;
-        while ($cnt){
-            $s = strpos($str, '{', $ss+1);
-            $e = strpos($str, '}', $ss+1);
-            if($s < $e  and $s > 0){$cnt++; $ss = $s;} else {$cnt--; $ss = $e;}
-        }
-        $end  = $ss;
-        $body = substr($str, $start+1, $end - $start-1);
-        $of   = $ob;
-        $fun[]= array(trim($name), trim($param), trim($body));
-    }
-    
-    return $fun;    
-}

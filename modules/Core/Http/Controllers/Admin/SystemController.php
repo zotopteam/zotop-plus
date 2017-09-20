@@ -30,8 +30,7 @@ class SystemController extends AdminController
         $success = trans('core::master.operated');
 
         //Hook
-        Action::fire('system.refresh');
-        
+        Action::fire('system.refresh');        
 
         // 清除模板缓存
         Artisan::call('cache:clear');
@@ -53,6 +52,9 @@ class SystemController extends AdminController
             // 重建配置缓存
             Artisan::call('config:cache');
         }
+
+        // 优化
+        Artisan::call('optimize');
 
         return $this->success($success);
     }

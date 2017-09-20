@@ -189,7 +189,7 @@ class RouteCollection implements Countable, IteratorAggregate
      */
     protected function matchAgainstRoutes(array $routes, $request, $includingMethod = true)
     {
-        return Arr::first($routes, function ($value) use ($request, $includingMethod) {
+        return collect($routes)->sortBy('isFallback')->first(function ($value) use ($request, $includingMethod) {
             return $value->matches($request, $includingMethod);
         });
     }
