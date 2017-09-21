@@ -28,9 +28,9 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <td colspan="2">{{trans('developer::module.file.name')}}</td>
-                    <td>{{trans('developer::module.file.path')}}</td>
-                    <td>{{trans('developer::module.file.lastmodified')}}</td>
+                    <td colspan="2">{{trans('developer::file.name')}}</td>
+                    <td>{{trans('developer::file.path')}}</td>
+                    <td>{{trans('developer::file.mtime')}}</td>
                 </tr>                
             </thead>
             <tbody>
@@ -42,7 +42,7 @@
                         {{$file->getFilename()}}
                         <div class="manage">
                             <a class="manage-item js-open" href="{{route('developer.module.controller.route',[$name,$type,basename($file,'.php')])}}" data-width="80%" data-height="60%">
-                                <i class="fa fa-fw fa-anchor"></i> 路由参考
+                                <i class="fa fa-fw fa-anchor"></i> {{trans('developer::controller.routers')}}
                             </a>
                         </div>
                     </td>
@@ -59,12 +59,12 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::module.controller.artisan')}}: php artisan {{$artisan}} {{$module}} $controller --style[{{implode('|', array_keys($styles))}}] --force
+            {{trans('developer::controller.artisan')}}: php artisan {{$artisan}} TestController {{$module}} --style[{{implode('|', array_keys($styles))}}] --force
         </div>
     </div>    
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::module.controller.path')}}: {{realpath($path)}}
+            {{trans('developer::controller.path')}}: {{realpath($path)}}
         </div>
     </div>
 </div>

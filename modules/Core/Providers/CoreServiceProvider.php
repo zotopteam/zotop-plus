@@ -78,8 +78,6 @@ class CoreServiceProvider extends ServiceProvider
         $configPath = $module->getPath().'/Config';
         $configFile = $module->getPath().'/config.php';
 
-
-
         // 注册模块根目录下的配置
         if ($this->app['files']->isFile($configFile)) {
             $this->mergeConfigFrom($configFile, strtolower("module.$moduleName"));
@@ -131,6 +129,7 @@ class CoreServiceProvider extends ServiceProvider
             \Modules\Core\Console\MakeTraitCommand::class,
             \Modules\Core\Console\AdminControllerCommand::class,
             \Modules\Core\Console\FrontControllerCommand::class,
+            \Modules\Core\Console\RebootCommand::class,
         ]);
     }
 

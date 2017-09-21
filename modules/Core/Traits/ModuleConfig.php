@@ -32,17 +32,8 @@ trait ModuleConfig
 
         File::put($path, "<?php\nreturn ".var_export($config,true).";");
 
-        // 如果是本地或者测试模式或者处于debug状态下，不缓存路由和配置
-        if ( app()->environment('local','testing') OR config('app.debug') ) {
-            
-            // 清除配置缓存
-            Artisan::call('config:clear');
-
-        } else {
-
-            // 重建配置缓存
-            Artisan::call('config:cache');
-        }        
+        // 重启
+        Artisan::call('reboot');
 
         return true;
     }
@@ -70,8 +61,8 @@ trait ModuleConfig
             Artisan::call('env:set',['key' => strtoupper($key), 'value'=>$value]);        
         }
 
-        Artisan::call('config:cache');
-        Artisan::call('route:cache');                
+        // 重启
+        Artisan::call('reboot');           
 
         return $this;
     }

@@ -132,14 +132,10 @@ class ConfigController extends AdminController
                 'APP_ADMIN_PREFIX' => $request->input('admin_prefix', 'admin'),
             ]);
 
-            // 更改后台地址
+            // 更改后台地址，TODO：本地或者测试环境下，route 已经加载，无法重新载入
             // config([
             //     'app.admin_prefix' => $request->input('admin_prefix', 'admin')
             // ]);
-
-            // TODO：这里有问题
-            // Artisan::call('config:cache');
-            // Artisan::call('route:cache');           
 
             return $this->success(trans('core::master.saved'), route('core.config.safe'));
         }

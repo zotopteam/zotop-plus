@@ -57,6 +57,13 @@ class BaseController extends Controller
      */
     public function __construct()
     {
+        // app实例
+        $this->app = app();
+
+        if ($this->app->runningInConsole() === true) {
+            return;
+        }
+
         // 初始化
         $this->__init();
 
@@ -76,9 +83,6 @@ class BaseController extends Controller
     // 初始化
     protected function __init()
     {
-        // app实例
-        $this->app = app();
-
         // view实例
         $this->view   = $this->app->make('view');
         
@@ -119,7 +123,6 @@ class BaseController extends Controller
             return strtolower(substr($action['controller'], strpos($action['controller'], "@") + 1));
         });                        
 
-        //$this->view->share('current', $this->current);
     }
 
     /**
@@ -170,9 +173,7 @@ class BaseController extends Controller
      */
     protected function setLocaleLanguage()
     {
-        
         if ( $this->locale ) {
-
             // 设置默认语言       
             app()->setLocale($this->locale);
         }
@@ -232,7 +233,6 @@ class BaseController extends Controller
     public function view($view = null, $data = [], $mergeData = [])
     {
         if ( empty($view) ) {
-
             // 默认view为: controller/action
             $view = $this->app['current.controller'].'.'.$this->app['current.action'];
         }

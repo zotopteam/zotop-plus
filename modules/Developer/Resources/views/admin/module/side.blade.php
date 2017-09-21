@@ -12,9 +12,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link {{Route::active('developer.module.controller')}}" href="{{route('developer.module.controller',[$module->name,'admin'])}}">
-                    <i class="fa fa-sitemap fa-fw"></i> {{trans('developer::module.controller')}}
+                    <i class="fa fa-sitemap fa-fw"></i> {{trans('developer::controller.title')}}
                 </a>
-            </li>                       
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{Route::active('developer.command.index')}}" href="{{route('developer.command.index',[$module->name])}}">
+                    <i class="fa fa-terminal fa-fw"></i> {{trans('developer::command.title')}}
+                </a>
+            </li>                                  
         </ul>        
     </div>
     <div class="side-footer">

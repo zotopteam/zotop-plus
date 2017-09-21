@@ -13,7 +13,7 @@ class SystemController extends AdminController
     /**
      * 首页
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
     {
@@ -23,46 +23,25 @@ class SystemController extends AdminController
     /**
      * 一键刷新
      * 
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function refresh()
     {
-        $success = trans('core::master.operated');
+        //$success = trans('core::master.operated');
 
         //Hook
-        Action::fire('system.refresh');        
+        Action::fire('system.refresh');
 
         // 清除模板缓存
-        Artisan::call('cache:clear');
+        Artisan::call('reboot');
 
-        // 如果是本地或者测试模式或者处于debug状态下，不缓存路由和配置
-        if ( app()->environment('local','testing') OR config('app.debug') ) {
-
-            // 清除路由缓存
-            Artisan::call('route:clear');
-            
-            // 清除配置缓存
-            Artisan::call('config:clear');
-
-        } else {
-
-            // 重建路由缓存
-            Artisan::call('route:cache');
-            
-            // 重建配置缓存
-            Artisan::call('config:cache');
-        }
-
-        // 优化
-        Artisan::call('optimize');
-
-        return $this->success($success);
+        return $this->success(trans('core::master.operated'));
     }
 
     /**
      * 系统环境
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function environment()
     {
@@ -96,7 +75,7 @@ class SystemController extends AdminController
     /**
      * 关于
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function about()
     {

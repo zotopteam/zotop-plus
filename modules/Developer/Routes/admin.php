@@ -22,17 +22,12 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->any('create/{name}/{type}','ControllerController@create')->name('developer.module.controller.create');
         $router->any('tempate/{name}/{type}/{controller}','ControllerController@template')->name('developer.module.controller.template');
         $router->any('route/{name}/{type}/{controller}','ControllerController@route')->name('developer.module.controller.route');
-    });    
- 
-    
-    // theme 开发
-    $router->group(['prefix' =>'theme','middleware'=>'allow:developer.theme'], function (Router $router) {
-        $router->get('index','themeController@index')->name('developer.theme.index');
-        $router->get('create','themeController@create')->name('developer.theme.create');
-        $router->post('store','themeController@store')->name('developer.theme.store');  
-        $router->get('edit/{name}','themeController@destroy@edit')->name('developer.theme.edit');
-        $router->put('update/{name}','themeController@update')->name('developer.theme.update');
-        $router->delete('destroy/{name}','themeController@destroy')->name('developer.theme.destroy');                 
+    });
+
+    // command group example
+    $router->group(['prefix' =>'module/command'], function (Router $router) {
+        $router->get('index/{module}','CommandController@index')->name('developer.command.index')->middleware('allow:developer.command.index');
+        $router->any('create/{module}','CommandController@create')->name('developer.command.create')->middleware('allow:developer.command.create');
     });
     
 });

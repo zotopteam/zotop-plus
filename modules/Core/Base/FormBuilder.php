@@ -129,7 +129,7 @@ class FormBuilder extends LaravelFormBuilder
     /**
      * 从标签数组里面获取value项
      * 
-     * @param  Array  $attrs 标签数组
+     * @param  array  $attrs 标签数组
      * @return mixed
      */
     public function getValue(Array $attrs, $value=null)
@@ -137,7 +137,7 @@ class FormBuilder extends LaravelFormBuilder
         $name = array_get($attrs, 'name');
 
         // 从数组里面弹出
-        if ( isset($attrs['value']) ) {
+        if (isset($attrs['value'])) {
             $value = array_pull($attrs, 'value');
         }
 
@@ -214,7 +214,7 @@ class FormBuilder extends LaravelFormBuilder
     /**
      * 手机号字段
      * 
-     * @param  Array  $attrs 标签数组
+     * @param  array  $attrs 标签数组
      * @return mixed
      */
     public function mobile(Array $attrs)

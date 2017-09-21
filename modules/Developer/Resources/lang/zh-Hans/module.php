@@ -10,12 +10,7 @@ return [
     'edit'                      => '开发模块',
     'show'                      => '模块信息',
     'path'                      => '模块路径',
-    
-    'file.name'                 => '文件名',
-    'file.path'                 => '文件路径',
-    'file.lastmodified'         => '最后修改时间',
-    
-    
+       
     
     'name.label'                => '名称',
     'name.help'                 => '模块的唯一标示符，勿与其它模块重复，只允许英文',
@@ -47,20 +42,4 @@ return [
     
     'files.label'               => '全局加载文件',    
     'files.help'                => '请直接修改 :0\module.json 中的 files',
-    
-    'controller'                => '控制器',
-    
-    'controller.admin'          => '后台控制器',
-    'controller.front'          => '前台控制器',
-    
-    'controller.path'           => '控制器所在位置',
-    'controller.artisan'        => 'Artisan创建命令',    
-    
-    'controller_name.label'     => '控制器名称',
-    'controller_name.help'      => '如：test，将创建TestController',
-    
-    'controller_style.label'    => '控制器风格',
-    'controller_style.help'     => '',
-    'controller_style.simple'   => '基本控制器，只含index动作和对应模板',
-    'controller_style.resource' => '资源控制器，包含index/create/store/show/edit/update/destory等动作和对应模板', 
 ];

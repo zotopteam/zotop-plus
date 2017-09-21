@@ -179,9 +179,8 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .table-inside>tbody>tr:last-child>td{border:0 none;}
 
 /*空数据*/
-.nodata{text-align:center;color:#999;padding:8rem 0;font-size:1.5rem;}
-.nodata:before{font-family:fontawesome;content:'\f118';display:block;font-size:6rem;color:#ebebeb;}
-.nodata>.btn{margin-top:-6px;}
+.nodata{color:#999;font-size:1.2rem;height:100%;width:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.nodata:before{font-family:fontawesome;content:'\f118';font-size:6rem;color:#ebebeb;}
 
 .popover{max-width:100%;}
 .popover-content{padding:0.5rem;}

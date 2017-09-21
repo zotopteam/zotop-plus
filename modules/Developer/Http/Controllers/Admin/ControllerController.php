@@ -23,22 +23,22 @@ class ControllerController extends AdminController
     {
         $types = Filter::fire('developer.controller.types',[
             'admin' => [
-                'name'    =>trans('developer::module.controller.admin'),
+                'name'    =>trans('developer::controller.admin'),
                 'path'    =>'Http/Controllers/Admin',
                 'artisan' =>'module:make-admin-controller',
                 'styles'   => [
-                    'resource' => trans('developer::module.controller_style.resource'),
-                    'simple'   => trans('developer::module.controller_style.simple'),
+                    'resource' => trans('developer::controller.style.resource'),
+                    'simple'   => trans('developer::controller.style.simple'),
                 ],
                 'middleware' => 'allow:{allow}'
             ],
             'front' => [
-                'name'    => trans('developer::module.controller.front'),
+                'name'    => trans('developer::controller.front'),
                 'path'    => 'Http/Controllers',
                 'artisan' => 'module:make-front-controller',
                 'styles'   => [
-                    'simple'   => trans('developer::module.controller_style.simple'),
-                    'resource' => trans('developer::module.controller_style.resource'),
+                    'simple'   => trans('developer::controller.style.simple'),
+                    'resource' => trans('developer::controller.style.resource'),
                 ],
                 'middleware' => ''                
             ],
@@ -147,7 +147,7 @@ class ControllerController extends AdminController
      */
     public function index(Request $request, $module, $type)
     {
-        $this->title   = trans('developer::module.controller');
+        $this->title   = trans('developer::controller.title');
         
         $this->name    = $module;
         $this->type    = $type;
@@ -179,11 +179,11 @@ class ControllerController extends AdminController
         // 表单提交时
         if ($request->isMethod('POST')) {
             
-            $controller_name  = $request->input('controller_name');
-            $controller_style = $request->input('controller_style');
+            $name  = $request->input('name');
+            $style = $request->input('style');
 
             // 判断是否已经存在
-            $path = $this->fullpath($module, $type, $controller_name);
+            $path = $this->fullpath($module, $type, $name);
 
             if (File::exists($path)) {
                 return $this->error(trans('core::master.existed'));
@@ -193,8 +193,8 @@ class ControllerController extends AdminController
 
             Artisan::call($artisan, [
                 'module'     => $module,
-                'controller' => $controller_name,
-                '--style'    => $controller_style,
+                'controller' => $name,
+                '--style'    => $style,
                 '--force'    => false,
             ]);
 
@@ -202,10 +202,10 @@ class ControllerController extends AdminController
         }
 
 
-        $this->title      = trans('developer::module.controller');
+        $this->title      = trans('core::master.create');
 
         $this->controller = [];
-        $this->controller_styles     = $this->types($type,'styles');
+        $this->styles     = $this->types($type,'styles');
 
         return $this->view();
     }
