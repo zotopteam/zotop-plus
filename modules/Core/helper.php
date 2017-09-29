@@ -30,49 +30,55 @@ if (! function_exists('module')) {
     /**
      * 获取全部module或者某个module信息
      * 
-     * @param  string $moduleName [description]
+     * @param  string $moduleName 模块名称
      * @return mixed 
      */
     function module($moduleName='')
     {
-        // 获取全部模块
-        $modules = \Module::all();
+        static $modules = [];
 
-        // 默认安装顺序排序
-        $direction = 'asc';
+        if (empty($modules)) {
+           
+            // 获取全部模块
+            $modules = \Module::all();
 
-        // 模块排序
-        uasort($modules, function ($a, $b) use ($direction) {
-            if ($a->order == $b->order) {
-                return 0;
+            // 默认安装顺序排序
+            $direction = 'asc';
+
+            // 模块排序
+            uasort($modules, function($a, $b) use ($direction) {
+
+                if ($a->order == $b->order) {
+                    return 0;
+                }
+
+                if ($direction == 'desc') {
+                    return $a->order < $b->order ? 1 : -1;
+                }
+
+                return $a->order > $b->order ? 1 : -1;
+            });   
+
+
+            foreach ($modules as $name=>$module) {
+                
+                $namespace = strtolower($name);
+
+                // 模块图标
+                if (empty($module->icon)) {
+                    $module->icon = $module->getExtraPath('Assets/module.png');
+                    $module->icon = preview($module->icon);
+                }
+
+                // 加载未启用模块语言包
+                if ( !$module->active ) {
+                    app('translator')->addNamespace($namespace, $module->getPath() . '/Resources/lang');
+                }
+
+                // 标题和描述语言化
+                $module->title       = trans($module->title);
+                $module->description = trans($module->description);                   
             }
-
-            if ($direction == 'desc') {
-                return $a->order < $b->order ? 1 : -1;
-            }
-
-            return $a->order > $b->order ? 1 : -1;
-        });   
-
-
-        foreach ($modules as $name=>$module) {
-            
-            $namespace = strtolower($name);
-
-            // module img
-            if ( empty($module->icon) ) {
-                $module->icon = $module->getExtraPath('Assets/module.png');
-                $module->icon = preview($module->icon);
-            }
-
-            // 加载未启用模块语言包
-            if ( !$module->active ) {
-                App('translator')->addNamespace($namespace, $module->getPath() . '/Resources/lang');
-            }
-
-            // 标题和描述语言化
-            $module->title       = trans($module->title);
-            $module->description = trans($module->description);                   
         }
 
         return $moduleName ? $modules[$moduleName] : $modules;        

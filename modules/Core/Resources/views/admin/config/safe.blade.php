@@ -42,7 +42,7 @@
                     @endif
                 </div>
             </div>
-
+            
             <div class="form-group row">
                 <label for="admin_prefix" class="col-2 col-form-label required">{{trans('core::config.admin_prefix.label')}}</label>
                 <div class="col-8">
@@ -56,20 +56,33 @@
                 </div>
             </div>
 
+            <div class="form-title row">{{trans('core::config.safe.log')}}</div>
+
             <div class="form-group row">
-                <label for="key" class="col-2 col-form-label required">{{trans('core::config.key.label')}}</label>
+                <label for="log" class="col-2 col-form-label required">{{trans('core::config.log.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="key" required="required"}
+                    {field type="select" name="log" options="$logs"}
                     
-                    @if ($errors->has('key'))
-                    <span class="form-help text-error">{{ $errors->first('key') }}</span>
+                    @if ($errors->has('log'))
+                    <span class="form-help text-error">{{ $errors->first('log') }}</span>
                     @else
-                    <span class="form-help">{{trans('core::config.key.help')}}</span>
+                    <span class="form-help">{{trans('core::config.log.help')}}</span>
                     @endif
                 </div>
             </div>
 
-            <div class="form-title row">{{trans('core::config.safe.log')}}</div>                                  
+            <div class="form-group row">
+                <label for="log_level" class="col-2 col-form-label required">{{trans('core::config.log_level.label')}}</label>
+                <div class="col-8">
+                    {field type="select" name="log_level" options="$log_levels"}
+                    
+                    @if ($errors->has('log_level'))
+                    <span class="form-help text-error">{{ $errors->first('log_level') }}</span>
+                    @else
+                    <span class="form-help">{{trans('core::config.log_level.help')}}</span>
+                    @endif
+                </div>
+            </div>                                                           
 
             {/form}           
         </div>

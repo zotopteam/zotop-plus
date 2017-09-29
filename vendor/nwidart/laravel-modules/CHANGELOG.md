@@ -4,6 +4,46 @@ All Notable changes to `laravel-modules` will be documented in this file.
 
 ## Next
 
+## 2.4.1 - 2017-09-27
+
+## Changed
+
+- Setting a default value for `modules.paths.modules` configuration key
+
+
+## 2.4.0 - 2017-09-27
+
+## Added
+
+- New `module:make-resource` command to generate resource classes
+- New `module:make-test` command to generate test classes
+
+## Changed
+
+- Improved error output of the `module:seed` command
+- Marking methods that served as proxies in `Module` and `Repository` classes as deprecated for next major
+- Fixed `module:make` and `module:make-provider` to generate the correct master service provider
+- Tests: tests are now using `spatie/phpunit-snapshot-assertions` to make sure the generated files have the correct content
+- Adding a sync option to the `module:make-job` command to make a synchronous job class
+- Changed `module:make-event` command to allow duck typed events (not type hinted event class)
+- Changed `module:make-listener` to allow a `--queued` option to make the event queueable
+- Changed `module:make-listener` command to not use the full class typehint when class was previous imported
+
+## 2.3.0 - 2017-09-26
+
+## Added
+
+- Ability to ignore some folders to generate
+- Creating an module:unuse command to forget the previously saved module
+- New command to generate Policy classes
+- New command for creating factories
+- New command for creating rules
+- new `public_path` helper for Lumen
+
+## Changed
+
+- Refactored class names that generate something to be fully consistent
+
 ## 2.2.1 - 2017-09-14
 
 ## Changed

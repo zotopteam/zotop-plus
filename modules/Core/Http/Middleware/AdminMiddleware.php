@@ -23,7 +23,7 @@ class AdminMiddleware
         if ( Route::is('admin.login','admin.login.post') || (Auth::check() && Auth::user()->isAdmin()) ) {
             return $next($request);
         }
-        
+
         // Ajax 禁止    
         if ($request->ajax()) {
             return response('Unauthorized.', 401);

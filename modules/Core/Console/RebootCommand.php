@@ -59,10 +59,7 @@ class RebootCommand extends Command
             
             $this->call('cache:clear');
 
-        }        
-
-        // 优化
-        $this->call('optimize');
+        }
 
         $this->info("Reboot : success");      
     }

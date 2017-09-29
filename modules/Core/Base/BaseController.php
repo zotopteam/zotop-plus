@@ -64,6 +64,9 @@ class BaseController extends Controller
             return;
         }
 
+        // view实例
+        $this->view   = $this->app->make('view');        
+
         // 初始化
         $this->__init();
 
@@ -82,10 +85,7 @@ class BaseController extends Controller
 
     // 初始化
     protected function __init()
-    {
-        // view实例
-        $this->view   = $this->app->make('view');
-        
+    {        
         // 默认主题
         $this->theme  = 'default';
         
@@ -175,7 +175,7 @@ class BaseController extends Controller
     {
         if ( $this->locale ) {
             // 设置默认语言       
-            app()->setLocale($this->locale);
+            $this->app->setLocale($this->locale);
         }
     }
 
@@ -187,7 +187,7 @@ class BaseController extends Controller
      * @param  mixed $value 参数值
      * @return $this
      */
-    public function with($key, $value=null)
+    public function with($key, $value = null)
     {
         if (is_array($key)) {
             $this->viewData = array_merge($this->viewData, $key);
@@ -232,8 +232,8 @@ class BaseController extends Controller
      */
     public function view($view = null, $data = [], $mergeData = [])
     {
-        if ( empty($view) ) {
-            // 默认view为: controller/action
+        // 默认view为: controller/action
+        if (empty($view)) {
             $view = $this->app['current.controller'].'.'.$this->app['current.action'];
         }
 
@@ -257,7 +257,7 @@ class BaseController extends Controller
     public function message(array $msg)
     {
         //如果请求为ajax，则输出json数据
-        if ( \Request::expectsJson() )
+        if (\Request::expectsJson())
         {
             return response()->json($msg);
         }

@@ -12,7 +12,7 @@ return [
     'safe.base'          => '运行环境',
     
     'env.label'          => '应用环境',
-    'env.help'           => '正式在线运行时，请选择生产环境',
+    'env.help'           => '',
     
     'envs.production'    => '生产环境 - production',
     'envs.local'         => '本地环境 - local',
@@ -21,13 +21,18 @@ return [
     'key.label'          => '安全码',
     'key.help'           => '更改后将退出系统并需要重新登录',   
     
-    'debug.label'        => '开启调试模式',
-    'debug.help'         => '开启后将进入调试模式',
+    'debug.label'        => '调试模式',
+    'debug.help'         => '',
     
-    'admin_prefix.label' => '后台URL前缀',
+    'admin_prefix.label' => '后台URL',
     'admin_prefix.help'  => '更改后将改变系统后台的URL地址，默认为：admin',
-
-
-    'safe.log'          => '系统日志',
-     
+    
+    
+    'safe.log'           => '系统日志',
+    
+    'log.label'          => '日志模式',
+    'log.help'           => '',
+    
+    'log_level.label'    => '日志级别',
+    'log_level.help'     => '',    
 ];

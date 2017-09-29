@@ -21,8 +21,6 @@
         "JildertMiedema\\LaravelPlupload\\LaravelPluploadServiceProvider"
     ],
     "aliases": {
-        "Html": "Collective\\Html\\HtmlFacade",
-        "Form": "Collective\\Html\\FormFacade",
         "Plupload": "JildertMiedema\\LaravelPlupload\\Facades\\Plupload",
         "Action": "Modules\\Core\\Hook\\ActionFacade",
         "Filter": "Modules\\Core\\Hook\\FilterFacade",

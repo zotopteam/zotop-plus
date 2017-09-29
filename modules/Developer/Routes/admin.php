@@ -24,10 +24,14 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->any('route/{name}/{type}/{controller}','ControllerController@route')->name('developer.module.controller.route');
     });
 
-    // command group example
+    // command group
     $router->group(['prefix' =>'module/command'], function (Router $router) {
         $router->get('index/{module}','CommandController@index')->name('developer.command.index')->middleware('allow:developer.command.index');
         $router->any('create/{module}','CommandController@create')->name('developer.command.create')->middleware('allow:developer.command.create');
     });
     
+    // theme group
+    $router->group(['prefix' =>'theme'], function (Router $router) {
+        $router->get('index','ThemeController@index')->name('developer.theme.index')->middleware('allow:developer.theme.index');
+    });    
 });

@@ -3,7 +3,6 @@
 namespace Nwidart\Modules;
 
 use Illuminate\Container\Container;
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
@@ -187,7 +186,7 @@ abstract class Module extends ServiceProvider
     {
         $lowerName = $this->getLowerName();
 
-        $langPath = $this->getPath() . "/Resources/lang";
+        $langPath = $this->getPath() . '/Resources/lang';
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $lowerName);
@@ -197,11 +196,11 @@ abstract class Module extends ServiceProvider
     /**
      * Get json contents from the cache, setting as needed.
      *
-     * @param $file
+     * @param string $file
      *
      * @return Json
      */
-    public function json($file = null)
+    public function json($file = null) : Json
     {
         if ($file === null) {
             $file = 'module.json';
@@ -215,12 +214,12 @@ abstract class Module extends ServiceProvider
     /**
      * Get a specific data from json file by given the key.
      *
-     * @param $key
+     * @param string $key
      * @param null $default
      *
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get(string $key, $default = null)
     {
         return $this->json()->get($key, $default);
     }
@@ -261,17 +260,10 @@ abstract class Module extends ServiceProvider
     {
         $this->app['events']->fire(sprintf('modules.%s.' . $event, $this->getLowerName()), [$this]);
     }
-
     /**
      * Register the aliases from this module.
      */
-    protected function registerAliases()
-    {
-        $loader = AliasLoader::getInstance();
-        foreach ($this->get('aliases', []) as $aliasName => $aliasClass) {
-            $loader->alias($aliasName, $aliasClass);
-        }
-    }
+    abstract public function registerAliases();
 
     /**
      * Register the service providers from this module.
@@ -312,7 +304,7 @@ abstract class Module extends ServiceProvider
      *
      * @return bool
      */
-    public function isStatus($status)
+    public function isStatus($status) : bool
     {
         return $this->get('active', 0) === $status;
     }
@@ -322,15 +314,16 @@ abstract class Module extends ServiceProvider
      *
      * @return bool
      */
-    public function enabled()
+    public function enabled() : bool
     {
-        return $this->active();
+        return $this->isStatus(1);
     }
 
     /**
      * Alternate for "enabled" method.
      *
      * @return bool
+     * @deprecated
      */
     public function active()
     {
@@ -341,6 +334,7 @@ abstract class Module extends ServiceProvider
      * Determine whether the current module not activated.
      *
      * @return bool
+     * @deprecated
      */
     public function notActive()
     {
@@ -348,11 +342,11 @@ abstract class Module extends ServiceProvider
     }
 
     /**
-     * Alias for "notActive" method.
+     *  Determine whether the current module not disabled.
      *
      * @return bool
      */
-    public function disabled()
+    public function disabled() : bool
     {
         return !$this->enabled();
     }
@@ -406,11 +400,11 @@ abstract class Module extends ServiceProvider
     /**
      * Get extra path.
      *
-     * @param $path
+     * @param string $path
      *
      * @return string
      */
-    public function getExtraPath($path)
+    public function getExtraPath(string $path) : string
     {
         return $this->getPath() . '/' . $path;
     }

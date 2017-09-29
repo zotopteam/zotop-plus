@@ -62,10 +62,6 @@ class ConfigController extends AdminController
     public function index(Request $request)
     {
         return redirect()->route('core.config.upload');
-
-        // $this->title = trans('core::config.title');
-
-        // return $this->view();
     }
 
 
@@ -111,6 +107,14 @@ class ConfigController extends AdminController
     {
         $this->title = trans('core::config.locale');
 
+        $timezones = [];
+
+        foreach(timezone_identifiers_list() as $key => $zone) {
+            $timezones[$zone] = 'UTC/GMT '.(new \DateTime(null, new \DateTimeZone($zone)))->format('P').' - '.$zone;    
+        }
+
+        dd($timezones);
+
         return $this->view();
     }  
 
@@ -128,25 +132,40 @@ class ConfigController extends AdminController
             $this->setEnv([
                 'APP_ENV'          => $request->input('env', 'production'),
                 'APP_DEBUG'        => $request->input('debug', 'production') ? 'true' : 'false',
-                'APP_KEY'          => $request->input('key'), //TODO: 未知问题，无法保存
+                //'APP_KEY'          => $request->input('key'), //TODO: 未知问题，无法保存
                 'APP_ADMIN_PREFIX' => $request->input('admin_prefix', 'admin'),
+                'APP_LOG'          => $request->input('log', 'single'),
+                'APP_LOG_LEVEL'    => $request->input('log_level', 'debug'),
             ]);
 
             // 更改后台地址，TODO：本地或者测试环境下，route 已经加载，无法重新载入
-            // config([
-            //     'app.admin_prefix' => $request->input('admin_prefix', 'admin')
-            // ]);
+            config([
+                'app.admin_prefix' => $request->input('admin_prefix', 'admin')
+            ]);
 
             return $this->success(trans('core::master.saved'), route('core.config.safe'));
         }
 
         $this->title = trans('core::config.safe');
 
+        // 运行环境选项
         $this->envs = Filter::fire('core.config.envs' ,[
             'production' => trans('core::config.envs.production'),
             'local'      => trans('core::config.envs.local'),
             'testing'    => trans('core::config.envs.testing'),
         ]);
+
+        // 日志模式选项
+        $this->logs = array_combine(
+            ['single','daily','syslog','errorlog'],
+            ['single','daily','syslog','errorlog']
+        );
+
+        // 日志级别选项
+        $this->log_levels = array_combine(
+            ['debug','info','notice','warning','error','critical','alert','emergency'],
+            ['debug','info','notice','warning','error','critical','alert','emergency']
+        );
 
         return $this->view();
     }         
