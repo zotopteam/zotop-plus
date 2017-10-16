@@ -2,6 +2,7 @@
 
 namespace Nwidart\Modules\Commands;
 
+use Nwidart\Modules\Support\Config\GenerateConfigReader;
 use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Traits\ModuleCommandTrait;
 use Symfony\Component\Console\Input\InputArgument;
@@ -49,6 +50,7 @@ class RouteProviderMakeCommand extends GeneratorCommand
             'MODULE'           => $this->getModuleName(),
             'NAME'             => $this->getFileName(),
             'MODULE_NAMESPACE' => $this->laravel['modules']->config('namespace'),
+            'ROUTES_PATH'   => $this->getRoutesPath(),
         ]))->render();
     }
 
@@ -69,8 +71,16 @@ class RouteProviderMakeCommand extends GeneratorCommand
     {
         $path = $this->laravel['modules']->getModulePath($this->getModuleName());
 
-        $generatorPath = $this->laravel['modules']->config('paths.generator.provider');
+        $generatorPath = GenerateConfigReader::read('provider');
 
-        return $path . $generatorPath . '/' . $this->getFileName() . '.php';
+        return $path . $generatorPath->getPath() . '/' . $this->getFileName() . '.php';
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getRoutesPath()
+    {
+        return '/' . $this->laravel['config']->get('stubs.files.routes', 'Http/routes.php');
     }
 }

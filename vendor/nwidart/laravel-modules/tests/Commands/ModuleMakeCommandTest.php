@@ -49,7 +49,7 @@ class ModuleMakeCommandTest extends BaseTestCase
         $this->artisan('module:make', ['name' => ['Blog']]);
 
         foreach (config('modules.paths.generator') as $directory) {
-            $this->assertTrue(is_dir($this->modulePath . '/' . $directory));
+            $this->assertTrue(is_dir($this->modulePath . '/' . $directory['path']));
         }
     }
 
@@ -64,6 +64,26 @@ class ModuleMakeCommandTest extends BaseTestCase
         }
         $path = base_path('modules/Blog') . '/module.json';
         $this->assertTrue($this->finder->exists($path), '[module.json] does not exists');
+        $this->assertMatchesSnapshot($this->finder->get($path));
+    }
+
+    /** @test */
+    public function it_generates_route_file()
+    {
+        $this->artisan('module:make', ['name' => ['Blog']]);
+
+        $path = $this->modulePath . '/' . $this->app['modules']->config('stubs.files.routes');
+
+        $this->assertMatchesSnapshot($this->finder->get($path));
+    }
+
+    /** @test */
+    public function it_generates_start_php_file()
+    {
+        $this->artisan('module:make', ['name' => ['Blog']]);
+
+        $path = $this->modulePath . '/' . $this->app['modules']->config('stubs.files.start');
+
         $this->assertMatchesSnapshot($this->finder->get($path));
     }
 
@@ -178,10 +198,59 @@ class ModuleMakeCommandTest extends BaseTestCase
     }
 
     /** @test */
-    public function it_can_ignore_some_folders_to_generate()
+    public function it_can_generate_module_with_old_config_format()
+    {
+        $this->app['config']->set('modules.paths.generator', [
+            'assets' => 'Assets',
+            'config' => 'Config',
+            'command' => 'Console',
+            'event' => 'Events',
+            'listener' => 'Listeners',
+            'migration' => 'Database/Migrations',
+            'factory' => 'Database/factories',
+            'model' => 'Entities',
+            'repository' => 'Repositories',
+            'seeder' => 'Database/Seeders',
+            'controller' => 'Http/Controllers',
+            'filter' => 'Http/Middleware',
+            'request' => 'Http/Requests',
+            'provider' => 'Providers',
+            'lang' => 'Resources/lang',
+            'views' => 'Resources/views',
+            'policies' => false,
+            'rules' => false,
+            'test' => 'Tests',
+            'jobs' => 'Jobs',
+            'emails' => 'Emails',
+            'notifications' => 'Notifications',
+            'resource' => false,
+        ]);
+
+        $this->artisan('module:make', ['name' => ['Blog']]);
+
+        $this->assertTrue(is_dir($this->modulePath . '/Assets'));
+        $this->assertTrue(is_dir($this->modulePath . '/Emails'));
+        $this->assertFalse(is_dir($this->modulePath . '/Rules'));
+        $this->assertFalse(is_dir($this->modulePath . '/Policies'));
+    }
+
+    /** @test */
+    public function it_can_ignore_some_folders_to_generate_with_old_format()
     {
         $this->app['config']->set('modules.paths.generator.assets', false);
         $this->app['config']->set('modules.paths.generator.emails', false);
+
+        $this->artisan('module:make', ['name' => ['Blog']]);
+
+        $this->assertFalse(is_dir($this->modulePath . '/Assets'));
+        $this->assertFalse(is_dir($this->modulePath . '/Emails'));
+    }
+
+    /** @test */
+    public function it_can_ignore_some_folders_to_generate_with_new_format()
+    {
+        $this->app['config']->set('modules.paths.generator.assets', ['path' => 'Assets', 'generate' => false]);
+        $this->app['config']->set('modules.paths.generator.emails', ['path' => 'Emails', 'generate' => false]);
 
         $this->artisan('module:make', ['name' => ['Blog']]);
 

@@ -3,6 +3,7 @@
 namespace Nwidart\Modules\Commands;
 
 use Illuminate\Support\Str;
+use Nwidart\Modules\Support\Config\GenerateConfigReader;
 use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Traits\ModuleCommandTrait;
 use Symfony\Component\Console\Input\InputArgument;
@@ -60,7 +61,9 @@ class FactoryMakeCommand extends GeneratorCommand
     {
         $path = $this->laravel['modules']->getModulePath($this->getModuleName());
 
-        return $path . 'Database/factories/' . $this->getFileName();
+        $factoryPath = GenerateConfigReader::read('factory');
+
+        return $path . $factoryPath->getPath() . '/' . $this->getFileName();
     }
 
     /**

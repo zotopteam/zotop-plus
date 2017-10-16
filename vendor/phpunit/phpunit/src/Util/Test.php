@@ -423,10 +423,7 @@ class Test
      */
     private static function parseAnnotationContent($message)
     {
-        if (
-            (\strpos($message, '::') !== false && \count(\explode('::', $message)) == 2)
-            && \defined($message)
-        ) {
+        if ((\strpos($message, '::') !== false && \count(\explode('::', $message)) == 2) && \defined($message)) {
             $message = \constant($message);
         }
 
@@ -527,7 +524,7 @@ class Test
                 }
 
                 if ($data instanceof Traversable) {
-                    $data = \iterator_to_array($data);
+                    $data = \iterator_to_array($data, false);
                 }
 
                 if (\is_array($data)) {
