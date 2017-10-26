@@ -29,6 +29,12 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->get('index/{module}','CommandController@index')->name('developer.command.index')->middleware('allow:developer.command.index');
         $router->any('create/{module}','CommandController@create')->name('developer.command.create')->middleware('allow:developer.command.create');
     });
+
+    // migration group
+    $router->group(['prefix' =>'migration'], function (Router $router) {
+        $router->get('index/{module}','MigrationController@index')->name('developer.migration.index')->middleware('allow:developer.migration.index');
+        $router->any('create/{module}','MigrationController@create')->name('developer.migration.create')->middleware('allow:developer.migration.create');
+    });    
     
     // theme group
     $router->group(['prefix' =>'theme'], function (Router $router) {

@@ -23,6 +23,16 @@ class Core extends Migration
             $table->integer('last_activity');
         });
 
+        // config
+        Schema::create('config', function (Blueprint $table) {
+            $table->string('key')->unique()->comment('键名');
+            $table->text('value')->nullable()->comment('键值');
+            $table->string('module', 100)->comment('模块名称');
+            $table->timestamps();
+
+            $table->comment = '用户';               
+        });   
+
         // users基础表
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id')->comment('编号');
@@ -90,6 +100,7 @@ class Core extends Migration
     public function down()
     {
         Schema::drop('sessions');
+        Schema::drop('config');
         Schema::drop('users');
         Schema::drop('password_resets');
         Schema::drop('roles');

@@ -16,6 +16,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{Route::active('developer.migration.index')}}" href="{{route('developer.migration.index',[$module->name])}}">
+                    <i class="fa fa-database fa-fw"></i> {{trans('developer::migration.title')}}
+                </a>
+            </li>              
+            <li class="nav-item">
                 <a class="nav-link {{Route::active('developer.command.index')}}" href="{{route('developer.command.index',[$module->name])}}">
                     <i class="fa fa-terminal fa-fw"></i> {{trans('developer::command.title')}}
                 </a>
