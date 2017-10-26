@@ -68,12 +68,12 @@ class CreateCommand extends Command
     protected $createFiles = [
         'start.stub'              => 'start.php',
         'config.stub'             => 'config.php',
-        'modulejson.stub'         => 'module.json',
-        'module.png'              => 'Assets/module.png',        
+        'modulejson.stub'         => 'module.json',              
         'routes-front.stub'       => 'Routes/front.php',
         'routes-admin.stub'       => 'Routes/admin.php',
         'routes-api.stub'         => 'Routes/api.php',
         'route-provider.stub'     => 'Providers/RouteServiceProvider.php',
+        'module.png'              => 'Resources/assets/module.png',  
         'lang/en/module.php'      => 'Resources/lang/en/module.php',
         'lang/zh-Hans/module.php' => 'Resources/lang/zh-Hans/module.php',
         'lang/zh-Hant/module.php' => 'Resources/lang/zh-Hant/module.php',
@@ -182,7 +182,7 @@ class CreateCommand extends Command
         $this->call('module:make-front-controller', [
             'controller' => 'IndexController',
             'module'     => $this->moduleName(),
-            '--plain'    => true
+            '--style'    => 'simple'
         ]);        
 
         $this->call('module:make-provider', [

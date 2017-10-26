@@ -66,7 +66,7 @@ if (! function_exists('module')) {
 
                 // 模块图标
                 if (empty($module->icon)) {
-                    $module->icon = $module->getExtraPath('Assets/module.png');
+                    $module->icon = $module->getExtraPath('/Resources/assets/module.png');
                     $module->icon = preview($module->icon);
                 }
 

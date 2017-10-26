@@ -1,0 +1,21 @@
+{
+    "name": "Test2",
+    "alias": "test2",
+    "title": "test2::module.title",
+    "description": "test2::module.description",
+    "keywords": [],
+    "version": "1.0.0",
+    "active": 0,
+    "installed": 0,
+    "order": 10,
+    "author":"zotop",
+    "email":"it@zotop.com",
+    "homepage":"http://www.zotop.com",       
+    "providers": [
+        "Modules\\Test2\\Providers\\RouteServiceProvider"
+    ],
+    "aliases":{},
+    "files": [
+        "start.php"
+    ]
+}

@@ -17,52 +17,8 @@ class ModulesController extends AdminController
      */
     public function index()
     {
-        // 获取全部模块
-        $modules = Module::all();
-
-        // 默认安装顺序排序
-        $direction = 'asc';
-
-        // 模块排序
-        uasort($modules, function ($a, $b) use ($direction) {
-            if ($a->order == $b->order) {
-                return 0;
-            }
-
-            if ($direction == 'desc') {
-                return $a->order < $b->order ? 1 : -1;
-            }
-
-            return $a->order > $b->order ? 1 : -1;
-        });   
-
-
-        foreach ($modules as $name=>$module) {
-            
-            $namespace = strtolower($name);
-            
-            if ( $module->active ) {
-
-                // 图标
-                $module->icon = Module::asset($namespace.':module.png');
-                
-            } else {
-
-                // 加载未启用模块语言包
-                App('translator')->addNamespace($namespace, $module->getPath() . '/Resources/lang');
-
-                // 预览图标
-                $module->icon = $module->getExtraPath('Assets/module.png');
-                $module->icon = preview($module->icon);
-            }
-
-            // 标题和描述语言化
-            $module->title       = trans($module->title);
-            $module->description = trans($module->description);                     
-        }
-
         $this->title   = trans('core::modules.title');
-        $this->modules = $modules;
+        $this->modules = module();
 
         return $this->view();
     }
