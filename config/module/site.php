@@ -4,7 +4,7 @@ return array (
   'theme' => 'default',
   'url' => 'http://www.zotop.com',
   'logo' => '/uploads/2017/07/28/201707281606120000007880.png',
-  'favicon' => '',
+  'favicon' => '/uploads/2017/10/25/201710252321420000007342.png',
   'slogan' => '',
   'copyright' => '',
   'beian' => '',
