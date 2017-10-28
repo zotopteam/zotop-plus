@@ -5,7 +5,7 @@
 <div class="main">
     <div class="main-header">
         <div class="main-title mr-auto">
-            {{$title}}
+            {{$title}} {{config('site.name')}}
         </div>
     </div>
     <div class="main-body scrollable">

@@ -246,6 +246,7 @@ return [
         /**
          * Custom Service Providers...
          */
+        App\Providers\InstallServiceProvider::class,
     ],
 
     /*

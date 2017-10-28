@@ -40,7 +40,7 @@ class CoreServiceProvider extends ServiceProvider
         foreach ($this->app['modules']->getOrdered() as $module) {
             $this->registerConfig($module); 
             $this->registerLanguageNamespace($module);
-        }
+        }      
     }
 
     /**
@@ -80,17 +80,22 @@ class CoreServiceProvider extends ServiceProvider
 
         // 注册模块根目录下的配置
         if ($this->app['files']->isFile($configFile)) {
-            $this->mergeConfigFrom($configFile, strtolower("module.$moduleName"));
+            $this->mergeConfigFrom($configFile, "module.$moduleName");
             $this->publishes([
-               $configFile => config_path(strtolower("module/$moduleName.php")),
-            ], 'config');     
+               $configFile => config_path("module/$moduleName.php"),
+            ], 'config');
         }
+
+        // TODO：部分config 存入数据库，从数据库中读取当前module的配置并缓存后覆盖默认数据，去除存储在config中的文件
+        // $config = $this->app['config']->get($moduleName, []);
+        // $config = array_merge($config,['name'=>'zotop']);
+        // $this->app['config']->set('site',$config);     
 
         // 注册模块Config目录下的配置
         if ($this->app['files']->isDirectory($configPath)) {
             foreach ($this->app['files']->files($configPath) as $configFile) {
                 $fileName = basename($configFile,'.php');
-                $this->mergeConfigFrom($configFile, strtolower("module.$moduleName.$fileName"));
+                $this->mergeConfigFrom($configFile, "module.$moduleName.$fileName");
             }
         }
     }
