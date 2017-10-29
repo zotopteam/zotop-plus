@@ -22,7 +22,7 @@ return [
     | This value is the version of your application..
     */
 
-    'version' => '1.2.0728',
+    'version' => '1.3.1029',
 
 
     /*
@@ -33,7 +33,7 @@ return [
     | This value is the release of your application. 
     */
 
-    'release' => '20170728',
+    'release' => '20171029',
 
     /*
     |--------------------------------------------------------------------------
@@ -60,10 +60,31 @@ return [
     | Application homepage
     |--------------------------------------------------------------------------
     |
-    | This value is the homepage of your application.
+    | This homepage of your application.
     */
 
-    'homepage' => 'http://www.zotop.com',   
+    'homepage' => 'http://www.zotop.com',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Github
+    |--------------------------------------------------------------------------
+    |
+    | This github url of your application.
+    */
+
+    'github' => 'https://coding.net/u/zotop/p/laravel_cms/git',
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application help
+    |--------------------------------------------------------------------------
+    |
+    | This help url of your application.
+    */
+
+    'help' => 'http://www.zotop.com/help',          
 
     /*
     |--------------------------------------------------------------------------

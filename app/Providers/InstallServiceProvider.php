@@ -54,11 +54,10 @@ class InstallServiceProvider extends ServiceProvider
                     $this->app['files']->copy(base_path('.env.example'), $env);
                 }
 
-                // return redirect('install');
-
-                // 暂时不强制进入安装
-                // header('Location:/install');
-                // exit();
+                // 强制进入安装
+                //header('Location:'.url('install'));
+                
+                //exit('The cms has not been installed. Please use the installer to install it');
             }
 
         }

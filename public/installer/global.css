@@ -1,0 +1,65 @@
+/*!
+ * Global css for installer
+ * Copyright 2011-2017 The zotop team
+ */
+
+/*导航条样式*/
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-button{display:none;}
+::-webkit-scrollbar-track, ::-webkit-scrollbar-track-piece{background:-webkit-gradient(linear,left);width:6px;height:6px;}
+::-webkit-scrollbar-thumb{border-width:0 0px;border-style:solid;border-color:#fefefe;border-radius:4px;background:#8a8a8a;}
+::-webkit-scrollbar-thumb:horizontal{border-width:0px 0;border-style:solid;border-color:#fefefe;border-radius:4px;background:#d9d9d9;}
+::-webkit-scrollbar-thumb:hover{background:#bdbdbd;}
+::-webkit-scrollbar-thumb:active{background:#8e8e8e;}
+
+::selection {background:#0072C6;color:#fff;}
+
+html,body {width:100%;height:100%;overflow:hidden;padding:0;margin:0;color:#fff;}
+body {font-family:"Helvetica Neue",Helvetica,Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;}
+
+a{color:#0072c6;}
+a:hover{color:#0064ae;outline:0 none;}
+a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
+
+.full-width{width:100%;}    
+.full-height{height:100%;}
+.pos-s{position:static;}
+.pos-r{position:relative;}
+.pos-a{position:absolute;}
+
+.scrollable{overflow:auto;outline:none;}
+.bootstrap-maxlength{font:normal 12px/1 sans-serif!important;padding:0.25rem 0.35rem!important;opacity:0.8;}
+
+.bg-primary{background-color:#0072c6!important;}
+.bg-success{background-color:#00bc3e!important;}
+.bg-info{background-color:#00bcf2!important;}
+.bg-warning{background-color:#ffa42f!important;}
+.bg-transparent{background-color:transparent!important;}
+
+
+.btn-outline{border-color:rgba(255,255,255,.25);}
+.btn-outline:hover,.btn-outline:focus,.btn-outline:active{background:rgba(255,255,255,.15);}
+
+.jumbotron{border-radius:0;}
+.jumbotron h1{font-size:6rem;margin-bottom:1rem;font-weight:400;line-height:1.5;}
+.jumbotron i.fa-lg{font-size:12rem;}
+.jumbotron p{font-size:1.25rem;margin-bottom:1rem;}
+
+.jumbotron table{width:autp;min-width:50%;max-width:80%;margin:0 auto;white-space:nowrap;}
+.jumbotron table td{padding:1rem;}     
+
+.header{padding:0;border-bottom:solid 1px rgba(255,255,255,0.1);}
+.main{overflow-x: auto;}
+.footer{padding:1.5rem;border-top:solid 1px rgba(255,255,255,0.1);}
+.footer .btn{padding:0.5rem 1.5rem;font-size:1rem;line-height:1.5;}
+
+/*css3 animation*/
+@keyframes wave{0%{transform:translate(-90px,0);}100%{transform:translate(85px,0);}}
+
+/* wave */
+.animation-wave{position:absolute;right:0;bottom:0;left:0;display:block;width:100%;height:3em;z-index:-1000;}
+.animation-wave .parallax>use{animation:wave 12s linear infinite;}
+.animation-wave .parallax>use:nth-child(1){animation-delay:-2s;}
+.animation-wave .parallax>use:nth-child(2){animation-delay:-2s;animation-duration:5s;}
+.animation-wave .parallax>use:nth-child(3){animation-delay:-4s;animation-duration:3s;}
+
