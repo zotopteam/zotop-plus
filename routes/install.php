@@ -17,13 +17,11 @@ Route::group(['prefix' => 'install', 'namespace' => 'App\Http\Controllers','midd
 
     Route::get('check', 'InstallController@check')->name('install.check');
 
-    Route::get('config', 'InstallController@config')->name('install.config');
+    Route::any('config', 'InstallController@config')->name('install.config');
 
     Route::get('modules', 'InstallController@modules')->name('install.modules');
 
     Route::get('installing', 'InstallController@installing')->name('install.installing');
-
-    Route::get('check', 'InstallController@check')->name('install.check');
 
     Route::get('finished', 'InstallController@finished')->name('install.finished');
 });

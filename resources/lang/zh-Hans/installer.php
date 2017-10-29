@@ -45,4 +45,25 @@ return [
     'check.disabled'            => '关闭',
     'check.notfound'            => '不存在',
     
+    'config'                    => '搭建网站数据存储平台',
+    'config.description'        => '请设置网站管理员信息和数据库连接参数等必填信息',
+    
+    'config.site'               => '站点设置',
+    'config.site.name'          => '站点名称',
+    'config.site.value'         => '逐涛网',
+    
+    'config.admin.username'     => '创始人帐号',
+    'config.admin.password'     => '创始人密码',
+    'config.admin.email'        => '创始人邮箱',
+    
+    'config.db'                 => '数据库设置',
+    
+    'config.db.connection'      => '连接类型',
+    'config.db.host'            => '主机地址',
+    'config.db.port'            => '端口', 
+    'config.db.database'        => '数据库', 
+    'config.db.username'        => '帐号',
+    'config.db.password'        => '密码',
+    'config.db.prefix'          => '数据表前缀',
+           
 ];

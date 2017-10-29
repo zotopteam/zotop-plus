@@ -23,6 +23,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 
 .full-width{width:100%;}    
 .full-height{height:100%;}
+
 .pos-s{position:static;}
 .pos-r{position:relative;}
 .pos-a{position:absolute;}
@@ -36,22 +37,44 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .bg-warning{background-color:#ffa42f!important;}
 .bg-transparent{background-color:transparent!important;}
 
+.tooltip{font-family:"Helvetica Neue",Helvetica,Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;z-index:99999;}
+.tooltip-inner{padding:0.5rem 1rem;font-size:0.75rem;line-height:150%;text-align:left;max-width:100%;white-space:nowrap;}
+
+.tooltip-error{z-index:10;}
+.tooltip-error .tooltip-inner{background-color:#ff0000;max-width:100%;}
+.tooltip-error.bs-tether-element-attached-top .tooltip-inner::before{border-bottom-color:#ff0000;}
+.tooltip-error.bs-tooltip-auto[x-placement^=bottom] .arrow::before, .tooltip-error.bs-tooltip-bottom .arrow::before{border-bottom-color:#ff0000;}
+
+
+.btn{cursor:pointer;}
 
 .btn-outline{border-color:rgba(255,255,255,.25);}
 .btn-outline:hover,.btn-outline:focus,.btn-outline:active{background:rgba(255,255,255,.15);}
 
-.jumbotron{border-radius:0;}
+.jumbotron{border-radius:0;margin-bottom:0;}
 .jumbotron h1{font-size:6rem;margin-bottom:1rem;font-weight:400;line-height:1.5;}
+.jumbotron h2{font-size:4rem;margin-bottom:1rem;font-weight:400;line-height:1.5;}
 .jumbotron i.fa-lg{font-size:12rem;}
 .jumbotron p{font-size:1.25rem;margin-bottom:1rem;}
 
-.jumbotron table{width:autp;min-width:50%;max-width:80%;margin:0 auto;white-space:nowrap;}
-.jumbotron table td{padding:1rem;}     
+.table{margin:0 auto;white-space:nowrap;}
+.table td{padding:1rem;}
+
+.table-sm{width:60%;}
+.table-md{width:80%;}
+.table-lg{width:100%;}  
 
 .header{padding:0;border-bottom:solid 1px rgba(255,255,255,0.1);}
-.main{overflow-x: auto;}
-.footer{padding:1.5rem;border-top:solid 1px rgba(255,255,255,0.1);}
+.footer{padding:1.5rem;border-top:solid 1px rgba(255,255,255,0.1);z-index:9999;}
 .footer .btn{padding:0.5rem 1.5rem;font-size:1rem;line-height:1.5;}
+.main{padding:0 6rem;}
+.main.scrollable{flex:1;}
+
+.form{margin:0 auto;}
+.form-sm{width:60%;}
+.form-md{width:80%;}
+.form-lg{width:100%;}
+.form-title{font-size:2rem;margin:1rem 0;}
 
 /*css3 animation*/
 @keyframes wave{0%{transform:translate(-90px,0);}100%{transform:translate(85px,0);}}

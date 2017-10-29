@@ -1,7 +1,7 @@
 @extends('install.master')
 
 @section('content')
-
+        <section class="main d-flex scrollable">
             <div class="jumbotron bg-transparent full-width align-self-center text-center">           
                 
                 <h1>{{trans('installer.welcome',[config('app.name')])}}</h1>
@@ -26,6 +26,7 @@
                 </div>
           
             </div>
+        </section>    
 @endsection
 
 @section('wizard')

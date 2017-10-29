@@ -2,7 +2,7 @@
 
 @section('content')
 
-            <div class="jumbotron bg-transparent full-width align-self-center text-center">           
+            <div class="jumbotron jumbotron-md bg-transparent full-width align-self-center text-center">           
                 
                 <h1>{{trans("installer.$current")}}</h1>
                 <p>{{trans("installer.$current.description")}}</p>
