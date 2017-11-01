@@ -14,10 +14,10 @@ return [
     'title'                     => ':0 安装程序',
     
     'wizard.welcome'            => '欢迎',
-    'wizard.check'              => '环境检测',
+    'wizard.check'              => '检测',
     'wizard.config'             => '设置',
-    'wizard.modules'            => '选择模块',
-    'wizard.installing'         => '安装进程',
+    'wizard.installing'         => '安装',
+    'wizard.modules'            => '模块',    
     'wizard.finished'           => '完成',
     
     'prev'                      => '上一步',
@@ -65,5 +65,11 @@ return [
     'config.db.username'        => '帐号',
     'config.db.password'        => '密码',
     'config.db.prefix'          => '数据表前缀',
-           
+    
+    'modules'                   => '安装模块',
+    'modules.description'       => '正在开始安装，请稍后……',
+    
+    'modules.installing'        => '模块正在安装中，请稍后……', 
+    'modules.installed'         => '模块安装成功，请稍后……', 
+    'modules.completed'         => '正在完成安装，请稍后……',    
 ];

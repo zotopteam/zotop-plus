@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Config\Repository as Config;
+use Illuminate\Database\Connectors\ConnectionFactory;
+use Illuminate\Database\DatabaseManager;
 use Route;
+use Artisan;
+use PDOException;
 
 class InstallController extends Controller
 {
@@ -51,7 +56,7 @@ class InstallController extends Controller
         $this->view    = $this->app->make('view');      
         
         // wizard
-        $this->wizard  = ['welcome','check','config','modules','installing','finished'];
+        $this->wizard  = ['welcome','check','config','installing','modules','finished'];
         
         // 获取当前动作指针
         $this->current = array_search(Route::getCurrentRoute()->getActionMethod(), $this->wizard);
@@ -130,7 +135,61 @@ class InstallController extends Controller
 
         // 生成 view
         return $this->view->make($view, $data, $mergeData);
-    }    
+    }
+
+    /**
+     * 消息提示
+     * 
+     * @param  array  $msg 消息内容
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function message(array $msg)
+    {
+        exit(json_encode($msg));
+    }
+
+    /**
+     * 消息提示：success
+     * 
+     * @param  mixed  $msg  消息内容
+     * @param  string  $url  跳转路径
+     * @param  integer $time 跳转或者消息提示时间
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function success($msg, $url='', $time=2)
+    {
+        $msg = is_array($msg) ? $msg : ['content'=>$msg];
+
+        $msg = array_merge($msg, [
+            'state' => true,
+            'type'  => 'success',
+            'url'   => $url,
+            'time'  => $time
+        ]);
+
+        return $this->message($msg);
+    }
+
+
+    /**
+     * 消息提示：error
+     * 
+     * @param  mixed  $msg  消息内容
+     * @param  integer $time 跳转或者消息提示时间
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function error($msg, $time=5)
+    {
+        $msg = is_array($msg) ? $msg : ['content'=>$msg];
+
+        $msg = array_merge($msg, [
+            'state' => false,
+            'type'  => 'error',
+            'time'  => $time
+        ]);
+
+        return $this->message($msg);
+    }        
 
     /**
      * Display the installer welcome page.
@@ -207,18 +266,40 @@ class InstallController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function config()
+    public function config(Config $config, Request $request)
     {
-        return $this->view();
-    }
+        if ($request->isMethod('POST')) {
+            
+            // 测试数据库是否能正常连接
+            $env    = $request->input('env');            
+            
+            // 数据库配置
+            $config['database.default']                                            = $env['DB_CONNECTION'];
+            $config['database.connections.' . $env['DB_CONNECTION'] . '.host']     = $env['DB_HOST'];
+            $config['database.connections.' . $env['DB_CONNECTION'] . '.port']     = $env['DB_PORT'];
+            $config['database.connections.' . $env['DB_CONNECTION'] . '.database'] = $env['DB_DATABASE'];
+            $config['database.connections.' . $env['DB_CONNECTION'] . '.username'] = $env['DB_USERNAME'];
+            $config['database.connections.' . $env['DB_CONNECTION'] . '.password'] = $env['DB_PASSWORD'];
+            $config['database.connections.' . $env['DB_CONNECTION'] . '.prefix']   = $env['DB_PREFIX'];
 
-    /**
-     * Display the installer check page.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function modules()
-    {
+            app(DatabaseManager::class)->purge($env['DB_CONNECTION']);
+            app(ConnectionFactory::class)->make($config['database.connections.' . $env['DB_CONNECTION']], $env['DB_CONNECTION']);
+
+            try {
+                app('db')->reconnect()->getPdo();
+
+                foreach ($env as $key => $value) {
+                    Artisan::call('env:set',['key' => $key, 'value'=>$value]);  
+                }             
+
+                return $this->success('success', route("install.{$this->next}"));
+
+            } catch (PDOException $e) {
+
+                return $this->error($e->getMessage());
+            }
+        }
+
         return $this->view();
     }
 
@@ -229,8 +310,36 @@ class InstallController extends Controller
      */
     public function installing()
     {
+        
+        // TODO：判断是否已经按照，如果已经安装，进入提示覆盖页面，否则直接进入模块安装
+        
+
+        return $this->view();
+    }    
+
+    /**
+     * Display the installer check page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function modules(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+
+            // TODO :安装此模块
+            $name  = $request->input('name');
+
+            sleep(2);
+
+            return $this->success($name.' success');
+        }
+
+
+        $this->modules = module();
+
         return $this->view();
     }
+
 
     /**
      * Display the installer check page.
