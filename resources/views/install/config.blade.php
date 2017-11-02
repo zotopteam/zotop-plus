@@ -13,8 +13,8 @@
             
             <div class="form-title">{{trans("installer.config.site")}}</div>
             <div class="form-group">
-                <label for="site[name]">{{trans("installer.config.site.name")}}</label>
-                <input type="text" class="form-control" name="site[name]" value="{{trans("installer.config.site.value")}}" required="required">
+                <label for="site[site.name]">{{trans("installer.config.site.name")}}</label>
+                <input type="text" class="form-control" name="site[site.name]" value="{{trans("installer.config.site.name.value")}}" required="required">
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">

@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Config\Repository as Config;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Database\Connectors\ConnectionFactory;
 use Illuminate\Database\DatabaseManager;
+use Illuminate\Support\Facades\Schema;
+use Modules\Core\Entities\User;
+use Modules\Core\Entities\Config;
 use Route;
+use Cache;
 use Artisan;
+use Module;
+use Exception;
 use PDOException;
 
 class InstallController extends Controller
@@ -56,7 +62,7 @@ class InstallController extends Controller
         $this->view    = $this->app->make('view');      
         
         // wizard
-        $this->wizard  = ['welcome','check','config','installing','modules','finished'];
+        $this->wizard  = ['welcome','check','config','database','modules','finished'];
         
         // 获取当前动作指针
         $this->current = array_search(Route::getCurrentRoute()->getActionMethod(), $this->wizard);
@@ -266,12 +272,18 @@ class InstallController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function config(Config $config, Request $request)
+    public function config(ConfigRepository $config, Request $request)
     {
         if ($request->isMethod('POST')) {
             
+            // 缓存站点设置，安装完成时最后写入
+            Cache::put('install.site', $request->input('site'), 60*24);
+
+            // 缓存管理员数据，安装完成时最后写入
+            Cache::put('install.admin', $request->input('admin'), 60*24);
+
             // 测试数据库是否能正常连接
-            $env    = $request->input('env');            
+            $env    = $request->input('env');           
             
             // 数据库配置
             $config['database.default']                                            = $env['DB_CONNECTION'];
@@ -290,7 +302,9 @@ class InstallController extends Controller
 
                 foreach ($env as $key => $value) {
                     Artisan::call('env:set',['key' => $key, 'value'=>$value]);  
-                }             
+                }
+
+                Artisan::call('key:generate');             
 
                 return $this->success('success', route("install.{$this->next}"));
 
@@ -304,15 +318,57 @@ class InstallController extends Controller
     }
 
     /**
-     * Display the installer check page.
+     * Display the database check page.
      *
      * @return \Illuminate\Http\Response
      */
-    public function installing()
+    public function database(Request $request)
     {
-        
-        // TODO：判断是否已经按照，如果已经安装，进入提示覆盖页面，否则直接进入模块安装
-        
+        if ($request->isMethod('POST')) {
+
+            $action = $request->input('action');
+
+            // 覆盖安装
+            if ($action == 'override') {        
+                
+                // 覆盖安装
+                try {
+
+                    Artisan::call('migrate:fresh');        
+
+                    return $this->success('success', route("install.{$this->next}"));
+
+                } catch (Exception $e) {
+
+                    return $this->error($e->getMessage());
+                }
+            }
+
+            // 覆盖安装
+            if ($action == 'init') {        
+                
+                // 覆盖安装
+                try {
+                    Artisan::call('migrate');  
+
+                    return $this->success('success', route("install.{$this->next}"));
+
+                } catch (Exception $e) {
+
+                    return $this->error($e->getMessage());
+                }
+            }
+
+        }
+
+        $this->installed = false;
+
+        // 判断是否已经安装，如果已经安装，进入提示覆盖页面
+        if (Schema::hasTable('migrations') || Schema::hasTable('users')) {
+            $this->installed = true; 
+        }
+
+        // 是否安装测试数据
 
         return $this->view();
     }    
@@ -326,12 +382,23 @@ class InstallController extends Controller
     {
         if ($request->isMethod('POST')) {
 
-            // TODO :安装此模块
-            $name  = $request->input('name');
+            // 安装模块
+            if ($name  = $request->input('name')) {
 
-            sleep(2);
+                // Find Module
+                $module = Module::find($name);
+                
+                // Publish Assets
+                Artisan::call('module:publish', ['module' => $name]);
 
-            return $this->success($name.' success');
+                // Migrate
+                Artisan::call('module:migrate', ['module' => $name]);
+                
+                // Update module.json
+                $module->json()->set('active', 1)->set('installed', 1)->save();
+
+                return $this->success($name.' install success');
+            }
         }
 
 
@@ -348,6 +415,41 @@ class InstallController extends Controller
      */
     public function finished()
     {
+        $this->site  = Cache::get('install.site');
+        $this->admin = Cache::get('install.admin');
+
+        // 完成安装以前，写入网站设置
+        if ($this->app['installed'] == false) {
+
+            // 插入超级管理员
+            User::updateOrCreate([
+                'username'       => $this->admin['username'],
+            ],[
+                'password'       => \Hash::make($this->admin['password']),
+                'modelid'        => 'admin',
+                'email'          => $this->admin['email'],
+                'mobile'         => '',
+                'remember_token' => str_random(10),
+            ]);
+
+            // 插入站点设置
+            foreach ($this->site as $key => $value) {
+                
+                Config::updateOrCreate([
+                    'module'       => 'site',
+                    'key'       => $key,
+                ],[
+                    'value'       => $value,
+                ]);
+            }
+
+            // 设置为已安装
+            Artisan::call('env:set',['key' => 'APP_INSTALLED', 'value'=>'true']);
+
+            // 清空所有缓存
+            Cache::flush();           
+        }
+
         return $this->view();
     }                               
 }

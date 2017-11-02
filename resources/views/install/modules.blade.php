@@ -77,6 +77,8 @@
                     install(index+1); // 安装下一个
                 } else {
                     progressText.html('{{trans("installer.$current.completed")}}');
+
+                    location.href = "{{route("install.$next")}}";
                     console.log('completed');
                 }
             } else {

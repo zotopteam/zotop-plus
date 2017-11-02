@@ -6,7 +6,7 @@
     @if($check)
         <section class="main d-flex scrollable">
             <div class="jumbotron bg-transparent full-width align-self-center text-center"> 
-            <h1><i class="fa fa-check-circle fa-lg"></i> </h1>
+            <h1><i class="fa fa-check-circle fa-lg"></i></h1>
             <h1>{{trans('installer.check.success')}}</h1>
             <p>{{trans('installer.check.success.description')}}</p>
             </div>

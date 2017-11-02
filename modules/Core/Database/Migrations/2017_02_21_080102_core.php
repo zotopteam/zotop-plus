@@ -13,24 +13,19 @@ class Core extends Migration
      */
     public function up()
     {
-        // session
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->unique();
-            $table->integer('user_id')->nullable();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->text('payload');
-            $table->integer('last_activity');
-        });
 
         // config
         Schema::create('config', function (Blueprint $table) {
-            $table->string('key')->unique()->comment('键名');
+            $table->string('key', 128)->comment('键名');
             $table->text('value')->nullable()->comment('键值');
-            $table->string('module', 100)->comment('模块名称');
+            $table->string('module', 128)->comment('模块名称');
             $table->timestamps();
 
-            $table->comment = '用户';               
+            $table->primary(['key', 'module']);
+
+            $table->engine = 'InnoDB';
+
+            $table->comment = '设置';             
         });   
 
         // users基础表
@@ -99,7 +94,6 @@ class Core extends Migration
      */
     public function down()
     {
-        Schema::drop('sessions');
         Schema::drop('config');
         Schema::drop('users');
         Schema::drop('password_resets');

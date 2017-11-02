@@ -9,7 +9,7 @@
         "laravel/framework": "5.5.*",
         "barryvdh/laravel-debugbar": "^3.0.1",
         "nwidart/laravel-modules": "^2.0",
-        "laravelcollective/html": "^5.4.0",
+        "laravelcollective/html": "^5.5",
         "doctrine/dbal": "^2.5",
         "jildertmiedema/laravel-plupload": "^0.4.1",
         "maatwebsite/excel": "~2.1.0",

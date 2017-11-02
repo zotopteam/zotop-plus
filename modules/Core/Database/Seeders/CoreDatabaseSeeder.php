@@ -16,16 +16,6 @@ class CoreDatabaseSeeder extends Seeder
     public function run()
     {
         Model::unguard();
-
-        User::updateOrCreate([
-            'username'       => 'admin',
-        ],[
-            'password'       => \Hash::make('admin999'),
-            'modelid'        => 'admin',
-            'email'          => '',
-            'mobile'         => '',
-            'remember_token' => str_random(10),
-        ]);
         
         // for ($i=0; $i <100 ; $i++) {
 

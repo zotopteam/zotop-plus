@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2017-10-26.
+    * Generated on 2017-11-02.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -58,7 +58,7 @@ namespace PHPSTORM_META {
         'theme' => \Modules\Core\Theme\Theme::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
-        'form' => \Modules\Core\Base\FormBuilder::class,
+        'form' => \Collective\Html\FormBuilder::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -205,7 +205,7 @@ namespace PHPSTORM_META {
         'theme' => \Modules\Core\Theme\Theme::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
-        'form' => \Modules\Core\Base\FormBuilder::class,
+        'form' => \Collective\Html\FormBuilder::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -352,7 +352,7 @@ namespace PHPSTORM_META {
         'theme' => \Modules\Core\Theme\Theme::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
-        'form' => \Modules\Core\Base\FormBuilder::class,
+        'form' => \Collective\Html\FormBuilder::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -499,7 +499,7 @@ namespace PHPSTORM_META {
         'theme' => \Modules\Core\Theme\Theme::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
-        'form' => \Modules\Core\Base\FormBuilder::class,
+        'form' => \Collective\Html\FormBuilder::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -646,7 +646,7 @@ namespace PHPSTORM_META {
         'theme' => \Modules\Core\Theme\Theme::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
-        'form' => \Modules\Core\Base\FormBuilder::class,
+        'form' => \Collective\Html\FormBuilder::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -793,7 +793,7 @@ namespace PHPSTORM_META {
         'theme' => \Modules\Core\Theme\Theme::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
-        'form' => \Modules\Core\Base\FormBuilder::class,
+        'form' => \Collective\Html\FormBuilder::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -940,7 +940,7 @@ namespace PHPSTORM_META {
         'theme' => \Modules\Core\Theme\Theme::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
-        'form' => \Modules\Core\Base\FormBuilder::class,
+        'form' => \Collective\Html\FormBuilder::class,
         'translation.loader' => \Illuminate\Translation\FileLoader::class,
         'translator' => \Illuminate\Translation\Translator::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,

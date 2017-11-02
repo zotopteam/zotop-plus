@@ -19,7 +19,7 @@ Route::group(['prefix' => 'install', 'namespace' => 'App\Http\Controllers','midd
 
     Route::any('config', 'InstallController@config')->name('install.config');
 
-    Route::get('installing', 'InstallController@installing')->name('install.installing');
+    Route::any('database', 'InstallController@database')->name('install.database');
     
     Route::any('modules', 'InstallController@modules')->name('install.modules');
 
