@@ -4,6 +4,8 @@ namespace Modules\Core\Traits;
 
 use File;
 use Artisan;
+use Module;
+use Modules\Core\Entities\Config;
 
 trait ModuleConfig
 {
@@ -14,10 +16,29 @@ trait ModuleConfig
      * @param  array  $config    [description]
      * @return [type]            [description]
      */
-    private function save($namespace, array $config)
+    private function config($module, array $config)
     {
         // 当前配置
-        $current = config($namespace, []);
+        //$current = config($module, []);
+        
+        $configOriginal = [];
+
+        $configFilePath = Module::getModulePath($module).'/config.php';
+
+        if (File::exists($configFilePath)) {
+           $configOriginal = include($configFilePath); 
+        }
+
+        $config = array_dot($config);
+        $config = array_only($config, array_keys($configOriginal));
+
+        Config::set($module, $config);
+
+        return true;
+                
+        dd($config);
+
+        // $configs = include($configFile);
 
         // 合并配置，只合并已经存在的值
         $config = array_merge($current, array_only($config, array_keys($current)));

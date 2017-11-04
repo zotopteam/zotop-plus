@@ -1,5 +1,5 @@
 <?php
 return [
-    'theme' => 'admin',
-    'skin'  => 'default'
+    'admin.theme' => 'admin',
+    'admin.skin'  => 'default'
 ];

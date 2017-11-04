@@ -19,8 +19,7 @@ class Core extends Migration
             $table->string('key', 128)->comment('键名');
             $table->text('value')->nullable()->comment('键值');
             $table->string('module', 128)->comment('模块名称');
-            $table->timestamps();
-
+            $table->string('type', 10)->comment('类型');
             $table->primary(['key', 'module']);
 
             $table->engine = 'InnoDB';

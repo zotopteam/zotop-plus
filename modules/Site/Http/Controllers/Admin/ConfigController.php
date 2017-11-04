@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Modules\Core\Traits\ModuleConfig;
+use Modules\Core\Entities\Config;
 
 class ConfigController extends AdminController
 {
@@ -23,20 +24,21 @@ class ConfigController extends AdminController
 
             // 表单验证
             $this->validate($request, [
-                'name' => 'required',
-                'url'  => 'url'
+                'site.name' => 'required',
+                'site.url'  => 'url'
             ],[],[
-                'name' => trans('site::config.name.label'),
-                'url'  => trans('site::config.url.label')
+                'site.name' => trans('site::config.name.label'),
+                'site.url'  => trans('site::config.url.label')
             ]);
 
             // 写入配置组
-            $this->save('module.site', $request->all());
+            $this->config('site', $request->all());
 
             return $this->success(trans('core::master.saved'),$request->referer());
         }
 
         $this->title = trans('site::config.base');
+        $this->config = Config::get('site');
 
         return $this->view();
     }
@@ -52,12 +54,13 @@ class ConfigController extends AdminController
         if ( $request->isMethod('POST') ) {
 
             // 写入配置组
-            $this->save('module.site', $request->all());
+            $this->config('site', $request->all());
 
             return $this->success(trans('core::master.saved'));
         }
 
-        $this->title = trans('site::config.seo');
+        $this->title  = trans('site::config.seo');
+        $this->config = Config::get('site');
 
         return $this->view();
     }

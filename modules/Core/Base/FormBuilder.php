@@ -12,25 +12,11 @@ use Collective\Html\FormBuilder as LaravelFormBuilder;
 class FormBuilder extends LaravelFormBuilder
 {
     /**
-     * 从属性数组中弹出值
-     * 
-     * @param  array $options 属性数组
-     * @param  string $key    要弹出的键名
-     * @param  mixed $default 默认值
-     * @return mixed
+     * The current data for the form.
+     *
+     * @var mixed
      */
-    private function options_pull(&$options, $key, $default=null)
-    {
-        if (isset($options[$key])) {
-            
-            $value = array_pull($options, $key);
-
-            return is_array($default) ? (array)$value + $default : $value;
-        }
-
-        return $default;      
-    }
-
+    protected $data = [];
 
     /**
      * Open up a new HTML form.
@@ -41,9 +27,14 @@ class FormBuilder extends LaravelFormBuilder
      */
     public function open(array $options = [])
     {
-        // 绑定数据
+        // 绑定模型
         if ( isset($options['model']) ) {
             $this->model = array_pull($options, 'model');
+        }
+
+        // 绑定数据
+        if ( isset($options['data']) && is_array($options['data']) ) {
+            $this->data = array_pull($options, 'data');
         }
 
         // 表单默认样式
@@ -127,6 +118,55 @@ class FormBuilder extends LaravelFormBuilder
     }
 
     /**
+     * Get the value that should be assigned to the field.
+     *
+     * @param  string $name
+     * @param  string $value
+     *
+     * @return mixed
+     */
+    public function getValueAttribute($name, $value = null)
+    {
+        $value = parent::getValueAttribute($name, $value);
+
+        // 加入data模式，尝试从数组中获取数据
+        if (empty($value) && $this->data) {
+
+            $name = str_replace(['[]', '[', ']'], ['', '.', ''], $name);
+
+            $value = array_get($this->data, $name);
+        }
+
+        return $value;
+    }
+
+    /**
+     * 从属性数组中取出值
+     * 
+     * @param  array $options 属性数组
+     * @param  string $key    要弹出的键名
+     * @param  mixed $default 默认值
+     * @return mixed
+     */
+    private function getAttribute(&$options, $key, $default=null)
+    {
+        if (isset($options[$key])) {
+            
+            $value = array_pull($options, $key);
+
+            if (is_array($default)) {
+                
+                $value = (array)$value + $default;
+            }
+
+            return $value;
+        }
+
+        return $default;      
+    }
+
+
+    /**
      * 从标签数组里面获取value项
      * 
      * @param  array  $attrs 标签数组
@@ -143,6 +183,19 @@ class FormBuilder extends LaravelFormBuilder
 
         return $this->getValueAttribute($name, $value);
     }
+
+    /**
+     * Transform key from array to dot syntax.
+     *
+     * @param  string $key
+     *
+     * @return mixed
+     */
+    // protected function transformKey($key)
+    // {
+    //     return str_replace(['[]', '[', ']'], ['', '.', ''], $key);
+    // }
+
 
     /**
      * Override parent ,add default class

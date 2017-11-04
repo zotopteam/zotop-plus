@@ -13,7 +13,7 @@ class FrontController extends BaseController
         parent::__init();
 
         // 默认为default主题
-        $this->theme = config('module.site.theme','default');
+        $this->theme = config('site.theme','default');
     }
 
 }

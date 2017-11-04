@@ -6,6 +6,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Traits\PublishConfig;
 use Nwidart\Modules\Module;
+use Modules\Core\Entities\Config;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -75,16 +76,37 @@ class CoreServiceProvider extends ServiceProvider
     protected function registerConfig(Module $module)
     {
         $moduleName = $module->getLowerName();
-        $configPath = $module->getPath().'/Config';
-        $configFile = $module->getPath().'/config.php';
 
-        // 注册模块根目录下的配置
-        if ($this->app['files']->isFile($configFile)) {
-            $this->mergeConfigFrom($configFile, "module.$moduleName");
-            $this->publishes([
-               $configFile => config_path("module/$moduleName.php"),
-            ], 'config');
+        // 注入自定义配置
+        if ($moduleConfig = Config::get($moduleName)) {
+            $this->app['config']->set($moduleConfig);
         }
+        
+
+        // $configPath = $module->getPath().'/Config';
+
+        // $configFile = $module->getPath().'/config.php';
+
+        // $configs = include($configFile);
+
+        // foreach ($configs as $key => $value) {
+
+        //     // 插入超级管理员
+        //     Config::updateOrCreate([
+        //         'key'       => $key,
+        //         'module'    => $moduleName,
+        //     ],[
+        //         'value'     => $value
+        //     ]);
+        // }        
+
+        // // 注册模块根目录下的配置
+        // if ($this->app['files']->isFile($configFile)) {
+        //     $this->mergeConfigFrom($configFile, "module.$moduleName");
+        //     $this->publishes([
+        //        $configFile => config_path("module/$moduleName.php"),
+        //     ], 'config');
+        // }
 
         // TODO：部分config 存入数据库，从数据库中读取当前module的配置并缓存后覆盖默认数据，去除存储在config中的文件
         // $config = $this->app['config']->get($moduleName, []);
@@ -92,12 +114,12 @@ class CoreServiceProvider extends ServiceProvider
         // $this->app['config']->set('site',$config);     
 
         // 注册模块Config目录下的配置
-        if ($this->app['files']->isDirectory($configPath)) {
-            foreach ($this->app['files']->files($configPath) as $configFile) {
-                $fileName = basename($configFile,'.php');
-                $this->mergeConfigFrom($configFile, "module.$moduleName.$fileName");
-            }
-        }
+        // if ($this->app['files']->isDirectory($configPath)) {
+        //     foreach ($this->app['files']->files($configPath) as $configFile) {
+        //         $fileName = basename($configFile,'.php');
+        //         $this->mergeConfigFrom($configFile, "module.$moduleName.$fileName");
+        //     }
+        // }
     }
 
     /**
