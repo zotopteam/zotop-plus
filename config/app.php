@@ -22,7 +22,7 @@ return [
     | This value is the version of your application..
     */
 
-    'version' => '1.3.1029',
+    'version' => '1.3.1103',
 
 
     /*
@@ -33,7 +33,7 @@ return [
     | This value is the release of your application. 
     */
 
-    'release' => '20171029',
+    'release' => '20171103',
 
     /*
     |--------------------------------------------------------------------------
@@ -98,6 +98,17 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Installed
+    |--------------------------------------------------------------------------
+    |
+    | When your application is Installed, it will be tue in .env
+    |
+    */
+
+    'installed' => env('APP_INSTALLED', false),
 
     /*
     |--------------------------------------------------------------------------

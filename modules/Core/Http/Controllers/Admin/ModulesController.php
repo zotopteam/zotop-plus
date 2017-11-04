@@ -75,7 +75,7 @@ class ModulesController extends AdminController
         // Artisan::call('module:publish-config', ['module' => $name]);
 
         // Migrate
-        Artisan::call('module:migrate', ['module' => $name]);
+        Artisan::call('module:migrate', ['module' => $name, '--force'=>true]);
         
         // Update module.json
         $module->json()->set('active', 1)->set('installed', 1)->save();

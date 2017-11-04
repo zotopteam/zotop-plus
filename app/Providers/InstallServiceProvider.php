@@ -24,7 +24,7 @@ class InstallServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('installed', function() {
-            return true === env('APP_INSTALLED', false);
+            return true === $this->app['config']->get('app.installed', false);
         });
 
         // 检查是否已经安装

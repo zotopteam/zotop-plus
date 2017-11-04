@@ -300,11 +300,12 @@ class InstallController extends Controller
             try {
                 app('db')->reconnect()->getPdo();
 
+                Artisan::call('key:generate');
+                Artisan::call('env:set',['key' => 'APP_URL', 'value'=>$request->root()]);
+
                 foreach ($env as $key => $value) {
                     Artisan::call('env:set',['key' => $key, 'value'=>$value]);  
-                }
-
-                Artisan::call('key:generate');             
+                }                             
 
                 return $this->success('success', route("install.{$this->next}"));
 
@@ -392,7 +393,7 @@ class InstallController extends Controller
                 Artisan::call('module:publish', ['module' => $name]);
 
                 // Migrate
-                Artisan::call('module:migrate', ['module' => $name]);
+                Artisan::call('module:migrate', ['module' => $name, '--force'=>true]);
                 
                 // Update module.json
                 $module->json()->set('active', 1)->set('installed', 1)->save();
