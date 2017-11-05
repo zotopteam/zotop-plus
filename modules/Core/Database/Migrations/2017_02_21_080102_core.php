@@ -16,9 +16,9 @@ class Core extends Migration
 
         // config
         Schema::create('config', function (Blueprint $table) {
-            $table->string('key', 128)->comment('键名');
-            $table->text('value')->nullable()->comment('键值');
             $table->string('module', 128)->comment('模块名称');
+            $table->string('key', 128)->comment('键名');
+            $table->text('value')->nullable()->comment('键值'); 
             $table->string('type', 10)->comment('类型');
             $table->primary(['key', 'module']);
 

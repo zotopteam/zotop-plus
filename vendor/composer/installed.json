@@ -2733,59 +2733,6 @@
         "homepage": "http://laravelcollective.com"
     },
     {
-        "name": "nikic/php-parser",
-        "version": "v3.1.1",
-        "version_normalized": "3.1.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/nikic/PHP-Parser.git",
-            "reference": "a1e8e1a30e1352f118feff1a8481066ddc2f234a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/nikic/PHP-Parser/a1e8e1a30e1352f118feff1a8481066ddc2f234a.zip",
-            "reference": "a1e8e1a30e1352f118feff1a8481066ddc2f234a",
-            "shasum": ""
-        },
-        "require": {
-            "ext-tokenizer": "*",
-            "php": ">=5.5"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "~4.0|~5.0"
-        },
-        "time": "2017-09-02T17:10:46+00:00",
-        "bin": [
-            "bin/php-parse"
-        ],
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "PhpParser\\": "lib/PhpParser"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Nikita Popov"
-            }
-        ],
-        "description": "A PHP parser written in PHP",
-        "keywords": [
-            "parser",
-            "php"
-        ]
-    },
-    {
         "name": "sebastian/recursion-context",
         "version": "3.0.0",
         "version_normalized": "3.0.0.0",
@@ -3165,72 +3112,6 @@
         ]
     },
     {
-        "name": "sebastian/comparator",
-        "version": "2.0.2",
-        "version_normalized": "2.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/sebastianbergmann/comparator.git",
-            "reference": "ae068fede81d06e7bb9bb46a367210a3d3e1fe6a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/sebastianbergmann/comparator/ae068fede81d06e7bb9bb46a367210a3d3e1fe6a.zip",
-            "reference": "ae068fede81d06e7bb9bb46a367210a3d3e1fe6a",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.0",
-            "sebastian/diff": "^2.0",
-            "sebastian/exporter": "^3.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^6.0"
-        },
-        "time": "2017-08-03T07:14:59+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Jeff Welch",
-                "email": "whatthejeff@gmail.com"
-            },
-            {
-                "name": "Volker Dusch",
-                "email": "github@wallbash.com"
-            },
-            {
-                "name": "Bernhard Schussek",
-                "email": "bschussek@2bepublished.at"
-            },
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de"
-            }
-        ],
-        "description": "Provides the functionality to compare PHP values for equality",
-        "homepage": "http://www.github.com/sebastianbergmann/comparator",
-        "keywords": [
-            "comparator",
-            "compare",
-            "equality"
-        ]
-    },
-    {
         "name": "phpunit/phpunit-mock-objects",
         "version": "4.0.4",
         "version_normalized": "4.0.4.0",
@@ -3382,72 +3263,6 @@
         "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
         "keywords": [
             "tokenizer"
-        ]
-    },
-    {
-        "name": "phpunit/php-code-coverage",
-        "version": "5.2.2",
-        "version_normalized": "5.2.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-            "reference": "8ed1902a57849e117b5651fc1a5c48110946c06b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/sebastianbergmann/php-code-coverage/8ed1902a57849e117b5651fc1a5c48110946c06b.zip",
-            "reference": "8ed1902a57849e117b5651fc1a5c48110946c06b",
-            "shasum": ""
-        },
-        "require": {
-            "ext-dom": "*",
-            "ext-xmlwriter": "*",
-            "php": "^7.0",
-            "phpunit/php-file-iterator": "^1.4.2",
-            "phpunit/php-text-template": "^1.2.1",
-            "phpunit/php-token-stream": "^1.4.11 || ^2.0",
-            "sebastian/code-unit-reverse-lookup": "^1.0.1",
-            "sebastian/environment": "^3.0",
-            "sebastian/version": "^2.0.1",
-            "theseer/tokenizer": "^1.1"
-        },
-        "require-dev": {
-            "ext-xdebug": "^2.5",
-            "phpunit/phpunit": "^6.0"
-        },
-        "suggest": {
-            "ext-xdebug": "^2.5.5"
-        },
-        "time": "2017-08-03T12:40:43+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.2.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sb@sebastian-bergmann.de",
-                "role": "lead"
-            }
-        ],
-        "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
-        "homepage": "https://github.com/sebastianbergmann/php-code-coverage",
-        "keywords": [
-            "coverage",
-            "testing",
-            "xunit"
         ]
     },
     {
@@ -3716,69 +3531,6 @@
             }
         ],
         "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)"
-    },
-    {
-        "name": "maximebf/debugbar",
-        "version": "v1.14.0",
-        "version_normalized": "1.14.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/maximebf/php-debugbar.git",
-            "reference": "e23a98f2d65607d8aa6c7b409a513f8fdf4acdde"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/maximebf/php-debugbar/e23a98f2d65607d8aa6c7b409a513f8fdf4acdde.zip",
-            "reference": "e23a98f2d65607d8aa6c7b409a513f8fdf4acdde",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0",
-            "psr/log": "^1.0",
-            "symfony/var-dumper": "^2.6|^3.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.0|^5.0"
-        },
-        "suggest": {
-            "kriswallsmith/assetic": "The best way to manage assets",
-            "monolog/monolog": "Log using Monolog",
-            "predis/predis": "Redis storage"
-        },
-        "time": "2017-08-17T07:17:00+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.14-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "DebugBar\\": "src/DebugBar/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Maxime Bouroumeau-Fuseau",
-                "email": "maxime.bouroumeau@gmail.com",
-                "homepage": "http://maximebf.com"
-            },
-            {
-                "name": "Barry vd. Heuvel",
-                "email": "barryvdh@gmail.com"
-            }
-        ],
-        "description": "Debug bar in the browser for php application",
-        "homepage": "https://github.com/maximebf/php-debugbar",
-        "keywords": [
-            "debug",
-            "debugbar"
-        ]
     },
     {
         "name": "sven/flex-env",
@@ -5108,6 +4860,254 @@
         "keywords": [
             "cron",
             "schedule"
+        ]
+    },
+    {
+        "name": "maximebf/debugbar",
+        "version": "v1.14.1",
+        "version_normalized": "1.14.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/maximebf/php-debugbar.git",
+            "reference": "64251a392344e3d22f3d21c3b7c531ba96eb01d2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/maximebf/php-debugbar/64251a392344e3d22f3d21c3b7c531ba96eb01d2.zip",
+            "reference": "64251a392344e3d22f3d21c3b7c531ba96eb01d2",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0",
+            "psr/log": "^1.0",
+            "symfony/var-dumper": "^2.6|^3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.0|^5.0"
+        },
+        "suggest": {
+            "kriswallsmith/assetic": "The best way to manage assets",
+            "monolog/monolog": "Log using Monolog",
+            "predis/predis": "Redis storage"
+        },
+        "time": "2017-09-13T12:19:36+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.14-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "DebugBar\\": "src/DebugBar/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Maxime Bouroumeau-Fuseau",
+                "email": "maxime.bouroumeau@gmail.com",
+                "homepage": "http://maximebf.com"
+            },
+            {
+                "name": "Barry vd. Heuvel",
+                "email": "barryvdh@gmail.com"
+            }
+        ],
+        "description": "Debug bar in the browser for php application",
+        "homepage": "https://github.com/maximebf/php-debugbar",
+        "keywords": [
+            "debug",
+            "debugbar"
+        ]
+    },
+    {
+        "name": "phpunit/php-code-coverage",
+        "version": "5.2.3",
+        "version_normalized": "5.2.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
+            "reference": "8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/sebastianbergmann/php-code-coverage/8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d.zip",
+            "reference": "8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d",
+            "shasum": ""
+        },
+        "require": {
+            "ext-dom": "*",
+            "ext-xmlwriter": "*",
+            "php": "^7.0",
+            "phpunit/php-file-iterator": "^1.4.2",
+            "phpunit/php-text-template": "^1.2.1",
+            "phpunit/php-token-stream": "^2.0",
+            "sebastian/code-unit-reverse-lookup": "^1.0.1",
+            "sebastian/environment": "^3.0",
+            "sebastian/version": "^2.0.1",
+            "theseer/tokenizer": "^1.1"
+        },
+        "require-dev": {
+            "ext-xdebug": "^2.5",
+            "phpunit/phpunit": "^6.0"
+        },
+        "suggest": {
+            "ext-xdebug": "^2.5.5"
+        },
+        "time": "2017-11-03T13:47:33+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "5.2.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sb@sebastian-bergmann.de",
+                "role": "lead"
+            }
+        ],
+        "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
+        "homepage": "https://github.com/sebastianbergmann/php-code-coverage",
+        "keywords": [
+            "coverage",
+            "testing",
+            "xunit"
+        ]
+    },
+    {
+        "name": "sebastian/comparator",
+        "version": "2.1.0",
+        "version_normalized": "2.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/comparator.git",
+            "reference": "1174d9018191e93cb9d719edec01257fc05f8158"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/sebastianbergmann/comparator/1174d9018191e93cb9d719edec01257fc05f8158.zip",
+            "reference": "1174d9018191e93cb9d719edec01257fc05f8158",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.0",
+            "sebastian/diff": "^2.0",
+            "sebastian/exporter": "^3.1"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^6.4"
+        },
+        "time": "2017-11-03T07:16:52+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Jeff Welch",
+                "email": "whatthejeff@gmail.com"
+            },
+            {
+                "name": "Volker Dusch",
+                "email": "github@wallbash.com"
+            },
+            {
+                "name": "Bernhard Schussek",
+                "email": "bschussek@2bepublished.at"
+            },
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }
+        ],
+        "description": "Provides the functionality to compare PHP values for equality",
+        "homepage": "https://github.com/sebastianbergmann/comparator",
+        "keywords": [
+            "comparator",
+            "compare",
+            "equality"
+        ]
+    },
+    {
+        "name": "nikic/php-parser",
+        "version": "v3.1.2",
+        "version_normalized": "3.1.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nikic/PHP-Parser.git",
+            "reference": "08131e7ff29de6bb9f12275c7d35df71f25f4d89"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/nikic/PHP-Parser/08131e7ff29de6bb9f12275c7d35df71f25f4d89.zip",
+            "reference": "08131e7ff29de6bb9f12275c7d35df71f25f4d89",
+            "shasum": ""
+        },
+        "require": {
+            "ext-tokenizer": "*",
+            "php": ">=5.5"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0|~5.0"
+        },
+        "time": "2017-11-04T11:48:34+00:00",
+        "bin": [
+            "bin/php-parse"
+        ],
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PhpParser\\": "lib/PhpParser"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Nikita Popov"
+            }
+        ],
+        "description": "A PHP parser written in PHP",
+        "keywords": [
+            "parser",
+            "php"
         ]
     }
 ]

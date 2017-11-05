@@ -13,13 +13,13 @@
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form data="$config" route="site.config.base" method="post" id="config" autocomplete="off"}
+            {form model="$config" route="site.config.base" method="post" id="config" autocomplete="off"}
             <div class="form-title row">{{trans('site::config.base.info.title')}}</div>
 
             <div class="form-group row">
-                <label for="site[name]" class="col-2 col-form-label required">{{trans('site::config.name.label')}}</label>
+                <label for="name" class="col-2 col-form-label required">{{trans('site::config.name.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="site[name]" required="required"}
+                    {field type="text" name="name" required="required"}
                     
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -30,10 +30,10 @@
             </div>
 
             <div class="form-group row">
-                <label for="site[url]" class="col-2 col-form-label required">{{trans('site::config.url.label')}}</label>
+                <label for="url" class="col-2 col-form-label required">{{trans('site::config.url.label')}}</label>
                 <div class="col-8">
 
-                    {field type="url" name="site[url]"}
+                    {field type="url" name="url"}
                     
                     @if ($errors->has('url'))
                     <span class="form-help text-error">{{ $errors->first('url') }}</span>
@@ -44,14 +44,14 @@
             </div>  
 
             <div class="form-group row">
-                <label for="site[theme]" class="col-2 col-form-label required">{{trans('site::config.theme.label')}}</label>
+                <label for="theme" class="col-2 col-form-label required">{{trans('site::config.theme.label')}}</label>
                 <div class="col-8">
 
                     <div class="row">
                     @foreach(Theme::getList('front') as $theme)
                         <div class="col-3">
                             <label class="check check-md">
-                                {field type="radio" name="site[theme]" value="$theme->name"}
+                                {field type="radio" name="theme" value="$theme->name"}
                                 <div class="card card-sm">
                                     <div class="image">
                                         <img class="card-img-top img-fluid" src="{{Theme::asset('img/placeholder.png')}}" style="background-image:url({{Theme::asset($theme->name.':theme.jpg')}});background-size:cover">
@@ -74,10 +74,10 @@
             </div>
 
             <div class="form-group row">
-                <label for="site[logo]" class="col-2 col-form-label">{{trans('site::config.logo.label')}}</label>
+                <label for="logo" class="col-2 col-form-label">{{trans('site::config.logo.label')}}</label>
                 <div class="col-8">
 
-                    {field type="upload_image" name="site[logo]"}
+                    {field type="upload_image" name="logo"}
                     
                     @if ($errors->has('logo'))
                     <span class="form-help text-error">{{ $errors->first('logo') }}</span>
@@ -88,10 +88,10 @@
             </div>  
 
             <div class="form-group row">
-                <label for="site[favicon]" class="col-2 col-form-label">{{trans('site::config.favicon.label')}}</label>
+                <label for="favicon" class="col-2 col-form-label">{{trans('site::config.favicon.label')}}</label>
                 <div class="col-8">
 
-                    {field type="upload_image" name="site[favicon]"}
+                    {field type="upload_image" name="favicon"}
                     
                     @if ($errors->has('favicon'))
                     <span class="form-help text-error">{{ $errors->first('favicon') }}</span>
@@ -104,10 +104,10 @@
             <div class="form-title row">{{trans('site::config.base.status.title')}}</div>
 
             <div class="form-group row">
-                <label for="site[closed]" class="col-2 col-form-label">{{trans('site::config.closed.label')}}</label>
+                <label for="closed" class="col-2 col-form-label">{{trans('site::config.closed.label')}}</label>
                 <div class="col-8">
 
-                    {field type="bool" name="site[closed]"}
+                    {field type="bool" name="closed"}
                     
                     @if ($errors->has('url'))
                     <span class="form-help text-error">{{ $errors->first('closed') }}</span>
@@ -118,10 +118,10 @@
             </div>  
 
             <div class="form-group row">
-                <label for="site[closed_reason]" class="col-2 col-form-label">{{trans('site::config.closed_reason.label')}}</label>
+                <label for="closed_reason" class="col-2 col-form-label">{{trans('site::config.closed_reason.label')}}</label>
                 <div class="col-8">
 
-                    {field type="textarea" name="site[closed_reason]" rows="3"}
+                    {field type="textarea" name="closed_reason" rows="3"}
                     
                     @if ($errors->has('closed_reason'))
                     <span class="form-help text-error">{{ $errors->first('closed_reason') }}</span>

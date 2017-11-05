@@ -11,12 +11,6 @@ use Collective\Html\FormBuilder as LaravelFormBuilder;
  */
 class FormBuilder extends LaravelFormBuilder
 {
-    /**
-     * The current data for the form.
-     *
-     * @var mixed
-     */
-    protected $data = [];
 
     /**
      * Open up a new HTML form.
@@ -30,11 +24,6 @@ class FormBuilder extends LaravelFormBuilder
         // 绑定模型
         if ( isset($options['model']) ) {
             $this->model = array_pull($options, 'model');
-        }
-
-        // 绑定数据
-        if ( isset($options['data']) && is_array($options['data']) ) {
-            $this->data = array_pull($options, 'data');
         }
 
         // 表单默认样式
@@ -116,29 +105,7 @@ class FormBuilder extends LaravelFormBuilder
 
         return $name;
     }
-
-    /**
-     * Get the value that should be assigned to the field.
-     *
-     * @param  string $name
-     * @param  string $value
-     *
-     * @return mixed
-     */
-    public function getValueAttribute($name, $value = null)
-    {
-        $value = parent::getValueAttribute($name, $value);
-
-        // 加入data模式，尝试从数组中获取数据
-        if (empty($value) && $this->data) {
-
-            $name = str_replace(['[]', '[', ']'], ['', '.', ''], $name);
-
-            $value = array_get($this->data, $name);
-        }
-
-        return $value;
-    }
+    
 
     /**
      * 从属性数组中取出值
@@ -183,18 +150,6 @@ class FormBuilder extends LaravelFormBuilder
 
         return $this->getValueAttribute($name, $value);
     }
-
-    /**
-     * Transform key from array to dot syntax.
-     *
-     * @param  string $key
-     *
-     * @return mixed
-     */
-    // protected function transformKey($key)
-    // {
-    //     return str_replace(['[]', '[', ']'], ['', '.', ''], $key);
-    // }
 
 
     /**

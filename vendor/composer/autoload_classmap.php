@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'CreateCacheTable' => $baseDir . '/database/migrations/2017_11_02_165202_create_cache_table.php',
+    'CreateSessionsTable' => $baseDir . '/database/migrations/2017_11_02_165256_create_sessions_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'File_Iterator' => $vendorDir . '/phpunit/php-file-iterator/src/Iterator.php',
     'File_Iterator_Facade' => $vendorDir . '/phpunit/php-file-iterator/src/Facade.php',

@@ -77,32 +77,7 @@ class Config extends Model
                 $config = [];
 
                 foreach (static::all() as $item) {
-
-                    switch ($item->type) {
-                        case 'int':
-                        case 'integer':
-                            $item->value = (int)$item->value;
-                            break;
-                        case 'real':
-                        case 'float':
-                        case 'double':
-                            $item->value = (float)$item->value;
-                            break;
-                        case 'string':
-                            $item->value = (string)$item->value;
-                            break;
-                        case 'bool':
-                        case 'boolean':
-                            $item->value = (bool)$item->value;
-                            break;
-                        case 'array':
-                            $item->value = json_decode($item->value, true);
-                            break;                        
-                        default:                            
-                            break;
-                    }
-
-                    $config[$item->module][$item->key] = $item->value;
+                    $config[$item->module][$item->key] = static::tranform($item->value, $item->type, false);
                 }
 
                 return $config;
@@ -121,23 +96,32 @@ class Config extends Model
      * 
      * @param string $module 模块名称
      * @param array  $config 设置数组
+     * @return mixed
      */
     public static function set($module, array $config)
     {
-        foreach ($config as $key => $value) {
-                 
-            // 获取变量类型
-            $type = gettype($value);
+        
+        $module = strtolower($module);
 
-            // 数组转换
-            if ($type=='array') {
-                $value = json_encode($value);
-            }
+        foreach ($config as $key => $value) {
+            
+            $key  = strtolower($key);
             
             // 更新或者插入 Laravel不支持联合主键
-            if (static::where(['key'=>$key, 'module'=>$module])->first()) {
-                static::where(['key'=>$key, 'module'=>$module])->update(['value'=>$value, 'type'=>$type]);
+            if ($item = static::where(['key'=>$key, 'module'=>$module])->first()) {
+
+                // 编码数据
+                $value = static::tranform($value, $item->type, true);                
+
+                static::where(['key'=>$key, 'module'=>$module])->update(['value'=>$value]);
             } else {
+
+                // 获取变量类型
+                $type  = gettype($value);
+
+                // 编码数据
+                $value = static::tranform($value, $type, true);
+
                 static::insert(['key' => $key, 'module' => $module,'value'=>$value, 'type'=>$type]);
             }
 
@@ -146,6 +130,63 @@ class Config extends Model
         Cache::forget(static::CACHE_NAME);
 
         return true;          
+    }
+
+    /**
+     * 删除配置项
+     * 
+     * @param string $module 模块名称
+     * @param string $key 键名
+     * @return mixed
+     */
+    public static function forget($module, $key=null)
+    {
+        if ($key) {
+            static::where(['key'=>$key, 'module'=>$module])->delete();
+        } else {
+            static::where(['module'=>$module])->delete();
+        }
+
+        Cache::forget(static::CACHE_NAME);
+
+        return true;            
+    }
+
+    /**
+     * 编码或者解码数据
+     * 
+     * @param  mixed $value  数据
+     * @param  string $type  类型
+     * @param  bool $encode 转换或者翻转
+     * @return mixed
+     */
+    public static function tranform($value, $type, $encode=true)
+    {
+        switch (strtolower($type)) {
+            case 'int':
+            case 'integer':
+                $value = (int)$value;
+                break;
+            case 'real':
+            case 'float':
+            case 'double':
+                $value = (float)$value;
+                break;
+            case 'string':
+                $value = (string)$value;
+                break;
+            case 'bool':
+            case 'boolean':
+                $value = (bool)$value;
+                break;
+            case 'array':
+                $value = $encode ? json_encode($value) : json_decode($value,true);
+                break;                        
+            default:                            
+                break;
+        }        
+
+        return $value;
     }
 
 }

@@ -386,17 +386,13 @@ class InstallController extends Controller
             // 安装模块
             if ($name  = $request->input('name')) {
 
-                // Find Module
-                $module = Module::find($name);
-                
-                // Publish Assets
-                Artisan::call('module:publish', ['module' => $name]);
-
-                // Migrate
-                Artisan::call('module:migrate', ['module' => $name, '--force'=>true]);
-                
-                // Update module.json
-                $module->json()->set('active', 1)->set('installed', 1)->save();
+                // install
+                Artisan::call('module:execute', [
+                    'action'  => 'install',
+                    'module'  => $name,
+                    '--force' => true,
+                    '--seed'  => false,
+                ]);
 
                 return $this->success($name.' install success');
             }
@@ -434,21 +430,13 @@ class InstallController extends Controller
             ]);
 
             // 插入站点设置
-            foreach ($this->site as $key => $value) {
-                
-                Config::updateOrCreate([
-                    'module'       => 'site',
-                    'key'       => $key,
-                ],[
-                    'value'       => $value,
-                ]);
-            }
+            Config::set('site', $this->site);
 
             // 设置为已安装
             Artisan::call('env:set',['key' => 'APP_INSTALLED', 'value'=>'true']);
 
-            // 清空所有缓存
-            Cache::flush();           
+            // 重启系统
+            Artisan::call('reboot');        
         }
 
         return $this->view();

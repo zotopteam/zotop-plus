@@ -395,6 +395,8 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
     );
 
     public static $classMap = array (
+        'CreateCacheTable' => __DIR__ . '/../..' . '/database/migrations/2017_11_02_165202_create_cache_table.php',
+        'CreateSessionsTable' => __DIR__ . '/../..' . '/database/migrations/2017_11_02_165256_create_sessions_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',

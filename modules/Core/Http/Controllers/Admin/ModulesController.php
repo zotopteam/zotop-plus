@@ -60,25 +60,15 @@ class ModulesController extends AdminController
      * @param  string $name 模块名称
      * @return json
      */
-    public function install(Request $request, $name)
-    {
-        // Find Module
-        $module = Module::find($name);
-
-        // TODO ：依赖检查，某些模块互相依赖，如果安装前应进行依赖检查
-        // coding……
-        
-        // Publish Assets
-        Artisan::call('module:publish', ['module' => $name]);
-
-        // Publish Config
-        // Artisan::call('module:publish-config', ['module' => $name]);
-
-        // Migrate
-        Artisan::call('module:migrate', ['module' => $name, '--force'=>true]);
-        
-        // Update module.json
-        $module->json()->set('active', 1)->set('installed', 1)->save();
+    public function install(Request $request, $module)
+    {  
+        // install
+        Artisan::call('module:execute', [
+            'action'  => 'install',
+            'module'  => $module,
+            '--force' => true,
+            '--seed'  => false,
+        ]);
 
         return $this->success(trans('core::modules.installed'), $request->referer());
     }
@@ -89,29 +79,20 @@ class ModulesController extends AdminController
      * @param  string $name 模块名称
      * @return json
      */
-    public function uninstall(Request $request, $name)
+    public function uninstall(Request $request, $module)
     {
         // 核心模块不能卸载
-        if (in_array(strtolower($name), config('modules.cores',['core']))) {
+        if (in_array(strtolower($module), config('modules.cores',['core']))) {
             return $this->error(trans('core::modules.core_operate_forbidden'));
         }
-        
-        // Find Module
-        $module = Module::find($name);
 
-        // TODO ：依赖检查，某些模块互相依赖，如果卸载并删除数据表，会导致错误，所以卸载前应进行依赖检查
-        // coding……
-        
-        // migrate-reset
-        Artisan::call('module:migrate-reset', ['module' => $name]);
-
-        // 删除发布的配置和assets文件
-        app('files')->delete(config_path('module/'.strtolower($name).'.php'));
-        app('files')->deleteDirectory(config_path('module/'.strtolower($name)));
-        app('files')->deleteDirectory(Module::assetPath($name));
-        
-        // update module.json
-        $module->json()->set('active', 0)->set('installed', 0)->save();
+        // install
+        Artisan::call('module:execute', [
+            'action'  => 'uninstall',
+            'module'  => $module,
+            '--force' => true,
+            '--seed'  => false,
+        ]);        
 
         return $this->success(trans('core::modules.uninstalled'), $request->referer());
     }

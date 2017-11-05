@@ -18,9 +18,7 @@ trait ModuleConfig
      */
     private function config($module, array $config)
     {
-        // 当前配置
-        //$current = config($module, []);
-        
+        // 获取当前配置，过滤掉当前模块配置中不存在的项      
         $configOriginal = [];
 
         $configFilePath = Module::getModulePath($module).'/config.php';
@@ -29,32 +27,9 @@ trait ModuleConfig
            $configOriginal = include($configFilePath); 
         }
 
-        $config = array_dot($config);
         $config = array_only($config, array_keys($configOriginal));
 
         Config::set($module, $config);
-
-        return true;
-                
-        dd($config);
-
-        // $configs = include($configFile);
-
-        // 合并配置，只合并已经存在的值
-        $config = array_merge($current, array_only($config, array_keys($current)));
-
-        // 写入
-        $path = config_path(str_replace('.', DIRECTORY_SEPARATOR, $namespace).'.php');
-        
-        // 如果不存在，尝试创建
-        if (!File::isDirectory($dir = dirname($path))) {
-            File::makeDirectory($dir, 0775, true);
-        }         
-
-        File::put($path, "<?php\nreturn ".var_export($config,true).";");
-
-        // 重启
-        Artisan::call('reboot');
 
         return true;
     }

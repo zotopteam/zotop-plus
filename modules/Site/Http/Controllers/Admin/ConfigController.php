@@ -24,12 +24,12 @@ class ConfigController extends AdminController
 
             // 表单验证
             $this->validate($request, [
-                'site.name' => 'required',
-                'site.url'  => 'url'
+                'name' => 'required',
+                'url'  => 'url'
             ],[],[
-                'site.name' => trans('site::config.name.label'),
-                'site.url'  => trans('site::config.url.label')
-            ]);
+                'name' => trans('site::config.name.label'),
+                'url'  => trans('site::config.url.label')
+            ]);           
 
             // 写入配置组
             $this->config('site', $request->all());
@@ -37,7 +37,7 @@ class ConfigController extends AdminController
             return $this->success(trans('core::master.saved'),$request->referer());
         }
 
-        $this->title = trans('site::config.base');
+        $this->title  = trans('site::config.base');
         $this->config = Config::get('site');
 
         return $this->view();

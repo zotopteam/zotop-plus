@@ -78,48 +78,25 @@ class CoreServiceProvider extends ServiceProvider
         $moduleName = $module->getLowerName();
 
         // 注入自定义配置
-        if ($moduleConfig = Config::get($moduleName)) {
-            $this->app['config']->set($moduleConfig);
+        if ($this->app['installed'] && $moduleConfig = Config::get($moduleName)) {
+
+            $this->app['config']->set($moduleName, $moduleConfig);
+        } else {
+
+            // 注册模块根目录下的配置
+            if ($this->app['files']->isFile($configFile = $module->getPath().'/config.php')) {
+                $this->mergeConfigFrom($configFile, $moduleName);
+            }              
         }
         
-
-        // $configPath = $module->getPath().'/Config';
-
-        // $configFile = $module->getPath().'/config.php';
-
-        // $configs = include($configFile);
-
-        // foreach ($configs as $key => $value) {
-
-        //     // 插入超级管理员
-        //     Config::updateOrCreate([
-        //         'key'       => $key,
-        //         'module'    => $moduleName,
-        //     ],[
-        //         'value'     => $value
-        //     ]);
-        // }        
-
-        // // 注册模块根目录下的配置
-        // if ($this->app['files']->isFile($configFile)) {
-        //     $this->mergeConfigFrom($configFile, "module.$moduleName");
-        //     $this->publishes([
-        //        $configFile => config_path("module/$moduleName.php"),
-        //     ], 'config');
-        // }
-
-        // TODO：部分config 存入数据库，从数据库中读取当前module的配置并缓存后覆盖默认数据，去除存储在config中的文件
-        // $config = $this->app['config']->get($moduleName, []);
-        // $config = array_merge($config,['name'=>'zotop']);
-        // $this->app['config']->set('site',$config);     
-
         // 注册模块Config目录下的配置
-        // if ($this->app['files']->isDirectory($configPath)) {
-        //     foreach ($this->app['files']->files($configPath) as $configFile) {
-        //         $fileName = basename($configFile,'.php');
-        //         $this->mergeConfigFrom($configFile, "module.$moduleName.$fileName");
-        //     }
-        // }
+        if ($this->app['files']->isDirectory($configPath = $module->getPath().'/Config')) {
+            
+            foreach ($this->app['files']->files($configPath) as $configFile) {
+                $fileName = basename($configFile,'.php');
+                $this->mergeConfigFrom($configFile, "$moduleName.$fileName");
+            }
+        }
     }
 
     /**
@@ -157,6 +134,7 @@ class CoreServiceProvider extends ServiceProvider
             \Modules\Core\Console\AdminControllerCommand::class,
             \Modules\Core\Console\FrontControllerCommand::class,
             \Modules\Core\Console\RebootCommand::class,
+            \Modules\Core\Console\ExecuteCommand::class,
         ]);
     }
 
