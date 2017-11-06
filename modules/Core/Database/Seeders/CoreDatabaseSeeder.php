@@ -4,7 +4,7 @@ namespace Modules\Core\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Core\Entities\User;
+use Modules\Core\Models\User;
 
 class CoreDatabaseSeeder extends Seeder
 {

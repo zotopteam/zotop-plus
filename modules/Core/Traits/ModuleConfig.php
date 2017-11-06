@@ -5,7 +5,7 @@ namespace Modules\Core\Traits;
 use File;
 use Artisan;
 use Module;
-use Modules\Core\Entities\Config;
+use Modules\Core\Models\Config;
 
 trait ModuleConfig
 {

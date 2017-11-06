@@ -5,7 +5,7 @@ namespace Modules\Region\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
-use Modules\Region\Entities\Region;
+use Modules\Region\Models\Region;
 
 class IndexController extends AdminController
 {

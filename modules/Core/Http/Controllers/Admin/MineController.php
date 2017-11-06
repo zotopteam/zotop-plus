@@ -5,7 +5,7 @@ namespace Modules\Core\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
-use Modules\Core\Entities\User;
+use Modules\Core\Models\User;
 use Modules\Core\Http\Requests\MineRequest;
 use Modules\Core\Http\Requests\MinePasswordRequest;
 use Auth;

@@ -5,7 +5,7 @@ namespace Modules\Core\Console;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use Modules\Core\Entities\Config;
+use Modules\Core\Models\Config;
 
 class ExecuteCommand extends Command
 {

@@ -6,7 +6,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Traits\PublishConfig;
 use Nwidart\Modules\Module;
-use Modules\Core\Entities\Config;
+use Modules\Core\Models\Config;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -77,26 +77,24 @@ class CoreServiceProvider extends ServiceProvider
     {
         $moduleName = $module->getLowerName();
 
-        // 注入自定义配置
-        if ($this->app['installed'] && $moduleConfig = Config::get($moduleName)) {
+        // 已安装时加载自定义配置
+        if ($this->app['installed'] == true && $moduleConfig = Config::get($moduleName)) {
+           $this->app['config']->set($moduleName, $moduleConfig);
+        }
 
-            $this->app['config']->set($moduleName, $moduleConfig);
-        } else {
-
-            // 注册模块根目录下的配置
-            if ($this->app['files']->isFile($configFile = $module->getPath().'/config.php')) {
-                $this->mergeConfigFrom($configFile, $moduleName);
-            }              
+        // 未安装的时加载模块根目录下的配置
+        if ($this->app['installed'] == false && $this->app['files']->isFile($configFile = $module->getPath().'/config.php')) {            
+            $this->mergeConfigFrom($configFile, $moduleName);
         }
         
         // 注册模块Config目录下的配置
-        if ($this->app['files']->isDirectory($configPath = $module->getPath().'/Config')) {
+        // if ($this->app['files']->isDirectory($configPath = $module->getPath().'/Config')) {
             
-            foreach ($this->app['files']->files($configPath) as $configFile) {
-                $fileName = basename($configFile,'.php');
-                $this->mergeConfigFrom($configFile, "$moduleName.$fileName");
-            }
-        }
+        //     foreach ($this->app['files']->files($configPath) as $configFile) {
+        //         $fileName = basename($configFile,'.php');
+        //         $this->mergeConfigFrom($configFile, "$moduleName.$fileName");
+        //     }
+        // }
     }
 
     /**

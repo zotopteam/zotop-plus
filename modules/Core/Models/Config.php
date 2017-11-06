@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Entities;
+namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;

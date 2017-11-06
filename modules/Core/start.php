@@ -2,7 +2,7 @@
 /**
  * 扩展 Request::referer 功能，暂时等于 URL::previous()
  */
-\Request::macro('referer', function(){
+\Request::macro('referer', function() {
 
     $referer = \URL::previous();
 
@@ -13,9 +13,26 @@
 /**
  * 扩展 Route:active 如果是当前route，则返回 active
  */
-\Route::macro('active', function($route, $active="active", $normal=''){
+\Route::macro('active', function($route, $active="active", $normal='') {
 
     return Route::is($route) ? $active : $normal;
+});
+
+/**
+ * 扩展getFileData方法, 获取数组文件数据
+ */
+\Module::macro('getFileData', function($module, $file) {
+    
+    $data = [];
+
+    $file = $this->getModulePath($module).$file;
+
+    if ($this->app['files']->isFile($file)) {
+        $data = require $file;
+        $data = is_array($data) ? $data : [];
+    }
+
+    return $data;
 });
 
 
