@@ -15,12 +15,16 @@
                     <i class="fa fa-circle-o fa-fw"></i> {{config('app.version')}}
                 </a>
                 &nbsp;
-                <a href="javascript:;" class="btn btn-outline text-white" target="_blank">
+                <a href="{{config('app.github')}}" class="btn btn-outline text-white" target="_blank">
                     <i class="fa fa-github fa-fw"></i> Github
                 </a>
                 &nbsp;
-                <a href="javascript:;" class="btn btn-outline text-white" target="_blank">
-                    <i class="fa fa-book fa-fw"></i> Help
+                <a href="{{config('app.document')}}" class="btn btn-outline text-white" target="_blank">
+                    <i class="fa fa-book fa-fw"></i> Document
+                </a>                
+                &nbsp;
+                <a href="{{config('app.help')}}" class="btn btn-outline text-white" target="_blank">
+                    <i class="fa fa-question-circle fa-fw"></i> Help
                 </a>
             </div>
             <svg class="animation-wave" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none">

@@ -22,7 +22,7 @@ return [
     | This value is the version of your application..
     */
 
-    'version' => '1.3.1105',
+    'version' => '1.3.1106',
 
 
     /*
@@ -33,7 +33,7 @@ return [
     | This value is the release of your application. 
     */
 
-    'release' => '20171105',
+    'release' => '20171106',
 
     /*
     |--------------------------------------------------------------------------
@@ -75,6 +75,15 @@ return [
 
     'github' => 'https://coding.net/u/zotop/p/laravel_cms/git',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Application help
+    |--------------------------------------------------------------------------
+    |
+    | This help url of your application.
+    */
+
+    'document' => 'http://doc.zotop.com/',  
 
     /*
     |--------------------------------------------------------------------------
@@ -84,7 +93,7 @@ return [
     | This help url of your application.
     */
 
-    'help' => 'http://www.zotop.com/help',          
+    'help' => 'http://help.zotop.com/',       
 
     /*
     |--------------------------------------------------------------------------

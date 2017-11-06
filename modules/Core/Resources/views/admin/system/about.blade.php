@@ -16,14 +16,17 @@
                     <i class="fa fa-circle-o fa-fw"></i> {{config('app.version')}}
                 </a>
                 &nbsp;
-                <a href="javascript:;" class="btn btn-outline text-white" target="_blank">
+                <a href="{{config('app.github')}}" class="btn btn-outline text-white" target="_blank">
                     <i class="fa fa-github fa-fw"></i> Github
                 </a>
                 &nbsp;
-                <a href="javascript:;" class="btn btn-outline text-white" target="_blank">
-                    <i class="fa fa-book fa-fw"></i> Help
+                <a href="{{config('app.document')}}" class="btn btn-outline text-white" target="_blank">
+                    <i class="fa fa-book fa-fw"></i> Document
+                </a>                
+                &nbsp;
+                <a href="{{config('app.help')}}" class="btn btn-outline text-white" target="_blank">
+                    <i class="fa fa-question-circle fa-fw"></i> Help
                 </a>
-
             </div>
         </div>
     </div>
