@@ -4,6 +4,28 @@ All Notable changes to `laravel-modules` will be documented in this file.
 
 ## Next
 
+## 2.6.0 - 2017-11-07
+
+## Added
+
+- Ability to customise the destination folder & namespace of a generated class
+- Added `php artisan module:migrate-status` command
+- `config_path()` helper for Lumen
+- Added views tag to view config in ServiceProvider
+- added package auto discovery for laravel 5.5 in generated module `composer.json`
+
+## Changed
+
+- Adding the ability to correctly load modules from multiple locations, together
+- Custom seeder path now also used in the `module:seed` command
+
+## 2.5.1 - 2017-10-13
+
+## Changed
+
+- added config_path helper to helpers for Lumen support
+- updated readme on how to install laravel-modules in Lumen
+
 ## 2.5.0 - 2017-10-03
 
 ## Changed

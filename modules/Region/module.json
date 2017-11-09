@@ -9,8 +9,8 @@
     "installed": 1,
     "order": 10,
     "author": "zotop",
-    "email": "duke.zhang@harkhark.cn",
-    "homepage": "http:\/\/www.harkhark.com",
+    "email": "hankx_chen@qq.com",
+    "homepage": "http:\/\/www.zotop.com",
     "providers": [
         "Modules\\Region\\Providers\\RouteServiceProvider"
     ],

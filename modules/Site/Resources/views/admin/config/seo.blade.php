@@ -33,8 +33,6 @@
                 <label for="keywords" class="col-2 col-form-label required">{{trans('site::config.keywords.label')}}</label>
                 <div class="col-8">
                     {field type="text" name="keywords" required="required"}
-
-                    {field type="checkboxgroup" name="test" options="[222,333]"}
                     
                     @if ($errors->has('keywords'))
                     <span class="form-help text-error">{{ $errors->first('keywords') }}</span>

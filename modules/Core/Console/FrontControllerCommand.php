@@ -158,7 +158,7 @@ class FrontControllerCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getDefaultNamespace()
+    public function getDefaultNamespace() : string
     {
         return 'Http\Controllers';
     }

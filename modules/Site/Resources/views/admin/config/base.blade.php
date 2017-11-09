@@ -107,7 +107,7 @@
                 <label for="closed" class="col-2 col-form-label">{{trans('site::config.closed.label')}}</label>
                 <div class="col-8">
 
-                    {field type="bool" name="closed"}
+                    {field type="enable" name="closed"}
                     
                     @if ($errors->has('url'))
                     <span class="form-help text-error">{{ $errors->first('closed') }}</span>

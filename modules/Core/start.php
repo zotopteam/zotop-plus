@@ -50,6 +50,7 @@
     ];
 
     return $navbar;
+    
 },1);
 
 /**
@@ -121,6 +122,7 @@
     ];        
     
     return $navbar;
+
 },100);
 
 /**
@@ -199,7 +201,8 @@
 
     return $this->toHtmlString(
         $this->view->make('core::field.upload_image')
-            ->with('name', $name)->with('value', $value)->with('attrs', $attrs)->with('options', $options)->with('button', $button)->with('tools', $tools)
+            ->with('name', $name)->with('value', $value)->with('attrs', $attrs)->with('options', $options)
+            ->with('button', $button)->with('tools', $tools)
             ->render()
     );
 });
@@ -207,7 +210,7 @@
 /**
  * 日期选择器
  */
-\Form::macro('date', function($attrs){
+\Form::macro('date', function($attrs) {
 
     $value = $this->getValue($attrs);
     $name  = $this->getAttribute($attrs, 'name');    
@@ -226,14 +229,17 @@
     ]);
 
     return $this->toHtmlString(
-        $this->view->make('core::field.datetime')->with('name', $name)->with('value', $value)->with('attrs', $attrs)->with('options', $options)->render()
+        $this->view->make('core::field.datetime')
+            ->with('name', $name)->with('value', $value)->with('attrs', $attrs)->with('options', $options)
+            ->render()
     );
 });
 
 /**
  * 日期时间选择器
  */
-\Form::macro('datetime', function($attrs){
+\Form::macro('datetime', function($attrs) {
+
     $attrs['format'] = 'Y-m-d H:i';
     $attrs['time']   = true;
 
@@ -243,7 +249,8 @@
 /**
  * 时间选择器
  */
-\Form::macro('time', function($attrs){
+\Form::macro('time', function($attrs) {
+
     $attrs['format'] = 'H:i';
     $attrs['time']   = true;
     $attrs['date']   = false;
@@ -255,20 +262,17 @@
 /**
  * 单选组
  */
-\Form::macro('radiogroup', function($attrs){
-
+\Form::macro('radiogroup', function($attrs) {
     $value   = $this->getValue($attrs);
     $name    = $this->getAttribute($attrs, 'name');    
     $options = $this->getAttribute($attrs, 'options',  []);
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'radiogroup-default');
-
     // 如果没有选择值，选择options的第一个
-    if ( is_null($value) && is_array($options) ) {
+    if (is_null($value)) {
         $value = array_keys($options);
         $value = reset($value);
     }
-
     return $this->toHtmlString(
         $this->view->make('core::field.radiogroup')->with('name', $name)->with('value', $value)->with('column', $column)->with('options', $options)->with('class', $class)->render()
     );
@@ -277,10 +281,24 @@
 /**
  * 是/否
  */
-\Form::macro('bool', function($attrs){
+\Form::macro('bool', function($attrs) {
+    // options
+    $attrs['options'] = $this->getAttribute($attrs, 'options',  [
+        1 => trans('core::master.yes'),
+        0 => trans('core::master.no')
+    ]);
+    return $this->macroCall('radiogroup',  [$attrs]);
+});
 
-    $attrs['options'] = (isset($attrs['options']) && is_array($attrs['options'])) ? $attrs['options'] : [1=>trans('core::master.yes'), 0=>trans('core::master.no')];
-
+/**
+ * 是/否
+ */
+\Form::macro('enable', function($attrs){
+    // options
+    $attrs['options'] = $this->getAttribute($attrs, 'options',  [
+        1 => trans('core::master.enable'),
+        0 => trans('core::master.disable')
+    ]);
     return $this->macroCall('radiogroup',  [$attrs]);
 });
 
@@ -288,16 +306,12 @@
  * 多选组
  */
 \Form::macro('checkboxgroup', function($attrs){
-
-    $value   = $this->getValue($attrs);
+    $value   = $this->getValue($attrs, []);
     $name    = $this->getAttribute($attrs, 'name');    
     $options = $this->getAttribute($attrs, 'options',  []);
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'checkboxgroup-default');
-
     return $this->toHtmlString(
         $this->view->make('core::field.checkboxgroup')->with('name', $name)->with('value', $value)->with('column', $column)->with('options', $options)->with('class', $class)->render()
     );
 });
-
-

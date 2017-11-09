@@ -75,10 +75,10 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getArguments()
     {
-        return array(
-            array('controller', InputArgument::REQUIRED, 'The name of the controller class.'),
-            array('module', InputArgument::OPTIONAL, 'The name of module will be used.'),
-        );
+        return [
+            ['controller', InputArgument::REQUIRED, 'The name of the controller class.'],
+            ['module', InputArgument::OPTIONAL, 'The name of module will be used.'],
+        ];
     }
 
     /**
@@ -105,14 +105,9 @@ class ControllerMakeCommand extends GeneratorCommand
         return $controller;
     }
 
-    /**
-     * Get default namespace.
-     *
-     * @return string
-     */
-    public function getDefaultNamespace()
+    public function getDefaultNamespace() : string
     {
-        return 'Http\Controllers';
+        return $this->laravel['modules']->config('paths.generator.controller.path', 'Http/Controllers');
     }
 
     /**

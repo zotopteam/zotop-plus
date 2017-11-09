@@ -49,6 +49,7 @@ return [
                 'MODULE_NAMESPACE',
             ],
         ],
+        'gitkeep' => true,
     ],
     'paths' => [
         /*
@@ -88,7 +89,7 @@ return [
         | Generator path
         |--------------------------------------------------------------------------
         | Customise the paths where the folders will be generated.
-        | Se the generate key to false to not generate that folder
+        | Set the generate key to false to not generate that folder
         */
         'generator' => [
             'config' => ['path' => 'Config', 'generate' => true],

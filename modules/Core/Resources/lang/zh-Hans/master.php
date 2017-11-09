@@ -27,6 +27,8 @@ return [
     'delete'               => '删除',
     'deleting'             => '删除中……',    
     'deleted'              => '删除成功',
+    'enable'               => '启用',
+    'enabled'              => '已启用',
     'disable'              => '禁用',
     'disabled'             => '已禁用',
     'active'               => '启用',
