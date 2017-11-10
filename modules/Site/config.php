@@ -2,6 +2,7 @@
 return [
     'name'           => 'SiteName',
     'theme'          => 'default',
+    'locale'         => '',
     'url'            => '',
     'logo'           => '',
     'favicon'        => '',

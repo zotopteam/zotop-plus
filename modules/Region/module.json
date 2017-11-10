@@ -1,7 +1,7 @@
 {
     "name": "Region",
     "alias": "region",
-    "title": "\u533a\u57df\u7ba1\u7406",
+    "title": "region::module.title",
     "description": "region::module.description",
     "keywords": [],
     "version": "1.0.0",

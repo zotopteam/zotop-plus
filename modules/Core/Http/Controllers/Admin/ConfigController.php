@@ -4,6 +4,8 @@ namespace Modules\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Modules\Core\Base\AdminController;
 use Modules\Core\Traits\ModuleConfig;
 use Modules\Core\Http\Requests\ConfigBaseRequest;
@@ -93,10 +95,60 @@ class ConfigController extends AdminController
      */
     public function mail(Request $request)
     {
+        // 保存数据
+        if ($request->isMethod('POST')) {
+
+            // 写入ENV配置
+            $this->setEnv([
+                'MAIL_DRIVER'       => $request->input('driver'),
+                'MAIL_FROM_ADDRESS' => $request->input('from.address'),
+                'MAIL_FROM_NAME'    => $request->input('from.name'),                
+                'MAIL_HOST'         => $request->input('host'),
+                'MAIL_PORT'         => $request->input('port'),
+                'MAIL_USERNAME'     => $request->input('username'),
+                'MAIL_PASSWORD'     => $request->input('password'),
+                'MAIL_ENCRYPTION'   => $request->input('encryption'),
+            ]);
+
+            return $this->success(trans('core::master.saved'));
+        }
+
         $this->title = trans('core::config.mail');
+        $this->drivers = Filter::fire('core.config.mail.drivers' ,[
+            'smtp'     => trans('core::config.mail.drivers.smtp'),
+            'mail'     => trans('core::config.mail.drivers.mail'),
+            'sendmail' => trans('core::config.mail.drivers.sendmail'),
+        ]);
 
         return $this->view();
-    }  
+    }
+
+    public function mailtest(Request $request)
+    {
+        // 保存数据
+        if ($request->isMethod('POST')) {
+
+            if ($to = $request->input('mailtest_sendto')) {
+
+                // 设置当前参数
+                $this->app['config']->set('mail',$request->all());
+
+                // 发送邮件
+                try {
+                    Mail::to($to)->send(new \Modules\Core\Emails\TestMail());
+                    $msg = $this->success(trans('core::master.operated'));                    
+                } catch (\Swift_TransportException $e) {
+                    $msg = $this->error($e->getMessage());
+                }
+                
+                exit($msg->getContent());                              
+            }
+
+            return $this->error(trans('core::master.forbidden'));
+        }
+
+        return new \Modules\Core\Emails\TestMail();
+    }
 
     /**
      * 本地时区和时间设置
@@ -105,15 +157,49 @@ class ConfigController extends AdminController
      */
     public function locale(Request $request)
     {
-        $this->title = trans('core::config.locale');
+        // 保存数据
+        if ($request->isMethod('POST')) {
 
-        $timezones = [];
+            // 写入ENV配置
+            $this->setEnv([
+                'APP_LOCALE'      => $request->input('locale'),
+                'APP_TIMEZONE'    => $request->input('timezone'),
+                'APP_DATE_FORMAT' => $request->input('date_format'),
+                'APP_TIME_FORMAT' => $request->input('time_format'),
+            ]);
 
-        foreach(timezone_identifiers_list() as $key => $zone) {
-            $timezones[$zone] = 'UTC/GMT '.(new \DateTime(null, new \DateTimeZone($zone)))->format('P').' - '.$zone;    
+            return $this->success(trans('core::master.saved'), route('core.config.locale'));
         }
 
-        dd($timezones);
+        $this->title = trans('core::config.locale');
+
+        // 语言选项
+        $this->languages = Filter::fire('core.config.languages' ,[
+            'zh-Hans' => trans('core::config.languages.zh-hans'),
+            'zh-Hant' => trans('core::config.languages.zh-hant'),
+            'en'      => trans('core::config.languages.en'),
+        ]);
+
+        // 日期格式选项
+        $this->date_formats = Filter::fire('core.config.date.formats' ,[
+            'Y-m-d' => Carbon::now()->format('Y-m-d'),
+            'Y/m/d' => Carbon::now()->format('Y/m/d'),
+            'Y.m.d' => Carbon::now()->format('Y.m.d'),
+        ]);
+
+        // 时间选项
+        $this->time_formats = Filter::fire('core.config.time.formats' ,[
+            'H:i:s' => Carbon::now()->format('H:i:s'),
+            'H:i'   => Carbon::now()->format('H:i'),
+        ]);
+        // 时区选项
+        $timezones = [];
+        foreach(timezone_identifiers_list() as $key => $zone) {
+            $continents = explode('/',$zone)[0];
+            $timezones[$continents][$zone] = 'UTC/GMT '.(new \DateTime(null, new \DateTimeZone($zone)))->format('P').' - '.$zone;    
+        }
+
+        $this->timezones = $timezones;
 
         return $this->view();
     }  

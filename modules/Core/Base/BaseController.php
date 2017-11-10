@@ -88,9 +88,6 @@ class BaseController extends Controller
     {        
         // 默认主题
         $this->theme  = 'default';
-        
-        // 默认语言 中文简体
-        $this->locale = 'zh-Hans';
     }
 
     /**

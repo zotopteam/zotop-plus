@@ -196,8 +196,21 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'zh-Hans',
+    /*
+    |--------------------------------------------------------------------------
+    | Application Locale Date && Time Format
+    |--------------------------------------------------------------------------
+    |
+    | The application locale date && time format the default locale that will be used
+    | by show the datetime
+    |
+    */
 
+    'date_format' => env('APP_DATE_FORMAT', 'Y-m-d'),
+
+
+    'time_format' => env('APP_TIME_FORMAT', 'H:i'),
     /*
     |--------------------------------------------------------------------------
     | Encryption Key

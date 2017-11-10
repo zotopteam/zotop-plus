@@ -114,7 +114,8 @@
 .ui-message .ui-dialog-content .msg-content{font-size:1rem;font-weight:bold;line-height:22px;max-width:800px;max-height:400px;overflow:auto;word-wrap:break-word;}
 .ui-message .ui-dialog-content .msg-content b{color:red;}
 .ui-message .ui-dialog-content .close{color:#666;position:absolute;top:1rem;right:1rem;font-size:1.25rem;}
-.ui-message-loading .msg-icon{background:url(../image/loading-big.gif);height:30px;width:30px;}
+.ui-message-loading .msg-icon{animation: fa-spin 1s infinite linear;}
+.ui-message-loading .msg-icon:before{content: "\f1ce";}
 .ui-message-success{color:#66bb00;border-color:#66bb00;}
 .ui-message-success .msg-icon:before{content:'\f058';}
 .ui-message-error{color:#ff0000;border-color:#ff0000;}
