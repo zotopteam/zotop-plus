@@ -16,10 +16,10 @@ class IndexController extends AdminController
      */
     public function index($parent_id = 0)
     {
-        $this->parent_id = $parent_id;
-        $this->parent    = $parent_id ? Region::find($parent_id) : NULL;
+        
         $this->title     = trans('region::module.title');
-        $this->parents   = $parent_id ? Region::getParents($parent_id) : [];
+        $this->parent_id = $parent_id;
+        $this->parents   = Region::parents($parent_id, true);
         $this->regions   = Region::where('parent_id', $parent_id)->orderBy('sort')->get();
 
         return $this->view();
@@ -51,12 +51,12 @@ class IndexController extends AdminController
         $this->validate($request, ['title' => 'required', 'parent_id' => 'required|numeric']);
 
         $region = new Region;
-        $input  = $request->all();
-        $region->fill($input);
-        $region->sort = Region::where('parent_id', $input['parent_id'])->max('sort') + 1;
+
+        $region->fill($request->all());
+        $region->sort = Region::where('parent_id', $request->input('parent_id'))->max('sort') + 1;
         $region->save();
 
-        return $this->success(trans('core::master.created'), route('region.index', $input['parent_id']));
+        return $this->success(trans('core::master.created'), route('region.index', $request->input('parent_id')));
     }
 
     /**
@@ -82,12 +82,13 @@ class IndexController extends AdminController
     public function update(Request $request, $id)
     {
         $this->validate($request, ['title' => 'required', 'parent_id' => 'required|numeric']);
+
         $region = Region::findOrFail($id);
-        $input  = $request->all();
-        $region->fill($input);
+
+        $region->fill($request->all());
         $region->save();
 
-        return $this->success(trans('core::master.operated'), route('region.index', $input['parent_id']));
+        return $this->success(trans('core::master.operated'), route('region.index', $request->input('parent_id')));
     }
 
     /**
@@ -98,9 +99,11 @@ class IndexController extends AdminController
     public function destroy(Request $request, $id)
     {
         $region = Region::findOrFail($id);
+
         if (Region::where('parent_id', $region->id)->count()) {
             return $this->error(trans('region::module.delete.disable'));
         }
+
         $region->delete();
 
         return $this->success(trans('core::master.operated'), $request->referer());

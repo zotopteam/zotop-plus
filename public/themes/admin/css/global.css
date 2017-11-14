@@ -138,7 +138,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .table>tbody>tr.disabled img{opacity:0.2;}
 
 .table>tbody>tr>td hr{margin:0.5rem 0;}
-.table>tbody>tr>td .title{font-size:1rem;}
+.table>tbody>tr>td .title{font-size:1.25rem;}
 .table>tbody>tr>td .title>span{font-size:0.875rem;color:#666;font-weight:normal;}
 .table>tbody>tr>td .content{font-size:0.875rem;margin-top:0.5rem;margin-bottom:0.5rem;}
 .table>tbody>tr>td .description{font-size:12px;color:#999;margin-top:0.25rem;}
@@ -303,7 +303,7 @@ textarea{resize:none;}
 .main-header .main-back b{display:none;font-size:1rem;}
 .main-header .main-title{display:inline-block;font-size:1.5rem;vertical-align:middle;padding:0 0.5rem;}
 .main-header .main-action{padding:0 0.5rem;}
-.main-header .main-action .breadcrumb{background:transparent;padding:0.25rem 1rem;margin-bottom:0;}
+.main-header .main-action .breadcrumb{background:transparent;padding:0.25rem 1rem;margin-bottom:0;margin-top:0.1875rem;}
 .main-header .main-action .breadcrumb-item+.breadcrumb-item::before{/*font-family:FontAwesome;content:'\f105';*/color:#ccc;}
 .main-header .main-action .btn{border:0 none;}
 

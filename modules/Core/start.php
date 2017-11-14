@@ -308,7 +308,7 @@
 \Form::macro('checkboxgroup', function($attrs){
     $value   = $this->getValue($attrs, []);
     $name    = $this->getAttribute($attrs, 'name');    
-    $options = $this->getAttribute($attrs, 'options',  []);
+    $options = $this->getAttribute($attrs, 'options', []);
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'checkboxgroup-default');
     return $this->toHtmlString(

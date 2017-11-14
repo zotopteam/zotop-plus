@@ -8,7 +8,6 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Route;
 use Module;
 use Theme;
 
@@ -98,7 +97,7 @@ class BaseController extends Controller
     protected function currentRouteAction()
     {
         // 获取当前路由数据
-        $action = Route::getCurrentRoute()->getAction();
+        $action = $this->app['router']->getCurrentRoute()->getAction();
 
         // 从路由信息中获取模块名称
         $this->app->singleton('current.module',function() use ($action) {

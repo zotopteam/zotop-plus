@@ -3,35 +3,21 @@
 namespace Modules\Region\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Traits\Nestable;
 
 class Region extends Model
 {
+    use Nestable;
+
+    /**
+     * 关闭时间戳
+     * @var boolean
+     */
     public $timestamps = FALSE;
+    
+    /**
+     * 可填充项
+     * @var array
+     */
     protected $fillable = ['parent_id', 'title', 'sort'];
-
-    public static function getParents($id)
-    {
-        if (!isset($parents)) $parents = [];
-        $region = self::find($id);
-        if ($region->parent_id) {
-            $parent    = self::find($region->parent_id);
-            $parents[] = $parent;
-            self::getParents($parent->id);
-        }
-        return $parents;
-    }
-
-    public static function getChilds($id)
-    {
-        if (!isset($childs)) $childs = [];
-        $region_childs = self::where('parent_id', $id)->get();
-        if ($region_childs) {
-            foreach ($region_childs as $region_child) {
-                $childs[] = $region_child->id;
-                self::getChilds($region_child->id);
-            }
-        }
-        return $childs;
-    }
-
 }

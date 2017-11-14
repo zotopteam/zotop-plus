@@ -56,7 +56,7 @@ class ThemeServiceProvider extends ServiceProvider
     protected function registerThemes()
     {
         // 获取主题目录并注册全部主题        
-        $path = $this->app['config']->get('themes.paths.themes',base_path('/themes'));
+        $path = $this->app['config']->get('themes.paths.themes', base_path('/themes'));
 
         $dirs = $this->app['files']->directories($path);
 

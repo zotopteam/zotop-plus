@@ -133,9 +133,12 @@ class ConfigController extends AdminController
                 // 设置当前参数
                 $this->app['config']->set('mail',$request->all());
 
+                // 使用新配置
+                (new \Illuminate\Mail\MailServiceProvider($this->app))->register();
+
                 // 发送邮件
                 try {
-                    Mail::to($to)->send(new \Modules\Core\Emails\TestMail());
+                    $this->app->make('mailer')->to($to)->send(new \Modules\Core\Emails\TestMail());
                     $msg = $this->success(trans('core::master.operated'));                    
                 } catch (\Swift_TransportException $e) {
                     $msg = $this->error($e->getMessage());
@@ -225,9 +228,7 @@ class ConfigController extends AdminController
             ]);
 
             // 更改后台地址，TODO：本地或者测试环境下，route 已经加载，无法重新载入
-            config([
-                'app.admin_prefix' => $request->input('admin_prefix', 'admin')
-            ]);
+            // $this->app['config']->set('app.admin_prefix', $request->input('admin_prefix', 'admin'));
 
             return $this->success(trans('core::master.saved'), route('core.config.safe'));
         }
@@ -240,6 +241,7 @@ class ConfigController extends AdminController
             'local'      => trans('core::config.envs.local'),
             'testing'    => trans('core::config.envs.testing'),
         ]);
+
 
         // 日志模式选项
         $this->logs = array_combine(
