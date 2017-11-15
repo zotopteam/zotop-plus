@@ -3,13 +3,13 @@
 @section('content')
 <div class="main scrollable">
 
-    {form model="$module" route="developer.module.store" method="post" class="m-5" autocomplete="off"}
+    {form model="$module" route="developer.module.store" method="post" class="m-4" autocomplete="off"}
 
         <div class="container-fluid">
 
-            <div class="form-group row">
-                <label for="name" class="col-2 col-form-label required">{{trans('developer::module.name.label')}}</label>
-                <div class="col-10">
+            <div class="form-group">
+                <label for="name" class="form-label required">{{trans('developer::module.name.label')}}</label>
+                <div class="form-field">
                     {field type="text" name="name" pattern="^[a-z]+$" required="required"}
 
                     @if ($errors->has('name'))
@@ -20,10 +20,10 @@
                 </div>                      
             </div>
 
-            <div class="form-group row">
-                <label for="plain" class="col-2 col-form-label required">{{trans('developer::module.plain.label')}}</label>
-                <div class="col-10">
-                    {field type="radiogroup" name="plain" options="$plains" required="required"}
+            <div class="form-group">
+                <label for="plain" class="form-label required">{{trans('developer::module.plain.label')}}</label>
+                <div class="form-field">
+                    {field type="radiogroup" name="plain" options="$plains" required="required" column="1"}
 
                     @if ($errors->has('plain'))
                     <span class="form-help text-error">{{ $errors->first('plain') }}</span>

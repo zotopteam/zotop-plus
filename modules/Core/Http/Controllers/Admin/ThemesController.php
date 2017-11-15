@@ -73,7 +73,7 @@ class ThemesController extends AdminController
         
         $this->name     = $name;
         $this->dir      = $request->input('dir');
-        $this->path     = $theme->path.DIRECTORY_SEPARATOR.$this->dir;
+        $this->path     = realpath($theme->path.DIRECTORY_SEPARATOR.$this->dir);
         $this->position = $this->position($this->dir);       
         $this->folders  = File::directories($this->path);
         $this->files    = File::files($this->path);

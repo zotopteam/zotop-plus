@@ -1,15 +1,15 @@
 <div class="container-fluid">
-	<div class="form-group row">
-        <label for="name" class="col-2 col-form-label">{{trans('region::module.parent.label')}}</label>
-        <div class="col-10">
+	<div class="form-group">
+        <label for="name" class="form-label">{{trans('region::module.parent.label')}}</label>
+        <div class="form-field">
         	<input type="hidden" class="form-control" name="parent_id" value="{{$region->parent_id}}">
-            <p class="form-control-static">{{$parent_region_title}}</p>
+            {field type="text" value="$parent_region_title" required="required" disabled="disabled"}
         </div>
     </div>
 
-    <div class="form-group row">
-        <label for="title" class="col-2 col-form-label required">{{trans('region::module.name.label')}}</label>
-        <div class="col-10">
+    <div class="form-group">
+        <label for="title" class="form-label required">{{trans('region::module.name.label')}}</label>
+        <div class="form-field">
             {field type="text" name="title" required="required"}
 
             @if ($errors->has('title'))

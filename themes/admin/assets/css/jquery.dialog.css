@@ -6,8 +6,8 @@
  * This is licensed under the GNU LGPL, version 2.1 or later.
  * For details, see:http://www.gnu.org/licenses/lgpl-2.1.html
  */
-.ui-dialog{*zoom:1;_float:left;position:relative;border:0px solid #d0d0d0;border-radius:0.25rem;overflow:hidden;outline:0;background-clip:padding-box;font-size:0.875rem;line-height:1.428571429;color:#333;opacity:0;-webkit-transform:scale(0);transform:scale(0);-webkit-transition:-webkit-transform .15s ease-in-out, opacity .15s ease-in-out;transition:transform .15s ease-in-out, opacity .15s ease-in-out;}
-.ui-popup-show .ui-dialog{opacity:1;-webkit-transform:scale(1);transform:scale(1);}
+.ui-dialog{*zoom:1;_float:left;position:relative;border:0px solid #d0d0d0;border-radius:0.25rem;overflow:hidden;outline:0;background-clip:padding-box;font-size:0.875rem;line-height:1.428571429;color:#333;opacity:0;transition:all 0.1s ease-in-out;/*transform:scale(0);transition:transform .15s ease-in-out, opacity .15s ease-in-out;*/}
+.ui-popup-show .ui-dialog{opacity:1;/*transform:scale(1);*/}
 .ui-popup-focus .ui-dialog{box-shadow:0 0 0.5rem rgba(0, 0, 0, 0.1);}
 .ui-popup-modal .ui-dialog{box-shadow:0 0 0.5rem rgba(0, 0, 0, 0.1), 0 0 250.5rem rgba(255, 255, 255, .3);}
 .ui-popup-follow .ui-dialog{border:1px solid #D0D0D0;}
@@ -16,12 +16,13 @@
 .ui-dialog-body,
 .ui-dialog-footer{padding:0;border:0 none;text-align:left;background-color:#f7f7f7;background-color:rgba(255,255,255,.9);}
 .ui-dialog-header{white-space:nowrap;}
-.ui-dialog-close{position:relative;float:right;top:0.5rem;right:0.5rem;padding:0 0.25rem;font-size:1.5rem;line-height:1;color:#000;text-shadow:0 1px 0 #FFF;opacity:.2;filter:alpha(opacity=20);cursor:pointer;background:transparent;border:0;-webkit-appearance:none;}
+.ui-dialog-close{position:relative;float:right;top:0.75rem;right:0.75rem;padding:0 0.25rem;font-size:1.5rem;line-height:1;color:#000;text-shadow:0 1px 0 #FFF;opacity:.2;filter:alpha(opacity=20);cursor:pointer;background:transparent;border:0;-webkit-appearance:none;}
 .ui-dialog-close:hover,
 .ui-dialog-close:focus{color:#000000;text-decoration:none;cursor:pointer;outline:0;opacity:0.5;filter:alpha(opacity=50);}
 .ui-dialog-title{margin:0;line-height:1.5;min-height:1rem;padding:0.75rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:1rem;cursor:default;}
 .ui-dialog-body{padding:1.25rem;text-align:center;background-color:#fff;}
 .ui-dialog-content{display:inline-block;position:relative;vertical-align:middle;*zoom:1;*display:inline;text-align:left;width:100%;height:100%;}
+.ui-dialog-content iframe{/*display: none;*/}
 .ui-dialog-footer{padding:0.75rem;}
 .ui-dialog-statusbar{float:left;margin-right:1.25rem;padding:5px 0;line-height:1.428571429;font-size:0.875rem;color:#888;white-space:nowrap;}
 .ui-dialog-statusbar label:hover{color:#333;}
@@ -92,12 +93,15 @@
 .ui-popup-right .ui-dialog-arrow-b{margin-top:-0.5rem;top:50%;}
 .ui-popup-right-bottom .ui-dialog-arrow-a,
 .ui-popup-right-bottom .ui-dialog-arrow-b{bottom:1rem;}
-@-webkit-keyframes ui-dialog-loading{0%{-webkit-transform:rotate(0deg);} 100%{-webkit-transform:rotate(360deg);}}
-@keyframes ui-dialog-loading{0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);}}
-/*ui-loading*/
-.ui-dialog-loading{vertical-align:middle;position:relative;display:block;*zoom:1;*display:inline;overflow:hidden;width:2rem;height:2rem;top:50%;margin:0 auto 0 auto;font-size:0;text-indent:-999em;color:#666;}
-.ui-dialog-loading{width:100%\9;text-indent:0\9;line-height:2rem\9;text-align:center\9;font-size:0.75rem\9;}
-.ui-dialog-loading::after{position:absolute;content:'';width:3px;height:3px;margin:14.5px 0 0 14.5px;border-radius:100%;box-shadow:0 -10px 0 1px #ccc, 10px 0px #ccc, 0 10px #ccc, -10px 0 #ccc, -0.5rem -0.5rem 0 0.5px #ccc, 0.5rem -0.5rem 0 1.5px #ccc, 0.5rem 0.5rem #ccc, -0.5rem 0.5rem #ccc;-webkit-transform:rotate(360deg);-webkit-animation:ui-dialog-loading 1.5s infinite linear;transform:rotate(360deg);animation:ui-dialog-loading 1.5s infinite linear;display:none\9;}
+
+/*ui-dialog-loader && ui-dialog-loading*/
+.ui-dialog-loader{position:absolute;top:0;right:0;left:0;bottom:0;background-color:#fff;background-color:rgba(255,255,255,.95);}
+.ui-dialog-loading,
+.ui-dialog-loading:after{border-radius: 50%; width: 6rem; height: 6rem;}
+.ui-dialog-loading{position: absolute; top:50%;left:50%; margin-top:-3rem;margin-left:-3rem; font-size: 0.75rem; position: relative; text-indent: -9999em; border-top: 0.25rem solid rgba(0, 0, 0, 0.2); border-right: 0.25rem solid rgba(0, 0, 0, 0.2); border-bottom: 0.25rem solid rgba(0, 0, 0, 0.2); border-left: 0.25rem solid rgba(0, 0, 0, 0.4); -webkit-transform: translateZ(0); -ms-transform: translateZ(0); transform: translateZ(0); -webkit-animation: ui-dialog-loading 0.8s infinite linear; animation: ui-dialog-loading 0.8s infinite linear;}
+@-webkit-keyframes ui-dialog-loading{0%{-webkit-transform: rotate(0deg); transform: rotate(0deg);} 100%{-webkit-transform: rotate(360deg); transform: rotate(360deg);}}
+@keyframes ui-dialog-loading{0%{-webkit-transform: rotate(0deg); transform: rotate(0deg);} 100%{-webkit-transform: rotate(360deg); transform: rotate(360deg);}}
+
 /*ui-alert && ui-confirm*/
 .ui-alert .msg-icon, .ui-confirm .msg-icon{font-size:72px;display:block;text-align:center;margin-bottom:1.25rem;}
 .ui-alert .msg-content,.ui-confirm .msg-content{text-align:center;font-size:1rem;font-weight:bold;line-height:2;min-width:400px;max-width:800px;max-height:400px;overflow:auto;word-wrap:break-word;}

@@ -7,9 +7,9 @@
 
         <div class="container-fluid">
 
-            <div class="form-group row">
-                <label for="name" class="col-2 col-form-label required">{{trans('developer::controller.name.label')}}</label>
-                <div class="col-10">
+            <div class="form-group">
+                <label for="name" class="form-label required">{{trans('developer::controller.name.label')}}</label>
+                <div class="form-field">
                     {field type="text" name="name" pattern="^[a-zA-z]+$" required="required"}
 
                     @if ($errors->has('name'))
@@ -20,9 +20,9 @@
                 </div>                      
             </div>
 
-            <div class="form-group row">
-                <label for="style" class="col-2 col-form-label required">{{trans('developer::controller.style.label')}}</label>
-                <div class="col-10">
+            <div class="form-group">
+                <label for="style" class="form-label required">{{trans('developer::controller.style.label')}}</label>
+                <div class="form-field">
                     {field type="radiogroup" name="style" options="$styles" column="1" required="required"}
 
                     @if ($errors->has('style'))

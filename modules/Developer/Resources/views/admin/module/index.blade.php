@@ -15,7 +15,7 @@
     </div>
     <div class="main-body scrollable">
 
-        <table class="table table-nowrap table-sortable">
+        <table class="table table-nowrap table-hover">
             <thead>
                 <tr>
                     <td width="20%" colspan="2">{{trans('core::modules.name.label')}}</td>
@@ -69,7 +69,9 @@
                         </div>  
                     </td>
                     <td class="text-center">
-                        <a class="btn btn-primary" href="{{route('developer.module.show',$module->name)}}">{{trans('developer::module.edit')}}</a>
+                        <a class="btn btn-success" href="{{route('developer.module.show',$module->name)}}" title="{{trans('developer::module.edit')}}">
+                            <i class="fa fa-pencil fa-2x"></i>
+                        </a>
                     </td>
                 </tr>
             @endforeach

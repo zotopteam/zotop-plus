@@ -33,15 +33,29 @@
 	                } else {
 	                    number ++;
 	                }
+	                
+	                // 自定义样式
+	                if (!val.class) {
+	                	val.class = val.autofocus ? 'btn-primary' : 'btn-secondary';
+	                }
 
-	                html += '<button type="button" i-id="' + id + '" '+ (val.disabled ? " disabled" :"") + (val.autofocus ? ' autofocus  class="btn btn-primary"' :'class="btn btn-default"') +'>' + val.value + '</button>';
+	                html +=
+	                  '<button'
+	                + ' type="button"'
+	                + ' i-id="' + id + '"'
+	                + style
+	                + (val.disabled ? ' disabled' : '')
+	                + (val.autofocus ? ' autofocus ' : '')
+	                + ' class="btn ' + val.class + '" '
+	                + '>'
+	                +   val.value
+	                + '</button>';
 
 	                that._$('button').on('click', '[i-id=' + id +']', function (event) {                
 	                    var $this = $(this);
 	                    if (!$this.attr('disabled')) {// IE BUG
 	                        that._trigger(id);
-	                    }
-	                
+	                    }	                
 	                    event.preventDefault();
 	                });
 
@@ -58,11 +72,13 @@
 			text = text || '';
 
 			if (type == 'reset') {
-				this.statusbar('');
+				//this.statusbar('');
+				this._$('content').find('.ui-dialog-loader').remove();
 			}
 
 			if (type == 'loading') {
-				this.statusbar('<i class="fa fa-spinner fa-spin"></i>' + text);
+				//this.statusbar('<i class="fa fa-spinner fa-spin"></i>' + text);
+				this._$('content').append('<div class="ui-dialog-loader"><div class="ui-dialog-loading">loading……</div>')
 			}
 
 			return this;
@@ -315,7 +331,11 @@
 		loading: '操作正在执行，请稍候……',
 		confirm: '确认',
 		alert: '警告',
-		prompt: '提示'
+		prompt: '提示',
+		oniframeload : function() {
+			// this._$('content').find('iframe').show();
+			this.status('reset');
+		}
 	});
 
 }(jQuery));

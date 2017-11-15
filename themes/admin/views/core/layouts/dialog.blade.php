@@ -29,7 +29,7 @@
     <script src="{{theme::asset('lang/'.App::getLocale().'/jquery.validate.js')}}"></script>
     @endif
     <script type="text/javascript">
-    var $dialog = $.dialog().status('reset');
+    var $dialog = $.dialog();
     </script>
     @stack('js') 
 </body>

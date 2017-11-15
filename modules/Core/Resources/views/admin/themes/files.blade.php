@@ -15,9 +15,9 @@
     </div>
     <div class="main-header breadcrumb m-0">
         @if($dir == '.')
-        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra mr-3 disabled"><i class="fa fa-arrow-up"></i>上一级</a>        
+        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('core::themes.file.up')}}</a>        
         @else
-        <a href="{{route('core.themes.files',[$name,'dir'=>dirname($dir)])}}" class="breadcrumb-item breadcrumb-extra mr-3"><i class="fa fa-arrow-up fa-fw"></i>上一级</a>
+        <a href="{{route('core.themes.files',[$name,'dir'=>dirname($dir)])}}" class="breadcrumb-item breadcrumb-extra"><i class="fa fa-arrow-up fa-fw"></i>{{trans('core::themes.file.up')}}</a>
         @endif
 
         @foreach($position as $k=>$v)
@@ -32,10 +32,10 @@
         <table class="table table-hover table-nowrap">
             <thead>
                 <tr>
-                    <td colspan="2">名称</td>
-                    <td>类型</td>
-                    <td>大小</td>
-                    <td>修改时间</td>
+                    <td colspan="2">{{trans('core::themes.file.name')}}</td>
+                    <td width="15%">{{trans('core::themes.file.type')}}</td>
+                    <td width="15%">{{trans('core::themes.file.size')}}</td>
+                    <td width="15%">{{trans('core::themes.file.mtime')}}</td>
                 </tr>
             </thead>        
             <tbody>
@@ -47,16 +47,16 @@
                     <td class="name pl-2">
                         <a href="{{route('core.themes.files',[$name,'dir'=>$dir.'/'.basename($folder)])}}">{{basename($folder)}}</a>
                     </td>
-                    <td width="10%">folder</td>
-                    <td>---</td>                    
-                    <td>---</td>                    
+                    <td width="10%">{{trans('core::themes.file.type.folder')}}</td>
+                    <td></td>                    
+                    <td></td>                    
                 </tr>
                 @endforeach            
                 @foreach($files as $file)
                 <tr>
                     <td width="1%" class="icon icon-sm pr-2"><i class="fa fa-file fa-2x fa-fw text-warning"></i></td>
                     <td class="name pl-2">{{$file->getFileName()}}</td>
-                    <td width="10%">file</td>
+                    <td width="10%">{{trans('core::themes.file.type.file')}}</td>
                     <td width="10%">{{round($file->getSize()/1024,2)}} KB</td>                    
                     <td width="10%">{{date('Y-m-d H:i:s',$file->getMTime())}}</td>                    
                 </tr>            
@@ -65,7 +65,9 @@
         </table>
     </div>
     <div class="main-footer">
-        Folder:{{count($folders)}} / Files:{{count($files)}} 
+        <div class="footer-text mr-auto">{{trans('core::themes.path',[$path])}} </div>
+        <div class="footer-text ml-auto">{{trans('core::themes.folders.count',[count($folders)])}} / {{trans('core::themes.files.count',[count($files)])}}</div>
+        
     </div>
 </div>
 @endsection

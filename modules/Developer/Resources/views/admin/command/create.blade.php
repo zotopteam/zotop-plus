@@ -7,9 +7,9 @@
 
         <div class="container-fluid">
 
-            <div class="form-group row">
-                <label for="name" class="col-2 col-form-label required">{{trans('developer::command.name.label')}}</label>
-                <div class="col-10">
+            <div class="form-group">
+                <label for="name" class="form-label required">{{trans('developer::command.name.label')}}</label>
+                <div class="form-field">
                     {field type="text" name="name" pattern="^[a-zA-z]+$" required="required"}
 
                     @if ($errors->has('name'))
