@@ -3,7 +3,7 @@
 @section('content')
 <div class="main scrollable">
 
-<pre class="p-5">
+<pre class="p-5 m-0">
 // {{$prefix}} group example
 $router->group(['prefix' =>'{{$prefix}}'], function (Router $router) {
 @foreach($router as $r)

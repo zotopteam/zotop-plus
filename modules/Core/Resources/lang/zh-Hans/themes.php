@@ -11,6 +11,7 @@ return [
     'status.label'      => '状态',
     
     'path'              => '位置：:0',
+    'edit'              => '编辑：:0',
     'upload'            => '上传主题',
     'files'             => '文件管理',
     'views'             => '视图',
@@ -26,6 +27,7 @@ return [
     'files.count'       => '文件个数：:0',
     
     'file.up'           => '上一级',
+    'file.edit'         => '编辑',
     'file.name'         => '名称',
     'file.path'         => '路径',
     'file.type'         => '类型',

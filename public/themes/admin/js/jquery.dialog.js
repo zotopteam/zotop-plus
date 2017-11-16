@@ -141,12 +141,27 @@
 	 */
 	$.dialog = function (options, modal){
 
-		if ( options ){
+		if (options) {
+			// 获取模式
 			if (typeof options === "string") {
 				return top.dialog.get(options);
-			}else{
-				return top.dialog(options)[modal ? "showModal" :"show"]();
 			}
+			// modal 模式
+			if (typeof modal === 'boolean' && modal ) {
+				var dialog = top.dialog(options);
+					dialog.addEventListener('show', function () {
+						$('body').addClass('blur');
+					});					
+					dialog.addEventListener('close', function () {
+						$('body').removeClass('blur');
+					});					
+				return dialog.showModal();
+			}
+			// follow 模式
+			if (typeof modal === 'object' && modal ) {
+				return top.dialog(options).show(modal);
+			}				
+			return top.dialog(options).show();
 		}
 
 		return top.dialog.get(window);

@@ -33,19 +33,24 @@
             <thead>
                 <tr>
                     <td colspan="2">{{trans('core::themes.file.name')}}</td>
-                    <td width="15%">{{trans('core::themes.file.type')}}</td>
-                    <td width="15%">{{trans('core::themes.file.size')}}</td>
-                    <td width="15%">{{trans('core::themes.file.mtime')}}</td>
+                    <td width="12%"></td>
+                    <td width="12%">{{trans('core::themes.file.type')}}</td>
+                    <td width="12%">{{trans('core::themes.file.size')}}</td>
+                    <td width="12%">{{trans('core::themes.file.mtime')}}</td>
                 </tr>
             </thead>        
             <tbody>
                 @foreach($folders as $folder)
                 <tr data-type="folder" data-href="{{route('core.themes.files',[$name,'dir'=>$dir.'/'.basename($folder)])}}">
-                    <td width="1%" class="icon icon-sm pr-2">
-                        <a href="{{route('core.themes.files',[$name,'dir'=>$dir.'/'.basename($folder)])}}"><i class="fa fa-folder fa-2x fa-fw text-primary"></i></a>
+                    <td width="1%" class="icon icon-sm pr-1">
+                        <a href="{{route('core.themes.files',[$name,'dir'=>$dir.'/'.basename($folder)])}}">
+                            <i class="fa fa-folder fa-2x fa-fw text-primary"></i>
+                        </a>
                     </td>
                     <td class="name pl-2">
                         <a href="{{route('core.themes.files',[$name,'dir'=>$dir.'/'.basename($folder)])}}">{{basename($folder)}}</a>
+                    </td>
+                    <td>
                     </td>
                     <td width="10%">{{trans('core::themes.file.type.folder')}}</td>
                     <td></td>                    
@@ -54,11 +59,16 @@
                 @endforeach            
                 @foreach($files as $file)
                 <tr>
-                    <td width="1%" class="icon icon-sm pr-2"><i class="fa fa-file fa-2x fa-fw text-warning"></i></td>
+                    <td width="1%" class="icon icon-sm pr-1"><i class="fa fa-file fa-2x fa-fw text-warning"></i></td>
                     <td class="name pl-2">{{$file->getFileName()}}</td>
-                    <td width="10%">{{trans('core::themes.file.type.file')}}</td>
-                    <td width="10%">{{round($file->getSize()/1024,2)}} KB</td>                    
-                    <td width="10%">{{date('Y-m-d H:i:s',$file->getMTime())}}</td>                    
+                    <td class="manage text-right">
+                        <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.themes.editor',[$name,'file'=>$dir.'/'.basename($file)])}}"  data-width="80%" data-height="60%" title="{{trans('core::themes.file.edit')}}">
+                            <i class="fa fa-pencil-square fa-fw text-primary"></i>
+                        </a>                        
+                    </td>
+                    <td>{{trans('core::themes.file.type.file')}}</td>
+                    <td>{{round($file->getSize()/1024,2)}} KB</td>                    
+                    <td>{{date('Y-m-d H:i:s',$file->getMTime())}}</td>                    
                 </tr>            
                 @endforeach
             </tbody>

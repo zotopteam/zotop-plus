@@ -229,9 +229,7 @@
     ]);
 
     return $this->toHtmlString(
-        $this->view->make('core::field.datetime')
-            ->with('name', $name)->with('value', $value)->with('attrs', $attrs)->with('options', $options)
-            ->render()
+        $this->view->make('core::field.datetime')->with(compact('name', 'value', 'attrs', 'options'))->render()
     );
 });
 
@@ -274,7 +272,7 @@
         $value = reset($value);
     }
     return $this->toHtmlString(
-        $this->view->make('core::field.radiogroup')->with('name', $name)->with('value', $value)->with('column', $column)->with('options', $options)->with('class', $class)->render()
+        $this->view->make('core::field.radiogroup')->with(compact('name', 'value', 'column', 'options', 'class'))->render()
     );
 });
 
@@ -312,6 +310,33 @@
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'checkboxgroup-default');
     return $this->toHtmlString(
-        $this->view->make('core::field.checkboxgroup')->with('name', $name)->with('value', $value)->with('column', $column)->with('options', $options)->with('class', $class)->render()
+        $this->view->make('core::field.checkboxgroup')->with(compact('name', 'value', 'column', 'options', 'class'))->render()
+    );
+});
+
+/**
+ * 代码编辑器
+ */
+\Form::macro('code', function($attrs){
+    $value   = $this->getValue($attrs, []);
+    $name    = $this->getAttribute($attrs, 'name');
+    $options = $this->getAttribute($attrs, 'options',  [
+        'width'         => $this->getAttribute($attrs, 'width', '100%'),
+        'height'        => $this->getAttribute($attrs, 'height', '600'),
+        'mode'          => $this->getAttribute($attrs, 'mode', 'text/html'),
+        'watch'         => $this->getAttribute($attrs, 'watch', false),
+        'toolbar'       => $this->getAttribute($attrs, 'toolbar', false),
+        'codeFold'      => $this->getAttribute($attrs, 'codeFold', true),
+        'searchReplace' => $this->getAttribute($attrs, 'searchReplace', true),
+        'theme'         => $this->getAttribute($attrs, 'theme','default'),
+        'path'          => \Module::asset('core:editormd/lib').'/',
+    ]);
+
+    if ($options['height'] == 'auto') {
+        $options['autoHeight'] = true;
+    }
+
+    return $this->toHtmlString(
+        $this->view->make('core::field.code')->with(compact('name', 'value', 'options'))->render()
     );
 });

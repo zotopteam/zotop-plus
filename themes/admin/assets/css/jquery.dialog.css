@@ -6,6 +6,7 @@
  * This is licensed under the GNU LGPL, version 2.1 or later.
  * For details, see:http://www.gnu.org/licenses/lgpl-2.1.html
  */
+body.blur > *:not(.ui-popup){filter: blur(1.5px);overflow:hidden;transition:all 0.1s;}
 .ui-dialog{*zoom:1;_float:left;position:relative;border:0px solid #d0d0d0;border-radius:0.25rem;overflow:hidden;outline:0;background-clip:padding-box;font-size:0.875rem;line-height:1.428571429;color:#333;opacity:0;transition:all 0.1s ease-in-out;/*transform:scale(0);transition:transform .15s ease-in-out, opacity .15s ease-in-out;*/}
 .ui-popup-show .ui-dialog{opacity:1;/*transform:scale(1);*/}
 .ui-popup-focus .ui-dialog{box-shadow:0 0 0.5rem rgba(0, 0, 0, 0.1);}

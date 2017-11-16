@@ -73,6 +73,7 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
     $router->group(['prefix' =>'themes'], function (Router $router) {
         $router->get('index/{type?}','ThemesController@index')->name('core.themes.index')->middleware('allow:core.themes.index');
         $router->get('files/{name}','ThemesController@files')->name('core.themes.files')->middleware('allow:core.themes.files');
+        $router->any('editor/{name?}','ThemesController@editor')->name('core.themes.editor')->middleware('allow:core.themes.editor');
         $router->any('publish/{name?}','ThemesController@publish')->name('core.themes.publish')->middleware('allow:core.themes.publish');
         $router->any('upload','ThemesController@upload')->name('core.themes.upload')->middleware('allow:core.themes.upload');
     });    

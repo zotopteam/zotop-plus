@@ -36,7 +36,7 @@
 
     <script type="text/javascript">
     $(function(){
-        $("#upload-image-{{$name}}").upload_image({!!json_encode($options)!!});
+        $("#upload-image-{{$name}}").upload_image({!! json_encode($options) !!});
     });
     </script>
 @endpush

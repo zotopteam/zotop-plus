@@ -13,5 +13,5 @@ return [
     'edit'           => '编辑',
     'delete'         => '删除',
     'delete.confirm' => '您确定要删除 [ :0 ] 吗？',
-    'delete.disable' => '清闲删除下级数据',
+    'delete.disable' => '尚有下级区域，如需删除，请先删除下级区域',
 ];
