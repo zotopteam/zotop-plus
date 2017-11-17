@@ -137,7 +137,7 @@ $(function(){
         var method  = $(this).data('method') || 'POST';
 
         var $dialog = $.confirm(confirm,function(){
-            $dialog.status('loading');
+            $dialog.loading(true);
             $.ajax({url:href,type:method,dataType:'json',success:function(msg){
                 $dialog.close().remove();
                 $.msg(msg);
@@ -157,7 +157,7 @@ $(function(){
         var method  = $(this).data('method') || 'DELETE';
 
         var $dialog = $.confirm(confirm,function(){
-            $dialog.status('loading');
+            $dialog.loading(true);
             $.ajax({url:href,type:method,dataType:'json',success:function(msg){
                 $dialog.close().remove();
                 $.msg(msg);
@@ -182,8 +182,11 @@ $(function(){
             height:height,
             ok:$.noop,
             cancel:$.noop,
+            oniframeload: function() {
+                this.loading(false);
+            },
             opener:window
-        },true).status('loading');
+        },true).loading(true);
 
         event.stopPropagation();
     });
@@ -205,18 +208,18 @@ $(function(){
                 input.select();
                 input.focus();
             }else{              
-                $dialog.status('loading');
+                $dialog.loading(true);
                 $.post(href,{newvalue:newvalue},function(msg){
                     if( msg.state ){
                         $dialog.close().remove();
                     }else{
-                        $dialog.statusbar('reset');
+                        $dialog.loading(false);
                     }
                     $.msg(msg);
                 },'json').fail(function(jqXHR){
                     input.select();
                     input.focus();
-                    $dialog.status('reset');
+                    $dialog.loading(false);
                     $.error(jqXHR.responseJSON.newvalue[0]);
                 });
             }

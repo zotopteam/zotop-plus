@@ -1,28 +1,28 @@
 @extends('core::layouts.master')
 
 @section('content')
-    <div class="d-flex full-height">        
-                
-        <div class="jumbotron bg-primary text-white full-width align-self-center text-center pos-r">           
+    <div class="d-flex full-height">
+
+		<div class="jumbotron bg-primary text-white full-width align-self-center text-center pos-r">
             <h1>{{config('app.name')}}</h1>
             <p>{{config('app.description')}}</p>
             <div class="p-3">
                 <a href="{{config('app.homepage')}}" class="btn btn-outline text-white" target="_blank">
                     <i class="fa fa-globe fa-fw"></i> Homepage
                 </a>
-                &nbsp;
+
                 <a href="javascript:;" class="btn btn-outline text-white" target="_blank">
                     <i class="fa fa-circle-o fa-fw"></i> {{config('app.version')}}
                 </a>
-                &nbsp;
+
                 <a href="{{config('app.github')}}" class="btn btn-outline text-white" target="_blank">
                     <i class="fa fa-github fa-fw"></i> Github
                 </a>
-                &nbsp;
+
                 <a href="{{config('app.document')}}" class="btn btn-outline text-white" target="_blank">
                     <i class="fa fa-book fa-fw"></i> Document
-                </a>                
-                &nbsp;
+                </a>
+
                 <a href="{{config('app.help')}}" class="btn btn-outline text-white" target="_blank">
                     <i class="fa fa-question-circle fa-fw"></i> Help
                 </a>
@@ -36,7 +36,7 @@
                     <use xlink:href="#gentle-wave" x="50" y="3" fill="rgba(255,255,255,.5)"></use>
                     <use xlink:href="#gentle-wave" x="50" y="6" fill="rgba(255,255,255,.5)"></use>
                 </g>
-            </svg>             
+            </svg>
         </div>
 
     </div>

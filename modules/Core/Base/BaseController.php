@@ -5,11 +5,13 @@ namespace Modules\Core\Base;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Carbon;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Module;
 use Theme;
+use Filter;
 
 class BaseController extends Controller
 {
@@ -170,9 +172,15 @@ class BaseController extends Controller
     protected function setLocaleLanguage()
     {
         if ( $this->locale ) {
-            // 设置默认语言       
-            $this->app->setLocale($this->locale);
-        }
+            $this->app->setLocale($this->locale);            
+        } else {
+            $this->locale = $this->app->getLocale();
+        } 
+
+        // Carbon 语言转换
+        $locales = Filter::fire('carbon.locale.transform',['zh-Hans'=>'zh','zh-Hant'=>'zh_TW']);
+        $locale  = isset($locales[$this->locale]) ? $locales[$this->locale] : $this->locale;
+        Carbon::setLocale($locale);
     }
 
 

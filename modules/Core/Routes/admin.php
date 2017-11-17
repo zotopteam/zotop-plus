@@ -73,10 +73,19 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
     $router->group(['prefix' =>'themes'], function (Router $router) {
         $router->get('index/{type?}','ThemesController@index')->name('core.themes.index')->middleware('allow:core.themes.index');
         $router->get('files/{name}','ThemesController@files')->name('core.themes.files')->middleware('allow:core.themes.files');
-        $router->any('editor/{name?}','ThemesController@editor')->name('core.themes.editor')->middleware('allow:core.themes.editor');
         $router->any('publish/{name?}','ThemesController@publish')->name('core.themes.publish')->middleware('allow:core.themes.publish');
         $router->any('upload','ThemesController@upload')->name('core.themes.upload')->middleware('allow:core.themes.upload');
-    });    
+    });
+
+    // themes group example
+    $router->group(['prefix' =>'file'], function (Router $router) {
+        $router->any('editor','FileController@editor')->name('core.file.editor')->middleware('allow:core.file.editor');
+        $router->any('create','FileController@create')->name('core.file.create')->middleware('allow:core.file.create');
+        $router->any('delete','FileController@delete')->name('core.file.delete')->middleware('allow:core.file.delete');
+        $router->any('copy','FileController@copy')->name('core.file.copy')->middleware('allow:core.file.copy');
+        $router->any('rename','FileController@rename')->name('core.file.rename')->middleware('allow:core.file.rename');
+        $router->any('upload/{type?}','FileController@upload')->name('core.file.upload')->middleware('allow:core.file.upload');
+    });      
 
     // Plupload 模块后台路由
     $router->group(['prefix' =>'plupload'], function (Router $router) {

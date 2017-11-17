@@ -1,5 +1,4 @@
 <?php
-
 if (! function_exists('preview')) {
     /**
      * 预览图片
@@ -82,5 +81,20 @@ if (! function_exists('module')) {
         }
 
         return $moduleName ? $modules[$moduleName] : $modules;        
+    }
+}
+
+if (! function_exists('path_base')) {
+    /**
+     * 将完整路径转化为base路径，base_path的反向函数
+     * 
+     * @param  string $path 路径
+     * @return string 转换后路径
+     */
+    function path_base($path)
+    {
+        $path = str_after($path, app()->basePath());
+        $path = str_replace('\\', '/', $path);
+        return $path;
     }
 }

@@ -35,6 +35,18 @@
     return $data;
 });
 
+/**
+ * 扩展File::mime方法, 获取文件类型audio/avi，text/xml 斜杠前面部分  
+ */
+\File::macro('mime', function($file) {
+    
+    if ($mimeType = static::mimeType($file)) {
+        list($mime, $type) = explode('/', $mimeType);
+        return $mime;
+    }
+
+    return null;
+});
 
 /**
  * 全局导航

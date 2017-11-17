@@ -137,8 +137,8 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .table>tbody>tr>th.condensed,.table>tbody>tr>td.condensed{padding-left:0.5rem;padding-right:0.5rem;}
 .table>tbody>tr>th.datetime,.table>tbody>tr>td.datetime{width:180px;}
 
-.table>tbody>tr .hover-show{visibility:hidden;}
-.table>tbody>tr:hover .hover-show{visibility:visible;}
+.table>tbody>tr .d-hover{visibility:hidden;}
+.table>tbody>tr:hover .d-hover{visibility:visible;}
 
 .table-fixed{table-layout:fixed;}
 .table-nowrap>thead>tr>th,.table-nowrap>tbody>tr>th,.table-nowrap>tfoot>tr>th,.table-nowrap>thead>tr>td,.table-nowrap>tbody>tr>td,.table-nowrap>tfoot>tr>td{white-space:nowrap;}

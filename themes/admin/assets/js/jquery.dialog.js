@@ -7,11 +7,11 @@
 	/*
 	 * 修改button 及 扩展shake摇头方法
 	*/
-	$.extend(dialog.create.prototype,{
+	$.extend(dialog.prototype, {
 		find: function(e){
 			return this._popup.find(e);
 		},		
-		button:function(args, callback) {
+		button:function(args) {
 	        args = args || [];
 	        var that = this;
 	        var html = '';
@@ -67,18 +67,20 @@
 
 	        return this;            
 		},
-		status: function(type, text) {
-
-			text = text || '';
-
-			if (type == 'reset') {
-				//this.statusbar('');
-				this._$('content').find('.ui-dialog-loader').remove();
+		callback: function(button_id, callback) {
+			if (typeof callback == 'function') {
+				this.callbacks[button_id] = callback;
+			} else {
+				this.callbacks[button_id]();
 			}
-
-			if (type == 'loading') {
-				//this.statusbar('<i class="fa fa-spinner fa-spin"></i>' + text);
+			return this;			
+		},
+		loading: function(loading) {
+			
+			if (loading) {
 				this._$('content').append('<div class="ui-dialog-loader"><div class="ui-dialog-loading">loading……</div>')
+			} else {
+				this._$('content').find('.ui-dialog-loader').remove();
 			}
 
 			return this;
@@ -242,7 +244,7 @@
 	 *
 	 */
 	$.loading = function(content){
-		return $.msg({state: 'loading',	time: 100000, content: content || dialog.defaults.loading});
+		return $.msg({state: 'loading',	time: 100000, content: content || dialog.defaults.loadingText});
 	}
 
 	/**
@@ -276,7 +278,7 @@
 			skin: 'ui-prompt',
 			fixed: true,
 			padding:'30px 50px',
-			title: dialog.defaults.prompt,
+			title: dialog.defaults.promptText,
 			content: function(){
 
 				var field = '<input type="text" class="form-control" value="'+ ( value || '') +'"/>';
@@ -312,10 +314,10 @@
 			skin: 'ui-confirm',
 			fixed: true,
 			padding:'30px 80px',
-			title: dialog.defaults.confirm,
+			title: dialog.defaults.confirmText,
 			content: '<b class="msg-icon fa fa-question-circle"></b><div class="msg-content">'+content+'</div>',
 			ok: ok,
-			cancel: cancel || function(){}
+			cancel: cancel || $.noop
 		},true);
 	};
 
@@ -330,7 +332,7 @@
 			skin: 'ui-alert',
 			fixed: true,
 			padding:'30px 80px',
-			title: dialog.defaults.alert,
+			title: dialog.defaults.alertText,
 			content: '<b class="msg-icon fa fa-warning"></b><div class="msg-content">'+content+'</div>',
 			ok: true,
 			onclose: callback
@@ -343,14 +345,10 @@
 		backdropOpacity:.2,
 		okValue: '确认',    
 		cancelValue: '取消',
-		loading: '操作正在执行，请稍候……',
-		confirm: '确认',
-		alert: '警告',
-		prompt: '提示',
-		oniframeload : function() {
-			// this._$('content').find('iframe').show();
-			this.status('reset');
-		}
+		loadingText: '操作正在执行，请稍候……',
+		confirmText: '确认',
+		alertText: '警告',
+		promptText: '提示'
 	});
 
 }(jQuery));

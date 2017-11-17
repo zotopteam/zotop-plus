@@ -80,28 +80,7 @@ class ThemesController extends AdminController
         $this->title    = trans('core::themes.files');
 
         return $this->view()->with('theme',$theme);
-    }
-
-    /**
-     * 文件编辑器
-     * 
-     * @param  Request $request [description]
-     * @param  string  $name    模型名称
-     * @return mixed
-     */
-    public function editor(Request $request, $name)
-    {
-        $theme          = Theme::find($name);
-        
-        $this->name    = $name;
-        $this->file    = $request->input('file');
-        $this->path    = realpath($theme->path.DIRECTORY_SEPARATOR.$this->file);
-        $this->title   = trans('core::themes.file.edit');
-        
-        $this->content = File::get($this->path);
-
-        return $this->view()->with('theme',$theme);
-    }    
+    }  
 
     /**
      * 资源发布

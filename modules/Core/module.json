@@ -18,13 +18,15 @@
         "Modules\\Core\\Providers\\ThemeServiceProvider",
         "Modules\\Core\\Providers\\ViewServiceProvider",
         "Modules\\Core\\Providers\\FormServiceProvider",
+        "Modules\\Core\\Providers\\FormatServiceProvider",
         "JildertMiedema\\LaravelPlupload\\LaravelPluploadServiceProvider"
     ],
     "aliases": {
         "Plupload": "JildertMiedema\\LaravelPlupload\\Facades\\Plupload",
-        "Action": "Modules\\Core\\Hook\\ActionFacade",
-        "Filter": "Modules\\Core\\Hook\\FilterFacade",
-        "Theme": "Modules\\Core\\Theme\\ThemeFacade"
+        "Format": "Modules\\Core\\Support\\Facades\\Format",
+        "Action": "Modules\\Core\\Hook\\Facades\\Action",
+        "Filter": "Modules\\Core\\Hook\\Facades\\Filter",
+        "Theme": "Modules\\Core\\Theme\\Facades\\Theme"
     },
     "files": [
         "start.php",

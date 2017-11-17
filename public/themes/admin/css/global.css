@@ -94,6 +94,10 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .text-md{font-size:1rem;}
 .text-lg{font-size:1.25rem;}
 
+.image{overflow:hidden;}
+.image img{width:100%;transition: all .5s ease-in-out;}
+.image-scale:hover img {transform: scale(1.25);}
+
 .label{display:inline;padding:.25rem .75rem;font-size:85%;font-weight: normal;color:#ffffff;text-align:center;white-space:nowrap;border-radius:.25rem;}
 .label.label-xs{padding:0.25rem 0.25rem;font-size:75%;}
 .label.label-sm{padding:0.25rem 0.5rem;font-size:75%;}
@@ -123,6 +127,9 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .manage{}
 .manage-item:hover,.manage-item:focus{text-decoration:none;outline:0 none;}
 .manage-item+.manage-item::before{display:inline-block;padding-right:.5rem;padding-left:.5rem;color:#dddddd;content:"|";}
+.manage-hover{}
+.manage-hover .manage-item{visibility:hidden;}
+.manage-hover:hover .manage-item{visibility:visible;}
 
 .table-responsive{border:0 none;}
 
@@ -139,19 +146,22 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 
 .table>tbody>tr>td hr{margin:0.5rem 0;}
 .table>tbody>tr>td .title{font-size:1.25rem;}
+.table>tbody>tr>td .image{margin:0.25rem;}
 .table>tbody>tr>td .title>span{font-size:0.875rem;color:#666;font-weight:normal;}
 .table>tbody>tr>td .content{font-size:0.875rem;margin-top:0.5rem;margin-bottom:0.5rem;}
 .table>tbody>tr>td .description{font-size:12px;color:#999;margin-top:0.25rem;}
 .table>tbody>tr>td .manage{font-size:0.875rem;margin-top:0.25rem;}
 
-.table>tbody>tr>td.manage{font-size:0.875rem;}
+.table>tbody>tr>td.manage{font-size:1rem;}
+.table>tbody>tr>td.manage .manage-item{padding:.5rem 0;}
 
 .table>tbody>tr>th.select,.table>tbody>tr>td.select{width:30.5rem;text-align:center;}
 .table>tbody>tr>th.condensed,.table>tbody>tr>td.condensed{padding-left:0.5rem;padding-right:0.5rem;}
 .table>tbody>tr>th.datetime,.table>tbody>tr>td.datetime{width:180px;}
 
-.table>tbody>tr .hover-show{visibility:hidden;}
-.table>tbody>tr:hover .hover-show{visibility:visible;}
+.table>tbody>tr .d-hover{visibility:hidden;}
+.table>tbody>tr:hover .d-hover{visibility:visible;}
+.table>tbody>tr:hover .manage-hover .manage-item{visibility:visible;}
 
 .table-fixed{table-layout:fixed;}
 .table-nowrap>thead>tr>th,.table-nowrap>tbody>tr>th,.table-nowrap>tfoot>tr>th,.table-nowrap>thead>tr>td,.table-nowrap>tbody>tr>td,.table-nowrap>tfoot>tr>td{white-space:nowrap;}
