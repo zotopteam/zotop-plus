@@ -69,7 +69,7 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->post('delete/{name}','ModulesController@delete')->name('core.modules.delete')->middleware('allow:core.modules.delete');                 
     });
 
-    // themes group example
+    // 主题管理
     $router->group(['prefix' =>'themes'], function (Router $router) {
         $router->get('index/{type?}','ThemesController@index')->name('core.themes.index')->middleware('allow:core.themes.index');
         $router->get('files/{name}','ThemesController@files')->name('core.themes.files')->middleware('allow:core.themes.files');
@@ -77,7 +77,7 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->any('upload','ThemesController@upload')->name('core.themes.upload')->middleware('allow:core.themes.upload');
     });
 
-    // themes group example
+    // 文件管理
     $router->group(['prefix' =>'file'], function (Router $router) {
         $router->any('editor','FileController@editor')->name('core.file.editor')->middleware('allow:core.file.editor');
         $router->any('create','FileController@create')->name('core.file.create')->middleware('allow:core.file.create');
@@ -85,8 +85,14 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->any('copy','FileController@copy')->name('core.file.copy')->middleware('allow:core.file.copy');
         $router->any('rename','FileController@rename')->name('core.file.rename')->middleware('allow:core.file.rename');
         $router->any('upload/{type?}','FileController@upload')->name('core.file.upload')->middleware('allow:core.file.upload');
-    });      
+    });
 
+    // 文件夹
+    $router->group(['prefix' =>'folder'], function (Router $router) {
+        $router->any('create','FolderController@create')->name('core.folder.create')->middleware('allow:core.folder.create');
+        $router->any('delete','FolderController@delete')->name('core.folder.delete')->middleware('allow:core.folder.delete');
+        $router->any('rename','FolderController@rename')->name('core.folder.rename')->middleware('allow:core.folder.rename');
+    });  
     // Plupload 模块后台路由
     $router->group(['prefix' =>'plupload'], function (Router $router) {
         

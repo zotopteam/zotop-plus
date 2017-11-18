@@ -13,6 +13,9 @@
             <a href="javascript:;" class="btn btn-primary js-prompt" data-url="{{route('core.file.create',['path'=>path_base($path)])}}" data-prompt="{{trans('core::file.name')}}" data-value="">
                 <i class="fa fa-file fa-fw"></i> {{trans('core::file.create')}}
             </a>
+            <a href="javascript:;" class="btn btn-primary js-prompt" data-url="{{route('core.folder.create',['path'=>path_base($path)])}}" data-prompt="{{trans('core::folder.name')}}" data-value="">
+                <i class="fa fa-folder fa-fw"></i> {{trans('core::folder.create')}}
+            </a>            
         </div>           
     </div>
     <div class="main-header breadcrumb m-0">
@@ -52,7 +55,14 @@
                     <td class="name pl-2">
                         <a href="{{route('core.themes.files',[$name,'dir'=>$dir.'/'.basename($folder)])}}">{{basename($folder)}}</a>
                     </td>
-                    <td>
+                    <td class="manage manage-hover text-right">
+                        <a href="javascript:;" class="manage-item js-prompt" data-url="{{route('core.folder.rename',['folder'=>path_base($folder)])}}" data-prompt="{{trans('core::folder.name')}}" data-value="{{basename($folder)}}">
+                            <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::folder.rename')}}
+                        </a>
+
+                        <a href="javascript:;" class="manage-item js-delete" data-url="{{route('core.folder.delete',['folder'=>path_base($folder)])}}">
+                            <i class="fa fa-trash fa-fw text-primary"></i> {{trans('core::folder.delete')}}
+                        </a>                        
                     </td>
                     <td width="10%">{{trans('core::folder.type')}}</td>
                     <td></td>                    

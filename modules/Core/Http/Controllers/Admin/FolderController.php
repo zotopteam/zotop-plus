@@ -9,38 +9,11 @@ use Artisan;
 use File;
 use Plupload;
 
-class FileController extends AdminController
+class FolderController extends AdminController
 {
-    /**
-     * 文件编辑器
-     * 
-     * @param  Request $request
-     * @param  string  $name    模型名称
-     * @return mixed
-     */
-    public function editor(Request $request)
-    {
-        $this->file    = $request->input('file');
-        $this->path    = base_path($this->file);
-
-        // 保存数据
-        if ($request->isMethod('POST')) {
-
-            File::put($this->path, $request->input('content'));
-
-            return $this->success(trans('core::master.saved'));
-        }        
-        
-
-        $this->title   = trans('core::file.edit');        
-        $this->content = File::get($this->path);
-        $this->mode    = File::extension($this->path);
-
-        return $this->view();
-    }
 
     /**
-     * 新建文件
+     * 新建文件夹
      * 
      * @param  Request $request
      * @return mixed
@@ -56,21 +29,16 @@ class FileController extends AdminController
             $newname = $request->input('newvalue');
 
             if (empty($newname)) {
-                return $this->error(trans('core::file.name.required'));
-            }
-
-            if (!strpos($newname,'.')) {
-                return $this->error(trans('core::file.extension.required'));
+                return $this->error(trans('core::folder.name.required'));
             }
 
             $newpath = $this->path.'/'.$newname;
-            $content = $newname;
 
             if (File::exists($newpath)) {
-                return $this->error(trans('core::file.existed', [$newname]));
+                return $this->error(trans('core::folder.existed', [$newname]));
             }
 
-            if (File::put($newpath, $content)) {
+            if (File::makeDirectory($newpath)) {
                 return $this->success(trans('core::master.operated'), $request->referer());
             }
             return $this->error(trans('core::master.operate.failed'));            
@@ -86,8 +54,8 @@ class FileController extends AdminController
      */
     public function rename(Request $request)
     {
-        $this->file    = $request->input('file');
-        $this->path    = base_path($this->file);
+        $this->folder = $request->input('folder');
+        $this->path   = base_path($this->folder);
 
         // 保存数据
         if ($request->isMethod('POST')) {
@@ -95,20 +63,16 @@ class FileController extends AdminController
             $newname = $request->input('newvalue');
 
             if (empty($newname)) {
-                return $this->error(trans('core::file.name.required'));
-            }
-
-            if (!strpos($newname,'.')) {
-                $newname = $newname.'.'.File::extension($this->path);
+                return $this->error(trans('core::folder.name.required'));
             }
 
             $newpath = dirname($this->path).'/'.$newname;
 
             if (File::exists($newpath)) {
-                return $this->error(trans('core::file.existed', [$newname]));
+                return $this->error(trans('core::folder.existed', [$newname]));
             }
 
-            if (File::move($this->path, $newpath)) {
+            if (File::moveDirectory($this->path, $newpath)) {
                 return $this->success(trans('core::master.operated'), $request->referer());
             }
             return $this->error(trans('core::master.operate.failed'));            
@@ -123,13 +87,17 @@ class FileController extends AdminController
      */
     public function delete(Request $request)
     {
-        $this->file    = $request->input('file');
-        $this->path    = base_path($this->file);
+        $this->folder = $request->input('folder');
+        $this->path   = base_path($this->folder);
 
         // 保存数据
         if ($request->isMethod('DELETE')) {
 
-            if (File::delete($this->path)) {
+            if (File::files($this->path) || File::directories($this->path)) {
+                return $this->error(trans('core::folder.delete.notempty', [basename($this->path)]));
+            }
+
+            if (File::deleteDirectory($this->path)) {
                 return $this->success(trans('core::master.deleted'), $request->referer());
             }
             return $this->error(trans('core::master.deleted.failed'));            
