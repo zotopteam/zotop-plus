@@ -231,6 +231,15 @@ $(function(){
         event.stopPropagation();
     });
 
+    $(document).on('click', 'a.js-image', function(event){
+        event.preventDefault();
+
+        var url   = $(this).data('url');
+        var title = $(this).data('title');
+        var $dialog = $.image(url, title);
+
+        event.stopPropagation();
+    });
 })
 
 

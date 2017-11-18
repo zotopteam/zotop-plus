@@ -339,6 +339,26 @@
 		});
 	};
 
+	/**
+	 * 警告
+	 * @param   {String, HTMLElement}   消息内容
+	 * @param   {Function}              (可选) 回调函数
+	 */
+	$.image = function(url, title, width, height) {
+		return $.dialog({
+			id: 'Image',
+			skin: 'ui-image',
+			width: (width || '50%'),
+			height: (height || '50%'),
+			fixed: true,
+			padding: 0,
+			title: title,
+			quickClose:true,
+			content: '<div class="image bg-image-preview"><img src="'+url+'" /></div>',
+			ok:true
+		}, true);
+	};
+
 	$.extend(dialog.defaults, {
 		cssUri : '',
 		padding:0,

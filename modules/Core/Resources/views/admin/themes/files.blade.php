@@ -72,7 +72,7 @@
                     <td class="manage manage-hover text-right">
                         @switch(File::mime($file))
                             @case('image')
-                                <a href="javascript:;" class="manage-item js-open" data-width="80%" data-height="60%">
+                                <a href="javascript:;" class="manage-item js-image" data-url="{{preview($file)}}" data-title="{{$file->getFileName()}}">
                                     <i class="fa fa-eye fa-fw text-primary"></i> {{trans('core::file.view')}}
                                 </a>
                                 @break
@@ -96,7 +96,7 @@
                     </td>
                     <td>{{trans('core::file.type.'.File::mime($file))}}</td>
                     <td>{{Format::size(File::size($file))}}</td>             
-                    <td>{{Format::date(File::lastModified($file),'Y-m-d')}}</td>                    
+                    <td>{{Format::date(File::lastModified($file),'datetime')}}</td>                    
                 </tr>            
                 @endforeach
             </tbody>
