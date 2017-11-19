@@ -289,6 +289,22 @@
 });
 
 /**
+ * 是/否 开关
+ */
+\Form::macro('toggle', function($attrs) {
+    $name = $this->getAttribute($attrs, 'name');
+    $value = $this->getAttribute($attrs, 'value', 1);
+    
+    $checked = $this->getAttribute($attrs, 'checked');
+    $checked = in_array(strtolower($checked), ['checked','true']) ? true : null;
+
+    $class = $this->getAttribute($attrs, 'class');
+    $class = trim('toggle '.$class);
+
+    return $this->checkbox($name, 1, $checked, compact('class'));
+});
+
+/**
  * 是/否
  */
 \Form::macro('bool', function($attrs) {

@@ -60,8 +60,8 @@ return [
     'key.help'                => '更改后将退出系统并需要重新登录', 
     'debug.label'             => '调试模式',
     'debug.help'              => '',
-    'admin_prefix.label'      => '后台URL',
-    'admin_prefix.help'       => '更改后将改变系统后台的URL地址，默认为：admin',  
+    'admin_prefix.label'      => '后台前缀',
+    'admin_prefix.help'       => '更改后将改变系统后台的URL地址前缀，默认为：admin',  
     
     'safe.log'                => '系统日志',
     'log.label'               => '日志模式',

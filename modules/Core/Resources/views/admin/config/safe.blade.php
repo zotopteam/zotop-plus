@@ -31,9 +31,9 @@
             </div>
 
             <div class="form-group row">
-                <label for="debug" class="col-2 col-form-label required">{{trans('core::config.debug.label')}}</label>
+                <label for="debug" class="col-2 col-form-label">{{trans('core::config.debug.label')}}</label>
                 <div class="col-8">
-                    {field type="bool" name="debug" required="required"}
+                    {field type="toggle" name="debug"}
                     
                     @if ($errors->has('debug'))
                     <span class="form-help text-error">{{ $errors->first('debug') }}</span>

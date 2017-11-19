@@ -215,11 +215,12 @@ label.check input[type=radio]:checked + .card{border-color:#66bb00;position:rela
 label.check input[type=radio]:checked + .card:before{content:"";width:0;height:0;border-top:40px solid #66bb00;border-left:40px solid transparent;position:absolute;display:block;right:0;top:0;z-index:1;}
 label.check input[type=radio]:checked + .card:after{content:"\f00c";position:absolute;top:4px;right:4px;color:#fff;font:normal normal normal 16px/1 FontAwesome;z-index:2;}
 
-label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 1px * 2);padding-bottom:calc(.5rem - 1px * 2);padding-right:1rem;}
+label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 1px * 3);padding-bottom:calc(.5rem - 1px * 3);padding-right:1rem;}
 
 
 /*checkbox radio*/
-[type=checkbox],[type=radio] {display:inline-block;font-family:fontAwesome;font-size:1rem;background:transparent;width:auto;min-width:1rem;clear:none;cursor:pointer;vertical-align:middle;outline:0;border: 0 none;-webkit-appearance:none;transition:all 0.5s}
+[type=checkbox],[type=radio] {display:inline-block;font-family:fontAwesome;font-size:1.2rem;color:#666;background-color:transparent;width:auto;min-width:1.2rem;clear:none;cursor:pointer;vertical-align:middle;outline:0;border: 0 none;appearance:none;-webkit-appearance:none;-moz-appearance:none;transition:all 0.5s}
+[type=checkbox]:focus,[type=radio]:focus{background-color:transparent;}
 [type=radio]{margin-top:0rem;}
 [type=radio]:before{content:'\f10c';}
 [type=radio]:checked:before{content:'\f192';color:#0072c6;}
@@ -230,6 +231,10 @@ label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 1px * 2);padd
 [type=checkbox]:disabled:checked:before,[type=radio]:disabled:checked:before{color:#ccc;}
 [type=checkbox]+span,[type=radio]+span{vertical-align:middle;}
 [type=checkbox]:checked+span,[type=radio]:checked+span{color:#0072c6;}
+
+.toggle[type=checkbox]{font-size:1.8rem;}
+.toggle[type=checkbox]:before{content:'\f204';}
+.toggle[type=checkbox]:checked:before{content:'\f205';color:#00bc3e;} 
 
 input,button,select,textarea,input:focus,button:focus,select:focus,textarea:focus{outline:0 none !important;}
 textarea{resize:none;}
