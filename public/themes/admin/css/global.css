@@ -219,16 +219,17 @@ label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 1px * 2);padd
 
 
 /*checkbox radio*/
-input[type=checkbox],input[type=radio]{position:static!important;border:1px solid #bbb;border:0 none\0;border-radius:3px;background:#fff;color:#555;clear:none;cursor:pointer;display:inline-block;line-height:0;height:1rem;width:1rem;min-width:1rem;margin:-3px 3px 0 0;outline:0;padding:0!important;text-align:center;vertical-align:middle;-webkit-appearance:none;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);box-shadow:inset 0 1px 2px rgba(0,0,0,.1);-webkit-transition:.05s border-color ease-in-out;transition:.05s border-color ease-in-out}
-input[type=radio]{-webkit-border-radius:50%;border-radius:50%;margin-2px 2px 0 0;line-height:10px}
-input[type=checkbox]:checked{background:#0072c6;border:solid 1px #0072c6;}
-input[type=checkbox]:checked:before,input[type=radio]:checked:before{float:left;display:inline-block;vertical-align:middle;width:1rem;font:normal 12px/1 FontAwesome;speak:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-input[type=checkbox]:checked:before{content:'\f00c';margin:1px 0 0 -1px;color:#fff;}
-input[type=radio]:checked{border-color:#0072c6;}
-input[type=radio]:checked:before{content:'\2022';text-indent:-9999px;-webkit-border-radius:50px;border-radius:50px;font-size:24px;width:6px;height:6px;margin:4px;line-height:1rem;background-color:#0072c6;}
-input[type=checkbox]:disabled,input[type=radio]:disabled{border-color:#d8d8d8;background-color:#ebebeb;}
-input[type=checkbox]:disabled:checked:before,input[type=radio]:disabled:checked:before{color:#ccc;}
-input[type=checkbox]:checked+span,input[type=radio]:checked+span{color:#0072c6;}
+[type=checkbox],[type=radio] {display:inline-block;font-family:fontAwesome;font-size:1rem;background:transparent;width:auto;min-width:1rem;clear:none;cursor:pointer;vertical-align:middle;outline:0;border: 0 none;-webkit-appearance:none;transition:all 0.5s}
+[type=radio]{margin-top:0rem;}
+[type=radio]:before{content:'\f10c';}
+[type=radio]:checked:before{content:'\f192';color:#0072c6;}
+[type=checkbox]{margin-top:.1rem;}
+[type=checkbox]:before{content:'\f096';}
+[type=checkbox]:checked:before{content:'\f14a';color:#0072c6;} 
+[type=checkbox]:disabled,[type=radio]:disabled{border-color:#d8d8d8;background-color:#ebebeb;}
+[type=checkbox]:disabled:checked:before,[type=radio]:disabled:checked:before{color:#ccc;}
+[type=checkbox]+span,[type=radio]+span{vertical-align:middle;}
+[type=checkbox]:checked+span,[type=radio]:checked+span{color:#0072c6;}
 
 input,button,select,textarea,input:focus,button:focus,select:focus,textarea:focus{outline:0 none !important;}
 textarea{resize:none;}
@@ -358,8 +359,13 @@ textarea{resize:none;}
 /* flicker */
 .animation-flicker{animation:flicker 1s .5s infinite ease both;}
 
+/* 分辨率大于1200px */
 @media (min-width:1200px) {
-    /*由于新版bootstrap采用popper，鼠标hover特性无法触发菜单右置，暂时屏蔽*/
     /*.dropdown:hover>.dropdown-menu {display:block;}*/
-    .jumbotron {padding:6rem 2rem;}    
+    .jumbotron {padding:6rem 2rem;}
+}
+
+/* 分辨率小于1400px */
+@media (max-width:1400px){
+    html{font-size:14px;} 
 }

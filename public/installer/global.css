@@ -7,10 +7,10 @@
 ::-webkit-scrollbar{width:6px;height:6px;}
 ::-webkit-scrollbar-button{display:none;}
 ::-webkit-scrollbar-track, ::-webkit-scrollbar-track-piece{background:-webkit-gradient(linear,left);width:6px;height:6px;}
-::-webkit-scrollbar-thumb{border-width:0 0px;border-style:solid;border-color:#fefefe;border-radius:4px;background:#8a8a8a;}
-::-webkit-scrollbar-thumb:horizontal{border-width:0px 0;border-style:solid;border-color:#fefefe;border-radius:4px;background:#d9d9d9;}
-::-webkit-scrollbar-thumb:hover{background:#bdbdbd;}
-::-webkit-scrollbar-thumb:active{background:#8e8e8e;}
+::-webkit-scrollbar-thumb{border-width:0 0px;border-style:solid;border-color:#fefefe;border-radius:4px;background:#fff;background:rgba(255,255,255,0.3);}
+::-webkit-scrollbar-thumb:horizontal{border-width:0px 0;border-style:solid;border-color:#fefefe;border-radius:4px;background:#fff;background:rgba(255,255,255,0.3);}
+::-webkit-scrollbar-thumb:hover{background:#fff;background:rgba(255,255,255,0.6);}
+::-webkit-scrollbar-thumb:active{background:#fff;background:rgba(255,255,255,0.6);}
 
 ::selection {background:#0072C6;color:#fff;}
 
@@ -91,4 +91,9 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .animation-wave .parallax>use:nth-child(1){animation-delay:-2s;}
 .animation-wave .parallax>use:nth-child(2){animation-delay:-2s;animation-duration:5s;}
 .animation-wave .parallax>use:nth-child(3){animation-delay:-4s;animation-duration:3s;}
+
+/* 分辨率小于 767px */
+@media (max-width:1400px){
+    html{font-size:14px;} 
+}
 
