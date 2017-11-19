@@ -12,14 +12,14 @@ abstract class Hook {
 	protected $listeners = [];
 
 	/**
-	 * 添加一个Hook
+	 * 监听Hook
 	 * 
-	 * @param string  $hook      Hook name
-	 * @param mixed   $callback  Function to execute
-	 * @param integer $priority  Priority of the action
-	 * @param integer $arguments Number of arguments to accept
+	 * @param string  $hook      钩子名称
+	 * @param mixed   $callback  回调函数或者回调的
+	 * @param integer $priority  执行优先级，默认为20，越小越靠前执行
+	 * @return mixed
 	 */
-	public function listen($hook, $callback, $priority = 20, $arguments = 1)
+	public function listen($hook, $callback, $priority = 20)
 	{
 		$i = 0;
 

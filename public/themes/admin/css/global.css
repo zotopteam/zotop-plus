@@ -303,7 +303,7 @@ textarea{resize:none;}
 
 
 /* 侧边区域 side*/
-.side{display:flex;flex-direction:column;position:absolute;top:0;left:0;bottom:0;background:#f6fafd;color:#666;width:14rem;}
+.side{display:flex;flex-direction:column;position:absolute;top:0;left:0;bottom:0;background:#f6fafd;color:#666;width:16rem;}
 .side:after{content:'';display:block;position:absolute;top:0;bottom:0;right:0;width:3px;border-right:1px solid #efefef;box-shadow:-0.25rem 0.25rem 0.25rem -0.25rem rgba(0,0,0,0.1) inset;z-index:-1;}
 .side-header{display:flex;font-size:1.5rem;padding:0.75rem 0.75rem;position:relative;clear:both;z-index:1;border-bottom:1px solid transparent;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;box-sizing:border-box;}
 .side-action{float:right;margin:10px 1rem 0 0.25rem;line-height:20px;}
@@ -332,7 +332,7 @@ textarea{resize:none;}
 .main-footer .pagination>li>a, .main-footer .pagination>li>span{border:0 none;border-radius:0.25rem!important;}
 .main-footer .pagination .page-link{margin-left:1px;}
 
-.side + .main{margin-left:14rem;}
+.side + .main{margin-left:16rem;}
 
 .nav-side{flex-direction:column!important;}
 .nav-side .nav-item{flex:1 1 100%;}

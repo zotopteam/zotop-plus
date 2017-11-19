@@ -24,7 +24,7 @@
                             <div class="shortcuts scrollable">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        @foreach(filter::fire('global.start',[]) as $s)
+                                        @foreach(Filter::fire('global.start',[]) as $s)
                                         <div class="col-md-2 p-0">
                                             <a href="{{$s['href']}}" class="shortcut shortcut-thumb">
                                                 <div class="shortcut-icon">
@@ -45,7 +45,7 @@
                         </div>
                     </li>
 
-                    @foreach(filter::fire('global.navbar',[]) as $navbar)                    
+                    @foreach(Filter::fire('global.navbar',[]) as $navbar)                    
                     <li class="item {{$navbar['class'] or ''}} {{$navbar['active'] ? 'active' : ''}}">
                         <a href="{{$navbar['href']}}">{{$navbar['text']}}</a>
                     </li>
@@ -55,7 +55,7 @@
             <div class="col-sm-6 col-md-5 col-lg-4">
                 <ul class="nav global-navbar global-tools float-right">
                     
-                    @foreach(filter::fire('global.tools',[]) as $tools)                    
+                    @foreach(Filter::fire('global.tools',[]) as $tools)                    
                     <li>
                         <a {!!Html::attributes(array_except($tools,['icon','text']))!!}>
                             @if(isset($tools['icon']))<i class="{{$tools['icon']}} fa-fw"></i>@endif
