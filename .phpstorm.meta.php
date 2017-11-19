@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2017-11-13.
+    * Generated on 2017-11-19.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -56,6 +56,7 @@ namespace PHPSTORM_META {
         'hook.action' => \Modules\Core\Hook\Action::class,
         'hook.filter' => \Modules\Core\Hook\Filter::class,
         'theme' => \Modules\Core\Theme\Theme::class,
+        'format' => \Modules\Core\Support\Format::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
         'form' => \Modules\Core\Base\FormBuilder::class,
@@ -203,6 +204,7 @@ namespace PHPSTORM_META {
         'hook.action' => \Modules\Core\Hook\Action::class,
         'hook.filter' => \Modules\Core\Hook\Filter::class,
         'theme' => \Modules\Core\Theme\Theme::class,
+        'format' => \Modules\Core\Support\Format::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
         'form' => \Modules\Core\Base\FormBuilder::class,
@@ -350,6 +352,7 @@ namespace PHPSTORM_META {
         'hook.action' => \Modules\Core\Hook\Action::class,
         'hook.filter' => \Modules\Core\Hook\Filter::class,
         'theme' => \Modules\Core\Theme\Theme::class,
+        'format' => \Modules\Core\Support\Format::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
         'form' => \Modules\Core\Base\FormBuilder::class,
@@ -497,6 +500,7 @@ namespace PHPSTORM_META {
         'hook.action' => \Modules\Core\Hook\Action::class,
         'hook.filter' => \Modules\Core\Hook\Filter::class,
         'theme' => \Modules\Core\Theme\Theme::class,
+        'format' => \Modules\Core\Support\Format::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
         'form' => \Modules\Core\Base\FormBuilder::class,
@@ -644,6 +648,7 @@ namespace PHPSTORM_META {
         'hook.action' => \Modules\Core\Hook\Action::class,
         'hook.filter' => \Modules\Core\Hook\Filter::class,
         'theme' => \Modules\Core\Theme\Theme::class,
+        'format' => \Modules\Core\Support\Format::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
         'form' => \Modules\Core\Base\FormBuilder::class,
@@ -791,6 +796,7 @@ namespace PHPSTORM_META {
         'hook.action' => \Modules\Core\Hook\Action::class,
         'hook.filter' => \Modules\Core\Hook\Filter::class,
         'theme' => \Modules\Core\Theme\Theme::class,
+        'format' => \Modules\Core\Support\Format::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
         'form' => \Modules\Core\Base\FormBuilder::class,
@@ -938,6 +944,7 @@ namespace PHPSTORM_META {
         'hook.action' => \Modules\Core\Hook\Action::class,
         'hook.filter' => \Modules\Core\Hook\Filter::class,
         'theme' => \Modules\Core\Theme\Theme::class,
+        'format' => \Modules\Core\Support\Format::class,
         'plupload' => \JildertMiedema\LaravelPlupload\Manager::class,
         'html' => \Collective\Html\HtmlBuilder::class,
         'form' => \Modules\Core\Base\FormBuilder::class,
