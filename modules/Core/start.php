@@ -22,17 +22,22 @@
  * 扩展getFileData方法, 获取数组文件数据
  */
 \Module::macro('getFileData', function($module, $file) {
-    
     $data = [];
-
     $file = $this->getModulePath($module).$file;
-
     if ($this->app['files']->isFile($file)) {
         $data = require $file;
         $data = is_array($data) ? $data : [];
     }
-
     return $data;
+});
+
+/**
+ * 扩展data方法, 从data目录获取数组文件数据
+ */
+\Module::macro('data', function($name) {
+    list($module, $file) = explode('::', $name);
+    $data = static::getFileData($module, "Data/{$file}.php");
+    return \Filter::fire($name,$data);
 });
 
 /**
@@ -144,11 +149,12 @@
         
     // 一键刷新
     $tools['refresh'] = [
-        'icon'  => 'fa fa-magic', 
-        'text'  => trans('core::master.refresh'),
-        'title' => trans('core::master.refresh.description'),
-        'href'  => route('core.system.refresh'),
-        'class' => 'refresh js-post', 
+        'icon'     => 'fa fa-magic', 
+        'text'     => trans('core::master.refresh'),
+        'title'    => trans('core::master.refresh.description'),
+        'href'     => 'javascript:;',
+        'data-url' => route('core.system.refresh'),
+        'class'    => 'refresh js-post',
     ];
 
     return $tools;

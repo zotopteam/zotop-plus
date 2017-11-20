@@ -179,14 +179,14 @@
 	$.progress = function(percent, callback){
 		
 		var options = {
-			id: 'progress',
-			skin: 'ui-progress',
-			title: false,
-			content: '<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div><a href="javascript:;" class="close" i="close">&#215;</a></div>',
-			padding: 0,
-			fixed: true,
-			resize: false,
-			onclose: callback
+			id      : 'progress',
+			skin    : 'ui-progress',
+			title   : false,
+			content : '<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div><a href="javascript:;" class="close" i="close">&#215;</a></div>',
+			padding : 0,
+			fixed   : true,
+			resize  : false,
+			onclose : callback
 		}
 
 		var dialog = $.dialog(options);
@@ -217,14 +217,14 @@
 		} 
 
 		var options = {
-			id: 'message',
-			skin: 'ui-message ui-message-' + msg.state,
-			title: false,
-			content: '<b class="msg-icon"></b><div class="msg-content">'+ msg.content +'</div><a href="javascript:;" class="close" i="close">&#215;</a>',
-			padding: 0,
-			fixed: true,
-			resize: false,
-			onclose: function(){
+			id      : 'message',
+			skin    : 'ui-message ui-message-' + msg.state,
+			title   : false,
+			content : '<b class="msg-icon"></b><div class="msg-content">'+ msg.content +'</div><a href="javascript:;" class="close" i="close">&#215;</a>',
+			padding : 0,
+			fixed   : true,
+			resize  : false,
+			onclose : function(){
 				if( msg.url ) parent.location.href = msg.url;
 				if( msg.onclose ) msg.onclose();
 			}
@@ -274,12 +274,12 @@
 		var input;
 
 		return $.dialog({
-			id: 'Prompt',
-			skin: 'ui-prompt',
-			fixed: true,
-			padding:'30px 50px',
-			title: dialog.defaults.promptText,
-			content: function(){
+			id      : 'Prompt',
+			skin    : 'ui-prompt',
+			fixed   : true,
+			padding :'30px 50px',
+			title   : dialog.defaults.promptText,
+			content : function(){
 
 				var field = '<input type="text" class="form-control" value="'+ ( value || '') +'"/>';
 
@@ -310,14 +310,14 @@
 	 */
 	$.confirm = function(content, ok, cancel) {
 		return $.dialog({
-			id: 'Confirm',
-			skin: 'ui-confirm',
-			fixed: true,
-			padding:'30px 80px',
-			title: dialog.defaults.confirmText,
-			content: '<b class="msg-icon fa fa-question-circle"></b><div class="msg-content">'+content+'</div>',
-			ok: ok,
-			cancel: cancel || $.noop
+			id      : 'Confirm',
+			skin    : 'ui-confirm',
+			fixed   : true,
+			padding :'30px 80px',
+			title   : dialog.defaults.confirmText,
+			content : '<b class="msg-icon fa fa-question-circle"></b><div class="msg-content">'+content+'</div>',
+			ok      : ok,
+			cancel  : cancel || $.noop
 		},true);
 	};
 
@@ -328,14 +328,14 @@
 	 */
 	$.alert = function(content, callback) {
 		return $.dialog({
-			id: 'Alert',
-			skin: 'ui-alert',
-			fixed: true,
-			padding:'30px 80px',
-			title: dialog.defaults.alertText,
-			content: '<b class="msg-icon fa fa-warning"></b><div class="msg-content">'+content+'</div>',
-			ok: true,
-			onclose: callback
+			id      : 'Alert',
+			skin    : 'ui-alert',
+			fixed   : true,
+			padding :'30px 80px',
+			title   : dialog.defaults.alertText,
+			content : '<b class="msg-icon fa fa-warning"></b><div class="msg-content">'+content+'</div>',
+			ok      : true,
+			onclose : callback
 		});
 	};
 
@@ -346,30 +346,29 @@
 	 */
 	$.image = function(url, title, width, height) {
 		return $.dialog({
-			id: 'Image',
-			skin: 'ui-image',
-			width: (width || '50%'),
-			height: (height || '50%'),
-			fixed: true,
-			padding: 0,
-			title: title,
-			quickClose:true,
-			content: '<div class="image bg-image-preview"><img src="'+url+'" /></div>',
-			ok:true
+			id         : 'Image',
+			skin       : 'ui-image',
+			width      : (width || '50%'),
+			height     : (height || '50%'),
+			fixed      : true,
+			padding    : 0,
+			title      : title,
+			quickClose : true,
+			content    : '<div class="image bg-image-preview"><img src="'+url+'" /></div>',
+			ok         :true
 		}, true);
 	};
 
 	$.extend(dialog.defaults, {
-		cssUri : '',
-		padding:0,
-		backdropOpacity:.2,
-		okValue: '确认',    
-		cancelValue: '取消',
-		loadingText: '操作正在执行，请稍候……',
-		confirmText: '确认',
-		alertText: '警告',
-		promptText: '提示'
+		cssUri          : '',
+		padding         : 0,
+		backdropOpacity : .2,
+		okValue         : '确认',    
+		cancelValue     : '取消',
+		loadingText     : '操作正在执行，请稍候……',
+		confirmText     : '确认',
+		alertText       : '警告',
+		promptText      : '提示'
 	});
 
 }(jQuery));
-

@@ -22,8 +22,6 @@ class HeaderBag implements \IteratorAggregate, \Countable
     protected $cacheControl = array();
 
     /**
-     * Constructor.
-     *
      * @param array $headers An array of HTTP headers
      */
     public function __construct(array $headers = array())
@@ -149,7 +147,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
         }
 
         if ('cache-control' === $key) {
-            $this->cacheControl = $this->parseCacheControl($values[0]);
+            $this->cacheControl = $this->parseCacheControl(implode(', ', $this->headers[$key]));
         }
     }
 

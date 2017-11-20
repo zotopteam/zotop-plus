@@ -18,52 +18,13 @@ class ConfigController extends AdminController
     use ModuleConfig;
 
     /**
-     * 初始化
-     * 
-     * @return null
-     */
-    public function __construct()
-    {
-        // 初始化父类
-        parent::__construct();
-
-        //  初始化侧边导航条
-        $this->navbar = Filter::fire('core.config.navbar', [
-            'upload' => [
-                'text'   => trans('core::config.upload'),
-                'href'   => route('core.config.upload'),
-                'class'  => 'fa fa-fw fa-upload',
-                'active' => Route::is('core.config.upload')
-            ],
-            'mail'   => [
-                'text'   => trans('core::config.mail'),
-                'href'   => route('core.config.mail'),
-                'class'  => 'fa fa-fw fa-envelope',
-                'active' => Route::is('core.config.mail'),
-            ],
-            'locale'   => [
-                'text'   => trans('core::config.locale'),
-                'href'   => route('core.config.locale'),
-                'class'  => 'fa fa-fw fa-map',
-                'active' => Route::is('core.config.locale'),
-            ],            
-            'safe'   => [
-                'text'   => trans('core::config.safe'),
-                'href'   => route('core.config.safe'),
-                'class'  => 'fa fa-fw fa-shield',
-                'active' => Route::is('core.config.safe')
-            ],
-        ]);
-    }
-
-    /**
      * 配置首页
      *
      * @return Response
      */
     public function index(Request $request)
     {
-        return redirect()->route('core.config.upload');
+        return redirect()->route('core.config.mail');
     }
 
 
@@ -185,6 +146,7 @@ class ConfigController extends AdminController
 
         // 日期格式选项
         $this->date_formats = Filter::fire('core.config.date.formats' ,[
+            //'Y年m月d日' => Carbon::now()->format('Y年m月d日'),
             'Y-m-d' => Carbon::now()->format('Y-m-d'),
             'Y/m/d' => Carbon::now()->format('Y/m/d'),
             'Y.m.d' => Carbon::now()->format('Y.m.d'),
@@ -192,6 +154,7 @@ class ConfigController extends AdminController
 
         // 时间选项
         $this->time_formats = Filter::fire('core.config.time.formats' ,[
+            //'a g:i' => Carbon::now()->format('a g:i'),
             'H:i:s' => Carbon::now()->format('H:i:s'),
             'H:i'   => Carbon::now()->format('H:i'),
         ]);

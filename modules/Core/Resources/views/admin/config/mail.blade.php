@@ -110,7 +110,7 @@
             <div class="form-group row">
                 <label for="password" class="col-2 col-form-label">{{trans('core::config.mail.password.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="password"}
+                    {field type="password" name="password"}
                     
                     @if ($errors->has('password'))
                     <span class="form-help text-error">{{ $errors->first('password') }}</span>
@@ -187,16 +187,16 @@
 
     $(function(){
 
-        $('#mail_from').change(function(){
+        $('[name="from[address]"]').change(function(){
             var from = $(this).val();
             var user = from.split('@')[0];
             var host = from.split('@')[1];
 
             //控件赋值
-            $('input[name="mail_smtp_host"]').val('smtp.' + host);
-            $('input[name="mail_smtp_port"]').val(25);
-            $('input[name="mail_smtp_username"]').val(user);
-            $('input[name="mail_smtp_password"]').val('');
+            $('[name="host"]').val('smtp.' + host);
+            $('[name="port"]').val(25);
+            $('[name="username"]').val(user);
+            $('[name="password"]').val('');
         });
     });
 

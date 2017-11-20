@@ -63,9 +63,10 @@ class Core extends Migration
         // 角色
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('slug')->unique();
-            $table->string('name');
-            $table->text('permissions')->nullable();
+            $table->string('name')->unique()->comment('角色名称');
+            $table->string('description')->nullable()->comment('角色描述');
+            $table->text('permissions')->nullable()->comment('角色权限');
+            $table->boolean('disabled')->default(0)->unsigned()->comment('禁用 0=否 1=禁用');
             $table->timestamps();
 
             $table->engine = 'InnoDB';

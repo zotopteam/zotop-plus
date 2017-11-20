@@ -29,13 +29,7 @@ class ConsoleLogger extends AbstractLogger
     const INFO = 'info';
     const ERROR = 'error';
 
-    /**
-     * @var OutputInterface
-     */
     private $output;
-    /**
-     * @var array
-     */
     private $verbosityLevelMap = array(
         LogLevel::EMERGENCY => OutputInterface::VERBOSITY_NORMAL,
         LogLevel::ALERT => OutputInterface::VERBOSITY_NORMAL,
@@ -46,9 +40,6 @@ class ConsoleLogger extends AbstractLogger
         LogLevel::INFO => OutputInterface::VERBOSITY_VERY_VERBOSE,
         LogLevel::DEBUG => OutputInterface::VERBOSITY_DEBUG,
     );
-    /**
-     * @var array
-     */
     private $formatLevelMap = array(
         LogLevel::EMERGENCY => self::ERROR,
         LogLevel::ALERT => self::ERROR,
@@ -61,11 +52,6 @@ class ConsoleLogger extends AbstractLogger
     );
     private $errored = false;
 
-    /**
-     * @param OutputInterface $output
-     * @param array           $verbosityLevelMap
-     * @param array           $formatLevelMap
-     */
     public function __construct(OutputInterface $output, array $verbosityLevelMap = array(), array $formatLevelMap = array())
     {
         $this->output = $output;
@@ -85,7 +71,7 @@ class ConsoleLogger extends AbstractLogger
         $output = $this->output;
 
         // Write to the error output if necessary and available
-        if ($this->formatLevelMap[$level] === self::ERROR) {
+        if (self::ERROR === $this->formatLevelMap[$level]) {
             if ($this->output instanceof ConsoleOutputInterface) {
                 $output = $output->getErrorOutput();
             }

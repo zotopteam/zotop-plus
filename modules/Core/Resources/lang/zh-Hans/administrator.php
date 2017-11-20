@@ -10,7 +10,6 @@ return [
     'form.base'              => '账户密码',
     'form.profile'           => '用户资料',
     
-    'status.label'           => '状态',
     'login_at.label'         => '最后登录',
     
     'username.label'         => '用户名',

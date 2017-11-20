@@ -35,7 +35,7 @@ class User extends Authenticatable
     /**
      * 当前登陆的用户是否为管理员 TODO：暂时写在此处，使用Repositories更佳
      * 
-     * @return boolean [description]
+     * @return boolean
      */
     public function isAdmin()
     {

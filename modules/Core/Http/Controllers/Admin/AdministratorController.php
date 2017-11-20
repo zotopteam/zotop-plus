@@ -76,11 +76,11 @@ class AdministratorController extends AdminController
      */
     public function update(AdministratorRequest $request, $id)
     {
-        $user  = User::findOrFail($id);
+        $user = User::findOrFail($id);
         $user->fill($request->all());
 
         // 修改密码
-        if ( $password_new = $request->input('password_new') ) {
+        if ($password_new = $request->input('password_new')) {
             $user->password = \Hash::make($password_new);
         }
         
@@ -127,7 +127,7 @@ class AdministratorController extends AdminController
         $user = User::findOrFail($id);
 
         // 禁止操作名单 TODO  $user->id==1 不是好方法，应该判断只剩下最后一个超级管理员
-        if ( $user->modelid != 'admin' OR $user->id==1 ) {
+        if (!$user->isAdmin() || $user->id==1 ) {
             return $this->error(trans('core::master.forbidden'));
         }
 
@@ -135,6 +135,4 @@ class AdministratorController extends AdminController
 
         return $this->success(trans('core::master.deleted'), route('core.administrator.index'));
     }
-
-
 }

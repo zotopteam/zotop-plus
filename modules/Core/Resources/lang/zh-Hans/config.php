@@ -1,7 +1,7 @@
 <?php
 return [
     'title'                   => '系统设置',
-    'description'             => '上传、水印、邮件、安全等设置',  
+    'description'             => '邮件、语言、区域、安全等设置',  
     
     'upload'                  => '文件上传',
     'mail'                    => '邮件发送',
@@ -42,7 +42,7 @@ return [
     'languages.zh-hans'       => '中文简体',
     'languages.en'            => 'English',
     'timezone.label'          => '系统时区',
-    'timezone.help'           => '', 
+    'timezone.help'           => '选择与您在同一时区的城市，协调世界时（UTC）为：:utc, 本地时间为：:locale', 
     
     'locale.datetime'         => '日期和时间',
     'date_format.label'       => '日期格式',

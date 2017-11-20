@@ -42,6 +42,17 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
        $router->delete('destroy/{id}','AdministratorController@destroy')->name('core.administrator.destroy')->middleware('allow:core.administrator.destroy');           
     });
 
+    // role 
+    $router->group(['prefix' =>'role'], function (Router $router) {
+        $router->get('index','RoleController@index')->name('core.role.index')->middleware('allow:core.role.index');
+        $router->get('create','RoleController@create')->name('core.role.create')->middleware('allow:core.role.create');
+        $router->post('store','RoleController@store')->name('core.role.store')->middleware('allow:core.role.store');
+        $router->get('edit/{id}','RoleController@edit')->name('core.role.edit')->middleware('allow:core.role.edit');
+        $router->put('update/{id}','RoleController@update')->name('core.role.update')->middleware('allow:core.role.update');
+        $router->post('status/{id}','RoleController@status')->name('core.role.status')->middleware('allow:core.role.status');
+        $router->delete('destroy/{id}','RoleController@destroy')->name('core.role.destroy')->middleware('allow:core.role.destroy');
+    });
+
     // 系统设置
     $router->group(['prefix' =>'config'], function (Router $router) {
         $router->any('index','ConfigController@index')->name('core.config.index')->middleware('allow:core.config.index');

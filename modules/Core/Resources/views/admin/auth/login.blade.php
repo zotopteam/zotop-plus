@@ -26,7 +26,7 @@
                             <label for="username" class="input-group-addon"><i class="fa fa-user fa-fw text-primary"></i></label>
                             {field type="text" name="username" required="required" autofocus="autofocus" placeholder="trans('core::auth.account.placeholder')" data-msg-required="trans('core::auth.account.required')"}
                             <label for="remember" class="input-group-addon" title="{{trans('core::auth.remember')}}" data-toggle="tooltip" data-placement="right">
-                                <input type="checkbox" class="form-control text-muted" name="remember" tabindex="-1" {{ old('remember') ? 'checked' : ''}}>
+                                <input type="checkbox" class="form-control text-muted text-md" name="remember" tabindex="-1" {{ old('remember') ? 'checked' : ''}}>
                             </label>
                         </div>
 

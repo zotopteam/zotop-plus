@@ -313,7 +313,7 @@ class ProcessTest extends TestCase
 
         $called = false;
         $p->run(function ($type, $buffer) use (&$called) {
-            $called = $buffer === 'foo';
+            $called = 'foo' === $buffer;
         });
 
         $this->assertTrue($called, 'The callback should be executed with the output');
@@ -326,7 +326,7 @@ class ProcessTest extends TestCase
 
         $called = false;
         $p->run(function ($type, $buffer) use (&$called) {
-            $called = $buffer === 'foo';
+            $called = 'foo' === $buffer;
         });
 
         $this->assertTrue($called, 'The callback should be executed with the output');
@@ -1225,7 +1225,7 @@ class ProcessTest extends TestCase
     {
         $input = new InputStream();
 
-        $process = $this->getProcessForCode('echo \'ping\'; stream_copy_to_stream(STDIN, STDOUT);');
+        $process = $this->getProcessForCode('echo \'ping\'; echo fread(STDIN, 4); echo fread(STDIN, 4);');
         $process->setInput($input);
 
         $process->start(function ($type, $data) use ($input) {

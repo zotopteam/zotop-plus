@@ -37,7 +37,7 @@
                     @if ($errors->has('timezone'))
                     <span class="form-help text-error">{{ $errors->first('timezone') }}</span>
                     @else
-                    <span class="form-help">{{trans('core::config.timezone.help')}}</span>
+                    <span class="form-help">{{trans('core::config.timezone.help',['utc'=>now('UTC'), 'locale'=>now()])}}</span>
                     @endif
                 </div>
             </div>

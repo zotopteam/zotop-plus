@@ -1,13 +1,18 @@
 @extends('core::layouts.master')
 
 @section('content')
+
+@include('core::administrator.side')
+
 <div class="main">
     <div class="main-header">
         <div class="main-title mr-auto">
             {{$title}}
         </div>
         <div class="main-action">
-            <a href="{{route('core.administrator.create')}}" class="btn btn-primary"> <i class="fa fa-plus"></i> {{trans('core::master.create')}}</a>
+            <a href="{{route('core.administrator.create')}}" class="btn btn-primary">
+                <i class="fa fa-plus"></i> {{trans('core::master.create')}}
+            </a>
         </div>        
     </div>
     <div class="main-body scrollable">
@@ -17,10 +22,11 @@
             <table class="table table-nowrap table-hover" >
                 <thead>
                 <tr>
-                    <td class="text-center" width="1%">{{trans('core::administrator.status.label')}}</td>
-                    <th>{{trans('core::administrator.username.label')}} ( {{trans('core::administrator.nickname.label')}} )</th>
+                    <th class="text-center" width="1%">{{trans('core::master.status')}}</th>
+                    <th>{{trans('core::administrator.username.label')}}</th>
+                    <th>{{trans('core::administrator.nickname.label')}}</th>
                     <th>{{trans('core::administrator.mobile.label')}}</th>
-                    <th>{{trans('core::administrator.email.label')}}</th>
+                    <th width="15%">{{trans('core::administrator.email.label')}}</th>
                     <th width="15%">{{trans('core::administrator.login_at.label')}}</th>
                 </tr>
                 </thead>
@@ -31,9 +37,9 @@
                             <i class="fa fa-2x {{$user->disabled ? 'fa-times-circle text-error' : 'fa-check-circle text-success'}}"></i>
                         </td>
                         <td>
-                            <div class="title">
-                                <b class="text-lg">{{$user->username}}</b>
-                                <span class="text-muted">( {{$user->nickname}} )</span></div>
+                            <div class="title text-lg">
+                                {{$user->username}}
+                            </div>
                             <div class="manage">
                                 <a class="manage-item" href="{{route('core.administrator.edit', $user->id)}}"><i class="fa fa-edit"></i> {{trans('core::master.edit')}}</a>
                                 <a class="manage-item js-confirm" href="javascript:;" data-url="{{route('core.administrator.status', $user->id)}}">
@@ -47,6 +53,7 @@
                             </div>
 
                         </td>
+                        <td>{{$user->nickname}}</td>
                         <td>{{$user->mobile}}</td>
                         <td>{{$user->email}}</td>
                         <td>

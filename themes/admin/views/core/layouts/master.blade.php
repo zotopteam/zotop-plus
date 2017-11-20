@@ -19,7 +19,7 @@
             <div class="col-sm-6 col-md-7 col-lg-8">
                 <ul class="nav global-navbar tabdropable">
                     <li class="brand dropdown">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CMS</a>
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{config('app.name')}}</a>
                         <div class="dropdown-menu dropdown-start">
                             <div class="shortcuts scrollable">
                                 <div class="container-fluid">

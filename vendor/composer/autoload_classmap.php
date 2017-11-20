@@ -233,7 +233,7 @@ return array(
     'PHPUnit\\Util\\TestDox\\XmlResultPrinter' => $vendorDir . '/phpunit/phpunit/src/Util/TestDox/XmlResultPrinter.php',
     'PHPUnit\\Util\\TextTestListRenderer' => $vendorDir . '/phpunit/phpunit/src/Util/TextTestListRenderer.php',
     'PHPUnit\\Util\\Type' => $vendorDir . '/phpunit/phpunit/src/Util/Type.php',
-    'PHPUnit\\Util\\Xml' => $vendorDir . '/phpunit/phpunit/src/Util/Xml.php',
+    'PHPUnit\\Util\\Xml' => $vendorDir . '/phpunit/phpunit/src/Util/XML.php',
     'PHPUnit\\Util\\XmlTestListRenderer' => $vendorDir . '/phpunit/phpunit/src/Util/XmlTestListRenderer.php',
     'PHPUnit_Framework_MockObject_BadMethodCallException' => $vendorDir . '/phpunit/phpunit-mock-objects/src/Exception/BadMethodCallException.php',
     'PHPUnit_Framework_MockObject_Builder_Identity' => $vendorDir . '/phpunit/phpunit-mock-objects/src/Builder/Identity.php',
