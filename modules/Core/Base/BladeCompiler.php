@@ -91,11 +91,11 @@ class BladeCompiler extends LaravelBladeCompiler
         $attrs = array();
 
         preg_match_all("/\s+([a-z0-9_-]+)\s*\=\s*\"(.*?)\"/i", stripslashes($str), $matches, PREG_SET_ORDER);
-
+        
         foreach ($matches as $v) {
             $attrs[$v[1]] = $v[2];
         }    
-
+        
         return $attrs;        
     }
 
@@ -124,7 +124,8 @@ class BladeCompiler extends LaravelBladeCompiler
                     if ( strpos($val, '$') === 0 OR preg_match('/[a-zA-Z\\_\x7f-\xff][a-zA-Z0-9_\x7f-\xff:]*\(.*?\)/', $val) OR preg_match('/^\[.*\]$/', $val) ) {
                         $str .= "'$key'=>$val,";
                     } else {
-                        $str .= "'$key'=>'" . addslashes($val) . "',";
+                        //$str .= "'$key'=>'" . addslashes($val) . "',";
+                        $str .= "'$key'=>'" . $val . "',";
                     }
 
                 }

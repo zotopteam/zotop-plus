@@ -1,0 +1,7 @@
+{
+  "name": "simple",
+  "title": "简洁主题",
+  "description": "采用Bootstrap v4 开发的响应式主题，兼容主流浏览器，自适应手机和pc浏览器",
+  "version":"1.0.0",
+  "type": "front"
+}

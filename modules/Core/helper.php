@@ -4,22 +4,32 @@ if (! function_exists('preview')) {
      * 预览图片
      * 
      * @param  string $path 图片路径
+     * @param  int $width 图片宽度
+     * @param  int $height 图片高度
      * @return string 临时图片URL
      */
-    function preview($path)
+    function preview($path, $width=null, $height=null, $resize=true)
     {
         if ( empty($path) || !File::exists($path) ) {
-            return \Theme::asset(app('current.theme')->name.':img/placeholder.png');
+            $path = app('current.theme')->path.'/assets/img/empty.png';
         }
 
-        $temp = 'temp/preview/'.md5($path).'.'.File::extension($path);
+        $temp = 'temp/preview/'.md5($path.'-'.$width.'-'.$height).'.'.File::extension($path);
         $file = public_path($temp);
 
         // 预览图片不存在，或者原图片被修改
-        if ( !File::exists($temp) OR File::lastModified($temp) < File::lastModified($path) ) {
+        if ( !File::exists($temp) || File::lastModified($temp) < File::lastModified($path) ) {
+            // 拷贝图片到临时目录
             File::copy($path, $file);
-        }  
-
+            // 图片缩放
+            if ($width || $height) {
+                if ($resize) {
+                    app('image')->make($file)->resize($width,$height)->save();
+                } else {
+                    app('image')->make($file)->fit($width,$height)->save();
+                }               
+            }          
+        }
         return url($temp);
     }
 }
@@ -66,7 +76,7 @@ if (! function_exists('module')) {
                 // 模块图标
                 if (empty($module->icon)) {
                     $module->icon = $module->getExtraPath('/Resources/assets/module.png');
-                    $module->icon = preview($module->icon);
+                    $module->icon = preview($module->icon,48,48);
                 }
 
                 // 加载未启用模块语言包

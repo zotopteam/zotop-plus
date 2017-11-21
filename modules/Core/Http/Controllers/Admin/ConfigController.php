@@ -24,7 +24,7 @@ class ConfigController extends AdminController
      */
     public function index(Request $request)
     {
-        return redirect()->route('core.config.mail');
+        return redirect()->route('core.config.upload');
     }
 
 
@@ -44,7 +44,8 @@ class ConfigController extends AdminController
             return $this->success(trans('core::master.saved'));
         }
 
-        $this->title = trans('core::config.upload');
+        $this->title  = trans('core::config.upload');
+        $this->config = config('core');
 
         return $this->view();
     }

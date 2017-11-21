@@ -46,24 +46,8 @@
             <div class="form-group row">
                 <label for="theme" class="col-2 col-form-label required">{{trans('site::config.theme.label')}}</label>
                 <div class="col-8">
-
-                    <div class="row">
-                    @foreach(Theme::getList('front') as $theme)
-                        <div class="col-3">
-                            <label class="check check-md">
-                                {field type="radio" name="theme" value="$theme->name"}
-                                <div class="card card-sm">
-                                    <div class="image">
-                                        <img class="card-img-top img-fluid" src="{{Theme::asset('img/placeholder.png')}}" style="background-image:url({{Theme::asset($theme->name.':theme.jpg')}});background-size:cover">
-                                    </div>
-                                    <div class="card-body p-2 text-center text-overflow">
-                                        {{$theme->name}}                                        
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-                    @endforeach                    
-                    </div>                       
+                    
+                    {field type="radiocards" name="theme" options="Module::data('site::theme.front')" class="radiocards-lg"}                
                     
                     @if ($errors->has('theme'))
                     <span class="form-help text-error">{{ $errors->first('theme') }}</span>

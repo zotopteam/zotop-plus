@@ -295,6 +295,29 @@
 });
 
 /**
+ * 单选卡片，支持图片和文字类型的卡片
+ * 文字卡片 options = ['value'=>'show text']
+ * 图片卡片 options = ['value'=>['img url']]
+ * 图文卡片 options = ['value'=>['img url','show text']]
+ */
+\Form::macro('radiocards', function($attrs) {
+    $value   = $this->getValue($attrs);
+    $name    = $this->getAttribute($attrs, 'name');    
+    $options = $this->getAttribute($attrs, 'options',  []);
+    $column  = $this->getAttribute($attrs, 'column', 0);
+    $class   = $this->getAttribute($attrs, 'class', 'radiocards-default');
+    // 如果没有选择值，选择options的第一个
+    if (is_null($value)) {
+        $value = array_keys($options);
+        $value = reset($value);
+    }
+    return $this->toHtmlString(
+        $this->view->make('core::field.radiocards')->with(compact('name', 'value', 'column', 'options', 'class'))->render()
+    );
+});
+
+
+/**
  * 是/否 开关
  */
 \Form::macro('toggle', function($attrs) {
