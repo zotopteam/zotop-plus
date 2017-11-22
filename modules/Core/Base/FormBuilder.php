@@ -99,12 +99,18 @@ class FormBuilder extends LaravelFormBuilder
      */
     public function getIdAttribute($name, $attributes)
     {
+        // 解决原函数中name为数组(含有[])的bug
+        $id = '';
+
         if (array_key_exists('id', $attributes)) {
-            return $attributes['id'];
+            $id = $attributes['id'];
+        } else {
+            $id = $name;
         }
 
-        return $name;
+        return str_replace(['.', '[]', '[', ']'], ['-', '', '-', ''], $id);
     }
+
     
 
     /**

@@ -19,7 +19,7 @@
             <div class="form-group row">
                 <label for="driver" class="col-2 col-form-label required">{{trans('core::config.mail.driver.label')}}</label>
                 <div class="col-8">
-                    {field type="select" options="$drivers" name="driver" required="required" column="1"}
+                    {field type="select" options="Module::data('core::config.mail_drivers')" name="driver" required="required" column="1"}
                     
                     @if ($errors->has('driver'))
                     <span class="form-help text-error">{{ $errors->first('driver') }}</span>

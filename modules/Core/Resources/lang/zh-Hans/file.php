@@ -24,4 +24,5 @@ return [
     'type.image'         => '图像',
     'type.audio'         => '音频',
     'type.video'         => '视频',
+    'type.files'         => '文件',
 ];

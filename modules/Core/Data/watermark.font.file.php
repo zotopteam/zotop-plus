@@ -15,7 +15,7 @@ foreach ($files as $file) {
         $width = 120;
         $height = 40;
         $image = Image::canvas($width, $height, '#0072c6');
-        $text = trans('core::config.image.watermark.font');
+        $text = trans('core::image.watermark.font');
         $image->text($text, $width/2, $height/2, function ($font) use ($path) {
             $font->file(base_path($path));
             $font->size(18);

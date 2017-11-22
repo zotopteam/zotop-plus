@@ -22,7 +22,7 @@
             </div>
             @endif            
         </label>
-        @if($column && $loop->iteration%$column==0)
+        @if($column && $loop->iteration%$column==0 && $loop->iteration < $loop->count)
         </div>
         <div class="radiocards-item">
         @endif

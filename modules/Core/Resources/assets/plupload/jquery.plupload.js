@@ -50,12 +50,13 @@ jquery upload api
 @param {Object} 详细设置选项说明
 	@param {String} [settings.runtimes="html5,flash,silverlight,html4"] 上传运行时，依次加载
 	@param {String} [settings.url] 服务器端的接收上传数据的url
-	@param {String} [settings.fileext] 允许上传的文件格式，默认为图片："jpg,jpeg,gif,png" 错误：`plupload.FILE_EXTENSION_ERROR`
-	@param {String} [settings.filedescription] 允许上传的文件说明，默认为："Image file"
-	@param {Object} [settings.params] 文件上传时传递的参数
-	@param {Number|String} [settings.maxsize=20MB] 选择文件时的文件大小限制, 默认为byte ,支持 b, kb, mb, gb, tb 等单位. 如： "10mb" 或者 "100kb"`. 错误： `plupload.FILE_SIZE_ERROR`.
-	@param {Number|String} [settings.maxcount=0] 选择文件个数限制，默认为不限制
-	@param {Boolean} [settings.multiple=true] 是否允许一次选择多个文件
+	@param {String} [settings.filters] 上传过滤器
+		@param {Array} [settings.filters.mime_types=[]] 接受的文件描述和格式. 如： [{title : "Image files", extensions : "jpg,jpeg,gif,png"}]`. 错误 `plupload.FILE_EXTENSION_ERROR`
+		@param {String|Number} [settings.filters.max_file_size=0] 选择文件时的文件大小限制, 默认为byte ,支持 b, kb, mb, gb, tb 等单位. 如： "10mb" 或者 "100kb"`. 错误： `plupload.FILE_SIZE_ERROR`.
+		@param {Boolean} [settings.filters.prevent_duplicates=false] 禁止重复加入上传队列. 错误： `plupload.FILE_DUPLICATE_ERROR`.
+		@param {Number} [settings.filters.max_file_count=0] 每次最多允许上传个数 (default is 0 - no limit).
+	@param {Object} [settings.multipart_params] 文件上传时传递的参数 {key:value}
+	@param {Boolean} [settings.multi_selection=true] 是否允许一次选择多个文件
 	@param {Object} [settings.resize] 客户端图片缩放. 仅支持 `image/jpeg` 和 `image/png` 的图片类型文件， 如： {width : 200, height : 200, quality : 90, crop: true}`
 		@param {Number} [settings.resize.width] 文件最大宽度，超出自动缩放
 		@param {Number} [settings.resize.height] 文件最大

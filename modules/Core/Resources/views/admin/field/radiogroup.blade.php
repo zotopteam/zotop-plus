@@ -7,7 +7,7 @@
                 {{$v}}
             </span>
         </label>
-        @if($column && $loop->iteration%$column==0)
+        @if($column && $loop->iteration%$column==0 && $loop->iteration < $loop->count)
         </div>
         <div class="radiogroup-item">
         @endif

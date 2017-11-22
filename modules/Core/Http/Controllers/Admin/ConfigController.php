@@ -39,7 +39,7 @@ class ConfigController extends AdminController
         if ($request->isMethod('POST')) {
 
             // 写入配置组
-            $this->save('modules.core.upload', $request->all());
+            $this->config('core', $request->all());
 
             return $this->success(trans('core::master.saved'));
         }
@@ -76,11 +76,6 @@ class ConfigController extends AdminController
         }
 
         $this->title = trans('core::config.mail');
-        $this->drivers = Filter::fire('core.config.mail.drivers' ,[
-            'smtp'     => trans('core::config.mail.drivers.smtp'),
-            'mail'     => trans('core::config.mail.drivers.mail'),
-            'sendmail' => trans('core::config.mail.drivers.sendmail'),
-        ]);
 
         return $this->view();
     }
@@ -138,36 +133,6 @@ class ConfigController extends AdminController
 
         $this->title = trans('core::config.locale');
 
-        // 语言选项
-        $this->languages = Filter::fire('core.config.languages' ,[
-            'zh-Hans' => trans('core::config.languages.zh-hans'),
-            'zh-Hant' => trans('core::config.languages.zh-hant'),
-            'en'      => trans('core::config.languages.en'),
-        ]);
-
-        // 日期格式选项
-        $this->date_formats = Filter::fire('core.config.date.formats' ,[
-            //'Y年m月d日' => Carbon::now()->format('Y年m月d日'),
-            'Y-m-d' => Carbon::now()->format('Y-m-d'),
-            'Y/m/d' => Carbon::now()->format('Y/m/d'),
-            'Y.m.d' => Carbon::now()->format('Y.m.d'),
-        ]);
-
-        // 时间选项
-        $this->time_formats = Filter::fire('core.config.time.formats' ,[
-            //'a g:i' => Carbon::now()->format('a g:i'),
-            'H:i:s' => Carbon::now()->format('H:i:s'),
-            'H:i'   => Carbon::now()->format('H:i'),
-        ]);
-        // 时区选项
-        $timezones = [];
-        foreach(timezone_identifiers_list() as $key => $zone) {
-            $continents = explode('/',$zone)[0];
-            $timezones[$continents][$zone] = 'UTC/GMT '.(new \DateTime(null, new \DateTimeZone($zone)))->format('P').' - '.$zone;    
-        }
-
-        $this->timezones = $timezones;
-
         return $this->view();
     }  
 
@@ -200,26 +165,6 @@ class ConfigController extends AdminController
         }
 
         $this->title = trans('core::config.safe');
-
-        // 运行环境选项
-        $this->envs = Filter::fire('core.config.envs' ,[
-            'production' => trans('core::config.envs.production'),
-            'local'      => trans('core::config.envs.local'),
-            'testing'    => trans('core::config.envs.testing'),
-        ]);
-
-
-        // 日志模式选项
-        $this->logs = array_combine(
-            ['single','daily','syslog','errorlog'],
-            ['single','daily','syslog','errorlog']
-        );
-
-        // 日志级别选项
-        $this->log_levels = array_combine(
-            ['debug','info','notice','warning','error','critical','alert','emergency'],
-            ['debug','info','notice','warning','error','critical','alert','emergency']
-        );
 
         return $this->view();
     }         

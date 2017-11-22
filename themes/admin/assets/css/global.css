@@ -29,6 +29,8 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .pos-s{position:static;}
 .pos-r{position:relative;}
 .pos-a{position:absolute;}
+.w-auto,.mw-auto{width:auto!important;}
+.h-auto,.mh-auto{height:auto!important;}
 
 .scroll,.scrollable{overflow:auto;outline:none;}
 .nicescroll-cursors{background:#000!important;border:0px solid rgba(255,255,255,0.5)!important;opacity:0.5;}
@@ -186,7 +188,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .table-inside>tbody>tr:last-child>td{border:0 none;}
 
 .table.form-control{padding:.5rem;border: 1px solid rgba(0,0,0,.15);border-radius:.25rem;}
-
+.table.form-control tr:last-child td{border:0 none;}
 /*空数据*/
 .nodata{color:#999;font-size:1.2rem;height:100%;width:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;}
 .nodata:before{font-family:fontawesome;content:'\f118';font-size:6rem;color:#ebebeb;}
@@ -272,6 +274,10 @@ textarea{resize:none;}
 .badge-danger{background-color:#ff0000;border-radius:0.5rem;}
 
 .btn-success .badge-danger{color:#5cb85c;background-color:#fff;}
+
+.btn-progress{position:relative;}
+.btn-progress .progress{position:absolute;top:0;right:0;bottom:0;left:0;border-radius:0;z-index:999;background:transparent;}
+.btn-progress .progress-bar{height:100%;line-height:3;}
 
 .breadcrumb{background:#f7f7f7;}
 .breadcrumb-item+.breadcrumb-item::before{font-family:fontawesome;content:'\f105'}

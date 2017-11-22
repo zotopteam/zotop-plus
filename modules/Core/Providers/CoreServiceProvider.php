@@ -83,7 +83,7 @@ class CoreServiceProvider extends ServiceProvider
         }
 
         // 未安装的时加载模块根目录下的配置
-        if ($this->app['installed'] == true && $this->app['files']->isFile($configFile = $module->getPath().'/config.php')) {            
+        if ($this->app['installed'] == false && $this->app['files']->isFile($configFile = $module->getPath().'/config.php')) {            
             $this->mergeConfigFrom($configFile, $moduleName);
         }
         

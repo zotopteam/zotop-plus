@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'upload.button'        => '上传',
-    'upload.image.button'  => '上传图片',
-    'upload.image.select'  => '从已上传中选择',
-    'upload.image.library' => '从图片库中选择',
-    'upload.image.dir'     => '从目录库中选择',
+    'upload.button'        => '上传:0',
+    'upload.select'        => '选择:0',
+    'insert.from.uploaded' => '从已上传中选择',
+    'insert.from.library'  => '从:0库中选择',
+    'insert.from.dir'      => '从目录库中选择',
 ];

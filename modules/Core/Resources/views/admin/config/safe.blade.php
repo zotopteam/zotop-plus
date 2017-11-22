@@ -20,7 +20,7 @@
             <div class="form-group row">
                 <label for="env" class="col-2 col-form-label required">{{trans('core::config.env.label')}}</label>
                 <div class="col-8">
-                    {field type="radiogroup" options="$envs" name="env" required="required"}
+                    {field type="radiogroup" name="env" options="Module::data('core::config.envs')" column="1" required="required"}
                     
                     @if ($errors->has('env'))
                     <span class="form-help text-error">{{ $errors->first('env') }}</span>
@@ -61,7 +61,7 @@
             <div class="form-group row">
                 <label for="log" class="col-2 col-form-label required">{{trans('core::config.log.label')}}</label>
                 <div class="col-8">
-                    {field type="select" name="log" options="$logs"}
+                    {field type="select" name="log" options="Module::data('core::config.logs')"}
                     
                     @if ($errors->has('log'))
                     <span class="form-help text-error">{{ $errors->first('log') }}</span>
@@ -74,7 +74,7 @@
             <div class="form-group row">
                 <label for="log_level" class="col-2 col-form-label required">{{trans('core::config.log_level.label')}}</label>
                 <div class="col-8">
-                    {field type="select" name="log_level" options="$log_levels"}
+                    {field type="select" name="log_level" options="Module::data('core::config.log_levels')"}
                     
                     @if ($errors->has('log_level'))
                     <span class="form-help text-error">{{ $errors->first('log_level') }}</span>

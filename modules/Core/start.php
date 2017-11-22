@@ -14,19 +14,21 @@
  * 扩展 Route:active 如果是当前route，则返回 active
  */
 \Route::macro('active', function($route, $active="active", $normal='') {
-
     return Route::is($route) ? $active : $normal;
 });
 
 /**
  * 扩展getFileData方法, 获取数组文件数据
  */
-\Module::macro('getFileData', function($module, $file) {
+\Module::macro('getFileData', function($module, $file, array $args=[]) {
     $data = [];
     $file = $this->getModulePath($module).$file;
     if ($this->app['files']->isFile($file)) {
-        $data = require $file;
-        $data = is_array($data) ? $data : [];
+        $data = value(function() use ($file, $args) {
+            @extract($args);
+            $data = require $file;
+            return is_array($data) ? $data : [];
+        });
     }
     return $data;
 });
@@ -34,10 +36,10 @@
 /**
  * 扩展data方法, 从data目录获取数组文件数据
  */
-\Module::macro('data', function($name) {
+\Module::macro('data', function($name, array $args=[]) {
     list($module, $file) = explode('::', $name);
-    $data = static::getFileData($module, "Data/{$file}.php");
-    return \Filter::fire($name,$data);
+    $data = static::getFileData($module, "Data/{$file}.php", $args);
+    return \Filter::fire($name, $data);
 });
 
 /**
@@ -173,56 +175,85 @@
 });
 
 /**
+ * 文件上传
+ */
+\Form::macro('upload', function($attrs) {
+    
+    $value    = $this->getValue($attrs);
+    $name     = $this->getAttribute($attrs, 'name');
+    $id       = $this->getIdAttribute($name, $attrs);
+    $filetype = $this->getAttribute($attrs, 'filetype', 'files');
+    $typename = $this->getAttribute($attrs, 'typename', trans('core::file.type.files'));
+    $allow    = $this->getAttribute($attrs, 'allow', config('core.upload.types.'.$filetype.'.extensions'));
+    $maxsize  = $this->getAttribute($attrs, 'maxsize', config('core.upload.types.'.$filetype.'.maxsize'));
+    $select   = $this->getAttribute($attrs, 'select', trans('core::field.upload.select',[$typename]));
+    $url      = $this->getAttribute($attrs, 'url', route('core.file.upload',[$filetype]));
+    $icon     = $this->getAttribute($attrs, 'icon', 'fa-file');
+    $button   = $this->getAttribute($attrs, 'button', trans('core::field.upload.button',[$typename]));
+
+    // 附加参数
+    $params = $this->getAttribute($attrs, 'params',  [
+        'allow'      => $allow,
+        'maxsize'    => $maxsize,
+        'filetype'   => $filetype,
+        'typename'   => $typename,
+        'module'     => app('current.module'),
+        'controller' => app('current.controller'),
+        'action'     => app('current.action'),
+        'field'      => $name,
+        'userid'     => Auth::user()->id,
+        'token'      => Auth::user()->token
+    ]);
+
+    // 选项
+    $options = $this->getAttribute($attrs, 'options',  [
+        'url'              => $url,
+        'filters'          => [
+            'max_file_size'      => $maxsize.'mb',
+            'mime_types'         => [['title'=>$select, 'extensions'=>$allow]],
+            'prevent_duplicates' => true,
+        ],           
+        'multipart_params' => $params,
+    ]);
+
+    // 高级上传及工具
+    $tools = $this->getAttribute($attrs, 'tools', Module::data('core::field.upload.tools', [
+        'filetype' => $filetype,
+        'typename' => $typename,
+    ]));
+
+    return $this->toHtmlString(
+        $this->view->make('core::field.upload')
+            ->with(compact('id', 'name', 'value', 'attrs', 'options','icon','button','tools'))
+            ->render()
+    );
+});
+
+/**
  * 单图片上传
  *
  * 
  * {field type="upload_image" value=""}
- * {field type="upload_image" value="" button="Upload" url="route('core.plupload.image')" resize="['width'=>1920,height=>800,quality=>100,crop=>false]" params=>"[]"}
+ * {field type="upload_image" value="" button="Upload" resize="['width'=>1920,height=>800,quality=>100,crop=>false]" params=>"[]"}
  */
-\Form::macro('upload_image', function($attrs){
+\Form::macro('upload_image', function($attrs) {
     
-    $value = $this->getValue($attrs);
-    $name  = $this->getAttribute($attrs, 'name');    
+    $attrs['filetype'] = 'image';
+    $attrs['typename'] = trans('core::file.type.image');
+    $attrs['icon']     = 'fa-image';
+    $attrs['allow']    = $this->getAttribute($attrs, 'allow', config('core.upload.types.image.extensions'));
 
-    // 上传URL
-    $url = $this->getAttribute($attrs, 'url',  route('core.plupload.image'));
+    // 系统是否开启图片压缩
+    $resize = config('core.image.resize.enabled', true) ? [
+        'width'   => config('core.image.resize.width', 1920),
+        'height'  => config('core.image.resize.height', 1920),
+        'quality' => config('core.image.resize.quality', 100),
+        'crop'    => config('core.image.resize.crop',  false)
+    ] : [];
+    
+    $attrs['options']  = ['resize' => $this->getAttribute($attrs, 'resize', $resize)];
 
-    // 图片缩放
-    $resize = $this->getAttribute($attrs, 'resize',  [
-        'width'   => config('module.core.upload.resize.width', 1920),
-        'height'  => config('module.core.upload.resize.height', 1920),
-        'quality' => config('module.core.upload.resize.quality', 100),
-        'crop'    => config('module.core.upload.resize.crop',  false)
-    ]);
-
-    // 附加参数
-    $params = $this->getAttribute($attrs, 'params',  [
-        'userid' => Auth::user()->id,
-        'token'  => Auth::user()->token
-    ]);
-
-    $options = $this->getAttribute($attrs, 'options',  [
-        'url'              => $url,
-        'resize'           => $resize,
-        'multipart_params' => $params
-    ]);
-
-    // 按钮文字
-    $button   = $this->getAttribute($attrs, 'button', trans('core::field.upload.image.button'));
-
-    // 高级上传及工具
-    $tools = $this->getAttribute($attrs, 'tools', \Filter::fire('upload_image.tools',  [
-        'select'   => ['text'=>trans('core::field.upload.image.select'),'icon'=>'fa-cloud', 'herf'=>'', 'class'=>'js-open'],
-        'libarary' => ['text'=>trans('core::field.upload.image.library'),'icon'=>'fa-database', 'herf'=>'', 'class'=>'js-open'],
-        'dir'      => ['text'=>trans('core::field.upload.image.select'),'icon'=>'fa-folder', 'herf'=>'', 'class'=>'js-open'],
-    ]));
-
-    return $this->toHtmlString(
-        $this->view->make('core::field.upload_image')
-            ->with('name', $name)->with('value', $value)->with('attrs', $attrs)->with('options', $options)
-            ->with('button', $button)->with('tools', $tools)
-            ->render()
-    );
+    return $this->macroCall('upload',  [$attrs]);
 });
 
 /**

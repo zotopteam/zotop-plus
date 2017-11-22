@@ -21,9 +21,9 @@ return [
             'opacity'  => '90',
             'type'     => 'text',
             'text'     => '',
-            'font'     => '/resources/watermark/fonts/default.otf',
+            'font'     => ['file'=>'/resources/watermark/fonts/default.otf','size'=>18,'color'=>'#ffffff'],
             'image'    => '',
-            'position' => 'bottom right',
+            'position' => 'bottom-right',
             'quality'  => '100'
         ],
     ],

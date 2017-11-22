@@ -20,7 +20,7 @@
             <div class="form-group row">
                 <label for="locale" class="col-2 col-form-label required">{{trans('core::config.locale.label')}}</label>
                 <div class="col-8">
-                    {field type="select" name="locale" options="$languages"}
+                    {field type="select" name="locale" options="Module::data('core::config.languages')"}
                     
                     @if ($errors->has('locale'))
                     <span class="form-help text-error">{{ $errors->first('locale') }}</span>
@@ -32,7 +32,7 @@
             <div class="form-group row">
                 <label for="timezone" class="col-2 col-form-label required">{{trans('core::config.timezone.label')}}</label>
                 <div class="col-8">
-                    {field type="select" name="timezone" options="$timezones"}
+                    {field type="select" name="timezone" options="Module::data('core::config.timezones')"}
                     
                     @if ($errors->has('timezone'))
                     <span class="form-help text-error">{{ $errors->first('timezone') }}</span>
@@ -46,7 +46,7 @@
             <div class="form-group row">
                 <label for="date_format" class="col-2 col-form-label required">{{trans('core::config.date_format.label')}}</label>
                 <div class="col-8">
-                    {field type="select" name="date_format" options="$date_formats"}
+                    {field type="select" name="date_format" options="Module::data('core::config.date_formats')"}
                     
                     @if ($errors->has('date_format'))
                     <span class="form-help text-error">{{ $errors->first('date_format') }}</span>
@@ -58,7 +58,7 @@
             <div class="form-group row">
                 <label for="time_format" class="col-2 col-form-label required">{{trans('core::config.time_format.label')}}</label>
                 <div class="col-8">
-                    {field type="select" name="time_format" options="$time_formats"}
+                    {field type="select" name="time_format" options="Module::data('core::config.time_formats')"}
                     
                     @if ($errors->has('time_format'))
                     <span class="form-help text-error">{{ $errors->first('time_format') }}</span>
