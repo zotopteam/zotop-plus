@@ -183,12 +183,12 @@
     $name     = $this->getAttribute($attrs, 'name');
     $id       = $this->getIdAttribute($name, $attrs);
     $filetype = $this->getAttribute($attrs, 'filetype', 'files');
-    $typename = $this->getAttribute($attrs, 'typename', trans('core::file.type.files'));
+    $url      = $this->getAttribute($attrs, 'url', route('core.file.upload',[$filetype]));
     $allow    = $this->getAttribute($attrs, 'allow', config('core.upload.types.'.$filetype.'.extensions'));
     $maxsize  = $this->getAttribute($attrs, 'maxsize', config('core.upload.types.'.$filetype.'.maxsize'));
-    $select   = $this->getAttribute($attrs, 'select', trans('core::field.upload.select',[$typename]));
-    $url      = $this->getAttribute($attrs, 'url', route('core.file.upload',[$filetype]));
-    $icon     = $this->getAttribute($attrs, 'icon', 'fa-file');
+    $typename = $this->getAttribute($attrs, 'typename', trans('core::file.type.'.$filetype));
+    $select   = $this->getAttribute($attrs, 'select', trans('core::field.upload.select',[$typename])); 
+    $icon     = $this->getAttribute($attrs, 'icon', 'fa-upload');
     $button   = $this->getAttribute($attrs, 'button', trans('core::field.upload.button',[$typename]));
 
     // 附加参数
@@ -224,7 +224,7 @@
 
     return $this->toHtmlString(
         $this->view->make('core::field.upload')
-            ->with(compact('id', 'name', 'value', 'attrs', 'options','icon','button','tools'))
+            ->with(compact('id', 'name', 'value', 'attrs', 'options', 'icon', 'button', 'select', 'tools'))
             ->render()
     );
 });
@@ -243,15 +243,25 @@
     $attrs['icon']     = 'fa-image';
     $attrs['allow']    = $this->getAttribute($attrs, 'allow', config('core.upload.types.image.extensions'));
 
-    // 系统是否开启图片压缩
+    // 压缩设置
     $resize = config('core.image.resize.enabled', true) ? [
         'width'   => config('core.image.resize.width', 1920),
         'height'  => config('core.image.resize.height', 1920),
         'quality' => config('core.image.resize.quality', 100),
         'crop'    => config('core.image.resize.crop',  false)
     ] : [];
-    
-    $attrs['options']  = ['resize' => $this->getAttribute($attrs, 'resize', $resize)];
+
+    $resize = $this->getAttribute($attrs, 'resize', $resize);
+
+    // 水印设置
+    $watermark = config('core.image.watermark');
+    $watermark = $this->getAttribute($attrs, 'watermark', $watermark);
+
+    //resize 设置传递给plupload
+    $attrs['options'] = ['resize' => $resize];
+
+    //resize 和 watermark 设置传给后端
+    $attrs['params']  = ['resize' => $resize, 'watermark' => $watermark];
 
     return $this->macroCall('upload',  [$attrs]);
 });
@@ -337,6 +347,7 @@
     $options = $this->getAttribute($attrs, 'options',  []);
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'radiocards-default');
+
     // 如果没有选择值，选择options的第一个
     if (is_null($value)) {
         $value = array_keys($options);

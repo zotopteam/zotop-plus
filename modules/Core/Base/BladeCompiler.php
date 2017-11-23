@@ -65,14 +65,12 @@ class BladeCompiler extends LaravelBladeCompiler
     /**
      * 将标签字符串转化为数组字符串
      * 
-     * 
-     * @param  string $str 标签字符串，所有参数都必须以半角（英文）双引号括起来，如： id="1" size="10" name="$name" placeholder="t('dddd')"
+     * @param  string $str 标签字符串，所有参数都必须放在半角（英文）双引号内，支持字符串、null、bool、 $变量 、function()函数 和 A::method() 静态方法，如： id="1" size="10" name="$name" placeholder="t('dddd')"
      * @return array
      */
 
     public function convertAttrs($str)
-    {
-       
+    { 
         $attrs = $this->convertAttrsToArray($str);
         $attrs = $this->convertArrayToString($attrs);
 
@@ -83,7 +81,7 @@ class BladeCompiler extends LaravelBladeCompiler
      * 将标签字符串转化为数组
      * 
      * 
-     * @param  string $str 标签字符串，所有参数都必须以半角（英文）双引号括起来，如： id="1" size="10" name="$name" placeholder="t('dddd')"
+     * @param  string $str 标签字符串，所有参数都必须放在半角（英文）双引号内， 如：id="1" type="image" name="$name" placeholder="t('dddd')"
      * @return array
      */
     public function convertAttrsToArray($str)
@@ -100,7 +98,7 @@ class BladeCompiler extends LaravelBladeCompiler
     }
 
     /**
-     * 将标签数组转化为数组字符串，支持 $变量 、function()函数 和 A::method() 静态方法 
+     * 将convertAttrsToArray得到的标签数组转化为标准格式的数组字符串
      *
      * @param array $attrs 数组
      * @return code
@@ -112,22 +110,11 @@ class BladeCompiler extends LaravelBladeCompiler
             $str = '[';
 
             foreach ($attrs as $key => $val) {
-
+                // 递归
                 if (is_array($val)) {
-                    
-                    // 递归
                     $str .= "'$key'=>" . $this->convertArrayToString($val) . ",";
-
-                } else {
-                    
-                    // TODO 属性中出现文字符合函数规则时会导致bug，比如：title="hello(hi,zotop)"，hello会被误以为是函数
-                    if ( strpos($val, '$') === 0 OR preg_match('/[a-zA-Z\\_\x7f-\xff][a-zA-Z0-9_\x7f-\xff:]*\(.*?\)/', $val) OR preg_match('/^\[.*\]$/', $val) ) {
-                        $str .= "'$key'=>$val,";
-                    } else {
-                        //$str .= "'$key'=>'" . addslashes($val) . "',";
-                        $str .= "'$key'=>'" . $val . "',";
-                    }
-
+                } else {                    
+                    $str .= "'$key'=>" . $this->convertStringToValue($val) . ",";
                 }
             }
 
@@ -137,4 +124,33 @@ class BladeCompiler extends LaravelBladeCompiler
         return '[]';
     }
 
+    /**
+     * 转换参数值为数组真实类型
+     * bool、 $变量 、function()函数 和 A::method() 静态方法 直接返回
+     * 字符串加上单引号
+     * 
+     * @param  string  $str 标签参数
+     * @return boolean
+     */
+    public function convertStringToValue($val)
+    {
+        // 如果是以$开头为变量  'key'=>$value
+        if (strpos($val, '$') === 0) {
+            return $val;
+        }
+        // 'null','true','false' 直接返回  'key'=>null,  'key'=>false,  'key'=>true 
+        if (in_array(strtolower($val), ['null','true','false'])) {
+            return $val;
+        }
+        // [……]，数组直接返回， 'key'=>[……],
+        if (preg_match('/^\[.*\]$/', $val)) {
+            return $val;
+        }
+        // test(……)，A::test(……) 函数或者方法直接返回 'key'=>test(……),'key'=>A::test(……),
+        if (preg_match('/[a-zA-Z\\_\x7f-\xff][a-zA-Z0-9_\x7f-\xff:]*\(.*?\)/', $val)) {
+             return $val;
+        }
+        // 字符串类型加单引号后返回，TODO：可能有些数据需要处理 addslashes($val)
+        return "'".$val."'";
+    }
 }

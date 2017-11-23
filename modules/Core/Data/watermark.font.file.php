@@ -27,5 +27,4 @@ foreach ($files as $file) {
     }
     $fonts[$path] = [url($preview), '', $name];
 }
-
 return $fonts;

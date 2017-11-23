@@ -22,7 +22,7 @@
                 <div class="col-3">                
                     <div class="card card-theme my-3">
                         <div class="image">
-                            <img class="card-img-top img-fluid" src="{{Theme::asset('img/placeholder.png')}}" style="background-image:url({{Theme::asset($theme->name.':theme.jpg')}});background-size:cover">
+                            <img class="card-img-top img-fluid" src="{{preview($theme->path.'/theme.jpg',300,200)}}">
                         </div>
                         <div class="card-body">
                             <div class="card-title d-flex flex-row">

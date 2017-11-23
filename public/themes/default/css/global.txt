@@ -1,6 +1,0 @@
-/*!
- * CMS global css
- * Copyright 2011-2017 zotop, Inc.
- */
-
-a{color:#0076c2}

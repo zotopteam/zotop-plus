@@ -199,7 +199,12 @@
                         {{trans('core::image.watermark.image')}}
                     </label>
                     <div class="col-8">
-                         {field type="upload_image" name="image[watermark][image]"}
+                        {field type="upload_image" name="image[watermark][image]"}
+                        @if ($errors->has('image.watermark.image'))
+                        <span class="form-help text-error">{{ $errors->first('image.watermark.image') }}</span>
+                        @else
+                        <span class="form-help">{{trans('core::image.watermark.image.help')}}</span>
+                        @endif                         
                     </div>
                 </div>
             </div>

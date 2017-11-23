@@ -1,4 +1,46 @@
 <?php
+if (! function_exists('array_deep')) {
+    /**
+     * 将array_dot得到的数组反向为真实数组格式
+     * @param  array  $arrayDot [description]
+     * @return [type]           [description]
+     */
+    function array_deep(array $arrayDot)
+    {
+        $array = array();
+        foreach ($arrayDot as $key => $value) {
+            array_set($array, $key, $value);
+        }
+        return $array;  
+    }
+}
+
+if (! function_exists('array_merge_deep')) {
+    /**
+     * 深层次合并数组
+     * @param  array  $arrayDot [description]
+     * @return array
+     */
+    function array_merge_deep(...$args)
+    {
+        $arrays = func_get_args();
+        $return = array_shift($arrays);
+
+        foreach ($arrays as $array) {
+            reset($return); //important
+            while (list($key, $value) = @each($array)) {
+                if (is_array($value) && @is_array($return[$key])) {
+                    $return[$key] = array_merge_deep($return[$key], $value);
+                } else {
+                    $return[$key] = $value;
+                }
+            }
+        }
+
+        return $return;
+    }
+}
+
 if (! function_exists('preview')) {
     /**
      * 预览图片
@@ -8,7 +50,7 @@ if (! function_exists('preview')) {
      * @param  int $height 图片高度
      * @return string 临时图片URL
      */
-    function preview($path, $width=null, $height=null, $resize=true)
+    function preview($path, $width=null, $height=null, $fit=true)
     {
         if ( empty($path) || !File::exists($path) ) {
             $path = app('current.theme')->path.'/assets/img/empty.png';
@@ -23,10 +65,12 @@ if (! function_exists('preview')) {
             File::copy($path, $file);
             // 图片缩放
             if ($width || $height) {
-                if ($resize) {
-                    app('image')->make($file)->resize($width,$height)->save();
-                } else {
+                if ($fit) {
                     app('image')->make($file)->fit($width,$height)->save();
+                } else {
+                    app('image')->make($file)->resize($width,$height,function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save();
                 }               
             }          
         }
@@ -72,12 +116,6 @@ if (! function_exists('module')) {
             foreach ($modules as $name=>$module) {
                 
                 $namespace = strtolower($name);
-
-                // 模块图标
-                if (empty($module->icon)) {
-                    $module->icon = $module->getExtraPath('/Resources/assets/module.png');
-                    $module->icon = preview($module->icon,48,48);
-                }
 
                 // 加载未启用模块语言包
                 if ( !$module->active ) {

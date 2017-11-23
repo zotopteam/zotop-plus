@@ -117,24 +117,31 @@ class FormBuilder extends LaravelFormBuilder
      * 从属性数组中取出值
      * 
      * @param  array $options 属性数组
-     * @param  string $key    要弹出的键名
+     * @param  mixed $key    要获取的键名，如果是数组，则为可能项，依次获取，直到获取到
      * @param  mixed $default 默认值
+     * @param  mixed $pull 是否从原数组中删除
      * @return mixed
      */
-    private function getAttribute(&$options, $key, $default=null)
+    private function getAttribute(&$options, $key, $default=null, $pull=true)
     {
-        if (isset($options[$key])) {
-            
-            $value = array_pull($options, $key);
-
-            if (is_array($default)) {
-                
-                $value = (array)$value + $default;
+        // 处理多个可能的键名
+        if (is_array($key)) {
+            foreach ($key as $k) {
+                if (array_has($options, $key)) {
+                    return static::getAttribute($options, $k, $default, $pull);
+                }
             }
-
+        }
+        // 如果存在键名，取出
+        if (array_has($options, $key)) {
+            // 是否从原数组中删除
+            $value = $pull ? array_pull($options, $key) : array_get($options, $key);
+            // value 为数组的情况下深度合并默认值
+            if (is_array($value) && is_array($default)) {
+                $value = array_merge_deep($default, $value);
+            }
             return $value;
         }
-
         return $default;      
     }
 

@@ -27,12 +27,10 @@ class SystemController extends AdminController
      */
     public function refresh()
     {
-        //$success = trans('core::master.operated');
-
-        //Hook
+        // Hook
         Action::fire('system.refresh');
 
-        // 清除模板缓存
+        // 重启系统
         Artisan::call('reboot');
 
         return $this->success(trans('core::master.operated'));
@@ -60,13 +58,13 @@ class SystemController extends AdminController
             'upload_max_filesize' => ini_get('upload_max_filesize'),
             'max_execution_time'  => ini_get('max_execution_time').'s',
             'server_timezone'     => config('app.timezone'),
-            'server_datetime'     => date('Y-m-d H:i:s'),
+            'server_datetime'     => now(),
             // 'local_date'       => gmdate('Y年n月j日 H:i:s', time() + 8 * 3600),
             'server_name'         => $_SERVER['SERVER_NAME'],
             'port'                => $_SERVER['SERVER_PORT'],
             'server_addr'         => $_SERVER['SERVER_ADDR'],
             'remote_addr'         => $_SERVER['REMOTE_ADDR'],
-            'disk'                => round((disk_free_space('.') / (1024 * 1024)), 2).'M',
+            'disk'                => \Format::size(disk_free_space('.')),
         ];        
         
         return $this->view();

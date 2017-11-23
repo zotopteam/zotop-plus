@@ -25,6 +25,7 @@ return [
     'watermark.font.color'            => '字体颜色',
     'watermark.text'                  => '水印文字',
     'watermark.image'                 => '水印图片',
+    'watermark.image.help'            => '水印图片一般是PNG格式，尺寸建议小于150px*50px',
     'watermark.position'              => '水印位置',
     'watermark.position.top-left'     => '顶部居左',
     'watermark.position.top'          => '顶部居中',
