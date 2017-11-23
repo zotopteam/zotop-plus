@@ -75,7 +75,7 @@
                         @if(File::mime($file) == 'image')
                         <div class="image"><img src="{{preview($file)}}"></div>
                         @else
-                        <i class="fa fa-file fa-2x fa-fw text-warning"></i>
+                        <i class="fa {{File::icon($file)}} fa-2x fa-fw text-warning"></i>
                         @endif
                     </td>
                     <td class="name pl-2">{{$file->getFileName()}}</td>

@@ -3,10 +3,7 @@
  * 扩展 Request::referer 功能，暂时等于 URL::previous()
  */
 \Request::macro('referer', function() {
-
-    $referer = \URL::previous();
-
-    return $referer;
+    return \URL::previous();
 });
 
 
@@ -39,7 +36,7 @@
 \Module::macro('data', function($name, array $args=[]) {
     list($module, $file) = explode('::', $name);
     $data = static::getFileData($module, "Data/{$file}.php", $args);
-    return \Filter::fire($name, $data);
+    return \Filter::fire($name, $data, $args);
 });
 
 /**
@@ -53,6 +50,34 @@
     }
 
     return null;
+});
+
+/**
+ * 扩展File::icon方法, 获取文件图标  
+ */
+\File::macro('icon', function($file) {
+    
+    if ($extension = static::extension($file)) {
+        
+        $icons = [
+            'pdf'  => 'fa-file-pdf-o',
+            'docx' => 'fa-file-word-o',
+            'xls'  => 'fa-file-excel-o',
+            'zip'  => 'fa-file-archive-o',
+            'gif'  => 'fa-file-image-o',
+            'jpg'  => 'fa-file-image-o',
+            'jpeg' => 'fa-file-image-o',
+            'png'  => 'fa-file-image-o',
+            'ppt'  => 'fa-file-powerpoint-o',
+            'pptx' => 'fa-file-powerpoint-o',
+        ];
+
+        if (isset($icon[$extension])) {
+            return $icon[$extension];
+        }
+    }
+
+    return 'fa-file';
 });
 
 /**

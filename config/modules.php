@@ -92,6 +92,7 @@ return [
         */
         'generator' => [
             'config'        => ['path' => 'Config', 'generate' => false],
+            'data'          => ['path' => 'Data', 'generate' => true],
             'command'       => ['path' => 'Console', 'generate' => true],
             'migration'     => ['path' => 'Database/Migrations', 'generate' => true],
             'seeder'        => ['path' => 'Database/Seeders', 'generate' => true],
