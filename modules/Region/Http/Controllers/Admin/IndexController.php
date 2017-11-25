@@ -22,6 +22,16 @@ class IndexController extends AdminController
         $this->parents   = Region::parents($parent_id, true);
         $this->regions   = Region::where('parent_id', $parent_id)->orderBy('sort')->get();
 
+        //$data = Region::enabled()->nestArray();
+        //$data = Region::enabled()->nestJson();
+        //$data = Region::parentIds($parent_id, true);
+        //$data = Region::parents($parent_id, true);
+        //$data = Region::childIds($parent_id);
+        //$data = Region::top($parent_id);
+        //$data = Region::enabled()->children($parent_id, true)->toArray();
+        //$data = Region::enabled()->nestArray(1);
+        //debug($data);
+
         return $this->view();
     }
 
@@ -132,9 +142,10 @@ class IndexController extends AdminController
      */
     public function disable(Request $request, $id)
     {
-        $region           = Region::findOrFail($id);
-        $region->disabled = 1;
-        $region->save();
+        // 禁用会同时禁用全部下级子节点
+        if ($childids = Region::childIds($id, true)) {
+            Region::whereIn('id', $childids)->update(['disabled' => 1]);
+        }
         return $this->success(trans('core::master.operated'), $request->referer());
     }
 
@@ -146,9 +157,12 @@ class IndexController extends AdminController
      */
     public function enable(Request $request, $id)
     {
-        $region           = Region::findOrFail($id);
-        $region->disabled = 0;
-        $region->save();
+        // TODO:如果父节点被禁用，则无法启用子节点
+
+        // 启用会同时禁用全部下级子节点
+        if ($childids = Region::childIds($id, true)) {
+            Region::whereIn('id', $childids)->update(['disabled' => 0]);
+        }
         return $this->success(trans('core::master.operated'), $request->referer());
     }
 }

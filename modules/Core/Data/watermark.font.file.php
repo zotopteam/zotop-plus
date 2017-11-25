@@ -2,7 +2,7 @@
 use Intervention\Image\ImageManagerStatic as Image;
 
 $fs = app('files');
-$path  = resource_path('watermark/fonts');
+$path  = resource_path('fonts');
 $files = $fs->files($path);
 $fonts = [];
 

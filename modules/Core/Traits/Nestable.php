@@ -6,10 +6,40 @@ use Illuminate\Support\Facades\Cache;
 trait Nestable
 {
     /**
-     * 父列键名
+     * 根节点的编号，默认为0，可以为字符串
+     * @var mixed
+     */    
+    public $rootId = 0;
+
+    /**
+     * 父列键名，数据表中必须包含该项
      * @var string
      */
-    protected $parentColumn = 'parent_id';
+    public $parentColumn = 'parent_id';
+
+    /**
+     * 排序键名，如果为空按照主键排序
+     * @var string
+     */
+    public $orderColumn = 'sort';
+
+    /**
+     * 默认排序顺序 asc 或 desc
+     * @var string
+     */
+    public $orderDirection = 'asc';
+    
+    /**
+     * 嵌套数组的子节点键名
+     * @var string
+     */    
+    public $childrenKey = 'children';
+
+    /**
+     * 嵌套数组的深度键名
+     * @var string
+     */     
+    public $depthKey = 'depth';
 
     /**
      * 缓存键名
@@ -40,7 +70,9 @@ trait Nestable
 
         static::deleted(function() {
             Cache::forget(static::$nested_cache_name);
-        });                
+        });
+
+        static::addGlobalScope(new NestableScope);            
     }    
 
     /**
@@ -48,12 +80,16 @@ trait Nestable
      * 
      * @return array
      */
-    protected function nested($id=null)
+    public function hashTable($id=null)
     {
         static $nested = [];
         if (empty($nested)) {
             $nested = Cache::remember(static::$nested_cache_name, static::$nested_cache_time, function() {
-                return $this->select($this->primaryKey, $this->parentColumn)->get()->pluck($this->parentColumn, $this->primaryKey)->toArray();
+                return $this->select($this->primaryKey, $this->parentColumn)
+                ->orderBy($this->orderColumn ?? $this->primaryKey, $this->orderDirection)
+                ->get()
+                ->pluck($this->parentColumn, $this->primaryKey)
+                ->toArray();
             });
         }
 
@@ -72,18 +108,40 @@ trait Nestable
      * @param  array   $parentIds 传递自身
      * @return array
      */
-    protected function parentIds($id, $self=false, &$parentIds=[])
+    public static function parentIds($id, $self=false, &$parentIds=[])
     {
+        static $instance = null;
+
+        if (empty($instance)) {
+            $instance = new static;
+        }
+
         if ($self) {
             $parentIds[] = $id;
         }
 
-        if ($parentId = static::nested($id)) {
-            $this->parentIds($parentId, true, $parentIds);
+        if ($parentId = $instance->hashTable($id)) {
+            $instance->parentIds($parentId, true, $parentIds);
         }
 
         return array_reverse($parentIds);
-    }    
+    }
+
+    /**
+     * 获取全部的父级节点
+     * 
+     * @param  mixed  $id         编号
+     * @param  boolean $self      是否包含自身
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function parents($id, $self=false)
+    {
+        $parentIds = static::parentIds($id, $self);
+
+        $primaryKey = ($instance = new static)->getKeyName();
+
+        return $instance->whereIn($primaryKey, $parentIds)->get();
+    }       
 
     /**
      * 获取节点的全部子编号 descendants
@@ -93,15 +151,21 @@ trait Nestable
      * @param  array   $childIds  传递自身
      * @return array
      */
-    public function childIds($id, $self=false, &$childIds=[])
+    public static function childIds($id, $self=false, &$childIds=[])
     {
+        static $instance = null;
+
+        if (empty($instance)) {
+            $instance = new static;
+        }
+
         if ($self) {
             $childIds[] = $id;
         }
 
-        foreach (static::nested() as $currentId => $currentParentId) {
+        foreach ($instance->hashTable() as $currentId => $currentParentId) {
             if ($id == $currentParentId) {
-                $this->childIds($currentId, true, $childIds);
+                $instance->childIds($currentId, true, $childIds);
             }
         }
 
@@ -109,21 +173,17 @@ trait Nestable
     }
 
     /**
-     * 获取节点的顶级节点编号
+     * 获取节点的一级节点编号，如果本身就是一级节点，返回自身
      * 
      * @param  mixed  $id         编号
      * @param  mixed  $rootId     默认顶级编号
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    protected function rootId($id, $rootId=0)
+    public static function topId($id)
     {
-        $parentIds = static::parentIds($id, false);
+        $parentIds = static::parentIds($id, true);
 
-        if ($parentIds) {
-            $rootId = reset($parentIds);
-        }
-
-        return $rootId;
+        return reset($parentIds);
     }
 
     /**
@@ -132,26 +192,16 @@ trait Nestable
      * @param  mixed  $id 编号
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    protected function root($id)
+    public static function top($id)
     {
-        $rootId = static::rootId($id);
+        $topId = static::topId($id);
 
-        return $this->where($this->primaryKey, $rootId)->first();
+        $primaryKey = ($instance = new static)->getKeyName();
+
+        return $instance->where($primaryKey, $topId)->first();
     }    
 
-    /**
-     * 获取全部的父级节点
-     * 
-     * @param  mixed  $id         编号
-     * @param  boolean $self      是否包含自身
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    protected function parents($id, $self=false)
-    {
-        $parentIds = static::parentIds($id, $self);
 
-        return $this->whereIn($this->primaryKey, $parentIds)->get();
-    }
 
     /**
      * 获取全部的子级节点
@@ -160,12 +210,10 @@ trait Nestable
      * @param  boolean $self      是否包含自身
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    protected function children($id, $self=false)
-    {
-        $childIds = static::childIds($id, $self);
+    // protected function children($id, $self=false)
+    // {
+    //     $childIds = static::childIds($id, $self);
 
-        return $this->whereIn($this->primaryKey, $childIds)->get();
-    }
-
-
+    //     return $this->whereIn($this->primaryKey, $childIds)->get();
+    // }
 }

@@ -21,7 +21,7 @@ return [
             'opacity'  => '90',
             'type'     => 'text',
             'text'     => '',
-            'font'     => ['file'=>'/resources/watermark/fonts/default.otf','size'=>18,'color'=>'#ffffff'],
+            'font'     => ['file'=>'/resources/fonts/default.otf','size'=>18,'color'=>'#ffffff'],
             'image'    => '',
             'position' => 'bottom-right',
             'quality'  => '100'

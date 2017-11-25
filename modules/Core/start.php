@@ -267,6 +267,7 @@
     $attrs['typename'] = trans('core::file.type.image');
     $attrs['icon']     = 'fa-image';
     $attrs['allow']    = $this->getAttribute($attrs, 'allow', config('core.upload.types.image.extensions'));
+    $attrs['preview']  = $this->getAttribute($attrs, 'preview', 'image');
 
     // 压缩设置
     $resize = config('core.image.resize.enabled', true) ? [

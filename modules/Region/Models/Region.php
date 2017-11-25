@@ -20,4 +20,15 @@ class Region extends Model
      * @var array
      */
     protected $fillable = ['parent_id', 'title', 'sort'];
+
+    /**
+     * 限制查询只包括启用的数据。
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEnabled($query)
+    {
+        return $query->where('disabled', 0);
+    }
+   
 }

@@ -10,14 +10,16 @@
 			var progress = $(this).find('.progress');
 
 			//图片预览
-			if (options.multipart_params.filetype == 'image') {
+			if (input.attr('preview') == 'image') {
 				input.popover({placement:'bottom',html:true,trigger:'hover',content:function(){
 					var value = input.val();
 					if (value) {
-						return input.hasClass('error') ? false : '<img src="'+ value +'" style="max-width:400px;max-height:200px"/>';
+						return input.hasClass('error') ? false : '<div class="image bg-image-preview"><img src="'+ value +'"/></div>';
 					}
 					return false;
-				}});
+				}}).on('show.bs.popover', function () {
+  					$($(this).data('bs.popover').getTipElement()).addClass('popover-image-preview');
+				});
 			}			
 
 			// 上传属性

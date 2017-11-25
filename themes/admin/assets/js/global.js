@@ -57,6 +57,7 @@ $(function(){
                 
                 var tooltip = $(value.element).addClass('error').tooltip({
                     trigger: "manual",
+                    container: $(value.element).parent('div'),
                     html: true,
                     title: function(element){
                         var title='';                        
@@ -71,8 +72,9 @@ $(function(){
                     },
                     placement: function(tip, element){
                         return $(element).data('placement') ? $(element).data('placement') : 'bottom';
-                    },              
-                    template: '<div class="tooltip tooltip-error" role="tooltip"><div class="tooltip-arrow arrow"></div><div class="tooltip-inner"></div></div>'
+                    }            
+                }).on('show.bs.tooltip', function () {
+                    $($(this).data('bs.tooltip').getTipElement()).addClass('tooltip-error');
                 });
 
                 //tooltip.data("bs.tooltip").options.title = value.message;

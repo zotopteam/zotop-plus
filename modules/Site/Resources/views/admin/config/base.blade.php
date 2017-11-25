@@ -47,7 +47,7 @@
                 <label for="theme" class="col-2 col-form-label required">{{trans('site::config.theme.label')}}</label>
                 <div class="col-8">
                     
-                    {field type="radiocards" name="theme" options="Module::data('site::theme.front')" class="radiocards-lg"}                
+                    {field type="radiocards" name="theme" options="Module::data('site::theme.front')" class="radiocards-lg" column="4"}                
                     
                     @if ($errors->has('theme'))
                     <span class="form-help text-error">{{ $errors->first('theme') }}</span>

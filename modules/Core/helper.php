@@ -41,6 +41,51 @@ if (! function_exists('array_merge_deep')) {
     }
 }
 
+if (! function_exists('array_nest')) {
+
+    /**
+     * 将扁平并含有(id,parent_id)的数组转化为嵌套数组，并追加深度
+     * 
+     * @code php
+     * $data = array(
+     *     array('id' => 1, 'parent_id' => 0, 'name' => '1-0'),
+     *     array('id' => 5, 'parent_id' => 0, 'name' => '5-0'),
+     *     array('id' => 2, 'parent_id' => 1, 'name' => '2-1'),
+     *     array('id' => 3, 'parent_id' => 1, 'name' => '2-1'),
+     *     array('id' => 4, 'parent_id' => 3, 'name' => '4-3'),   
+     *     array('id' => 6, 'parent_id' => 5, 'name' => '6-5'),
+     * );
+     *
+     * $values = array_nest($data, 0);
+     * @endcode
+     * 
+     * @param  array $array   扁平数组
+     * @param  string $rootId  初始节点编号
+     * @param  string $rootDepth 初始节点深度
+     * @param  string $id   id的键名
+     * @param  string $parentid parent_id的键名
+     * @param  string $children  转化后的子数据键名
+     * @param  string $depth  转化后的节点深度
+     * @return array
+     */
+    function array_nest(array $array, $rootId=0, $rootDepth=0, $id='id', $parentid='parent_id', $children='children', $depth="depth")
+    {
+
+        $nestArray = [];
+        foreach ($array as $row) {
+            if(is_array($row) && isset($row[$id]) && isset($row[$parentid]) && $row[$parentid] == $rootId) {
+                $row[$depth] = $rootDepth;
+                if ($nest = array_nest($array, $row[$id], $row[$depth] + 1, $id, $parentid, $children, $depth)) {
+                    $row[$children] = $nest;
+                }
+                $nestArray[] = $row;
+            }
+        }
+        
+        return $nestArray;
+    }
+}
+
 if (! function_exists('preview')) {
     /**
      * 预览图片
