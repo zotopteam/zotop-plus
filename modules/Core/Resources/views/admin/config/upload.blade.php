@@ -89,7 +89,7 @@
                         <div class="input-group-addon">{{trans('core::image.resize.width')}}</div>
                         {field type="number" name="image[resize][width]" min="0"}
                         <div class="input-group-addon">{{trans('core::image.resize.height')}}</div>
-                        {field type="number" name="image[resize][width]" min="0"}
+                        {field type="number" name="image[resize][height]" min="0"}
                         <div class="input-group-addon">px</div>
                     </div>
                     
@@ -137,7 +137,7 @@
                         <div class="input-group-addon">{{trans('core::image.watermark.width')}}</div>
                         {field type="number" name="image[watermark][width]" min="0"}
                         <div class="input-group-addon">{{trans('core::image.watermark.height')}}</div>
-                        {field type="number" name="image[watermark][width]" min="0"}
+                        {field type="number" name="image[watermark][height]" min="0"}
                         <div class="input-group-addon">px</div>
                     </div>
                     
@@ -174,7 +174,7 @@
                         <div class="input-group">
                             <div class="input-group-addon">{{trans('core::image.watermark.font.size')}}</div>
                             {field type="select" name="image[watermark][font][size]" options="Module::data('core::watermark.font.size')"}
-                            <div class="input-group-addon">PX</div>                
+                            <div class="input-group-addon">px</div>                
                         </div>
                     </div>
                     <div class="col-3">
@@ -234,25 +234,66 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="resize_quality" class="col-2 col-form-label">
-                    {{trans('core::image.resize.quality')}}
-                </label>
+                <label for="image_watermark_offset" class="col-2 col-form-label">{{trans('core::image.watermark.offset')}}</label>
                 <div class="col-5">
-                    {field type="number" name="image[resize][quality]" min="0" max="100"}
+                    <div class="input-group">
+                        <div class="input-group-addon">{{trans('core::image.watermark.offset.x')}}</div>
+                        {field type="number" name="image[watermark][offset][x]" min="0"}
+                        <div class="input-group-addon">{{trans('core::image.watermark.offset.y')}}</div>
+                        {field type="number" name="image[watermark][offset][y]" min="0"}
+                        <div class="input-group-addon">px</div>
+                    </div>
                     
-                    @if ($errors->has('debug'))
-                    <span class="form-help text-error">{{ $errors->first('debug') }}</span>
+                    @if ($errors->has('offset'))
+                    <span class="form-help text-error">{{ $errors->first('offset') }}</span>
                     @else
-                    <span class="form-help">{{trans('core::image.resize.quality.help')}}</span>
+                    <span class="form-help">{{trans('core::image.watermark.offset.help')}}</span>
                     @endif
                 </div>
-            </div>                                                                       
+            </div>            
+            <div class="form-group row">
+                <label for="watermark_opacity" class="col-2 col-form-label">
+                    {{trans('core::image.watermark.opacity')}}
+                </label>
+                <div class="col-5">
+                    {field type="number" name="image[watermark][opacity]" min="1" max="100"}
+                    
+                    @if ($errors->has('watermark.opacity'))
+                    <span class="form-help text-error">{{ $errors->first('watermark.opacity') }}</span>
+                    @else
+                    <span class="form-help">{{trans('core::image.watermark.opacity.help')}}</span>
+                    @endif
+                </div>
+            </div>                  
+            <div class="form-group row">
+                <label for="watermark_quality" class="col-2 col-form-label">
+                    {{trans('core::image.watermark.quality')}}
+                </label>
+                <div class="col-5">
+                    {field type="number" name="image[watermark][quality]" min="0" max="100"}
+                    
+                    @if ($errors->has('watermark.quality'))
+                    <span class="form-help text-error">{{ $errors->first('watermark.quality') }}</span>
+                    @else
+                    <span class="form-help">{{trans('core::image.watermark.quality.help')}}</span>
+                    @endif
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="watermark_test" class="col-2 col-form-label">
+                </label>
+                <div class="col-5">
+                    <div class="btn btn-secondary" id="watermark-test">
+                        {{trans('core::image.watermark.test')}}
+                    </div>
+                </div>
+            </div>                                                                                  
             {/form}
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
-            {field type="submit" form="config" value="trans('core::master.save')" class="btn btn-primary"}
+            {field type="submit" form="config" value="trans('core::master.save')" class="btn btn-primary"}           
         </div>
     </div>
     
@@ -273,6 +314,30 @@
             watermark_type_change();
         });        
     });
+
+    $(function(){
+        $('#watermark-test').on('click',function(){
+            var data = $('form.form').serialize();
+            var title = $(this).text();
+            var dialog = $.dialog({
+                    title: title,
+                    content: '',
+                    width: '50%',
+                    height: '60%',
+                    ok: true,
+                    padding:0
+            }, true).loading(true);
+
+            $.post("{{route('core.config.watermarktest')}}", data, function(msg){
+                dialog.content('<a href="'+msg.content+'" target="_blank">' +
+                 '  <div class="image-preview bg-image-preview full-height full-width d-flex justify-content-center p-3">' +
+                 '      <img src="'+msg.content+'" class="align-self-center">' +
+                 '  </div>'+
+                 '</a>');
+            },'json');
+        });
+    });
+
     $(function(){
         $('form.form').validate({       
             submitHandler:function(form){                

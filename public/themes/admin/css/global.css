@@ -104,6 +104,9 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .image img{width:100%;transition: all .5s ease-in-out;}
 .image-scale:hover img {transform: scale(1.25);}
 
+.image-preview{}
+.image-preview img{max-width:100%;max-height:100%;}
+
 .label{display:inline;padding:.25rem .75rem;font-size:85%;font-weight: normal;color:#ffffff;text-align:center;white-space:nowrap;border-radius:.25rem;}
 .label.label-xs{padding:0.25rem 0.25rem;font-size:75%;}
 .label.label-sm{padding:0.25rem 0.5rem;font-size:75%;}

@@ -57,6 +57,7 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
     $router->group(['prefix' =>'config'], function (Router $router) {
         $router->any('index','ConfigController@index')->name('core.config.index')->middleware('allow:core.config.index');
         $router->any('upload','ConfigController@upload')->name('core.config.upload')->middleware('allow:core.config.upload');
+        $router->any('watermark/test','ConfigController@watermarktest')->name('core.config.watermarktest');
         $router->any('mail','ConfigController@mail')->name('core.config.mail')->middleware('allow:core.config.mail');
         $router->any('mail/test','ConfigController@mailtest')->name('core.config.mailtest');
         $router->any('safe','ConfigController@safe')->name('core.config.safe')->middleware('allow:core.config.safe');
@@ -103,7 +104,8 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->any('create','FolderController@create')->name('core.folder.create')->middleware('allow:core.folder.create');
         $router->any('delete','FolderController@delete')->name('core.folder.delete')->middleware('allow:core.folder.delete');
         $router->any('rename','FolderController@rename')->name('core.folder.rename')->middleware('allow:core.folder.rename');
-    });  
+    });
+
     // Plupload 模块后台路由
     $router->group(['prefix' =>'plupload'], function (Router $router) {
         

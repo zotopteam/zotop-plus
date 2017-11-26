@@ -98,7 +98,7 @@ if (! function_exists('preview')) {
     function preview($path, $width=null, $height=null, $fit=true)
     {
         if ( empty($path) || !File::exists($path) ) {
-            $path = app('current.theme')->path.'/assets/img/empty.png';
+            $path = app('current.theme')->path.'/assets/img/empty.jpg';
         }
 
         $temp = 'temp/preview/'.md5($path.'-'.$width.'-'.$height).'.'.File::extension($path);
