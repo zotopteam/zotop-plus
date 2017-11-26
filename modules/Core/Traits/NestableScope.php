@@ -13,7 +13,7 @@ class NestableScope implements Scope
      *
      * @var array
      */
-    protected $extensions = ['Children','NestArray','NestJson'];
+    protected $extensions = ['Child','Children','NestArray','NestJson'];
 
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -39,6 +39,19 @@ class NestableScope implements Scope
         }
     }
 
+    /**
+     * Add the with-trashed extension to the builder.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @return void
+     */
+    protected function addChild(Builder $builder)
+    {
+        $builder->macro('child', function (Builder $builder, $id) {
+            $model = $builder->getModel();
+            return $builder->where($model->parentColumn, $id)->get();
+        });
+    }
     /**
      * Add the with-trashed extension to the builder.
      *

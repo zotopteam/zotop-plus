@@ -30,7 +30,12 @@ class IndexController extends AdminController
         //$data = Region::top($parent_id);
         //$data = Region::enabled()->children($parent_id, true)->toArray();
         //$data = Region::enabled()->nestArray(1);
-        //debug($data);
+        // $data = Region::parent($parent_id);
+
+        // $data = Region::child($parent_id);
+        // debug($data);
+
+
 
         return $this->view();
     }
@@ -108,12 +113,11 @@ class IndexController extends AdminController
      */
     public function destroy(Request $request, $id)
     {
-        $region = Region::findOrFail($id);
-
-        if (Region::where('parent_id', $region->id)->count()) {
-            return $this->error(trans('region::module.delete.disable'));
+        if (Region::child($id)->count()) {
+            return $this->error(trans('region::module.delete.forbidden'));
         }
 
+        $region = Region::findOrFail($id);
         $region->delete();
 
         return $this->success(trans('core::master.operated'), $request->referer());
@@ -157,7 +161,10 @@ class IndexController extends AdminController
      */
     public function enable(Request $request, $id)
     {
-        // TODO:如果父节点被禁用，则无法启用子节点
+        // 如果父节点被禁用，则无法启用子节点
+        if ($parent = Region::parent($id)) {
+            return $this->error(trans('region::module.enable.forbidden'));
+        }
 
         // 启用会同时禁用全部下级子节点
         if ($childids = Region::childIds($id, true)) {

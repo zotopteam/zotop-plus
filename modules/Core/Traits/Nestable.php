@@ -101,6 +101,23 @@ trait Nestable
     }
 
     /**
+     * 获取节点的上级节点编号
+     * @param  mixed $id 节点编号
+     * @return mixed
+     */
+    public static function parentId($id)
+    {
+        return (new static)->hashTable($id);
+    }
+
+    public static function parent($id)
+    {
+        $parentId = static::parentId($id);
+        $primaryKey = ($instance = new static)->getKeyName();
+        return $instance->where($primaryKey, $parentId)->first();      
+    }
+
+    /**
      * 获取节点的全部父编号 ancestors
      * 
      * @param  mixed  $id         编号
@@ -142,6 +159,30 @@ trait Nestable
 
         return $instance->whereIn($primaryKey, $parentIds)->get();
     }       
+    /**
+     * 获取节点的子节点编号
+     * 
+     * @param  mixed  $id         编号
+     * @return array
+     */
+    public static function childId($id)
+    {
+        static $instance = null;
+
+        if (empty($instance)) {
+            $instance = new static;
+        }
+
+        $childId = [];
+
+        foreach ($instance->hashTable() as $currentId => $currentParentId) {
+            if ($id == $currentParentId) {
+                $childId[] = $currentId;
+            }
+        }
+
+        return $childId;        
+    }
 
     /**
      * 获取节点的全部子编号 descendants
@@ -199,21 +240,5 @@ trait Nestable
         $primaryKey = ($instance = new static)->getKeyName();
 
         return $instance->where($primaryKey, $topId)->first();
-    }    
-
-
-
-    /**
-     * 获取全部的子级节点
-     * 
-     * @param  mixed  $id         编号
-     * @param  boolean $self      是否包含自身
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    // protected function children($id, $self=false)
-    // {
-    //     $childIds = static::childIds($id, $self);
-
-    //     return $this->whereIn($this->primaryKey, $childIds)->get();
-    // }
+    }
 }

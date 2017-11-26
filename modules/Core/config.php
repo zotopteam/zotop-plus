@@ -13,7 +13,7 @@ return [
         'url'  => '',
     ],
     'image' => [
-        'resize' => ['enabled'=>1,'width'=>1980,'height'=>'1200','quality'=>100],
+        'resize' => ['enabled'=>1,'width'=>1920,'height'=>'1200','quality'=>100],
         'watermark' => [
             'enabled'  => 1,
             'width'    => '300',
