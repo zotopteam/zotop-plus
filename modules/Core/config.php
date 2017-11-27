@@ -24,7 +24,7 @@ return [
             'font'     => ['file'=>'/resources/fonts/default.otf','size'=>36,'color'=>'#ffffff'],
             'image'    => '',
             'position' => 'bottom-right',
-            'offset'   => [10,10],
+            'offset'   => ['x'=>10,'y'=>10],
             'quality'  => '100'
         ],
     ],
