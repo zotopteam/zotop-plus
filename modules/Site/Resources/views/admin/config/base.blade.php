@@ -14,7 +14,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
             {form model="$config" route="site.config.base" method="post" id="config" autocomplete="off"}
-            <div class="form-title row">{{trans('site::config.base.info.title')}}</div>
+            <div class="form-title row">{{trans('site::config.base.info')}}</div>
 
             <div class="form-group row">
                 <label for="name" class="col-2 col-form-label required">{{trans('site::config.name.label')}}</label>
@@ -41,7 +41,7 @@
                     <span class="form-help">{{trans('site::config.url.help')}}</span>
                     @endif
                 </div>
-            </div>  
+            </div>
 
             <div class="form-group row">
                 <label for="theme" class="col-2 col-form-label required">{{trans('site::config.theme.label')}}</label>
@@ -56,7 +56,7 @@
                     @endif
                 </div>
             </div>
-
+            
             <div class="form-group row">
                 <label for="logo" class="col-2 col-form-label">{{trans('site::config.logo.label')}}</label>
                 <div class="col-8">
@@ -85,35 +85,8 @@
                 </div>
             </div>
 
-            <div class="form-title row">{{trans('site::config.base.status.title')}}</div>
 
-            <div class="form-group row">
-                <label for="closed" class="col-2 col-form-label">{{trans('site::config.closed.label')}}</label>
-                <div class="col-8">
 
-                    {field type="enable" name="closed"}
-                    
-                    @if ($errors->has('url'))
-                    <span class="form-help text-error">{{ $errors->first('closed') }}</span>
-                    @else
-                    <span class="form-help">{{trans('site::config.closed.help')}}</span>
-                    @endif
-                </div>
-            </div>  
-
-            <div class="form-group row">
-                <label for="closed_reason" class="col-2 col-form-label">{{trans('site::config.closed_reason.label')}}</label>
-                <div class="col-8">
-
-                    {field type="textarea" name="closed_reason" rows="3"}
-                    
-                    @if ($errors->has('closed_reason'))
-                    <span class="form-help text-error">{{ $errors->first('closed_reason') }}</span>
-                    @else
-                    <span class="form-help">{{trans('site::config.closed_reason.help')}}</span>
-                    @endif
-                </div>
-            </div>
             {/form}           
         </div>
     </div><!-- main-body -->

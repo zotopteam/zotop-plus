@@ -64,5 +64,29 @@ class ConfigController extends AdminController
 
         return $this->view();
     }
-     
+
+    /**
+     * 搜索优化
+     *
+     * @return Response
+     */
+    public function close(Request $request)
+    {
+        // 保存数据
+        if ( $request->isMethod('POST') ) {
+
+            $config = $request->all();
+            $config = $config + ['closed'=>0];
+            
+            // 写入配置组
+            $this->config('site', $config);
+
+            return $this->success(trans('core::master.saved'));
+        }
+
+        $this->title  = trans('site::config.close');
+        $this->config = Config::get('site');
+
+        return $this->view();
+    }     
 }

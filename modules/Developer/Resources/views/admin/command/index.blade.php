@@ -9,7 +9,7 @@
         </div>     
         <div class="main-action">
             <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.command.create',[$name])}}" data-width="800" data-height="300">
-                <i class="fa fa-plus"></i> {{trans('core::master.create')}}
+                <i class="fa fa-plus"></i> {{trans('developer::command.create')}}
             </a>
         </div>
     </div>

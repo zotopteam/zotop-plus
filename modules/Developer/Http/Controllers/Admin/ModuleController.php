@@ -21,7 +21,7 @@ class ModuleController extends AdminController
      */
     public function index()
     {
-        $this->title   = trans('developer::module.develop');
+        $this->title   = trans('developer::module.title');
         $this->modules = module();
 
         return $this->view();

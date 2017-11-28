@@ -15,7 +15,7 @@
                         <i class="fa fa-puzzle-piece"></i>
                     </div>
                     <div class="card-body">
-                        <a href="{{route('developer.module.index')}}"> {{trans('developer::module.develop')}}</a>
+                        <a href="{{route('developer.module.index')}}"> {{trans('developer::module.title')}}</a>
                     </div>
                 </div>
 
@@ -24,7 +24,7 @@
                         <i class="fa fa-diamond"></i>
                     </div>
                     <div class="card-body">
-                        <a href="{{route('developer.theme.index')}}"> {{trans('developer::theme.develop')}}</a>
+                        <a href="{{route('developer.theme.index')}}"> {{trans('developer::theme.title')}}</a>
                     </div>                    
                 </div>             
 

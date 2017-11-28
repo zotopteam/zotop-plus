@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 扩展 Request::referer 功能，暂时等于 URL::previous()
  */
@@ -15,11 +16,12 @@
 });
 
 /**
- * 扩展getFileData方法, 获取数组文件数据
+ * 扩展$module->getFileData
+ * @var [type]
  */
-\Module::macro('getFileData', function($module, $file, array $args=[]) {
+\Nwidart\Modules\Module::macro('getFileData', function($file, array $args=[]) {
     $data = [];
-    $file = $this->getModulePath($module).$file;
+    $file = $this->getExtraPath($file);
     if ($this->app['files']->isFile($file)) {
         $data = value(function() use ($file, $args) {
             @extract($args);
@@ -31,9 +33,16 @@
 });
 
 /**
+ * 扩展Module::getFileData方法, 获取数组文件数据
+ */
+\Nwidart\Modules\Facades\Module::macro('getFileData', function($module, $file, array $args=[]) {
+    return $this->find($module)->getFileData($file, $args);
+});
+
+/**
  * 扩展data方法, 从data目录获取数组文件数据
  */
-\Module::macro('data', function($name, array $args=[]) {
+\Nwidart\Modules\Facades\Module::macro('data', function($name, array $args=[]) {
     list($module, $file) = explode('::', $name);
     $data = static::getFileData($module, "Data/{$file}.php", $args);
     return \Filter::fire($name, $data, $args);

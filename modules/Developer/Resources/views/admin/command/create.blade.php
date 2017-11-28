@@ -8,7 +8,7 @@
         <div class="container-fluid">
 
             <div class="form-group">
-                <label for="name" class="form-label required">{{trans('developer::command.name.label')}}</label>
+                <label for="name" class="form-label required">{{trans('developer::command.name')}}</label>
                 <div class="form-field">
                     {field type="text" name="name" pattern="^[a-zA-z]+$" required="required"}
 

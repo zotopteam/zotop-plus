@@ -198,7 +198,7 @@ class ControllerController extends AdminController
                 '--force'    => false,
             ]);
 
-            return $this->success(trans('core::master.saved'),route('developer.module.controller',[$module,$type]));
+            return $this->success(trans('core::master.saved'),route('developer.controller.index',[$module,$type]));
         }
 
 

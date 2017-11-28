@@ -1,8 +1,8 @@
 {
     "name": "Developer",
     "alias": "developer",
-    "title": "developer::module.title",
-    "description": "developer::module.description",
+    "title": "developer::master.title",
+    "description": "developer::master.description",
     "keywords": [],
     "version": "1.1.5",
     "active": 1,

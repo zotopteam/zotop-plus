@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Modules\Core\Models\Role;
+use Modules\Core\Support\Permission;
 
 class RoleController extends AdminController
 {
@@ -27,11 +28,11 @@ class RoleController extends AdminController
      * 
      * @return Response
      */
-    public function create()
+    public function create(Permission $permission)
     {
-        $this->title = trans('core::role.create');
-        $this->role = Role::findOrNew(0);
-
+        $this->title       = trans('core::role.create');
+        $this->role        = Role::findOrNew(0);
+        $this->permissions = $permission->all();
         return $this->view();
     }
 

@@ -1,7 +1,9 @@
 <?php
 namespace Modules\Core\Support;
 
+use Illuminate\Support\Str;
 use InvalidArgumentException;
+use BadMethodCallException;
 
 class Watermark
 {
@@ -269,4 +271,34 @@ class Watermark
 
         throw new InvalidArgumentException("Watermark config color [$color] not correct.");
     }
+
+    /**
+     * Dynamically bind parameters to the view.
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     * @return \Modules\Core\Support\Watermark
+     *
+     * @throws \BadMethodCallException
+     */
+    public function __call($method, $parameters)
+    {
+        if (! Str::startsWith($method, 'with')) {
+            throw new BadMethodCallException("Method [$method] does not exist on view.");
+        }
+
+        return $this->with(Str::camel(substr($method, 4)), $parameters[0]);
+    }
+
+    /**
+     * Handle dynamic static method calls into the method.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public static function __callStatic($method, $parameters)
+    {
+        return (new static)->$method(...$parameters);
+    }         
 }

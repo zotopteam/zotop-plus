@@ -5,7 +5,7 @@ use Illuminate\Routing\Router;
 $router->group(['prefix' =>'developer','module'=>'developer'], function (Router $router) {
     
     // 首页
-    $router->get('index', 'IndexController@index')->name('developer.index')->middleware('allow:developer.index');
+    $router->get('index', 'IndexController@index')->name('developer.index');
 
     // module 开发
     $router->group(['prefix' =>'/module','middleware'=>'allow:developer.module'], function (Router $router) {
@@ -17,11 +17,11 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
     });
 
     // module/controller 开发
-    $router->group(['prefix' =>'module/controller','middleware'=>'allow:developer.module.controller'], function (Router $router) {
-        $router->get('index/{name}/{type}','ControllerController@index')->name('developer.module.controller');
-        $router->any('create/{name}/{type}','ControllerController@create')->name('developer.module.controller.create');
-        $router->any('tempate/{name}/{type}/{controller}','ControllerController@template')->name('developer.module.controller.template');
-        $router->any('route/{name}/{type}/{controller}','ControllerController@route')->name('developer.module.controller.route');
+    $router->group(['prefix' =>'module/controller','middleware'=>'allow:developer.controller'], function (Router $router) {
+        $router->get('index/{name}/{type}','ControllerController@index')->name('developer.controller.index');
+        $router->any('create/{name}/{type}','ControllerController@create')->name('developer.controller.create');
+        $router->any('tempate/{name}/{type}/{controller}','ControllerController@template')->name('developer.controller.template');
+        $router->any('route/{name}/{type}/{controller}','ControllerController@route')->name('developer.controller.route');
     });
 
     // command group
@@ -36,6 +36,11 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->any('create/{module}','MigrationController@create')->name('developer.migration.create')->middleware('allow:developer.migration.create');
     });    
     
+    // permission scan
+    $router->group(['prefix' =>'permission'], function (Router $router) {
+        $router->get('index/{module}/{type}','PermissionController@index')->name('developer.permission.index')->middleware('allow:developer.permission.index');
+    });
+
     // theme group
     $router->group(['prefix' =>'theme'], function (Router $router) {
         $router->get('index','ThemeController@index')->name('developer.theme.index')->middleware('allow:developer.theme.index');

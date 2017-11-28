@@ -5,7 +5,7 @@
 \Filter::listen('global.navbar',function($navbar){
     
     $navbar['developer'] = [
-        'text'   => trans('developer::module.title'),
+        'text'   => trans('developer::master.title'),
         'href'   => route('developer.index'),
         'active' => Route::is('developer.*')
     ];
@@ -19,10 +19,10 @@
 \Filter::listen('global.start',function($navbar){
     
     $navbar['developer'] = [
-        'text' => trans('developer::module.develop'),
+        'text' => trans('developer::module.title'),
         'href' => route('developer.module.index'),
         'icon' => 'fa fa-puzzle-piece bg-warning text-white',
-        'tips' => trans('developer::module.develop.description'),
+        'tips' => trans('developer::module.description'),
     ];
     
     return $navbar;
@@ -30,7 +30,7 @@
 
 
 /**
- * 一键刷新
+ * 安装了开发助手时，一键刷新时发布模块和主题
  */
 \Action::listen('system.refresh', function(){
     \Artisan::call('module:publish');

@@ -15,4 +15,7 @@ return [
     
     'description.label' => '角色描述',
     'description.help'  => '',
+
+    'select.all'        => '全选',
+    'select.none'       => '全部不选',   
 ];

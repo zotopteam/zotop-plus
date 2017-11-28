@@ -4,11 +4,9 @@ return [
     'title'                  => '网站设置',
     'description'            => '站点名称、网址、主题、Logo等信息设置',
     
-    'base'                   => '基本设置',    
-    'base.info.title'        => '基本信息',    
-    'base.status.title'      => '网站状态',
-    
-    
+    'base'                   => '网站信息',    
+    'base.info'              => '基本信息',    
+ 
     'name.label'             => '网站名称',
     'name.help'              => '请输入当前站点名称',
     
@@ -25,11 +23,6 @@ return [
     'favicon.label'          => '网站Favicon',
     'favicon.help'           => '收藏夹和浏览器地址栏左侧显示的小图标，宽高：16px*16px或32px*32px，格式：ico或png',  
     
-    'closed.label'           => '关闭网站',
-    'closed.help'            => '网站关闭时不影响网站后台访问并且管理员登陆系统之后可以访问网站',  
-    
-    'closed_reason.label'    => '关闭原因',
-    'closed_reason.help'     => '如：暂停访问，请稍后关注……',
     
     'seo'                    => '搜索优化',    
     'seo.global.title'       => '全局优化', 
@@ -50,5 +43,14 @@ return [
     'index_meta.label'       => '首页Meta',
     'index_meta.help'        => '首页<head>中的额外的<meta>标签',
     'index_meta.placeholder' => '<meta name="test" content="test">',
-            
+
+    'close'                  => '关闭网站',
+    'closed.label'           => '关闭网站',
+    'closed.help'            => '网站关闭时不影响网站后台访问并且管理员登陆系统之后可以访问网站',  
+    
+    'closed_reason.label'    => '关闭原因',
+    'closed_reason.help'     => '如：暂停访问，请稍后关注……',
+
+    'contact'                => '联系方式',
+
 ];

@@ -4,16 +4,13 @@
     </div>
     <div class="side-body scrollable">
         <ul class="nav nav-pills nav-side">
+            @foreach(Module::data('site::config.navbar') as $n) 
             <li class="nav-item">
-                <a class="nav-link {{Route::active('site.config.base')}}" href="{{route('site.config.base')}}">
-                    <i class="fa fa-cog fa-fw"></i> {{trans('site::config.base')}}
+                <a class="nav-link {{$n['class'] or ''}}" href="{{$n['href']}}">
+                    <i class="fa fa-fw {{$n['icon'] or ''}}"></i> {{$n['text']}}
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{Route::active('site.config.seo')}}" href="{{route('site.config.seo')}}">
-                    <i class="fa fa-search fa-fw"></i> {{trans('site::config.seo')}}
-                </a>
-            </li>                      
+            @endforeach                                      
         </ul>        
     </div>
 </div>

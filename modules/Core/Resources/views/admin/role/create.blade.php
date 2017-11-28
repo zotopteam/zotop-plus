@@ -44,9 +44,40 @@
                 </div>
             </div>
 
-            <div class="form-title row">{{trans('core::role.form.permission')}}</div>            
-
-
+            <div class="form-title row">
+                <span class="d-inline-block mr-3">{{trans('core::role.form.permission')}}</span>
+                <a href="javascript:;" class="text-sm d-inline-block p-1 select-all" data-select="select-all">{{trans('core::role.select.all')}}</a>
+                <a href="javascript:;" class="text-sm d-inline-block p-1 select-none" data-select="select-none">{{trans('core::role.select.none')}}</a>
+            </div>            
+            
+            @foreach ($permissions as $m=>$module)    
+            <div class="form-group row">
+                <label class="col-2 checkbox">
+                    <input type="checkbox" name="permissions[]" value="{{$module['key']}}" data-type="module" data-module="{{$m}}">
+                    <span>{{$module['title']}}</span>
+                </label>
+                <div class="col-10">
+                    @foreach ($module['permissions'] as $c=>$controller)
+                    <div class="row">
+                        <div class="col-2">
+                            <label class="checkbox">
+                                <input type="checkbox" name="permissions[]" value="{{$controller['key']}}" data-type="controller"  data-module="{{$m}}" data-controller="{{$c}}">
+                                <span>{{$controller['title']}}</span>
+                            </label>
+                        </div>
+                        <div class="col-10">
+                            @foreach ($controller['permissions'] as $a=>$action)
+                            <label class="checkbox">
+                                <input type="checkbox" name="permissions[]" value="{{$action['key']}}" data-type="action"  data-module="{{$m}}" data-controller="{{$c}}" data-action="{{$a}}">
+                                <span>{{$action['title']}}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endforeach
             {/form}
 
         </div>
@@ -63,6 +94,7 @@
 
 @push('js')
 <script type="text/javascript">
+    // 表单提交
     $(function(){
 
         $('form.form').validate({
@@ -92,5 +124,54 @@
             }            
         });
     })
+
+    //权限选择
+    $(function(){
+        //全选
+        $('[data-select=select-all]').on('click',function() {
+            $('[data-module]').prop('checked', true);
+        });
+
+        //全不选
+        $('[data-select=select-none]').on('click',function() {
+            $('[data-module]').prop('checked', false);
+        });
+
+        //选择模块
+        $('[data-type=module]').change(function() {
+            $('[data-module='+ $(this).data('module') +']').prop('checked', $(this).prop("checked"));
+        });
+
+        // 选择控制器
+        $('[data-type=controller]').change(function() {
+            $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +']').prop('checked', $(this).prop("checked"));
+
+            if ($('[data-module='+ $(this).data('module') +'][data-type=controller]:checked').length == $('[data-module='+ $(this).data('module') +'][data-type=controller]').length) {
+                $('[data-module='+ $(this).data('module') +'][data-type=module]').prop('checked', true);
+            } else {
+                $('[data-module='+ $(this).data('module') +'][data-type=module]').prop('checked', false);
+            }
+        });
+
+        // 选择控制器
+        $('[data-type=action]').change(function() {
+            if(false == $(this).prop("checked")){
+                $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=module]').prop('checked', false);
+                $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=controller]').prop('checked', false);
+            }
+
+            if ($('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=action]:checked').length == $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=action]').length) {
+                $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=controller]').prop('checked', true);
+            } else {
+                $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=controller]').prop('checked', false);
+            }
+
+            if ($('[data-module='+ $(this).data('module') +'][data-type=controller]:checked').length == $('[data-module='+ $(this).data('module') +'][data-type=controller]').length) {
+                $('[data-module='+ $(this).data('module') +'][data-type=module]').prop('checked', true);
+            } else {
+                $('[data-module='+ $(this).data('module') +'][data-type=module]').prop('checked', false);
+            }                  
+        });   
+    });
 </script>
 @endpush

@@ -5,27 +5,14 @@
     </div>
     <div class="side-body scrollable">
         <ul class="nav nav-pills nav-side">
+            @foreach(Module::data('developer::module.navbar',['module'=>$module]) as $n) 
             <li class="nav-item">
-                <a class="nav-link {{Route::active('developer.module.show')}}" href="{{route('developer.module.show',$module->name)}}">
-                    <i class="fa fa-info-circle fa-fw"></i> {{trans('developer::module.show')}}
+                <a class="nav-link {{$n['class'] or ''}}" href="{{$n['href']}}">
+                    <i class="fa fa-fw {{$n['icon']}}"></i> {{$n['text']}}
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{Route::active('developer.module.controller')}}" href="{{route('developer.module.controller',[$module->name,'admin'])}}">
-                    <i class="fa fa-sitemap fa-fw"></i> {{trans('developer::controller.title')}}
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{Route::active('developer.migration.index')}}" href="{{route('developer.migration.index',[$module->name])}}">
-                    <i class="fa fa-database fa-fw"></i> {{trans('developer::migration.title')}}
-                </a>
-            </li>              
-            <li class="nav-item">
-                <a class="nav-link {{Route::active('developer.command.index')}}" href="{{route('developer.command.index',[$module->name])}}">
-                    <i class="fa fa-terminal fa-fw"></i> {{trans('developer::command.title')}}
-                </a>
-            </li>                                  
-        </ul>        
+            @endforeach                    
+        </ul>    
     </div>
     <div class="side-footer">
         

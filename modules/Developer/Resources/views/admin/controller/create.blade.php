@@ -3,12 +3,12 @@
 @section('content')
 <div class="main scrollable">
 
-    {form model="$controller" route="['developer.module.controller.create', $module, $type]" method="post" class="p-3" autocomplete="off"}
+    {form model="$controller" route="['developer.controller.create', $module, $type]" method="post" class="p-3" autocomplete="off"}
 
         <div class="container-fluid">
 
             <div class="form-group">
-                <label for="name" class="form-label required">{{trans('developer::controller.name.label')}}</label>
+                <label for="name" class="form-label required">{{trans('developer::controller.name')}}</label>
                 <div class="form-field">
                     {field type="text" name="name" pattern="^[a-zA-z]+$" required="required"}
 
@@ -21,7 +21,7 @@
             </div>
 
             <div class="form-group">
-                <label for="style" class="form-label required">{{trans('developer::controller.style.label')}}</label>
+                <label for="style" class="form-label required">{{trans('developer::controller.style')}}</label>
                 <div class="form-field">
                     {field type="radiogroup" name="style" options="$styles" column="1" required="required"}
 

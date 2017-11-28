@@ -11,5 +11,6 @@ $router->group(['prefix' =>'site','module'=>'site'], function (Router $router) {
     $router->group(['prefix' =>'config'], function (Router $router) {
         $router->any('base','ConfigController@base')->name('site.config.base')->middleware('allow:site.config.base');
         $router->any('seo','ConfigController@seo')->name('site.config.seo')->middleware('allow:site.config.seo');
+        $router->any('close','ConfigController@close')->name('site.config.close')->middleware('allow:site.config.close');
     });    
 });
