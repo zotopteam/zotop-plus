@@ -64,6 +64,7 @@ class Core extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique()->comment('角色名称');
+            $table->string('code')->unique()->comment('角色标识');
             $table->string('description')->nullable()->comment('角色描述');
             $table->text('permissions')->nullable()->comment('角色权限');
             $table->boolean('disabled')->default(0)->unsigned()->comment('禁用 0=否 1=禁用');

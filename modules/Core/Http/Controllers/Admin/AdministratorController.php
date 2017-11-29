@@ -18,7 +18,7 @@ class AdministratorController extends AdminController
     public function index()
     {
         $this->title = trans('core::administrator.title');
-        $this->users = User::where('modelid','admin')->orderby('id','asc')->paginate(50);
+        $this->users = User::with('roles')->whereIn('modelid',['super','admin'])->orderby('id','asc')->paginate(50);
 
         return $this->view();
     }
@@ -49,6 +49,7 @@ class AdministratorController extends AdminController
         $user->modelid  = 'admin';
         $user->password = \Hash::make($user->password);
         $user->save();
+        $user->roles()->attach($request->input('roles'));
 
         return $this->success(trans('core::master.created'), route('core.administrator.index'));
     }
@@ -85,6 +86,8 @@ class AdministratorController extends AdminController
         }
         
         $user->save();
+        $user->roles()->sync($request->input('roles'));
+
 
         return $this->success(trans('core::master.updated'), route('core.administrator.index'));  
     }
@@ -98,8 +101,8 @@ class AdministratorController extends AdminController
     {
         $user = User::findOrFail($id);
 
-        // 禁止操作名单 TODO  $user->id==1 不是好方法，应该判断只剩下最后一个超级管理员
-        if ( $user->modelid != 'admin' OR $user->id==1 ) {
+        // 禁止禁用super
+        if ( $user->isSuper() ) {
             return $this->error(trans('core::master.forbidden'));
         }
 
@@ -127,10 +130,11 @@ class AdministratorController extends AdminController
         $user = User::findOrFail($id);
 
         // 禁止操作名单 TODO  $user->id==1 不是好方法，应该判断只剩下最后一个超级管理员
-        if (!$user->isAdmin() || $user->id==1 ) {
+        if ($user->isSuper()) {
             return $this->error(trans('core::master.forbidden'));
         }
-
+        // 解除权限关系
+        $user->roles()->detach();
         $user->delete();
 
         return $this->success(trans('core::master.deleted'), route('core.administrator.index'));

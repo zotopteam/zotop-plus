@@ -76,11 +76,12 @@ class RoleController extends AdminController
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit(Permission $permission, $id)
     {
-        $this->title = trans('core::role.edit');
-        $this->id    = $id;
-        $this->role  = Role::findOrFail($id);
+        $this->title       = trans('core::role.edit');
+        $this->id          = $id;
+        $this->role        = Role::findOrFail($id);
+        $this->permissions = $permission->all();
 
         return $this->view();
     }
@@ -103,8 +104,7 @@ class RoleController extends AdminController
         ]);
 
         $role = Role::findOrFail($id);
-        $role->fill($request->all());
-        
+        $role->fill($request->all());        
         $role->save();
 
         return $this->success(trans('core::master.updated'), route('core.role.index'));  

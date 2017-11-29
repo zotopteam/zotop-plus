@@ -153,7 +153,7 @@
             }
         });
 
-        // 选择控制器
+        // 选择动作
         $('[data-type=action]').change(function() {
             if(false == $(this).prop("checked")){
                 $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=module]').prop('checked', false);

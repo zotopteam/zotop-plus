@@ -10,11 +10,11 @@ class Role extends Model
     protected $fillable = ['name','description','permissions'];
 
     /**
-     * 获取全部模块的权限
-     * @return [type] [description]
+     * 属性转换
+     *
+     * @var array
      */
-    public static function permissions()
-    {
-        
-    }    
+    protected $casts = [
+        'permissions' => 'array',
+    ];
 }

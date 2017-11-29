@@ -438,13 +438,14 @@
  * 多选组
  */
 \Form::macro('checkboxgroup', function($attrs){
-    $value   = $this->getValue($attrs, []);
-    $name    = $this->getAttribute($attrs, 'name');    
-    $options = $this->getAttribute($attrs, 'options', []);
-    $column  = $this->getAttribute($attrs, 'column', 0);
-    $class   = $this->getAttribute($attrs, 'class', 'checkboxgroup-default');
+    $value    = $this->getValue($attrs, []);
+    $name     = $this->getAttribute($attrs, 'name');    
+    $options  = $this->getAttribute($attrs, 'options', []);
+    $column   = $this->getAttribute($attrs, 'column', 0);
+    $class    = $this->getAttribute($attrs, 'class', 'checkboxgroup-default');
+
     return $this->toHtmlString(
-        $this->view->make('core::field.checkboxgroup')->with(compact('name', 'value', 'column', 'options', 'class'))->render()
+        $this->view->make('core::field.checkboxgroup')->with(compact('name', 'value', 'column', 'options', 'class', 'attrs'))->render()
     );
 });
 

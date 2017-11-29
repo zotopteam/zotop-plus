@@ -56,7 +56,18 @@
                     @endif                          
                 </div>
             </div>
-
+            @if (! $user->isSuper())
+            <div class="form-group row">
+                <label for="nickname" class="col-2 col-form-label required">{{trans('core::administrator.roles.label')}}</label>
+                <div class="col-4">
+                    {field type="checkboxgroup" name="roles" value="Module::data('core::administrator.roles',[$user])" options="Module::data('core::administrator.roles')" required="required" minlength="1"}
+                    
+                    @if ($errors->has('roles'))
+                    <span class="form-help text-error">{{ $errors->first('roles') }}</span>
+                    @endif
+                </div>
+            </div>
+            @endif
             <div class="form-title row">{{trans('core::administrator.form.profile')}}</div>            
 
             <div class="form-group row">

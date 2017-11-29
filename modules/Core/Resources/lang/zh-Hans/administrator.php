@@ -33,5 +33,7 @@ return [
     'password_confirm.help'  => '为确保安全，请再次输入密码',
     
     'password_new.label'     => '新密码',
-    'password_new.help'      => '如需修改请输入新密码，不修改请留空',       
+    'password_new.help'      => '如需修改请输入新密码，不修改请留空',
+
+    'roles.label'            => '角色',
 ];

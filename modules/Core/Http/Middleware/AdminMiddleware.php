@@ -20,7 +20,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         // 管理员已经或者登录页面运行继续运行
-        if ( Route::is('admin.login','admin.login.post') || (Auth::check() && Auth::user()->isAdmin()) ) {
+        if ( Route::is('admin.login','admin.login.post') || (Auth::check() && Auth::user()->isModel(['super','admin'])) ) {
             return $next($request);
         }
 

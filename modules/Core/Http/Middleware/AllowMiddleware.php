@@ -4,6 +4,7 @@ namespace Modules\Core\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Authorization
@@ -34,9 +35,12 @@ class AllowMiddleware
     public function handle($request, \Closure $next, $permission)
     {
         // 检查用户是否有权限 $permission
+        if (Auth::user()->allow($permission)) {
+            return $next($request);
+        }
         
-        
-        return $next($request);
+        // 权限不足
+        return new Response('Forbidden', 403);      
     }
 
 }

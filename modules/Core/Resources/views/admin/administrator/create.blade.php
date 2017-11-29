@@ -56,6 +56,23 @@
                     @endif                          
                 </div>
             </div>
+            
+                      
+            <div class="form-group row">
+                <label for="nickname" class="col-2 col-form-label required">{{trans('core::administrator.roles.label')}}</label>
+                <div class="col-4">
+                    @if ($roles = Module::data('core::administrator.roles'))  
+                    {field type="checkboxgroup" name="roles" options="$roles" required="required" minlength="1"}
+                    @else
+                    <div class="form-control-plaintext">
+                        <a href="{{route('core.role.index')}}">{{trans('core::role.required')}}</a>
+                    </div>
+                    @endif
+                    @if ($errors->has('roles'))
+                    <span class="form-help text-error">{{ $errors->first('roles') }}</span>
+                    @endif
+                </div>
+            </div>
 
             <div class="form-title row">{{trans('core::administrator.form.profile')}}</div>            
 

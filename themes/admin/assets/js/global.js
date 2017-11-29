@@ -57,10 +57,10 @@ $(function(){
                 
                 var tooltip = $(value.element).addClass('error').tooltip({
                     trigger: "manual",
-                    container: $(value.element).parent('div'),
+                    container: $(value.element).parents('div:first'),
                     html: true,
                     title: function(element){
-                        var title='';                        
+                        var title='';               
                         if (typeof(value.message) == 'object') {
                             $.each(value.message,function(i,message){
                                 title += '<div class="tooltip-item">'+message+'</div>';

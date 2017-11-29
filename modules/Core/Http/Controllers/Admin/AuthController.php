@@ -43,8 +43,8 @@ class AuthController extends AdminController
     protected function credentials(Request $request)
     {
         $credentials = $request->only($this->username(), 'password');
-        $credentials = array_merge($credentials,[
-            'modelid'  => 'admin',
+        $credentials = array_merge($credentials, [
+            'modelid'  => ['super','admin'],
             'disabled' => 0
         ]);
 

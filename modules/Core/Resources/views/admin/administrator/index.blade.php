@@ -40,8 +40,16 @@
                             <div class="title text-lg">
                                 {{$user->username}}
                             </div>
+                            @if (! $user->isSuper())
+                            <div class="text-sm text-muted">
+                                @foreach ($user->roles as $role)
+                                    <span>{{$role->name}}</span>
+                                @endforeach
+                            </div>
+                            @endif
                             <div class="manage">
                                 <a class="manage-item" href="{{route('core.administrator.edit', $user->id)}}"><i class="fa fa-edit"></i> {{trans('core::master.edit')}}</a>
+                                @if (! $user->isSuper())
                                 <a class="manage-item js-confirm" href="javascript:;" data-url="{{route('core.administrator.status', $user->id)}}">
                                     @if($user->disabled)
                                     <i class="fa fa-check-circle"></i> {{trans('core::master.active')}}
@@ -50,6 +58,7 @@
                                     @endif                                    
                                 </a>
                                 <a class="manage-item js-delete" href="javascript:;" data-url="{{route('core.administrator.destroy', $user->id)}}"><i class="fa fa-times"></i> {{trans('core::master.delete')}}</a>
+                                @endif
                             </div>
 
                         </td>
