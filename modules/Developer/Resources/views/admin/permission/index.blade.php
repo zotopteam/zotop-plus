@@ -22,14 +22,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($permissions as $key=>$node)
+                @foreach ($permissions as $key=>$name)
                 <tr>
                     <td>
-                        {{str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $node['depth'])}}
-                        <i class="fa fa-fw {{$node['depth'] ? 'fa-file' : 'fa-folder'}} text-warning"></i>
+                        <i class="fa fa-fw fa-key text-warning"></i>
                         {{$key}}
                     </td>
-                    <td>{{$node['name']}}</td>
+                    <td>{{trans($name)}}</td>
                     <td></td>
                 </tr>
                 @endforeach

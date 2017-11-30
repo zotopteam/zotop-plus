@@ -3,7 +3,7 @@
 @section('content')
 <div class="main scrollable">
     {form model="$region" route="['region.update', $region['id']]" method="post" class="m-5" autocomplete="off"}
-        @include('index.form')
+        @include('region.form')
     {/form}
 </div>
 @endsection

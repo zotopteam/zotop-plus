@@ -68,6 +68,7 @@
                 </div>
             </div>
             @endif
+            
             <div class="form-title row">{{trans('core::administrator.form.profile')}}</div>            
 
             <div class="form-group row">

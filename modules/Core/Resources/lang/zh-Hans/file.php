@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title'              => '文件管理',
     'count'              => '文件个数：:0',
     'position'           => '位置：:0', 
     'create'             => '新建文件',
@@ -9,6 +10,8 @@ return [
     'extension.required' => '文件扩展名不能为空',    
     'view'               => '查看',
     'edit'               => '编辑',
+    'editor'             => '编辑器',
+    'upload'             => '上传',
     'delete'             => '删除',
     'rename'             => '重命名',
     'copy'               => '复制',

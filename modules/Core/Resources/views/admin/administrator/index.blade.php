@@ -40,7 +40,9 @@
                             <div class="title text-lg">
                                 {{$user->username}}
                             </div>
-                            @if (! $user->isSuper())
+                            @if ($user->isSuper())
+                            <div class="text-sm text-important">{{trans('core::administrator.model.super')}}</div>
+                            @else
                             <div class="text-sm text-muted">
                                 @foreach ($user->roles as $role)
                                     <span>{{$role->name}}</span>

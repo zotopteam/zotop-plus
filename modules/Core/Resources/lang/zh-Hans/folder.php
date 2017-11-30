@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title'           => '文件夹管理',
     'count'           => '文件夹个数：:0',    
     'position'        => '位置：:0', 
     'up'              => '上一级',

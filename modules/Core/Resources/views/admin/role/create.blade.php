@@ -45,36 +45,46 @@
             </div>
 
             <div class="form-title row">
-                <span class="d-inline-block mr-3">{{trans('core::role.form.permission')}}</span>
-                <a href="javascript:;" class="text-sm d-inline-block p-1 select-all" data-select="select-all">{{trans('core::role.select.all')}}</a>
-                <a href="javascript:;" class="text-sm d-inline-block p-1 select-none" data-select="select-none">{{trans('core::role.select.none')}}</a>
+
+                <div class="col-2 p-0">{{trans('core::role.form.permission')}}</div>
+                <div class="col-8 p-1">
+                    <a href="javascript:;" class="text-sm mr-3 select-all" data-select="select-all">{{trans('core::role.select.all')}}</a>
+                    <a href="javascript:;" class="text-sm mr-3 select-none" data-select="select-none">{{trans('core::role.select.none')}}</a>
+                </div>
             </div>            
             
             @foreach ($permissions as $m=>$module)    
             <div class="form-group row">
-                <label class="col-2 checkbox">
-                    <input type="checkbox" name="permissions[]" value="{{$module['key']}}" data-type="module" data-module="{{$m}}">
-                    <span>{{$module['title']}}</span>
+                <label class="col-2 col-form-label" data-type="module" data-module="{{$m}}">
+                    <div >{{$module['title']}}</div>                
                 </label>
                 <div class="col-10">
-                    @foreach ($module['permissions'] as $c=>$controller)
                     <div class="row">
-                        <div class="col-2">
-                            <label class="checkbox">
-                                <input type="checkbox" name="permissions[]" value="{{$controller['key']}}" data-type="controller"  data-module="{{$m}}" data-controller="{{$c}}">
-                                <span>{{$controller['title']}}</span>
+                        @foreach ($module['permissions'] as $key=>$val)
+                        @if (is_array($val))
+                        <div class="col-6 role-group mb-2">
+                            <label class="role-group-title cur-p" data-type="group">
+                                <b>{{trans($key)}}</b>                           
                             </label>
-                        </div>
-                        <div class="col-10">
-                            @foreach ($controller['permissions'] as $a=>$action)
-                            <label class="checkbox">
-                                <input type="checkbox" name="permissions[]" value="{{$action['key']}}" data-type="action"  data-module="{{$m}}" data-controller="{{$c}}" data-action="{{$a}}">
-                                <span>{{$action['title']}}</span>
-                            </label>
+                            <div class="role-group-body">
+                            @foreach ($val as $k=>$v)
+                               <label class="checkbox">
+                                    {field type="checkbox" name="permissions[]" value="$k" data-module="$m"}
+                                    <span>{{trans($v)}}</span>
+                                </label>
                             @endforeach
+                            </div>
                         </div>
-                    </div>
-                    @endforeach
+                        @else
+                        <div class="col-auto">
+                            <label class="checkbox">
+                                {field type="checkbox" name="permissions[]" value="$key" data-module="$m"}
+                                <span>{{trans($val)}}</span>
+                            </label>
+                        </div>
+                        @endif
+                        @endforeach
+                    </div>  
                 </div>
             </div>
             @endforeach
@@ -138,40 +148,26 @@
         });
 
         //选择模块
-        $('[data-type=module]').change(function() {
-            $('[data-module='+ $(this).data('module') +']').prop('checked', $(this).prop("checked"));
-        });
-
-        // 选择控制器
-        $('[data-type=controller]').change(function() {
-            $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +']').prop('checked', $(this).prop("checked"));
-
-            if ($('[data-module='+ $(this).data('module') +'][data-type=controller]:checked').length == $('[data-module='+ $(this).data('module') +'][data-type=controller]').length) {
-                $('[data-module='+ $(this).data('module') +'][data-type=module]').prop('checked', true);
+        $('[data-type=module]').on('click', function() {
+            var checkbox = $(this).parent('.form-group').find('input[data-module]');
+            if (checkbox.length == checkbox.filter(':checked').length) {
+                checkbox.prop('checked', false);
             } else {
-                $('[data-module='+ $(this).data('module') +'][data-type=module]').prop('checked', false);
+                checkbox.prop('checked', true);
             }
         });
 
-        // 选择动作
-        $('[data-type=action]').change(function() {
-            if(false == $(this).prop("checked")){
-                $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=module]').prop('checked', false);
-                $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=controller]').prop('checked', false);
-            }
+        // 选择组
+        $('[data-type=group]').on('click', function() {
+            var checkbox = $(this).parent('.role-group').find('input[data-module]');
 
-            if ($('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=action]:checked').length == $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=action]').length) {
-                $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=controller]').prop('checked', true);
+            if (checkbox.length == checkbox.filter(':checked').length) {
+                checkbox.prop('checked', false);
             } else {
-                $('[data-module='+ $(this).data('module') +'][data-controller='+ $(this).data('controller') +'][data-type=controller]').prop('checked', false);
-            }
+                checkbox.prop('checked', true);
+            }            
+        });
 
-            if ($('[data-module='+ $(this).data('module') +'][data-type=controller]:checked').length == $('[data-module='+ $(this).data('module') +'][data-type=controller]').length) {
-                $('[data-module='+ $(this).data('module') +'][data-type=module]').prop('checked', true);
-            } else {
-                $('[data-module='+ $(this).data('module') +'][data-type=module]').prop('checked', false);
-            }                  
-        });   
-    });
+    });   
 </script>
 @endpush

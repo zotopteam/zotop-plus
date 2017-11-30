@@ -139,8 +139,8 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
         ),
         'XdgBaseDir\\' => 
         array (
@@ -2644,6 +2644,8 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Modules\\Core\\Providers\\ViewServiceProvider' => __DIR__ . '/../..' . '/modules/Core/Providers/ViewServiceProvider.php',
         'Modules\\Core\\Support\\Facades\\Format' => __DIR__ . '/../..' . '/modules/Core/Support/Facades/Format.php',
         'Modules\\Core\\Support\\Format' => __DIR__ . '/../..' . '/modules/Core/Support/Format.php',
+        'Modules\\Core\\Support\\Permission' => __DIR__ . '/../..' . '/modules/Core/Support/Permission.php',
+        'Modules\\Core\\Support\\Watermark' => __DIR__ . '/../..' . '/modules/Core/Support/Watermark.php',
         'Modules\\Core\\Theme\\Facades\\Theme' => __DIR__ . '/../..' . '/modules/Core/Theme/Facades/Theme.php',
         'Modules\\Core\\Theme\\Theme' => __DIR__ . '/../..' . '/modules/Core/Theme/Theme.php',
         'Modules\\Core\\Theme\\ThemeNotFoundException' => __DIR__ . '/../..' . '/modules/Core/Theme/ThemeNotFoundException.php',
@@ -2657,6 +2659,7 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Modules\\Developer\\Http\\Controllers\\Admin\\IndexController' => __DIR__ . '/../..' . '/modules/Developer/Http/Controllers/Admin/IndexController.php',
         'Modules\\Developer\\Http\\Controllers\\Admin\\MigrationController' => __DIR__ . '/../..' . '/modules/Developer/Http/Controllers/Admin/MigrationController.php',
         'Modules\\Developer\\Http\\Controllers\\Admin\\ModuleController' => __DIR__ . '/../..' . '/modules/Developer/Http/Controllers/Admin/ModuleController.php',
+        'Modules\\Developer\\Http\\Controllers\\Admin\\PermissionController' => __DIR__ . '/../..' . '/modules/Developer/Http/Controllers/Admin/PermissionController.php',
         'Modules\\Developer\\Http\\Controllers\\Admin\\ThemeController' => __DIR__ . '/../..' . '/modules/Developer/Http/Controllers/Admin/ThemeController.php',
         'Modules\\Developer\\Http\\Controllers\\IndexController' => __DIR__ . '/../..' . '/modules/Developer/Http/Controllers/IndexController.php',
         'Modules\\Developer\\Http\\Requests\\ModuleRequest' => __DIR__ . '/../..' . '/modules/Developer/Http/Requests/ModuleRequest.php',

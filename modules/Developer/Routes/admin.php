@@ -25,24 +25,24 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
     });
 
     // command group
-    $router->group(['prefix' =>'module/command'], function (Router $router) {
-        $router->get('index/{module}','CommandController@index')->name('developer.command.index')->middleware('allow:developer.command.index');
-        $router->any('create/{module}','CommandController@create')->name('developer.command.create')->middleware('allow:developer.command.create');
+    $router->group(['prefix' =>'module/command','middleware'=>'allow:developer.command'], function (Router $router) {
+        $router->get('index/{module}','CommandController@index')->name('developer.command.index');
+        $router->any('create/{module}','CommandController@create')->name('developer.command.create');
     });
 
     // migration group
-    $router->group(['prefix' =>'migration'], function (Router $router) {
-        $router->get('index/{module}','MigrationController@index')->name('developer.migration.index')->middleware('allow:developer.migration.index');
-        $router->any('create/{module}','MigrationController@create')->name('developer.migration.create')->middleware('allow:developer.migration.create');
+    $router->group(['prefix' =>'migration','middleware'=>'allow:developer.migration'], function (Router $router) {
+        $router->get('index/{module}','MigrationController@index')->name('developer.migration.index');
+        $router->any('create/{module}','MigrationController@create')->name('developer.migration.create');
     });    
     
     // permission scan
-    $router->group(['prefix' =>'permission'], function (Router $router) {
-        $router->get('index/{module}/{type}','PermissionController@index')->name('developer.permission.index')->middleware('allow:developer.permission.index');
+    $router->group(['prefix' =>'permission','middleware'=>'allow:developer.permission'], function (Router $router) {
+        $router->get('index/{module}/{type}','PermissionController@index')->name('developer.permission.index');
     });
 
     // theme group
-    $router->group(['prefix' =>'theme'], function (Router $router) {
-        $router->get('index','ThemeController@index')->name('developer.theme.index')->middleware('allow:developer.theme.index');
+    $router->group(['prefix' =>'theme','middleware'=>'allow:developer.permission'], function (Router $router) {
+        $router->get('index','ThemeController@index')->name('developer.theme.index');
     });    
 });

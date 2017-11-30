@@ -1,10 +1,10 @@
 {
     "name": "Region",
     "alias": "region",
-    "title": "region::module.title",
-    "description": "region::module.description",
+    "title": "region::region.title",
+    "description": "region::region.description",
     "keywords": [],
-    "version": "1.0.0",
+    "version": "1.2.0",
     "active": 1,
     "installed": 1,
     "order": 10,

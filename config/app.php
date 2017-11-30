@@ -22,7 +22,7 @@ return [
     | This value is the version of your application..
     */
 
-    'version' => '1.3.1119',
+    'version' => '1.3.1130',
 
 
     /*
@@ -33,7 +33,7 @@ return [
     | This value is the release of your application. 
     */
 
-    'release' => '20171119',
+    'release' => '20171130',
 
     /*
     |--------------------------------------------------------------------------
@@ -53,7 +53,7 @@ return [
     | This value is the description of your application.
     */
 
-    'description' => '基于Laravel5和bootstrap4，模块化开发，打造更简洁、更易用的内容管理系统',         
+    'description' => '基于Laravel5.5和bootstrap4，支持模块和主题，打造更简洁、更易用的内容管理系统',         
 
     /*
     |--------------------------------------------------------------------------

@@ -28,28 +28,11 @@ class Permission
             $module     = $moduleEnabled->getLowerName();
             $permission = $moduleEnabled->getFileData('permission.php');
 
-            array_set($permissions, $module, [
-                'key'         => $module,
+            $permissions[$module] = [
                 'title'       => trans($moduleEnabled->title),
-                'permissions' => []
-            ]);
-
-            foreach ($permission as $controller => $actions) {
-                // controller
-                array_set($permissions, $module.'.permissions.'.$controller, [
-                    'key'         => $module.'.'.$controller,
-                    'title'       => trans($module.'::'.$controller.'.title'),
-                    'permissions' => []
-                ]);
-
-                 // action 
-                foreach ($actions as $action) {
-                    array_set($permissions, $module.'.permissions.'.$controller.'.permissions.'.$action, [
-                        'key'        => $module.'.'.$controller.'.'.$action,
-                        'title'      => trans($module.'::'.$controller.'.'.$action),
-                    ]);
-                }
-            }            
+                'description' => trans($moduleEnabled->description),
+                'permissions' => $permission
+            ];        
         }
 
         return $permissions;

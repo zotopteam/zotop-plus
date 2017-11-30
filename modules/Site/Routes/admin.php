@@ -5,7 +5,7 @@ use Illuminate\Routing\Router;
 $router->group(['prefix' =>'site','module'=>'site'], function (Router $router) {
     
     // 首页
-    $router->get('/', 'IndexController@index')->name('site.index')->middleware('allow:site.index');
+    $router->get('/', 'IndexController@index')->name('site.index');
 
     // 系统设置
     $router->group(['prefix' =>'config'], function (Router $router) {

@@ -5,7 +5,7 @@
 
     {form model="$region" route="region.store" method="post" class="m-5" autocomplete="off"}
 
-        @include('index.form')
+        @include('region.form')
 
     {/form}
 </div>

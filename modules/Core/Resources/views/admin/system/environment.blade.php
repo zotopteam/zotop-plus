@@ -40,7 +40,16 @@
                 </p>                
             </div>
             <div class="card-body">
-                {{trans('core::system.environment.files')}}
+                <table class="table table-hover">
+                    <tbody>
+                    @foreach($filesystem as $fs)
+                    <tr>
+                        <td><i class="fa fa-fw {{$fs['icon']}} text-warning"></i> {{path_base($fs['path'])}}</td>
+                        <td>{{$fs['perms']}}</td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                </table>                   
             </div>
         </div>        
     </div>

@@ -65,7 +65,29 @@ class SystemController extends AdminController
             'server_addr'         => $_SERVER['SERVER_ADDR'],
             'remote_addr'         => $_SERVER['REMOTE_ADDR'],
             'disk'                => \Format::size(disk_free_space('.')),
-        ];        
+        ];
+
+        $filesystem = [];
+
+        foreach (app('files')->directories(base_path()) as $path) {
+            $filesystem[] = [
+                'type' => 'folder',
+                'icon' => 'fa-folder',
+                'path' => $path,
+                'perms' => substr(sprintf('%o', fileperms($path)), -4)
+            ];
+        }
+
+        foreach (app('files')->files(base_path()) as $path) {
+            $filesystem[] = [
+                'type' => 'file',
+                'icon' => 'fa-file',
+                'path' => $path,
+                'perms' => substr(sprintf('%o', fileperms($path)), -4)
+            ];
+        }
+
+        $this->filesystem = $filesystem;         
         
         return $this->view();
     }

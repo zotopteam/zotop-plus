@@ -1,7 +1,8 @@
 <?php
-
-return [
-    'module'     => ['index','show','create','store','update'],
-    'controller' => ['index','create','route'],
-    'migration'  => ['index','create'],
-];
+return array (
+  'developer.module' => 'developer::module.title',
+  'developer.controller' => 'developer::controller.title',
+  'developer.command' => 'developer::command.title',
+  'developer.migration' => 'developer::migration.title',
+  'developer.permission' => 'developer::permission.title',
+);

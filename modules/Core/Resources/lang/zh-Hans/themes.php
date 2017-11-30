@@ -3,7 +3,8 @@
 return [
     'title'             => '主题',
     'description'       => '管理网站主题，上传或者删除主题',
-    
+
+    'index'             => '主题列表',
     'status.label'      => '状态',
     'name.label'        => '名称',
     'description.label' => '描述', 

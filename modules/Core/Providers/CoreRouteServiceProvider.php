@@ -128,7 +128,7 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
                 'type'       => 'admin',
                 'namespace'  => $this->namespace.'\Admin',
                 'prefix'     => $this->app['config']->get('app.admin_prefix','admin'),
-                'middleware' => ['web','admin'],               
+                'middleware' => ['web','admin'],           
             ], function (Router $router) use ($adminRouteFile) {
                 require $adminRouteFile;
             });

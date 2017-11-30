@@ -38,7 +38,7 @@ class AdministratorRequest extends FormRequest
                 'username'         => 'required|unique:users,username,'.$id.',id',
                 'password_new'     => 'min:6', 
                 'password_confirm' => 'same:password_new',
-                'roles'            => User::find($id)->isSuper() ? '' : 'required',         
+                'roles'            => User::find($id)->isSuper() ? '' : 'required',
                 'nickname'         => 'required|max:100|unique:users,nickname,'.$id.',id',
                 'email'            => 'required|unique:users,email,'.$id.',id', 
                 'mobile'           => 'required|unique:users,mobile,'.$id.',id',    

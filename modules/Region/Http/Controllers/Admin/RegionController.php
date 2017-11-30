@@ -7,7 +7,7 @@ use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Modules\Region\Models\Region;
 
-class IndexController extends AdminController
+class RegionController extends AdminController
 {
     /**
      * 首页
@@ -17,7 +17,7 @@ class IndexController extends AdminController
     public function index($parent_id = 0)
     {
         
-        $this->title     = trans('region::index.title');
+        $this->title     = trans('region::region.title');
         $this->parent_id = $parent_id;
         $this->parents   = Region::parents($parent_id, true);
         $this->regions   = Region::where('parent_id', $parent_id)->orderBy('sort')->get();
@@ -50,7 +50,7 @@ class IndexController extends AdminController
         $this->region              = Region::findOrNew(0);
         $this->region->parent_id   = $parent_id;
         $parent_region             = Region::find($parent_id);
-        $this->parent_region_title = $parent_region ? $parent_region['title'] : trans('region::index.root');
+        $this->parent_region_title = $parent_region ? $parent_region['title'] : trans('region::region.root');
 
         return $this->view();
     }
@@ -83,7 +83,7 @@ class IndexController extends AdminController
         $this->region = Region::findOrNew($id);
 
         $parent_region             = Region::find($this->region->parent_id);
-        $this->parent_region_title = $parent_region ? $parent_region['title'] : trans('region::index.root');
+        $this->parent_region_title = $parent_region ? $parent_region['title'] : trans('region::region.root');
         return $this->view();
     }
 
