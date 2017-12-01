@@ -5,13 +5,13 @@
 \Filter::listen('global.navbar',function($navbar){
     
     $navbar['developer'] = [
-        'text'   => trans('developer::master.title'),
+        'text'   => trans('developer::developer.title'),
         'href'   => route('developer.index'),
         'active' => Route::is('developer.*')
     ];
 
     return $navbar;
-});
+}, 80);
 
 /**
  * 扩展模块管理
@@ -26,7 +26,7 @@
     ];
     
     return $navbar;
-},80);
+}, 80);
 
 
 /**

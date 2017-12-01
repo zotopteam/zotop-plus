@@ -8,7 +8,7 @@ return [
     'resize.height'                   => '高',
     'resize.maxsize'                  => '最大尺寸',
     'resize.quality'                  => '压缩品质',
-    'resize.quality.help'             => '压缩品质为0-100，数字越大图片越清晰，建议至少为80',
+    'resize.quality.help'             => '压缩品质从0-100，数值越大图片越清晰，建议至少为80',
 
     'watermark'                       => '图片水印',
     'watermark.enabled'               => '启用',
@@ -41,8 +41,8 @@ return [
     'watermark.offset.y'              => '纵向',
     'watermark.offset.help'           => '水印在设定位置上横向和纵向的偏移距离，一般为0-50之间',
     'watermark.opacity'               => '水印透明度',
-    'watermark.opacity.help'          => '透明度为0-100之间的数字，数字越小越透明',
+    'watermark.opacity.help'          => '透明度从0-100，数值越小透明度越高',
     'watermark.quality'               => '压缩品质',
-    'watermark.quality.help'          => '压缩品质为0-100，数字越大图片越清晰，建议至少为80',
+    'watermark.quality.help'          => '压缩品质从0-100，数值越大图片越清晰，建议至少为80',
     'watermark.test'                  => '测试水印',
 ];

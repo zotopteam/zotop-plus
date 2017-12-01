@@ -38,7 +38,8 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
     
     // permission scan
     $router->group(['prefix' =>'permission','middleware'=>'allow:developer.permission'], function (Router $router) {
-        $router->get('index/{module}/{type}','PermissionController@index')->name('developer.permission.index');
+        $router->get('index/{module}','PermissionController@index')->name('developer.permission.index');
+        $router->any('scan/{module}','PermissionController@scan')->name('developer.permission.scan');
     });
 
     // theme group

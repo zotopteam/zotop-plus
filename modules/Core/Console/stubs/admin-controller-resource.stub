@@ -5,6 +5,7 @@ namespace $CLASS_NAMESPACE$;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
+//use Modules\$MODULE$\Models\$MODEL$;
 
 class $CLASS$ extends AdminController
 {
@@ -15,6 +16,15 @@ class $CLASS$ extends AdminController
      */
     public function index()
     {
+        $this->title = trans('$LOWER_NAME$::$LOWER_NAME$.title');
+
+        // 全部获取
+        //$this->$PLURAL_MODEL$ = $MODEL$::all();
+        // 部分获取
+        //$this->$PLURAL_MODEL$ = $MODEL$::with('some')->where('key','value')->orderby('id','asc')->get();        
+        // 分页获取
+        //$this->$PLURAL_MODEL$ = $MODEL$::with('some')->where('key','value')->orderby('id','asc')->paginate(25);
+
         return $this->view();
     }
 
@@ -25,6 +35,10 @@ class $CLASS$ extends AdminController
      */
     public function create()
     {
+        $this->title = trans('$LOWER_NAME$::$LOWER_NAME$.create');
+
+        $this->$LOWER_MODEL$ = $MODEL$::findOrNew(0);
+
         return $this->view();
     }
 
@@ -36,7 +50,11 @@ class $CLASS$ extends AdminController
      */
     public function store(Request $request)
     {
-        //
+        $$LOWER_MODEL$ = new $MODEL$;
+        $$LOWER_MODEL$->fill($request->all());
+        $$LOWER_MODEL$->save();
+
+        return $this->success(trans('core::master.created'), route('$LOWER_NAME$.$LOWER_CONTROLLER$.index'));
     }
 
     /**
@@ -47,7 +65,11 @@ class $CLASS$ extends AdminController
      */
     public function show($id)
     {
-        //
+        $this->title = trans('$LOWER_NAME$::$LOWER_NAME$.show');
+
+        $this->$LOWER_MODEL$ = $MODEL$::findOrFail($id);
+
+        return $this->view();
     }    
 
     /**
@@ -57,6 +79,10 @@ class $CLASS$ extends AdminController
      */
     public function edit($id)
     {
+        $this->title = trans('$LOWER_NAME$::$LOWER_NAME$.edit');
+        $this->id    = $id;
+        $this->$LOWER_MODEL$ = $MODEL$::findOrFail($id);
+
         return $this->view();
     }
 
@@ -68,7 +94,11 @@ class $CLASS$ extends AdminController
      */
     public function update(Request $request, $id)
     {
-        //
+        $$LOWER_MODEL$ = $MODEL$::findOrFail($id);
+        $$LOWER_MODEL$->fill($request->all());        
+        $$LOWER_MODEL$->save();
+
+        return $this->success(trans('core::master.updated'), route('$LOWER_NAME$.$LOWER_CONTROLLER$.index'));
     }
 
     /**
@@ -78,6 +108,9 @@ class $CLASS$ extends AdminController
      */
     public function destroy($id)
     {
-        //
+        $$LOWER_MODEL$ = $MODEL$::findOrFail($id);
+        $$LOWER_MODEL$->delete();
+
+        return $this->success(trans('core::master.deleted'), route('$LOWER_NAME$.$LOWER_CONTROLLER$.index'));        
     }
 }

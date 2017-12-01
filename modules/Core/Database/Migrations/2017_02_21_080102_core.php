@@ -51,6 +51,20 @@ class Core extends Migration
             $table->comment = '用户';
         });
 
+        // users 扩展表
+        Schema::create('users_data', function (Blueprint $table) {
+            $table->integer('user_id')->comment('编号');
+            $table->string('module', 128)->comment('模块名称');
+            $table->string('key', 128)->comment('键名');
+            $table->text('value')->nullable()->comment('键值'); 
+            $table->string('type', 10)->comment('类型');
+            $table->timestamps();
+            $table->primary(['user_id', 'module', 'key']);
+
+            $table->engine = 'InnoDB';
+            $table->comment = '用户扩展表';
+        });        
+
         // 重设密码
         Schema::create('password_resets', function (Blueprint $table) {
             $table->string('email')->index();

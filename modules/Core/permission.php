@@ -4,7 +4,7 @@ return [
         'core.mine.edit'       => 'core::mine.edit',
         'core.mine.password'   => 'core::mine.password',
         'core.mine.permission' => 'core::mine.permission',
-        'core.mine.log'        => 'core::mine.log'
+        'core.mine.log'        => 'core::mine.log',
     ],
 
     'core::administrator.title' => [

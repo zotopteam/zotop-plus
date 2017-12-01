@@ -55,8 +55,7 @@ class CommandController extends AdminController
         $this->name    = $module;
         $this->module  = module($module);
         $this->path    = $this->module->getExtraPath('Console');
-        $this->files   = File::files($this->path);
-
+        $this->files   = File::exists($this->path) ? File::files($this->path) : [];
 
         return $this->view();
     }

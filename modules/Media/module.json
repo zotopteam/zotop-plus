@@ -1,0 +1,21 @@
+{
+    "name": "Media",
+    "alias": "media",
+    "title": "media::media.title",
+    "description": "media::media.description",
+    "keywords": [],
+    "version": "1.0.0",
+    "active": 1,
+    "installed": 1,
+    "order": 10,
+    "author": "zotop",
+    "email": "it@zotop.com",
+    "homepage": "http:\/\/www.zotop.com",
+    "providers": [
+        "Modules\\Media\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": [],
+    "files": [
+        "start.php"
+    ]
+}

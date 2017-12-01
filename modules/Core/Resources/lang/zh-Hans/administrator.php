@@ -7,11 +7,11 @@ return [
     'model.super'            => '系统管理员',
     'model.admin'            => '管理员',
     
-    'index'                  => '列表',
-    'create'                 => '添加',
-    'edit'                   => '编辑',
+    'index'                  => '管理员列表',
+    'create'                 => '添加管理员',
+    'edit'                   => '编辑管理员',
     'status'                 => '启用/禁用',
-    'destroy'                => '删除',
+    'destroy'                => '删除管理员',
     
     'form.base'              => '账户密码',
     'form.profile'           => '用户资料',

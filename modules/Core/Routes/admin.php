@@ -55,7 +55,7 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
 
     // 系统设置
     $router->group(['prefix' =>'config'], function (Router $router) {
-        $router->any('index','ConfigController@index')->name('core.config.index')->middleware('allow:core.config.index');
+        $router->any('index','ConfigController@index')->name('core.config.index');
         $router->any('upload','ConfigController@upload')->name('core.config.upload')->middleware('allow:core.config.upload');
         $router->any('watermark/test','ConfigController@watermarktest')->name('core.config.watermarktest');
         $router->any('mail','ConfigController@mail')->name('core.config.mail')->middleware('allow:core.config.mail');
@@ -66,7 +66,7 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
 
     // 系统功能
     $router->group(['prefix' =>'system'], function (Router $router) {
-        $router->post('refresh','SystemController@refresh')->name('core.system.refresh')->middleware('allow:core.system.refresh');
+        $router->post('refresh','SystemController@refresh')->name('core.system.refresh');
         $router->get('environment','SystemController@environment')->name('core.system.environment');       
         $router->get('about','SystemController@about')->name('core.system.about');    
     });

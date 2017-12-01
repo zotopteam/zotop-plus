@@ -191,3 +191,41 @@ if (! function_exists('path_base')) {
         return $path;
     }
 }
+
+if (! function_exists('trans_has')) {
+    /**
+     * 检查是否存在对应翻译
+     * 
+     * @param  string $path 路径
+     * @return string 转换后路径
+     */
+    function trans_has($key, $locale = null, $fallback = true)
+    {
+        return app('translator')->has($key, $locale, $fallback);
+    }
+}
+
+if (! function_exists('trans_find')) {
+    /**
+     * 翻译文件，可以从多个key中插座，没有找到翻译则结果返回空
+     *
+     * @param  string|array  $keys 如果是字符串，多个用||分割
+     * @param  array   $replace
+     * @param  string  $locale
+     * @return \Illuminate\Contracts\Translation\Translator|string|array|null
+     */
+    function trans_find($keys, $replace = [], $locale = null)
+    {
+        if (is_string($keys)) {
+            $keys = explode('||', $keys);
+        }
+
+        foreach ($keys as $key) {
+            if (trans_has($key, $locale, false)) {
+                return trans($key, $replace, $locale);
+            }
+        }
+
+        return null;
+    }
+}

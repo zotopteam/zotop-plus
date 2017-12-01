@@ -1,10 +1,10 @@
 {
     "name": "Site",
     "alias": "site",
-    "title": "site::module.title",
-    "description": "site::module.description",
+    "title": "site::site.title",
+    "description": "site::site.description",
     "keywords": [],
-    "version": "1.0.0",
+    "version": "1.2.0",
     "active": 1,
     "installed": 1,
     "order": 2,

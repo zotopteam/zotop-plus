@@ -30,6 +30,7 @@ class AdminControllerCommand extends GeneratorCommand
                             {controller : The name of the admin controller class.} 
                             {module : The name of module will be used.} 
                             {--style=resource : The style of controller.} 
+                            {--model : The model of controller.} 
                             {--force : Overwrite any existing files.}';
 
 
@@ -106,16 +107,20 @@ class AdminControllerCommand extends GeneratorCommand
         $path   = $this->laravel['modules']->getModulePath('Core');
 
         $stub = new Stub($this->getStubName(), [
-            'MODULENAME'        => $module->getStudlyName(),
-            'CONTROLLERNAME'    => $this->getControllerName(),
-            'NAMESPACE'         => $module->getStudlyName(),
-            'CLASS_NAMESPACE'   => $this->getClassNamespace($module),
-            'CLASS'             => $this->getControllerName(),
-            'LOWER_NAME'        => $module->getLowerName(),
-            'MODULE'            => $this->getModuleName(),
-            'NAME'              => $this->getModuleName(),
-            'STUDLY_NAME'       => $module->getStudlyName(),
-            'MODULE_NAMESPACE'  => $this->laravel['modules']->config('namespace'),
+            'MODULENAME'       => $module->getStudlyName(),
+            'CONTROLLERNAME'   => $this->getControllerName(),
+            'LOWER_CONTROLLER' => $this->getLowerControllerShortName(),
+            'NAMESPACE'        => $module->getStudlyName(),
+            'CLASS_NAMESPACE'  => $this->getClassNamespace($module),
+            'CLASS'            => $this->getControllerName(),
+            'LOWER_NAME'       => $module->getLowerName(),
+            'MODULE'           => $this->getModuleName(),
+            'NAME'             => $this->getModuleName(),
+            'STUDLY_NAME'      => $module->getStudlyName(),
+            'MODULE_NAMESPACE' => $this->laravel['modules']->config('namespace'),
+            'MODEL'            => $this->getModelName(),
+            'LOWER_MODEL'      => $this->getLowerModelName(),
+            'PLURAL_MODEL'     => $this->getPluralModelName(),
         ]);
 
         $stub->setBasePath($path.'Console/stubs');
@@ -141,16 +146,26 @@ class AdminControllerCommand extends GeneratorCommand
     }
 
     /**
-     * 获取Controller名称，不含Conroller
+     * 获取Controller短名称，不含Conroller
      * 
      * @return array|string
      */
-    protected function getLowerControllerName()
+    protected function getControllerShortName()
     {
         $controller = $this->getControllerName();
         $controller = substr($controller, 0, -10);
 
-        return strtolower($controller);
+        return $controller;
+    }
+
+    /**
+     * 获取Controller名称，不含Conroller
+     * 
+     * @return array|string
+     */
+    protected function getLowerControllerShortName()
+    {
+        return strtolower($this->getControllerShortName());
     }    
 
     /**
@@ -161,6 +176,42 @@ class AdminControllerCommand extends GeneratorCommand
     public function getDefaultNamespace() : string
     {
         return 'Http\Controllers\Admin';
+    }
+
+    /**
+     * 获取默认使用的数据模型
+     * 
+     * @return string
+     */
+    public function getModelName()
+    {
+        $model = $this->option('model');
+
+        if ($model) {
+            return studly_case($model);
+        }
+
+        return $this->getControllerShortName();
+    }
+
+    /**
+     * 获取默认使用的数据模型小写名称
+     * 
+     * @return string
+     */    
+    public function getLowerModelName()
+    {
+        return strtolower($this->getModelName());
+    }
+
+    /**
+     * 获取复数的模型名称
+     * 
+     * @return string
+     */
+    public function getPluralModelName()
+    {
+        return str_plural($this->getLowerModelName());
     }
 
     /**
@@ -212,7 +263,7 @@ class AdminControllerCommand extends GeneratorCommand
     {
         $path = $this->laravel['modules']->getModulePath($this->getModuleName());
 
-        $path = $path . 'Resources/views/admin/'.$this->getLowerControllerName().'/';
+        $path = $path . 'Resources/views/admin/'.$this->getLowerControllerShortName().'/';
 
         return $file ? $path . $file : $path;
     }

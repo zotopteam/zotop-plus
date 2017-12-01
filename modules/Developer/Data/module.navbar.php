@@ -26,7 +26,7 @@ return [
     ],
     'permission' => [
         'text'  => trans('developer::permission.title'),
-        'href'  => route('developer.permission.index',[$module->name, 'admin']),
+        'href'  => route('developer.permission.index',[$module->name]),
         'icon'  => 'fa-key',
         'class' => Route::active('developer.permission.index'),
     ],                  

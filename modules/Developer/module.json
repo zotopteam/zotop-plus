@@ -1,10 +1,10 @@
 {
     "name": "Developer",
     "alias": "developer",
-    "title": "developer::master.title",
-    "description": "developer::master.description",
+    "title": "developer::developer.title",
+    "description": "developer::developer.description",
     "keywords": [],
-    "version": "1.1.5",
+    "version": "1.2.0",
     "active": 1,
     "installed": 1,
     "order": 10,

@@ -1,0 +1,25 @@
+{
+    "name": "zotop/media",
+    "description": "",
+    "authors": [
+        {
+            "name": "Zotop Team",
+            "email": "cms@zotop.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Media\\Providers\\MediaServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Media\\": ""
+        }
+    }
+}

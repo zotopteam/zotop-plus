@@ -74,9 +74,9 @@ class CreateCommand extends Command
         'routes-admin.stub'       => 'Routes/admin.php',
         'routes-api.stub'         => 'Routes/api.php',
         'route-provider.stub'     => 'Providers/RouteServiceProvider.php',        
-        'lang/en/module.php'      => 'Resources/lang/en/module.php',
-        'lang/zh-Hans/module.php' => 'Resources/lang/zh-Hans/module.php',
-        'lang/zh-Hant/module.php' => 'Resources/lang/zh-Hant/module.php',
+        'lang/en/module.php'      => 'Resources/lang/en/$LOWERCASE_MODULE_NAME$.php',
+        'lang/zh-Hans/module.php' => 'Resources/lang/zh-Hans/$LOWERCASE_MODULE_NAME$.php',
+        'lang/zh-Hant/module.php' => 'Resources/lang/zh-Hant/$LOWERCASE_MODULE_NAME$.php',
     ];
 
     /**
@@ -174,17 +174,20 @@ class CreateCommand extends Command
      */
     public function createResources()
     {
+        // 后台创建ModuleNameController
         $this->call('module:make-admin-controller', [
-            'controller' => 'IndexController',
-            'module' => $this->moduleName()
+            'controller' => $this->moduleName().'Controller',
+            'module'     => $this->moduleName()
         ]);
 
+        // 前台创建IndexController
         $this->call('module:make-front-controller', [
             'controller' => 'IndexController',
             'module'     => $this->moduleName(),
             '--style'    => 'simple'
         ]);        
 
+        // 创建默认的ModuleNameServiceProvider
         $this->call('module:make-provider', [
             'name'   => $this->moduleName() . 'ServiceProvider',
             'module' => $this->moduleName()
