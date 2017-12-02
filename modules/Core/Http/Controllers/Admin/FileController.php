@@ -8,6 +8,7 @@ use Modules\Core\Base\AdminController;
 use Artisan;
 use File;
 use Plupload;
+use Filter;
 
 class FileController extends AdminController
 {
@@ -160,7 +161,7 @@ class FileController extends AdminController
     }    
 
     /**
-     * 图片字段上传
+     * 文件上传
      * 
      * @return [type] [description]
      */
@@ -169,36 +170,31 @@ class FileController extends AdminController
         // 获得multipart_params传过来的数据
         $params = $request->all();
 
-        return Plupload::receive('file', function ($tempfile) use($params)
-        {            
-            $basepath = '/uploads/'.date('Y/m/d',time());           
-            $filepath = public_path($basepath);
+        return Plupload::receive('file', function ($tempfile) use($type, $params) {
+
+            $basepath = '/uploads/'.$type.'/'.date('Y/m/d',time()).'/';         
+            $savepath = public_path($basepath);
             $filename = date('YmdHisu', time()).rand(1000,9999).'.'.File::extension($tempfile->getClientOriginalName());
 
             // 如果目录不存在，尝试创建目录
-            if ( !File::exists($filepath) ) {
-                File::makeDirectory($filepath, 0775, true);
-            }           
+            if (! File::exists($savepath)) {
+                File::makeDirectory($savepath, 0775, true);
+            }
 
             // 移动文件
-            $file = $tempfile->move($filepath, $filename);
-            
-            // TODO 文件判断和处理
-            // coding……
-            
-            // 文件路径，相对于public目录
-            $path = $basepath.'/'.$filename;
-            $url  = $path;
+            $file = $tempfile->move($savepath, $filename);
 
-            return [
+            // 返回处理结果
+            return Filter::fire('file.upload', [
                 'status'    => true,
                 'name'      => $params['filename'],
-                'type'      => $file->getMimeType(),
+                'type'      => $type,
+                'mimetype'  => $file->getMimeType(),
                 'extension' => $file->getExtension(),
                 'size'      => $file->getSize(),
-                'path'      => $path,
-                'url'       => $url,
-            ];
+                'path'      => $basepath.$filename,
+                'url'       => $basepath.$filename,
+            ], $file, $params);
         });
     }     
 }

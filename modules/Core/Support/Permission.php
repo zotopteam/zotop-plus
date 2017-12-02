@@ -28,11 +28,16 @@ class Permission
             $module     = $moduleEnabled->getLowerName();
             $permission = $moduleEnabled->getFileData('permission.php');
 
+            // 模块未开启权限不显示
+            if (empty($permission)) {
+                continue;
+            }
+
             $permissions[$module] = [
                 'title'       => trans($moduleEnabled->title),
                 'description' => trans($moduleEnabled->description),
                 'permissions' => $permission
-            ];        
+            ];       
         }
 
         return $permissions;
