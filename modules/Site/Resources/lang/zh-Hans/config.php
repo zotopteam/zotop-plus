@@ -44,12 +44,12 @@ return [
     'index_meta.help'        => '首页<head>中的额外的<meta>标签',
     'index_meta.placeholder' => '<meta name="test" content="test">',
 
-    'close'                  => '关闭网站',
-    'closed.label'           => '关闭网站',
-    'closed.help'            => '网站关闭时不影响网站后台访问并且管理员登陆系统之后可以访问网站',  
+    'maintain'               => '维护模式',
+    'maintained.label'       => '开启维护模式',
+    'maintained.help'        => '开启维护模式后将暂停网站前台访问，但是不影响网站后台访问，并且管理员登陆系统之后可以访问网站',  
     
-    'closed_reason.label'    => '关闭原因',
-    'closed_reason.help'     => '如：暂停访问，请稍后关注……',
+    'maintaining.label'      => '维护提示文字',
+    'maintaining.help'       => '开启维护模式后前台访问显示内容，如：网站升级中，请稍后访问……',
 
     'contact'                => '联系方式',
 

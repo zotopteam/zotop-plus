@@ -21,7 +21,7 @@
     $navbar['media'] = [
         'text' => trans('media::media.title'),
         'href' => route('media.index'),
-        'icon' => 'fa fa-puzzle-piece bg-warning text-white',
+        'icon' => 'fa fa-files-o bg-info text-white',
         'tips' => trans('media::media.description'),
     ];
     

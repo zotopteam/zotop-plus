@@ -9,8 +9,8 @@ return [
     'slogan'         => '',
     'copyright'      => '',
     'beian'          => '',
-    'closed'         => 0,
-    'closed_reason'  => '',
+    'maintained'     => 0, // 维护模式 1=开启，0=关闭
+    'maintaining'    => '', // 维护模式提示文字
     
     'title'          => '',
     'keywords'       => '',

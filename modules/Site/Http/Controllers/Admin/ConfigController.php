@@ -70,13 +70,13 @@ class ConfigController extends AdminController
      *
      * @return Response
      */
-    public function close(Request $request)
+    public function maintain(Request $request)
     {
         // 保存数据
         if ( $request->isMethod('POST') ) {
 
             $config = $request->all();
-            $config = $config + ['closed'=>0];
+            $config = $config + ['maintained'=>0];
             
             // 写入配置组
             $this->config('site', $config);
@@ -84,7 +84,7 @@ class ConfigController extends AdminController
             return $this->success(trans('core::master.saved'));
         }
 
-        $this->title  = trans('site::config.close');
+        $this->title  = trans('site::config.maintain');
         $this->config = Config::get('site');
 
         return $this->view();

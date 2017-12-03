@@ -12,10 +12,10 @@ return [
         'icon'  => 'fa-search',
         'class' => Route::active('site.config.seo'),
     ], 
-    'close' => [
-        'text'  => trans('site::config.close'),
-        'href'  => route('site.config.close'),
+    'maintain' => [
+        'text'  => trans('site::config.maintain'),
+        'href'  => route('site.config.maintain'),
         'icon'  => 'fa-power-off',
-        'class' => Route::active('site.config.close'),
+        'class' => Route::active('site.config.maintain'),
     ],              
 ];

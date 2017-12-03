@@ -2,7 +2,7 @@
 
 return [
     'title'       => '媒体',
-    'description' => '网站媒体文件管理',
+    'description' => '网站图片、视频、音频、文档等各种媒体管理',
 
     'name'        => '名称',
     'size'        => '大小',

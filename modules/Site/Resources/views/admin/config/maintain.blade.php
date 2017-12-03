@@ -13,32 +13,32 @@
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="$config" route="site.config.close" method="post" id="config" autocomplete="off"}
+            {form model="$config" route="site.config.maintain" method="post" id="config" autocomplete="off"}
             
             <div class="form-group row">
-                <label for="closed" class="col-2 col-form-label">{{trans('site::config.closed.label')}}</label>
+                <label for="maintained" class="col-2 col-form-label">{{trans('site::config.maintained.label')}}</label>
                 <div class="col-8">
 
-                    {field type="toggle" name="closed"}
+                    {field type="toggle" name="maintained"}
                     
                     @if ($errors->has('url'))
-                    <span class="form-help text-error">{{ $errors->first('closed') }}</span>
+                    <span class="form-help text-error">{{ $errors->first('maintained') }}</span>
                     @else
-                    <span class="form-help">{{trans('site::config.closed.help')}}</span>
+                    <span class="form-help">{{trans('site::config.maintained.help')}}</span>
                     @endif
                 </div>
             </div>  
 
             <div class="form-group row">
-                <label for="closed_reason" class="col-2 col-form-label">{{trans('site::config.closed_reason.label')}}</label>
+                <label for="maintaining" class="col-2 col-form-label">{{trans('site::config.maintaining.label')}}</label>
                 <div class="col-8">
 
-                    {field type="textarea" name="closed_reason" rows="3"}
+                    {field type="textarea" name="maintaining" rows="3"}
                     
-                    @if ($errors->has('closed_reason'))
-                    <span class="form-help text-error">{{ $errors->first('closed_reason') }}</span>
+                    @if ($errors->has('maintaining'))
+                    <span class="form-help text-error">{{ $errors->first('maintaining') }}</span>
                     @else
-                    <span class="form-help">{{trans('site::config.closed_reason.help')}}</span>
+                    <span class="form-help">{{trans('site::config.maintaining.help')}}</span>
                     @endif
                 </div>
             </div>
