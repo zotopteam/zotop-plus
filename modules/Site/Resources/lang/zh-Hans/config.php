@@ -4,7 +4,8 @@ return [
     'title'                  => '网站设置',
     'description'            => '站点名称、网址、主题、Logo等信息设置',
     
-    'base'                   => '网站信息',    
+    'base'                   => '网站信息',
+    'base.tips'              => '站点名称、网址、主题、Logo等信息设置',
     'base.info'              => '基本信息',    
  
     'name.label'             => '网站名称',
@@ -24,7 +25,8 @@ return [
     'favicon.help'           => '收藏夹和浏览器地址栏左侧显示的小图标，宽高：16px*16px或32px*32px，格式：ico或png',  
     
     
-    'seo'                    => '搜索优化',    
+    'seo'                    => '搜索优化',
+    'seo.tips'               => '网站标题、关键词、Meta等信息设置',
     'seo.global.title'       => '全局优化', 
     'seo.index.title'        => '首页优化',  
     
@@ -45,6 +47,7 @@ return [
     'index_meta.placeholder' => '<meta name="test" content="test">',
 
     'maintain'               => '维护模式',
+    'maintain.tips'          => '',
     'maintained.label'       => '开启维护模式',
     'maintained.help'        => '开启维护模式后将暂停网站前台访问，但是不影响网站后台访问，并且管理员登陆系统之后可以访问网站',  
     

@@ -66,7 +66,7 @@ class ConfigController extends AdminController
     }
 
     /**
-     * 搜索优化
+     * 维护模式
      *
      * @return Response
      */
