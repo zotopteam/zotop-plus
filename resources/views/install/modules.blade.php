@@ -1,8 +1,8 @@
 @extends('install.master')
 
 @section('content')
-    <section class="main d-flex">    
-        <div class="jumbotron jumbotron-md bg-transparent full-width align-self-center text-center">           
+    <section class="main d-flex scrollable">    
+        <div class="jumbotron bg-transparent full-width align-self-center text-center">          
             <h1>{{trans("installer.$current")}}</h1>
             <p class="progress-text">{{trans("installer.$current.description")}}</p>
             <div class="progress">
@@ -10,9 +10,9 @@
             </div>
         </div>
     </section>
-
-    <section class="main d-flex flex-column" style="flex:1;"> 
-        <div class="modules full-height scrollable">
+    
+    <section class="d-none"> 
+        <div class="modules">
             @foreach($modules as $name=>$module)                
                 <div class="module text-center" data-name="{{$name}}" data-title="{{$module->title}}">
                     <div class="module-icon">
@@ -77,12 +77,11 @@
                     install(index+1); // 安装下一个
                 } else {
                     progressText.html('{{trans("installer.$current.completed")}}');
-
                     location.href = "{{route("install.$next")}}";
-                    console.log('completed');
                 }
             } else {
                 module.addClass('error');
+                progressText.html(msg.content);
             }
 
         },'json');
