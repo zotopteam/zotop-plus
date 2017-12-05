@@ -213,6 +213,10 @@
  */
 \Form::macro('upload', function($attrs) {
     
+    // 标签预处理
+    $attrs = Filter::fire('core.field.upload.attrs', $attrs);
+
+    // 标签参数分解
     $value    = $this->getValue($attrs);
     $name     = $this->getAttribute($attrs, 'name');
     $id       = $this->getIdAttribute($name, $attrs);
@@ -224,6 +228,8 @@
     $select   = $this->getAttribute($attrs, 'select', trans('core::field.upload.select',[$typename])); 
     $icon     = $this->getAttribute($attrs, 'icon', 'fa-upload');
     $button   = $this->getAttribute($attrs, 'button', trans('core::field.upload.button',[$typename]));
+    $folder   = $this->getAttribute($attrs, 'folder', '');
+    $data_id  = $this->getAttribute($attrs, 'data_id', '');
 
     // 附加参数
     $params = $this->getAttribute($attrs, 'params',  [
@@ -235,7 +241,9 @@
         'controller' => app('current.controller'),
         'action'     => app('current.action'),
         'field'      => $name,
-        'userid'     => Auth::user()->id,
+        'folder'     => $folder,
+        'data_id'    => $data_id,
+        'user_id'    => Auth::user()->id,
         'token'      => Auth::user()->token
     ]);
 
@@ -251,10 +259,7 @@
     ]);
 
     // 高级上传及工具
-    $tools = $this->getAttribute($attrs, 'tools', Module::data('core::field.upload.tools', [
-        'filetype' => $filetype,
-        'typename' => $typename,
-    ]));
+    $tools = $this->getAttribute($attrs, 'tools', Module::data('core::field.upload.tools', $params));
 
     return $this->toHtmlString(
         $this->view->make('core::field.upload')
@@ -272,11 +277,15 @@
  */
 \Form::macro('upload_image', function($attrs) {
     
-    $attrs['filetype'] = 'image';
-    $attrs['typename'] = trans('core::file.type.image');
-    $attrs['icon']     = 'fa-image';
-    $attrs['allow']    = $this->getAttribute($attrs, 'allow', config('core.upload.types.image.extensions'));
-    $attrs['preview']  = $this->getAttribute($attrs, 'preview', 'image');
+    // 标签预处理
+    $attrs = Filter::fire('core.field.upload_image.attrs', $attrs);
+    $attrs = $attrs + [
+        'filetype' => 'image',
+        'typename' => trans('core::file.type.image'),
+        'icon'     => 'fa-image',
+        'allow'    => $this->getAttribute($attrs, 'allow', config('core.upload.types.image.extensions')),
+        'preview'  => $this->getAttribute($attrs, 'preview', 'image')
+    ];
 
     // 压缩设置
     $resize = config('core.image.resize.enabled', true) ? [

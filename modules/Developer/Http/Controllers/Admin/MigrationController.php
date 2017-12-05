@@ -89,9 +89,36 @@ class MigrationController extends AdminController
         }
 
 
-        $this->title      = trans('core::master.create');
+        $this->title      = trans('developer::migration.create');
 
 
         return $this->view();
-    }    
+    }
+
+    /**
+     * 执行命令
+     * 
+     * @param  Request $request
+     * @param  string $module 模型名称
+     * @return mixed
+     */
+    public function execute(Request $request, $module, $action)
+    {
+        $actions = [
+            'migrate'  => 'module:migrate',
+            'rollback' => 'module:migrate-rollback',
+            'reset'    => 'module:migrate-reset',
+            'refresh'  => 'module:migrate-refresh',
+            'seed'     => 'module:seed',
+        ];
+
+        $command = $actions[$action] ?? reset($actions);
+
+        Artisan::call($command, [
+            'module'  => $module,
+            '--force' => true
+        ]);
+
+        return $this->success(trans('core::master.operated'));
+    }        
 }

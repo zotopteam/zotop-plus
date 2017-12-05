@@ -2,28 +2,14 @@
 /**
  * 扩展后台全局导航
  */
-\Filter::listen('global.navbar',function($navbar){
-    
-    $navbar['media'] = [
-        'text'   => trans('media::media.title'),
-        'href'   => route('media.index'),
-        'active' => Route::is('media.*')
-    ];
-
-    return $navbar;
-});
+\Filter::listen('global.start','Modules\Media\Hook\Listener@start', 80);
 
 /**
- * 扩展模块管理
+ * 扩展开始菜单
  */
-\Filter::listen('global.start',function($navbar){
-    
-    $navbar['media'] = [
-        'text' => trans('media::media.title'),
-        'href' => route('media.index'),
-        'icon' => 'fa fa-files-o bg-info text-white',
-        'tips' => trans('media::media.description'),
-    ];
-    
-    return $navbar;
-}, 80);
+\Filter::listen('global.navbar', 'Modules\Media\Hook\Listener@navbar');
+
+/**
+ * 监听系统图片上传
+ */
+\Filter::listen('core.file.upload', 'Modules\Media\Hook\Listener@upload');

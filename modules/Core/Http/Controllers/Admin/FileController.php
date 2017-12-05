@@ -185,7 +185,7 @@ class FileController extends AdminController
             $file = $tempfile->move($savepath, $filename);
 
             // 返回处理结果
-            return Filter::fire('file.upload', [
+            return Filter::fire('core.file.upload', [
                 'status'    => true,
                 'name'      => $params['filename'],
                 'type'      => $type,

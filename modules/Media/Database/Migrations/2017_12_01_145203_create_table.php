@@ -25,7 +25,7 @@ class CreateTable extends Migration
         });
 
         Schema::create('media_files', function (Blueprint $table) {
-            
+
             $table->increments('id');
             $table->integer('folder_id')->unsigned()->default(0)->comment('文件夹编号');
             $table->string('name')->comment('名称');
@@ -34,7 +34,7 @@ class CreateTable extends Migration
             $table->string('type')->comment('类型, image/viedo/audio/files');
             $table->string('extension')->comment('扩展名');
             $table->string('mimetype')->comment('MimeType');
-            $table->integer('wdith')->unsigned()->default(0)->comment('图片宽度');
+            $table->integer('width')->unsigned()->default(0)->comment('图片宽度');
             $table->integer('height')->unsigned()->default(0)->comment('图片高度');
             $table->integer('size')->unsigned()->default(0)->comment('大小');
             $table->string('module')->nullable()->comment('模块');
@@ -42,11 +42,12 @@ class CreateTable extends Migration
             $table->string('action')->nullable()->comment('动作');
             $table->string('field')->nullable()->comment('字段');
             $table->string('data_id')->nullable()->comment('数据编号');
+            $table->integer('user_id')->comment('用户编号');
             $table->timestamps();
 
             $table->engine  = 'InnoDB';
             $table->comment = '媒体文件';
-        });        
+        });
     }
 
     /**

@@ -17,10 +17,8 @@ $router->group(['prefix' =>'media','module'=>'media'], function (Router $router)
 
     // 文件管理
     $router->group(['prefix' =>'file'], function (Router $router) {
-        $router->any('editor','FileController@editor')->name('media.file.editor')->middleware('allow:media.file.editor');
-        $router->any('create','FileController@create')->name('media.file.create')->middleware('allow:media.file.create');
+        $router->any('edit','FileController@editor')->name('media.file.edit')->middleware('allow:media.file.edit');
         $router->any('delete','FileController@delete')->name('media.file.delete')->middleware('allow:media.file.delete');
-        $router->any('copy','FileController@copy')->name('media.file.copy')->middleware('allow:media.file.copy');
         $router->any('rename','FileController@rename')->name('media.file.rename')->middleware('allow:media.file.rename');
         $router->any('upload/{type?}','FileController@upload')->name('media.file.upload')->middleware('allow:media.file.upload');
     });

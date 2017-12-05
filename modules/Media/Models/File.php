@@ -12,5 +12,5 @@ class File extends Model
      * @var string
      */
     protected $table = 'media_files';    
-    protected $fillable = [];
+    protected $fillable = ['folder_id','name','path','url','type','extension','mimetype','width','height','size','module','controller','action','field','data_id','user_id'];
 }

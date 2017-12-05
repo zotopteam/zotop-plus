@@ -28,8 +28,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <td colspan="2">{{trans('developer::file.name')}}</td>
-                    <td>{{trans('developer::file.path')}}</td>
+                    <td colspan="3">{{trans('developer::file.name')}}</td>
                     <td>{{trans('developer::file.mtime')}}</td>
                 </tr>                
             </thead>
@@ -39,14 +38,16 @@
                 <tr>
                     <td width="1%" class="icon icon-sm pr-2"><div class="fa fa-file fa-{{$file->getExtension()}} fa-2x text-primary"></div> </td>
                     <td class="pl-2">
-                        {{$file->getFilename()}}
-                        <div class="manage">
-                            <a class="manage-item js-open" href="{{route('developer.controller.route',[$name,$type,basename($file,'.php')])}}" data-width="80%" data-height="60%">
-                                <i class="fa fa-fw fa-anchor"></i> {{trans('developer::controller.route')}}
-                            </a>
+                        <div class="title">{{$file->getFilename()}}</div>
+                        <div class="description">
+                            {{$file->getRealPath()}}
                         </div>
                     </td>
-                    <td>{{$file->getRealPath()}}</td>
+                    <td class="manage manage-hover text-right">
+                        <a class="manage-item js-open" href="{{route('developer.controller.route',[$name,$type,basename($file,'.php')])}}" data-width="80%" data-height="60%">
+                            <i class="fa fa-fw fa-anchor"></i> {{trans('developer::controller.route')}}
+                        </a>                        
+                    </td>
                     <td>{{date('Y-m-d H:i:s',$file->getMTime())}}</td>
                 </tr>
                 @endforeach

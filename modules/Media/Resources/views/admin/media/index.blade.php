@@ -44,7 +44,7 @@
             <tbody>
             @foreach($folders as $folder)
                 <tr class="folder-item" data-url="{{route('media.index', $folder->id)}}">
-                    <td width="1%" class="pr-2">
+                    <td width="1%" class="text-center pr-2">
                         <i class="fa fa-fw fa-2x fa-folder text-warning"></i>
                     </td>
                     <td class="pl-2">
@@ -52,11 +52,11 @@
                              <a href="{{route('media.index', $folder->id)}}">{{$folder->name}}</a>
                         </div>
                     </td>
-                    <td width="10%" class="manage text-right">
-                            <a class="manage-item d-hover" href="{{route('media.folder.edit', $folder->id)}}">
+                    <td width="10%" class="manage manage-hover text-right">
+                            <a class="manage-item" href="{{route('media.folder.edit', $folder->id)}}">
                                 <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
                             </a>
-                            <a class="manage-item d-hover js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $folder->id)}}">
+                            <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $folder->id)}}">
                                 <i class="fa fa-times"></i> {{trans('core::master.delete')}}
                             </a>                        
                     </td>
@@ -68,20 +68,34 @@
 
             @foreach($files as $file)
                 <tr>
-                    <td>
+                    <td width="1%" class="text-center pr-2">
+                        @if ($file->type == 'image')
+                            <div class="image"><img src="{{preview(public_path($file->path), 32, 32)}}"></div>
+                        @else
+                            <i class="fa fa-fw fa-2x fa-file text-warning"></i>
+                            <i class="fa {{File::icon($file->extension)}} fa-2x fa-fw text-warning"></i>
+                        @endif
+                        
+                    </td>                
+                    <td class="pl-2">
                         <div class="title text-lg">
                             {{$file->name}}
                         </div>
-                        <div class="manage">
-                            <a class="manage-item" href="{{route('media.edit', $file->id)}}">
-                                <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
-                            </a>
-                            <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.destroy', $file->id)}}">
-                                <i class="fa fa-times"></i> {{trans('core::master.delete')}}
-                            </a>
+                        <div class="description">
+                            {{$file->width}}px × {{$file->height}}px
                         </div>
                     </td>
-                    <td></td>
+                    <td width="10%" class="manage manage-hover text-right">
+                        <a class="manage-item" href="{{route('media.file.edit', $file->id)}}">
+                            <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                        </a>
+                        <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $file->id)}}">
+                            <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                        </a>                        
+                    </td>
+                    <td>{{trans('core::file.type.'.$file->type)}}</td>
+                    <td>{{Format::size($file->size)}}</td>
+                    <td>{{$file->created_at}}</td>
                 </tr>
             @endforeach
 

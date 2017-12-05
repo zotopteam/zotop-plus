@@ -34,6 +34,7 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
     $router->group(['prefix' =>'migration','middleware'=>'allow:developer.migration'], function (Router $router) {
         $router->get('index/{module}','MigrationController@index')->name('developer.migration.index');
         $router->any('create/{module}','MigrationController@create')->name('developer.migration.create');
+        $router->any('execute/{module}/{action}','MigrationController@execute')->name('developer.migration.execute');
     });    
     
     // permission scan
