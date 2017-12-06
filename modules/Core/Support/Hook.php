@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Hook;
+namespace Modules\Core\Support;
 
 abstract class Hook {
 

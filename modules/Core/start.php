@@ -1,4 +1,18 @@
 <?php
+/**
+ * 开始菜单
+ */
+\Filter::listen('global.start', 'Modules\Core\Hook\Listener@start', 99999);
+
+/**
+ * 快捷导航
+ */
+\Filter::listen('global.navbar', 'Modules\Core\Hook\Listener@navbar', 1);
+
+/**
+ * 快捷工具
+ */
+\Filter::listen('global.tools', 'Modules\Core\Hook\Listener@tools');
 
 /**
  * 扩展 Request::referer 功能，暂时等于 URL::previous()
@@ -6,7 +20,6 @@
 \Request::macro('referer', function() {
     return \URL::previous();
 });
-
 
 /**
  * 扩展 Route:active 如果是当前route，则返回 active
@@ -17,7 +30,6 @@
 
 /**
  * 扩展$module->getFileData
- * @var [type]
  */
 \Nwidart\Modules\Module::macro('getFileData', function($file, array $args=[]) {
     $data = [];
@@ -52,12 +64,10 @@
  * 扩展File::mime方法, 获取文件类型audio/avi，text/xml 斜杠前面部分  
  */
 \File::macro('mime', function($file) {
-    
     if ($mimeType = static::mimeType($file)) {
         list($mime, $type) = explode('/', $mimeType);
         return $mime;
     }
-
     return null;
 });
 
@@ -65,135 +75,12 @@
  * 扩展File::icon方法, 获取文件图标  
  */
 \File::macro('icon', function($file) {
-    
-    if ($extension = static::extension($file)) {
-        
-        $icons = [
-            'pdf'  => 'fa-file-pdf-o',
-            'docx' => 'fa-file-word-o',
-            'xls'  => 'fa-file-excel-o',
-            'zip'  => 'fa-file-archive-o',
-            'gif'  => 'fa-file-image-o',
-            'jpg'  => 'fa-file-image-o',
-            'jpeg' => 'fa-file-image-o',
-            'png'  => 'fa-file-image-o',
-            'ppt'  => 'fa-file-powerpoint-o',
-            'pptx' => 'fa-file-powerpoint-o',
-        ];
-
-        if (isset($icon[$extension])) {
-            return $icon[$extension];
-        }
+    $extension = strpos($file, '.') ? static::extension($file) : trim($file, '.');
+    $icon = \Module::data('core::file.icon');
+    if (isset($icon[$extension])) {
+        return $icon[$extension];
     }
-
     return 'fa-file';
-});
-
-/**
- * 全局导航
- */
-\Filter::listen('global.navbar', function($navbar){
-        
-    // 主页
-    $navbar['core.index'] = [
-        'text'   => trans('core::master.index'),
-        'href'   => route('admin.index'),
-        'class'  => 'index', 
-        'active' => Route::is('admin.index')
-    ];
-
-    return $navbar;
-    
-},1);
-
-/**
- * 快捷方式
- */
-\Filter::listen('global.start', function($navbar){
-    
-    //编辑我的资料
-    $navbar['mine-edit'] = [
-        'text' => trans('core::mine.edit'),
-        'href' => route('core.mine.edit'),
-        'icon' => 'fa fa-user-circle bg-primary text-white', 
-        'tips' => trans('core::mine.edit.description'),
-    ];
-
-    //修改我的密码
-    $navbar['mine-password'] = [
-        'text' => trans('core::mine.password'),
-        'href' => route('core.mine.password'),
-        'icon' => 'fa fa-key bg-primary text-white', 
-        'tips' => trans('core::mine.password.description'),
-    ];
-
-    //管理员快捷方式
-    $navbar['administrator'] = [
-        'text' => trans('core::administrator.title'),
-        'href' => route('core.administrator.index'),
-        'icon' => 'fa fa-users bg-primary text-white', 
-        'tips' => trans('core::administrator.description'),
-    ];
-
-    //管理员快捷方式
-    $navbar['core-config'] = [
-        'text' => trans('core::config.title'),
-        'href' => route('core.config.index'),
-        'icon' => 'fa fa-cogs bg-primary text-white', 
-        'tips' => trans('core::config.description'),
-    ];    
-
-    //模块管理
-    $navbar['themes'] = [
-        'text' => trans('core::themes.title'),
-        'href' => route('core.themes.index'),
-        'icon' => 'fa fa-universal-access bg-primary text-white', 
-        'tips' => trans('core::themes.description'),
-    ];
-      
-    //模块管理
-    $navbar['modules'] = [
-        'text' => trans('core::modules.title'),
-        'href' => route('core.modules.index'),
-        'icon' => 'fa fa-puzzle-piece bg-primary text-white', 
-        'tips' => trans('core::modules.description'),
-    ];
-
-    //environment 服务器环境
-    $navbar['environment'] = [
-        'text' => trans('core::system.environment.title'),
-        'href' => route('core.system.environment'),
-        'icon' => 'fa fa-server bg-primary text-white', 
-        'tips' => trans('core::system.environment.description'),
-    ];
-
-    $navbar['about'] = [
-        'text' => trans('core::system.about.title'),
-        'href' => route('core.system.about'),
-        'icon' => 'fa fa-info-circle bg-primary text-white', 
-        'tips' => trans('core::system.about.description'),
-    ];        
-    
-    return $navbar;
-
-},100);
-
-/**
- * 全局工具
- */
-\Filter::listen('global.tools', function($tools){
-        
-    // 一键刷新
-    $tools['refresh'] = [
-        'icon'     => 'fa fa-magic', 
-        'text'     => trans('core::master.refresh'),
-        'title'    => trans('core::master.refresh.description'),
-        'href'     => 'javascript:;',
-        'data-url' => route('core.system.refresh'),
-        'class'    => 'refresh js-post',
-    ];
-
-    return $tools;
 });
 
 

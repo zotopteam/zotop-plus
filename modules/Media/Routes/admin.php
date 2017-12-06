@@ -5,7 +5,7 @@ use Illuminate\Routing\Router;
 $router->group(['prefix' =>'media','module'=>'media'], function (Router $router) {
     
     // 首页
-    $router->get('/{folder_id?}', 'MediaController@index')->name('media.index')->middleware('allow:media.index');
+    $router->get('/{folder_id?}/{type?}', 'MediaController@index')->name('media.index')->middleware('allow:media.index');
 
     // 文件夹
     $router->group(['prefix' =>'folder'], function (Router $router) {

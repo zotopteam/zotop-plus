@@ -51,4 +51,7 @@ return [
     'close'                => '关闭',
     'closed'               => '已关闭',
     'more'                 => '更多',
+    'search'               => '搜索',
+    'search.placeholder'   => '请输入关键词',    
+    'searching'            => '搜索: “:0”',
 ];

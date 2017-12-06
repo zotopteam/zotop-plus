@@ -3,8 +3,8 @@ namespace Modules\Core\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use Modules\Core\Hook\Action;
-use Modules\Core\Hook\Filter;
+use Modules\Core\Support\Action;
+use Modules\Core\Support\Filter;
 
 use Blade;
 

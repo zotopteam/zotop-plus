@@ -24,9 +24,9 @@
     "aliases": {
         "Plupload": "JildertMiedema\\LaravelPlupload\\Facades\\Plupload",
         "Format": "Modules\\Core\\Support\\Facades\\Format",
-        "Action": "Modules\\Core\\Hook\\Facades\\Action",
-        "Filter": "Modules\\Core\\Hook\\Facades\\Filter",
-        "Theme": "Modules\\Core\\Theme\\Facades\\Theme"
+        "Action": "Modules\\Core\\Support\\Facades\\Action",
+        "Filter": "Modules\\Core\\Support\\Facades\\Filter",
+        "Theme": "Modules\\Core\\Support\\Facades\\Theme"
     },
     "files": [
         "start.php",

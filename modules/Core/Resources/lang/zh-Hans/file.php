@@ -28,4 +28,5 @@ return [
     'type.audio'         => '音频',
     'type.video'         => '视频',
     'type.files'         => '文件',
+    'type.other'         => '其它',
 ];

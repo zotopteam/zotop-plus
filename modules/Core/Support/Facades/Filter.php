@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Core\Hook\Facades;
+namespace Modules\Core\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Action extends Facade
+class Filter extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -13,6 +13,6 @@ class Action extends Facade
      */
     protected static function getFacadeAccessor()
     {
-    	return 'hook.action';
+    	return 'hook.filter';
     }
 }

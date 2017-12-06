@@ -1,20 +1,28 @@
 @extends('core::layouts.master')
 
 @section('content')
+@include('media::media.side')
 <div class="main">
     <div class="main-header">
-        <div class="main-title mr-auto">
-            {{$title}}
+        <div class="main-action mr-auto">
+            <a href="{{route('media.file.upload')}}" class="btn btn-primary">
+                <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
+            </a>
+
+            <a href="javascript:;" class="btn btn-outline-primary js-prompt" data-url="{{route('media.folder.create',[$folder_id,'prompt'])}}"  data-prompt="{{trans('media::folder.name')}}">
+                <i class="fa fa-fw fa-folder"></i> {{trans('media::folder.create')}}
+            </a>
         </div>
         <div class="main-action">
-            
-            <a href="javascript:;" class="btn btn-primary js-prompt" data-url="{{route('media.folder.create',[$folder_id,'prompt'])}}"  data-prompt="{{trans('media::folder.name')}}">
-                <i class="fa fa-folder"></i> {{trans('media::folder.create')}}
-            </a>
-            <a href="{{route('media.file.upload')}}" class="btn btn-primary">
-                <i class="fa fa-upload"></i> {{trans('media::file.upload')}}
-            </a> 
-                   
+            <form class="form-inline form-search">
+                <div class="input-group">   
+                    {field type="select" name="type" options="Module::data('media::type.options')"}
+                    <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('core::master.search.placeholder')}}" required="required" aria-label="Search" style="min-width:12rem;">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
+                    </div>
+                </div>
+            </form>
         </div>        
     </div>
     <div class="main-header breadcrumb m-0">
@@ -29,12 +37,18 @@
         @foreach($parents as $p)
         <a class="breadcrumb-item" href="{{route('media.index', $p->id)}}">{{$p->name}}</a> 
         @endforeach
+        @if ($keywords)
+            <span class="breadcrumb-item active">{{trans('core::master.searching', [$keywords])}}</span> 
+        @endif        
     </div>
     <div class="main-body scrollable">
 
-        <table class="table table-nowrap table-hover">
+        <table class="table table-nowrap table-hover table-select">
             <thead>
             <tr>
+                <th class="select">
+                    <input type="checkbox" name="" class="select-all">
+                </th>
                 <th colspan="3">{{trans('media::media.name')}}</th>
                 <th width="12%">{{trans('media::media.type')}}</th>
                 <th width="12%">{{trans('media::media.size')}}</th>
@@ -44,6 +58,9 @@
             <tbody>
             @foreach($folders as $folder)
                 <tr class="folder-item" data-url="{{route('media.index', $folder->id)}}">
+                    <td class="select">
+                        <input type="checkbox" name="" class="selectAll">
+                    </td>
                     <td width="1%" class="text-center pr-2">
                         <i class="fa fa-fw fa-2x fa-folder text-warning"></i>
                     </td>
@@ -68,6 +85,9 @@
 
             @foreach($files as $file)
                 <tr>
+                    <td class="select">
+                        <input type="checkbox" name="" class="selectAll">
+                    </td>                
                     <td width="1%" class="text-center pr-2">
                         @if ($file->type == 'image')
                             <div class="image"><img src="{{preview(public_path($file->path), 32, 32)}}"></div>

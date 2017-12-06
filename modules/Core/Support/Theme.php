@@ -1,5 +1,5 @@
 <?php
-namespace Modules\Core\Theme;
+namespace Modules\Core\Support;
 
 
 class Theme

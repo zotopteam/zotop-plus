@@ -101,6 +101,10 @@ $(function(){
     });    
 });
 
+// 绑定默认搜索
+$(function(){
+    $('form.form-search').validate();
+});
 
 //dialog
 $(function(){
@@ -134,7 +138,7 @@ $(function(){
         event.preventDefault();
 
         var href    = $(this).data('url') || $(this).attr('href');
-        var text    = $(this).attr('title') || $(this).data('original-title') || $(this).text();
+        var text    = $(this).data('title') || $(this).text() || $(this).attr('title');
         var confirm = $(this).data('confirm') || $.trans('您确定要 [{0}] 嘛?', text);
         var method  = $(this).data('method') || 'POST';
 

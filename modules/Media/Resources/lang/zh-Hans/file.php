@@ -21,7 +21,8 @@ return [
     'type'               => '类型',
     'size'               => '大小',
     'mtime'              => '修改时间',
-    
+
+    'type.all'           => '全部',
     'type.null'          => '文件',
     'type.text'          => '文本',
     'type.image'         => '图像',

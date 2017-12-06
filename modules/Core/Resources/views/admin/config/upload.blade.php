@@ -19,7 +19,7 @@
             <div class="form-group row">
                 <label for="types" class="col-2 col-form-label required">{{trans('core::config.upload.types.label')}}</label>
                 <div class="col-8">
-                    
+                
                     <table class="table table-nowrap form-control">
                         <thead>
                             <tr>
@@ -29,10 +29,10 @@
                                 <th width="12%" class="text-center">{{trans('core::config.upload.types.enabled')}}</th>
                             </tr>
                         </thead>
-                        <tbody> 
-                            @foreach ($config['upload']['types'] as $type=>$setting)
+                        <tbody>
+                            @foreach (Module::data('core::file.types') as $type=>$name)
                             <tr>
-                                <td>{{trans('core::file.type.'.$type)}}</td>
+                                <td>{{$name}}</td>
                                 <td>{field type="text" name="upload[types]['.$type.'][extensions]"}</td>
                                 <td>
                                     <div class="input-group">

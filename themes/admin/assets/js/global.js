@@ -101,6 +101,10 @@ $(function(){
     });    
 });
 
+// 绑定默认搜索
+$(function(){
+    $('form.form-search').validate();
+});
 
 //dialog
 $(function(){

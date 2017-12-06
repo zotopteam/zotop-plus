@@ -49,3 +49,105 @@ i&&!i.options.disabled&&(s.sortables.push(i),i.refreshPositions(),i._trigger("ac
     };
 
 }(jQuery));
+
+/*
+ * jQuery selectTable Plugin
+ *
+ * @author   zotop
+ * @created  2012-11-14
+ * @version  2.0
+ * @site     http://zotop.com
+*/
+
+(function($) {
+    // default
+    $.selectTable = {options : {
+        item : 'tbody>tr',
+        ignore : '',
+        selectall : 'input.select-all',
+        oncheck : null
+    }};
+
+    function selectTable($table, options){
+        var self = this;
+        var $tr = $table.find(options.item).not(options.ignore);
+        var $checkboxes = $tr.find('input:checkbox');
+
+        // API methods
+        $.extend(self, {
+            //get checked length
+            checked : function(){
+                return $checkboxes.filter(':checked').length;
+            },
+            // select special node
+            select : function(selector, state){
+                $checkboxes.filter(selector).each(function(){
+                    this.checked = state;
+                    $(this).closest(options.item).toggleClass('selected', this.checked);
+                });
+                self.updateAll(($checkboxes.length === $checkboxes.filter(':checked').length));
+            },
+            //select all or unselect all
+            selectAll : function(state){
+                $checkboxes.each(function(){
+                    this.checked = state;
+                    $(this).closest(options.item).toggleClass('selected', this.checked);
+                });
+                self.updateAll(state);
+            },
+            // update selectall state
+            updateAll : function(state){
+                $(options.selectall).each(function(){
+                    this.checked = state;
+                });
+            }
+        });
+
+        // mouseover
+        $tr.each(function(){
+            $(this).hover(function(){
+                $(this).addClass('mouseover');
+            },function(){
+                $(this).removeClass('mouseover');
+            });
+        });
+
+        // select one
+        $checkboxes.click(function(e){
+            $(this).closest(options.item).toggleClass('selected', this.checked).toggleClass('mouseover', this.checked);
+            self.updateAll(($checkboxes.length === $checkboxes.filter(':checked').length));
+            if( typeof (options.oncheck) == "function" ){
+                options.oncheck(this,$checkboxes,$tr);
+            }
+        });
+
+        // select all
+        $table.find(options.selectall).click(function(e){
+            var state = $(e.target).is('input:checkbox') ? this.checked : $(this).attr('state');
+            self.selectAll(state);
+        });
+    }
+
+    // jQuery plugin initialization
+    $.fn.selectTable = function(options){
+
+        // setup options
+        options = $.extend({}, $.selectTable.options, options);
+
+        // install selectTable for each entry in jQuery object
+        this.each(function(){
+            instance = new selectTable($(this), options);
+            $(this).removeData("selectTable").data("selectTable", instance);
+        });
+
+        // if options.api == true then return api,else return this
+        return options.api ? api: this;
+    }
+
+    // default bind
+    $(function(){
+        $('table.table-select').each(function(){
+            $(this).selectTable();
+        });
+    });
+})(jQuery);

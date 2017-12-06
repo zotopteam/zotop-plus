@@ -44,7 +44,7 @@ class ThemeServiceProvider extends ServiceProvider
     {
         // 绑定theme与Theme类的实例
         $this->app->singleton('theme', function($app){
-            return new \Modules\Core\Theme\Theme($app);
+            return new \Modules\Core\Support\Theme($app);
         });
     }
 

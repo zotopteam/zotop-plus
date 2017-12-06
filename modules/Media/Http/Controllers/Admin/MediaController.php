@@ -15,14 +15,28 @@ class MediaController extends AdminController
      *
      * @return Response
      */
-    public function index($folder_id=0)
+    public function index(Request $request, $folder_id=0, $type=null)
     {
         $this->title     = trans('media::media.title');
         $this->folder_id = $folder_id;
+        $this->type      = $type ?? $request->input('type');
+        $this->keywords  = $request->input('keywords');
         $this->folder    = Folder::find($folder_id);
         $this->parents   = Folder::parents($folder_id, true);
         $this->folders   = Folder::where('parent_id',$folder_id)->get();
-        $this->files     = File::where('folder_id',$folder_id)->paginate(25);
+
+        $file = File::where('folder_id',$folder_id);
+
+        if ($this->type) {
+            $file->where('type',$this->type);
+        }
+
+        if ($this->keywords) {
+            $file->where('name', 'like', '%'.$this->keywords.'%');
+        }
+
+
+        $this->files = $file->paginate(25);
 
         return $this->view();
     }
