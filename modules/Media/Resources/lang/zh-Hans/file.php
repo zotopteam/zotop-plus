@@ -11,7 +11,7 @@ return [
     'view'               => '查看',
     'edit'               => '编辑',
     'editor'             => '编辑器',
-    'upload'             => '上传',
+    'upload'             => '上传文件',
     'delete'             => '删除',
     'rename'             => '重命名',
     'copy'               => '复制',
@@ -21,12 +21,4 @@ return [
     'type'               => '类型',
     'size'               => '大小',
     'mtime'              => '修改时间',
-
-    'type.all'           => '全部',
-    'type.null'          => '文件',
-    'type.text'          => '文本',
-    'type.image'         => '图像',
-    'type.audio'         => '音频',
-    'type.video'         => '视频',
-    'type.files'         => '文件',
 ];

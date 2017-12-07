@@ -201,37 +201,29 @@ $(function(){
         event.preventDefault();
 
         var href   = $(this).data('url') || $(this).attr('href');
-        var value  = $(this).data('value');
-        var prompt = $(this).data('prompt');
+        var name   = $(this).data('name') || 'newvalue';
+        var value  = $(this).data('value') || '';
+        var prompt = $(this).data('prompt') || '';
         var type   = $(this).data('type') || 'text';
-        var title  = $(this).attr('title') || $(this).data('original-title') || $(this).text();        
-        var $dialog = $.prompt(prompt,function(newvalue){
-
-            var input = type=='textarea' ? this._$('content').find('textarea')[0] : this._$('content').find('input')[0];
-
-            if( $.trim(newvalue) == '' ) {
-                $dialog.shake();
+        var title  = $(this).attr('title') || $(this).data('original-title') || $(this).text();
+        var posts  = {};   
+        var $dialog = $.prompt(prompt, function(newvalue, input) {
+            posts[name] = newvalue;
+            $dialog.loading(true);
+            $.post(href, posts, function(msg) {
+                if( msg.state ){
+                    $dialog.close().remove();
+                }else{
+                    $dialog.loading(false);
+                }
+                $.msg(msg);
+            },'json').fail(function(jqXHR){
                 input.select();
                 input.focus();
-            }else{              
-                $dialog.loading(true);
-                $.post(href,{newvalue:newvalue},function(msg){
-                    if( msg.state ){
-                        $dialog.close().remove();
-                    }else{
-                        $dialog.loading(false);
-                    }
-                    $.msg(msg);
-                },'json').fail(function(jqXHR){
-                    input.select();
-                    input.focus();
-                    $dialog.loading(false);
-                    $.error(jqXHR.responseJSON.newvalue[0]);
-                });
-            }
-
+                $dialog.loading(false);
+                $.error(jqXHR.responseJSON.newvalue[0]);
+            });
             return false;
-
         }, value, type).title(title);
 
         event.stopPropagation();

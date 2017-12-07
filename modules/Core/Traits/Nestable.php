@@ -3,6 +3,16 @@ namespace Modules\Core\Traits;
 
 use Illuminate\Support\Facades\Cache;
 
+//$data = Region::enabled()->nestArray();
+//$data = Region::enabled()->nestJson();
+//$data = Region::parentIds($parent_id, true);
+//$data = Region::parents($parent_id, true);
+//$data = Region::childIds($parent_id);
+//$data = Region::top($parent_id);
+//$data = Region::enabled()->children($parent_id, true)->toArray();
+//$data = Region::enabled()->nestArray(1);
+// $data = Region::parent($parent_id);
+
 trait Nestable
 {
     /**

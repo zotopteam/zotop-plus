@@ -101,11 +101,17 @@ if (! function_exists('preview')) {
             $path = app('current.theme')->path.'/assets/img/empty.jpg';
         }
 
-        $temp = 'temp/preview/'.md5($path.'-'.$width.'-'.$height).'.'.File::extension($path);
+        $temp = md5($path);
+        $temp = substr($temp, 0, 2).'/'.substr($temp, 2, 2).'/'.$temp;
+        $temp = 'temp/preview/'.$temp.'/'.$width.'-'.$height.'.'.File::extension($path);
         $file = public_path($temp);
 
         // 预览图片不存在，或者原图片被修改
-        if ( !File::exists($temp) || File::lastModified($temp) < File::lastModified($path) ) {
+        if ( !File::exists($file) || File::lastModified($file) < File::lastModified($path) ) {           
+            // 如果目录不存在，尝试创建
+            if (!File::isDirectory($dir = dirname($file))) {
+                File::makeDirectory($dir, 0775, true);
+            }
             // 拷贝图片到临时目录
             File::copy($path, $file);
             // 图片缩放

@@ -1,10 +1,8 @@
 <?php
-use File;
-use Module;
 
-$types  = Module::data('core::file.types');
+$types  = app('modules')->data('core::file.types');
 $options = [];
-$options[''] = trans('media::file.type.all');
+$options[''] = trans('core::file.type.all');
 foreach ($types as $t => $n) {
     $options[$t] = $n;
 }

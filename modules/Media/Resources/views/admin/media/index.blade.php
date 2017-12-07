@@ -9,7 +9,7 @@
                 <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
             </a>
 
-            <a href="javascript:;" class="btn btn-outline-primary js-prompt" data-url="{{route('media.folder.create',[$folder_id,'prompt'])}}"  data-prompt="{{trans('media::folder.name')}}">
+            <a href="javascript:;" class="btn btn-outline-primary js-prompt" data-url="{{route('media.folder.create',[$folder_id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name">
                 <i class="fa fa-fw fa-folder"></i> {{trans('media::folder.create')}}
             </a>
         </div>
@@ -43,6 +43,7 @@
     </div>
     <div class="main-body scrollable">
 
+        {form route="media.index" method="post"}
         <table class="table table-nowrap table-hover table-select">
             <thead>
             <tr>
@@ -59,7 +60,7 @@
             @foreach($folders as $folder)
                 <tr class="folder-item" data-url="{{route('media.index', $folder->id)}}">
                     <td class="select">
-                        <input type="checkbox" name="" class="selectAll">
+                        <input type="checkbox" name="folder_id[]" value="{{$folder->id}}" class="selectAll">
                     </td>
                     <td width="1%" class="text-center pr-2">
                         <i class="fa fa-fw fa-2x fa-folder text-warning"></i>
@@ -70,11 +71,11 @@
                         </div>
                     </td>
                     <td width="10%" class="manage manage-hover text-right">
-                            <a class="manage-item" href="{{route('media.folder.edit', $folder->id)}}">
-                                <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                            <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.folder.edit',[$folder->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$folder->name}}">
+                                <i class="fa fa-fw fa-eraser"></i> {{trans('core::folder.rename')}}
                             </a>
                             <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $folder->id)}}">
-                                <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                                <i class="fa fa-fw fa-times"></i> {{trans('core::master.delete')}}
                             </a>                        
                     </td>
                     <td>{{trans('media::folder.type')}}</td>
@@ -86,28 +87,28 @@
             @foreach($files as $file)
                 <tr>
                     <td class="select">
-                        <input type="checkbox" name="" class="selectAll">
+                        <input type="checkbox" name="file_id[]" value="{{$file->id}}" class="selectAll">
                     </td>                
                     <td width="1%" class="text-center pr-2">
                         @if ($file->type == 'image')
-                            <div class="image"><img src="{{preview(public_path($file->path), 32, 32)}}"></div>
+                            <div class="image"><img src="{{$file->getPreview(32,32)}}"></div>
                         @else
                             <i class="fa fa-fw fa-2x fa-file text-warning"></i>
                             <i class="fa {{File::icon($file->extension)}} fa-2x fa-fw text-warning"></i>
                         @endif
                         
                     </td>                
-                    <td class="pl-2">
-                        <div class="title text-lg">
-                            {{$file->name}}
+                    <td width="50%" class="pl-2">
+                        <div class="title text-lg text-overflow">
+                            {{str_limit($file->name,36)}}
                         </div>
                         <div class="description">
                             {{$file->width}}px × {{$file->height}}px
                         </div>
                     </td>
                     <td width="10%" class="manage manage-hover text-right">
-                        <a class="manage-item" href="{{route('media.file.edit', $file->id)}}">
-                            <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                        <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.file.edit',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
+                            <i class="fa fa-fw fa-eraser"></i> {{trans('core::file.rename')}}
                         </a>
                         <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $file->id)}}">
                             <i class="fa fa-times"></i> {{trans('core::master.delete')}}
@@ -121,6 +122,8 @@
 
             </tbody>
         </table>
+        {/form}
+
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">

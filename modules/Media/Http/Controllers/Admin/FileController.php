@@ -5,9 +5,9 @@ namespace Modules\Media\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
-use Modules\Media\Models\Folder;
+use Modules\Media\Models\File;
 
-class FolderController extends AdminController
+class FileController extends AdminController
 {
     /**
      * 首页
@@ -30,16 +30,16 @@ class FolderController extends AdminController
         // 保存数据
         if ($request->isMethod('POST')) {
 
-            $folder = new Folder;
-            $folder->fill($request->all());
-            $folder->parent_id = $parent_id;
-            $folder->save();
+            $file = new File;
+            $file->fill($request->all());
+            $file->parent_id = $parent_id;
+            $file->save();
 
             return $this->success(trans('core::master.created'), $request->referer());       
         }
 
         $this->title = trans('media::media.create');
-        $this->folder = Folder::findOrNew(0);
+        $this->File = File::findOrNew(0);
 
         return $this->view();
     }
@@ -54,16 +54,16 @@ class FolderController extends AdminController
         // 保存数据
         if ($request->isMethod('POST')) {
 
-            $folder = Folder::findOrFail($id);
-            $folder->fill($request->all());
-            $folder->save();
+            $file = File::findOrFail($id);
+            $file->fill($request->all());
+            $file->save();
 
             return $this->success(trans('core::master.updated'), $request->referer());       
         }
 
         $this->title = trans('media::media.edit');
         $this->id    = $id;
-        $this->folder = Folder::findOrFail($id);
+        $this->File = File::findOrFail($id);
 
         return $this->view();
     }
@@ -75,12 +75,9 @@ class FolderController extends AdminController
      */
     public function delete(Request $request, $id)
     {
-        $folder = Folder::findOrFail($id);
+        $file = File::findOrFail($id);
+        $file->delete();
 
-        if ($folder->delete()) {
-            return $this->success(trans('core::master.deleted'), $request->referer());
-        }
-
-        return $this->error($folder->error);  
+        return $this->success(trans('core::master.deleted'), $request->referer());        
     }
 }

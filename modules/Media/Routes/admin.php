@@ -9,16 +9,15 @@ $router->group(['prefix' =>'media','module'=>'media'], function (Router $router)
 
     // 文件夹
     $router->group(['prefix' =>'folder'], function (Router $router) {
-        $router->any('create/{parent_id?}/{method?}','FolderController@create')->name('media.folder.create')->middleware('allow:media.folder.create');
-        $router->any('rename{$id}','FolderController@rename')->name('media.folder.rename')->middleware('allow:media.folder.rename');
-        $router->any('edit/{$id}','FolderController@edit')->name('media.folder.edit')->middleware('allow:media.folder.edit');
-        $router->any('delete/{$id}','FolderController@delete')->name('media.folder.delete')->middleware('allow:media.folder.delete');
+        $router->any('create/{parent_id?}','FolderController@create')->name('media.folder.create')->middleware('allow:media.folder.create');
+        $router->any('edit/{id}','FolderController@edit')->name('media.folder.edit')->middleware('allow:media.folder.edit');
+        $router->any('delete/{id}','FolderController@delete')->name('media.folder.delete')->middleware('allow:media.folder.delete');
     });
 
     // 文件管理
     $router->group(['prefix' =>'file'], function (Router $router) {
-        $router->any('edit','FileController@editor')->name('media.file.edit')->middleware('allow:media.file.edit');
-        $router->any('delete','FileController@delete')->name('media.file.delete')->middleware('allow:media.file.delete');
+        $router->any('edit/{id}','FileController@edit')->name('media.file.edit')->middleware('allow:media.file.edit');
+        $router->any('delete/{id}','FileController@delete')->name('media.file.delete')->middleware('allow:media.file.delete');
         $router->any('rename','FileController@rename')->name('media.file.rename')->middleware('allow:media.file.rename');
         $router->any('upload/{type?}','FileController@upload')->name('media.file.upload')->middleware('allow:media.file.upload');
     });

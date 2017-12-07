@@ -296,7 +296,17 @@
 				input.focus();
 			},
 			ok: function () {
-				return ok && ok.call(this, input.value);
+				var value = input.value;
+
+				// 如果输入框为空
+				if ($.trim(value) == '') {
+	                this.shake();
+	                input.select();
+	                input.focus();
+	                return false;
+				}
+
+				return ok && ok.call(this, value, input);
 			},
 			cancel: function () {}
 		},true);

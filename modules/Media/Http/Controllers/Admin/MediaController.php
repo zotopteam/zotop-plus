@@ -36,94 +36,23 @@ class MediaController extends AdminController
         }
 
 
-        $this->files = $file->paginate(25);
+        $this->files = $file->orderby('created_at', 'desc')->paginate(25);
 
         return $this->view();
     }
 
     /**
-     * 新建
-     * 
-     * @return Response
-     */
-    public function create()
-    {
-        $this->title = trans('media::media.create');
-
-        $this->media = Media::findOrNew(0);
-
-        return $this->view();
-    }
-
-    /**
-     * 保存
+     * 多选操作
      *
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function operate(Request $request)
     {
         $media = new Media;
         $media->fill($request->all());
         $media->save();
 
-        return $this->success(trans('core::master.created'), route('media.media.index'));
-    }
-
-    /**
-     * 显示
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $this->title = trans('media::media.show');
-
-        $this->media = Media::findOrFail($id);
-
-        return $this->view();
-    }    
-
-    /**
-     * 编辑
-     *
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $this->title = trans('media::media.edit');
-        $this->id    = $id;
-        $this->media = Media::findOrFail($id);
-
-        return $this->view();
-    }
-
-    /**
-     * 更新
-     *
-     * @param  Request $request
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        $media = Media::findOrFail($id);
-        $media->fill($request->all());        
-        $media->save();
-
-        return $this->success(trans('core::master.updated'), route('media.media.index'));
-    }
-
-    /**
-     * 删除
-     *
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        $media = Media::findOrFail($id);
-        $media->delete();
-
-        return $this->success(trans('core::master.deleted'), route('media.media.index'));        
+        return $this->success(trans('core::master.created'), $request->referer());
     }
 }

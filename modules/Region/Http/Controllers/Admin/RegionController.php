@@ -34,9 +34,7 @@ class RegionController extends AdminController
 
         // $data = Region::child($parent_id);
         // debug($data);
-
-
-
+        
         return $this->view();
     }
 
