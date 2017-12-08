@@ -115,7 +115,7 @@ body.blur > *:not(.ui-popup){filter: blur(1.5px);overflow:hidden;transition:all 
 /*ui-message*/
 .ui-message{border:solid 3px #0072C6;color:#0072C6;}
 .ui-message .ui-dialog-content{padding:1rem 3rem 1rem 3.5rem;display:block;}
-.ui-message .ui-dialog-content .msg-icon{position:absolute;top:10px;left:1rem;font:normal 2rem/1 FontAwesome;}
+.ui-message .ui-dialog-content .msg-icon{position:absolute;top:10px;left:1rem;font:900 2rem/1 'Font Awesome 5 Free';}
 .ui-message .ui-dialog-content .msg-content{font-size:1rem;font-weight:bold;line-height:22px;max-width:800px;max-height:400px;overflow:auto;word-wrap:break-word;}
 .ui-message .ui-dialog-content .msg-content b{color:red;}
 .ui-message .ui-dialog-content .close{color:#666;position:absolute;top:1rem;right:1rem;font-size:1.25rem;}

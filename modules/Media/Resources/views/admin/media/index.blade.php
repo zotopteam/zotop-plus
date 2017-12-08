@@ -33,7 +33,7 @@
         @else
         <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('media::folder.up')}}</a>
         @endif
-        <a class="breadcrumb-item" href="{{route('media.index')}}">{{trans('media::media.title')}}</a>
+        <a class="breadcrumb-item" href="{{route('media.index')}}">{{trans('media::media.root')}}</a>
         @foreach($parents as $p)
         <a class="breadcrumb-item" href="{{route('media.index', $p->id)}}">{{$p->name}}</a> 
         @endforeach

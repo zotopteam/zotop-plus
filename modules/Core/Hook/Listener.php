@@ -49,7 +49,7 @@ class Listener
         $start['themes'] = [
             'text' => trans('core::themes.title'),
             'href' => route('core.themes.index'),
-            'icon' => 'fa fa-universal-access bg-primary text-white', 
+            'icon' => 'fa fa-gem bg-primary text-white', 
             'tips' => trans('core::themes.description'),
         ];
           

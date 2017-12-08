@@ -18,7 +18,7 @@ class Listener
         $start['media'] = [
             'text' => trans('media::media.title'),
             'href' => route('media.index'),
-            'icon' => 'fa fa-files-o bg-info text-white',
+            'icon' => 'fa fa-images bg-info text-white',
             'tips' => trans('media::media.description'),
         ];
         

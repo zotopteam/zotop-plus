@@ -70,7 +70,7 @@
                     </td>
                     <td class="text-center">
                         <a class="btn btn-success rounded-circle" href="{{route('developer.module.show',$module->name)}}">
-                            <i class="fa fa-pencil fa-2x"></i>
+                            <i class="fa fa-pencil-alt fa-2x"></i>
                         </a>
                     </td>
                 </tr>

@@ -7,7 +7,7 @@
             @foreach(Module::data('site::config.navbar') as $n) 
             <li class="nav-item">
                 <a class="nav-link {{$n['class'] or ''}}" href="{{$n['href']}}">
-                    <i class="fa fa-fw {{$n['icon'] or ''}}"></i> {{$n['text']}}
+                    <i class="nav-icon {{$n['icon'] or ''}}"></i> <span class="nav-text">{{$n['text']}}</span>
                 </a>
             </li>
             @endforeach                                      

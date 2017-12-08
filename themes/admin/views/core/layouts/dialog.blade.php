@@ -8,7 +8,7 @@
     <title>{{config('site.name')}} {{$title or ''}} {{config('app.name')}} </title>
     <link href="{{theme::asset('favicon.ico')}}" rel="shortcut icon" type="image/x-icon">
     <link rel="stylesheet" href="{{theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{theme::asset('css/font-awesome.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{theme::asset('css/jquery.dialog.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{theme::asset('css/global.css')}}" rel="stylesheet">
     @stack('css')

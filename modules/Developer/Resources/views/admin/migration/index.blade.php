@@ -20,13 +20,16 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a href="javascript:;" class="dropdown-item js-confirm" data-url="{{route('developer.migration.execute',[$name,'rollback'])}}" data-confirm="{{trans('developer::migration.rollback.tips')}}">
-                        <i class="fa fa-reply fa-fw"></i> {{trans('developer::migration.rollback')}}
+                        <i class="dropdown-item-icon fa fa-reply fa-fw"></i>
+                        <b class="dropdown-item-text">{{trans('developer::migration.rollback')}}</b>
                     </a>
                     <a href="javascript:;" class="dropdown-item js-confirm" data-url="{{route('developer.migration.execute',[$name,'reset'])}}" data-confirm="{{trans('developer::migration.reset.tips')}}">
-                        <i class="fa fa-reply-all fa-fw"></i> {{trans('developer::migration.reset')}}
+                        <i class="dropdown-item-icon fa fa-reply-all fa-fw"></i>
+                        <b class="dropdown-item-text">{{trans('developer::migration.reset')}}</b>
                     </a>
                     <a href="javascript:;" class="dropdown-item js-confirm" data-url="{{route('developer.migration.execute',[$name,'refresh'])}}" data-confirm="{{trans('developer::migration.refresh.tips')}}">
-                        <i class="fa fa-refresh fa-fw"></i> {{trans('developer::migration.refresh')}}
+                        <i class="dropdown-item-icon fa fa-sync fa-fw"></i>
+                        <b class="dropdown-item-text">{{trans('developer::migration.refresh')}}</b>
                     </a>                                       
                 </div>                                               
             </div>       
@@ -134,7 +137,7 @@
                 {{trans('developer::migration.refresh')}}: php artisan module:migrate-refresh {{$module}}
             </div>
             <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$name,'refresh'])}}" data-confirm="{{trans('developer::migration.refresh.tips')}}">
-                <i class="fa fa-refresh fa-fw"></i> {{trans('developer::migration.refresh')}}
+                <i class="fa fa-sync fa-fw"></i> {{trans('developer::migration.refresh')}}
             </a>
         </div>
     </div> 

@@ -8,7 +8,7 @@
     <title>{{$title or ''}} @yield('title')</title>
     <link href="{{theme::asset('favicon.ico')}}" rel="shortcut icon" type="image/x-icon">
     <link rel="stylesheet" href="{{theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{theme::asset('css/font-awesome.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{theme::asset('css/global.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{theme::asset('css/login.css')}}" rel="stylesheet">
     @stack('css')
