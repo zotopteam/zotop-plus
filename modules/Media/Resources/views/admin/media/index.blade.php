@@ -66,7 +66,7 @@
                         <i class="fa fa-fw fa-2x fa-folder text-warning"></i>
                     </td>
                     <td class="pl-2">
-                        <div class="title">
+                        <div class="title text-lg">
                              <a href="{{route('media.index', $folder->id)}}">{{$folder->name}}</a>
                         </div>
                     </td>
@@ -90,28 +90,38 @@
                         <input type="checkbox" name="file_id[]" value="{{$file->id}}" class="selectAll">
                     </td>                
                     <td width="1%" class="text-center pr-2">
-                        @if ($file->type == 'image')
-                            <div class="image"><img src="{{$file->getPreview(32,32)}}"></div>
+                        @if ($file->isImage())
+                            <a href="javascript:;" class="js-image" data-url="{{$file->getPreview()}}" data-title="{{$file->name}}">
+                                <div class="image"><img src="{{$file->getPreview(32,32)}}"></div>
+                            </a>
                         @else
-                            <i class="fa fa-fw fa-2x fa-file text-warning"></i>
-                            <i class="fa {{File::icon($file->extension)}} fa-2x fa-fw text-warning"></i>
-                        @endif
-                        
+                            <i class="fa {{$file->getIcon()}} fa-2x fa-fw text-warning"></i>
+                        @endif                        
                     </td>                
                     <td width="50%" class="pl-2">
-                        <div class="title text-lg text-overflow">
+                        <div class="title text-md text-overflow">
                             {{str_limit($file->name,36)}}
                         </div>
                         <div class="description">
+                            @if ($file->isImage())
                             {{$file->width}}px × {{$file->height}}px
+                            @endif
                         </div>
                     </td>
                     <td width="10%" class="manage manage-hover text-right">
-                        <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.file.edit',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
-                            <i class="fa fa-fw fa-eraser"></i> {{trans('core::file.rename')}}
+                        @if ($file->isImage())
+                        <a href="javascript:;" class="manage-item js-image" data-url="{{$file->getPreview()}}" data-title="{{$file->name}}">
+                            <i class="fa fa-eye fa-fw"></i> {{trans('media::file.view')}}
                         </a>
+                        @endif                 
+                        <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.file.edit',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
+                            <i class="fa fa-fw fa-eraser"></i> {{trans('media::file.rename')}}
+                        </a>
+                        <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.file.move', $file->id)}}" data-title="{{$file->name}}">
+                            <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
+                        </a>                        
                         <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $file->id)}}">
-                            <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                            <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
                         </a>                        
                     </td>
                     <td>{{trans('core::file.type.'.$file->type)}}</td>
@@ -142,7 +152,28 @@
         $('.folder-item').on('dblclick',function(){
             location.href = $(this).data('url');
             return false;
-        });        
+        });
+
+        $('.js-move').on('click',function(){
+            var title  = $(this).text();
+            var select = '{{route('media.folder.select')}}';
+            var $dialog = $.dialog({
+                    title:title,
+                    url:select,
+                    width:500,
+                    height:400,
+                    padding:'1rem',
+                    ok:function() {
+                        alert(this.selected_folder_id);
+                        return false;
+                    },
+                    cancel:$.noop,
+                    oniframeload: function() {
+                        this.loading(false);
+                    },
+                    opener:window
+                }, true).loading(true);
+        })      
     });
 
 </script>

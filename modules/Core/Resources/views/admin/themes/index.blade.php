@@ -8,7 +8,7 @@
         </div>
         <div class="main-action">            
             <a href="{{route('core.themes.publish')}}" class="btn btn-success js-post" title="{{trans('core::themes.publish.tooltip')}}">
-                <i class="fa fa-refresh fa-fw"></i> {{trans('core::themes.publish')}}
+                <i class="fa fa-sync fa-fw"></i> {{trans('core::themes.publish')}}
             </a>
             <a href="{{route('core.themes.upload')}}" class="btn btn-primary btn-upload">
                 <i class="fa fa-upload fa-fw"></i> {{trans('core::themes.upload')}}
@@ -32,13 +32,13 @@
                             <div class="card-text text-overflow text-overflow-2 d-none">{{$theme->description}}</div>
                             <div class="card-text manage">
                                 <a href="{{route('core.themes.files', [$theme->name,'dir'=>'./views'])}}" class="manage-item">
-                                    <i class="fa fa-file-text fa-fw"></i> {{trans('core::themes.views')}}
+                                    <i class="far fa-file fa-fw"></i> {{trans('core::themes.views')}}
                                 </a>
                                 <a href="{{route('core.themes.files', [$theme->name,'dir'=>'./assets'])}}" class="manage-item">
-                                    <i class="fa fa-file-text-o fa-fw"></i> {{trans('core::themes.assets')}}
+                                    <i class="fas fa-file fa-fw"></i> {{trans('core::themes.assets')}}
                                 </a>
                                 <a href="{{route('core.themes.publish', [$theme->name])}}" class="manage-item js-post" title="{{trans('core::themes.publish.tooltip')}}">
-                                    <i class="fa fa-refresh fa-fw"></i> {{trans('core::themes.publish')}}
+                                    <i class="fa fa-sync fa-fw"></i> {{trans('core::themes.publish')}}
                                 </a>
                             </div>                                                          
                         </div>

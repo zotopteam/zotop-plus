@@ -16,7 +16,7 @@ class FolderController extends AdminController
      */
     public function index()
     {
-        $this->title = trans('media::media.title');
+        $this->title = trans('media::folder.title');
         return $this->view();
     }
 
@@ -38,7 +38,7 @@ class FolderController extends AdminController
             return $this->success(trans('core::master.created'), $request->referer());       
         }
 
-        $this->title = trans('media::media.create');
+        $this->title = trans('media::folder.create');
         $this->folder = Folder::findOrNew(0);
 
         return $this->view();
@@ -61,7 +61,7 @@ class FolderController extends AdminController
             return $this->success(trans('core::master.updated'), $request->referer());       
         }
 
-        $this->title = trans('media::media.edit');
+        $this->title = trans('media::folder.edit');
         $this->id    = $id;
         $this->folder = Folder::findOrFail($id);
 
@@ -82,5 +82,36 @@ class FolderController extends AdminController
         }
 
         return $this->error($folder->error);  
+    }
+
+    /**
+     * 文件夹选择对话框
+     *
+     * @return Response
+     */    
+    public function select(Request $request, $id=0)
+    {
+        // 组装tree数据
+        $tree = Folder::select('id','parent_id','name as title')->orderBy('sort','asc')->get()->map(function($item, $key){
+            $item->key    = $item->id;
+            $item->folder = true;
+            return $item;
+        })->toArray();
+
+        $tree = [
+            [
+                'folder'    => true,
+                'key'       => 0,
+                'icon'      => 'fas fa-home text-primary',
+                'title'     => trans('media::folder.root'),
+                'children'  => array_nest($tree)
+            ]
+        ];
+
+        $this->title = trans('media::folder.select');
+        $this->id    = $id;
+        $this->tree  = $tree;
+
+        return $this->view();
     }
 }

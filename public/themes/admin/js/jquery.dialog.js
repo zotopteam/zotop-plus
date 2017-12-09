@@ -176,29 +176,29 @@
 	 * @param  {Function} callback 回调
 	 * @return {Object} 进度条
 	 */
-	$.progress = function(percent, callback){
+	// $.progress = function(percent, callback){
 		
-		var options = {
-			id      : 'progress',
-			skin    : 'ui-progress',
-			title   : false,
-			content : '<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div><a href="javascript:;" class="close" i="close">&#215;</a></div>',
-			padding : 0,
-			fixed   : true,
-			resize  : false,
-			onclose : callback
-		}
+	// 	var options = {
+	// 		id      : 'progress',
+	// 		skin    : 'ui-progress',
+	// 		title   : false,
+	// 		content : '<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div><a href="javascript:;" class="close" i="close">&#215;</a></div>',
+	// 		padding : 0,
+	// 		fixed   : true,
+	// 		resize  : false,
+	// 		onclose : callback
+	// 	}
 
-		var dialog = $.dialog(options);
+	// 	var dialog = $.dialog(options);
 
-		if ( parseInt(percent) <= 100 ) {
-			dialog._$('content').find('.progress-bar').attr('aria-valuenow', percent).css('width',percent+'%').text(percent+'%');
-			return dialog;
-		} else {
-			$.dialog('progress').close().remove();
-			return true;
-		}		
-	}
+	// 	if ( parseInt(percent) <= 100 ) {
+	// 		dialog._$('content').find('.progress-bar').attr('aria-valuenow', percent).css('width',percent+'%').text(percent+'%');
+	// 		return dialog;
+	// 	} else {
+	// 		$.dialog('progress').close().remove();
+	// 		return true;
+	// 	}		
+	// }
 
 	/**
 	 * 消息提示
@@ -358,12 +358,12 @@
 		return $.dialog({
 			id         : 'Image',
 			skin       : 'ui-image',
-			width      : (width || '50%'),
-			height     : (height || '50%'),
+			width      : (width || '80%'),
+			height     : (height || '80%'),
 			fixed      : true,
 			padding    : 0,
 			title      : title,
-			quickClose : true,
+			quickClose : false,
 			content    : '<div class="image bg-image-preview"><img src="'+url+'" /></div>',
 			ok         :true
 		}, true);

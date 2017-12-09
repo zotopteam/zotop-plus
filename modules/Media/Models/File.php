@@ -55,5 +55,47 @@ class File extends Model
     public function getPreview($width = null, $height = null, $fit = true)
     {
         return preview($this->getRealPath(), $width, $height, $fit);
-    }     
+    }
+
+    /**
+     * 获取文件图标
+     * 
+     * @return string
+     */
+    public function getIcon()
+    {
+        return app('files')->icon($this->extension);
+    }
+
+    /**
+     * 判定文件类型
+     * @param  mixed $modelid 模型编号
+     * @return boolean
+     */
+    public function isType($type)
+    {
+        // 根据类型判断
+        if ($this->type == $type) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Dynamically pass missing methods to the user.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        // isAdmin,isSuper,isMember
+        if (starts_with($method, 'is')) {
+            return $this->isType(strtolower(substr($method, 2)));
+        }
+
+        return parent::__call($method, $parameters);
+    }       
 }
