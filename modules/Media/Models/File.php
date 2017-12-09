@@ -45,7 +45,16 @@ class File extends Model
     }
 
     /**
-     * 获取预览图
+     * 获取文件的URL
+     * @return string
+     */
+    public function getUrl()
+    {
+        return url($this->url);
+    }
+
+    /**
+     * 获取预览图URL
      * 
      * @param  int $width 宽度
      * @param  int $height 高度

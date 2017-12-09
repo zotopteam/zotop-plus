@@ -12,6 +12,7 @@ $router->group(['prefix' =>'media','module'=>'media'], function (Router $router)
         $router->any('create/{parent_id?}','FolderController@create')->name('media.folder.create')->middleware('allow:media.folder.create');
         $router->any('edit/{id}','FolderController@edit')->name('media.folder.edit')->middleware('allow:media.folder.edit');
         $router->any('delete/{id}','FolderController@delete')->name('media.folder.delete')->middleware('allow:media.folder.delete');
+        $router->any('move/{id}','FolderController@move')->name('media.folder.move')->middleware('allow:media.folder.move');
         $router->any('select/{id?}','FolderController@select')->name('media.folder.select');
     });
 
@@ -21,6 +22,7 @@ $router->group(['prefix' =>'media','module'=>'media'], function (Router $router)
         $router->any('edit/{id}','FileController@edit')->name('media.file.edit')->middleware('allow:media.file.edit');
         $router->any('delete/{id}','FileController@delete')->name('media.file.delete')->middleware('allow:media.file.delete');
         $router->any('rename','FileController@rename')->name('media.file.rename')->middleware('allow:media.file.rename');
+        $router->any('move/{id}','FileController@move')->name('media.file.move')->middleware('allow:media.file.move');
         $router->any('upload/{type?}','FileController@upload')->name('media.file.upload')->middleware('allow:media.file.upload');
     });
 

@@ -74,6 +74,9 @@
                             <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.folder.edit',[$folder->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$folder->name}}">
                                 <i class="fa fa-fw fa-eraser"></i> {{trans('core::folder.rename')}}
                             </a>
+                            <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.folder.move', $folder->id)}}" data-select="{{route('media.folder.select',[$folder->parent_id])}}" data-title="{{$folder->name}}">
+                                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::folder.move')}}
+                            </a>                               
                             <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $folder->id)}}">
                                 <i class="fa fa-fw fa-times"></i> {{trans('core::master.delete')}}
                             </a>                        
@@ -91,8 +94,8 @@
                     </td>                
                     <td width="1%" class="text-center pr-2">
                         @if ($file->isImage())
-                            <a href="javascript:;" class="js-image" data-url="{{$file->getPreview()}}" data-title="{{$file->name}}">
-                                <div class="image"><img src="{{$file->getPreview(32,32)}}"></div>
+                            <a href="javascript:;" class="js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}">
+                                <div class="icon icon-32"><img src="{{$file->getPreview(32,32)}}"></div>
                             </a>
                         @else
                             <i class="fa {{$file->getIcon()}} fa-2x fa-fw text-warning"></i>
@@ -110,14 +113,14 @@
                     </td>
                     <td width="10%" class="manage manage-hover text-right">
                         @if ($file->isImage())
-                        <a href="javascript:;" class="manage-item js-image" data-url="{{$file->getPreview()}}" data-title="{{$file->name}}">
+                        <a href="javascript:;" class="manage-item js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}">
                             <i class="fa fa-eye fa-fw"></i> {{trans('media::file.view')}}
                         </a>
                         @endif                 
                         <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.file.edit',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
                             <i class="fa fa-fw fa-eraser"></i> {{trans('media::file.rename')}}
                         </a>
-                        <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.file.move', $file->id)}}" data-title="{{$file->name}}">
+                        <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.file.move', $file->id)}}" data-select="{{route('media.folder.select',[$file->folder_id])}}" data-title="{{$file->name}}">
                             <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
                         </a>                        
                         <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $file->id)}}">
@@ -155,8 +158,9 @@
         });
 
         $('.js-move').on('click',function(){
-            var title  = $(this).text();
-            var select = '{{route('media.folder.select')}}';
+            var title  = $(this).text() + $(this).data('title');
+            var move   = $(this).data('url');
+            var select = $(this).data('select');
             var $dialog = $.dialog({
                     title:title,
                     url:select,
@@ -164,7 +168,17 @@
                     height:400,
                     padding:'1rem',
                     ok:function() {
-                        alert(this.selected_folder_id);
+                        var folder_id = this.selected_folder_id;
+                        $.post(move, {folder_id:folder_id}, function(msg) {
+                            $.msg(msg);
+                            // 操作成功
+                            if ( msg.state && msg.url ) {
+                                $dialog.close().remove();
+                                location.href = msg.url;
+                                return true;
+                            }
+                            return false;
+                        })
                         return false;
                     },
                     cancel:$.noop,

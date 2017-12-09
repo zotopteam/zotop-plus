@@ -114,4 +114,31 @@ class FolderController extends AdminController
 
         return $this->view();
     }
+
+    /**
+     * 移动
+     *
+     * @return Response
+     */
+    public function move(Request $request, $id)
+    {
+        $folder_id = $request->input('folder_id');
+
+        $folder = Folder::findOrFail($id);
+
+        // 未移动
+        if ($folder->parent_id == $folder_id) {
+            return $this->error(trans('media::folder.move.unchange', [$folder->name]));
+        }
+
+        // 禁止移动到自身下面
+        if (in_array($folder_id, $folder->getChildIds(true))) {
+            return $this->error(trans('media::folder.move.forbidden', [$folder->name]));
+        }
+
+        $folder->parent_id = $folder_id;
+        $folder->save();
+
+        return $this->success(trans('core::master.operated'), $request->referer());        
+    }      
 }

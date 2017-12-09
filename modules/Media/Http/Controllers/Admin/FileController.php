@@ -16,7 +16,7 @@ class FileController extends AdminController
      */
     public function index()
     {
-        $this->title = trans('media::media.title');
+        $this->title = trans('media::file.title');
         return $this->view();
     }
 
@@ -38,7 +38,7 @@ class FileController extends AdminController
             return $this->success(trans('core::master.created'), $request->referer());       
         }
 
-        $this->title = trans('media::media.create');
+        $this->title = trans('media::file.create');
         $this->File = File::findOrNew(0);
 
         return $this->view();
@@ -61,7 +61,7 @@ class FileController extends AdminController
             return $this->success(trans('core::master.updated'), $request->referer());       
         }
 
-        $this->title = trans('media::media.edit');
+        $this->title = trans('media::file.edit');
         $this->id    = $id;
         $this->File = File::findOrFail($id);
 
@@ -80,4 +80,25 @@ class FileController extends AdminController
 
         return $this->success(trans('core::master.deleted'), $request->referer());        
     }
+
+    /**
+     * 移动
+     *
+     * @return Response
+     */
+    public function move(Request $request, $id)
+    {
+        $folder_id = $request->input('folder_id');
+
+        $file = File::findOrFail($id);
+
+        if ($file->folder_id == $folder_id) {
+            return $this->error(trans('media::file.move.unchange', [$file->name]));
+        }
+
+        $file->folder_id = $folder_id;
+        $file->save();
+
+        return $this->success(trans('core::master.operated'), $request->referer());        
+    }    
 }

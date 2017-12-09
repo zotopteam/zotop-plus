@@ -120,12 +120,37 @@ trait Nestable
         return (new static)->hashTable($id);
     }
 
+    /**
+     * 实例方法 getParentId
+     * 
+     * @return mixed
+     */
+    public function getParentId()
+    {
+        return $this->{$this->$parentColumn};
+    }
+
+    /**
+     * 获取父节点
+     * @param  mixed $id 节点编号
+     * @return mixed
+     */
     public static function parent($id)
     {
         $parentId = static::parentId($id);
         $primaryKey = ($instance = new static)->getKeyName();
         return $instance->where($primaryKey, $parentId)->first();      
     }
+
+    /**
+     * 实例方法 getParentId
+     * 
+     * @return mixed
+     */
+    public function getParent()
+    {
+        return static::parent($this->getKey());
+    }    
 
     /**
      * 获取节点的全部父编号 ancestors
@@ -155,6 +180,17 @@ trait Nestable
     }
 
     /**
+     * 实例方法 getParentId
+     * 
+     * @param  boolean $self      是否包含自身
+     * @return mixed
+     */
+    public function getParentIds($self=false)
+    {
+        return static::parentIds($this->getKey(), $self);
+    }   
+
+    /**
      * 获取全部的父级节点
      * 
      * @param  mixed  $id         编号
@@ -168,7 +204,19 @@ trait Nestable
         $primaryKey = ($instance = new static)->getKeyName();
 
         return $instance->whereIn($primaryKey, $parentIds)->get();
-    }       
+    }
+
+    /**
+     * 实例方法 getParents
+     * 
+     * @param  boolean $self      是否包含自身
+     * @return mixed
+     */
+    public function getParents($self=false)
+    {
+        return static::parents($this->getKey(), $self);
+    }
+
     /**
      * 获取节点的子节点编号
      * 
@@ -193,6 +241,16 @@ trait Nestable
 
         return $childId;        
     }
+
+    /**
+     * 实例方法 getChildId
+     * 
+     * @return mixed
+     */
+    public function getChildId()
+    {
+        return static::childId($this->getKey());
+    }    
 
     /**
      * 获取节点的全部子编号 descendants
@@ -224,6 +282,17 @@ trait Nestable
     }
 
     /**
+     * 实例方法 getChildIds
+     * 
+     * @param  boolean $self 是否包含自身
+     * @return mixed
+     */
+    public function getChildIds($self=false)
+    {
+        return static::childIds($this->getKey(), $self);
+    }        
+
+    /**
      * 获取节点的一级节点编号，如果本身就是一级节点，返回自身
      * 
      * @param  mixed  $id         编号
@@ -236,6 +305,16 @@ trait Nestable
 
         return reset($parentIds);
     }
+
+    /**
+     * 实例方法 getTopId
+     * 
+     * @return mixed
+     */
+    public function getTopId()
+    {
+        return static::topId($this->getKey());
+    }  
 
     /**
      * 获取顶级节点
@@ -251,4 +330,14 @@ trait Nestable
 
         return $instance->where($primaryKey, $topId)->first();
     }
+
+    /**
+     * 实例方法 getTop
+     * 
+     * @return mixed
+     */
+    public function getTop()
+    {
+        return static::top($this->getKey());
+    }     
 }
