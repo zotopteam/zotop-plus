@@ -4,6 +4,7 @@
 @include('media::media.side')
 <div class="main">
     <div class="main-header">
+         @if (empty($keywords))
         <div class="main-action mr-auto">
             <a href="{{route('media.file.upload')}}" class="btn btn-primary">
                 <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
@@ -13,18 +14,27 @@
                 <i class="fa fa-fw fa-folder"></i> {{trans('media::folder.create')}}
             </a>
         </div>
+        @else
+        <div class="main-back">
+            <a href="{{route('media.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+        </div>        
+        <div class="main-title mx-auto">
+            {{trans('core::master.searching', [$keywords])}}
+        </div>        
+        @endif
         <div class="main-action">
-            <form class="form-inline form-search">
-                <div class="input-group">   
-                    {field type="select" name="type" options="Module::data('media::type.options')"}
+            {form route="media.index" class="form-inline form-search" method="get"}
+                <div class="input-group">
+                    {{--{field type="select" name="type" options="Module::data('media::type.options')"}--}}
                     <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('core::master.search.placeholder')}}" required="required" aria-label="Search" style="min-width:12rem;">
                     <div class="input-group-btn">
                         <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
                     </div>
                 </div>
-            </form>
+            {/form}
         </div>        
     </div>
+    @if (empty($keywords))    
     <div class="main-header breadcrumb m-0">
         @if ($folder_id)
         <a href="{{route('media.index',[$folder->parent_id])}}" class="breadcrumb-item breadcrumb-extra">
@@ -36,11 +46,9 @@
         <a class="breadcrumb-item" href="{{route('media.index')}}">{{trans('media::media.root')}}</a>
         @foreach($parents as $p)
         <a class="breadcrumb-item" href="{{route('media.index', $p->id)}}">{{$p->name}}</a> 
-        @endforeach
-        @if ($keywords)
-            <span class="breadcrumb-item active">{{trans('core::master.searching', [$keywords])}}</span> 
-        @endif        
+        @endforeach      
     </div>
+    @endif
     <div class="main-body scrollable">
 
         {form route="media.index" method="post"}

@@ -23,18 +23,28 @@ class MediaController extends AdminController
         $this->keywords  = $request->input('keywords');
         $this->folder    = Folder::find($folder_id);
         $this->parents   = Folder::parents($folder_id, true);
-        $this->folders   = Folder::where('parent_id',$folder_id)->get();
 
-        $file = File::where('folder_id',$folder_id);
+        $folder = Folder::query();
+
+        if ($this->keywords) {
+            $folder->where('name', 'like', '%'.$this->keywords.'%');
+        } else {
+            $folder->where('parent_id', $folder_id);
+        }
+
+        $this->folders   = $folder->orderby('sort', 'desc')->orderby('created_at', 'desc')->get();         
+
+        $file = File::query();
+        
+        if ($this->keywords) {
+            $file->where('name', 'like', '%'.$this->keywords.'%');
+        } else {
+            $file->where('folder_id',$folder_id);
+        }
 
         if ($this->type) {
             $file->where('type',$this->type);
         }
-
-        if ($this->keywords) {
-            $file->where('name', 'like', '%'.$this->keywords.'%');
-        }
-
 
         $this->files = $file->orderby('created_at', 'desc')->paginate(25);
 
