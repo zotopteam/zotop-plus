@@ -1,7 +1,6 @@
 <?php
 namespace Modules\Core\Support;
 
-use Filter;
 use Illuminate\Support\Carbon;
 
 class Format
@@ -77,7 +76,7 @@ class Format
      */
     public function isTimestamp($time)
     {
-        if (strtotime(date('Y-m-d H:i:s',$time)) === $time) {
+        if (is_string($time) && strtotime(date('Y-m-d H:i:s',$time)) === $time) {
             return true;
         }
         return false;
@@ -89,14 +88,15 @@ class Format
      * @param  mixed  $time 时间戳或者日期
      * @param  string $format 时间日期格式： [datetime | date | time | Y-m-d H:i][ human] ，带human则显示友好时间，datetime human | Y-m-d H:i human
      * @param  string $timezone 时区
+     * @param  int $inHuman 转换限定时间，单位秒，如：3600内的时间显示为友好时间
      * @return string
      */
-    public function date($time, $format='datetime human', $timezone=null)
+    public function date($time, $format='datetime human', $timezone=null, $inHuman=null)
     {
-        $timezone  = $timezone ?? config('app.timezone');              
-        $humanTime = config('app.human_time', 365*24*60*60); //human_time 秒前的转换
-        $isHuman   = false; 
-        $formats   = Filter::fire('date.formats', [
+        $timezone = $timezone ?? config('app.timezone');              
+        $inHuman  = $inHuman ?? config('app.time_human');
+        $isHuman  = false; 
+        $formats  = \Filter::fire('date.formats', [
             'date'     => config('app.date_format'),
             'time'     => config('app.time_format'),
             'datetime' => config('app.date_format').' '.config('app.time_format'),
@@ -122,7 +122,8 @@ class Format
                 $time = strtotime($time);
             }
 
-            if (time() > ($time + $humanTime)) {
+            // 是否在human转换范围内
+            if (time() > ($time + $inHuman)) {
                 $isHuman = false;
             }
 
@@ -132,7 +133,7 @@ class Format
                 return $time->diffForHumans();
             }
 
-            return $time->format($format);            
+            return $time->format($format);        
         }
 
         return null;

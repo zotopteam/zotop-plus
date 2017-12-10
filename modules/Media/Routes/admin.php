@@ -6,6 +6,7 @@ $router->group(['prefix' =>'media','module'=>'media'], function (Router $router)
     
     // 首页
     $router->get('index/{folder_id?}/{type?}', 'MediaController@index')->name('media.index')->middleware('allow:media.index');
+    $router->any('operate', 'MediaController@operate')->name('media.operate')->middleware('allow:media.operate');
 
     // 文件夹
     $router->group(['prefix' =>'folder'], function (Router $router) {

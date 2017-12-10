@@ -2,7 +2,8 @@
 
 return [
     'title'              => '文件管理',
-    'count'              => '文件个数：:0',
+    'count'              => '文件总数',
+    'space'              => '占用空间',
     'position'           => '位置：:0', 
     'create'             => '新建文件',
     'existed'            => '[ :0 ] 已经存在',
@@ -11,7 +12,7 @@ return [
     'view'               => '查看',
     'edit'               => '编辑',
     'editor'             => '编辑器',
-    'upload'             => '上传文件',
+    'upload'             => '上传',
     'delete'             => '删除',
     'rename'             => '重命名',
     'copy'               => '复制',

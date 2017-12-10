@@ -63,10 +63,12 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
 (function($) {
     // default
     $.selectTable = {options : {
-        item : 'tbody>tr',
-        ignore : '',
+        item      : 'tbody>tr',
+        ignore    : '',
         selectall : 'input.select-all',
-        oncheck : null
+        operator  : '.js-operate',
+        onCheck   : $.noop,
+        onChange  : $.noop
     }};
 
     function selectTable($table, options){
@@ -87,6 +89,7 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                     $(this).closest(options.item).toggleClass('selected', this.checked);
                 });
                 self.updateAll(($checkboxes.length === $checkboxes.filter(':checked').length));
+                self.onChange(); 
             },
             //select all or unselect all
             selectAll : function(state){
@@ -95,13 +98,24 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                     $(this).closest(options.item).toggleClass('selected', this.checked);
                 });
                 self.updateAll(state);
+                self.onChange();
             },
             // update selectall state
             updateAll : function(state){
                 $(options.selectall).each(function(){
                     this.checked = state;
                 });
-            }
+            },
+            onCheck : function() {
+
+            },
+            onChange : function() {
+                if ($checkboxes.filter(':checked').length > 0) {
+                    $(options.operator).removeClass('disabled');
+                } else {
+                    $(options.operator).addClass('disabled');
+                }
+            }            
         });
 
         // mouseover
@@ -117,9 +131,8 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
         $checkboxes.click(function(e){
             $(this).closest(options.item).toggleClass('selected', this.checked).toggleClass('mouseover', this.checked);
             self.updateAll(($checkboxes.length === $checkboxes.filter(':checked').length));
-            if( typeof (options.oncheck) == "function" ){
-                options.oncheck(this,$checkboxes,$tr);
-            }
+            self.onCheck();
+            self.onChange();
         });
 
         // select all
@@ -127,6 +140,8 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
             var state = $(e.target).is('input:checkbox') ? this.checked : $(this).attr('state');
             self.selectAll(state);
         });
+
+        self.onChange();
     }
 
     // jQuery plugin initialization

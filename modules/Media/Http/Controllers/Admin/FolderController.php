@@ -131,14 +131,12 @@ class FolderController extends AdminController
             return $this->error(trans('media::folder.move.unchange', [$folder->name]));
         }
 
-        // 禁止移动到自身下面
-        if (in_array($folder_id, $folder->getChildIds(true))) {
-            return $this->error(trans('media::folder.move.forbidden', [$folder->name]));
+        $folder->parent_id = $folder_id;
+        
+        if ($folder->save()) {
+            return $this->success(trans('core::master.operated'), $request->referer());
         }
 
-        $folder->parent_id = $folder_id;
-        $folder->save();
-
-        return $this->success(trans('core::master.operated'), $request->referer());        
+        return $this->error($folder->error);                
     }      
 }

@@ -2,6 +2,7 @@
 
 namespace Modules\Media\Models;
 
+use Format;
 use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
@@ -30,7 +31,7 @@ class File extends Model
             $temp = md5($path);
             $temp = substr($temp, 0, 2).'/'.substr($temp, 2, 2).'/'.$temp;
 
-            app('files')->deleteDirectory(public_path('temp/preview/'.$temp));
+            app('files')->deleteDirectory(public_path('previews/'.$temp));
             app('files')->delete($path);
         });
     }
@@ -74,6 +75,29 @@ class File extends Model
     public function getIcon()
     {
         return app('files')->icon($this->extension);
+    }
+
+    /**
+     * 获取格式化后的文件大小
+     * 
+     * @return string
+     */
+    public function getSize()
+    {
+        return Format::size($this->size);
+    }
+
+    /**
+     * 获取格式化后的时间
+     * 
+     * @return string
+     */
+    public function getCreatedAt($human = false)
+    {
+        if ($human) {
+            return Format::date($this->created_at, 'datetime human');
+        }
+        return Format::date($this->created_at, 'datetime');
     }
 
     /**

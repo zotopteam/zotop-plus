@@ -32,7 +32,7 @@ class MediaController extends AdminController
             $folder->where('parent_id', $folder_id);
         }
 
-        $this->folders   = $folder->orderby('sort', 'desc')->orderby('created_at', 'desc')->get();         
+        $this->folders   = $folder->orderby('sort', 'desc')->orderby('created_at', 'asc')->get();         
 
         $file = File::query();
         
@@ -59,10 +59,6 @@ class MediaController extends AdminController
      */
     public function operate(Request $request)
     {
-        $media = new Media;
-        $media->fill($request->all());
-        $media->save();
-
         return $this->success(trans('core::master.created'), $request->referer());
     }
 }

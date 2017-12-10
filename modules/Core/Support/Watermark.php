@@ -105,8 +105,14 @@ class Watermark
     {
         $image  = $this->image->make($source);
         $config = $this->config($image);
+        $target = $target ?? $source;
         
         if ($config['enabled'] && $image->width() > $config['width'] && $image->height() > $config['height']) {
+            
+            // 如果目录不存在，尝试创建
+            if (! $this->files->isDirectory($dir = dirname($target)) ) {
+                $this->files->makeDirectory($dir, 0775, true);
+            }
 
             // 图片水印
             if ($config['type'] == 'image' && $watermark = $config['image']) {
@@ -129,7 +135,7 @@ class Watermark
                 }); 
             }
 
-            return $image->save($target ?? $source, $config['quality']);
+            return $image->save($target, $config['quality']);
         }
 
         return null;

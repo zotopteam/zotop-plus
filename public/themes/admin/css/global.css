@@ -88,6 +88,8 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .dropdown-menu.dropdown-caret:before{border-bottom:7px solid rgba(0, 0, 0, 0.2); border-left:7px solid transparent; border-right:7px solid transparent; content:""; display:inline-block; left:9px; position:absolute; top:-7px;}
 .dropdown-menu.dropdown-caret:after{border-bottom:6px solid #FFFFFF; border-left:6px solid transparent; border-right:6px solid transparent; content:""; display:inline-block; left:10px; position:absolute; top:-6px;}
 .dropdown-toggle::after{margin-bottom:-0.1rem;}
+.dropdown-toggle-icon{padding-right:.5rem;text-align:center!important;}
+.dropdown-toggle-icon:after{border:0 none!important;margin:0!important;}
 
 /*text*/
 .text-primary,.text-pending{color:#0072c6!important;}
@@ -100,6 +102,9 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .text-overflow-3{white-space:normal;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
 .text-overflow-4{white-space:normal;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;}
 .text-overflow-5{white-space:normal;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;}
+
+.text-wrap{white-space:normal;word-wrap:break-word;word-break:break-all;}
+.text-nowrap{white-space:nowrap;}
 
 .text-xs{font-size:0.75rem!important;}
 .text-sm{font-size:0.875rem!important;}
@@ -377,11 +382,12 @@ textarea{resize:none;}
 .main-body.scroll,.main-body.scrollable{flex:1;}
 
 .main-footer{display:flex;z-index:100;border-top:1px solid #efefef;background:#fff;padding:0.5rem 0.75rem;}
-.main-footer .select-all{margin:0.20.25rem;vertical-align:middle;}
+.main-footer .select-all{margin:0.20rem .25rem;vertical-align:middle;}
+.main-footer .btn{line-height:1;}
 .main-footer .footer-text{white-space:nowrap;display:inline-block;padding:0.425rem;}
 .main-footer .pagination{margin-bottom:0;}
 .main-footer .pagination>li>a, .main-footer .pagination>li>span{border:0 none;border-radius:0.25rem!important;}
-.main-footer .pagination .page-link{margin-left:1px;}
+.main-footer .pagination .page-link{margin-left:1px;line-height:1;}
 
 .side + .main{margin-left:16rem;}
 

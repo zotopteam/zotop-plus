@@ -6,7 +6,7 @@
         <div class="tree clearfix" id="tree" style="width:100%;overflow:hidden;">     
         </div>
         <div class="divider"></div>      
-        <ul class="nav nav-pills nav-side">
+        <ul class="nav nav-pills nav-side d-none">
             @foreach(Module::data('media::media.navbar') as $n)
             <li class="nav-item">
                 <a class="nav-link {{$n['class'] or ''}} {{$n['active'] or ''}}" href="{{$n['href']}}">
@@ -15,7 +15,14 @@
             </li>
             @endforeach                    
         </ul>
-
+    </div>
+    <div class="side-footer justify-content-between align-items-center">
+        {{trans('media::file.count')}}
+        <span class="badge badge-primary badge-pill">0</span>
+    </div>
+    <div class="side-footer justify-content-between align-items-center">
+        {{trans('media::file.space')}}
+        <span class="badge badge-primary badge-pill">0.00KB</span>
     </div>
 </div>
 @push('css')

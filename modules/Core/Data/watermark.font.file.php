@@ -1,16 +1,22 @@
 <?php
 use Intervention\Image\ImageManagerStatic as Image;
 
-$fs = app('files');
+$fs    = app('files');
 $path  = resource_path('fonts');
 $files = $fs->files($path);
 $fonts = [];
 
+// 如果字体预览目录不存在，尝试创建
+if (! $fs->isDirectory($dir = public_path('previews/fonts')) ) {
+    $fs->makeDirectory($dir, 0775, true);
+}
+
+// 生成字体预览图
 foreach ($files as $file) {
     $path = path_base($file);
     $name = app('files')->name($file);
 
-    $preview = 'temp/preview/font-'.md5($name).'.jpg';
+    $preview = 'previews/fonts/'.md5($name).'.jpg';
     if (!$fs->exists(public_path($preview))) {
         $width = 120;
         $height = 40;
@@ -27,4 +33,5 @@ foreach ($files as $file) {
     }
     $fonts[$path] = [url($preview), '', $name];
 }
+
 return $fonts;

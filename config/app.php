@@ -209,8 +209,9 @@ return [
 
     'date_format' => env('APP_DATE_FORMAT', 'Y-m-d'),
 
-
     'time_format' => env('APP_TIME_FORMAT', 'H:i'),
+
+    'time_human' => env('APP_TIME_HUMAN', 365*24*60*60),
     /*
     |--------------------------------------------------------------------------
     | Encryption Key

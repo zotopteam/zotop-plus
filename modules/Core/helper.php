@@ -103,7 +103,7 @@ if (! function_exists('preview')) {
 
         $temp = md5($path);
         $temp = substr($temp, 0, 2).'/'.substr($temp, 2, 2).'/'.$temp;
-        $temp = 'temp/preview/'.$temp.'/'.$width.'-'.$height.'.'.File::extension($path);
+        $temp = 'previews/'.$temp.'/'.$width.'-'.$height.'.'.File::extension($path);
         $file = public_path($temp);
 
         // 预览图片不存在，或者原图片被修改

@@ -69,7 +69,7 @@ class ConfigController extends AdminController
             $config = $request->input('image.watermark');
             $config = $config + ['enabled'=>0]; 
             $source = resource_path('watermark/test.jpg');
-            $target = 'temp/preview/watermark_test.jpg';
+            $target = 'previews/watermarks/test.jpg';
 
             if ((new Watermark)->with($config)->apply($source, public_path($target))) {
                 return $this->success(url($target).'?token='.str_random(20));
