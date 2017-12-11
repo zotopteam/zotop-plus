@@ -72,6 +72,22 @@
 });
 
 /**
+ * 扩展File::type方法, 获取文件的类型  
+ */
+\File::macro('humanType', function($file) {
+    $extension  = strpos($file, '.') ? static::extension($file) : trim($file, '.');
+    $humanTypes = config('core.upload.types');
+    foreach ($humanTypes as $type => $info) {
+        $extensions = explode(',', strtolower($info['extensions']));
+
+        if (in_array($extension, $extensions)) {
+            return $type;
+        }
+    }
+    return null;
+});
+
+/**
  * 扩展File::icon方法, 获取文件图标  
  */
 \File::macro('icon', function($file) {
@@ -83,6 +99,21 @@
     return 'fa-file';
 });
 
+/**
+ * 扩展上传的获取文件名，解决extention和guessExtention有时候无法获取或者获取不正确问题
+ */
+\Illuminate\Http\UploadedFile::macro('getClientExtention',function() {
+    return \File::extension($this->getClientOriginalName());
+});
+
+/**
+ * 扩展上传的获取文件类型，依据系统可上传的类型判断
+ */
+\Illuminate\Http\UploadedFile::macro('getHumanType',function() {
+    $extension = $this->getClientExtention();
+
+    return \File::humanType($extension);
+});
 
 /**
  * 单图片上传
@@ -137,12 +168,13 @@
     // 选项
     $options = $this->getAttribute($attrs, 'options',  [
         'url'              => $url,
+        'chunk_size'       => config('core.upload.chunk_size', '2mb'),
+        'multipart_params' => $params,
         'filters'          => [
             'max_file_size'      => $maxsize.'mb',
             'mime_types'         => [['title'=>$select, 'extensions'=>$allow]],
             'prevent_duplicates' => true,
-        ],           
-        'multipart_params' => $params,
+        ] 
     ]);
 
     // 高级上传及工具

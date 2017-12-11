@@ -2,6 +2,7 @@
 namespace Modules\Media\Hook;
 
 use Route;
+use Auth;
 use Modules\Media\Models\Folder;
 use Modules\Media\Models\File;
 
@@ -57,6 +58,9 @@ class Listener
                 $fileinfo['height'] = $imageinfo[1];
             }
         }
+
+        // 完善数据
+        $fileinfo['user_id']    = Auth::user()->id;
 
         // 保存文件信息
         File::create($fileinfo);

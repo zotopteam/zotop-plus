@@ -165,16 +165,24 @@ class FileController extends AdminController
      * 
      * @return [type] [description]
      */
-    public function upload(Request $request, $type)
+    public function upload(Request $request, $type=null)
     {
         // 获得multipart_params传过来的数据
         $params = $request->all();
 
         return Plupload::receive('file', function ($tempfile) use($type, $params) {
 
-            $basepath = '/uploads/'.$type.'/'.date('Y/m/d',time()).'/';         
-            $savepath = public_path($basepath);
-            $filename = date('YmdHisu', time()).rand(1000,9999).'.'.File::extension($tempfile->getClientOriginalName());
+            // 开启了plupload.unique_names，防止中文文件名导致的乱码
+            // 此处无法得到真实文件名，真实文件名通过 $params['filename']传递
+            $extension = $tempfile->getClientExtention();
+
+            //如果没传入文件类型，则获取，TODO:获取不到或者类型禁止未开启上传应该禁止上传
+            $type      = $type ?? $tempfile->getHumanType() ?? 'othor';
+
+            // 文件上传信息
+            $basepath  = '/uploads/'.$type.'/'.date('Y/m/d',time()).'/';         
+            $savepath  = public_path($basepath);
+            $filename  = date('YmdHisu', time()).rand(1000,9999).'.'.$extension;
 
             // 如果目录不存在，尝试创建目录
             if (! File::exists($savepath)) {
