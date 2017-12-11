@@ -72,14 +72,13 @@
 });
 
 /**
- * 扩展File::type方法, 获取文件的类型  
+ * 扩展File::humanType方法, 获取文件的类型，依据系统可上传的类型判断
  */
 \File::macro('humanType', function($file) {
     $extension  = strpos($file, '.') ? static::extension($file) : trim($file, '.');
     $humanTypes = config('core.upload.types');
     foreach ($humanTypes as $type => $info) {
         $extensions = explode(',', strtolower($info['extensions']));
-
         if (in_array($extension, $extensions)) {
             return $type;
         }

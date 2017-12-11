@@ -30,7 +30,7 @@
         </div>        
         @endif
         <div class="main-action">
-            {form route="media.operate" class="form-inline form-search" method="get"}
+            {form route="media.index" class="form-inline form-search" method="get"}
                 <div class="input-group">
                     {{--{field type="select" name="type" options="Module::data('media::type.options')"}--}}
                     <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('media::media.search.placeholder')}}" required="required" aria-label="Search">
