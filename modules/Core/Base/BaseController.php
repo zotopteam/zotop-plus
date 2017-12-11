@@ -280,16 +280,14 @@ class BaseController extends Controller
      */
     public function success($msg, $url='', $time=2)
     {
-        $msg = is_array($msg) ? $msg : ['content'=>$msg];
-
-        $msg = array_merge($msg, [
-            'state' => true,
-            'type'  => 'success',
-            'url'   => $url,
-            'time'  => $time
+        return $this->message([
+            'state'   => true,
+            'type'    => 'success',
+            'icon'    => 'fa fa-check-circle',
+            'content' => $msg,
+            'url'     => $url,
+            'time'    => $time
         ]);
-
-        return $this->message($msg);
     }
 
 
@@ -302,14 +300,12 @@ class BaseController extends Controller
      */
     public function error($msg, $time=5)
     {
-        $msg = is_array($msg) ? $msg : ['content'=>$msg];
-
-        $msg = array_merge($msg, [
-            'state' => false,
-            'type'  => 'error',
-            'time'  => $time
+        return $this->message([
+            'state'   => false,
+            'type'    => 'error',
+            'icon'    => 'fa fa-times-circle',
+            'content' => $msg,
+            'time'    => $time
         ]);
-
-        return $this->message($msg);
     }
 }

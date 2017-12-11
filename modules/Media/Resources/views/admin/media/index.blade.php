@@ -75,7 +75,7 @@
             @foreach($folders as $folder)
                 <tr class="folder-item" data-url="{{route('media.index', $folder->id)}}">
                     <td class="select">
-                        <input type="checkbox" name="folder_id[]" value="{{$folder->id}}" data-type="folder" class="select">
+                        <input type="checkbox" name="folder_ids[]" value="{{$folder->id}}" data-type="folder" class="select">
                     </td>
                     <td width="1%" class="text-center pr-2">
                         <i class="fa fa-fw fa-2x fa-folder text-warning"></i>
@@ -105,7 +105,7 @@
             @foreach($files as $file)
                 <tr>
                     <td class="select">
-                        <input type="checkbox" name="file_id[]" value="{{$file->id}}" data-type="file" class="select">
+                        <input type="checkbox" name="file_ids[]" value="{{$file->id}}" data-type="file" class="select">
                     </td>                
                     <td width="1%" class="text-center pr-2">
                         @if ($file->isImage())
@@ -172,7 +172,7 @@
             <button type="button" class="btn btn-success js-operate" data-operate="move" data-select="{{route('media.folder.select',[$folder_id])}}">
                 <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
             </button>
-            <button type="button" class="btn btn-danger js-operate" data-operate="delete">
+            <button type="button" class="btn btn-danger js-operate" data-operate="delete" data-confirm="{{trans('core::master.delete.confirm')}}">
                 <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
             </button>
         </div>    
@@ -184,7 +184,7 @@
 
 @push('js')
 <script type="text/javascript">
-
+    
     // move dialog
     function movedata(title, select, callback) {
         $.dialog({
@@ -211,7 +211,7 @@
             $.msg(msg);
             // 操作成功
             if (msg.state) callback(); 
-            if (msg.url)  location.href = msg.url;
+            //if (msg.url)  location.href = msg.url;
         });
     }
 
@@ -262,18 +262,19 @@
                 var form    = $('form.form-datalist');
                 var action  = form.attr('action');
                 var data    = form.serializeArray();
-                    data.push({operate:operate});       
+                    data.push({name:"operate", value:operate});
                 
                 if (operate == 'move') {
                     movedata(title, $(this).data('select'), function(dialog) {
-                        data.push({folder_id:dialog.selected_folder_id});
-                        postdata(action, $.param(data), function(){
+                        data.push({name:"move_folder_id", value:dialog.selected_folder_id});
+                        postdata(action, $.param(data), function() {
                             dialog.close().remove();
                         });
                     })
                 } else if(operate == 'delete') {
-                    // confirm
-                    postdata(action, $.param(data), $.noop);
+                    $.confirm($(this).data('confirm'), function(){
+                        postdata(action, $.param(data), $.noop);
+                    })
                 } else {
                     postdata(action, $.param(data), $.noop);
                 }

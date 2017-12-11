@@ -33,6 +33,7 @@ return [
     'deleting'             => '删除中……',    
     'deleted'              => '删除成功',
     'delete.failed'        => '删除失败',
+    'delete.confirm'       => '确认要删除嘛？',
     'status'               => '状态',
     'enable'               => '启用',
     'enabled'              => '已启用',

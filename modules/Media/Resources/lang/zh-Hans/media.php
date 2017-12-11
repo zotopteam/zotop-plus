@@ -15,4 +15,5 @@ return [
     'select.folder'      => '选择全部文件夹',
     'select.file'        => '选择全部文件',
     'select.type'        => '选择 :0',
+    'operate.result'     => '操作成功 :0, 操作失败：:1',
 ];

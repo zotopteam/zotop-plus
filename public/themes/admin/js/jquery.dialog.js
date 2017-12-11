@@ -205,26 +205,35 @@
 	 * @param   {Json}     (可选) 参数
 	 * @param   {Bool}     (可选) 缓存内容
 	 */
-	$.msg = function(msg){
+	$.msg = function(msg) {
 		//console.log(msg);	
 			
-		if( $.dialog('message') ){
+		if ($.dialog('message')) {
 			$.dialog('message').close().remove();
 		} 
-		
-		if( typeof(msg.state) == 'boolean' ){
-			msg.state = msg.state ? 'success' : 'error';
-		} 
+
+		if (typeof(msg.content) == 'object') {
+			msg.content = msg.content.length > 1 ? '<ul><li>' + msg.content.join('</li><li>') + '</li></ul>' : msg.content.join('');
+		}
+
+		if (msg.type) {
+			msg.skin = msg.skin + ' ui-message-'+ msg.type;
+		}
+
+		msg.icon = msg.icon || 'fa fa-info-circle';
 
 		var options = {
 			id      : 'message',
-			skin    : 'ui-message ui-message-' + msg.state,
+			skin    : 'ui-message ' + msg.skin,
 			title   : false,
-			content : '<b class="msg-icon"></b><div class="msg-content">'+ msg.content +'</div><a href="javascript:;" class="close" i="close">&#215;</a>',
+			content : '	<b class="msg-icon"><i class="'+ msg.icon +'"></i></b>' +
+						'<div class="msg-content">'+ msg.content +'</div>'+
+						'<a href="javascript:;" class="close" i="close">&#215;</a>'+
+						'',
 			padding : 0,
 			fixed   : true,
 			resize  : false,
-			onclose : function(){
+			onclose : function() {
 				if( msg.url ) parent.location.href = msg.url;
 				if( msg.onclose ) msg.onclose();
 			}
@@ -232,8 +241,10 @@
 
 		var dialog = $.dialog(options);
 
-		if( msg.time > 0 ){
-			setTimeout(function(){dialog.close().remove();}, msg.time*1000);
+		if(msg.time > 0) {
+			setTimeout(function(){
+				dialog.close().remove();
+			}, msg.time*1000);
 		}
 
 		return dialog;
@@ -244,7 +255,7 @@
 	 *
 	 */
 	$.loading = function(content){
-		return $.msg({state: 'loading',	time: 100000, content: content || dialog.defaults.loadingText});
+		return $.msg({type: 'loading', icon:'fa fa-spinner fa-spin', time: 100000, content: content || dialog.defaults.loadingText});
 	}
 
 	/**
@@ -252,7 +263,7 @@
 	 *
 	 */
 	$.success = function(content, onclose, time){
-		return $.msg({state: 'success',	time: time||2, content: content, onclose: onclose});
+		return $.msg({type: 'success', icon:'fa fa-check-circle', time: time||2, content: content, onclose: onclose});
 	}
 
 	/**
@@ -260,7 +271,7 @@
 	 *
 	 */
 	$.error = function(content, onclose, time){
-		return $.msg({state: 'error', time: time||3, content: content, onclose: onclose});
+		return $.msg({type: 'error', icon:'fa fa-times-circle', time: time||3, content: content, onclose: onclose});
 	}
 
 	/**
@@ -277,7 +288,7 @@
 			id      : 'Prompt',
 			skin    : 'ui-prompt',
 			fixed   : true,
-			padding :'30px 50px',
+			padding : 0,
 			title   : dialog.defaults.promptText,
 			content : function(){
 
@@ -288,7 +299,7 @@
 					field = '<textarea class="form-control" rows="5">'+ ( value || '') +'</textarea>';
 				}
 
-				return '<div class="prompt-text">'+ prompt +'</div><div class="prompt-field">'+field+'</div>';
+				return '<div class="prompt-content"><div class="prompt-text">'+ prompt +'</div><div class="prompt-field">'+field+'</div></div>';
 			},
 			onshow: function () {
 				input = this._$('content').find('.form-control')[0];
@@ -323,9 +334,9 @@
 			id      : 'Confirm',
 			skin    : 'ui-confirm',
 			fixed   : true,
-			padding :'30px 80px',
+			padding : 0,
 			title   : dialog.defaults.confirmText,
-			content : '<b class="msg-icon fa fa-question-circle"></b><div class="msg-content">'+content+'</div>',
+			content : '<div class="msg-icon"><i class="fa fa-question-circle"></i></div><div class="msg-content">'+content+'</div>',
 			ok      : ok,
 			cancel  : cancel || $.noop
 		},true);
@@ -341,9 +352,9 @@
 			id      : 'Alert',
 			skin    : 'ui-alert',
 			fixed   : true,
-			padding :'30px 80px',
+			padding : 0,
 			title   : dialog.defaults.alertText,
-			content : '<b class="msg-icon fa fa-warning"></b><div class="msg-content">'+content+'</div>',
+			content : '<div class="msg-icon"><i class="fa fa-exclamation-triangle"></i></div><div class="msg-content">'+content+'</div>',
 			ok      : true,
 			onclose : callback
 		});

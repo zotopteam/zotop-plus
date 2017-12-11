@@ -5,25 +5,16 @@
     <div class="side-body scrollable">
         <div class="tree clearfix" id="tree" style="width:100%;overflow:hidden;">     
         </div>
-        <div class="divider"></div>      
-        <ul class="nav nav-pills nav-side d-none">
-            @foreach(Module::data('media::media.navbar') as $n)
-            <li class="nav-item">
-                <a class="nav-link {{$n['class'] or ''}} {{$n['active'] or ''}}" href="{{$n['href']}}">
-                    <i class="nav-icon {{$n['icon'] or ''}}"></i> <span class="nav-text">{{$n['text']}}</span>
-                </a>               
-            </li>
-            @endforeach                    
-        </ul>
     </div>
+    <div class="divider m-0"></div>
+    @foreach(Module::data('media::info') as $i)
     <div class="side-footer justify-content-between align-items-center">
-        {{trans('media::file.count')}}
-        <span class="badge badge-primary badge-pill">0</span>
+        {{$i['title']}}
+        @if(isset($i['badge']))
+        <span class="badge {{$i['badge_class'] or 'badge-primary'}} badge-pill">{{$i['badge']}}</span>
+        @endif
     </div>
-    <div class="side-footer justify-content-between align-items-center">
-        {{trans('media::file.space')}}
-        <span class="badge badge-primary badge-pill">0.00KB</span>
-    </div>
+    @endforeach
 </div>
 @push('css')
 <link rel="stylesheet" href="{{theme::asset('vendor/fancytree/skin-zotop/ui.fancytree.css')}}" rel="stylesheet">
@@ -35,7 +26,7 @@ $(function(){
     // Initialize Fancytree
     $("#tree").fancytree({
         extensions: ["glyph","wide"],
-        source: {!! json_encode(Module::data('media::media.tree')) !!},
+        source: {!! json_encode(Module::data('media::tree')) !!},
         //minExpandLevel: 2,
         checkbox: false,
         selectMode: 3,
@@ -68,8 +59,9 @@ $(function(){
             }
         }        
     })
-
-    $("#tree").fancytree("getTree").activateKey('{{$folder_id}}').setExpanded(true);
+    @if(Route::is('media.index'))
+    $("#tree").fancytree("getTree").activateKey('{{$folder_id or 0}}').setExpanded(true);
+    @endif
 });
 </script>
 @endpush
