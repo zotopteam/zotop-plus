@@ -15,6 +15,11 @@
 \Filter::listen('global.tools', 'Modules\Core\Hook\Listener@tools');
 
 /**
+ * 文件上传
+ */
+\Filter::listen('core.file.upload', 'Modules\Core\Hook\Listener@upload');
+
+/**
  * 扩展 Request::referer 功能，暂时等于 URL::previous()
  */
 \Request::macro('referer', function() {
@@ -89,11 +94,13 @@
 /**
  * 扩展File::icon方法, 获取文件图标  
  */
-\File::macro('icon', function($file) {
-    $extension = strpos($file, '.') ? static::extension($file) : trim($file, '.');
+\File::macro('icon', function(...$file) {
     $icon = \Module::data('core::file.icon');
-    if (isset($icon[$extension])) {
-        return $icon[$extension];
+    foreach(func_get_args() as $file) {
+        $extension = strpos($file, '.') ? static::extension($file) : trim($file, '.');
+        if (isset($icon[$extension])) {
+            return $icon[$extension];
+        }
     }
     return 'fa-file';
 });
@@ -205,7 +212,7 @@
         'preview'  => $this->getAttribute($attrs, 'preview', 'image')
     ];
 
-    // 压缩设置
+    // 获取系统设置的默认压缩设置
     $resize = config('core.image.resize.enabled', true) ? [
         'width'   => config('core.image.resize.width', 1920),
         'height'  => config('core.image.resize.height', 1920),
@@ -213,6 +220,10 @@
         'crop'    => config('core.image.resize.crop',  false)
     ] : [];
 
+    // 获取标签设置的resize
+    // 1：如果未设置，则读取系统默认，传递给后端处理
+    // 2：如果是数组（包含空数组），合并默认设置，传递给后端处理
+    // 3：设置为true或者false，传递给后端进行处理
     $resize = $this->getAttribute($attrs, 'resize', $resize);
 
     // 水印设置

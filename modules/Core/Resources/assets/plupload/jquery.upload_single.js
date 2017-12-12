@@ -40,13 +40,14 @@
 		        uploaded : function(up, file, response){
 
 		            // 单个文件上传完成 返回信息在 response 中
-		            if ( response.result.status )
-		            {
+		            if (response.result.state) {
 		            	input.val(response.result.url);
+		            } else {
+		            	$.error(response.result.content);
 		            }
-		            
+
 		        },
-		        complete : function(up,files){
+		        complete : function(up, files){
 		            // 全部上传完成
 		            progress.addClass('d-none')
 		            progress.find('.progress-bar').html('');

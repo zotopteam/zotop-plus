@@ -120,7 +120,7 @@ jquery upload api
 		h = plupload.parseInt(h);
 		q = plupload.parseInt(q, 90);
 
-		if ( r && w && h ){
+		if (r && w && h) {
 			c = ( r == 2 ) ? true : false;
 			return {width:w, height:h, quality:q, crop : c}
 		}
@@ -141,8 +141,7 @@ jquery upload api
 
     //返回uploader对象
     $.fn.plupload = function(options) {
-        if (options){
-
+        if (options) {
             $(this)._upload(options);
         }
         return $(this)._upload();
@@ -162,9 +161,10 @@ jquery upload api
             autostart : true,
 			maxcount : 100,
 			headers: {
-		        'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+				//'X-Requested-With' : 'XMLHttpRequest'
+		        'X-CSRF-TOKEN'     : $('meta[name="csrf_token"]').attr('content')
 		    },			
-			error : function(error,detail){
+			error : function(error, detail){
 				alert(error +' '+ detail);
 			}
 		}
@@ -177,13 +177,13 @@ jquery upload api
 		options.silverlight_xap_url = options.silverlight_xap_url || options.basepath + 'Moxie.xap';
 
 		// 生成实例
-		return $(this).each(function(){
+		return $(this).each(function() {
 
 			var $this = $(this);
 			var id = $this.attr('id');
 
 			// 给容器赋予id
-			if(!id){
+			if(!id) {
 				id = plupload.guid();
 				$this.attr('id', id);
 			}
@@ -192,10 +192,9 @@ jquery upload api
 			options.browse_button = id;
 
 			// 设置默认拖拽上传区域，如果不存在，则将按钮本身设为拖拽区域
-			options.drop_element = id + "-dragdrop";
+			options.drop_element = options.drop_element || id + "-dragdrop";
 
-			if ( options.dragdrop && $('#'+options.drop_element).length == 0 )
-			{
+			if ( options.dragdrop && $('#'+options.drop_element).length == 0 ) {
 				options.drop_element = id;
 			}
 
@@ -208,17 +207,13 @@ jquery upload api
 				uploader.content = $this.html();
 
 				//设置附加属性
-				uploader.params = function(key,val){
+				uploader.params = function(key,val) {
 					if( val === undefined ){
 						return uploader.settings.multipart_params[key];
 					}else{
 						return uploader.settings.multipart_params[key] = val;
 					}
-				}
-
-				//默认为AJAX模式
-				uploader.params('IS_AJAX',true);
-				
+				}			
 
 			// 存储对象
 			plupload.uploaders[id] = uploader;
@@ -233,15 +228,13 @@ jquery upload api
 
 			//初始化
 			uploader.bind('Init', function(up, res) {
-
-				//zotop.debug(up);
-
+				//console.log(up);
 			});
 
 			uploader.bind("PostInit", function(up) {
 
 				// 拖放区域设置
-				console.log(up.settings.drop_element);
+				// console.log(up.settings.drop_element);
 				if ( up.features.dragdrop && up.settings.drop_element ){
 					$(up.settings.drop_element).on('dragover',function(){
 						$(this).addClass('upload-dragover');
@@ -379,13 +372,10 @@ jquery upload api
 
 				var data = plupload.parseJSON(info.response);
 
-			    if (typeof console != 'undefined'){
-			        console.log(data);
-			    }
+				console.log(data);
 			    
 				//每个上传成功都会调用该函数
 				typeof options.uploaded == 'function' && options.uploaded(up,file,data);
-
 			});
 
 			// Set file specific progress

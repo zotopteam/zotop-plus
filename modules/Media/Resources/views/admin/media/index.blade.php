@@ -14,7 +14,7 @@
         <div class="main-title mr-auto">{{trans('media::media.root')}}</div>
         @endif
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary file-upload" data-url="{{route('core.file.upload')}}">
+            <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
                 <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
             </a>
             <a href="javascript:;" class="btn btn-outline-primary js-prompt" data-url="{{route('media.folder.create',[$folder_id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name">
@@ -41,6 +41,9 @@
             {/form}
         </div>        
     </div>
+    <div class="main-header progress p-0 rounded-0 d-none">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>        
+    </div>
     @if (empty($keywords))    
     <div class="main-header breadcrumb m-0">
         @if ($folder_id)
@@ -56,7 +59,7 @@
         @endforeach      
     </div>
     @endif
-    <div class="main-body scrollable">
+    <div class="main-body scrollable" id="file-upload-dragdrop">
 
         {form route="media.operate" class="form-datalist" method="post"}
         <table class="table table-nowrap table-hover table-select">
@@ -192,6 +195,7 @@
         var self = $(this);
         var url = self.data('url');
         var progress = $('.progress');
+        var success = 0;
         var options = {
                 url : url,
                 autostart : true, //自动开始
@@ -205,7 +209,7 @@
                     'token'      : '{{Auth::user()->token}}'
                 },
                 filters: {
-                    max_file_size:'20mb',
+                    //max_file_size:'20mb',
                     mime_types : [
                         { title : "select files", extensions : "*"},
                     ],
@@ -215,11 +219,23 @@
                     progress.removeClass('d-none');
                     progress.find('.progress-bar').width(up.total.percent+'%').html(up.total.percent+'%');
                 },
-                complete : function(up,files){
+                uploaded : function(up, file, response){
+                    // 单个文件上传完成 返回信息在 response 中
+                    if (response.result.state) {
+                        $.success(response.result.content);
+                        success ++;
+                    } else {
+                        $.error(response.result.content);
+                    }
+                },                
+                complete : function(up, files){
                     // 全部上传完成
                     progress.addClass('d-none')
                     progress.find('.progress-bar').html('');
-                    location.reload();
+
+                    if (success > 0) {
+                        location.reload();
+                    }
                 },
                 error : function(error,detail){
                     $.error(detail);

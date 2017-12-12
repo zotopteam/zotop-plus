@@ -74,10 +74,7 @@ class File extends Model
      */
     public function getIcon()
     {
-        if ($icon = app('files')->icon($this->extension)) {
-            return $icon;
-        }
-        return app('files')->icon($this->type);
+        return app('files')->icon($this->extension, $this->type);
     }
 
     /**

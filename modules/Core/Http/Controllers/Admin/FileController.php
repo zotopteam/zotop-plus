@@ -170,14 +170,18 @@ class FileController extends AdminController
         // 获得multipart_params传过来的数据
         $params = $request->all();
 
-        return Plupload::receive('file', function ($tempfile) use($type, $params) {
+        return Plupload::receive('file', function ($tempFile) use($type, $params) {
 
             // 开启了plupload.unique_names，防止中文文件名导致的乱码
             // 此处无法得到真实文件名，真实文件名通过 $params['filename']传递
-            $extension = $tempfile->getClientExtention();
+            $extension = $tempFile->getClientExtention();
 
             //如果没传入文件类型，则获取，TODO:获取不到或者类型禁止未开启上传应该禁止上传
-            $type      = $type ?? $tempfile->getHumanType() ?? 'othor';
+            $type      = $type ?? $tempFile->getHumanType();
+
+            if (empty($type)) {
+                return ['state'=>false, 'content'=>trans('core::file.upload.error.type', [$params['filename']])];
+            }
 
             // 文件上传信息
             $basepath  = '/uploads/'.$type.'/'.date('Y/m/d',time()).'/';         
@@ -190,19 +194,23 @@ class FileController extends AdminController
             }
 
             // 移动文件
-            $file = $tempfile->move($savepath, $filename);
+            $splFile = $tempFile->move($savepath, $filename);
 
-            // 返回处理结果
-            return Filter::fire('core.file.upload', [
-                'status'    => true,
+            $return = [
+                'state'     => true,
+                'content'   => trans('core::file.upload.success', [$params['filename']]),
                 'name'      => $params['filename'],
                 'type'      => $type,
-                'mimetype'  => $file->getMimeType(),
-                'extension' => $file->getExtension(),
-                'size'      => $file->getSize(),
+                'hash'      => md5_file($splFile->getRealPath()),
+                'mimetype'  => $splFile->getMimeType(),
+                'extension' => $splFile->getExtension(),
+                'size'      => $splFile->getSize(),
                 'path'      => $basepath.$filename,
                 'url'       => $basepath.$filename,
-            ], $file, $params);
+            ];
+
+            // 返回处理结果
+            return Filter::fire('core.file.upload', $return, $splFile, $params);
         });
     }     
 }

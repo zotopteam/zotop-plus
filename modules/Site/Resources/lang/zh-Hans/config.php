@@ -22,7 +22,7 @@ return [
     'logo.help'              => '网站logo图片，推荐使用PNG格式图片',  
     
     'favicon.label'          => '网站Favicon',
-    'favicon.help'           => '收藏夹和浏览器地址栏左侧显示的小图标，宽高：16px*16px或32px*32px，格式：ico或png',  
+    'favicon.help'           => '收藏夹和浏览器地址栏左侧显示的小图标，宽高：16px*16px或32px*32px，格式：png',  
     
     
     'seo'                    => '搜索优化',

@@ -36,35 +36,32 @@ class Listener
 
         return $navbar;
     }
+
     /**
      * 监听上传
-     * 
-     * @return array info
+     * @param  array $return  返回给前端的文件信息
+     * @param  object $splFile 文件
+     * @param  array $params  参数
+     * @return array
      */
-    public function upload($info, $file = null, $params = [])
+    public function upload($return, $splFile, $params)
     {
-        $fileinfo = array_merge($params, $info);
+        if ($return['state']) {       
+            
+            // 合并信息
+            $fileinfo = array_merge($params, $return, [
+                'user_id' => Auth::user()->id,
+                'token'   => Auth::user()->token
+            ]);
 
-        // 图片文件处理
-        if ($fileinfo['type'] == 'image') {
-            // 图片缩放
-            // ……
-            // 图片水印
-            // ……
-            // 补全图片宽高
-            if (empty($fileinfo['width']) || empty($fileinfo['height'])) {
-                $imageinfo = getimagesize($file->getRealPath()) ?? [0,0];
-                $fileinfo['width']  = $imageinfo[0];
-                $fileinfo['height'] = $imageinfo[1];
-            }
+            // 保存文件信息
+            $file = new File;
+            $file->fill($fileinfo);
+            $file->save();
+
+            return $return + ['id'=>$file->id];
         }
-
-        // 完善数据
-        $fileinfo['user_id']    = Auth::user()->id;
-
-        // 保存文件信息
-        File::create($fileinfo);
-
-        return $info;
+        
+        return $result;
     }
 }

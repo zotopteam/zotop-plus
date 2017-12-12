@@ -75,7 +75,7 @@
                 <label for="favicon" class="col-2 col-form-label">{{trans('site::config.favicon.label')}}</label>
                 <div class="col-8">
 
-                    {field type="upload_image" name="favicon" allow="ico,png" resize="false" watermark="false"}
+                    {field type="upload_image" name="favicon" allow="png" resize="false" watermark="false"}
                        
                     @if ($errors->has('favicon'))
                     <span class="form-help text-error">{{ $errors->first('favicon') }}</span>

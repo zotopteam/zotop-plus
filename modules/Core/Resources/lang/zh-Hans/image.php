@@ -3,7 +3,7 @@ return [
     'resize'                          => '图片压缩',
     'resize.enabled'                  => '启用',
     'resize.max'                      => '最大尺寸',
-    'resize.max.help'                 => '图片尺寸大于设置最大尺寸值时自动压缩到设置尺寸',
+    'resize.max.help'                 => '图片尺寸大于设置最大尺寸值时自动压缩到设置尺寸, 0或者空为自动',
     'resize.width'                    => '宽',
     'resize.height'                   => '高',
     'resize.maxsize'                  => '最大尺寸',

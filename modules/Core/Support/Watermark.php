@@ -59,6 +59,7 @@ class Watermark
     /**
      * 自定义参数，可以链式使用
      * with([……]) //覆盖系统设置
+     * with(false) //关闭水印
      * with('image') //使用图片水印，水印图片为系统设置图片
      * with('text') //使用文字水印，水印文字为系统设置文字
      * with('image','path of image') //使用自定义图片水印
@@ -69,19 +70,26 @@ class Watermark
      * 
      * @param  string|array $key  键名或者配置数组
      * @param  mixed $value 键值
-     * @return [type]        [description]
+     * @return this
      */
     public function with($key, $value=null)
     {
-        // //设置key值
+
+        //设置key值
         if (is_string($key)) {
 
             // 当传入的key为image或者text时，设置水印类型
-            if (in_array($key,['image','text'])) {
+            if (in_array($key, ['image','text'])) {
                 $this->config['type'] = $key;
             }
 
-            if (!is_null($value)) {
+            // 关闭
+            if ($key === false || $key === 'false') {
+                $this->config['enabled'] = false;
+            }
+
+            // 赋值
+            if (! is_null($value)) {
                 $this->config = array_set($this->config, $key, $value);
             }
         }
