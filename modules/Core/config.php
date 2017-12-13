@@ -13,19 +13,24 @@ return [
         'url'  => '',
     ],
     'image' => [
-        'resize' => ['enabled'=>1,'width'=>1920,'height'=>'1200','quality'=>100],
+        'resize' => [
+            'enabled' => 1,
+            'width'   => 1920,
+            'height'  => 1200,
+            'quality' => 90
+        ],
         'watermark' => [
             'enabled'  => 1,
-            'width'    => '300',
-            'height'   => '200',
-            'opacity'  => '90',
+            'width'    => '500',
+            'height'   => '500',
+            'opacity'  => '50',
             'type'     => 'text',
             'text'     => '',
             'font'     => ['file'=>'/resources/fonts/default.otf','size'=>36,'color'=>'#ffffff'],
             'image'    => '',
             'position' => 'bottom-right',
             'offset'   => ['x'=>10,'y'=>10],
-            'quality'  => '100'
+            'quality'  => '90'
         ],
     ],
 ];

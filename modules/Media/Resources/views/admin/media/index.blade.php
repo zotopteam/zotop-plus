@@ -159,10 +159,10 @@
     <div class="main-footer">
         <div class="main-action mr-auto">
             <div class="btn-group dropup">
-                <button type="button" class="btn btn-secondary js-select-all">
+                <button type="button" class="btn btn-light js-select-all">
                     {{trans('media::media.select.all')}}
                 </button>
-                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-left">
@@ -231,13 +231,13 @@
                 complete : function(up, files){
                     // 全部上传完成
                     progress.addClass('d-none')
-                    progress.find('.progress-bar').html('');
+                    progress.find('.progress-bar').width('0%').html('');
 
                     if (success > 0) {
                         location.reload();
                     }
                 },
-                error : function(error,detail){
+                error : function(error, detail){
                     $.error(detail);
                 }
         };

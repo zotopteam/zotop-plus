@@ -172,15 +172,21 @@ class FileController extends AdminController
 
         return Plupload::receive('file', function ($tempFile) use($type, $params) {
 
-            // 开启了plupload.unique_names，防止中文文件名导致的乱码
-            // 此处无法得到真实文件名，真实文件名通过 $params['filename']传递
-            $extension = $tempFile->getClientExtention();
-
-            //如果没传入文件类型，则获取，TODO:获取不到或者类型禁止未开启上传应该禁止上传
-            $type      = $type ?? $tempFile->getHumanType();
+            //如果没传入文件类型，则从系统上传设置中匹配，获取不到则禁止上传
+            $type = $type ?? $tempFile->getHumanType();
 
             if (empty($type)) {
                 return ['state'=>false, 'content'=>trans('core::file.upload.error.type', [$params['filename']])];
+            }
+
+            // 检查文件扩展名是否被允许
+            // 开启了plupload.unique_names，防止中文文件名导致的乱码
+            // 此处无法得到真实文件名，真实文件名通过 $params['filename']传递
+            $extension = $tempFile->getClientOriginalExtension(); 
+            $allow     = $params['allow'] ?? config("core.upload.types.{$type}.extensions");
+
+            if (! in_array($extension, explode(',', $allow))) {
+                return ['state'=>false, 'content'=>trans('core::file.upload.error.extension', [$params['filename']])];
             }
 
             // 文件上传信息

@@ -47,12 +47,12 @@
 		            }
 
 		        },
-		        complete : function(up,files){
+		        complete : function(up, files){
 		            // 全部上传完成
-		            progress.addClass('d-none')
-		            progress.find('.progress-bar').html('');
+		            progress.addClass('d-none');
+		            progress.find('.progress-bar').width('0%').html('');
 		        },
-				error : function(error,detail){
+				error : function(error, detail){
 					$.error(detail);
 				}
     		};

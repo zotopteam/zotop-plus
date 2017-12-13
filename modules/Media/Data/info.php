@@ -1,6 +1,6 @@
 <?php
-use Format;
 use Modules\Media\Models\File;
+use Modules\Core\Support\Facades\Format;
 
 $info = [
     'filecounts' => [

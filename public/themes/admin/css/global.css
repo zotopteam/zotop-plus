@@ -290,22 +290,27 @@ textarea{resize:none;}
 .radiocards .radiocards-row{margin:-0.25rem;}
 .radiocards .radiocards-col{padding:0.25rem;float:left;}
 
+.badge{font-weight:normal;}
+.badge-danger{background-color:#ff0000;border-radius:0.5rem;}
+
 .btn{cursor:pointer;}
 .btn-secondary{border-color:rgba(0,0,0,.15);}
 
 .btn-outline{border-color:rgba(255,255,255,.25);}
 .btn-outline:hover,.btn-outline:focus,.btn-outline:active{background:rgba(255,255,255,.15);}
 
-.badge{font-weight:normal;}
-.badge-danger{background-color:#ff0000;border-radius:0.5rem;}
-
 .btn-success .badge-danger{color:#5cb85c;background-color:#fff;}
+.btn-light{border-color:#ccc;background-color:#ebebeb;}
 
 .btn-progress{position:relative;}
 .btn-progress .progress{position:absolute;top:0;right:0;bottom:0;left:0;border-radius:0;z-index:999;background:transparent;}
 .btn-progress .progress-bar{height:100%;line-height:3;}
 
 .btn-group > .btn:not(:first-child){border-left:solid 1px rgba(255,255,255,0.2)}
+.btn-group > .btn-light:not(:first-child){border-left:solid 1px rgba(0,0,0,0.1)}
+
+
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn{cursor: not-allowed;opacity:0.5;}
 
 .breadcrumb{background:#f7f7f7;}
 .breadcrumb-item+.breadcrumb-item::before{font-family:'Font Awesome 5 Free';font-weight:900;content:'\f105'}

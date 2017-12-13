@@ -317,7 +317,17 @@ jquery upload api
 						break;
 
 					case plupload.HTTP_ERROR:
+						console.log(err);
 						details = plupload.t("Upload URL might be wrong or doesn't exist");
+
+						if (err.status == 405) {
+							details = plupload.t("Upload URL doesn't exist");
+						}
+
+						if (err.status == 500) {
+							details = plupload.t("Upload server wrong");
+						}
+						
 						break;
 				}
 

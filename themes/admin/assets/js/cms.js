@@ -111,9 +111,9 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
             },
             onChange : function() {
                 if ($checkboxes.filter(':checked').length > 0) {
-                    $(options.operator).removeClass('disabled');
+                    $(options.operator).removeClass('disabled').attr('disabled', false);
                 } else {
-                    $(options.operator).addClass('disabled');
+                    $(options.operator).addClass('disabled').attr('disabled', true);
                 }
             }            
         });

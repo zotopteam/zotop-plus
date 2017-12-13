@@ -106,18 +106,10 @@
 });
 
 /**
- * 扩展上传的获取文件名，解决extention和guessExtention有时候无法获取或者获取不正确问题
- */
-\Illuminate\Http\UploadedFile::macro('getClientExtention',function() {
-    return \File::extension($this->getClientOriginalName());
-});
-
-/**
  * 扩展上传的获取文件类型，依据系统可上传的类型判断
  */
 \Illuminate\Http\UploadedFile::macro('getHumanType',function() {
-    $extension = $this->getClientExtention();
-
+    $extension = $this->getClientOriginalExtension();
     return \File::humanType($extension);
 });
 

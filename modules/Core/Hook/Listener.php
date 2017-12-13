@@ -125,7 +125,7 @@ class Listener
      */
     public function upload($return, $splFile, $params)
     {
-        // 处理图片
+        // 处理图片 TODO：使用队列处理
         if ($return['type']=='image') {
             
             // 图片路径
@@ -134,10 +134,10 @@ class Listener
             try {
 
                 // 图片缩放
-                (new Resize)->with($params['resize'] ?? [])->apply($path);
+                app(Resize::class)->with($params['resize'] ?? [])->apply($path);
 
                 // 图片水印
-                (new Watermark)->with($params['watermark'] ?? [])->apply($path);
+                app(Watermark::class)->with($params['watermark'] ?? [])->apply($path);
 
                 // 获取宽高和大小
                 $image = app('image')->make($path);
