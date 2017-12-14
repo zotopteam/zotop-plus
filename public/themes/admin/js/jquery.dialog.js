@@ -129,7 +129,8 @@
 	 */
 	$.fn.dialog = function (options){
 		options = $.extend(options, {quickClose:true});
-		options.align = options.align || $(this).data('align');
+		options.align  = options.align || $(this).data('align');
+		options.opener = window;
 
 		return this.each(function(){
 			return top.dialog(options).show(this);
@@ -148,6 +149,10 @@
 			if (typeof options === "string") {
 				return top.dialog.get(options);
 			}
+
+			// 传递当前窗口
+			options.opener = window;
+
 			// modal 模式
 			if (typeof modal === 'boolean' && modal ) {
 				var dialog = top.dialog(options);
@@ -234,7 +239,14 @@
 			fixed   : true,
 			resize  : false,
 			onclose : function() {
-				if( msg.url ) parent.location.href = msg.url;
+				if( msg.url ) {
+					var parentDialog = top.dialog.get(this.opener);
+					if (parentDialog && parentDialog.open) {
+						this.opener.location.href = msg.url;
+					} else {
+						parent.location.href = msg.url;
+					}
+				}
 				if( msg.onclose ) msg.onclose();
 			}
 		};

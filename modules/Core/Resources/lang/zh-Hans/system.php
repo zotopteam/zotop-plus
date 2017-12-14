@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'fastrefresh'                            => '刷新',
+    'fastrefresh.tips'                       => '一键刷新缓存',
     'environment.title'                      => '系统环境',
     'environment.description'                => '服务器环境、文件和目录权限检测',
     

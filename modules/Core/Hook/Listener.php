@@ -107,11 +107,11 @@ class Listener
         // 一键刷新
         $tools['refresh'] = [
             'icon'     => 'fa fa-magic', 
-            'text'     => trans('core::master.refresh'),
-            'title'    => trans('core::master.refresh.description'),
+            'text'     => trans('core::system.fastrefresh'),
+            'title'    => trans('core::system.fastrefresh.tips'),
             'href'     => 'javascript:;',
-            'data-url' => route('core.system.refresh'),
-            'class'    => 'refresh js-post',
+            'data-url' => route('core.system.refresh',['fast']),
+            'class'    => 'fastclean js-post',
         ];
         return $tools;
     }

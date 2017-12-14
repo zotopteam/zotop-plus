@@ -182,16 +182,15 @@ $(function(){
         var width   = $(this).data('width') || 'auto';
         var height  = $(this).data('height') || 'auto';     
         var $dialog = $.dialog({
-            title:title,
-            url:url,
-            width:width,
-            height:height,
-            ok:$.noop,
-            cancel:$.noop,
-            oniframeload: function() {
+            title        : title,
+            url          : url,
+            width        : width,
+            height       : height,
+            ok           : $.noop,
+            cancel       : $.noop,
+            oniframeload : function() {
                 this.loading(false);
-            },
-            opener:window
+            }
         },true).loading(true);
 
         event.stopPropagation();
@@ -232,8 +231,8 @@ $(function(){
     $(document).on('click', 'a.js-image', function(event){
         event.preventDefault();
 
-        var url   = $(this).data('url');
-        var title = $(this).data('title');
+        var url     = $(this).data('url');
+        var title   = $(this).data('title');
         var $dialog = $.image(url, title);
 
         event.stopPropagation();

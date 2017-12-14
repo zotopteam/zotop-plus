@@ -2,11 +2,8 @@
 return [
     'title'                => '主页',
     'index'                => '主页',
-    'viewsite'             => '网站首页',
-    'viewsite.description' => '访问 :0 首页',
     'thanks'               => '感谢您使用 :0',
-    'refresh'              => '一键刷新',
-    'refresh.description'  => '一键刷新全部缓存',
+    'refresh'              => '刷新',
     'view'                 => '查看',
     'create'               => '添加',
     'creating'             => '添加中……',

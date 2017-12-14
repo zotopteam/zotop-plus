@@ -76,7 +76,7 @@ class Format
      */
     public function isTimestamp($time)
     {
-        if (is_string($time) && strtotime(date('Y-m-d H:i:s',$time)) === $time) {
+        if ((is_string($time) || is_numeric($time)) && strtotime(date('Y-m-d H:i:s',$time)) === $time) {
             return true;
         }
         return false;

@@ -14,6 +14,22 @@ if (! function_exists('array_deep')) {
         return $array;  
     }
 }
+if (! function_exists('array_object')) {
+    
+    /**
+     * 数组转对象
+     * @param  array $array 数组
+     * @return mixed
+     */
+    function array_object($array)
+    {
+        if (is_array($array)) {
+            return (object)array_map(__FUNCTION__, $array);
+        } else {
+            return $array;
+        }
+    }
+}
 
 if (! function_exists('array_merge_deep')) {
     /**

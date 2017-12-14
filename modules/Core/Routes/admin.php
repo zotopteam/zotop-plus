@@ -66,7 +66,7 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
 
     // 系统功能
     $router->group(['prefix' =>'system'], function (Router $router) {
-        $router->post('refresh','SystemController@refresh')->name('core.system.refresh');
+        $router->any('refresh/{mode?}','SystemController@refresh')->name('core.system.refresh');
         $router->get('environment','SystemController@environment')->name('core.system.environment');       
         $router->get('about','SystemController@about')->name('core.system.about');    
     });
@@ -97,6 +97,7 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->any('copy','FileController@copy')->name('core.file.copy')->middleware('allow:core.file.copy');
         $router->any('rename','FileController@rename')->name('core.file.rename')->middleware('allow:core.file.rename');
         $router->any('upload/{type?}','FileController@upload')->name('core.file.upload')->middleware('allow:core.file.upload');
+        $router->any('select','FileController@select')->name('core.file.select')->middleware('allow:core.file.select');
     });
 
     // 文件夹
@@ -104,6 +105,7 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->any('create','FolderController@create')->name('core.folder.create')->middleware('allow:core.folder.create');
         $router->any('delete','FolderController@delete')->name('core.folder.delete')->middleware('allow:core.folder.delete');
         $router->any('rename','FolderController@rename')->name('core.folder.rename')->middleware('allow:core.folder.rename');
+
     });
 
 });

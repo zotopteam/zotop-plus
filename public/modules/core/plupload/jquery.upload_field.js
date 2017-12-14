@@ -1,13 +1,18 @@
 // 单文件上传
 (function($) {
 
-	$.fn.upload_single = function(options) {
+	$.fn.upload_field = function(options) {
 
-		return this.each(function(){
+		return this.each(function() {
 			
 			var upload   = $(this).find('button.btn-upload');
-			var input    = $(this).find('input:first');
+			var input    = $(this).find('input:first');			
 			var progress = $(this).find('.progress');
+			var select   = $(this).find('.js-upload-field-select');
+
+			var callback = function(value) {
+				input.val(value);
+			}
 
 			//图片预览
 			if (input.attr('preview') == 'image') {
@@ -22,7 +27,7 @@
 				});
 			}			
 
-			// 上传属性
+			// 文件上传
 			var defaults = {
 		        multi_selection : false, //是否可以选择多个文件
 		        autostart : true, //自动开始
@@ -41,7 +46,7 @@
 
 		            // 单个文件上传完成 返回信息在 response 中
 		            if (response.result.state) {
-		            	input.val(response.result.url);
+		            	callback(response.result.url);
 		            } else {
 		            	$.error(response.result.content);
 		            }
@@ -58,10 +63,35 @@
     		};
 
     		options = $.extend({}, defaults, options);
-
-    		console.log(options);
-			
 			upload.plupload(options);
+
+			// 文件选择
+			select.on('click', function() {
+
+				var url   = $(this).data('url');
+				var title = $(this).data('title');
+
+		        $.dialog({
+		            title   : title,
+		            url     : url,
+		            width   : '80%',
+		            height  : '60%',
+		            padding : 0,
+		            ok:function() {
+		            	if (this.selected) {
+		                	callback(this.selected);
+		                	return true;
+		                }
+		                return false;
+		            },
+		            cancel:$.noop,
+		            oniframeload: function() {
+		                this.loading(false);
+		            },
+		            opener:window
+		        }, true).loading(true);     				
+
+			});
 		});
 
 	}

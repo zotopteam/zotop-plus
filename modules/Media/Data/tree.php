@@ -17,13 +17,13 @@ $tree = [
         'href'      => route('media.index',[0]),
         'children'  => array_nest($tree)
     ],
-    [
-        'folder'    => true,
-        'key'       => -1,
-        'icon'      => 'fas fa-trash text-primary',
-        'title'     => trans('media::media.trash'),
-        'href'      => route('media.index',[0]),    
-    ]
+    // [
+    //     'folder'    => true,
+    //     'key'       => -1,
+    //     'icon'      => 'fas fa-trash text-primary',
+    //     'title'     => trans('media::media.trash'),
+    //     'href'      => route('media.trash'),    
+    // ]
 ];
 
 return $tree;

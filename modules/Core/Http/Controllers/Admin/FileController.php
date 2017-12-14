@@ -5,6 +5,8 @@ namespace Modules\Core\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
+use Modules\Core\Support\Facades\Format;
+use Modules\Core\Support\FileBrowser;
 use Artisan;
 use File;
 use Plupload;
@@ -162,8 +164,9 @@ class FileController extends AdminController
 
     /**
      * 文件上传
-     * 
-     * @return [type] [description]
+     * @param  Request $request
+     * @param  string  $type  类型
+     * @return array
      */
     public function upload(Request $request, $type=null)
     {
@@ -218,5 +221,34 @@ class FileController extends AdminController
             // 返回处理结果
             return Filter::fire('core.file.upload', $return, $splFile, $params);
         });
-    }     
+    }
+
+    /**
+     * 文件选择
+     * 
+     * @param  Request $request
+     * @param  string  $type  类型
+     * @return array
+     */
+    public function select(Request $request)
+    {
+        $browser = app(FileBrowser::class, [
+            'root' => $request->input('root'),
+            'dir'  => $request->input('dir')
+        ]);
+
+        $this->params   = $browser->params;
+        $this->path     = $browser->path;
+        $this->upfolder = $browser->upfolder();
+        $this->position = $browser->position();
+        $this->folders  = $browser->folders();
+        $this->files    = $browser->files()->filter(function($item) use($request) {
+            return $item->type == $request->filetype;
+        });
+
+        // 选择文件个数，默认不限制
+        $this->select = $request->input('select', 0);
+
+        return $this->view();
+    }    
 }

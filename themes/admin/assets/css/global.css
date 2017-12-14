@@ -79,7 +79,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .dropdown-menu {border-radius:3px;padding:0.25rem;box-shadow:3px 3px 0 rgba(12,12,12,0.03);}
 .dropdown-head {color:#333;padding:0.5rem 10px;margin-bottom:0.25rem;border-bottom:solid 1px #e5e5e5;}
 .dropdown-item{padding:0.5rem 0.75rem;transition:all 0.2s ease-out 0s;white-space:nowrap;border-radius:3px;}
-.dropdown-item-icon{margin-right:0.25rem;}
+.dropdown-item-icon{width:1.25rem;text-align:center;margin-right:0.25rem;}
 .dropdown-item-text{font-weight:normal;}
 
 .dropdown-menu-primary .dropdown-item{color:#0072c6;padding:0.5rem 0.75rem;border-radius:2px;transition:all 0.2s ease-out 0s;white-space:nowrap;display:block;}
@@ -295,22 +295,21 @@ textarea{resize:none;}
 
 .btn{cursor:pointer;}
 .btn-secondary{border-color:rgba(0,0,0,.15);}
-
 .btn-outline{border-color:rgba(255,255,255,.25);}
 .btn-outline:hover,.btn-outline:focus,.btn-outline:active{background:rgba(255,255,255,.15);}
-
 .btn-success .badge-danger{color:#5cb85c;background-color:#fff;}
-.btn-light{border-color:#ccc;background-color:#ebebeb;}
+.btn-light{border-color:rgba(0,0,0,.15);}
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn{cursor: not-allowed;opacity:0.5;}
 
 .btn-progress{position:relative;}
 .btn-progress .progress{position:absolute;top:0;right:0;bottom:0;left:0;border-radius:0;z-index:999;background:transparent;}
 .btn-progress .progress-bar{height:100%;line-height:3;}
 
+.btn>.btn-icon{vertical-align:middle;width:1.25rem;text-align:center;}
+.btn>.btn-text{font-weight:normal;}
+
 .btn-group > .btn:not(:first-child){border-left:solid 1px rgba(255,255,255,0.2)}
 .btn-group > .btn-light:not(:first-child){border-left:solid 1px rgba(0,0,0,0.1)}
-
-
-.btn.disabled, .btn[disabled], fieldset[disabled] .btn{cursor: not-allowed;opacity:0.5;}
 
 .breadcrumb{background:#f7f7f7;}
 .breadcrumb-item+.breadcrumb-item::before{font-family:'Font Awesome 5 Free';font-weight:900;content:'\f105'}
@@ -321,15 +320,15 @@ textarea{resize:none;}
 .shortcut:hover{border:1px solid #70c0e7;background:#e5f3fb;text-decoration:none;}
 
 .shortcut-list {margin:1rem 0;}
-.shortcut-list .shortcut-icon i{padding:0.6rem;font-size:2rem;border-radius:.25rem;width:3.3rem;text-align:center;}
+.shortcut-list .shortcut-icon i{width:3.2rem;height:3.2rem;padding:0.6rem 0;font-size:2rem;border-radius:.25rem;text-align:center;}
 .shortcut-list .shortcut-text {position:absolute;top:0;left:4.5rem;right:0;}
-.shortcut-list .shortcut-text h2{font-size:1.25rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;margin:0.5rem 0 0.6rem 0;}
+.shortcut-list .shortcut-text h2{font-size:1.25rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;margin:0.6rem 0 0.45rem 0;}
 .shortcut-list .shortcut-text p{font-size:0.875rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;margin:0}
 .shortcut-list .shortcut-badge {position:absolute;left:0;top:0;}
 .shortcut-list .shortcut-badge a{color:#fff;}
 
 .shortcut-thumb {text-align:center;}
-.shortcut-thumb .shortcut-icon i{margin:0;padding:0.8rem;font-size:2rem;border-radius:.25rem;width:3.75rem;text-align:center;}
+.shortcut-thumb .shortcut-icon i{width:3.6rem;height:3.6rem;margin:0;padding:0.8rem 0;font-size:2rem;border-radius:.25rem;text-align:center;}
 .shortcut-thumb .shortcut-text{position:relative;left:0;}
 .shortcut-thumb .shortcut-text h2{font-size:0.875rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;margin:0.75rem 0 0 0;}
 .shortcut-thumb .shortcut-text p{display:none;}

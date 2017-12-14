@@ -232,7 +232,7 @@
                     // 全部上传完成
                     progress.addClass('d-none')
                     progress.find('.progress-bar').width('0%').html('');
-
+                    
                     if (success > 0) {
                         location.reload();
                     }
