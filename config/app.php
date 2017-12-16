@@ -197,6 +197,17 @@ return [
     */
 
     'fallback_locale' => 'zh-Hans',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Faker locale
+    |--------------------------------------------------------------------------
+    |
+    | The  locale that will be used  by the faker, default is en
+    |
+    */    
+    'faker_locale' => 'zh_CN',
+    
     /*
     |--------------------------------------------------------------------------
     | Application Locale Date && Time Format

@@ -98,6 +98,7 @@ class Resize
             // 缩放并保持比例
             $image->resize($config['width'], $config['height'], function ($constraint) {
                 $constraint->aspectRatio();
+                $constraint->upsize();                
             });
 
             return $image->save($target, $config['quality']);

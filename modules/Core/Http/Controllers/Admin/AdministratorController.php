@@ -18,7 +18,7 @@ class AdministratorController extends AdminController
     public function index()
     {
         $this->title = trans('core::administrator.title');
-        $this->users = User::with('roles')->whereIn('modelid',['super','admin'])->orderby('id','asc')->paginate(50);
+        $this->users = User::with('roles')->whereIn('modelid',['super','admin'])->orderby('id','asc')->paginate(10);
 
         return $this->view();
     }

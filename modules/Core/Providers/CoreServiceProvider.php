@@ -4,9 +4,11 @@ namespace Modules\Core\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Factory;
 use Modules\Core\Traits\PublishConfig;
 use Nwidart\Modules\Module;
 use Modules\Core\Models\Config;
+
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -41,6 +43,7 @@ class CoreServiceProvider extends ServiceProvider
         foreach ($this->app['modules']->getOrdered() as $module) {
             $this->registerConfig($module); 
             $this->registerLanguageNamespace($module);
+            $this->registerFactories($module);
         }      
     }
 
@@ -114,6 +117,16 @@ class CoreServiceProvider extends ServiceProvider
         }
 
         return $this->loadTranslationsFrom($module->getPath() . '/Resources/lang', $moduleName);
+    }
+
+    /**
+     * Register an additional directory of factories.
+     */
+    public function registerFactories($module)
+    {
+        if (! app()->environment('production')) {
+            app(Factory::class)->load($module->getPath() . '/Database/Factories');
+        }
     }
 
     /**
