@@ -31,13 +31,13 @@
                             </div>
                             <div class="card-text text-overflow text-overflow-2 d-none">{{$theme->description}}</div>
                             <div class="card-text manage">
-                                <a href="{{route('core.themes.files', [$theme->name,'dir'=>'./views'])}}" class="manage-item">
+                                <a href="{{route('core.themes.files', ['theme'=>$theme->name,'dir'=>'/views'])}}" class="manage-item">
                                     <i class="far fa-file fa-fw"></i> {{trans('core::themes.views')}}
                                 </a>
-                                <a href="{{route('core.themes.files', [$theme->name,'dir'=>'./assets'])}}" class="manage-item">
+                                <a href="{{route('core.themes.files', ['theme'=>$theme->name,'dir'=>'/assets'])}}" class="manage-item">
                                     <i class="fas fa-file fa-fw"></i> {{trans('core::themes.assets')}}
                                 </a>
-                                <a href="{{route('core.themes.publish', [$theme->name])}}" class="manage-item js-post" title="{{trans('core::themes.publish.tooltip')}}">
+                                <a href="{{route('core.themes.publish', ['theme'=>$theme->name])}}" class="manage-item js-post" title="{{trans('core::themes.publish.tooltip')}}">
                                     <i class="fa fa-sync fa-fw"></i> {{trans('core::themes.publish')}}
                                 </a>
                             </div>                                                          

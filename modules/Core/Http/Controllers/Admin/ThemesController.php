@@ -5,48 +5,13 @@ namespace Modules\Core\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
+use Modules\Core\Support\FileBrowser;
 use Theme;
 use Artisan;
 use File;
 
 class ThemesController extends AdminController
 {
-
-    /**
-     * 将一个路径转化成名称-路径数组，用于生成position
-     *
-     *
-     * @param array $dir 路径
-     * @param string $s 分隔符
-     *
-     * @return array 包含全部路径的数组
-     */    
-    private function position($dir, $s='/')
-    {
-
-        $data = array();
-
-        if ($dir) {
-
-            $dirs = explode($s, $dir);
-
-            $path = '';
-
-            foreach($dirs as $d)
-            {   
-                if ($d == '.' || $d=='') {
-                    $path = $d;
-                } else {
-                    $path = $path.$s.$d;
-                }
-                
-                $data[$path] = $d;
-            }
-        }
-
-        return $data;
-    }
-
     /**
      * 首页
      *
@@ -67,16 +32,21 @@ class ThemesController extends AdminController
      *
      * @return Response
      */
-    public function files(Request $request, $name)
+    public function files(Request $request, $theme)
     {
-        $theme          = Theme::find($name);
-        
-        $this->name     = $name;
-        $this->dir      = $request->input('dir');
-        $this->path     = realpath($theme->path.DIRECTORY_SEPARATOR.$this->dir);
-        $this->position = $this->position($this->dir);       
-        $this->folders  = File::directories($this->path);
-        $this->files    = File::files($this->path);
+        $theme   = Theme::find($theme);
+
+        $browser = app(FileBrowser::class, [
+            'root' => path_base($theme->path),
+        ]);
+
+        $this->params   = $browser->params;
+        $this->path     = $browser->path;
+        $this->upfolder = $browser->upfolder();
+        $this->position = $browser->position();
+        $this->folders  = $browser->folders();
+        $this->files    = $browser->files();
+
         $this->title    = trans('core::themes.files');
 
         return $this->view()->with('theme',$theme);
@@ -87,11 +57,11 @@ class ThemesController extends AdminController
      *
      * @return Response
      */
-    public function publish($name='')
+    public function publish($theme='')
     {
-        if ($name) {
+        if ($theme) {
             Artisan::call("theme:publish",[
-                'theme' => $name
+                'theme' => $theme
             ]);
         } else {
             Artisan::call('theme:publish');

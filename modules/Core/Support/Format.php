@@ -39,6 +39,20 @@ class Format
     }
 
     /**
+     * 格式化url，去除多余的斜杠，并转化为相对url或者绝对url
+     *
+     *
+     * @param string $url
+     * @return string
+     */
+    public static function url($url)
+    {
+        $url = str_replace("\\", "/", $url);
+        $url = preg_replace("#(^|[^:])//+#", "\\1/", $url); //替换多余的斜线
+        return $url;
+    }    
+
+    /**
      * 格式化文本，一般用于格式化textarea的显示值
      * @param string $string
      * @return string

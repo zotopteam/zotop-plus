@@ -10,27 +10,34 @@
             {{$theme->title}} {{$title}}
         </div>
         <div class="main-action">            
-            <a href="javascript:;" class="btn btn-primary js-prompt" data-url="{{route('core.file.create',['path'=>path_base($path)])}}" data-prompt="{{trans('core::file.name')}}" data-value="">
+            <a href="javascript:;" class="btn btn-primary js-prompt" data-url="{{route('core.file.create',['path'=>$path])}}" data-prompt="{{trans('core::file.name')}}" data-value="">
                 <i class="fa fa-file fa-fw"></i> {{trans('core::file.create')}}
             </a>
-            <a href="javascript:;" class="btn btn-primary js-prompt" data-url="{{route('core.folder.create',['path'=>path_base($path)])}}" data-prompt="{{trans('core::folder.name')}}" data-value="">
+            <a href="javascript:;" class="btn btn-primary js-prompt" data-url="{{route('core.folder.create',['path'=>$path])}}" data-prompt="{{trans('core::folder.name')}}" data-value="">
                 <i class="fa fa-folder fa-fw"></i> {{trans('core::folder.create')}}
             </a>            
         </div>           
     </div>
     <div class="main-header breadcrumb m-0">
-        @if($dir == '.')
-        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('core::folder.up')}}</a>        
-        @else
-        <a href="{{route('core.themes.files',[$name,'dir'=>dirname($dir)])}}" class="breadcrumb-item breadcrumb-extra"><i class="fa fa-arrow-up fa-fw"></i>{{trans('core::folder.up')}}</a>
-        @endif
 
-        @foreach($position as $k=>$v)
-        @if($v == '.')
-        <a href="{{route('core.themes.files',[$name,'dir'=>$k])}}" class="breadcrumb-item">{{$theme->name}} </a>
+        @if($upfolder)
+        <a href="{{$upfolder->href}}" class="breadcrumb-item breadcrumb-extra">
+            <i class="fa fa-arrow-up fa-fw"></i> {{trans('core::folder.up')}}
+        </a>
         @else
-        <a href="{{route('core.themes.files',[$name,'dir'=>$k])}}" class="breadcrumb-item">{{$v}}</a>
+        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled">
+            <i class="fa fa-arrow-up"></i> {{trans('core::folder.up')}}
+        </a>
+        @endif        
+
+        @foreach($position as $p)
+        <a href="{{$p->href}}" class="breadcrumb-item">
+            @if ($loop->first)
+            <i class="fa fa-home fa-fw"></i>
+            @else
+            <i class="fa fa-folder fa-fw"></i> {{$p->name}}
         @endif
+        </a>
         @endforeach
     </div>
     <div class="main-body scrollable">
@@ -46,74 +53,89 @@
             </thead>        
             <tbody>
                 @foreach($folders as $folder)
-                <tr data-type="folder" data-href="{{route('core.themes.files',[$name,'dir'=>$dir.'/'.basename($folder)])}}">
+                <tr data-type="folder" data-href="{{$folder->href}}">
                     <td width="1%" class="icon icon-sm pr-1">
-                        <a href="{{route('core.themes.files',[$name,'dir'=>$dir.'/'.basename($folder)])}}">
+                        <a href="{{$folder->href}}">
                             <i class="fa fa-folder fa-2x fa-fw text-warning"></i>
                         </a>
                     </td>
                     <td class="name pl-2">
-                        <a href="{{route('core.themes.files',[$name,'dir'=>$dir.'/'.basename($folder)])}}">{{basename($folder)}}</a>
+                        <a href="{{$folder->href}}">{{$folder->name}}</a>
                     </td>
                     <td class="manage manage-hover text-right">
-                        <a href="javascript:;" class="manage-item js-prompt" data-url="{{route('core.folder.rename',['folder'=>path_base($folder)])}}" data-prompt="{{trans('core::folder.name')}}" data-value="{{basename($folder)}}">
+
+                        <a href="javascript:;" class="manage-item js-prompt" data-url="{{route('core.folder.rename',['folder'=>$folder->path])}}" data-prompt="{{trans('core::folder.name')}}" data-value="{{$folder->name}}">
                             <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::folder.rename')}}
                         </a>
 
-                        <a href="javascript:;" class="manage-item js-delete" data-url="{{route('core.folder.delete',['folder'=>path_base($folder)])}}">
+                        <a href="javascript:;" class="manage-item js-delete" data-url="{{route('core.folder.delete',['folder'=>$folder->path])}}">
                             <i class="fa fa-trash fa-fw text-primary"></i> {{trans('core::folder.delete')}}
                         </a>                        
                     </td>
-                    <td width="10%">{{trans('core::folder.type')}}</td>
-                    <td></td>                    
-                    <td></td>                    
+                    <td width="10%">{{$folder->typename}}</td>
+                    <td>{{$folder->size}}</td>
+                    <td>{{$folder->time}}</td>                    
                 </tr>
                 @endforeach            
                 @foreach($files as $file)
-                <tr>
+                <tr data-type="file">
                     <td width="1%" class="icon icon-sm pr-1">
-                        @if(File::mime($file) == 'image')
-                        <div class="image"><img src="{{preview($file)}}"></div>
+                        @if($file->type == 'image')
+                        <div class="icon"><img src="{{preview($file->realpath,32,32)}}" width="32"></div>
                         @else
-                        <i class="fa {{File::icon($file)}} fa-2x fa-fw text-warning"></i>
+                        <i class="fa {{$file->icon}} fa-2x fa-fw text-warning"></i>
                         @endif
                     </td>
-                    <td class="name pl-2">{{$file->getFileName()}}</td>
+                    <td class="name pl-2">
+                        <div class="title text-md text-wrap">{{$file->name}}</div>
+                        <div class="description">
+                            @if($file->type == 'image') {{$file->width}}px × {{$file->height}}px @endif
+                        </div>
+                        <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>
+                    </td>
                     <td class="manage manage-hover text-right">
-                        @switch(File::mime($file))
+                        @switch($file->mime)
                             @case('image')
-                                <a href="javascript:;" class="manage-item js-image" data-url="{{preview($file)}}" data-title="{{$file->getFileName()}}">
+                                <a href="javascript:;" class="manage-item js-image" data-url="{{$file->url ?: preview($file->realpath)}}" data-title="{{$file->name}}">
                                     <i class="fa fa-eye fa-fw text-primary"></i> {{trans('core::file.view')}}
                                 </a>
                                 @break
                             @case('text')
-                                <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.file.editor',['file'=>path_base($file)])}}"  data-width="80%" data-height="60%">
-                                    <i class="fa fa-pencil-square fa-fw text-primary"></i> {{trans('core::file.edit')}}
+                                <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.file.editor',['file'=>$file->path])}}"  data-width="80%" data-height="60%">
+                                    <i class="fa fa-edit fa-fw text-primary"></i> {{trans('core::file.edit')}}
                                 </a>
                                 @break
-                        @endswitch                   
-                        <a href="javascript:;" class="manage-item js-post" data-url="{{route('core.file.copy',['file'=>path_base($file)])}}">
-                            <i class="fa fa-copy fa-fw text-primary"></i> {{trans('core::file.copy')}}
-                        </a>
+                        @endswitch
+                        <div class="dropdown d-inline-block manage-item">
+                            <a href="javascript:;" data-toggle="dropdown">
+                                {{trans('core::master.more')}}
+                                <i class="fa fa-angle-down" ></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="javascript:;" class="dropdown-item js-post" data-url="{{route('core.file.copy',['file'=>$file->path])}}">
+                                    <i class="fa fa-copy fa-fw text-primary"></i> {{trans('core::file.copy')}}
+                                </a>
 
-                        <a href="javascript:;" class="manage-item js-prompt" data-url="{{route('core.file.rename',['file'=>path_base($file)])}}" data-prompt="{{trans('core::file.name')}}" data-value="{{basename($file)}}">
-                            <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::file.rename')}}
-                        </a>
+                                <a href="javascript:;" class="dropdown-item js-prompt" data-url="{{route('core.file.rename',['file'=>$file->path])}}" data-prompt="{{trans('core::file.name')}}" data-value="{{$file->name}}">
+                                    <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::file.rename')}}
+                                </a>
 
-                        <a href="javascript:;" class="manage-item js-delete" data-url="{{route('core.file.delete',['file'=>path_base($file)])}}">
-                            <i class="fa fa-trash fa-fw text-primary"></i> {{trans('core::file.delete')}}
-                        </a>                                             
+                                <a href="javascript:;" class="dropdown-item js-delete" data-url="{{route('core.file.delete',['file'=>$file->path])}}">
+                                    <i class="fa fa-times fa-fw text-primary"></i> {{trans('core::file.delete')}}
+                                </a>                            
+                            </div>
+                        </div>                                           
                     </td>
-                    <td>{{trans('core::file.type.'.File::mime($file))}}</td>
-                    <td>{{Format::size(File::size($file))}}</td>             
-                    <td>{{Format::date(File::lastModified($file),'datetime')}}</td>                    
+                    <td>{{$file->typename}}</td>
+                    <td>{{$file->size}}</td>
+                    <td>{{$file->time}}</td>                    
                 </tr>            
                 @endforeach
             </tbody>
         </table>
     </div>
     <div class="main-footer">
-        <div class="footer-text mr-auto">{{trans('core::folder.position',[path_base($path)])}} </div>
+        <div class="footer-text mr-auto">{{trans('core::folder.position',[$path])}}</div>
         <div class="footer-text ml-auto">{{trans('core::folder.count',[count($folders)])}} / {{trans('core::file.count',[count($files)])}}</div>
         
     </div>
@@ -125,5 +147,13 @@
 @endpush
 
 @push('js')
-
+<script type="text/javascript">
+    $(function(){
+        // 文件夹双击
+        $('[data-type="folder"]').on('dblclick',function(){
+            location.href = $(this).data('href');
+            return false;
+        });
+    });    
+</script>
 @endpush

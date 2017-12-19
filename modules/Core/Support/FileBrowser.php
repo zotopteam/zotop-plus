@@ -39,7 +39,10 @@ class FileBrowser
      * 
      * @var array
      */
-    public $params = [];      
+    public $parameters = [];
+    public $params = [];
+
+
 
     /**
      * 当前页面路由名称
@@ -55,12 +58,13 @@ class FileBrowser
      */
     public function __construct(Request $request, $root='public/uploads', $dir='')
     {
-        $this->root     = $root;
-        $this->dir      = $dir ?: $request->input('dir');
-        $this->path     = $this->root.'/'.$this->dir;
-        $this->realpath = realpath(base_path($this->path));
-        $this->params   = $request->all();
-        $this->route    = app('router')->getCurrentRoute()->getName();
+        $this->root       = $root;
+        $this->dir        = $dir ?: $request->input('dir');
+        $this->path       = $this->root.'/'.trim($this->dir,'/');
+        $this->realpath   = realpath(base_path($this->path));
+        $this->route      = app('router')->getCurrentRoute()->getName();
+        $this->parameters = app('router')->getCurrentRoute()->parameters();
+        $this->params     = $request->all();
     }
 
     /**
@@ -75,7 +79,7 @@ class FileBrowser
         while ($segments) {
             $dir  = implode('/', $segments);
             $name = array_pop($segments);
-            $href = route($this->route, ['dir'=>$dir] + $this->params);
+            $href = route($this->route, $this->parameters + ['dir'=>$dir] + $this->params);
             $position[] = (object) compact('name','href');
         }
         $position = array_reverse($position);
@@ -95,7 +99,7 @@ class FileBrowser
             array_pop($segments);
             $dir  = implode('/', $segments);
             $name = array_last($segments);
-            $href = route($this->route, ['dir'=>$dir] + $this->params);
+            $href = route($this->route, $this->parameters + ['dir'=>$dir] + $this->params);
             $upfolder = (object) compact('name','href');
             return $upfolder;
         }
@@ -120,7 +124,7 @@ class FileBrowser
             $path     = path_base($realpath);
             $size     = '';
             $time     = Format::date(File::lastModified($realpath), 'datetime');
-            $href     = route($this->route, ['dir'=>$this->dir.'/'.$name] + $this->params);
+            $href     = route($this->route, $this->parameters + ['dir'=>$this->dir.'/'.$name] + $this->params);
             $typename = trans('core::folder.type');
             $folder   = Filter::fire('core.filebrower.folder',
                             compact('type','name','icon','path','size','time','href','realpath','typename'),
