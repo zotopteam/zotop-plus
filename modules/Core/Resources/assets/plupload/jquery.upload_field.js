@@ -78,8 +78,8 @@
 		            height  : '60%',
 		            padding : 0,
 		            ok:function() {
-		            	if (this.selected) {
-		                	callback(this.selected);
+		            	if (this.selected && this.selected.length) {
+		                	callback(this.selected[0].url);
 		                	return true;
 		                }
 		                return false;

@@ -160,7 +160,7 @@ class FileBrowser
 
             if (starts_with($realpath, public_path())) {
                 $url = str_after($realpath, public_path());
-                //$url = url($url);
+                $url = Format::url($url);
             }
 
             $typename = trans('core::file.type.'.$type);

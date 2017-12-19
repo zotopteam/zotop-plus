@@ -1,7 +1,6 @@
 @extends('core::layouts.dialog')
 
 @section('content')
-@include('core::file.select_side')
 <div class="main">
     <div class="main-header">       
         <div class="main-action mr-auto">
@@ -153,7 +152,20 @@
 @push('js')
 <script type="text/javascript">
     var select = {{$select}};
-    var selected = [];
+
+    // 回调
+    function callback()
+    {
+        var selected  = new Array();
+
+        $('[data-type="file"]').filter('.selected').each(function() {
+            var data = $(this).find('[name=data]').val();
+                data = $.parseJSON(data);
+            selected.push(data);
+        });
+
+        $dialog.selected = selected;   
+    }
 
     $(function(){
         // 文件夹双击
@@ -164,20 +176,33 @@
 
         // 文件双击，直接返回
         $('[data-type="file"]').on('dblclick', function(){
-           
+            $(this).addClass('selected').siblings(".selected").removeClass('selected'); //单选
+            callback();
             return false;
         });
 
         // 文件双击
-        $('[data-type="file1"]').on('click', function(event) {
-            event.preventDefault();
-
+        $('[data-type="file"]').on('click', function(event) {
+            //event.preventDefault();
             //当点击为按钮时，禁止选择
-            if($(event.target).prop('tagName') == 'A') return false;
+            if($(event.target).prop('tagName') == 'A') return ;
 
-            var data = $(this).find('[name=data]').val();
-                data = $.parseJSON(data);
+            // 选择和取消选择
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass("selected");
+            } else if ( select == 1 ) {
+                $(this).addClass('selected').siblings(".selected").removeClass('selected'); //单选
+            } else {
+                var num = $('.selected').length;
+                if( select>1 && num > select ) {
+                    $.error(select);
+                    return false;
+                }else{
+                    $(this).addClass("selected");
+                }
+            }
 
+            callback();
 
             event.stopPropagation();
             return false;
