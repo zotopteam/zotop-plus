@@ -139,7 +139,7 @@ $(function(){
 
         var href    = $(this).data('url') || $(this).attr('href');
         var text    = $(this).data('title') || $(this).text() || $(this).attr('title');
-        var confirm = $(this).data('confirm') || $.trans('您确定要 [{0}] 嘛?', text);
+        var confirm = $(this).data('confirm') || $.trans('您确定要 [ {0} ] 嘛?', text);
         var method  = $(this).data('method') || 'POST';
 
         var $dialog = $.confirm(confirm,function(){

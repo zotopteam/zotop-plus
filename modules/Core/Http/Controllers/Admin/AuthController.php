@@ -12,7 +12,6 @@ class AuthController extends AdminController
 {
     use AuthenticatesUsers;
 
-
     /**
      * 登录
      *
@@ -40,17 +39,34 @@ class AuthController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    protected function credentials(Request $request)
+    // protected function credentials(Request $request)
+    // {
+    //     $credentials = $request->only($this->username(), 'password');
+    //     $credentials = array_merge($credentials, [
+    //         'modelid'  => ['super','admin'],
+    //         'disabled' => 0
+    //     ]);
+
+    //     return $credentials;
+    // }
+
+    /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request)
     {
-        $credentials = $request->only($this->username(), 'password');
-        $credentials = array_merge($credentials, [
-            'modelid'  => ['super','admin'],
-            'disabled' => 0
-        ]);
+         $credentials = $request->only($this->username(), 'password');
+         $credentials = $credentials + ['disabled'=>0];
 
-        return $credentials;
+        return $this->guard()->attempt(
+            $credentials + ['modelid'=>'super'], $request->filled('remember')
+        ) || $this->guard()->attempt(
+            $credentials + ['modelid'=>'admin'], $request->filled('remember')
+        );
     }
-
 
     /**
      * 登陆成功
@@ -68,7 +84,7 @@ class AuthController extends AdminController
         ]);
 
         if ($request->expectsJson()) {
-            return $this->success(trans('core::auth.success'),$this->redirectPath());
+            return $this->success(trans('core::auth.success'), $this->redirectPath());
         }
 
          return redirect()->intended($this->redirectPath()); 
@@ -115,11 +131,9 @@ class AuthController extends AdminController
         $this->guard()->logout();
 
         $request->session()->flush();
-
         $request->session()->regenerate();
 
-        return $this->success(trans('core::auth.logout.success'),route('admin.login'));
-
+        return $this->success(trans('core::auth.logout.success'), route('admin.login'));
         //return redirect(route('admin.login'));
     }
 }

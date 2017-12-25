@@ -276,19 +276,31 @@ class AdminControllerCommand extends GeneratorCommand
      */
     private function renderViewStub($stub)
     {
-        $stub = $this->laravel['files']->get($stub);
+        $stub   = $this->laravel['files']->get($stub);
+        $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
-        return str_replace(
-            [
-                '$MODULE_NAME$',
-                '$CONTROLLER_NAME$',
-            ],
-            [
-                $this->getModuleName(),
-                $this->getControllerName()
-            ],
-            $stub
-        );
+        $params = [
+            'MODULENAME'       => $module->getStudlyName(),
+            'CONTROLLERNAME'   => $this->getControllerName(),
+            'LOWER_CONTROLLER' => $this->getLowerControllerShortName(),
+            'NAMESPACE'        => $module->getStudlyName(),
+            'CLASS_NAMESPACE'  => $this->getClassNamespace($module),
+            'CLASS'            => $this->getControllerName(),
+            'LOWER_NAME'       => $module->getLowerName(),
+            'MODULE'           => $this->getModuleName(),
+            'NAME'             => $this->getModuleName(),
+            'STUDLY_NAME'      => $module->getStudlyName(),
+            'MODULE_NAMESPACE' => $this->laravel['modules']->config('namespace'),
+            'MODEL'            => $this->getModelName(),
+            'LOWER_MODEL'      => $this->getLowerModelName(),
+            'PLURAL_MODEL'     => $this->getPluralModelName(),       
+        ];
+
+        foreach ($params as $key => $value) {
+            $stub = str_replace('$'.$key.'$', $value, $stub);
+        }
+
+        return $stub;
     }
 
 

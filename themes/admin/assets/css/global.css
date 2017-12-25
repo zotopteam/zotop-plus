@@ -222,6 +222,8 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .form-group{margin-bottom:0;padding:0.75rem 0;}
 .form-group.row:hover{background:#f6fafd;}
 .form-help{color:#666;font-size:0.75rem;display:block;margin-top:.25rem;}
+.form-tabs{padding:.75rem 1rem;padding-bottom:0;}
+.form-tab-content{padding:.25rem 0;}
 
 label.required:after {content:'*';font-size:0.875rem;color:#f00;margin-left:0.25rem;font-weight:bold;}
 label.col-form-label {cursor:pointer;}

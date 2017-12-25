@@ -231,7 +231,7 @@ class FileController extends AdminController
      * @return array
      */
     public function select(Request $request)
-    {
+    {       
         $browser = app(FileBrowser::class, [
             'root' => $request->input('root'),
             'dir'  => $request->input('dir')
