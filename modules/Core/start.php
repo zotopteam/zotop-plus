@@ -368,11 +368,12 @@
  * 多选组
  */
 \Form::macro('checkboxgroup', function($attrs){
-    $value    = $this->getValue($attrs, []);
-    $name     = $this->getAttribute($attrs, 'name');    
-    $options  = $this->getAttribute($attrs, 'options', []);
-    $column   = $this->getAttribute($attrs, 'column', 0);
-    $class    = $this->getAttribute($attrs, 'class', 'checkboxgroup-default');
+    $value   = $this->getValue($attrs);
+    $value   = is_array($value) ? $value : [];
+    $name    = $this->getAttribute($attrs, 'name');    
+    $options = $this->getAttribute($attrs, 'options', []);
+    $column  = $this->getAttribute($attrs, 'column', 0);
+    $class   = $this->getAttribute($attrs, 'class', 'checkboxgroup-default');
 
     return $this->toHtmlString(
         $this->view->make('core::field.checkboxgroup')->with(compact('name', 'value', 'column', 'options', 'class', 'attrs'))->render()
@@ -383,7 +384,7 @@
  * 代码编辑器
  */
 \Form::macro('code', function($attrs){
-    $value   = $this->getValue($attrs, []);
+    $value   = $this->getValue($attrs);
     $name    = $this->getAttribute($attrs, 'name');
     $options = $this->getAttribute($attrs, 'options',  [
         'width'         => $this->getAttribute($attrs, 'width', '100%'),

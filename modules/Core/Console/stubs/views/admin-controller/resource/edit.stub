@@ -14,7 +14,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$$LOWER_MODEL$" route="[$LOWER_NAME$.$LOWER_CONTROLLER$.store, $id]" method="put" autocomplete="off"}
+            {form model="$$LOWER_MODEL$" route="['$LOWER_NAME$.$LOWER_CONTROLLER$.store', $id]" id="$LOWER_MODEL$-form" method="put" autocomplete="off"}
 
             <div class="form-title row">{{trans('$LOWER_NAME$::$LOWER_CONTROLLER$.form.base')}}</div>
 
@@ -37,7 +37,7 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
-            {field type="submit" form="administrator" value="trans('core::master.save')" class="btn btn-primary"}
+            {field type="submit" form="$LOWER_MODEL$-form" value="trans('core::master.save')" class="btn btn-primary"}
         </div>
     </div>
 </div>
