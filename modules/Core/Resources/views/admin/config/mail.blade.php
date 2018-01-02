@@ -110,7 +110,7 @@
             <div class="form-group row">
                 <label for="password" class="col-2 col-form-label">{{trans('core::config.mail.password.label')}}</label>
                 <div class="col-8">
-                    {field type="password" name="password"}
+                    {field type="password2" name="password"}
                     
                     @if ($errors->has('password'))
                     <span class="form-help text-error">{{ $errors->first('password') }}</span>
@@ -130,7 +130,8 @@
                         {field type="email" name="mailtest_sendto" required="required"}
                         <span class="input-group-btn">
                             <button class="btn btn-primary form-submit" type="submit" id="mailtest">
-                                <i class="fa fa-send fa-fw"></i>{{trans('core::config.mail.test.send')}}
+                                <i class="fa fa-paper-plane fa-fw text-center"></i>
+                                {{trans('core::config.mail.test.send')}}
                             </button>
                         </span>                        
                     </div>                   

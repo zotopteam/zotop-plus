@@ -13,3 +13,8 @@
  * 监听系统图片上传
  */
 \Filter::listen('core.file.upload', 'Modules\Media\Hook\Listener@upload');
+
+/**
+ * 监听上传字段
+ */
+\Filter::listen('core::field.upload.tools', 'Modules\Media\Hook\Listener@fieldUploadTools');

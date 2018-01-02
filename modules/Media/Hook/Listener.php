@@ -64,4 +64,24 @@ class Listener
         
         return $result;
     }
+
+    public function fieldUploadTools($tools, $params)
+    {
+        @extract($params);
+
+        $mediaTools = [
+            'uploaded'   => [
+                'text'  => trans('media::file.insert.from.uploaded',[$typename]),
+                'icon'  => 'fa fa-cloud',
+                'href'  => route('media.file.select', ['from'=>'public/uploads'] + $params),
+            ],
+            'libarary' => [
+                'text'  => trans('media::file.insert.from.media',[$typename]),
+                'icon'  => 'fa fa-database',
+                'href'  => route('media.file.select', ['from'=>'public/uploads'] + $params),
+            ]
+        ];
+
+        return $mediaTools + $tools;
+    }
 }

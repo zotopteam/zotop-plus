@@ -23,4 +23,7 @@ return [
     'type'               => '类型',
     'size'               => '大小',
     'mtime'              => '修改时间',
+
+    'insert.from.uploaded' => '已上传',
+    'insert.from.media'    => '媒体库',    
 ];

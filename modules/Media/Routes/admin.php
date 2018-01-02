@@ -25,6 +25,7 @@ $router->group(['prefix' =>'media','module'=>'media'], function (Router $router)
         $router->any('rename','FileController@rename')->name('media.file.rename')->middleware('allow:media.file.rename');
         $router->any('move/{id}','FileController@move')->name('media.file.move')->middleware('allow:media.file.move');
         $router->any('upload/{type?}','FileController@upload')->name('media.file.upload')->middleware('allow:media.file.upload');
+        $router->any('select/{type?}','FileController@select')->name('media.file.select')->middleware('allow:media.file.select');
     });
 
 
