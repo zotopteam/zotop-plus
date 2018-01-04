@@ -6,13 +6,13 @@ use Auth;
 use Modules\Media\Models\Folder;
 use Modules\Media\Models\File;
 
-
 class Listener
 {
     /**
-     * [start description]
-     * @param  [type] $start [description]
-     * @return [type]        [description]
+     * 开始菜单扩展
+     * 
+     * @param  array $start 开始菜单数组
+     * @return array
      */
     public function start($start)
     {
@@ -65,23 +65,32 @@ class Listener
         return $result;
     }
 
-    public function fieldUploadTools($tools, $params)
+    /**
+     * 上传控件扩展工具
+     * 
+     * @param  array $tools 工具数据
+     * @param  array $params 传入参数
+     * @return array
+     */
+    public function select($tools, $params)
     {
         @extract($params);
 
-        $mediaTools = [
+        $select = [
             'uploaded'   => [
-                'text'  => trans('media::file.insert.from.uploaded',[$typename]),
-                'icon'  => 'fa fa-cloud',
-                'href'  => route('media.file.select', ['from'=>'public/uploads'] + $params),
+                'text'   => trans('media::media.insert.from.uploaded',[$typename]),
+                'icon'   => 'fa fa-cloud',
+                'href'   => route('media.select.uploaded', $params),
+                'active' => Route::active('media.select.uploaded'),
             ],
             'libarary' => [
-                'text'  => trans('media::file.insert.from.media',[$typename]),
-                'icon'  => 'fa fa-database',
-                'href'  => route('media.file.select', ['from'=>'public/uploads'] + $params),
+                'text'   => trans('media::media.insert.from.library',[$typename]),
+                'icon'   => 'fa fa-database',
+                'href'   => route('media.select.library', $params),
+                'active' => Route::active('media.select.library'),
             ]
         ];
 
-        return $mediaTools + $tools;
+        return $select + $tools;
     }
 }

@@ -149,6 +149,7 @@
 
     // 附加参数
     $params = $this->getAttribute($attrs, 'params',  [
+        'select'     => 1,
         'allow'      => $allow,
         'maxsize'    => $maxsize,
         'filetype'   => $filetype,
@@ -237,10 +238,12 @@
 \Form::macro('date', function($attrs) {
 
     $value = $this->getValue($attrs);
-    $name  = $this->getAttribute($attrs, 'name');    
-    
+    $id    = $this->getId($attrs);
+    $name  = $this->getAttribute($attrs, 'name');
+
     $options = $this->getAttribute($attrs, 'options',  [
         'inline'     => $this->getAttribute($attrs, 'inline', false),
+        'icon'       => $this->getAttribute($attrs, 'icon', false),
         'format'     => $this->getAttribute($attrs, 'format', 'Y-m-d'),
         'timepicker' => $this->getAttribute($attrs, 'time', false),
         'datepicker' => $this->getAttribute($attrs, 'date', true),
@@ -252,8 +255,14 @@
         'startDate'  => $this->getAttribute($attrs, 'start', false),
     ]);
 
+    // 追加标签
+    $attrs =  $attrs + [
+        'class'       => 'form-control-date',
+        'data-toggle' => 'date'
+    ];    
+
     return $this->toHtmlString(
-        $this->view->make('core::field.datetime')->with(compact('name', 'value', 'attrs', 'options'))->render()
+        $this->view->make('core::field.datetime')->with(compact('name', 'value', 'id', 'attrs', 'options'))->render()
     );
 });
 
@@ -383,9 +392,10 @@
 /**
  * 代码编辑器
  */
-\Form::macro('code', function($attrs){
+\Form::macro('code', function($attrs) {
     $value   = $this->getValue($attrs);
     $name    = $this->getAttribute($attrs, 'name');
+
     $options = $this->getAttribute($attrs, 'options',  [
         'width'         => $this->getAttribute($attrs, 'width', '100%'),
         'height'        => $this->getAttribute($attrs, 'height', '600'),

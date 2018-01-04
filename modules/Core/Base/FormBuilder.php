@@ -111,7 +111,21 @@ class FormBuilder extends LaravelFormBuilder
         return str_replace(['.', '[]', '[', ']'], ['-', '', '-', ''], $id);
     }
 
-    
+    /**
+     * 从标签中获取ID
+     * 
+     * @param  array  $attributes 标签数据
+     * @param  string  $default 默认值
+     * @return string
+     */
+    public function getId($attributes, $default = null)
+    {
+        if (array_key_exists('name', $attributes)) {
+            return static::getIdAttribute($attributes['name'], $attributes); 
+        }
+        
+        return $default;      
+    }
 
     /**
      * 从属性数组中取出值

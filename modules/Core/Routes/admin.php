@@ -15,18 +15,18 @@ $router->group(['prefix' =>'/', 'module'=>'core'], function (Router $router) {
 
     // 登出
     $router->any('logout', 'AuthController@logout')->name('admin.logout');
-    
+
 });
 
 // Core 模块后台路由
 $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) {
 
     // 个人管理
-    $router->group(['prefix' =>'mine'], function (Router $router) {       
+    $router->group(['prefix' =>'mine'], function (Router $router) {
        $router->get('edit','MineController@edit')->name('core.mine.edit')->middleware('allow:core.mine.edit');
        $router->put('update','MineController@update')->name('core.mine.update')->middleware('allow:core.mine.edit');
        $router->get('password','MineController@password')->name('core.mine.password')->middleware('allow:core.mine.password');
-       $router->put('password_update','MineController@updatePassword')->name('core.mine.password.update')->middleware('allow:core.mine.password');       
+       $router->put('password_update','MineController@updatePassword')->name('core.mine.password.update')->middleware('allow:core.mine.password');
        $router->get('permission','MineController@permission')->name('core.mine.permission')->middleware('allow:core.mine.permission');
        $router->get('log','MineController@log')->name('core.mine.log')->middleware('allow:core.mine.log');
     });
@@ -39,10 +39,10 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
        $router->get('edit/{id}','AdministratorController@edit')->name('core.administrator.edit')->middleware('allow:core.administrator.edit');
        $router->put('update/{id}','AdministratorController@update')->name('core.administrator.update')->middleware('allow:core.administrator.edit');
        $router->post('status/{id}','AdministratorController@status')->name('core.administrator.status')->middleware('allow:core.administrator.status');
-       $router->delete('destroy/{id}','AdministratorController@destroy')->name('core.administrator.destroy')->middleware('allow:core.administrator.destroy');           
+       $router->delete('destroy/{id}','AdministratorController@destroy')->name('core.administrator.destroy')->middleware('allow:core.administrator.destroy');
     });
 
-    // role 
+    // role
     $router->group(['prefix' =>'role'], function (Router $router) {
         $router->get('index','RoleController@index')->name('core.role.index')->middleware('allow:core.role.index');
         $router->get('create','RoleController@create')->name('core.role.create')->middleware('allow:core.role.create');
@@ -61,14 +61,14 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->any('mail','ConfigController@mail')->name('core.config.mail')->middleware('allow:core.config.mail');
         $router->any('mail/test','ConfigController@mailtest')->name('core.config.mailtest')->middleware('allow:core.config.mail');
         $router->any('safe','ConfigController@safe')->name('core.config.safe')->middleware('allow:core.config.safe');
-        $router->any('locale','ConfigController@locale')->name('core.config.locale')->middleware('allow:core.config.locale');            
-    });       
+        $router->any('locale','ConfigController@locale')->name('core.config.locale')->middleware('allow:core.config.locale');
+    });
 
     // 系统功能
     $router->group(['prefix' =>'system'], function (Router $router) {
         $router->any('refresh/{mode?}','SystemController@refresh')->name('core.system.refresh');
-        $router->get('environment','SystemController@environment')->name('core.system.environment');       
-        $router->get('about','SystemController@about')->name('core.system.about');    
+        $router->get('environment','SystemController@environment')->name('core.system.environment');
+        $router->get('about','SystemController@about')->name('core.system.about');
     });
 
     // 模块管理
@@ -78,7 +78,7 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->post('disable/{name}','ModulesController@disable')->name('core.modules.disable')->middleware('allow:core.modules.status');
         $router->post('install/{name}','ModulesController@install')->name('core.modules.install')->middleware('allow:core.modules.install');
         $router->post('uninstall/{name}','ModulesController@uninstall')->name('core.modules.uninstall')->middleware('allow:core.modules.uninstall');
-        $router->post('delete/{name}','ModulesController@delete')->name('core.modules.delete')->middleware('allow:core.modules.delete');                 
+        $router->post('delete/{name}','ModulesController@delete')->name('core.modules.delete')->middleware('allow:core.modules.delete');
     });
 
     // 主题管理
@@ -105,7 +105,6 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->any('create','FolderController@create')->name('core.folder.create')->middleware('allow:core.folder.create');
         $router->any('delete','FolderController@delete')->name('core.folder.delete')->middleware('allow:core.folder.delete');
         $router->any('rename','FolderController@rename')->name('core.folder.rename')->middleware('allow:core.folder.rename');
-
     });
 
 });

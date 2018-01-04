@@ -15,6 +15,8 @@
 \Filter::listen('core.file.upload', 'Modules\Media\Hook\Listener@upload');
 
 /**
- * 监听上传字段
+ * 监听上传工具字段，从媒体中选择
  */
-\Filter::listen('core::field.upload.tools', 'Modules\Media\Hook\Listener@fieldUploadTools');
+\Filter::listen('core::field.upload.tools', 'Modules\Media\Hook\Listener@select');
+
+\Filter::listen('media::select.navbar', 'Modules\Media\Hook\Listener@select');

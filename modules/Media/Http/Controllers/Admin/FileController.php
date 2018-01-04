@@ -100,5 +100,6 @@ class FileController extends AdminController
         $file->save();
 
         return $this->success(trans('core::master.operated'), $request->referer());        
-    }    
+    }
+
 }

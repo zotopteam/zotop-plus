@@ -110,4 +110,48 @@ class MediaController extends AdminController
         // 全是正确
         return $this->success(trans('core::master.operated'), $request->referer());
     }
+
+    /**
+     * 从已上传中选择文件
+     *
+     * @return Response
+     */
+    public function uploaded(Request $request)
+    {
+        $file = File::query();
+
+        $from = $request->only(['module','controller','action','field','dataid','filetype','allow']);
+
+        foreach ($from as $key => $value) {        
+            if ($key == 'filetype' && $value) {
+                $file->where('type', $value);
+            } elseif ($key == 'allow' && $value) {
+                $file->whereIn('extension', explode(',', $value));
+            } else {
+                $file->where($key, $value);
+            }
+        }
+        
+        $this->params = $request->all();
+        $this->files  = $file->orderby('created_at', 'desc')->paginate(50);
+        $this->title  = trans('media::media.insert.from.uploaded',[$request->typename]);
+        
+        return $this->view('media::media.select.uploaded');
+    }
+
+    /**
+     * 从媒体库中选择文件
+     *
+     * @return Response
+     */
+    public function library(Request $request)
+    {        
+        $this->params = $request->all();
+        $this->files   = [];
+
+        debug($this->params);
+
+        $this->title = trans('media::media.insert.from.library',[$request->typename]);
+        return $this->view('media::media.select.library');
+    }        
 }

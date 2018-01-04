@@ -181,7 +181,7 @@
             return false;
         });
 
-        // 文件双击
+        // 文件单击
         $('[data-type="file"]').on('click', function(event) {
             //event.preventDefault();
             //当点击为按钮时，禁止选择

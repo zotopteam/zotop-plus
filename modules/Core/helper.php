@@ -14,6 +14,7 @@ if (! function_exists('array_deep')) {
         return $array;  
     }
 }
+
 if (! function_exists('array_object')) {
     
     /**
@@ -99,6 +100,25 @@ if (! function_exists('array_nest')) {
         }
         
         return $nestArray;
+    }
+}
+
+if (! function_exists('array_change_key')) {
+
+    /**
+     * 改变数组键名
+     * 
+     * @param  array  $array   源数组
+     * @param  array  $changes 数组键名映射
+     * @return array
+     */
+    function array_change_key(array $array, array $changes)
+    {
+        foreach ($changes as $old => $new) {            
+            array_set($array, $new, array_pull($array, $old));
+        }
+
+        return $array;
     }
 }
 

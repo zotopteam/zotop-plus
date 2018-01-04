@@ -75,7 +75,7 @@
 		            title   : title,
 		            url     : url,
 		            width   : '80%',
-		            height  : '60%',
+		            height  : '70%',
 		            padding : 0,
 		            ok:function() {
 		            	if (this.selected && this.selected.length) {

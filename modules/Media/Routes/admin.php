@@ -7,6 +7,8 @@ $router->group(['prefix' =>'media','module'=>'media'], function (Router $router)
     // 首页
     $router->get('index/{folder_id?}/{type?}', 'MediaController@index')->name('media.index')->middleware('allow:media.index');
     $router->any('operate', 'MediaController@operate')->name('media.operate')->middleware('allow:media.operate');
+    $router->any('select/uploaded','MediaController@uploaded')->name('media.select.uploaded')->middleware('allow:media.select.uploaded');
+    $router->any('select/library','MediaController@library')->name('media.select.library')->middleware('allow:media.select.library');
 
     // 文件夹
     $router->group(['prefix' =>'folder'], function (Router $router) {
@@ -25,7 +27,6 @@ $router->group(['prefix' =>'media','module'=>'media'], function (Router $router)
         $router->any('rename','FileController@rename')->name('media.file.rename')->middleware('allow:media.file.rename');
         $router->any('move/{id}','FileController@move')->name('media.file.move')->middleware('allow:media.file.move');
         $router->any('upload/{type?}','FileController@upload')->name('media.file.upload')->middleware('allow:media.file.upload');
-        $router->any('select/{type?}','FileController@select')->name('media.file.select')->middleware('allow:media.file.select');
     });
 
 
