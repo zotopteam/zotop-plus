@@ -14,7 +14,7 @@
 ::selection {background:#0072C6;color:#fff;}
 
 html,body {width:100%;height:100%;overflow:hidden;padding:0;margin:0;/*font-size:14px;*/}
-body {font-family:"Helvetica Neue",Helvetica,Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;padding-top:3rem;}
+body {padding-top:3rem;}
 body.dialog{padding:0;}
 
 dt,dt{margin-bottom:.5rem;margin-left:0;}
@@ -292,7 +292,8 @@ textarea{resize:none;}
 .radiocards .radiocards-row{margin:-0.25rem;}
 .radiocards .radiocards-col{padding:0.25rem;float:left;}
 
-.badge{font-weight:normal;}
+.badge{font-size:70%;line-height:inherit;}
+.badge-pill{padding:.25em .7em;}
 .badge-danger{background-color:#ff0000;border-radius:0.5rem;}
 
 .btn{cursor:pointer;}
@@ -316,6 +317,7 @@ textarea{resize:none;}
 .breadcrumb{background:#f7f7f7;}
 .breadcrumb-item+.breadcrumb-item::before{font-family:'Font Awesome 5 Free';font-weight:900;content:'\f105'}
 .breadcrumb-extra+.breadcrumb-item::before{content:''}
+.breadcrumb-item:hover{text-decoration:none!important;}
 
 /*shortcut*/
 .shortcut{border:1px solid transparent;color:#666;background:transparent;margin:0;padding:0.5rem;display:block;overflow:hidden;zoom:1;border-radius:0.25rem;position:relative;text-align:left;}
