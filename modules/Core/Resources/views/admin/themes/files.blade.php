@@ -81,7 +81,7 @@
                 <tr data-type="file">
                     <td width="1%" class="icon icon-sm pr-1">
                         @if($file->type == 'image')
-                        <div class="icon"><img src="{{preview($file->realpath,32,32)}}" width="32"></div>
+                        <div class="icon bg-image-preview"><img src="{{preview($file->realpath,32,32)}}" width="32"></div>
                         @else
                         <i class="fa {{$file->icon}} fa-2x fa-fw text-warning"></i>
                         @endif

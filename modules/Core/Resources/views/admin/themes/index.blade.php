@@ -19,15 +19,15 @@
         <div class="container-fluid">
             <div class="row">
             @foreach($themes as $theme)
-                <div class="col-3">                
+                <div class="col-4">                
                     <div class="card card-theme my-3">
-                        <div class="image">
-                            <img class="card-img-top img-fluid" src="{{preview($theme->path.'/theme.jpg',300,200)}}">
+                        <div class="image bg-image-preview">
+                            <img class="card-img-top img-fluid" src="{{preview($theme->path.'/theme.jpg',600,400)}}">
                         </div>
                         <div class="card-body">
                             <div class="card-title d-flex flex-row">
-                                <h4 class="mr-auto">{{$theme->title}}</h4>
-                                <small>version:{{$theme->version}}</small>
+                                <h4 class="mr-auto text-overflow">{{$theme->title}}</h4>
+                                <small class="py-1 ml-3">{{$theme->version}}</small>
                             </div>
                             <div class="card-text text-overflow text-overflow-2 d-none">{{$theme->description}}</div>
                             <div class="card-text manage">
