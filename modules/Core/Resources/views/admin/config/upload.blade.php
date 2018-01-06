@@ -37,7 +37,7 @@
                                 <td>
                                     <div class="input-group">
                                         {field type="number" name="upload[types]['.$type.'][maxsize]" min="0" required="required}
-                                        <div class="input-group-addon">MB</div>
+                                        <div class="input-group-append"><span class="input-group-text">MB</span></div>
                                     </div>
                                 </td>
                                 <td class="text-center">{field type="toggle" name="upload[types]['.$type.'][enabled]"}</td>
@@ -86,11 +86,11 @@
                 <label for="resize_max" class="col-2 col-form-label">{{trans('core::image.resize.max')}}</label>
                 <div class="col-5">
                     <div class="input-group">
-                        <div class="input-group-addon">{{trans('core::image.resize.width')}}</div>
+                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.resize.width')}}</span></div>
                         {field type="number" name="image[resize][width]" min="0"}
-                        <div class="input-group-addon">{{trans('core::image.resize.height')}}</div>
+                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.resize.height')}}</span></div>
                         {field type="number" name="image[resize][height]" min="0"}
-                        <div class="input-group-addon">px</div>
+                        <div class="input-group-append"><span class="input-group-text">px</span></div>
                     </div>
                     
                     @if ($errors->has('max'))
@@ -134,11 +134,11 @@
                 <label for="image_watermark_min" class="col-2 col-form-label">{{trans('core::image.watermark.min')}}</label>
                 <div class="col-5">
                     <div class="input-group">
-                        <div class="input-group-addon">{{trans('core::image.watermark.width')}}</div>
+                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.width')}}</span></div>
                         {field type="number" name="image[watermark][width]" min="0"}
-                        <div class="input-group-addon">{{trans('core::image.watermark.height')}}</div>
+                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.height')}}</span></div>
                         {field type="number" name="image[watermark][height]" min="0"}
-                        <div class="input-group-addon">px</div>
+                        <div class="input-group-append"><span class="input-group-text">px</span></div>
                     </div>
                     
                     @if ($errors->has('min'))
@@ -172,14 +172,14 @@
                     </label>
                     <div class="col-3">
                         <div class="input-group">
-                            <div class="input-group-addon">{{trans('core::image.watermark.font.size')}}</div>
+                            <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.font.size')}}</span></div>
                             {field type="select" name="image[watermark][font][size]" options="Module::data('core::watermark.font.size')"}
-                            <div class="input-group-addon">px</div>                
+                            <div class="input-group-append"><span class="input-group-text">px</span></div>                
                         </div>
                     </div>
                     <div class="col-3">
                         <div class="input-group">
-                            <div class="input-group-addon">{{trans('core::image.watermark.font.color')}}</div>
+                            <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.font.color')}}</span></div>
                             {field type="text" name="image[watermark][font][color]"}
                         </div>                
                     </div>                
@@ -237,11 +237,11 @@
                 <label for="image_watermark_offset" class="col-2 col-form-label">{{trans('core::image.watermark.offset')}}</label>
                 <div class="col-5">
                     <div class="input-group">
-                        <div class="input-group-addon">{{trans('core::image.watermark.offset.x')}}</div>
+                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.offset.x')}}</span></div>
                         {field type="number" name="image[watermark][offset][x]" min="0"}
-                        <div class="input-group-addon">{{trans('core::image.watermark.offset.y')}}</div>
+                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.offset.y')}}</span></div>
                         {field type="number" name="image[watermark][offset][y]" min="0"}
-                        <div class="input-group-addon">px</div>
+                        <div class="input-group-append"><span class="input-group-text">px</span></div>
                     </div>
                     
                     @if ($errors->has('offset'))

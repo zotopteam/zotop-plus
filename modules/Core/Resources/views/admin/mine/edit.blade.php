@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="email" class="col-2 col-form-label required">{{trans('core::mine.mobile.label')}}</label>
+                    <label for="mobile" class="col-2 col-form-label required">{{trans('core::mine.mobile.label')}}</label>
                     <div class="col-4 col-md-6">
                         {field type="mobile" name="mobile" required="required"}
 
@@ -56,7 +56,7 @@
 
                 <div class="form-group row">
                     <label for="sign" class="col-2 col-form-label">{{trans('core::mine.sign.label')}}</label>
-                    <div class="col-6">
+                    <div class="col-8">
                         {field type="textarea" name="sign" rows="3" maxlength="255"}
 
                         @if ($errors->has('sign'))

@@ -23,11 +23,15 @@
                 </div>
                 <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                         <div class="input-group input-group-merge">
-                            <label for="username" class="input-group-addon"><i class="fa fa-user fa-fw text-primary"></i></label>
-                            {field type="text" name="username" required="required" autofocus="autofocus" placeholder="trans('core::auth.account.placeholder')" data-msg-required="trans('core::auth.account.required')"}
-                            <label for="remember" class="input-group-addon" title="{{trans('core::auth.remember')}}" data-toggle="tooltip" data-placement="right">
-                                <input type="checkbox" class="form-control text-muted text-md" name="remember" tabindex="-1" {{ old('remember') ? 'checked' : ''}}>
+                            <label for="username" class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-user fa-fw text-primary"></i></span>
                             </label>
+                            {field type="text" name="username" required="required" autofocus="autofocus" placeholder="trans('core::auth.account.placeholder')" data-msg-required="trans('core::auth.account.required')"}
+                            <div class="input-group-append" title="{{trans('core::auth.remember')}}" data-toggle="tooltip" data-placement="right">
+                                <div class="input-group-text">
+                                    <input type="checkbox" class="form-control text-muted text-md" name="remember" tabindex="-1" {{ old('remember') ? 'checked' : ''}}>
+                                </div>
+                            </div>
                         </div>
 
                         @if ($errors->has('username'))
@@ -36,7 +40,9 @@
                 </div>
                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                         <div class="input-group input-group-merge">
-                            <label for="password" class="input-group-addon"><i class="fa fa-lock fa-fw text-primary"></i></label>                    
+                            <label for="password" class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-lock fa-fw text-primary"></i></span>
+                            </label>                    
                             {field type="password" name="password" required="required" placeholder="trans('core::auth.password.placeholder')" data-msg-required="trans('core::auth.password.required')"}
                         </div>
 

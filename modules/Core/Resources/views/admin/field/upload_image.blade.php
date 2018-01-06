@@ -1,9 +1,9 @@
 <div class="input-group input-upload-image" id="upload-image-{{$id}}">
     {{Form::text($name,$value,$attrs)}}
-    <div class="input-group-addon progress-percent" style="display:none;">
+    <div class="input-group-append progress-percent" style="display:none;">
         0%
     </div>
-    <span class="input-group-btn">
+    <span class="input-group-append">
         <button type="button" tabindex="-1" class="btn btn-secondary btn-upload">
             <i class="fa fa-image"></i>
             {{$button}}

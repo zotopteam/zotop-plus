@@ -22,9 +22,9 @@
                     {field type="toggle" name="maintained"}
                     
                     @if ($errors->has('url'))
-                    <span class="form-help text-error">{{ $errors->first('maintained') }}</span>
+                    <div class="form-help text-error">{{ $errors->first('maintained') }}</div>
                     @else
-                    <span class="form-help">{{trans('site::config.maintained.help')}}</span>
+                    <div class="form-help">{{trans('site::config.maintained.help')}}</div>
                     @endif
                 </div>
             </div>  
@@ -36,9 +36,9 @@
                     {field type="textarea" name="maintaining" rows="3"}
                     
                     @if ($errors->has('maintaining'))
-                    <span class="form-help text-error">{{ $errors->first('maintaining') }}</span>
+                    <div class="form-help text-error">{{ $errors->first('maintaining') }}</div>
                     @else
-                    <span class="form-help">{{trans('site::config.maintaining.help')}}</span>
+                    <div class="form-help">{{trans('site::config.maintaining.help')}}</div>
                     @endif
                 </div>
             </div>

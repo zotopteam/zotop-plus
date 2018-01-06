@@ -34,7 +34,7 @@
                 <div class="input-group">
                     {{--{field type="select" name="type" options="Module::data('media::type.options')"}--}}
                     <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('media::media.search.placeholder')}}" required="required" aria-label="Search">
-                    <div class="input-group-btn">
+                    <div class="input-group-append">
                         <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
                     </div>
                 </div>

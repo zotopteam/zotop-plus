@@ -1,11 +1,11 @@
 <div class="input-group upload-field" id="upload-field-{{$id}}">
     {{Form::text($name,$value,$attrs)}}
-    <span class="input-group-btn">
+    <span class="input-group-append">
         <button type="button" tabindex="-1" class="btn btn-light btn-icon-text btn-upload btn-progress">
             <i class="btn-icon fa fa-fw {{$icon or 'fa-upload'}}"></i>
             <b class="btn-text">{{$button}}</b>
             <div class="progress d-none">
-              <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div>
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div>
             </div>            
         </button>
         @if($tools)

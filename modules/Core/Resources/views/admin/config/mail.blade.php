@@ -32,7 +32,9 @@
                 <label for="from[address]" class="col-2 col-form-label required">{{trans('core::config.mail.from.address.label')}}</label>
                 <div class="col-8">
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-envelope fa-fw"></i></span>
+                        </div>
                         {field type="email" name="from[address]" required="required"}
                     </div>                   
                     
@@ -126,14 +128,16 @@
                 <label for="test" class="col-2 col-form-label required">{{trans('core::config.mail.test.label')}}</label>
                 <div class="col-8">
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-envelope fa-fw"></i></span>
+                        </div>
                         {field type="email" name="mailtest_sendto" required="required"}
-                        <span class="input-group-btn">
+                        <div class="input-group-append">
                             <button class="btn btn-primary form-submit" type="submit" id="mailtest">
                                 <i class="fa fa-paper-plane fa-fw text-center"></i>
                                 {{trans('core::config.mail.test.send')}}
                             </button>
-                        </span>                        
+                        </div>                        
                     </div>                   
                     
                     @if ($errors->has('from.address'))

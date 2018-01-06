@@ -4,7 +4,7 @@
 </div>
 @elseif($options['icon'])
 <div class="input-group input-datetime" id="datetimepicker-{{$name}}">    
-    <span class="input-group-addon"><i class="fa fa-calendar-alt fa-fw"></i></span>
+    <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-calendar-alt fa-fw"></i></span></div>
     {{Form::text($name,$value,$attrs)}}
 </div>
 @else
