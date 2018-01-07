@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="contextmenu d-none">
                                         @if ($file->isImage())
-                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}">
+                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}" data-info="{{$file->getSize()}} / {{$file->width}}px × {{$file->height}}px">
                                             <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
                                             <b class="contextmenu-item-text">{{trans('media::file.view')}}</b>
                                         </a>
@@ -72,7 +72,7 @@
                                             <b class="contextmenu-item-text">{{trans('media::file.delete')}}</b>
                                         </a>
                                 </div>
-                                <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>                                                           
+                                <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>
                             </div>                           
                         </div>
                     </label>
@@ -83,9 +83,11 @@
         </div>
 
     </div><!-- main-body -->
+    @if ($files->lastPage() > 1)  
     <div class="main-footer">
-        {{ $files->links('core::pagination.default') }}
+        {{ $files->appends($params)->links('core::pagination.default') }}
     </div>
+    @endif
 </div>
 @endsection
 

@@ -231,27 +231,35 @@ $(function(){
     $(document).on('click', 'a.js-image', function(event){
         event.preventDefault();
 
-        var url     = $(this).data('url');
-        var title   = $(this).data('title');
-        var $dialog = $.image(url, title);
+        var url   = $(this).data('url');
+        var title = $(this).data('title');
+        var info  = $(this).data('info');
+
+        var $dialog = $.image(url, title).statusbar(info);
 
         event.stopPropagation();
     });
 
     $(document).on('contextmenu', '.js-contextmenu', function(event){
-        event.preventDefault();
+        
+        // contextmenu 必须在当前元素之内
+        var contextmenu = $(this).data('contextmenu') || '.contextmenu';
+            contextmenu = $(this).find(contextmenu);
 
-        var content = $(this).find('.contextmenu').html();
+        if (contextmenu.length && contextmenu.html()) {
 
-        var d = $.dialog({
-            skin       : 'ui-contextmenu',
-            quickClose : true,
-            content    : content
-        }, event);
+            // 使用dialog函数，在当前页面打开对话框，使用 $.dialog 为顶级页面打开
+            var d = dialog({
+                skin       : 'ui-contextmenu',
+                quickClose : true,
+                content    : contextmenu.html()
+            }).show(event);
 
-        return d.destroyed;
+            event.preventDefault();
+            event.stopPropagation();
 
-        event.stopPropagation();
+            return d.destroyed;
+        }       
     });    
 })
 
