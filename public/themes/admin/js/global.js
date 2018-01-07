@@ -237,6 +237,22 @@ $(function(){
 
         event.stopPropagation();
     });
+
+    $(document).on('contextmenu', '.js-contextmenu', function(event){
+        event.preventDefault();
+
+        var content = $(this).find('.contextmenu').html();
+
+        var d = $.dialog({
+            skin       : 'ui-contextmenu',
+            quickClose : true,
+            content    : content
+        }, event);
+
+        return d.destroyed;
+
+        event.stopPropagation();
+    });    
 })
 
 

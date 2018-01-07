@@ -74,8 +74,8 @@
 		        $.dialog({
 		            title   : title,
 		            url     : url,
-		            width   : '80%',
-		            height  : '70%',
+		            width   : '95%',
+		            height  : '75%',
 		            padding : 0,
 		            ok:function() {
 		            	if (this.selected && this.selected.length) {

@@ -133,7 +133,7 @@ class MediaController extends AdminController
         }
         
         $this->params = $request->all();
-        $this->files  = $file->orderby('created_at', 'desc')->paginate(50);
+        $this->files  = $file->orderby('created_at', 'desc')->paginate(24);
         $this->title  = trans('media::media.insert.from.uploaded',[$request->typename]);
         
         return $this->view('media::media.select.uploaded');

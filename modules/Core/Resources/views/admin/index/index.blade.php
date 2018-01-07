@@ -12,8 +12,8 @@
         <div class="container-fluid">
             <div class="row">
                 @foreach(filter::fire('global.start',[]) as $s)
-                <div class="col-sm-4 col-md-3">
-                    <a href="{{$s['href']}}" class="shortcut shortcut-list">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <a href="{{$s['href']}}" class="shortcut shortcut-media">
                         <div class="shortcut-icon">
                             <i class="{{$s['icon']}}"></i>
                             @if(isset($s['badge']))

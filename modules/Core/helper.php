@@ -153,10 +153,11 @@ if (! function_exists('preview')) {
             // 图片缩放
             if ($width || $height) {
                 if ($fit) {
-                    app('image')->make($file)->fit($width,$height)->save();
+                    app('image')->make($file)->fit($width, $height)->save();
                 } else {
-                    app('image')->make($file)->resize($width,$height,function ($constraint) {
+                    app('image')->make($file)->resize($width, $height, function($constraint) {
                         $constraint->aspectRatio();
+                        $constraint->upsize();
                     })->save();
                 }               
             }          

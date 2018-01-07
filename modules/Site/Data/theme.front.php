@@ -11,7 +11,7 @@ foreach ($themes as $theme) {
     $description = $theme->description;
 
     $return[$value] = [$image, $title];
-    
+
     //显示描述信息
     //$return[$value] = [$image, $title, $description];
 }

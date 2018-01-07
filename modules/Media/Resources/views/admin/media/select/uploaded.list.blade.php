@@ -8,11 +8,9 @@
             {{$title}}
         </div>        
         <div class="main-action">
-            @if (request()->input('select', 0) != 1)
             <a href="javascript:;" class="btn btn-light js-select-all">
                 <i class="fa fa-check-square fa-fw"></i> {{trans('media::media.select.all')}}
             </a>
-            @endif
             <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('core::master.refresh')}}">
                 <i class="fa fa-sync"></i>
             </a>        
@@ -23,64 +21,72 @@
     </div>
     <div class="main-body scrollable" id="file-upload-dragdrop">
         
-        <div class="container-fluid">
+        {form route="media.operate" class="form-datalist" method="post"}
+        <table class="table table-nowrap table-hover table-select">
+            <thead>
+            <tr>
+                <th class="select">
+                    <input type="checkbox" class="select-all d-none">
+                </th>
+                <th colspan="3">{{trans('media::media.name')}}</th>
+                <th width="10%">{{trans('media::media.type')}}</th>
+                <th width="10%">{{trans('media::media.size')}}</th>
+                <th width="10%">{{trans('media::media.created_at')}}</th>
+            </tr>
+            </thead>
+            <tbody>
 
-            <div class="row">
             @foreach($files as $file)
-                <div class="col-sm-4 col-md-3 col-xl-2 p-1">
-                    <label class="card-check d-block" data-type="file">
+                <tr data-type="file">
+                    <td class="select">
                         @if (request()->input('select', 0) == 1)
-                        <input type="radio" name="file_ids[]" value="{{$file->id}}" class="form-control form-control-check">
+                        <input type="radio" name="file_ids[]" value="{{$file->id}}" class="select">
                         @else
-                        <input type="checkbox" name="file_ids[]" value="{{$file->id}}" class="form-control form-control-check">
-                        @endif               
-                        <div class="card card-md bg-light js-contextmenu">
-                            <div class="card-image">
-                                <div class="pos-r"style="padding-bottom:60%;overflow:hidden;">
-                                    <div class="pos-a pos-full d-flex justify-content-center bg-image-preview">
-                                        @if ($file->isImage())
-                                        <img src="{{$file->getUrl()}}" class="img-fluid align-self-center">
-                                        @else
-                                        <i class="fa {{$file->getIcon()}} fa-2x fa-fw text-warning"></i>
-                                        @endif
-                                    </div>
-                                </div>                             
-                            </div>
-                            <div class="card-body p-2">
-                                <div class="card-text text-md text-overflow">
-                                    {{$file->name}}
-                                </div>
-                                <div class="card-text">
-                                    <small class="text-success">{{$file->getSize()}}</small>
-                                    @if ($file->isImage())
-                                    <small>{{$file->width}}px × {{$file->height}}px</small>
-                                    @endif
-                                </div>
-                                <div class="contextmenu d-none">
-                                        @if ($file->isImage())
-                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}">
-                                            <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::file.view')}}</b>
-                                        </a>
-                                        @endif                 
-                                        <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.file.edit',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
-                                            <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::file.rename')}}</b>
-                                        </a>                      
-                                        <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $file->id)}}">
-                                            <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::file.delete')}}</b>
-                                        </a>
-                                </div>
-                                <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>                                                           
-                            </div>                           
+                        <input type="checkbox" name="file_ids[]" value="{{$file->id}}" class="select">
+                        @endif                        
+                    </td>                
+                    <td width="1%" class="text-center pr-2">
+                        @if ($file->isImage())
+                            <a href="javascript:;" class="js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}">
+                                <div class="icon icon-32"><img src="{{$file->getPreview(32,32)}}"></div>
+                            </a>
+                        @else
+                            <i class="fa {{$file->getIcon()}} fa-2x fa-fw text-warning"></i>
+                        @endif                        
+                    </td>                
+                    <td width="50%" class="pl-2">
+                        <div class="title text-md text-wrap">
+                            {{$file->name}}
                         </div>
-                    </label>
-                </div>
+                        <div class="description">
+                            @if ($file->isImage())
+                            {{$file->width}}px × {{$file->height}}px
+                            @endif
+                        </div>
+                        <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>
+                    </td>
+                    <td width="10%" class="manage manage-hover text-right">
+                        @if ($file->isImage())
+                        <a href="javascript:;" class="manage-item js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}">
+                            <i class="fa fa-eye fa-fw"></i> {{trans('media::file.view')}}
+                        </a>
+                        @endif                 
+                        <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.file.edit',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
+                            <i class="fa fa-fw fa-eraser"></i> {{trans('media::file.rename')}}
+                        </a>                      
+                        <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $file->id)}}">
+                            <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
+                        </a>                        
+                    </td>
+                    <td>{{trans('core::file.type.'.$file->type)}}</td>
+                    <td>{{$file->getSize()}}</td>
+                    <td>{{$file->getCreatedAt()}}</td>
+                </tr>
             @endforeach
-            </div>
-        
-        </div>
+
+            </tbody>
+        </table>
+        {/form}
 
     </div><!-- main-body -->
     <div class="main-footer">
@@ -156,7 +162,7 @@
         var selected  = new Array();
 
         $('[data-type="file"]').each(function() {
-            if ($(this).find('input.form-control-check').is(':checked')) {
+            if ($(this).find('input.select').is(':checked')) {
                 var data = $(this).find('[name=data]').val();
                     data = $.parseJSON(data);
                 selected.push(data);                
@@ -167,9 +173,30 @@
     }
 
     $(function(){
+        var selectTable = $('table.table-select').data('selectTable');
+
+        $('.js-select-all').on('click', function() {
+            selectTable.selectAll(true);
+            callback();
+        });
+
+        $('input.select').on('change',function(){
+            callback();
+        });
+
         // 文件单击
         $('[data-type="file"]').on('click', function(event) {
+            //当点击为按钮时，禁止选择
+            if($(event.target).prop('tagName') == 'A') return;
+
+            if($(this).find('input.select').is(':checked')) {
+                $(this).find('input.select').prop('checked',false);
+            } else {
+                $(this).find('input.select').prop('checked',true);
+            }
             callback();
+            event.stopPropagation();
+            return false;
         });          
     });
 

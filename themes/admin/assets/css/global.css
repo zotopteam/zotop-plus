@@ -25,12 +25,17 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 
 .full-width{width:100%;}    
 .full-height{height:100%;}
+
 .pos-s{position:static;}
 .pos-r{position:relative;}
 .pos-a{position:absolute;}
+.pos-f{position:fixed;}
+.pos-full{top:0;right:0;left:0;bottom:0}
+
 .cur-p{cursor:pointer;}
 .cur-m{cursor:move;}
 .cur-d{cursor:disabled;}
+
 .w-auto,.mw-auto{width:auto!important;}
 .h-auto,.mh-auto{height:auto!important;}
 
@@ -151,6 +156,12 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .manage-hover .manage-item{visibility:hidden;}
 .manage-hover:hover .manage-item{visibility:visible;}
 
+.contextmenu{}
+.contextmenu-item{display:block;padding:0.5rem 0.75rem;transition:all 0.2s ease-out 0s;white-space:nowrap;text-decoration:none!important;min-width:10rem;outline:0 none!important;}
+.contextmenu-item:hover{background:#0072c6;color:#fff;}
+.contextmenu-item-icon{width:1.25rem;text-align:center;margin-right:0.25rem;}
+.contextmenu-item-text{font-weight:normal;}
+
 .table-responsive{border:0 none;}
 
 .table{margin-bottom:0;}
@@ -249,6 +260,7 @@ label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 1px * 3);padd
 [type=checkbox]+span,[type=radio]+span{vertical-align:text-top;margin-left:.25rem;}
 [type=checkbox]:checked+span,[type=radio]:checked+span{color:#0072c6;}
 
+
 .toggle[type=checkbox]{font-size:1.8rem;font-weight:900;}
 .toggle[type=checkbox]:before{content:'\f204';}
 .toggle[type=checkbox]:checked:before{content:'\f205';color:#00bc3e;} 
@@ -274,26 +286,24 @@ textarea{resize:none;}
 .input-group-merge .custom-select:not(:first-child), .input-group-merge .form-control:not(:first-child){border-left:0;padding-left:.375rem;}
 .input-group-merge .custom-select:not(:last-child), .input-group-merge .form-control:not(:last-child){border-right:0;padding-right:.375rem;}
 
+.card-check{max-width:100%;}
+.card-check label{text-align:center;}
+.card-check img{border-radius:.05rem;}
+.card-check .card-body{padding:.75rem;}
+.card-check .form-control-check{display:none;}
+.card-check .form-control-check + .card{border-color:#fff;border-width:3px;cursor:pointer;transition:all 0.2s;}
+.card-check .form-control-check + .card:hover,
+.card-check .form-control-check + .card:focus{border-color:rgba(0,0,0,0.1);border-color:#66bb00;}
+.card-check .form-control-check:checked + .card{border-color:#66bb00;position:relative;}
+.card-check .form-control-check:checked + .card:before{content:"";width:0;height:0;border-top:1.5rem solid #66bb00;border-left:1.5rem solid transparent;position:absolute;display:block;right:0;top:0;z-index:1;}
+.card-check .form-control-check:checked + .card:after{content:"\f00c";position:absolute;top:.05rem;right:.05rem;color:#fff;font:900 .75rem/1 'Font Awesome 5 Free';z-index:2;}
+.card-check .form-control-check:checked + .card-md:before{border-top-width:2rem;border-left-width:2rem;}
+.card-check .form-control-check:checked + .card-md:after{font-size:1rem;top:.1rem;right:.1rem;}
+.card-check .form-control-check:checked + .card-lg:before{border-top-width:3rem;border-left-width:3rem;}
+.card-check .form-control-check:checked + .card-lg:after{font-size:1rem;top:.35rem;right:.35rem;}
 
-.radiocards{max-width:100%;}
-.radiocards label{text-align:center;}
-.radiocards img{border-radius:.05rem;}
-.radiocards .card-body{padding:.5rem;}
-.radiocards [type=radio]{display:none;}
-.radiocards [type=radio]+.card{border-color:#fff;border-width:3px;cursor:pointer;transition:all 0.2s;}
-.radiocards [type=radio]+.card:hover{border-color:rgba(0,0,0,0.1);border-color:#66bb00;}
-.radiocards [type=radio]:checked + .card{border-color:#66bb00;position:relative;}
-.radiocards [type=radio]:checked + .card:before{content:"";width:0;height:0;border-top:1.5rem solid #66bb00;border-left:1.5rem solid transparent;position:absolute;display:block;right:0;top:0;z-index:1;}
-.radiocards [type=radio]:checked + .card:after{content:"\f00c";position:absolute;top:.05rem;right:.05rem;color:#fff;font:900 .75rem/1 'Font Awesome 5 Free';z-index:2;}
-
-.radiocards-md [type=radio]:checked + .card:before{border-top-width:2rem;border-left-width:2rem;}
-.radiocards-md [type=radio]:checked + .card:after{font-size:1rem;top:.1rem;right:.1rem;}
-
-.radiocards-lg [type=radio]:checked + .card:before{border-top-width:3rem;border-left-width:3rem;}
-.radiocards-lg [type=radio]:checked + .card:after{font-size:1rem;top:.35rem;right:.35rem;}
-
-.radiocards .radiocards-row{margin:-0.25rem;}
-.radiocards .radiocards-col{padding:0.25rem;float:left;}
+.radiocards, .checkboxcards{margin:0 -0.25rem;}
+.radiocards .card, .checkboxcards .card{margin:0 .25rem;}
 
 .badge{font-size:70%;line-height:inherit;}
 .badge-pill{padding:.25em .7em;}
@@ -326,13 +336,14 @@ textarea{resize:none;}
 .shortcut{border:1px solid transparent;color:#666;background:transparent;margin:0;padding:0.5rem;display:block;overflow:hidden;zoom:1;border-radius:0.25rem;position:relative;text-align:left;}
 .shortcut:hover{border:1px solid #70c0e7;background:#e5f3fb;text-decoration:none;}
 
-.shortcut-list {margin:1rem 0;}
-.shortcut-list .shortcut-icon i{width:3.2rem;height:3.2rem;padding:0.6rem 0;font-size:2rem;border-radius:.25rem;text-align:center;}
-.shortcut-list .shortcut-text {position:absolute;top:0;left:4.5rem;right:0;}
-.shortcut-list .shortcut-text h2{font-size:1.25rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;margin:0.6rem 0 0.45rem 0;}
-.shortcut-list .shortcut-text p{font-size:0.875rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;margin:0}
-.shortcut-list .shortcut-badge {position:absolute;left:0;top:0;}
-.shortcut-list .shortcut-badge a{color:#fff;}
+.shortcut-media {margin-top:1.25rem;display:flex;}
+.shortcut-media .shortcut-icon{align-self: center!important;}
+.shortcut-media .shortcut-icon i{width:3.25rem;height:3.25rem;text-align:center;padding:0.6rem 0;font-size:2rem;border-radius:.25rem;}
+.shortcut-media .shortcut-text {margin-left:.75rem;flex:1;overflow:hidden;}
+.shortcut-media .shortcut-text h2{font-size:1.25rem;margin:0;margin-bottom:.4rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.shortcut-media .shortcut-text p{font-size:0.875rem;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.shortcut-media .shortcut-badge {position:absolute;left:0;top:0;}
+.shortcut-media .shortcut-badge a{color:#fff;}
 
 .shortcut-thumb {text-align:center;}
 .shortcut-thumb .shortcut-icon i{width:3.6rem;height:3.6rem;margin:0;padding:0.8rem 0;font-size:2rem;border-radius:.25rem;text-align:center;}
