@@ -15,52 +15,64 @@ class Listener
     public function start($start)
     {
         //编辑我的资料
-        $start['mine-edit'] = [
-            'text' => trans('core::mine.edit'),
-            'href' => route('core.mine.edit'),
-            'icon' => 'fa fa-user-circle bg-primary text-white', 
-            'tips' => trans('core::mine.edit.description'),
-        ];
+        if (allow('core.mine.edit')) {
+            $start['mine-edit'] = [
+                'text'  => trans('core::mine.edit'),
+                'href'  => route('core.mine.edit'),
+                'icon'  => 'fa fa-user-circle bg-primary text-white', 
+                'tips'  => trans('core::mine.edit.description'),
+            ];
+        }
 
         //修改我的密码
-        $start['mine-password'] = [
-            'text' => trans('core::mine.password'),
-            'href' => route('core.mine.password'),
-            'icon' => 'fa fa-key bg-primary text-white', 
-            'tips' => trans('core::mine.password.description'),
-        ];
+        if (allow('core.mine.password')) {
+            $start['mine-password'] = [
+                'text' => trans('core::mine.password'),
+                'href' => route('core.mine.password'),
+                'icon' => 'fa fa-key bg-primary text-white', 
+                'tips' => trans('core::mine.password.description'),
+            ];
+        }
 
         //管理员快捷方式
-        $start['administrator'] = [
-            'text' => trans('core::administrator.title'),
-            'href' => route('core.administrator.index'),
-            'icon' => 'fa fa-users bg-primary text-white', 
-            'tips' => trans('core::administrator.description'),
-        ];
+        if (allow('core.administrator.index')) {
+            $start['administrator'] = [
+                'text' => trans('core::administrator.title'),
+                'href' => route('core.administrator.index'),
+                'icon' => 'fa fa-users bg-primary text-white', 
+                'tips' => trans('core::administrator.description'),
+            ];
+        }
 
-        //管理员快捷方式
-        $start['core-config'] = [
-            'text' => trans('core::config.title'),
-            'href' => route('core.config.index'),
-            'icon' => 'fa fa-cogs bg-primary text-white', 
-            'tips' => trans('core::config.description'),
-        ];    
+        //系统设置
+        if (allow('core.config.index')) {
+            $start['core-config'] = [
+                'text' => trans('core::config.title'),
+                'href' => route('core.config.index'),
+                'icon' => 'fa fa-cogs bg-primary text-white', 
+                'tips' => trans('core::config.description'),
+            ];
+        }
 
-        //模块管理
-        $start['themes'] = [
-            'text' => trans('core::themes.title'),
-            'href' => route('core.themes.index'),
-            'icon' => 'fa fa-gem bg-primary text-white', 
-            'tips' => trans('core::themes.description'),
-        ];
+        // 主题管理
+        if (allow('core.themes.index')) {
+            $start['themes'] = [
+                'text' => trans('core::themes.title'),
+                'href' => route('core.themes.index'),
+                'icon' => 'fa fa-gem bg-primary text-white', 
+                'tips' => trans('core::themes.description'),
+            ];
+        }
           
         //模块管理
-        $start['modules'] = [
-            'text' => trans('core::modules.title'),
-            'href' => route('core.modules.index'),
-            'icon' => 'fa fa-puzzle-piece bg-primary text-white', 
-            'tips' => trans('core::modules.description'),
-        ];
+        if (allow('core.modules.index')) {
+            $start['modules'] = [
+                'text' => trans('core::modules.title'),
+                'href' => route('core.modules.index'),
+                'icon' => 'fa fa-puzzle-piece bg-primary text-white', 
+                'tips' => trans('core::modules.description'),
+            ];
+        }
 
         //environment 服务器环境
         $start['environment'] = [
@@ -105,14 +117,17 @@ class Listener
     public function tools($tools)
     {
         // 一键刷新
-        $tools['refresh'] = [
-            'icon'     => 'fa fa-magic', 
-            'text'     => trans('core::system.fastrefresh'),
-            'title'    => trans('core::system.fastrefresh.tips'),
-            'href'     => 'javascript:;',
-            'data-url' => route('core.system.refresh',['fast']),
-            'class'    => 'fastclean js-post',
-        ];
+        if (allow('core.system.refresh')) {
+            $tools['refresh'] = [
+                'icon'     => 'fa fa-magic', 
+                'text'     => trans('core::system.fastrefresh'),
+                'title'    => trans('core::system.fastrefresh.tips'),
+                'href'     => 'javascript:;',
+                'data-url' => route('core.system.refresh',['fast']),
+                'class'    => 'fastclean js-post',
+            ];
+        }
+        
         return $tools;
     }
 

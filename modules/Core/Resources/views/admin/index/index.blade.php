@@ -13,7 +13,7 @@
             <div class="row">
                 @foreach(filter::fire('global.start',[]) as $s)
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <a href="{{$s['href']}}" class="shortcut shortcut-media">
+                    <a href="{{$s['href']}}" class="shortcut shortcut-media {{$s['class'] ?? ''}}" target="{{$s['target'] ?? '_self'}}">
                         <div class="shortcut-icon">
                             <i class="{{$s['icon']}}"></i>
                             @if(isset($s['badge']))

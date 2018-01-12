@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factory;
 use Modules\Core\Traits\PublishConfig;
 use Nwidart\Modules\Module;
 use Modules\Core\Models\Config;
-
+use Blade;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -44,7 +44,12 @@ class CoreServiceProvider extends ServiceProvider
             $this->registerConfig($module); 
             $this->registerLanguageNamespace($module);
             $this->registerFactories($module);
-        }      
+        }
+
+        // 模板中的权限指令
+        Blade::if('allow', function ($permission) {
+            return allow($permission);
+        });             
     }
 
     /**

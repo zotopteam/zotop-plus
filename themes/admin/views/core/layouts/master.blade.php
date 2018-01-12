@@ -26,7 +26,7 @@
                                     <div class="row">
                                         @foreach(Filter::fire('global.start',[]) as $s)
                                         <div class="col-md-2 p-0">
-                                            <a href="{{$s['href']}}" class="shortcut shortcut-thumb">
+                                            <a href="{{$s['href']}}" class="shortcut shortcut-thumb {{$s['class'] ?? ''}}" target="{{$s['target'] ?? '_self'}}">
                                                 <div class="shortcut-icon">
                                                     <i class="{{$s['icon']}}"></i>
                                                     @if(isset($s['badge']))

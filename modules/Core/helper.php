@@ -1,4 +1,17 @@
 <?php
+if (! function_exists('allow')) {
+
+    /**
+     * 检查当前用户是否拥有权限
+     * @param  $permission 权限节点
+     * @return bool
+     */
+    function allow($permission)
+    {
+        return auth()->user()->allow($permission);
+    }
+}
+
 if (! function_exists('array_deep')) {
     /**
      * 将array_dot得到的数组反向为真实数组格式

@@ -2,14 +2,15 @@
 /**
  * 扩展后台全局导航
  */
-\Filter::listen('global.navbar',function($navbar){
-    
-    $navbar['developer'] = [
-        'text'   => trans('developer::developer.title'),
-        'href'   => route('developer.index'),
-        'active' => Route::is('developer.*')
-    ];
+\Filter::listen('global.navbar',function($navbar) {
 
+    if (allow('developer.index')) {
+        $navbar['developer'] = [
+            'text'   => trans('developer::developer.title'),
+            'href'   => route('developer.index'),
+            'active' => Route::is('developer.*')
+        ];
+    }
     return $navbar;
 }, 80);
 
@@ -18,14 +19,17 @@
  */
 \Filter::listen('global.start',function($navbar){
     
-    $navbar['developer'] = [
-        'text' => trans('developer::module.title'),
-        'href' => route('developer.module.index'),
-        'icon' => 'fa fa-puzzle-piece bg-warning text-white',
-        'tips' => trans('developer::module.description'),
-    ];
+    if (allow('developer.module.index')) {
+        $navbar['developer'] = [
+            'text' => trans('developer::module.title'),
+            'href' => route('developer.module.index'),
+            'icon' => 'fa fa-puzzle-piece bg-warning text-white',
+            'tips' => trans('developer::module.description'),
+        ];
+    }
     
     return $navbar;
+
 }, 80);
 
 
