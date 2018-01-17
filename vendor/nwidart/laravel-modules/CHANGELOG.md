@@ -4,6 +4,18 @@ All Notable changes to `laravel-modules` will be documented in this file.
 
 ## Next
 
+
+## 2.7.0 - 2018-01-13
+
+## Changed
+
+- Rename the `before` method to `boot` in the `RouterServiceProvider` stub file
+- Fixing caching issue if modules were loaded from a different directory
+- Fixing how modules are loaded from vendor directory (#423 #417)
+- Update to Mockery 1.0
+- use default file stubs only if override does not exists
+- Fix non well formed numeric value in seed command
+
 ## 2.6.0 - 2017-11-07
 
 ## Added
