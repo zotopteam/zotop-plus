@@ -291,9 +291,9 @@ textarea{resize:none;}
 .card-check img{border-radius:.05rem;}
 .card-check .card-body{padding:.75rem;}
 .card-check .form-control-check{display:none;}
-.card-check .form-control-check + .card{border-color:#fff;border-width:3px;cursor:pointer;transition:all 0.2s;}
-.card-check .form-control-check + .card:hover,
-.card-check .form-control-check + .card:focus{border-color:rgba(0,0,0,0.1);border-color:#66bb00;}
+.card-check .card{border-color:#fff;border-width:3px;cursor:pointer;transition:all 0.2s;}
+.card-check .card:hover,
+.card-check .card:focus{border-color:rgba(0,0,0,0.1);border-color:#66bb00;}
 .card-check .form-control-check:checked + .card{border-color:#66bb00;position:relative;}
 .card-check .form-control-check:checked + .card:before{content:"";width:0;height:0;border-top:1.5rem solid #66bb00;border-left:1.5rem solid transparent;position:absolute;display:block;right:0;top:0;z-index:1;}
 .card-check .form-control-check:checked + .card:after{content:"\f00c";position:absolute;top:.05rem;right:.05rem;color:#fff;font:900 .75rem/1 'Font Awesome 5 Free';z-index:2;}

@@ -144,12 +144,34 @@ class MediaController extends AdminController
      *
      * @return Response
      */
-    public function library(Request $request)
-    {        
-        $this->params = $request->all();
-        $this->files   = [];
+    public function library(Request $request, $folder_id=0)
+    {
+        $folder_id = $request->input('folder_id', $folder_id);
+
+        $folder = Folder::where('parent_id', $folder_id);
+        $file   = File::where('folder_id', $folder_id);
+
+        // 文件类型
+        if ($filetype = $request->input('filetype')) {
+            $file->where('type', $filetype);
+        }
+
+        // 允许的扩展名
+        if ($allow = $request->input('allow')) {
+            $file->whereIn('extension', explode(',', $allow));
+        }    
+
+        $this->params  = $params = $request->all();
+        $this->files   = $file->orderby('created_at', 'desc')->paginate(24);
+        $this->folders = $folder->orderby('sort', 'desc')->orderby('created_at', 'desc')->get()->map(function($folder) use($params) {
+            $folder->url = route('media.select.library', ['folder_id'=>$folder->id] + $params);
+            return $folder;
+        });
+        $this->folder    = Folder::find($folder_id);
+        $this->parents   = Folder::parents($folder_id, true);        
 
         debug($this->params);
+        debug($this->parents);
 
         $this->title = trans('media::media.insert.from.library',[$request->typename]);
         return $this->view('media::media.select.library');

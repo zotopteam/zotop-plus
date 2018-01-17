@@ -24,8 +24,40 @@
     <div class="main-body scrollable p-2" id="file-upload-dragdrop">
         
         <div class="container-fluid">
-
             <div class="row">
+            @foreach($folders as $folder)
+                <div class="col-sm-4 col-md-3 col-xl-2 p-1">
+                    <label class="card-check d-block cur-p m-0" data-type="folder" data-url="{{$folder->url}}">  
+                        <div class="card card-md bg-light js-contextmenu">
+                            <div class="card-image">
+                                <div class="card-thumb pos-r">
+                                    <div class="pos-a pos-full d-flex justify-content-center bg-white">
+                                        <i class="fa fa-folder fa-6x fa-fw text-warning align-self-center"></i>
+                                    </div>
+                                </div>                             
+                            </div>
+                            <div class="card-body p-2">
+                                <div class="card-text text-md text-overflow">
+                                    {{$folder->name}}
+                                </div>
+                                <div class="card-text">
+                                    <small class="text-success">xxx</small>
+                                </div>
+                                <div class="contextmenu d-none">          
+                                        <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.folder.edit',[$folder->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$folder->name}}">
+                                            <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
+                                            <b class="contextmenu-item-text">{{trans('media::folder.rename')}}</b>
+                                        </a>                      
+                                        <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $folder->id)}}">
+                                            <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
+                                            <b class="contextmenu-item-text">{{trans('media::folder.delete')}}</b>
+                                        </a>
+                                </div>
+                            </div>                           
+                        </div>
+                    </label>
+                </div>
+            @endforeach            
             @foreach($files as $file)
                 <div class="col-sm-4 col-md-3 col-xl-2 p-1">
                     <label class="card-check d-block m-0" data-type="file">
@@ -39,9 +71,9 @@
                                 <div class="card-thumb pos-r">
                                     <div class="pos-a pos-full d-flex justify-content-center bg-image-preview">
                                         @if ($file->isImage())
-                                        <img src="{{$file->getUrl()}}" class="img-fluid align-self-center">
+                                        <img src="{{$file->getUrl()}}" class="align-self-center">
                                         @else
-                                        <i class="fa {{$file->getIcon()}} fa-2x fa-fw text-warning"></i>
+                                        <i class="fa {{$file->getIcon()}} fa-6x fa-fw text-warning align-self-center"></i>
                                         @endif
                                     </div>
                                 </div>                             
@@ -97,7 +129,6 @@
     .card-thumb img{max-width:100%;max-height:100%;}
 </style>
 @endpush
-
 @push('js')
 <script type="text/javascript" src="{{Module::asset('core:plupload/plupload.full.min.js')}}"></script>
 <script type="text/javascript" src="{{Module::asset('core:plupload/i18n/'.App::getLocale().'.js')}}"></script>
@@ -176,6 +207,12 @@
     }
 
     $(function(){
+        // 文件夹双击
+        $('[data-type="folder"]').on('click',function(){
+            location.href = $(this).data('url');
+            return false;
+        });
+
         // 文件单击
         $('[data-type="file"]').on('click', function(event) {
             callback();
