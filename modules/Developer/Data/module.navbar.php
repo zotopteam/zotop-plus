@@ -6,12 +6,18 @@ return [
         'icon'  => 'fa fa-info-circle',
         'class' => Route::active('developer.module.show'),
     ],
+    'model' => [
+        'text'  => trans('developer::model.title'),
+        'href'  => route('developer.model.index',[$module->name]),
+        'icon'  => 'fa fa-cube',
+        'class' => Route::active('developer.model.index'),
+    ],     
     'controller' => [
         'text'  => trans('developer::controller.title'),
         'href'  => route('developer.controller.index',[$module->name, 'admin']),
         'icon'  => 'fa fa-sitemap',
         'class' => Route::active('developer.controller.index'),
-    ], 
+    ],
     'migration' => [
         'text'  => trans('developer::migration.title'),
         'href'  => route('developer.migration.index',[$module->name]),

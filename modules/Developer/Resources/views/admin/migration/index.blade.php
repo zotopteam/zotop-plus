@@ -58,7 +58,7 @@
                     </td>
                     <td class="manage manage-hover text-right">
                         <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.file.editor',['file'=>path_base($file)])}}"  data-width="80%" data-height="80%">
-                            <i class="fa fa-pencil-square fa-fw text-primary"></i> {{trans('core::file.edit')}}
+                            <i class="fa fa-pen-square fa-fw text-primary"></i> {{trans('core::file.edit')}}
                         </a>
                         <div class="dropdown d-inline-block manage-item">
                             <a href="javascript:;" data-toggle="dropdown">

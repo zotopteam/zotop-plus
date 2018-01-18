@@ -8,8 +8,8 @@
             {{$title}}
         </div>     
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.command.create',[$name])}}" data-width="800" data-height="300">
-                <i class="fa fa-plus"></i> {{trans('developer::command.create')}}
+            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.model.create',[$name])}}" data-width="800" data-height="400">
+                <i class="fa fa-plus"></i> {{trans('developer::model.create')}}
             </a>
         </div>
     </div>
@@ -46,12 +46,12 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::command.artisan')}}: php artisan module:make-command TestCommand {{$module}}
+            {{trans('developer::model.artisan')}}: php artisan module:make-model Test {{$module}}
         </div>
     </div>    
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::command.path')}}: {{realpath($path)}}
+            {{trans('developer::model.path')}}: {{realpath($path)}}
         </div>
     </div>
 </div>

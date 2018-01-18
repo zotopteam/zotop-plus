@@ -16,6 +16,12 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->post('update/{name}/{field}','ModuleController@update')->name('developer.module.update');
     });
 
+    // module/model 开发
+    $router->group(['prefix' =>'model'], function (Router $router) {
+        $router->get('index/{module}','ModelController@index')->name('developer.model.index')->middleware('allow:developer.model.index');
+        $router->any('create/{module}','ModelController@create')->name('developer.model.create')->middleware('allow:developer.model.create');
+    });    
+
     // module/controller 开发
     $router->group(['prefix' =>'module/controller','middleware'=>'allow:developer.controller'], function (Router $router) {
         $router->get('index/{name}/{type}','ControllerController@index')->name('developer.controller.index');

@@ -109,7 +109,7 @@
                                 @break
                             @case('text')
                                 <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.file.editor',['file'=>$file['path']])}}"  data-width="80%" data-height="60%">
-                                    <i class="fa fa-pencil-square fa-fw text-primary"></i> {{trans('core::file.edit')}}
+                                    <i class="fa fa-pen-square fa-fw text-primary"></i> {{trans('core::file.edit')}}
                                 </a>
                                 @break
                         @endswitch
