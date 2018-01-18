@@ -6,18 +6,32 @@
     <div class="main-header">
         <div class="main-title mr-auto">
             {{$title}}
-        </div>        
+        </div>
         <div class="main-action">
-            @if (request()->input('select', 0) != 1)
-            <a href="javascript:;" class="btn btn-light js-select-all">
-                <i class="fa fa-check-square fa-fw"></i> {{trans('media::media.select.all')}}
+            <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
+                <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
             </a>
-            @endif
+            <a href="javascript:;" class="btn btn-outline-primary btn-icon-only js-prompt" data-url="{{route('media.folder.create',[$folder_id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" title="{{trans('media::folder.create')}}">
+                <i class="fa fa-fw fa-folder"></i>
+            </a>
             <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('core::master.refresh')}}">
                 <i class="fa fa-sync"></i>
             </a>        
         </div>        
     </div>
+    <div class="main-header breadcrumb m-0 p-2 text-sm">
+        @if ($folder_id)
+        <a href="{{$parent_url}}" class="breadcrumb-item breadcrumb-extra">
+            <i class="fa fa-fw fa-arrow-up"></i>{{trans('media::folder.up')}}
+        </a>
+        @else
+        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('media::folder.up')}}</a>
+        @endif
+        <a class="breadcrumb-item" href="{{$root_url}}">{{trans('media::media.root')}}</a>
+        @foreach($parents as $p)
+        <a class="breadcrumb-item" href="{{$p->url}}">{{$p->name}}</a> 
+        @endforeach      
+    </div>    
     <div class="main-header progress p-0 rounded-0 d-none">
         <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>        
     </div>
@@ -40,8 +54,8 @@
                                 <div class="card-text text-md text-overflow">
                                     {{$folder->name}}
                                 </div>
-                                <div class="card-text">
-                                    <small class="text-success">xxx</small>
+                                <div class="card-text text-xs">
+                                    <small class="text-success">{{trans('media::folder.type')}}</small>
                                 </div>
                                 <div class="contextmenu d-none">          
                                         <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.folder.edit',[$folder->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$folder->name}}">
@@ -71,9 +85,9 @@
                                 <div class="card-thumb pos-r">
                                     <div class="pos-a pos-full d-flex justify-content-center bg-image-preview">
                                         @if ($file->isImage())
-                                        <img src="{{$file->getUrl()}}" class="align-self-center">
+                                        <img src="{{$file->url()}}" class="align-self-center">
                                         @else
-                                        <i class="fa {{$file->getIcon()}} fa-6x fa-fw text-warning align-self-center"></i>
+                                        <i class="fa {{$file->icon()}} fa-6x fa-fw text-warning align-self-center"></i>
                                         @endif
                                     </div>
                                 </div>                             
@@ -82,15 +96,16 @@
                                 <div class="card-text text-md text-overflow">
                                     {{$file->name}}
                                 </div>
-                                <div class="card-text">
-                                    <small class="text-success">{{$file->getSize()}}</small>
+                                <div class="card-text text-xs">
+                                    <small class="text-success">{{trans('core::file.type.'.$file->type)}}</small>
+                                    <small class="text-info">{{$file->size()}}</small>
                                     @if ($file->isImage())
                                     <small>{{$file->width}}px × {{$file->height}}px</small>
                                     @endif
                                 </div>
                                 <div class="contextmenu d-none">
                                         @if ($file->isImage())
-                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}" data-info="{{$file->getSize()}} / {{$file->width}}px × {{$file->height}}px">
+                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->url()}}" data-title="{{$file->name}}" data-info="{{$file->size()}} / {{$file->width}}px × {{$file->height}}px">
                                             <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
                                             <b class="contextmenu-item-text">{{trans('media::file.view')}}</b>
                                         </a>
@@ -98,7 +113,7 @@
                                         <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.file.edit',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
                                             <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
                                             <b class="contextmenu-item-text">{{trans('media::file.rename')}}</b>
-                                        </a>                      
+                                        </a>                                                                  
                                         <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $file->id)}}">
                                             <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
                                             <b class="contextmenu-item-text">{{trans('media::file.delete')}}</b>
@@ -116,7 +131,7 @@
 
     </div><!-- main-body -->
     @if ($files->lastPage() > 1)  
-    <div class="main-footer">
+    <div class="main-footer text-sm p-1">
         {{ $files->appends($params)->links('core::pagination.default') }}
     </div>
     @endif

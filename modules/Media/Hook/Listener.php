@@ -86,7 +86,7 @@ class Listener
             'libarary' => [
                 'text'   => trans('media::media.insert.from.library',[$typename]),
                 'icon'   => 'fa fa-database',
-                'href'   => route('media.select.library', $params),
+                'href'   => route('media.select.library', [0] + $params),
                 'active' => Route::active('media.select.library'),
             ]
         ];

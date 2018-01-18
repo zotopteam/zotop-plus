@@ -146,8 +146,6 @@ class MediaController extends AdminController
      */
     public function library(Request $request, $folder_id=0)
     {
-        $folder_id = $request->input('folder_id', $folder_id);
-
         $folder = Folder::where('parent_id', $folder_id);
         $file   = File::where('folder_id', $folder_id);
 
@@ -161,17 +159,26 @@ class MediaController extends AdminController
             $file->whereIn('extension', explode(',', $allow));
         }    
 
-        $this->params  = $params = $request->all();
-        $this->files   = $file->orderby('created_at', 'desc')->paginate(24);
-        $this->folders = $folder->orderby('sort', 'desc')->orderby('created_at', 'desc')->get()->map(function($folder) use($params) {
-            $folder->url = route('media.select.library', ['folder_id'=>$folder->id] + $params);
+        $this->params    = $params = $request->all();
+        $this->folder_id = $folder_id;
+        $this->folder    = Folder::find($folder_id);
+        $this->files     = $file->orderby('created_at', 'desc')->paginate(48);
+        $this->folders   = $folder->orderby('sort', 'desc')->orderby('created_at', 'desc')->get()->map(function($folder) use($params) {
+            $folder->url = route('media.select.library', [$folder->id] + $params);
             return $folder;
         });
-        $this->folder    = Folder::find($folder_id);
-        $this->parents   = Folder::parents($folder_id, true);        
 
-        debug($this->params);
-        debug($this->parents);
+        $this->parents   = Folder::parents($folder_id, true)->map(function($folder) use($params) {
+            $folder->url = route('media.select.library', [$folder->id] + $params);
+            return $folder;
+        });
+
+        $this->root_url = route('media.select.library', [0] + $params);
+
+        if ($this->folder) { 
+            $this->parent_url = route('media.select.library', [$this->folder->parent_id] + $params);
+        }
+
 
         $this->title = trans('media::media.insert.from.library',[$request->typename]);
         return $this->view('media::media.select.library');

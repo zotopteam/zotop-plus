@@ -25,7 +25,7 @@ class File extends Model
         // 删除文件和文件的缩略图、预览图
         static::deleted(function($file) {
             //文件真实路径
-            $path = $file->getRealPath();
+            $path = $file->realpath();
             
             // 预览图和缩略图位置
             $temp = md5($path);
@@ -40,7 +40,7 @@ class File extends Model
      * 获取文件的真实路径
      * @return string
      */
-    public function getRealPath()
+    public function realpath()
     {
         return public_path($this->path);
     }
@@ -49,7 +49,7 @@ class File extends Model
      * 获取文件的URL
      * @return string
      */
-    public function getUrl()
+    public function url()
     {
         return url($this->url);
     }
@@ -62,9 +62,9 @@ class File extends Model
      * @param  bool $fit 
      * @return string
      */
-    public function getPreview($width = null, $height = null, $fit = true)
+    public function preview($width = null, $height = null, $fit = true)
     {
-        return preview($this->getRealPath(), $width, $height, $fit);
+        return preview($this->realpath(), $width, $height, $fit);
     }
 
     /**
@@ -72,7 +72,7 @@ class File extends Model
      * 
      * @return string
      */
-    public function getIcon()
+    public function icon()
     {
         return app('files')->icon($this->extension, $this->type);
     }
@@ -82,7 +82,7 @@ class File extends Model
      * 
      * @return string
      */
-    public function getSize()
+    public function size()
     {
         return Format::size($this->size);
     }
@@ -92,13 +92,15 @@ class File extends Model
      * 
      * @return string
      */
-    public function getCreatedAt($human = false)
+    public function createdAt($human = false)
     {
         if ($human) {
             return Format::date($this->created_at, 'datetime human');
         }
         return Format::date($this->created_at, 'datetime');
     }
+
+
 
     /**
      * 判定文件类型

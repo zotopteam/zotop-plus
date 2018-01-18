@@ -76,7 +76,7 @@ class Folder extends Model
      * 
      * @return string
      */
-    public function getCreatedAt($human = false)
+    public function createdAt($human = false)
     {
         if ($human) {
             return Format::date($this->created_at, 'datetime human');

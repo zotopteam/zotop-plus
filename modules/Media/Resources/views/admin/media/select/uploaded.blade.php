@@ -39,9 +39,9 @@
                                 <div class="card-thumb pos-r">
                                     <div class="pos-a pos-full d-flex justify-content-center bg-image-preview">
                                         @if ($file->isImage())
-                                        <img src="{{$file->getUrl()}}" class="img-fluid align-self-center">
+                                        <img src="{{$file->url()}}" class="img-fluid align-self-center">
                                         @else
-                                        <i class="fa {{$file->getIcon()}} fa-2x fa-fw text-warning"></i>
+                                        <i class="fa {{$file->icon()}} fa-2x fa-fw text-warning"></i>
                                         @endif
                                     </div>
                                 </div>                             
@@ -51,14 +51,14 @@
                                     {{$file->name}}
                                 </div>
                                 <div class="card-text">
-                                    <small class="text-success">{{$file->getSize()}}</small>
+                                    <small class="text-success">{{$file->size()}}</small>
                                     @if ($file->isImage())
                                     <small>{{$file->width}}px × {{$file->height}}px</small>
                                     @endif
                                 </div>
                                 <div class="contextmenu d-none">
                                         @if ($file->isImage())
-                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}" data-info="{{$file->getSize()}} / {{$file->width}}px × {{$file->height}}px">
+                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->url()}}" data-title="{{$file->name}}" data-info="{{$file->size()}} / {{$file->width}}px × {{$file->height}}px">
                                             <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
                                             <b class="contextmenu-item-text">{{trans('media::file.view')}}</b>
                                         </a>
@@ -84,7 +84,7 @@
 
     </div><!-- main-body -->
     @if ($files->lastPage() > 1)  
-    <div class="main-footer">
+    <div class="main-footer text-sm p-1">
         {{ $files->appends($params)->links('core::pagination.default') }}
     </div>
     @endif
@@ -172,7 +172,7 @@
             }
         });
 
-        $dialog.selected = selected;   
+        $dialog.selected = selected;  
     }
 
     $(function(){

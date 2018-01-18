@@ -101,7 +101,7 @@
                     </td>
                     <td>{{trans('media::folder.type')}}</td>
                     <td></td>
-                    <td>{{$folder->getCreatedAt()}}</td>
+                    <td>{{$folder->createdAt()}}</td>
                 </tr>
             @endforeach
 
@@ -112,11 +112,11 @@
                     </td>                
                     <td width="1%" class="text-center pr-2">
                         @if ($file->isImage())
-                            <a href="javascript:;" class="js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}">
-                                <div class="icon icon-32"><img src="{{$file->getPreview(32,32)}}"></div>
+                            <a href="javascript:;" class="js-image" data-url="{{$file->url()}}" data-title="{{$file->name}}">
+                                <div class="icon icon-32"><img src="{{$file->preview(32,32)}}"></div>
                             </a>
                         @else
-                            <i class="fa {{$file->getIcon()}} fa-2x fa-fw text-warning"></i>
+                            <i class="fa {{$file->icon()}} fa-2x fa-fw text-warning"></i>
                         @endif                        
                     </td>                
                     <td width="50%" class="pl-2">
@@ -131,7 +131,7 @@
                     </td>
                     <td width="10%" class="manage manage-hover text-right">
                         @if ($file->isImage())
-                        <a href="javascript:;" class="manage-item js-image" data-url="{{$file->getUrl()}}" data-title="{{$file->name}}">
+                        <a href="javascript:;" class="manage-item js-image" data-url="{{$file->url()}}" data-title="{{$file->name}}">
                             <i class="fa fa-eye fa-fw"></i> {{trans('media::file.view')}}
                         </a>
                         @endif                 
@@ -146,8 +146,8 @@
                         </a>                        
                     </td>
                     <td>{{trans('core::file.type.'.$file->type)}}</td>
-                    <td>{{$file->getSize()}}</td>
-                    <td>{{$file->getCreatedAt()}}</td>
+                    <td>{{$file->size()}}</td>
+                    <td>{{$file->createdAt()}}</td>
                 </tr>
             @endforeach
 
