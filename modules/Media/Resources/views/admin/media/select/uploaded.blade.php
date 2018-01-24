@@ -160,8 +160,8 @@
 </script>
 <script type="text/javascript">  
 
-    // 回调
-    function callback() {
+    // 确定按钮回调
+    $dialog.callbacks['ok'] = function () {
         var selected  = new Array();
 
         $('[data-type="file"]').each(function() {
@@ -172,15 +172,12 @@
             }
         });
 
-        $dialog.selected = selected;  
+        if (selected.length) {
+            this.close(selected).remove(); 
+        }
+        
+        return false;
     }
-
-    $(function(){
-        // 文件单击
-        $('[data-type="file"]').on('click', function(event) {
-            callback();
-        });          
-    });
 
 </script>
 @endpush

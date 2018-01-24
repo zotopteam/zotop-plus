@@ -68,28 +68,32 @@
 			// 文件选择
 			select.on('click', function() {
 
+				// 属性
 				var url   = $(this).data('url');
 				var title = $(this).data('title');
 
-		        $.dialog({
-		            title   : title,
-		            url     : url,
-		            width   : '95%',
-		            height  : '75%',
-		            padding : 0,
-		            ok:function() {
-		            	if (this.selected && this.selected.length) {
-		                	callback(this.selected[0].url);
-		                	return true;
-		                }
-		                return false;
-		            },
-		            cancel:$.noop,
-		            oniframeload: function() {
-		                this.loading(false);
-		            },
-		            opener:window
+				// 对话框
+		        var dialog = $.dialog({
+			            title        : title,
+			            url          : url,
+			            width        : '95%',
+			            height       : '75%',
+			            padding      : 0,
+			            ok           : $.noop,
+			            cancel       : $.noop,
+			            oniframeload : function() {
+			                this.loading(false);
+			            },
+			            opener       :window
 		        }, true).loading(true);     				
+
+		        // 监听对话框关闭传值
+				dialog.addEventListener('close', function () {
+					var selected = this.returnValue;
+	            	if (selected && selected.length) {
+	                	callback(selected[0].url);
+	                }
+				});		        
 
 			});
 		});

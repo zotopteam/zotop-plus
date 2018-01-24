@@ -248,6 +248,7 @@ $(function(){
 
         if (contextmenu.length && contextmenu.html()) {
 
+            // 使用dialog函数，在当前页面打开对话框，使用 $.dialog 为顶级页面打开
             var d = dialog({
                 skin       : 'ui-contextmenu',
                 quickClose : true,

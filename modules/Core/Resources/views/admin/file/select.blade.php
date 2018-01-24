@@ -167,6 +167,23 @@
         $dialog.selected = selected;   
     }
 
+    // 确定按钮回调
+    $dialog.callbacks['ok'] = function () {
+        var selected  = new Array();
+
+        $('[data-type="file"]').filter('.selected').each(function() {
+            var data = $(this).find('[name=data]').val();
+                data = $.parseJSON(data);
+            selected.push(data);
+        });
+
+        if (selected.length) {
+            this.close(selected).remove(); 
+        }
+        
+        return false;
+    }    
+
     $(function(){
         // 文件夹双击
         $('[data-type="folder"]').on('dblclick',function(){
@@ -176,8 +193,8 @@
 
         // 文件双击，直接返回
         $('[data-type="file"]').on('dblclick', function(){
-            $(this).addClass('selected').siblings(".selected").removeClass('selected'); //单选
-            callback();
+            $(this).addClass('selected').siblings(".selected").removeClass('selected');  //单选
+            $dialog.ok();
             return false;
         });
 
@@ -201,8 +218,6 @@
                     $(this).addClass("selected");
                 }
             }
-
-            callback();
 
             event.stopPropagation();
             return false;
