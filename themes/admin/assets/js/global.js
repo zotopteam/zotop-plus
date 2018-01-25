@@ -19,6 +19,10 @@ $(function(){
  
     // niceScroll
     $('.scrollable').niceScroll();
+    // 窗口改变大小时，重置滚动条，如果页面内元素高度发生改变，使用触发 $(window).trigger('resize')
+    $(window).resize(function(){
+        $(".scrollable").getNiceScroll().resize();
+    });
 
     // maxlength
     $('input[maxlength],textarea[maxlength]').maxlength({alwaysShow:true,appendToParent:true,threshold:10,separator:'/',placement:'bottom-right-inside'});  

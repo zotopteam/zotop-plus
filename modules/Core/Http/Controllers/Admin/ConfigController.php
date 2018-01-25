@@ -109,6 +109,12 @@ class ConfigController extends AdminController
         return $this->view();
     }
 
+    /**
+     * 发送测试邮件
+     * 
+     * @param  Request $request
+     * @return mixed
+     */
     public function mailtest(Request $request)
     {
         // 保存数据

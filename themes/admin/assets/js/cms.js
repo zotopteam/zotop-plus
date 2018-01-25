@@ -167,3 +167,117 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
         });
     });
 })(jQuery);
+
+/**
+ * 表单依赖显示
+ * 
+ * @author   hankx_chen
+ * @created  2018-01-25
+ * @version  2.0
+ * @site     http://zotop.com
+ */
+(function($) {
+
+    var depend = function(element, options) {
+        var self = this;
+
+        this.element   = $(element);
+        this.options   = options || {};
+        this.container = this.options.container ? this.element.closest(this.options.container) : undefined;
+        this.depend    = $(this.options.depend, this.container);
+        this.when      = this.options.when;
+        this.then      = this.options.then;
+
+        // value
+        if (this.options.when.indexOf('value') == 0) {
+            this.value = this.when.substr(6);
+            this.value = this.value.split(',');
+            this.when  = 'value';
+        }
+
+        // depend change
+         if (this.when == 'checked' || this.when == 'unchecked' || this.when == 'value') {
+            $(document).on('change', this.options.depend, $.proxy(this.changed, this));
+        }
+
+        // element update
+        this.element.on('update.zotop.depend', function(event){
+            event.stopPropagation();
+            self.changed();
+        })                             
+
+        // 初始化绑定
+        this.changed();
+    }
+
+    depend.prototype.changed = function() {
+        if (this.when == 'checked') {
+            this.update(this.depend.is(':checked'));
+        }
+
+        if (this.when == 'unchecked') {
+            this.update(!this.depend.is(':checked'));
+        }
+        
+        if (this.when == 'value') {
+            var depend = this.depend.not('[type=checkbox], [type=radio], [type=button], [type=submit]');
+                depend = depend.length ? depend : this.depend.not(':not(:checked)');
+
+            var value = depend.length ? depend.val() : '';
+
+            this.update($.inArray(value, this.value) != -1);
+        }
+    }
+
+    depend.prototype.update = function (status) {
+        var self = this;
+        var then = this.options.then.split('|');
+
+        $.each(then, function(index, action) {
+            self.action(action, status);
+        })
+
+        this.element.trigger('updated.zotop.depend', status);   
+    }
+
+    depend.prototype.action = function (action, status) {
+        // show
+        if (action == 'show') {
+            this.element.toggleClass('d-none', !status).trigger('show.zotop.depend');
+            $(window).trigger('resize');
+        }
+        //hide
+        if (action == 'hide') {
+            this.element.toggleClass('d-none', status).trigger('hide.zotop.depend');
+            $(window).trigger('resize');
+        }
+    }
+
+
+    depend.default = {
+        container : false,
+        depond    : false, // 依赖于某个元素，如：.watermark-type :radio
+        when      : false, // 条件 checked,unchecked,value=1            
+        then      : false // 动作 show , hide, enable, disable
+    }
+
+    $.fn.depend = function (options) {
+        var options = options || {};
+        return this.each(function () {
+            var $this   = $(this);
+            var data    = $this.data('zotop.depend');
+            var options = $.extend({}, depend.default, $this.data(), options);
+            if (!data) {
+                $this.data('zotop.depend', (data = new depend(this, options)))
+            }
+        })
+    }
+
+    $.fn.depend.Constructor = depend;
+
+    // default bind
+    $(function(){
+        $('[data-depend]').depend();
+    });        
+
+})(jQuery);

@@ -85,7 +85,7 @@
 			                this.loading(false);
 			            },
 			            opener       :window
-		        }, true).loading(true);     				
+		        }, true).loading(true); 				
 
 		        // 监听对话框关闭传值
 				dialog.addEventListener('close', function () {

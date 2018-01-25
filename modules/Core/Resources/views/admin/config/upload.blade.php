@@ -149,7 +149,7 @@
                 </div>
             </div>
 
-            <div class="form-group row watermark-type">
+            <div class="form-group row" id="watermark-type">
                 <label for="image_watermark_type" class="col-2 col-form-label">
                     {{trans('core::image.watermark.type')}}
                 </label>
@@ -157,7 +157,7 @@
                     {field type="radiogroup" name="image[watermark][type]" options="Module::data('core::watermark.type')"}
                 </div>
             </div>
-            <div class="watermark-options d-none" rel="text">
+            <div class="watermark-options" rel="text" data-depend="#watermark-type :radio" data-when="value=text" data-then="show">
                 <div class="form-group row">
                     <label for="image_watermark_font" class="col-2 col-form-label">
                         {{trans('core::image.watermark.font')}}
@@ -193,7 +193,7 @@
                     </div>
                 </div>
             </div>
-            <div class="watermark-options d-none" rel="image">
+            <div class="watermark-options" rel="image" data-depend="#watermark-type :radio" data-when="value=image" data-then="show">
                 <div class="form-group row">
                     <label for="image_watermark_image" class="col-2 col-form-label">
                         {{trans('core::image.watermark.image')}}
@@ -303,17 +303,6 @@
 
 @push('js')
 <script type="text/javascript">
-    $(function(){
-        var watermark_type = $('.watermark-type :radio');
-        function watermark_type_change() {
-            var value = watermark_type.filter(':checked').val();
-            $('.watermark-options').addClass('d-none').filter('[rel='+value+']').removeClass('d-none');
-        }
-        watermark_type_change();
-        watermark_type.on('click',function(){
-            watermark_type_change();
-        });        
-    });
 
     $(function(){
         $('#watermark-test').on('click',function(){

@@ -48,10 +48,10 @@ $(function(){
             store: "local" // 'cookie', 'local': use localStore, 'session': sessionStore
         },
         expand: function() {
-            $(".scrollable").getNiceScroll().resize();
+            $(window).trigger('resize');
         },
         collapse:function() {
-            $(".scrollable").getNiceScroll().resize();
+            $(window).trigger('resize');
         },
         click: function(event, data){
             if (data.targetType == 'title' && data.node.data.href) {
