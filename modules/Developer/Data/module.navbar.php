@@ -6,6 +6,12 @@ return [
         'icon'  => 'fa fa-info-circle',
         'class' => Route::active('developer.module.show'),
     ],
+    'table' => [
+        'text'  => trans('developer::table.title'),
+        'href'  => route('developer.table.index',[$module->name]),
+        'icon'  => 'fa fa-database',
+        'class' => Route::active('developer.table.index'),
+    ],    
     'model' => [
         'text'  => trans('developer::model.title'),
         'href'  => route('developer.model.index',[$module->name]),

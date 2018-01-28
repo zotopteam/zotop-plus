@@ -36,6 +36,14 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->any('create/{module}','CommandController@create')->name('developer.command.create');
     });
 
+    // table group
+    $router->group(['prefix' =>'module/table','middleware'=>'allow:developer.table'], function (Router $router) {
+        $router->get('index/{module}','TableController@index')->name('developer.table.index');
+        $router->get('create/{module}','TableController@create')->name('developer.table.create');
+        $router->get('edit/{module}/{table}','TableController@edit')->name('developer.table.edit');
+        $router->delete('destroy/{module}/{table}','TableController@destroy')->name('developer.table.destroy');
+    });    
+
     // migration group
     $router->group(['prefix' =>'migration','middleware'=>'allow:developer.migration'], function (Router $router) {
         $router->get('index/{module}','MigrationController@index')->name('developer.migration.index');
