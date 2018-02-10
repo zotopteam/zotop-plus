@@ -20,14 +20,15 @@
             <table class="table table-nowrap table-hover">
                 <thead>
                 <tr>
-                    <th>{{trans('developer::table.name')}}</th>
+                    <th colspan="2">{{trans('developer::table.name')}}</th>
                     <td width="1%"></td>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($tables as $table)
                     <tr>
-                        <td>
+                        <td width="1%" class="icon icon-sm pr-2"><div class="fa fa-table fa-2x text-primary"></div></td>
+                        <td class="pl-2">
                             <div class="title text-lg">
                                 {{$table}}
                             </div>

@@ -10,7 +10,7 @@ return [
         'text'  => trans('developer::table.title'),
         'href'  => route('developer.table.index',[$module->name]),
         'icon'  => 'fa fa-database',
-        'class' => Route::active('developer.table.index'),
+        'class' => Route::active('developer.table.*'),
     ],    
     'model' => [
         'text'  => trans('developer::model.title'),

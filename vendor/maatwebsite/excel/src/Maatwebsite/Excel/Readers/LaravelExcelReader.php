@@ -246,6 +246,13 @@ class LaravelExcelReader
      */
     protected $dispatcher;
 
+	/**
+	 * The line containing the header title, by default
+	 *
+	 * @var int
+	 */
+	protected $headerRow;
+
     /**
      * Construct new reader
      *
@@ -371,6 +378,15 @@ class LaravelExcelReader
         $this->selectedSheets = $sheets;
     }
 
+	/**
+	 * Define a different header row than the global config
+	 * @param int $number
+	 */
+    public function setHeaderRow($number)
+    {
+    	$this->headerRow = $number;
+    }
+
     /**
      * Check if sheets were selected
      *
@@ -395,7 +411,7 @@ class LaravelExcelReader
             return true;
         }
 
-        return in_array($index, $selectedSheets) ? true : false;
+        return in_array($index, $selectedSheets);
     }
 
     /**
@@ -1302,6 +1318,15 @@ class LaravelExcelReader
     public function getFileName()
     {
         return pathinfo($this->file, PATHINFO_FILENAME);
+    }
+
+	/**
+	 * Get the row containing the header
+	 * @return int
+	 */
+    public function getHeaderRow()
+    {
+    	return $this->headerRow ?: config('excel.import.startRow', 1);
     }
 
     /**

@@ -34,7 +34,7 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
      */
     protected static $proxies = [
         'average', 'avg', 'contains', 'each', 'every', 'filter', 'first', 'flatMap',
-        'keyBy', 'map', 'partition', 'reject', 'sortBy', 'sortByDesc', 'sum',
+        'keyBy', 'map', 'partition', 'reject', 'sortBy', 'sortByDesc', 'sum', 'unique',
     ];
 
     /**
@@ -644,7 +644,11 @@ class Collection implements ArrayAccess, Arrayable, Countable, IteratorAggregate
      */
     public function get($key, $default = null)
     {
-        return Arr::get($this->items, $key, $default);
+        if ($this->offsetExists($key)) {
+            return $this->items[$key];
+        }
+
+        return value($default);
     }
 
     /**

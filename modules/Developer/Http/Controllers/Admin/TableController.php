@@ -32,11 +32,11 @@ class TableController extends AdminController
      * 
      * @return Response
      */
-    public function create()
+    public function create($module)
     {
-        $this->title = trans('developer::developer.create');
+        $this->module  = module($module);
 
-        $this->table = Table::findOrNew(0);
+        $this->title = trans('developer::table.create');
 
         return $this->view();
     }

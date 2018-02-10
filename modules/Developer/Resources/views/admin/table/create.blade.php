@@ -14,20 +14,26 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$table" route="developer.table.store" id="table-form" method="post" autocomplete="off"}
+            {form route="['developer.table.create', $module]" id="table-form" method="post" autocomplete="off"}
 
-            <div class="form-title row">{{trans('developer::table.form.base')}}</div>
 
-            <div class="form-group row">
-                <label for="title" class="col-2 col-form-label required">{{trans('developer::table.title.label')}}</label>
-                <div class="col-4">
-                    {field type="text" name="title" required="required"}
+            <div class="form-group">
+                <label for="name" class="form-label required">{{trans('developer::table.name')}}</label>
+                <div class="form-field">
+                    {field type="text" name="name" required="required"}
 
-                    @if ($errors->has('title'))
-                    <span class="form-help text-error">{{ $errors->first('title') }}</span>
+                    @if ($errors->has('name'))
+                    <span class="form-help text-error">{{ $errors->first('name') }}</span>
                     @else
-                    <span class="form-help">{{trans('developer::table.title.help')}}</span>                     
+                    <span class="form-help">{{trans_find('developer::table.name.help')}}</span>                     
                     @endif                       
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="columns" class="form-label required">{{trans('developer::table.columns')}}</label>
+                <div class="form-field">
+                      
                 </div>
             </div>
 
