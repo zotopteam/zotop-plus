@@ -70,10 +70,10 @@ return [
     | Application Github
     |--------------------------------------------------------------------------
     |
-    | This github url of your application.
+    | This github url of your application. old: https://coding.net/u/zotop/p/laravel_cms/git
     */
 
-    'github' => 'https://coding.net/u/zotop/p/laravel_cms/git',
+    'github' => 'https://github.com/zotopteam/zotop-plus',
 
     /*
     |--------------------------------------------------------------------------

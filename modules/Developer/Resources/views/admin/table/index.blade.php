@@ -8,7 +8,7 @@
             {{$title}}
         </div>
         <div class="main-action">
-            <a href="{{route('developer.table.create',[$module])}}" class="btn btn-primary">
+            <a href="{{route('developer.table.create',[$module])}}" class="btn btn-primary d-none">
                 <i class="fa fa-plus"></i> {{trans('core::master.create')}}
             </a>
         </div>        
@@ -35,10 +35,10 @@
 
                         </td>
                         <td class="manage">
-                            <a class="manage-item" href="{{route('developer.table.edit', [$module, $table])}}">
+                            <a class="manage-item d-none" href="{{route('developer.table.edit', [$module, $table])}}">
                                 <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
                             </a>
-                            <a class="manage-item js-delete" href="javascript:;" data-url="{{route('developer.table.destroy', [$module, $table])}}">
+                            <a class="manage-item  d-none js-delete" href="javascript:;" data-url="{{route('developer.table.destroy', [$module, $table])}}">
                                 <i class="fa fa-times"></i> {{trans('core::master.delete')}}
                             </a>
                         </td>

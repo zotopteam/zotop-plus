@@ -27,10 +27,9 @@ class PermissionController extends AdminController
         $this->module      = module($module);
         $this->path        = $this->module->getExtraPath('permission.php');
         $this->permissions = $this->module->getFileData('permission.php');
-
-        // 获取模块所有的allows中的节点，用于和当前权限比对
+        
+        // 从全局路由中获取模块所有的allows中的节点，用于和当前权限比对
         $this->allows      = $this->getRoutesPermissions($module);
-
 
         return $this->view();
     }
@@ -129,6 +128,6 @@ class PermissionController extends AdminController
             return substr($middleware, 6);
         })->implode(',');
 
-        return strtolower($allow);
+        return $allow ? strtolower($allow) : null;
     }
 }

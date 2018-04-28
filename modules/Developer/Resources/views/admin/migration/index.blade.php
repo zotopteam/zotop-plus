@@ -43,6 +43,7 @@
                 <tr>
                     <td colspan="3">{{trans('developer::file.name')}}</td>
                     <td>{{trans('developer::file.mtime')}}</td>
+                    <td>{{trans('developer::migration.migrated')}}</td>
                 </tr>                
             </thead>
             <tbody>
@@ -51,11 +52,12 @@
                 <tr>
                     <td width="1%" class="icon icon-sm pr-2"><div class="fa fa-file fa-{{$file->getExtension()}} fa-2x text-primary"></div> </td>
                     <td class="pl-2">
-                        <div class="title">{{$file->getFilename()}}</div>
+                        <div class="title">{{$file->getFilename()}} </div>
                         <div class="description">
                             {{$file->getRealPath()}}
                         </div>
                     </td>
+
                     <td class="manage manage-hover text-right">
                         <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.file.editor',['file'=>path_base($file)])}}"  data-width="80%" data-height="80%">
                             <i class="fa fa-pen-square fa-fw text-primary"></i> {{trans('core::file.edit')}}
@@ -80,6 +82,13 @@
                                                        
                     </td>
                     <td>{{date('Y-m-d H:i:s',$file->getMTime())}}</td>
+                    <td>
+                        @if(in_array(File::name($file), $migrations))
+                            <i class="fa fa-check-circle fa-2x text-success"></i>
+                        @else
+
+                        @endif
+                    </td>                    
                 </tr>
                 @endforeach
           

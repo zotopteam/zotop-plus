@@ -51,7 +51,7 @@ class MigrationController extends AdminController
         $this->module  = module($module);
         $this->path    = $this->module->getExtraPath('Database/Migrations');
         $this->files   = File::files($this->path);
-
+        $this->migrations = \DB::table('migrations')->get()->pluck('migration')->toArray();
 
         return $this->view();
     }
@@ -119,6 +119,6 @@ class MigrationController extends AdminController
             '--force' => true
         ]);
 
-        return $this->success(trans('core::master.operated'));
+        return $this->success(trans('core::master.operated'),route('developer.migration.index',[$module]));
     }        
 }

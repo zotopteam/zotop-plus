@@ -6,6 +6,7 @@ return [
     'create'        => '创建迁移',
     'execute'       => '执行命令',
     'migrate'       => '执行迁移',
+    'migrated'      => '已迁移',
     'migrate.tips'  => '运行当前模块所有未运行过的迁移',
     'rollback'      => '回滚一步',
     'rollback.tips' => '回滚当前模块最后一次迁移，注意：操作会导致模块数据丢失',

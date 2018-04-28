@@ -61,8 +61,8 @@ class Table
 		} else {
 			$moduleName = $module->getLowerName();
 	        $tables = array_filter($tables, function($table) use($moduleName) {
-	            return starts_with($table, $moduleName.'_');
-	        });		
+	            return $table == $moduleName || starts_with($table, $moduleName.'_');
+	        });	
 		}
 
 		return $tables;
