@@ -849,14 +849,14 @@ EOF;
         $kernel = new CustomProjectDirKernel();
         $kernel->boot();
 
-        $this->assertSame($containerClass, get_class($kernel->getContainer()));
+        $this->assertInstanceOf($containerClass, $kernel->getContainer());
         $this->assertFileExists($containerFile);
         unlink(__DIR__.'/Fixtures/cache/custom/FixturesCustomDebugProjectContainer.php.meta');
 
         $kernel = new CustomProjectDirKernel(function ($container) { $container->register('foo', 'stdClass')->setPublic(true); });
         $kernel->boot();
 
-        $this->assertTrue(get_class($kernel->getContainer()) !== $containerClass);
+        $this->assertNotInstanceOf($containerClass, $kernel->getContainer());
         $this->assertFileExists($containerFile);
         $this->assertFileExists(dirname($containerFile).'.legacy');
     }
@@ -899,6 +899,21 @@ EOF;
         $kernel->handle($request);
 
         $this->assertEquals(1, ResettableService::$counter);
+    }
+
+    /**
+     * @group time-sensitive
+     */
+    public function testKernelStartTimeIsResetWhileBootingAlreadyBootedKernel()
+    {
+        $kernel = $this->getKernelForTest(array('initializeBundles'), true);
+        $kernel->boot();
+        $preReBoot = $kernel->getStartTime();
+
+        sleep(3600); //Intentionally large value to detect if ClockMock ever breaks
+        $kernel->reboot(null);
+
+        $this->assertGreaterThan($preReBoot, $kernel->getStartTime());
     }
 
     /**
@@ -970,10 +985,10 @@ EOF;
         return $kernel;
     }
 
-    protected function getKernelForTest(array $methods = array())
+    protected function getKernelForTest(array $methods = array(), $debug = false)
     {
         $kernel = $this->getMockBuilder('Symfony\Component\HttpKernel\Tests\Fixtures\KernelForTest')
-            ->setConstructorArgs(array('test', false))
+            ->setConstructorArgs(array('test', $debug))
             ->setMethods($methods)
             ->getMock();
         $p = new \ReflectionProperty($kernel, 'rootDir');

@@ -222,11 +222,11 @@ class FormBuilder extends LaravelFormBuilder
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function select($name, $list = [], $selected = null, array $options = [], array $attrs = [])
+    public function select($name, $list = [], $selected = null, array $options = [], array $attrs = [], array $optgroups = [])
     {
         $options['class'] = empty($options['class']) ? 'form-control' : 'form-control '.$options['class'];
 
-        return parent::select($name, $list, $selected, $options, $attrs);            
+        return parent::select($name, $list, $selected, $options, $attrs, $optgroups);            
     }     
 
     /**
