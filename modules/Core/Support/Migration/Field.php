@@ -180,7 +180,7 @@ class Field {
 	 */
 	protected function getLength($length)
 	{
-		if ($length and $length !== 255) {
+		if ($length and $length !== 255 and $length !== 65535) {
 			return $length;
 		}
 	}

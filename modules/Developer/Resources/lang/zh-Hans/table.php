@@ -12,5 +12,5 @@ return [
     'columns'      => '数据表字段',
     'columns.help' => '',
 
-    'migration'    => '生成迁移文件',
+    'migration'    => '生成迁移',
 ];

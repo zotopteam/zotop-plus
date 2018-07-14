@@ -5,7 +5,7 @@ namespace Modules\Section\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
-//use Modules\Section\Models\Section;
+use Modules\Section\Models\Section;
 
 class SectionController extends AdminController
 {
@@ -21,9 +21,10 @@ class SectionController extends AdminController
         // 全部获取
         //$this->sections = Section::all();
         // 部分获取
-        //$this->sections = Section::with('some')->where('key','value')->orderby('id','asc')->get();        
+        //$this->sections = Section::with('some')->where('key','value')->orderby('id','asc')->get();
+                
         // 分页获取
-        //$this->sections = Section::with('some')->where('key','value')->orderby('id','asc')->paginate(25);
+        $this->sections = Section::orderby('id','asc')->paginate(25);
 
         return $this->view();
     }
