@@ -1,0 +1,25 @@
+{
+    "name": "zotop/section",
+    "description": "",
+    "authors": [
+        {
+            "name": "Zotop Team",
+            "email": "cms@zotop.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Section\\Providers\\SectionServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Section\\": ""
+        }
+    }
+}

@@ -69,8 +69,9 @@
                         </div>  
                     </td>
                     <td class="text-center">
-                        <a class="btn btn-success rounded-circle" href="{{route('developer.module.show',$module->name)}}">
-                            <i class="fa fa-pencil-alt fa-2x"></i>
+                        <a class="fa-stack fa-2x text-success" href="{{route('developer.module.show',$module->name)}}">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i>
                         </a>
                     </td>
                 </tr>

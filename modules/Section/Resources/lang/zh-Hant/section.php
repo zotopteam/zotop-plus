@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'title'             => 'Region',
+    'title'             => '区块',
     'description'       => '',
 ];

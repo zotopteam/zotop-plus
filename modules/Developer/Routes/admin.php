@@ -42,6 +42,7 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->get('create/{module}','TableController@create')->name('developer.table.create');
         $router->get('edit/{module}/{table}','TableController@edit')->name('developer.table.edit');
         $router->delete('destroy/{module}/{table}','TableController@destroy')->name('developer.table.destroy');
+        $router->any('migration/{module}/{table}','TableController@migration')->name('developer.table.migration');
     });    
 
     // migration group
