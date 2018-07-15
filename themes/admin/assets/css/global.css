@@ -414,13 +414,14 @@ textarea{resize:none;}
 .side + .main{margin-left:16rem;}
 
 .nav-side{flex-direction:column!important;}
-.nav-side .nav-item{flex:1 1 100%;}
+.nav-side .nav-item{flex:1 1 100%;position:relative;}
 .nav-side .nav-link{border-radius:0;padding:0.75rem 0.75rem;}
 .nav-side .nav-link:hover{background-color:#ECF9FF}
 .nav-side .nav-link.active{background-color:#0275d8;cursor:pointer;}
 .nav-side .nav-icon{width:1.25rem;text-align:center;margin-right:.25rem;}
 .nav-side .nav-text{}
 .nav-side .nav-item .nav .nav-link{padding-left:2.75rem;}
+.nav-side .nav-badge{position:absolute;right:0.75rem;top:0;padding:0.75rem 0.75rem}
 .nav-side .diver{}
 
 .jumbotron{border-radius:0;}

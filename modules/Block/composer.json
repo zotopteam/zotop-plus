@@ -1,0 +1,25 @@
+{
+    "name": "zotop/block",
+    "description": "",
+    "authors": [
+        {
+            "name": "Zotop Team",
+            "email": "cms@zotop.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Block\\Providers\\BlockServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Block\\": ""
+        }
+    }
+}
