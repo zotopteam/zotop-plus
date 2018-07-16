@@ -19,7 +19,7 @@ class Listener
             'text' => trans('block::block.title'),
             'href' => route('block.index'),
             'icon' => 'fa fa-cubes bg-info text-white',
-            'tips' => trans('block::block.description'),
+            'tips' => trans('block::block.about'),
         ];
         
         return $start;

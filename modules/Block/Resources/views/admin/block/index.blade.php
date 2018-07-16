@@ -9,7 +9,7 @@
             {{$category->name}}
         </div>
         <div class="main-action">
-            <a href="{{route('block.create')}}" class="btn btn-primary">
+            <a href="{{route('block.create',$category->id)}}" class="btn btn-primary">
                 <i class="fa fa-plus"></i> {{trans('core::master.create')}}
             </a>
         </div>        

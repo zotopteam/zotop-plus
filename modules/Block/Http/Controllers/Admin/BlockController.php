@@ -42,11 +42,11 @@ class BlockController extends AdminController
      * 
      * @return Response
      */
-    public function create()
+    public function create($category_id=0)
     {
-        $this->title = trans('block::block.create');
-
-        $this->block = Block::findOrNew(0);
+        $this->title    = trans('block::block.create');
+        $this->category = Category::findOrFail($category_id); 
+        $this->block    = Block::findOrNew(0);
 
         return $this->view();
     }
