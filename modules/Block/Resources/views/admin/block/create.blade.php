@@ -30,33 +30,6 @@
             </div>
 
             <div class="form-group row">
-                <label for="code" class="col-2 col-form-label required">{{trans('block::block.code')}}</label>
-                <div class="col-8">
-                    {field type="text" name="code" required="required"}
-
-                    @if ($errors->has('code'))
-                    <span class="form-help text-error">{{ $errors->first('code') }}</span>
-                    @else
-                    <span class="form-help">{{trans('block::block.code.help')}}</span>                     
-                    @endif                       
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="type" class="col-2 col-form-label required">{{trans('block::block.type')}}</label>
-                <div class="col-8">
-                    
-                    {field type="radiocards" name="type" options="Module::data('block::type.select')"}               
-                    
-                    @if ($errors->has('type'))
-                    <span class="form-help text-error">{{ $errors->first('type') }}</span>
-                    @else
-                    <span class="form-help">{{trans('block::block.type.help')}}</span>
-                    @endif
-                </div>
-            </div>            
-
-            <div class="form-group row">
                 <label for="description" class="col-2 col-form-label">{{trans('block::block.description')}}</label>
                 <div class="col-8">
                     {field type="textarea" name="description" rows="3"}
@@ -67,7 +40,48 @@
                     <span class="form-help">{{trans('block::block.description.help')}}</span>                     
                     @endif                       
                 </div>
-            </div>
+            </div>            
+
+            <div class="form-group row">
+                <label for="code" class="col-2 col-form-label required">{{trans('block::block.code')}}</label>
+                <div class="col-8">
+                    {field type="translate" name="code" source="name" required="required"}
+
+                    @if ($errors->has('code'))
+                    <span class="form-help text-error">{{ $errors->first('code') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.code.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>          
+
+
+
+            <div class="form-group row">
+                <label for="interval" class="col-2 col-form-label required">{{trans('block::block.interval')}}</label>
+                <div class="col-8">
+                    {field type="number" name="interval" required="required"}
+
+                    @if ($errors->has('interval'))
+                    <span class="form-help text-error">{{ $errors->first('interval') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.interval.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div> 
+
+            <div class="form-group row">
+                <label for="template" class="col-2 col-form-label required">{{trans('block::block.template')}}</label>
+                <div class="col-8">
+                    {field type="template" name="template" required="required"}
+
+                    @if ($errors->has('template'))
+                    <span class="form-help text-error">{{ $errors->first('template') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.template.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>            
             {/form}
 
         </div>

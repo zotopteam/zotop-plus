@@ -5,7 +5,7 @@ use Illuminate\Routing\Router;
 $router->group(['prefix'=>'block', 'module'=>'block'], function (Router $router) {
     
     $router->get('index/{category_id?}','BlockController@index')->name('block.index')->middleware('allow:block.index');
-    $router->get('create/{category_id?}','BlockController@create')->name('block.create')->middleware('allow:block.create');
+    $router->get('create/{category_id}/{type}','BlockController@create')->name('block.create')->middleware('allow:block.create');
     $router->post('store','BlockController@store')->name('block.store')->middleware('allow:block.store');
     $router->get('show/{id}','BlockController@show')->name('block.show')->middleware('allow:block.show');
     $router->get('edit/{id}','BlockController@edit')->name('block.edit')->middleware('allow:block.edit');

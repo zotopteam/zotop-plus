@@ -1,24 +1,35 @@
 <?php
 $types = [];
 
-$path = module_path('block').'/Resources/type/';
-
 $types['list'] = [
-    'type' => 'list',
-    'image' => preview($path.'list.png', 150, 90),
-    'title' => trans('block::type.list'),
+    'type'     => 'list',
+    'icon'     => 'far fa-list-alt',
+    'title'    => trans('block::type.list'),
+    'help'     => trans('block::type.list.help'),
+    'create'   => 'block::block.create_list',
+    'edit'     => 'block::block.edit_list',
+    'template' => 'block::list',
 ];
 
 $types['html'] = [
     'type' => 'html',
-    'image' => preview($path.'html.png', 150, 90),
+    'icon' => 'far fa-newspaper',
     'title' => trans('block::type.html'),
+    'help'  => trans('block::type.html.help'),
 ];
 
 $types['text'] = [
     'type' => 'text',
-    'image' => preview($path.'text.png', 150, 90),
+    'icon' => 'fas fa-align-justify',
     'title' => trans('block::type.text'),
+    'help'  => trans('block::type.text.help'),
+];
+
+$types['code'] = [
+    'type' => 'code',
+    'icon' => 'fa fa-code',
+    'title' => trans('block::type.code'),
+    'help'  => trans('block::type.code.help'),
 ];
 
 
