@@ -26,10 +26,15 @@ class FormBuilder extends LaravelFormBuilder
             $this->model = array_pull($options, 'model');
         }
 
+        if ( $referer = array_pull($options, 'referer') ) {
+            $referer = $referer == true ? request()->referer() : $referer;
+            $referer = $this->hidden('_referer', $referer);
+        }
+
         // 表单默认样式
         $options['class'] = isset($options['class']) ? 'form '.$options['class'] : 'form';
 
-        return parent::open($options);
+        return parent::open($options).$referer;
     }	
 
     /**

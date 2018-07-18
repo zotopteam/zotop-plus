@@ -17,6 +17,19 @@
             {form model="$block" route="block.store" id="block-form" method="post" autocomplete="off"}
 
             <div class="form-group row">
+                <label for="category_id" class="col-2 col-form-label required">{{trans('block::block.category_id')}}</label>
+                <div class="col-8">
+                    {field type="select" name="category_id" options="Module::data('block::category.select')" required="required"}
+
+                    @if ($errors->has('category_id'))
+                    <span class="form-help text-error">{{ $errors->first('category_id') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.category_id.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
+
+            <div class="form-group row">
                 <label for="name" class="col-2 col-form-label required">{{trans('block::block.name')}}</label>
                 <div class="col-8">
                     {field type="text" name="name" required="required"}
@@ -53,22 +66,7 @@
                     <span class="form-help">{{trans('block::block.code.help')}}</span>                     
                     @endif                       
                 </div>
-            </div>          
-
-
-
-            <div class="form-group row">
-                <label for="interval" class="col-2 col-form-label required">{{trans('block::block.interval')}}</label>
-                <div class="col-8">
-                    {field type="number" name="interval" required="required"}
-
-                    @if ($errors->has('interval'))
-                    <span class="form-help text-error">{{ $errors->first('interval') }}</span>
-                    @else
-                    <span class="form-help">{{trans('block::block.interval.help')}}</span>                     
-                    @endif                       
-                </div>
-            </div> 
+            </div>
 
             <div class="form-group row">
                 <label for="template" class="col-2 col-form-label required">{{trans('block::block.template')}}</label>
@@ -87,8 +85,8 @@
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
-        <div class="mr-auto">
-            {field type="submit" form="block-form" value="trans('core::master.save')" class="btn btn-primary"}
+        <div class="ml-auto">
+            {field type="submit" form="block-form" value="trans('block::block.save.next')" class="btn btn-primary"}
         </div>
     </div>
 </div>

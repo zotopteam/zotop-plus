@@ -20,9 +20,15 @@
 \Filter::listen('core.file.upload', 'Modules\Core\Hook\Listener@upload');
 
 /**
- * 扩展 Request::referer 功能，暂时等于 URL::previous()
+ * 扩展 Request::referer 功能
  */
 \Request::macro('referer', function() {
+
+    // 如果前面有传入，比如表单传入
+    if ($referer = request()->input('_referer')) {
+        return $referer;
+    }
+    
     return \URL::previous();
 });
 
@@ -399,6 +405,7 @@
     $options = $this->getAttribute($attrs, 'options',  [
         'width'         => $this->getAttribute($attrs, 'width', '100%'),
         'height'        => $this->getAttribute($attrs, 'height', '600'),
+        'placeholder'   => $this->getAttribute($attrs, 'placeholder', 'coding……'),
         'mode'          => $this->getAttribute($attrs, 'mode', 'text/html'),
         'watch'         => $this->getAttribute($attrs, 'watch', false),
         'toolbar'       => $this->getAttribute($attrs, 'toolbar', false),

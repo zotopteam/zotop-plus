@@ -29,7 +29,14 @@ $(function(){
 
     $('textarea[maxlength]').on('autosize.resized', function() {
         $(this).trigger('maxlength.reposition');
-    });    
+    });
+
+    // 复制到剪贴板
+    var clipboard = new ClipboardJS('.btn-copy');
+        clipboard.on('success', function(e) {
+            e.clearSelection();
+            $.success($(e.trigger).data('success'));
+        });      
 });
 
 // Validation 扩展
