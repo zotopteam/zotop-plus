@@ -43,6 +43,19 @@
             </div>
 
             <div class="form-group row">
+                <label for="code" class="col-2 col-form-label required">{{trans('block::block.code')}}</label>
+                <div class="col-8">
+                    {field type="translate" name="code" source="name" required="required"}
+
+                    @if ($errors->has('code'))
+                    <span class="form-help text-error">{{ $errors->first('code') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.code.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>            
+
+            <div class="form-group row">
                 <label for="description" class="col-2 col-form-label">{{trans('block::block.description')}}</label>
                 <div class="col-8">
                     {field type="textarea" name="description" rows="3"}
@@ -54,19 +67,6 @@
                     @endif                       
                 </div>
             </div>            
-
-            <div class="form-group row">
-                <label for="code" class="col-2 col-form-label required">{{trans('block::block.code')}}</label>
-                <div class="col-8">
-                    {field type="translate" name="code" source="name" required="required"}
-
-                    @if ($errors->has('code'))
-                    <span class="form-help text-error">{{ $errors->first('code') }}</span>
-                    @else
-                    <span class="form-help">{{trans('block::block.code.help')}}</span>                     
-                    @endif                       
-                </div>
-            </div>
 
             <div class="form-group row">
                 <label for="template" class="col-2 col-form-label required">{{trans('block::block.template')}}</label>

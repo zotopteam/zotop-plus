@@ -25,9 +25,9 @@
             @if ($block->type == 'code')
                 {field type="code" name="data" height="400" required="required" placeholder="trans('block::block.data.placeholder.code')"}
             @elseif ($block->type == 'html')
-                {field type="textarea" name="data" rows="18" required="required" placeholder="trans('block::block.data.placeholder.text')"}
+                {field type="textarea" name="data" rows="18" class="rounded-0" required="required" placeholder="trans('block::block.data.placeholder.html')"}
             @elseif ($block->type == 'text')
-                {field type="textarea" name="data" rows="18" required="required" placeholder="trans('block::block.data.placeholder.text')"}                
+                {field type="textarea" name="data" rows="18" class="rounded-0" required="required" placeholder="trans('block::block.data.placeholder.text')"}                
             @endif
             
 
@@ -42,10 +42,8 @@
 
     </div><!-- main-body -->
     <div class="main-footer">
-        <div class="mr-auto">
-            {field type="button" form="block-form" value="trans('block::block.save.edit')" class="btn btn-primary btn-save-edit"}
-        </div>
         <div class="ml-auto">
+             {field type="button" form="block-form" value="trans('block::block.save.edit')" class="btn btn-primary btn-save-edit"}
             {field type="button" form="block-form" value="trans('block::block.save.back')" class="btn btn-success btn-save-back"}
         </div>
     </div>

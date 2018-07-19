@@ -285,9 +285,9 @@ $(function(){
             axis: "y",
             placeholder:"ui-sortable-placeholder",
             helper: function(e,tr){
-                // tr.children().each(function(){
-                //     $(this).width($(this).width());
-                // });
+                tr.children().each(function(){
+                    $(this).width($(this).width());
+                });
                 return tr;
             },
             update:function(){

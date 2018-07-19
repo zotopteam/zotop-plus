@@ -28,13 +28,15 @@ return [
     'type'                  => '类型',
     'type.help'             => '',
 
+    'fields'                => '字段',
+    'fields.help'           => '列表使用的字段',
+
     'description'           => '描述',
     'description.help'      => '区块描述信息，如：图片尺寸最大1920px*600px',
 
     'interval'              => '更新频率',
     'interval.help'         => '0为手动更新，单位：秒',
     
-
     'template'              => '模板',
     'template.help'         => '模板决定区块显示样式',
 

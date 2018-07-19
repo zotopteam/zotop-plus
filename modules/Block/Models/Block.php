@@ -16,7 +16,8 @@ class Block extends Model
      * @var array
      */
     protected $casts = [
-        'data' => 'json',
+        'data'   => 'json',
+        'fields' => 'json',
     ];
 
     /**
@@ -43,7 +44,7 @@ class Block extends Model
     }
 
     /**
-     * 查看率
+     * 区块类型名称
      *
      * @param  string  $value
      * @return string
@@ -54,7 +55,7 @@ class Block extends Model
     }
 
     /**
-     * 查看率
+     * 模板代码
      *
      * @param  string  $value
      * @return string
@@ -73,5 +74,6 @@ class Block extends Model
     public function scopeSorted($query)
     {
         return $query->orderby('sort', 'asc')->orderby('id', 'asc');
-    }       
+    }
+
 }

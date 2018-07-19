@@ -53,6 +53,7 @@ class BlockController extends AdminController
         $this->block->category_id = $category_id;
         $this->block->interval    = 0;
         $this->block->template    = Block::type($type, 'template', 'block::'.$type);
+        $this->block->fields      = Block::type($type, 'fields', []);
 
         // 获取创建视图
         $view = Block::type($type, 'create', 'block::block.create');
@@ -190,5 +191,25 @@ class BlockController extends AdminController
         }
 
         return $this->success(trans('core::master.operated'));
-    }       
+    }
+
+    /**
+     * 字段显示和添加
+     * 
+     * @param  Request $request
+     * @param  string  $action  动作
+     * @return Response
+     */
+    public function fields(Request $request, $action='')
+    {
+        $fields = $request->input('fields');
+
+        if ($action == 'add') {
+            $fields[time()] = ['show'=>0, 'label'=>'', 'type'=>'text','name'=>'','required'=>'required'];
+        }
+
+        $this->fields = $fields;
+
+        return $this->view();
+    }     
 }

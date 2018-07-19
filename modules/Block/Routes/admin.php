@@ -13,6 +13,7 @@ $router->group(['prefix'=>'block', 'module'=>'block'], function (Router $router)
     $router->any('data/{id}','BlockController@data')->name('block.data')->middleware('allow:block.data');
     $router->delete('destroy/{id}','BlockController@destroy')->name('block.destroy')->middleware('allow:block.destroy');
     $router->post('sort','BlockController@sort')->name('block.sort')->middleware('allow:block.sort');
+    $router->any('fields/{action?}','BlockController@fields')->name('block.fields')->middleware('allow:block.fields');
 
     // 区块分类
     $router->group(['prefix' =>'category'], function (Router $router) {

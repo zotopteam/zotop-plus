@@ -17,6 +17,19 @@
             {form model="$block" route="block.store" id="block-form" method="post" autocomplete="off"}
 
             <div class="form-group row">
+                <label for="category_id" class="col-2 col-form-label required">{{trans('block::block.category_id')}}</label>
+                <div class="col-8">
+                    {field type="select" name="category_id" options="Module::data('block::category.select')" required="required"}
+
+                    @if ($errors->has('category_id'))
+                    <span class="form-help text-error">{{ $errors->first('category_id') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.category_id.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
+
+            <div class="form-group row">
                 <label for="name" class="col-2 col-form-label required">{{trans('block::block.name')}}</label>
                 <div class="col-8">
                     {field type="text" name="name" required="required"}
@@ -25,6 +38,35 @@
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
                     @else
                     <span class="form-help">{{trans('block::block.name.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="code" class="col-2 col-form-label required">{{trans('block::block.code')}}</label>
+                <div class="col-8">
+                    {field type="translate" name="code" source="name" required="required"}
+
+                    @if ($errors->has('code'))
+                    <span class="form-help text-error">{{ $errors->first('code') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.code.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="fields" class="col-2 col-form-label required">{{trans('block::block.fields')}}</label>
+                <div class="col-8">
+
+                    <div class="fields">
+                        <i class="fa fa-spinner fa-spin"></i>
+                    </div>    
+
+                    @if ($errors->has('fields'))
+                    <span class="form-help text-error">{{ $errors->first('fields') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.fields.help')}}</span>                     
                     @endif                       
                 </div>
             </div>
@@ -42,33 +84,7 @@
                 </div>
             </div>            
 
-            <div class="form-group row">
-                <label for="code" class="col-2 col-form-label required">{{trans('block::block.code')}}</label>
-                <div class="col-8">
-                    {field type="translate" name="code" source="name" required="required"}
 
-                    @if ($errors->has('code'))
-                    <span class="form-help text-error">{{ $errors->first('code') }}</span>
-                    @else
-                    <span class="form-help">{{trans('block::block.code.help')}}</span>                     
-                    @endif                       
-                </div>
-            </div>          
-
-
-
-            <div class="form-group row">
-                <label for="interval" class="col-2 col-form-label required">{{trans('block::block.interval')}}</label>
-                <div class="col-8">
-                    {field type="number" name="interval" required="required"}
-
-                    @if ($errors->has('interval'))
-                    <span class="form-help text-error">{{ $errors->first('interval') }}</span>
-                    @else
-                    <span class="form-help">{{trans('block::block.interval.help')}}</span>                     
-                    @endif                       
-                </div>
-            </div> 
 
             <div class="form-group row">
                 <label for="template" class="col-2 col-form-label required">{{trans('block::block.template')}}</label>
@@ -87,8 +103,8 @@
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
-        <div class="mr-auto">
-            {field type="submit" form="block-form" value="trans('core::master.save')" class="btn btn-primary"}
+        <div class="ml-auto">
+            {field type="submit" form="block-form" value="trans('block::block.save.next')" class="btn btn-primary"}
         </div>
     </div>
 </div>
@@ -96,6 +112,16 @@
 
 @push('js')
 <script type="text/javascript">
+
+    // 加载字段
+    $(function(){
+        $('.fields').load('{{route('block.fields')}}', {
+            'fields': {!! json_encode($block->fields) !!}
+        }, function(){
+            $(window).trigger('resize');
+        });
+    });
+
     $(function(){
         $('form.form').validate({
             submitHandler:function(form){                
