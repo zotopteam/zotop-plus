@@ -5,6 +5,17 @@
 
 <div class="main">
     <div class="main-header">
+        @if($keywords = request('keywords'))
+            <div class="main-back">
+                <a href="{{route('block.index',$category->id)}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            </div>
+            <div class="main-title mr-auto">
+                {{$category->name}}
+            </div>                    
+            <div class="main-title mr-auto">
+                {{trans('core::master.searching', [$keywords])}}
+            </div>        
+        @else
         <div class="main-title mr-auto">
             {{$category->name}}
         </div>
@@ -13,7 +24,7 @@
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-plus"></i> {{trans('block::block.create')}}
                 </button>
-                <div class="dropdown-menu dropdown-menu-right">
+                <div class="dropdown-menu">
                     @foreach(Module::data('block::types') as $key=>$val)
                         <a class="dropdown-item" href="{{route('block.create',[$category->id, $key])}}" title="{{$val['help']}}" data-placement="left">
                             <i class="dropdown-item-icon {{$val['icon']}} fa-fw"></i>
@@ -22,7 +33,19 @@
                     @endforeach
                 </div>
             </div>       
-        </div>        
+        </div>
+        @endif
+
+        <div class="main-action">
+            {form route="['block.index',$category->id]" class="form-inline form-search" method="get"}
+                <div class="input-group">
+                    <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('core::master.keywords.placeholder')}}" required="required" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
+                    </div>
+                </div>
+            {/form}
+        </div>              
     </div>
     <div class="main-body scrollable">
         @if($blocks->count() == 0)
@@ -36,6 +59,7 @@
                     <th>{{trans('block::block.name')}}</th>
                     <td width="30%" >{{trans('block::block.code.include')}}</td>
                     <td width="20%" class="text-center">{{trans('block::block.type')}}</td>
+                    <td></td>
                 </tr>
                 </thead>
                 <tbody>
@@ -69,6 +93,10 @@
                             </div>                            
                         </th>
                         <td class="text-center" title="{{$block->type}}"> {{$block->type_name}}</td>
+                        <td>
+                            <b>{{$block->user->username}}</b>
+                            <div class="text-sm">{{$block->updated_at}}</div>
+                        </td>
                     </tr>
                 @endforeach
 

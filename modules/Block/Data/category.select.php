@@ -1,4 +1,4 @@
 <?php
 use \Modules\Block\Models\Category;
 
-return Category::sorted()->get()->pluck('name', 'id')->toArray();
+return Category::all()->pluck('name', 'id')->toArray();

@@ -14,9 +14,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$block" route="block.store" id="block-form" method="post" autocomplete="off"}
-            
-            {field type="hidden" name="type" required="required"}
+            {form model="$block" route="['block.update', $block->id]" id="block-form" method="put" autocomplete="off" referer="true"}
 
             <div class="form-group row">
                 <label for="category_id" class="col-2 col-form-label required">{{trans('block::block.category_id')}}</label>
@@ -55,7 +53,23 @@
                     <span class="form-help">{{trans('block::block.code.help')}}</span>                     
                     @endif                       
                 </div>
-            </div>            
+            </div>
+
+            <div class="form-group row">
+                <label for="fields" class="col-2 col-form-label required">{{trans('block::block.fields')}}</label>
+                <div class="col-8">
+
+                    <div class="fields">
+                        <i class="fa fa-spinner fa-spin"></i>
+                    </div>    
+
+                    @if ($errors->has('fields'))
+                    <span class="form-help text-error">{{ $errors->first('fields') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.fields.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
 
             <div class="form-group row">
                 <label for="description" class="col-2 col-form-label">{{trans('block::block.description')}}</label>
@@ -69,6 +83,8 @@
                     @endif                       
                 </div>
             </div>            
+
+
 
             <div class="form-group row">
                 <label for="template" class="col-2 col-form-label required">{{trans('block::block.template')}}</label>
@@ -88,7 +104,7 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="ml-auto">
-            {field type="submit" form="block-form" value="trans('block::block.save.next')" class="btn btn-primary"}
+            {field type="submit" form="block-form" value="trans('block::block.save')" class="btn btn-primary"}
         </div>
     </div>
 </div>
@@ -96,6 +112,16 @@
 
 @push('js')
 <script type="text/javascript">
+
+    // 加载字段
+    $(function(){
+        $('.fields').load('{{route('block.fields')}}', {
+            'fields': {!! json_encode($block->fields) !!}
+        }, function(){
+            $(window).trigger('resize');
+        });
+    });
+
     $(function(){
         $('form.form').validate({
             submitHandler:function(form){                

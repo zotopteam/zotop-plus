@@ -3,6 +3,7 @@
 namespace Modules\Block\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Category extends Model
 {
@@ -10,13 +11,18 @@ class Category extends Model
     protected $fillable = ["name","description"];
 
     /**
-     * 查询排序
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * 全局作用域
+     * 
+     * @return null
      */
-    public function scopeSorted($query)
+    protected static function boot()
     {
-        return $query->orderby('sort', 'asc')->orderby('id', 'asc');
-    }    
+        parent::boot();
+
+        // sort
+        static::addGlobalScope('sort', function (Builder $builder) {
+            $builder->orderby('sort', 'asc')->orderby('id', 'asc');
+        });
+    }
+ 
 }

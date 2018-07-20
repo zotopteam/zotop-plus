@@ -3,11 +3,16 @@
 namespace Modules\Block\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Modules\Core\Traits\UserRelation;
 use Module;
 
 class Block extends Model
 {
+    use UserRelation;
+    
     protected $table = 'block';
+
     protected $fillable = ['category_id','type','code','name','description','rows','data','template','interval','fields','commend','sort','user_id','disabled'];
 
     /**
@@ -19,6 +24,21 @@ class Block extends Model
         'data'   => 'json',
         'fields' => 'json',
     ];
+
+    /**
+     * 全局作用域
+     * 
+     * @return null
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // sort
+        static::addGlobalScope('sort', function (Builder $builder) {
+            $builder->orderby('sort', 'asc')->orderby('id', 'asc');
+        });
+    }
 
     /**
      * 区块类型
@@ -66,14 +86,14 @@ class Block extends Model
     }
 
     /**
-     * 查询排序
+     * 获取字段，为了排序需要去掉key名
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  string  $value
+     * @return void
      */
-    public function scopeSorted($query)
+    public function getFieldsAttribute($value)
     {
-        return $query->orderby('sort', 'asc')->orderby('id', 'asc');
+        return $value ? array_values(json_decode($value,true)) : $value;
     }
 
 }

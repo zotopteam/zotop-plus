@@ -19,7 +19,7 @@ class CategoryController extends AdminController
         $this->title = trans('block::category.title');
     
         // 分页获取
-        $this->categories = Category::sorted()->get();
+        $this->categories = Category::all();
 
         return $this->view();
     }

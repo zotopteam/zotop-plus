@@ -3,7 +3,7 @@ use Modules\Block\Models\Category;
 
 $navbar = [];
 
-$categories = Category::sorted()->get();
+$categories = Category::all();
 
 // 获取route中的参数 category_id
 $category_id = request()->route('category_id');

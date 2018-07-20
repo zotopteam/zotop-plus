@@ -22,7 +22,7 @@ class BlockController extends AdminController
         // 如果未传入分类编号，则定位到第一个分类上
         if (empty($category_id)) {
             // 获取区块分类中的第一个
-            $this->category = Category::sorted()->first();
+            $this->category = Category::first();
             // 如果没有任何区块分类，获取失败，必须先添加
             if (! $this->category) {
                 return redirect()->route('block.category.index');
@@ -31,8 +31,10 @@ class BlockController extends AdminController
             $this->category = Category::findOrFail($category_id);          
         }
 
-        // 分页获取
-        $this->blocks = Block::sorted()->where('category_id', $this->category->id)->get();
+        // 获取列表
+        $this->blocks = Block::when($keywords = request('keywords'), function ($query, $keywords) {
+            return $query->where('name', 'like', '%'.$keywords.'%');
+        })->where('category_id', $this->category->id)->get();
 
         return $this->view();
     }
@@ -45,11 +47,11 @@ class BlockController extends AdminController
     public function create($category_id, $type)
     {
         $this->title    = trans('block::block.create.type', [Block::type($type, 'name')]);
-        $this->type     = $type;
         $this->category = Category::findOrFail($category_id); 
         $this->block    = Block::findOrNew(0);
 
         // 默认数据
+        $this->block->type        = $type;
         $this->block->category_id = $category_id;
         $this->block->interval    = 0;
         $this->block->template    = Block::type($type, 'template', 'block::'.$type);
@@ -105,6 +107,8 @@ class BlockController extends AdminController
         // 获取创建视图
         $view = Block::type($this->block->type, 'edit', 'block::block.edit');
 
+        debug($this->block->fields);
+
         return $this->view($view);
     }
 
@@ -134,7 +138,7 @@ class BlockController extends AdminController
         $block = Block::findOrFail($id);
         $block->delete();
 
-        return $this->success(trans('core::master.deleted'), route('block.block.index'));        
+        return $this->success(trans('core::master.deleted'), request()->referer());       
     }
 
     /**
@@ -205,7 +209,7 @@ class BlockController extends AdminController
         $fields = $request->input('fields');
 
         if ($action == 'add') {
-            $fields[time()] = ['show'=>0, 'label'=>'', 'type'=>'text','name'=>'','required'=>'required'];
+            $fields[] = ['show'=>0, 'label'=>'', 'type'=>'text','name'=>'','required'=>'required'];
         }
 
         $this->fields = $fields;
