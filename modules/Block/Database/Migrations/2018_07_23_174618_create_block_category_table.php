@@ -21,7 +21,6 @@ class CreateBlockCategoryTable extends Migration {
 			$table->string('name')->comment('名称');
 			$table->text('description')->nullable()->comment('说明');
 			$table->integer('sort')->unsigned()->default(0)->comment('排序');
-			$table->integer('posts')->unsigned()->default(0)->comment('数量');
 			$table->timestamps();
 
             $table->comment = '';             

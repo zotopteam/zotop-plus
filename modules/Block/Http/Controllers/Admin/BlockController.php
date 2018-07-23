@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Modules\Block\Models\Block;
 use Modules\Block\Models\Category;
+use Modules\Block\Http\Requests\BlockRequest;
 
 class BlockController extends AdminController
 {
@@ -53,6 +54,7 @@ class BlockController extends AdminController
         // 默认数据
         $this->block->type        = $type;
         $this->block->category_id = $category_id;
+        $this->block->rows        = 0;
         $this->block->interval    = 0;
         $this->block->template    = Block::type($type, 'template', 'block::'.$type);
         $this->block->fields      = Block::type($type, 'fields', []);
@@ -69,7 +71,7 @@ class BlockController extends AdminController
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(BlockRequest $request)
     {
         $block = new Block;
         $block->fill($request->all());
@@ -87,7 +89,6 @@ class BlockController extends AdminController
     public function show($id)
     {
         $this->title = trans('block::block.show');
-
         $this->block = Block::findOrFail($id);
 
         return $this->view();
@@ -107,8 +108,6 @@ class BlockController extends AdminController
         // 获取创建视图
         $view = Block::type($this->block->type, 'edit', 'block::block.edit');
 
-        debug($this->block->fields);
-
         return $this->view($view);
     }
 
@@ -118,9 +117,8 @@ class BlockController extends AdminController
      * @param  Request $request
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(BlockRequest $request, $id)
     {
-
         $block = Block::findOrFail($id);
         $block->fill($request->all());        
         $block->save();
@@ -208,6 +206,7 @@ class BlockController extends AdminController
     {
         $fields = $request->input('fields');
 
+        // 添加时字段数组尾部增加一条数据，show=0 可以删除
         if ($action == 'add') {
             $fields[] = ['show'=>0, 'label'=>'', 'type'=>'text','name'=>'','required'=>'required'];
         }

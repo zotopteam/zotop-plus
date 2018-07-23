@@ -27,6 +27,7 @@
                     <td class="drag"></td>
                     <th width="30%">{{trans('block::category.name')}}</th>
                     <td>{{trans('block::category.description')}}</td>
+                    <td>{{trans('block::category.blocks_count')}}</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -50,6 +51,7 @@
                             </div>
                         </td>
                         <td>{{$category->description}}</td>
+                        <td>{{$category->blocks_count}}</td>
                     </tr>
                     @endforeach
                 </tbody>

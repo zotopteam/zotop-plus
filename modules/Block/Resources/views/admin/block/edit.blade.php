@@ -15,6 +15,8 @@
         <div class="container-fluid">
 
             {form model="$block" route="['block.update', $block->id]" id="block-form" method="put" autocomplete="off" referer="true"}
+            
+            {field type="hidden" name="type" required="required"}
 
             <div class="form-group row">
                 <label for="category_id" class="col-2 col-form-label required">{{trans('block::block.category_id')}}</label>

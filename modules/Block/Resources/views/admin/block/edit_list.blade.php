@@ -16,6 +16,8 @@
 
             {form model="$block" route="['block.update', $block->id]" id="block-form" method="put" autocomplete="off" referer="true"}
 
+            {field type="hidden" name="type" required="required"}
+
             <div class="form-group row">
                 <label for="category_id" class="col-2 col-form-label required">{{trans('block::block.category_id')}}</label>
                 <div class="col-8">
@@ -51,6 +53,24 @@
                     <span class="form-help text-error">{{ $errors->first('code') }}</span>
                     @else
                     <span class="form-help">{{trans('block::block.code.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="rows" class="col-2 col-form-label required">{{trans('block::block.rows')}}</label>
+                <div class="col-8">
+                    <div class="input-group">
+                            {field type="number" name="rows" min="0" required="required"}
+                            <div class="input-group-append">
+                                <span class="input-group-text">{{trans('block::block.rows.unit')}}</span>
+                            </div>
+                    </div>
+
+                    @if ($errors->has('rows'))
+                    <span class="form-help text-error">{{ $errors->first('rows') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.rows.help')}}</span>                     
                     @endif                       
                 </div>
             </div>

@@ -11,4 +11,8 @@ return [
 
     'description'      => '分类描述',
     'description.help' => '',
+
+    'blocks_count'     => '区块条数',
+
+    'delete.hasblock'  => '删除失败，分类下尚有区块'
 ];

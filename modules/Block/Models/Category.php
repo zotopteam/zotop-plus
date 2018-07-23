@@ -19,10 +19,17 @@ class Category extends Model
     {
         parent::boot();
 
-        // sort
+        // sort 排序全局作用域
         static::addGlobalScope('sort', function (Builder $builder) {
             $builder->orderby('sort', 'asc')->orderby('id', 'asc');
         });
     }
- 
+
+    /**
+     * 和block的关联
+     * @return hasMany
+     */
+    public function blocks() {
+        return $this->hasMany(Block::class, 'category_id', 'id');
+    } 
 }

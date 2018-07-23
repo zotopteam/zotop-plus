@@ -57,6 +57,10 @@ return [
     'description'                 => '描述',
     'description.help'            => '区块描述信息，如：图片尺寸最大1920px*600px',
 
+    'rows'                        => '行数',
+    'rows.help'                   => '0为无固定行数',
+    'rows.unit'                   => '行',
+
     'interval'                    => '更新频率',
     'interval.help'               => '0为手动更新，单位：秒',
     

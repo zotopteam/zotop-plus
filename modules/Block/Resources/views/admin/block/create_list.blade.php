@@ -57,6 +57,24 @@
             </div>
 
             <div class="form-group row">
+                <label for="rows" class="col-2 col-form-label required">{{trans('block::block.rows')}}</label>
+                <div class="col-8">
+                    <div class="input-group">
+                            {field type="number" name="rows" min="0" required="required"}
+                            <div class="input-group-append">
+                                <span class="input-group-text">{{trans('block::block.rows.unit')}}</span>
+                            </div>
+                    </div>
+
+                    @if ($errors->has('rows'))
+                    <span class="form-help text-error">{{ $errors->first('rows') }}</span>
+                    @else
+                    <span class="form-help">{{trans('block::block.rows.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>            
+
+            <div class="form-group row">
                 <label for="fields" class="col-2 col-form-label required">{{trans('block::block.fields')}}</label>
                 <div class="col-8">
 
