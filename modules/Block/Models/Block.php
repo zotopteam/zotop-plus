@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\Core\Traits\UserRelation;
 use Module;
+use Action;
 
 class Block extends Model
 {
@@ -38,6 +39,16 @@ class Block extends Model
         static::addGlobalScope('sort', function (Builder $builder) {
             $builder->orderby('sort', 'asc')->orderby('id', 'asc');
         });
+
+        // 保存后
+        static::saved(function ($model) {
+            Action::fire('block.saved', $model);
+        });
+
+        // 保存后
+        static::deleted(function ($model) {
+            Action::fire('block.deleted', $model);
+        });            
     }
 
     /**

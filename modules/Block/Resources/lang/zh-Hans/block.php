@@ -21,7 +21,7 @@ return [
     'name'                        => '名称',
     'name.help'                   => '区块显示名称',
 
-    'code'                        => '代码',
+    'code'                        => '唯一代码',
     'code.help'                   => '区块唯一代码，英文或者数字，最大64个字符',
     'code.include'                => '调用代码',
 
@@ -54,10 +54,20 @@ return [
     'fields.validator.fieldname'  => '长度2-20，允许小写英文字母、数字和下划线，并且仅能字母开头，不以下划线结尾',
     'fields.validator.uniquename' => '标识已经存在，请使用其它标识',
 
+    'fields.setting'              => '设置',
+    'fields.length'               => '长度',
+    'fields.length.unit'          => '字',
+    'fields.size'                 => '尺寸',
+    'fields.width_height'         => '宽高',
+    'fields.width'                => '宽',
+    'fields.height'               => '高',
+    'fields.rows'                 => '行数',
+    'fields.watermark'            => '水印',
+
     'description'                 => '描述',
     'description.help'            => '区块描述信息，如：图片尺寸最大1920px*600px',
 
-    'rows'                        => '行数',
+    'rows'                        => '显示行数',
     'rows.help'                   => '0为无固定行数',
     'rows.unit'                   => '行',
 

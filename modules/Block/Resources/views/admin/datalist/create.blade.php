@@ -5,7 +5,7 @@
     
         <div class="container-fluid">
             {form model="$datalist" route="block.datalist.store" id="datalist-form" method="post" autocomplete="off"}
-            
+            {field type="hidden" name="block_id" required="required"}
             @foreach ($fields as $field)            
             <div class="form-group">
                 <label for="{{array_get($field, 'field.id')}}" class="form-label {{array_get($field, 'field.required')}}">

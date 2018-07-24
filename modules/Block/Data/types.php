@@ -13,8 +13,8 @@ $types['list'] = [
     'fields'   => [
         ['show'=>2,'label'=>trans('block::type.list.fields.title'),'type'=>'title','name'=>'title','minlength'=>1,'maxlength'=>50, 'required'=>'required'],
         ['show'=>0,'label'=>trans('block::type.list.fields.url'),'type'=>'link','name'=>'url','required'=>'required'],
-        ['show'=>0,'label'=>trans('block::type.list.fields.image'),'type'=>'upload_image','name'=>'image','required'=>'required','resize'=>['enabled'=>true, 'width'=>'', 'height'=>''],'watermark'=>0],
-        ['show'=>0,'label'=>trans('block::type.list.fields.description'),'type'=>'textarea','name'=>'description','required'=>'required','minlength'=>0,'maxlength'=>255],
+        ['show'=>0,'label'=>trans('block::type.list.fields.image'),'type'=>'upload_image','name'=>'image','required'=>'required','resize'=>['enabled'=>0, 'width'=>'', 'height'=>''],'watermark'=>0],
+        ['show'=>0,'label'=>trans('block::type.list.fields.description'),'type'=>'textarea','name'=>'description','required'=>'required','minlength'=>0,'maxlength'=>255, 'rows'=>3],
         ['show'=>0,'label'=>trans('block::type.list.fields.time'),'type'=>'datetime','name'=>'time','required'=>'required'],
     ]
 ];

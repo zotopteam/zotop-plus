@@ -76,7 +76,7 @@
 
             <div class="form-group row">
                 <label for="fields" class="col-2 col-form-label required">{{trans('block::block.fields')}}</label>
-                <div class="col-8">
+                <div class="col-9">
 
                     <div class="fields">
                         <i class="fa fa-spinner fa-spin"></i>

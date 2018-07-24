@@ -29,13 +29,17 @@ $router->group(['prefix'=>'block', 'module'=>'block'], function (Router $router)
 
     // datalist group example
     $router->group(['prefix' =>'datalist'], function (Router $router) {
-        $router->get('index/{block_id}','DatalistController@index')->name('block.datalist.index')->middleware('allow:block.datalist.index');
-        $router->get('create/{block_id}','DatalistController@create')->name('block.datalist.create')->middleware('allow:block.datalist.create');
-        $router->post('store','DatalistController@store')->name('block.datalist.store')->middleware('allow:block.datalist.store');
-        $router->get('show/{id}','DatalistController@show')->name('block.datalist.show')->middleware('allow:block.datalist.show');
-        $router->get('edit/{id}','DatalistController@edit')->name('block.datalist.edit')->middleware('allow:block.datalist.edit');
-        $router->put('update/{id}','DatalistController@update')->name('block.datalist.update')->middleware('allow:block.datalist.update');
-        $router->delete('destroy/{id}','DatalistController@destroy')->name('block.datalist.destroy')->middleware('allow:block.datalist.destroy');
+        $router->get('index/{block_id}','DatalistController@index')->name('block.datalist.index')->middleware('allow:block.datalist');
+        $router->get('history/{block_id}','DatalistController@history')->name('block.datalist.history')->middleware('allow:block.datalist');
+        $router->get('create/{block_id}','DatalistController@create')->name('block.datalist.create')->middleware('allow:block.datalist');
+        $router->post('store','DatalistController@store')->name('block.datalist.store')->middleware('allow:block.datalist');
+        $router->get('show/{id}','DatalistController@show')->name('block.datalist.show')->middleware('allow:block.datalist');
+        $router->get('edit/{id}','DatalistController@edit')->name('block.datalist.edit')->middleware('allow:block.datalist');
+        $router->put('update/{id}','DatalistController@update')->name('block.datalist.update')->middleware('allow:block.datalist');
+        $router->delete('destroy/{id}','DatalistController@destroy')->name('block.datalist.destroy')->middleware('allow:block.datalist');
+        $router->post('sort','DatalistController@sort')->name('block.datalist.sort')->middleware('allow:block.datalist');
+        $router->post('stick/{id}/{stick}','DatalistController@stick')->name('block.datalist.stick')->middleware('allow:block.datalist');
+        $router->post('republish/{id}','DatalistController@republish')->name('block.datalist.republish')->middleware('allow:block.datalist');
     });     
 });
 

@@ -59,7 +59,7 @@
                     <th>{{trans('block::block.name')}}</th>
                     <td width="30%" >{{trans('block::block.code.include')}}</td>
                     <td width="20%" class="text-center">{{trans('block::block.type')}}</td>
-                    <td></td>
+                    <td>{{trans('core::master.lastmodify')}}</td>
                 </tr>
                 </thead>
                 <tbody>

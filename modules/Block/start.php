@@ -8,3 +8,14 @@
  * 扩展开始菜单
  */
 \Filter::listen('global.navbar', 'Modules\Block\Hook\Listener@navbar');
+
+
+/**
+ * 区块保存后，更新区块data数据
+ */
+\Action::listen('block.saved', 'Modules\Block\Hook\Listener@blockSaved');
+
+/**
+ * 区块删除
+ */
+\Action::listen('block.deleted', 'Modules\Block\Hook\Listener@blockDeleted');

@@ -54,4 +54,5 @@ return [
     'search'               => '搜索',
     'search.placeholder'   => '请输入关键词',    
     'searching'            => '搜索: “:0”',
+    'lastmodify'           => '最后更新',
 ];

@@ -11,7 +11,7 @@ trait UserRelation
      *
      * @return void
      */
-    public static function bootUserId()
+    public static function bootUserRelation()
     {
         static::updating(function ($model) {
             $model->user_id = \Auth::User()->id;

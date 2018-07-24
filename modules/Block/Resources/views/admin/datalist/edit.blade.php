@@ -1,69 +1,61 @@
-@extends('core::layouts.master')
+@extends('core::layouts.dialog')
 
 @section('content')
-<div class="main">
-    <div class="main-header">
-        <div class="main-back">
-            <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
-        </div>
-        <div class="main-title mr-auto">
-            {{$title}}
-        </div>
-    </div>
+<div class="main scrollable">
     
-    <div class="main-body scrollable">
         <div class="container-fluid">
+            {form model="$datalist" route="['block.datalist.update', $datalist->id]" id="datalist-form" method="put" autocomplete="off"}
 
-            {form model="$datalist" route="['block.datalist.store', $id]" id="datalist-form" method="put" autocomplete="off"}
+            {field type="hidden" name="block_id" required="required"}
 
-            <div class="form-title row">{{trans('block::datalist.form.base')}}</div>
-
-            <div class="form-group row">
-                <label for="title" class="col-2 col-form-label required">{{trans('block::datalist.title.label')}}</label>
-                <div class="col-4">
-                    {field type="text" name="title" required="required"}
-
-                    @if ($errors->has('title'))
-                    <span class="form-help text-error">{{ $errors->first('title') }}</span>
-                    @else
-                    <span class="form-help">{{trans('block::datalist.title.help')}}</span>                     
-                    @endif                       
-                </div>
+            @foreach ($fields as $field)            
+            <div class="form-group">
+                <label for="{{array_get($field, 'field.id')}}" class="form-label {{array_get($field, 'field.required')}}">
+                    {{array_get($field, 'label')}}
+                </label>
+                <div class="form-field">
+                    {{Form::field($field['field'])}}
+                </div>                      
             </div>
+            @endforeach
 
             {/form}
-
         </div>
-    </div><!-- main-body -->
-    <div class="main-footer">
-        <div class="mr-auto">
-            {field type="submit" form="datalist-form" value="trans('core::master.save')" class="btn btn-primary"}
-        </div>
-    </div>
 </div>
 @endsection
 
 @push('js')
 <script type="text/javascript">
+    
+    // 对话框设置
+    $dialog.callbacks['ok'] = function(){
+        $('form.form').submit();
+        return false;
+    };
+
+    // 表单提交
     $(function(){
         $('form.form').validate({
             submitHandler:function(form){                
                 var validator = this;
-                $('.form-submit').prop('disabled',true);
                 $.post($(form).attr('action'), $(form).serialize(), function(msg){
-                    $.msg(msg);
-                    if ( msg.state && msg.url ) {
-                        location.href = msg.url;
-                        return true;
+                    
+                    // 关闭对话框，刷新页面
+                    if (msg.state) {
+                        msg.onclose = function () {
+                            $dialog.opener.location.reload();
+                        }
+                        $dialog.close();
                     }
-                    $('.form-submit').prop('disabled',false);
-                    return false;
+
+                    // 弹出消息
+                    $.msg(msg);
+
                 },'json').fail(function(jqXHR){
-                    $('.form-submit').prop('disabled',false);
                     return validator.showErrors(jqXHR.responseJSON.errors);
                 });
             }            
         });
-    })
+    })  
 </script>
 @endpush
