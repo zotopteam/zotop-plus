@@ -18,12 +18,16 @@
 			if (input.attr('preview') == 'image') {
 				input.popover({placement:'bottom',html:true,trigger:'hover',content:function(){
 					var value = input.val();
-					if (value) {
-						return input.hasClass('error') ? false : '<div class="image bg-image-preview"><img src="'+ value +'"/></div>';
-					}
-					return false;
+					var width = $(window).width() * 0.25;
+					var height = $(window).height() * 0.25;
+					return '<div class="image bg-image-preview p-2"><img src="'+ value +'" style="max-width:'+width+'px;max-height:'+height+'px;"/></div>';
 				}}).on('show.bs.popover', function () {
-  					$($(this).data('bs.popover').getTipElement()).addClass('popover-image-preview');
+					var value = input.val();
+					if (value && !input.hasClass('error')) {
+						//$(input.data('bs.popover').getTipElement()).addClass('popover-image-preview');
+						return true;
+					}
+  					return false;
 				});
 			}			
 
