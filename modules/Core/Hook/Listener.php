@@ -168,4 +168,21 @@ class Listener
 
         return $return;
     }
+
+    /**
+     * 禁止卸载、禁用、删除系统模块
+     * @param  view $view 
+     * @param  stiring $module 模块名称
+     * @return mixed
+     */
+    public function checkIsCore($view, $module)
+    {
+        // 核心模块不能卸载
+        if (in_array(strtolower($module), config('modules.cores',['core']))) {
+            $view->error = trans('core::modules.core_operate_forbidden');
+            return false;
+        }
+
+        return $view;       
+    }
 }

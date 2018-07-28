@@ -18,10 +18,10 @@
         <table class="table table-nowrap table-hover">
             <thead>
                 <tr>
-                    <td width="20%" colspan="2">{{trans('core::modules.name.label')}}</td>
+                    <td colspan="2">{{trans('core::modules.name.label')}}</td>
                     <td width="10%">{{trans('core::modules.version.label')}}</td>
-                    <td>{{trans('core::modules.description.label')}}</td>
-                    <td class="text-center">{{trans('developer::module.edit')}}</td>
+                    <td width="40%" c>{{trans('core::modules.description.label')}}</td>
+                    <td width="10%" class="text-center">{{trans('developer::module.edit')}}</td>
                 </tr>
             </thead>        
             <tbody>  
@@ -35,19 +35,19 @@
                         <div class="manage">
                             @if($module->installed)
                                 @if($module->active)
-                                <a href="javascript:;" data-url="{{route('core.modules.disable',[$name])}}" class="manage-item js-confirm"><i class="fa fa-times-circle"></i> {{trans('core::master.disable')}}</a>
+                                <a href="javascript:;" data-url="{{route('core.modules.disable',[$name])}}" class="manage-item js-confirm"><i class="fa fa-times-circle fa-fw"></i> {{trans('core::master.disable')}}</a>
                                 @else
-                                <a href="javascript:;" data-url="{{route('core.modules.enable',[$name])}}" class="manage-item js-confirm"><i class="fa fa-check-circle"></i> {{trans('core::master.active')}}</a>
+                                <a href="javascript:;" data-url="{{route('core.modules.enable',[$name])}}" class="manage-item js-confirm"><i class="fa fa-check-circle fa-fw"></i> {{trans('core::master.active')}}</a>
                                 @endif
 
-                                @foreach(filter::fire('modules.manage',[],$module) as $s)
-                                <a href="{{$s['href']}}" class="manage-item {{$s['icon']}}"><i class="{{$s['icon']}}"></i>{{$s['text']}}</a>                                        
+                                @foreach(filter::fire('module.manage', [], $name) as $s)
+                                <a href="{{$s['href']}}" class="manage-item {{$s['class']}}"><i class="{{$s['icon']}} fa-fw"></i>{{$s['text']}}</a>
                                 @endforeach
                            
-                                <a href="javascript:;" data-url="{{route('core.modules.uninstall',[$name])}}" data-confirm="{{trans('core::modules.uninstall.confirm',[$module->title])}}"  class="manage-item js-confirm"><i class="fa fa-trash"></i> {{trans('core::modules.uninstall')}}</a>
+                                <a href="javascript:;" data-url="{{route('core.modules.uninstall',[$name])}}" data-confirm="{{trans('core::modules.uninstall.confirm',[$module->title])}}"  class="manage-item js-confirm"><i class="fa fa-trash fa-fw"></i> {{trans('core::modules.uninstall')}}</a>
                             @else
-                                <a href="javascript:;" data-url="{{route('core.modules.install',[$name])}}" class="manage-item js-confirm"><i class="fa fa-wrench"></i> {{trans('core::modules.install')}}</a>
-                                <a href="javascript:;" data-url="{{route('core.modules.delete',[$name])}}" data-confirm="{{trans('core::modules.delete.confirm',[$module->title])}}" class="manage-item js-confirm"><i class="fa fa-times"></i> {{trans('core::master.delete')}}</a>
+                                <a href="javascript:;" data-url="{{route('core.modules.install',[$name])}}" class="manage-item js-confirm fa-fw"><i class="fa fa-wrench fa-fw"></i> {{trans('core::modules.install')}}</a>
+                                <a href="javascript:;" data-url="{{route('core.modules.delete',[$name])}}" data-confirm="{{trans('core::modules.delete.confirm',[$module->title])}}" class="manage-item js-confirm"><i class="fa fa-times fa-fw"></i> {{trans('core::master.delete')}}</a>
                             @endif
                         </div>
                     </td>

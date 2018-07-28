@@ -46,7 +46,7 @@
             <div class="form-group row">
                 <label for="code" class="col-2 col-form-label required">{{trans('block::block.code')}}</label>
                 <div class="col-8">
-                    {field type="translate" name="code" source="name" required="required"}
+                    {field type="translate" name="code" source="name" format="id" required="required" maxlength="64"}
 
                     @if ($errors->has('code'))
                     <span class="form-help text-error">{{ $errors->first('code') }}</span>

@@ -7,6 +7,8 @@ use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Module;
 use Artisan;
+use Filter;
+use Action;
 
 class ModulesController extends AdminController
 {
@@ -44,10 +46,10 @@ class ModulesController extends AdminController
      */
     public function disable(Request $request, $name)
     {
-        // 核心模块不能禁用
-        if (in_array(strtolower($name), config('modules.cores',['core']))) {
-            return $this->error(trans('core::modules.core_operate_forbidden'));
-        }
+        // 卸载前置Hook
+        if (! Filter::fire('module.disabling', $this, $name) ) {
+            return $this->error($this->error);
+        }    
 
         Module::disable($name);
 
@@ -81,9 +83,9 @@ class ModulesController extends AdminController
      */
     public function uninstall(Request $request, $module)
     {
-        // 核心模块不能卸载
-        if (in_array(strtolower($module), config('modules.cores',['core']))) {
-            return $this->error(trans('core::modules.core_operate_forbidden'));
+        // 卸载前置Hook
+        if (! Filter::fire('module.uninstalling', $this, $module) ) {
+            return $this->error($this->error);
         }
 
         // install
@@ -105,9 +107,9 @@ class ModulesController extends AdminController
      */
     public function delete(Request $request, $name)
     {
-        // 核心模块不能卸载
-        if (in_array(strtolower($name), config('modules.cores',['core']))) {
-            return $this->error(trans('core::modules.core_operate_forbidden'));
+        // 卸载前置Hook
+        if (! Filter::fire('module.deleting', $this, $name) ) {
+            return $this->error($this->error);
         }
         
         // Find Module

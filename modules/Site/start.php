@@ -47,4 +47,22 @@
     ];
 
     return $tools;
-},1);
+}, 1);
+
+/**
+ * 全局工具
+ */
+\Filter::listen('module.manage',function($manage, $module) {
+    
+    if (strtolower($module) == 'site') {
+        $manage['site_config'] = [
+            'text'  => trans('site::config.title'),
+            'href'  => route('site.config.base'),
+            'icon'  => 'fa fa-cog',
+            'class' => '',
+        ];
+    }
+    
+    return $manage;         
+
+}, 1);

@@ -19,3 +19,8 @@
  * 区块删除
  */
 \Action::listen('block.deleted', 'Modules\Block\Hook\Listener@blockDeleted');
+
+/**
+ * 卸载验证
+ */
+\Filter::listen('module.uninstalling', 'Modules\Block\Hook\Listener@uninstalling');

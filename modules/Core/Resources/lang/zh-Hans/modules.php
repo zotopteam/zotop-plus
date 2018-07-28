@@ -12,7 +12,7 @@ return [
     
     'install'                => '安装',
     'uninstall'              => '卸载',
-    'uninstall.confirm'      => '您确定要卸载 [ :0 ] 吗？<br/>如果有数据，卸载后数据将全部删除，并且无法恢复，卸载前请先备份！',
+    'uninstall.confirm'      => '您确定要卸载 [ :0 ] 吗？',
     
     'installed'              => '安装成功',
     'uninstalled'            => '卸载成功',

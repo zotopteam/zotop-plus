@@ -263,7 +263,7 @@ label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 1px * 3);padd
 .toggle[type=checkbox]:checked:before{content:'\f205';color:#00bc3e;} 
 
 
-[type=select]:not([size]):not([multiple]){padding-right:1.75rem;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='50' fill='%23c3c3c3'><polygon points='0,0 100,0 50,50'/></svg>");background-repeat:no-repeat;background-position:right .75rem center;background-size:.75rem;-webkit-appearance:none;-moz-appearance:none;appearance:none;}
+select:not([size]):not([multiple]){padding-right:1.75rem;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='50' fill='%23c3c3c3'><polygon points='0,0 100,0 50,50'/></svg>");background-repeat:no-repeat;background-position:right .75rem center;background-size:.75rem;-webkit-appearance:none;-moz-appearance:none;appearance:none;}
 
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none !important;margin:0;}
 input[type="number"]{-moz-appearance:textfield;}

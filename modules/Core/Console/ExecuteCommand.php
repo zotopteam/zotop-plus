@@ -112,7 +112,6 @@ class ExecuteCommand extends Command
             $this->info("Config");
 
             if ($configs = require $configFile) {
-                
                 Config::set($name, $configs);
             }          
         }

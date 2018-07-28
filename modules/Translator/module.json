@@ -1,0 +1,21 @@
+{
+    "name": "Translator",
+    "alias": "translator",
+    "title": "translator::translator.title",
+    "description": "translator::translator.description",
+    "keywords": [],
+    "version": "1.0.0",
+    "active": 1,
+    "installed": 1,
+    "order": "8",
+    "author": "zotop",
+    "email": "it@zotop.com",
+    "homepage": "http:\/\/www.zotop.com",
+    "providers": [
+        "Modules\\Translator\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": [],
+    "files": [
+        "start.php"
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "name": "zotop/translator",
+    "description": "",
+    "authors": [
+        {
+            "name": "Zotop Team",
+            "email": "cms@zotop.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Translator\\Providers\\TranslatorServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Translator\\": ""
+        }
+    }
+}
