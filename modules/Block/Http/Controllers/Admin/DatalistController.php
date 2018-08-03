@@ -21,7 +21,7 @@ class DatalistController extends AdminController
         $this->block = Block::findOrFail($block_id);
 
         // 分页获取
-        $this->datalists = Datalist::where('status','history')->paginate(25);
+        $this->datalists = Datalist::where('block_id',$block_id)->where('status','history')->paginate(25);
 
         return $this->view();
     }
@@ -52,7 +52,7 @@ class DatalistController extends AdminController
      * 保存
      *
      * @param  Request $request
-     * @return Response
+     * @return json
      */
     public function store(Request $request)
     {
@@ -61,22 +61,7 @@ class DatalistController extends AdminController
         $datalist->save();
 
         return $this->success(trans('core::master.created'), route('block.datalist.index', $request->input('block_id')));
-    }
-
-    /**
-     * 显示
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $this->title = trans('block::datalist.show');
-
-        $this->datalist = Datalist::findOrFail($id);
-
-        return $this->view();
-    }    
+    }   
 
     /**
      * 编辑
@@ -102,7 +87,7 @@ class DatalistController extends AdminController
      * 更新
      *
      * @param  Request $request
-     * @return Response
+     * @return json
      */
     public function update(Request $request, $id)
     {
@@ -116,7 +101,7 @@ class DatalistController extends AdminController
     /**
      * 删除
      *
-     * @return Response
+     * @return json
      */
     public function destroy(Request $request, $id)
     {
@@ -139,20 +124,24 @@ class DatalistController extends AdminController
     /**
      * 排序
      *
-     * @return Response
+     * @return json
      */
-    public function sort(Request $request)
+    public function sort(Request $request, $block_id)
     {
-        $block_id = $request->input('block_id');
-        $sort     = $request->input('sort');
+        $id    = $request->input('id');
+        $sort  = $request->input('sort');
+        $stick = $request->input('stick');
 
-        // 排序字段sort是逆向排序
-        $sort = array_reverse($sort);
+        // 将当前列表 $sort 之前的数据的 sort 全部加 1， 为拖动的数据保留出位置
+        Datalist::where('block_id', $block_id)->where('sort','>=', $sort)->increment('sort', 1);        
 
-        foreach ($sort as $i => $id) {
-            Datalist::where('id', $id)->update(['sort' => $i+1]);
-        }
-
+        // 更新当前数据的排序和置顶信息，如果排在置顶数据之前，自动置顶，如果排在非置顶数据后，自动取消置顶
+        Datalist::where('id', $id)->update([
+            'sort'  => $sort,
+            'stick' => $stick,
+        ]);
+        
+        // 更新区块数据
         Datalist::updateBlockData($block_id);
 
         return $this->success(trans('core::master.operated'), $request->referer());
@@ -161,7 +150,7 @@ class DatalistController extends AdminController
     /**
      * 排序
      *
-     * @return Response
+     * @return json
      */
     public function stick(Request $request, $id, $stick)
     {
@@ -180,13 +169,14 @@ class DatalistController extends AdminController
      */
     public function republish($id)
     {
-        // 重新发布：设置状态为发布，并且将数据放在最前面，最下面如果有超出条数限制部分，自动推进历史记录
+        // 设置状态为发布，并且将数据放在最前面，最下面如果有超出条数限制部分，自动推进历史记录
+        // 设置置顶状态为 非置顶：0
         $datalist = Datalist::findOrFail($id);
         $datalist->status = 'publish';
-        $datalist->sort = Datalist::publish($datalist->block_id)->pluck('sort')->max() + 1;
+        $datalist->sort = time();
+        $datalist->stick = 0;
         $datalist->save();
 
         return $this->success(trans('core::master.operated'), route('block.data', $datalist->block_id));
-
     }       
 }

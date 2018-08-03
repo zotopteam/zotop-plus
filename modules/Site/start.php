@@ -54,7 +54,7 @@
  */
 \Filter::listen('module.manage',function($manage, $module) {
     
-    if (strtolower($module) == 'site') {
+    if (strtolower($module->name) == 'site') {
         $manage['site_config'] = [
             'text'  => trans('site::config.title'),
             'href'  => route('site.config.base'),

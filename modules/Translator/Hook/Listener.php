@@ -25,9 +25,9 @@ class Listener
         return $start;
     }
 
-    public function module_manage($manage, $module)
+    public function moduleManage($manage, $module)
     {
-        if (strtolower($module) == 'translator') {
+        if (strtolower($module->name) == 'translator') {
             $manage['translator_config'] = [
                 'text'  => trans('translator::config.title'),
                 'href'  => route('translator.config.index'),

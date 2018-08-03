@@ -14,6 +14,7 @@ return [
     'save.next'                   => '保存并下一步',
     'data'                        => '内容维护',
     'setting'                     => '设置',
+    'preview'                     => '预览',
 
     'form.base'                   => '基本信息',
 

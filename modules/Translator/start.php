@@ -48,7 +48,7 @@ if (! function_exists('translate_alias')) {
 /**
  * 模块管理
  */
-\Filter::listen('module.manage','Modules\Translator\Hook\Listener@module_manage', 80);
+\Filter::listen('module.manage','Modules\Translator\Hook\Listener@moduleManage', 80);
 
 
 /**

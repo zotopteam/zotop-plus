@@ -170,15 +170,104 @@ class Listener
     }
 
     /**
+     * 模块管理按钮
+     * 
+     * @param  array $manage 按钮数组
+     * @param  module $module 模块对象
+     * @return array
+     */
+    public function moduleManage($manage, $module)
+    {
+        if ($module->installed) {
+
+            // 禁用和启用
+            if($module->active) {
+                $manage['disable'] = [
+                    'text'     => trans('core::master.disable'),
+                    'data-url' => route('core.modules.disable',[$module->name]),
+                    'icon'     => 'fa fa-times-circle',
+                    'class'    => 'js-confirm',
+                ];              
+            } else {
+                $manage['active'] = [
+                    'text'     => trans('core::master.active'),
+                    'data-url' => route('core.modules.enable',[$module->name]),
+                    'icon'     => 'fa fa-check-circle ',
+                    'class'    => 'js-confirm',
+                ];                 
+            }
+
+            // 卸载
+            $manage['uninstall'] = [
+                'text'         => trans('core::modules.uninstall'),
+                'data-url'     => route('core.modules.uninstall',[$module->name]),
+                'data-confirm' => trans('core::modules.uninstall.confirm', [$module->title]),
+                'icon'         => 'fa fa-trash ',
+                'class'        => 'js-confirm',
+            ];              
+
+        } else {
+            // 安装
+            $manage['install'] = [
+                'text'     => trans('core::modules.install'),
+                'data-url' => route('core.modules.install',[$module->name]),
+                'icon'     => 'fa fa-wrench',
+                'class'    => 'js-confirm',
+            ];
+
+            // 删除
+            $manage['delete'] = [
+                'text'         => trans('core::modules.delete'),
+                'data-url'     => route('core.modules.delete',[$module->name]),
+                'data-confirm' => trans('core::modules.delete.confirm', [$module->title]),
+                'icon'         => 'fa fa-times',
+                'class'        => 'js-confirm',
+            ];                        
+        }
+
+        return $manage;
+    }
+
+    /**
+     * 核心模块禁止 禁用和卸载
+     * 
+     * @param  array $manage 按钮数组
+     * @param  module $module 模块对象
+     * @return array
+     */
+    public function moduleManageCore($manage, $module)
+    {
+        if (in_array(strtolower($module), config('modules.cores', ['core']))) {
+
+            // 当模块安装后，禁止和卸载按钮 禁用状态
+            if ($module->installed) {
+                $manage['disable'] = [
+                    'text'  => trans('core::master.disable'),
+                    'icon'  => 'fa fa-times-circle',
+                    'class' => 'disabled',
+                ];
+                $manage['uninstall'] = [
+                    'text'  => trans('core::modules.uninstall'),
+                    'icon'  => 'fa fa-trash ',
+                    'class' => 'disabled',
+                ];
+            }
+
+        }
+
+        return $manage;
+    }
+
+    /**
      * 禁止卸载、禁用、删除系统模块
      * @param  view $view 
      * @param  stiring $module 模块名称
      * @return mixed
      */
-    public function checkIsCore($view, $module)
+    public function moduleManageCoreForbidden($view, $module)
     {
         // 核心模块不能卸载
-        if (in_array(strtolower($module), config('modules.cores',['core']))) {
+        if (in_array(strtolower($module), config('modules.cores', ['core']))) {
             $view->error = trans('core::modules.core_operate_forbidden');
             return false;
         }

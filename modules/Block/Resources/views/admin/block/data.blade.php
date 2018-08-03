@@ -12,8 +12,13 @@
             {{$block->name}}- {{$title}}
         </div>
         <div class="main-action">
-            <a class="btn btn-primary" href="{{route('block.edit', $block->id)}}">
-                <i class="fa fa-cog"></i> {{trans('block::block.setting')}}
+            @if ($block->data)   
+            <a href="javascript:;" class="btn btn-info js-open" data-url="{{route('block.preview', $block->id)}}" data-width="80%" data-height="60%">
+                <i class="fa fa-eye fa-fw"></i> {{trans('block::block.preview')}}
+            </a>
+            @endif    
+            <a class="btn btn-info" href="{{route('block.edit', $block->id)}}">
+                <i class="fa fa-cog fa-fw"></i> {{trans('block::block.setting')}}
             </a>            
         </div>
     </div>

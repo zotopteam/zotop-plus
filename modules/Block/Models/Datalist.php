@@ -40,7 +40,7 @@ class Datalist extends Model
         // 保存前
         static::creating(function ($model) {
             $model->status = 'publish';
-            $model->sort = static::publish($model->block_id)->pluck('sort')->max() + 1;
+            $model->sort   = time();
         });        
 
         // 保存后
@@ -99,6 +99,19 @@ class Datalist extends Model
         }
 
         return $fields;
+    }
+
+    /**
+     * 获取已经发布的数据
+     * 
+     * @param  int $block_id 区块编号
+     * @return collection
+     */
+    public static function history($block_id)
+    {
+        $history = static::where('status', 'history')->where('block_id', $block_id)->get();
+        
+        return $history;
     }
 
     /**

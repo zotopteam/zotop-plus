@@ -33,22 +33,11 @@
                     <td class="pl-2">
                         <div class="title"> <b class="text-lg">{{$module->title}}</b> <span class="text-muted">{{$name}}</span></div>
                         <div class="manage">
-                            @if($module->installed)
-                                @if($module->active)
-                                <a href="javascript:;" data-url="{{route('core.modules.disable',[$name])}}" class="manage-item js-confirm"><i class="fa fa-times-circle fa-fw"></i> {{trans('core::master.disable')}}</a>
-                                @else
-                                <a href="javascript:;" data-url="{{route('core.modules.enable',[$name])}}" class="manage-item js-confirm"><i class="fa fa-check-circle fa-fw"></i> {{trans('core::master.active')}}</a>
-                                @endif
-
-                                @foreach(filter::fire('module.manage', [], $name) as $s)
-                                <a href="{{$s['href']}}" class="manage-item {{$s['class']}}"><i class="{{$s['icon']}} fa-fw"></i>{{$s['text']}}</a>
-                                @endforeach
-                           
-                                <a href="javascript:;" data-url="{{route('core.modules.uninstall',[$name])}}" data-confirm="{{trans('core::modules.uninstall.confirm',[$module->title])}}"  class="manage-item js-confirm"><i class="fa fa-trash fa-fw"></i> {{trans('core::modules.uninstall')}}</a>
-                            @else
-                                <a href="javascript:;" data-url="{{route('core.modules.install',[$name])}}" class="manage-item js-confirm fa-fw"><i class="fa fa-wrench fa-fw"></i> {{trans('core::modules.install')}}</a>
-                                <a href="javascript:;" data-url="{{route('core.modules.delete',[$name])}}" data-confirm="{{trans('core::modules.delete.confirm',[$module->title])}}" class="manage-item js-confirm"><i class="fa fa-times fa-fw"></i> {{trans('core::master.delete')}}</a>
-                            @endif
+                            @foreach(filter::fire('module.manage', [], $module) as $s)
+                            <a href="{{$s['href'] or 'javascript:;'}}" class="manage-item {{$s['class'] or ''}}" {!!Html::attributes(array_except($s,['icon','text','href','class']))!!}>
+                                <i class="{{$s['icon'] or ''}} fa-fw"></i> {{$s['text']}}
+                            </a>
+                            @endforeach
                         </div>
                     </td>
                     <td width="10%">{{$module->version}}</td>

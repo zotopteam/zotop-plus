@@ -20,11 +20,16 @@
 \Filter::listen('core.file.upload', 'Modules\Core\Hook\Listener@upload');
 
 /**
+ * 模块管理
+ */
+\Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManage', 100);
+\Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManageCore', 100);
+/**
  * 卸载、禁用，删除前验证是否为核心模块
  */
-\Filter::listen('module.uninstalling', 'Modules\Core\Hook\Listener@checkIsCore');
-\Filter::listen('module.deleting', 'Modules\Core\Hook\Listener@checkIsCore');
-\Filter::listen('module.disabling', 'Modules\Core\Hook\Listener@checkIsCore');
+\Filter::listen('module.uninstalling', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
+\Filter::listen('module.deleting', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
+\Filter::listen('module.disabling', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
 
 /**
  * 扩展 Request::referer 功能

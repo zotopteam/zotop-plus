@@ -81,20 +81,6 @@ class BlockController extends AdminController
     }
 
     /**
-     * 显示
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $this->title = trans('block::block.show');
-        $this->block = Block::findOrFail($id);
-
-        return $this->view();
-    }    
-
-    /**
      * 编辑
      *
      * @return Response
