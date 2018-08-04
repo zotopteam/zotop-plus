@@ -1,7 +1,6 @@
 @extends('core::layouts.master')
 
 @section('content')
-    <div class="d-flex full-height">
 
 		<div class="jumbotron bg-primary text-white full-width align-self-center text-center pos-r">
             <h1>{{config('app.name')}}</h1>
@@ -39,7 +38,11 @@
             </svg>
         </div>
 
-    </div>
+        <div class="full-width align-self-center text-center">
+            {block code="picture_list"}
+        </div>
+
+
 
 @endsection
 

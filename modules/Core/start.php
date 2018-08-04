@@ -435,3 +435,22 @@
         $this->view->make('core::field.code')->with(compact('name', 'value', 'options'))->render()
     );
 });
+
+/**
+ * 模板选择器
+ */
+\Form::macro('template', function($attrs) {
+    $value  = $this->getValue($attrs);
+    $name   = $this->getAttribute($attrs, 'name');
+    $id     = $this->getIdAttribute($name, $attrs);
+    $button = $this->getAttribute($attrs, 'button', trans('core::field.template.select'));
+    $select = route('core.themes.selectview', [
+        'theme'  => config('site.theme'),
+        'module' => $this->getAttribute($attrs, 'module', app('current.module')),
+    ]);
+
+
+    return $this->toHtmlString(
+        $this->view->make('core::field.template')->with(compact('id', 'name', 'value', 'button', 'select', 'attrs'))->render()
+    );
+});

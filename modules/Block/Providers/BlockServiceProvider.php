@@ -3,6 +3,7 @@
 namespace Modules\Block\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Blade;
 
 class BlockServiceProvider extends ServiceProvider
 {
@@ -20,7 +21,7 @@ class BlockServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->baldeBlockTag();
     }    
 
     /**
@@ -41,5 +42,25 @@ class BlockServiceProvider extends ServiceProvider
     public function provides()
     {
         return [];
+    }
+
+    public function baldeBlockTag()
+    {
+        // 解析{block ……}
+        Blade::extend(function($value)
+        {
+            $pattern = sprintf('/(@)?%sblock(\s+[^}]+?)\s*%s(\r?\n)?/s', '{', '}');
+
+            $callback = function ($matches)  {
+
+                $whitespace = empty($matches[3]) ? '' : $matches[3].$matches[3];
+
+                $attrs = Blade::convertAttrs($matches[2]);
+
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo block_tag(".$attrs."); ?>{$whitespace}";
+            };
+
+            return preg_replace_callback($pattern, $callback, $value);
+        });        
     }
 }

@@ -136,8 +136,9 @@ if (! function_exists('array_change_key')) {
 }
 
 if (! function_exists('preview')) {
+
     /**
-     * 预览图片
+     * 根据图片路径，预览站点内任意位置的图片
      * 
      * @param  string $path 图片路径
      * @param  int $width 图片宽度
@@ -151,21 +152,23 @@ if (! function_exists('preview')) {
         }
 
         $temp = md5($path);
-        $temp = substr($temp, 0, 2).'/'.substr($temp, 2, 2).'/'.$temp;
-        $temp = 'previews/'.$temp.'/'.$width.'-'.$height.'.'.File::extension($path);
+        $temp = 'previews/'.substr($temp, 0, 2).'/'.substr($temp, 2, 2).'/'.$temp.'-'.intval($width).'-'.intval($height).'-'.intval($fit).'.'.File::extension($path);
         $file = public_path($temp);
 
         // 预览图片不存在，或者原图片被修改
         if ( !File::exists($file) || File::lastModified($file) < File::lastModified($path) ) {           
+            
             // 如果目录不存在，尝试创建
             if (!File::isDirectory($dir = dirname($file))) {
                 File::makeDirectory($dir, 0775, true);
             }
+            
             // 拷贝图片到临时目录
             File::copy($path, $file);
+            
             // 图片缩放
             if ($width || $height) {
-                if ($fit) {
+                if ($width && $height && $fit) {
                     app('image')->make($file)->fit($width, $height)->save();
                 } else {
                     app('image')->make($file)->resize($width, $height, function($constraint) {
@@ -175,7 +178,61 @@ if (! function_exists('preview')) {
                 }               
             }          
         }
+
         return url($temp);
+    }
+}
+
+if (! function_exists('image')) {
+    
+    /**
+     * 根据图片Url获取图片访问完整路径或者缩略图路径
+     * 
+     * @param  string $path 图片路径
+     * @param  int $width 图片宽度
+     * @param  int $height 图片高度
+     * @return string 临时图片URL
+     */
+    function image($url, $width=null, $height=null, $fit=true)
+    {
+        $path = public_path($url);
+
+        // 如果图片不存在
+        if ( empty($url) || !File::exists($path) ) {
+            $url  = app('current.theme')->asset.'/img/empty.jpg';
+            $path = app('current.theme')->path.'/assets/img/empty.jpg';
+        }
+
+        // 如果缩放图片
+        if ($width || $height) {
+            $url = md5($url);
+            $url = 'thumbnails/'.substr($url, 0, 2).'/'.substr($url, 2, 2).'/'.$url.'-'.intval($width).'-'.intval($height).'-'.intval($fit).'.'.File::extension($path);
+            $file = public_path($url);
+
+            // 缩略图不存在，或者原图片被修改
+            if ( !File::exists($file) || File::lastModified($file) < File::lastModified($path) ) {           
+                
+                // 如果目录不存在，尝试创建
+                if (!File::isDirectory($dir = dirname($file))) {
+                    File::makeDirectory($dir, 0775, true);
+                }
+
+                // 拷贝图片到临时目录
+                File::copy($path, $file);
+
+                // 图片处理
+                if ($width && $height && $fit) {
+                    app('image')->make($file)->fit($width, $height)->save();
+                } else {
+                    app('image')->make($file)->resize($width, $height, function($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })->save();
+                }
+            }                     
+        }
+
+        return url($url);
     }
 }
 

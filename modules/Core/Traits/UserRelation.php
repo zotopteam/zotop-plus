@@ -21,9 +21,9 @@ trait UserRelation
             $model->user_id = \Auth::User()->id;
         });
 
-        static::addGlobalScope('user', function (Builder $builder) {
-            $builder->with('user');
-        });                
+        // static::addGlobalScope('user', function (Builder $builder) {
+        //     $builder->with('user');
+        // });            
     }
 
     public function user()

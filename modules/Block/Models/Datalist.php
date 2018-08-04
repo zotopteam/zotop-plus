@@ -122,7 +122,7 @@ class Datalist extends Model
      */
     public static function publish($block_id)
     {
-        $publish = static::where('status', 'publish')->where('block_id', $block_id)->get();
+        $publish = static::with('user')->where('status', 'publish')->where('block_id', $block_id)->get();
         
         return $publish;
     }

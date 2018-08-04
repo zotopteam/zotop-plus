@@ -33,7 +33,7 @@ class BlockController extends AdminController
         }
 
         // 获取列表
-        $this->blocks = Block::when($keywords = request('keywords'), function ($query, $keywords) {
+        $this->blocks = Block::with('user')->when($keywords = request('keywords'), function ($query, $keywords) {
             return $query->where('name', 'like', '%'.$keywords.'%');
         })->where('category_id', $this->category->id)->get();
 

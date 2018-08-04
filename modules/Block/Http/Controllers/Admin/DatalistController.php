@@ -21,7 +21,7 @@ class DatalistController extends AdminController
         $this->block = Block::findOrFail($block_id);
 
         // 分页获取
-        $this->datalists = Datalist::where('block_id',$block_id)->where('status','history')->paginate(25);
+        $this->datalists = Datalist::with('user')->where('block_id',$block_id)->where('status','history')->paginate(25);
 
         return $this->view();
     }

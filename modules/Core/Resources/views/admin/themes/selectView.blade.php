@@ -55,8 +55,6 @@
                     <td width="1%"></td>
                     <td colspan="2">{{trans('core::file.name')}}</td>
                     <td width="12%"></td>
-                    <td width="12%">{{trans('core::file.type')}}</td>
-                    <td width="12%">{{trans('core::file.size')}}</td>
                     <td width="12%">{{trans('core::file.mtime')}}</td>
                 </tr>
             </thead>        
@@ -82,8 +80,6 @@
                             <i class="fa fa-trash fa-fw text-primary"></i> {{trans('core::folder.delete')}}
                         </a>                        
                     </td>
-                    <td width="10%">{{$folder->typename}}</td>
-                    <td>{{$folder->size}}</td>
                     <td>{{$folder->time}}</td>                    
                 </tr>
                 @endforeach            
@@ -91,7 +87,7 @@
                 <tr data-type="file">
                     <td class="text-center">
                         <i class=" select-icon fa fa-check-circle fa-2x"></i>
-                    </td>                
+                    </td>
                     <td width="1%" class="icon icon-sm pr-1">
                         @if($file->type == 'image')
                         <div class="icon"><img src="{{preview($file->realpath,32,32)}}" width="32"></div>
@@ -139,8 +135,6 @@
                             </div>
                         </div>                                           
                     </td>
-                    <td>{{$file->typename}}</td>
-                    <td>{{$file->size}}</td>
                     <td>{{$file->time}}</td>                    
                 </tr>            
                 @endforeach

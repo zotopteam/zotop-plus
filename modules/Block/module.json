@@ -12,6 +12,7 @@
     "email": "it@zotop.com",
     "homepage": "http:\/\/www.zotop.com",
     "providers": [
+        "Modules\\Block\\Providers\\BlockServiceProvider",
         "Modules\\Block\\Providers\\RouteServiceProvider"
     ],
     "aliases": [],

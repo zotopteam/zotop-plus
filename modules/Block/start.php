@@ -24,3 +24,27 @@
  * 卸载验证
  */
 \Filter::listen('module.uninstalling', 'Modules\Block\Hook\Listener@uninstalling');
+
+if (! function_exists('block_tag')) {
+
+    // 解析 {block code="……"} 标签
+    function block_tag($attrs)
+    {
+        $code  = array_pull($attrs, 'code');
+
+        $block = \Modules\Block\Models\Block::where('code', $code)->first();
+
+        // 如果block存在，解析并返回
+        if ($block) {
+            $data     = $block->toArray();
+            $template = array_pull($data, 'template');
+            $view     = app('view');
+
+            return $view->make($template)->with($data)->render();
+        }
+        
+        // 自动创建block
+        
+        return $code;
+    }
+}
