@@ -9,7 +9,7 @@
 </div>
 @push('js')
     @once('select-template')
-    <script type="text/javascript" src="{{Module::asset('core:js/jquery.template.js')}}"></script>
+    <script type="text/javascript" src="{{Module::asset('site:js/jquery.template.js')}}"></script>
     @endonce
 
     <script type="text/javascript">

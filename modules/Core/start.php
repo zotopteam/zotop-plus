@@ -124,6 +124,28 @@
 });
 
 /**
+ * 扩展File::meta, 从文件头部的注释中获取文件文本文件的meta说明信息
+ */
+\File::macro('meta', function($file, array $headers=[]) {
+    
+    // 获取的header
+    $headers = $headers ? $headers : ['title', 'description', 'author', 'url'];
+
+    // 读取文件的头部8KB
+    $fp   = fopen($file, 'r');
+    $data = fread($fp, 8192);
+    fclose($fp);
+
+    // 从注释中获取meta
+    foreach ($headers as $key) {
+        preg_match('/{{--\s*'.$key.':(.*?)\s*--}}/s', $data, $match);
+        ${$key} = $match ? trim($match[1]) : '';        
+    }
+
+    return compact($headers);
+});
+
+/**
  * 扩展上传的获取文件类型，依据系统可上传的类型判断
  */
 \Illuminate\Http\UploadedFile::macro('getHumanType',function() {
@@ -433,24 +455,5 @@
 
     return $this->toHtmlString(
         $this->view->make('core::field.code')->with(compact('name', 'value', 'options'))->render()
-    );
-});
-
-/**
- * 模板选择器
- */
-\Form::macro('template', function($attrs) {
-    $value  = $this->getValue($attrs);
-    $name   = $this->getAttribute($attrs, 'name');
-    $id     = $this->getIdAttribute($name, $attrs);
-    $button = $this->getAttribute($attrs, 'button', trans('core::field.template.select'));
-    $select = route('core.themes.selectview', [
-        'theme'  => config('site.theme'),
-        'module' => $this->getAttribute($attrs, 'module', app('current.module')),
-    ]);
-
-
-    return $this->toHtmlString(
-        $this->view->make('core::field.template')->with(compact('id', 'name', 'value', 'button', 'select', 'attrs'))->render()
     );
 });

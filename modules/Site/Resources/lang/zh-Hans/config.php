@@ -6,7 +6,8 @@ return [
     
     'base'                   => '网站信息',
     'base.tips'              => '站点名称、网址、主题、Logo等信息设置',
-    'base.info'              => '基本信息',    
+    'base.info'              => '基本信息', 
+    'base.theme'             => '主题设置',    
  
     'name.label'             => '网站名称',
     'name.help'              => '请输入当前站点名称',
@@ -32,6 +33,12 @@ return [
     
     'title.label'            => '网站标题',
     'title.help'             => '网站标题一般显示在标题栏上，适当填写可以优化搜索',
+
+    'slogan.label'           => '站点标语',
+    'slogan.help'            => '如：简洁、强大的网站管理系统',
+
+    'copyright.label'        => '版权信息',
+    'copyright.help'         => '如：Copyright©2013-2018 All Rights Reserved 逐涛网 版权所有',         
     
     'keywords.label'         => '网站关键词',
     'keywords.help'          => '请分析并填写网站关键词(Meta Keywords)，多个关键词使用空格隔开',

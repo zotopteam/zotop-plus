@@ -1,3 +1,5 @@
+{{-- title:列表区块默认模板 --}}
+
 <ul class="list-group">
 @foreach ($data as $v)
     <li class="list-group-item">

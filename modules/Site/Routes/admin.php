@@ -4,8 +4,9 @@ use Illuminate\Routing\Router;
 // Site 模块后台路由
 $router->group(['prefix' =>'site','module'=>'site'], function (Router $router) {
     
-    // 首页
-    $router->get('/', 'IndexController@index')->name('site.index');
+    // 模板选择
+    $router->get('select/view/{theme?}','SiteController@selectView')->name('site.view.select');
+
 
     // 系统设置
     $router->group(['prefix' =>'config'], function (Router $router) {

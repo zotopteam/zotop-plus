@@ -91,6 +91,9 @@
                         <div class="description">
                             @if($file->type == 'image') {{$file->width}}px × {{$file->height}}px @endif
                         </div>
+                        <div class="description">
+                            {{$file->meta->title or ''}}
+                        </div>                        
                         <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>
                     </td>
                     <td class="manage manage-hover text-right">

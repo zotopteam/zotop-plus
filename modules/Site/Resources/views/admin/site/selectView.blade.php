@@ -54,6 +54,7 @@
                 <tr>
                     <td width="1%"></td>
                     <td colspan="2">{{trans('core::file.name')}}</td>
+                    <td></td>
                     <td width="12%"></td>
                     <td width="12%">{{trans('core::file.mtime')}}</td>
                 </tr>
@@ -70,6 +71,7 @@
                     <td class="name pl-2">
                         <a href="{{$folder->href}}">{{$folder->name}}</a>
                     </td>
+                    <td></td>
                     <td class="manage manage-hover text-right">
 
                         <a href="javascript:;" class="manage-item js-prompt" data-url="{{route('core.folder.rename',['folder'=>$folder->path])}}" data-prompt="{{trans('core::folder.name')}}" data-value="{{$folder->name}}">
@@ -96,12 +98,16 @@
                         @endif
                     </td>
                     <td class="name pl-2">
-                        <div class="title text-md text-wrap">{{$file->name}}</div>
+                        <div class="title text-md text-wrap">{{$file->view}}</div>
                         <div class="description">
                             @if($file->type == 'image') {{$file->width}}px × {{$file->height}}px @endif
                         </div>
+                        <div class="description">
+                            {{$file->path}}
+                        </div>                        
                         <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>
                     </td>
+                    <td>{{$file->meta->title or ''}}</td>
                     <td class="manage manage-hover text-right">
                         @switch($file->mime)
                             @case('image')

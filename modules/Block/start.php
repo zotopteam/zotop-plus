@@ -40,11 +40,16 @@ if (! function_exists('block_tag')) {
             $template = array_pull($data, 'template');
             $view     = app('view');
 
-            return $view->make($template)->with($data)->render();
+            if ($view->exists($template)) {
+                return $view->make($template)->with($data)->render();
+            }
+
+            return '<span class="text-error">'.trans('block::block.view.notexist', [$template, $code]).'</span>';
         }
         
         // 自动创建block
+        // coding
         
-        return $code;
+        return '<span class="text-error">'.trans('block::block.code.notexist', [$code]).'</span>';
     }
 }

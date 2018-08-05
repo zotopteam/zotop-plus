@@ -149,23 +149,29 @@ class FileBrowser
             $type   = File::humanType($realpath) ?? 'other';
             $icon   = File::icon($realpath);
 
+            // 获取meta信息中的标题和说明
+            $meta = File::meta($realpath);   
+
+            // 如果是图片，获取图片宽高
             $width   = 0;
             $height  = 0;
-
             if ($type == 'image' && $imagesize = @getimagesize($realpath)) {
                 list($width, $height) = $imagesize;
             }
 
+            // 获取访问地址
             $url = '';
-
             if (starts_with($realpath, public_path())) {
                 $url = str_after($realpath, public_path());
                 $url = Format::url($url);
             }
 
+            // 获取类型名称
             $typename = trans('core::file.type.'.$type);
+
+            // 返回数据
             $file     = Filter::fire('core.filebrower.file',
-                            compact('name','path','size','time','mime','type','icon','url','width','height','realpath','typename'),
+                            compact('name','path','size','time','mime','type','icon','url','width','height','realpath','typename', 'meta'),
                             $realpath
                         );            
 

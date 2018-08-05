@@ -28,7 +28,7 @@
                     @endif
                 </div>
             </div>
-
+            
             <div class="form-group row">
                 <label for="url" class="col-2 col-form-label required">{{trans('site::config.url.label')}}</label>
                 <div class="col-8">
@@ -42,6 +42,36 @@
                     @endif
                 </div>
             </div>
+
+            <div class="form-group row">
+                <label for="slogan" class="col-2 col-form-label">{{trans('site::config.slogan.label')}}</label>
+                <div class="col-8">
+                    {field type="text" name="slogan"}
+                    
+                    @if ($errors->has('slogan'))
+                    <span class="form-help text-error">{{ $errors->first('slogan') }}</span>
+                    @else
+                    <span class="form-help">{{trans('site::config.slogan.help')}}</span>
+                    @endif
+                </div>
+            </div>
+
+
+
+            <div class="form-group row">
+                <label for="copyright" class="col-2 col-form-label">{{trans('site::config.copyright.label')}}</label>
+                <div class="col-8">
+                    {field type="text" name="copyright"}
+                    
+                    @if ($errors->has('copyright'))
+                    <span class="form-help text-error">{{ $errors->first('copyright') }}</span>
+                    @else
+                    <span class="form-help">{{trans('site::config.copyright.help')}}</span>
+                    @endif
+                </div>
+            </div>            
+
+            <div class="form-title row">{{trans('site::config.base.theme')}}</div>
 
             <div class="form-group row">
                 <label for="theme" class="col-2 col-form-label required">{{trans('site::config.theme.label')}}</label>
@@ -84,8 +114,6 @@
                     @endif
                 </div>
             </div>
-
-
 
             {/form}           
         </div>

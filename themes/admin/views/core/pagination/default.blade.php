@@ -1,9 +1,10 @@
+{{-- title:默认分页模板 --}}
 <ul class="pagination">
     {{-- Previous Page Link --}}
     @if ($paginator->onFirstPage())
-        <li class="page-item page-previous disabled"><span class="page-link">&laquo;</span></li>
+        <li class="page-item page-previous disabled"><span class="page-link">«</span></li>
     @else
-        <li class="page-item page-previous"><a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">&laquo;</a></li>
+        <li class="page-item page-previous"><a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">«</a></li>
     @endif
 
     {{-- Pagination Elements --}}
@@ -27,8 +28,8 @@
 
     {{-- Next Page Link --}}
     @if ($paginator->hasMorePages())
-        <li class="page-item page-next"><a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">&raquo;</a></li>
+        <li class="page-item page-next"><a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">»</a></li>
     @else
-        <li class="page-item page-next disabled"><span class="page-link">&raquo;</span></li>
+        <li class="page-item page-next disabled"><span class="page-link">»</span></li>
     @endif
 </ul>

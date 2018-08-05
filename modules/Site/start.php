@@ -66,3 +66,23 @@
     return $manage;         
 
 }, 1);
+
+/**
+ * 模板选择器
+ */
+\Form::macro('template', function($attrs) {
+    $value  = $this->getValue($attrs);
+    $name   = $this->getAttribute($attrs, 'name');
+    $id     = $this->getIdAttribute($name, $attrs);
+    $button = $this->getAttribute($attrs, 'button', trans('site::field.template.select'));
+    $select = route('site.view.select', [
+        'theme'  => config('site.theme'),
+        'module' => $this->getAttribute($attrs, 'module', app('current.module')),
+    ]);
+
+
+    return $this->toHtmlString(
+        $this->view->make('site::field.template')->with(compact('id', 'name', 'value', 'button', 'select', 'attrs'))->render()
+    );
+});
+

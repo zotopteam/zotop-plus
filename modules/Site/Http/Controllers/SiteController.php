@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Site\Http\Controllers\Admin;
+namespace Modules\Site\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use Modules\Core\Base\FrontController;
 
-class IndexController extends AdminController
+class SiteController extends FrontController
 {
     /**
      * 首页
@@ -15,6 +15,6 @@ class IndexController extends AdminController
      */
     public function index()
     {
-        return $this->view();
+        return $this->view('index');
     }
 }

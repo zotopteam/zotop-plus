@@ -1,3 +1,4 @@
+{{-- title:站点首页 --}}
 @extends('core::layouts.master')
 
 @section('content')

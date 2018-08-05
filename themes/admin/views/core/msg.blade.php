@@ -1,3 +1,4 @@
+{{-- title:提示信息模板 --}}
 Theme::Core::msg
 
 <h1>{{$type}}</h1>
