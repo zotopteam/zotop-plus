@@ -5,7 +5,6 @@ namespace Modules\Core\Base;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Carbon;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -24,19 +23,6 @@ class BaseController extends Controller
      */    
     protected $app;
 
-    /**
-     * 主题名称
-     * 
-     * @var string
-     */
-    protected $theme;
-
-    /**
-     * 本地语言
-     * 
-     * @var string
-     */    
-    protected $locale;
 
     /**
      * view 实例
@@ -66,121 +52,7 @@ class BaseController extends Controller
         }
 
         // view实例
-        $this->view   = $this->app->make('view');        
-
-        // 初始化
-        $this->__init();
-
-        // 解析当前路由数据
-        $this->currentRouteAction();
-
-        // 注册主题和模块view
-        $this->registerThemeViews();
-
-        // 注册模块命名空间view
-        $this->registerNamespaces();
-
-        // 设置当前语言
-        $this->setLocaleLanguage();        
-    }
-
-    // 初始化
-    protected function __init()
-    {        
-        // 默认主题
-        $this->theme  = 'default';
-    }
-
-    /**
-     * 解析当前路由数据
-     * 
-     * @return void
-     */
-    protected function currentRouteAction()
-    {
-        // 获取当前路由数据
-        $action = $this->app['router']->getCurrentRoute()->getAction();
-
-        // 从路由信息中获取模块名称
-        $this->app->singleton('current.module',function() use ($action) {
-            return is_array($action['module']) ? end($action['module']) : $action['module'];
-        });
-
-        // 从路由信息中获取动作类型，如： admin,api,front
-        $this->app->singleton('current.type',function() use ($action) {
-            return is_array($action['type']) ? end($action['type']) : $action['type'];
-        });
-
-        // 从路由中获取控制器    
-        $this->app->singleton('current.controller',function() use ($action) {
-            return strtolower(substr($action['controller'], strrpos($action['controller'], "\\") + 1, strrpos($action['controller'], "@")-strlen($action['controller'])-10));
-        });
-
-        // 从路由信息中获取模块名称
-        $this->app->singleton('current.action',function() use ($action) {
-            return strtolower(substr($action['controller'], strpos($action['controller'], "@") + 1));
-        });                        
-
-    }
-
-    /**
-     * 注册主题模板和模块的views，实现在主题和模块中寻址
-     * 
-     * @return void
-     */
-    protected function registerThemeViews()
-    {
-
-        // 注册主题模板，实现view在主题中寻址
-        $this->app->singleton('current.theme',function() {
-            return Theme::active($this->theme);
-        });  
-
-        
-        // 在主题对应模块下的目录中寻址
-        $this->view->addLocation($this->app['current.theme']->path.'/views/'.strtolower($this->app['current.module']));
-
-
-        // 注册当前模块的views，实现view在模块中寻址
-        $this->view->addLocation(Module::getModulePath($this->app['current.module']) . '/Resources/views/'.strtolower($this->app['current.type']));
-         
-    }
-
-    /**
-     * 注册资源命名空间，按照命名空间寻址
-     * 
-     * @return void
-     */
-    protected function registerNamespaces()
-    {
-        foreach (Module::getOrdered() as $module) {
-
-            // 模型名称和路径
-            $name = $module->getLowerName();
-            $path = $module->getPath();
-
-            // 注册命名空间
-            $this->view->addNamespace($name, [$this->app['current.theme']->path.'/views/'.$name, $path . '/Resources/views/'.$this->app['current.type']]);
-        }
-    }
-
-    /**
-     * 设置本地语言
-     * 
-     * @return void 
-     */
-    protected function setLocaleLanguage()
-    {
-        if ( $this->locale ) {
-            $this->app->setLocale($this->locale);            
-        } else {
-            $this->locale = $this->app->getLocale();
-        } 
-
-        // Carbon 语言转换
-        $locales = Filter::fire('carbon.locale.transform',['zh-Hans'=>'zh','zh-Hant'=>'zh_TW']);
-        $locale  = isset($locales[$this->locale]) ? $locales[$this->locale] : $this->locale;
-        Carbon::setLocale($locale);
+        $this->view   = $this->app['view'];     
     }
 
 
@@ -261,8 +133,7 @@ class BaseController extends Controller
     public function message(array $msg)
     {
         //如果请求为ajax，则输出json数据
-        if (\Request::expectsJson())
-        {
+        if (\Request::expectsJson()) {
             return response()->json($msg);
         }
         

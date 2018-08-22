@@ -25,8 +25,12 @@ class CoreServiceProvider extends ServiceProvider
      * @var array
      */
     protected $middlewares = [
-        'admin' => 'AdminMiddleware',
-        'allow' => 'AllowMiddleware',
+        'module' => 'ModuleMiddleware',
+        'theme'  => 'ThemeMiddleware',
+        'locale' => 'LocaleMiddleware',
+        'admin'  => 'AdminMiddleware',
+        'front'  => 'FrontMiddleware',
+        'allow'  => 'AllowMiddleware',
     ];    
 
     /**

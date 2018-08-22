@@ -20,7 +20,8 @@ class SiteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // 注册中间件
+        $this->registerMiddleware();
     }    
 
     /**
@@ -42,4 +43,15 @@ class SiteServiceProvider extends ServiceProvider
     {
         return [];
     }
+
+    /**
+     * 注册中间件, 替换Core中的front中间件
+     *
+     * @param  Router $router
+     * @return void
+     */
+    public function registerMiddleware()
+    {
+        $this->app['router']->aliasMiddleware('front', "Modules\\Site\\Http\\Middleware\\FrontMiddleware");
+    }    
 }

@@ -2,7 +2,7 @@
 /**
  * 全局导航
  */
-\Filter::listen('global.navbar',function($navbar){
+\Filter::listen('global.navbar', function($navbar){
     
     // 站点名称
     $navbar['core.sitename'] = [
@@ -13,12 +13,12 @@
     ];
 
     return $navbar;
-},0);
+}, 0);
 
 /**
  * 快捷方式
  */
-\Filter::listen('global.start',function($navbar){
+\Filter::listen('global.start', function($navbar) {
   
     //站点设置
     $navbar['config-site'] = [
@@ -30,12 +30,12 @@
 
     return $navbar;
 
-},99);
+}, 99);
 
 /**
  * 全局工具
  */
-\Filter::listen('global.tools',function($tools){
+\Filter::listen('global.tools', function($tools) {
         
     // 网站首页
     $tools['viewsite'] = [
@@ -52,7 +52,7 @@
 /**
  * 全局工具
  */
-\Filter::listen('module.manage',function($manage, $module) {
+\Filter::listen('module.manage', function($manage, $module) {
     
     if (strtolower($module->name) == 'site') {
         $manage['site_config'] = [

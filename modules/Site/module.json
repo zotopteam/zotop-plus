@@ -12,6 +12,7 @@
     "email": "",
     "homepage": "",
     "providers": [
+        "Modules\\Site\\Providers\\SiteServiceProvider",
         "Modules\\Site\\Providers\\RouteServiceProvider"
     ],
     "aliases": [],

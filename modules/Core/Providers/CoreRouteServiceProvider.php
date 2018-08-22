@@ -104,7 +104,7 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
             $router->group([
                 'type'       => 'front',
                 'namespace'  => $this->namespace,
-                'middleware' => ['web'],                
+                'middleware' => ['web','module','front','locale','theme'],                
             ], function (Router $router) use ($frontRouteFile) {
                 require $frontRouteFile;
             });
@@ -128,7 +128,7 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
                 'type'       => 'admin',
                 'namespace'  => $this->namespace.'\Admin',
                 'prefix'     => $this->app['config']->get('app.admin_prefix','admin'),
-                'middleware' => ['web','admin'],           
+                'middleware' => ['web','module','admin','locale','theme'],           
             ], function (Router $router) use ($adminRouteFile) {
                 require $adminRouteFile;
             });

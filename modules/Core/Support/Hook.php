@@ -25,10 +25,9 @@ abstract class Hook {
 
 		$uniquePriority = $priority;
 
-		do
-		{
-			if( isset( $this->listeners[$hook][$uniquePriority] ) )
-			{
+		do {
+
+			if (isset( $this->listeners[$hook][$uniquePriority])) {
 				$i += 0.1;
 				$uniquePriority = $priority + $i;
 			}
@@ -47,9 +46,9 @@ abstract class Hook {
 	{
 		$listeners = isset($this->listeners[$hook]) ? $this->listeners[$hook] : [];
 
-		if ($listeners){			
+		if ($listeners) {			
 			// 排序
-			uksort($listeners, function($a,$b){
+			uksort($listeners, function($a, $b) {
 				return strnatcmp($a,$b);
 			});
 		}
@@ -65,19 +64,18 @@ abstract class Hook {
 	 */
 	protected function callback($callback)
 	{
+		// 类函数：字符串且包含@符号
 		if (is_string($callback) && strpos($callback, '@')) {
-
 			$callback = explode('@', $callback);
-			
 			return array(app('\\' . $callback[0]), $callback[1]);
-
-		} else if (is_callable($callback)) {
-
-			return $callback;
-
-		} else {
-			throw new Exception('$callback is not a Callable', 1);
 		}
+
+		// 闭包函数
+		if (is_callable($callback)) {
+			return $callback;
+		}
+		
+		throw new Exception('$callback is not a Callable', 1);
 	}
 
 	/**
