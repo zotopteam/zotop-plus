@@ -58,15 +58,8 @@ class ThemeMiddleware
      */
     protected function registerThemeViews()
     {
-        $theme = $this->app['current.theme'];
-
-        // 注册主题模板，实现view在主题中寻址
-        $this->app->singleton('current.theme', function() use ($theme) {
-            return Theme::active($theme);
-        });  
-        
         // 在主题对应模块下的目录中寻址
-        $this->view->addLocation($this->app['current.theme']->path.'/views/'.strtolower($this->app['current.module']));
+        $this->view->addLocation($this->app['theme']->path().'/views/'.strtolower($this->app['current.module']));
 
         // 注册当前模块的views，实现view在模块中寻址
         $this->view->addLocation(Module::getModulePath($this->app['current.module']) . '/Resources/views/'.strtolower($this->app['current.type']));
@@ -86,8 +79,11 @@ class ThemeMiddleware
             $name = $module->getLowerName();
             $path = $module->getPath();
 
-            // 注册命名空间
-            $this->view->addNamespace($name, [$this->app['current.theme']->path.'/views/'.$name, $path . '/Resources/views/'.$this->app['current.type']]);
+            // 注册模块名称为命名空间
+            $this->view->addNamespace($name, [
+                $this->app['theme']->path().'/views/'.$name,
+                $path . '/Resources/views/'.strtolower($this->app['current.type'])
+            ]);
         }
     }    
 

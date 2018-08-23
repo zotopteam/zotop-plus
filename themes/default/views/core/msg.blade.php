@@ -5,4 +5,4 @@
 
 ThemeName:
 
-{{app('current.theme')->name}}
+{{app('current.theme')}}

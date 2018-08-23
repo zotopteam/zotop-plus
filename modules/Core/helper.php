@@ -148,7 +148,7 @@ if (! function_exists('preview')) {
     function preview($path, $width=null, $height=null, $fit=true)
     {
         if ( empty($path) || !File::exists($path) ) {
-            $path = app('current.theme')->path.'/assets/img/empty.jpg';
+            $path = app('theme')->path('assets/img/empty.jpg');
         }
 
         $temp = md5($path);
@@ -199,8 +199,8 @@ if (! function_exists('image')) {
 
         // 如果图片不存在
         if ( empty($url) || !File::exists($path) ) {
-            $url  = app('current.theme')->asset.'/img/empty.jpg';
-            $path = app('current.theme')->path.'/assets/img/empty.jpg';
+            $url  = app('theme')->asset('img/empty.jpg');
+            $path = app('theme')->path('assets/img/empty.jpg');
         }
 
         // 如果缩放图片

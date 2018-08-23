@@ -50,11 +50,10 @@ class LocaleMiddleware
     {
         $locale = $this->app['current.locale'];
 
-        if ( $locale ) {
+        // 当前语言设置
+        if ( $locale && $locale != $this->app->getLocale()) {
             $this->app->setLocale($locale);            
-        } else {
-            $locale = $this->app->getLocale();
-        } 
+        }
 
         // Carbon 语言转换
         $locales = Filter::fire('carbon.locale.transform', [

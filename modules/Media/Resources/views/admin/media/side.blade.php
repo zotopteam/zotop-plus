@@ -17,10 +17,10 @@
     @endforeach
 </div>
 @push('css')
-<link rel="stylesheet" href="{{theme::asset('vendor/fancytree/skin-zotop/ui.fancytree.css')}}" rel="stylesheet">
+<link rel="stylesheet" href="{{Theme::asset('vendor/fancytree/skin-zotop/ui.fancytree.css')}}" rel="stylesheet">
 @endpush
 @push('js')
-<script src="{{theme::asset('vendor/fancytree/jquery.fancytree-all.min.js')}}"></script>
+<script src="{{Theme::asset('vendor/fancytree/jquery.fancytree-all.min.js')}}"></script>
 <script type="text/javascript">
 $(function(){
     // Initialize Fancytree

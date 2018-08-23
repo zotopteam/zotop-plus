@@ -32,10 +32,12 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        // 当前主题
         $this->app->singleton('current.theme',function() {
             return config('core.theme', 'admin');
         });
 
+        // 当前语言
         $this->app->singleton('current.locale',function() {
             return config('core.locale', $this->app->getLocale());
         });              

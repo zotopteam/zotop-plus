@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf_token" content="{{ csrf_token() }}"/>
     <title>{{config('site.name')}} {{$title or ''}} {{config('app.name')}} </title>
-    <link href="{{theme::asset('favicon.ico')}}" rel="shortcut icon" type="image/x-icon">
-    <link rel="stylesheet" href="{{theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{theme::asset('css/jquery.dialog.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{theme::asset('css/global.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('favicon.ico')}}" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{Theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{Theme::asset('css/jquery.dialog.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     @stack('css')
 </head>
 <body class="{{app('current.module')}}-{{app('current.controller')}}-{{app('current.action')}}">
@@ -103,16 +103,16 @@
     <footer class="global-footer">        
     </footer>
 
-    <script src="{{theme::asset('js/jquery.min.js')}}"></script>
-    <script src="{{theme::asset('js/popper.min.js')}}"></script>    
-    <script src="{{theme::asset('js/bootstrap.min.js')}}"></script>
-    <script src="{{theme::asset('js/jquery.validate.min.js')}}"></script>
-    <script src="{{theme::asset('js/jquery.nicescroll.min.js')}}"></script>    
-    <script src="{{theme::asset('js/jquery.dialog.js')}}"></script>
-    <script src="{{theme::asset('js/cms.js')}}"></script>
-    <script src="{{theme::asset('js/global.js')}}"></script>
+    <script src="{{Theme::asset('js/jquery.min.js')}}"></script>
+    <script src="{{Theme::asset('js/popper.min.js')}}"></script>    
+    <script src="{{Theme::asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{Theme::asset('js/jquery.validate.min.js')}}"></script>
+    <script src="{{Theme::asset('js/jquery.nicescroll.min.js')}}"></script>    
+    <script src="{{Theme::asset('js/jquery.dialog.js')}}"></script>
+    <script src="{{Theme::asset('js/cms.js')}}"></script>
+    <script src="{{Theme::asset('js/global.js')}}"></script>
     @if(!App::isLocale('en'))
-    <script src="{{theme::asset('lang/'.App::getLocale().'/jquery.validate.js')}}"></script>
+    <script src="{{Theme::asset('lang/'.App::getLocale().'/jquery.validate.js')}}"></script>
     @endif
     @stack('js')   
 </body>

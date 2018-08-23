@@ -6,4 +6,4 @@ Theme::Core::msg
 
 ThemeName:
 
-{{app('current.theme')->name}}
+{{app('current.theme')}}

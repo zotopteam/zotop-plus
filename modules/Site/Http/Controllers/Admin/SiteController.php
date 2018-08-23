@@ -21,8 +21,7 @@ class SiteController extends AdminController
      */
     public function selectView(Request $request, $theme=null)
     {
-        $theme  = $theme ? Theme::find($theme) : app('current.theme');
-        $views  = path_base($theme->path).'/views';
+        $views  = path_base(Theme::path('views', $theme));
         $module = strtolower($request->input('module'));
 
         $root   = $views.'/'.$module;

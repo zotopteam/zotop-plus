@@ -32,7 +32,6 @@ class ModuleMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-
         // 获取当前路由数据
         $action = $this->app['router']->getCurrentRoute()->getAction();
 
@@ -61,7 +60,7 @@ class ModuleMiddleware
             return 'default';
         });
 
-        // 当前主题
+        // 当前语言
         $this->app->singleton('current.locale',function() use ($action) {
             return $this->app->getLocale();
         });                  

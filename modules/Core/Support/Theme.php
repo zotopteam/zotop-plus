@@ -60,14 +60,18 @@ class Theme
      */
     public function getList($type=null)
     {
-        if ($type == null) return $this->themes;
+        // 如果type为空，返回全部的主题
+        if ($type == null) {
+            return $this->themes;
+        }
 
+        // 只取当前类型的主题
         $list = [];
 
         foreach ($this->themes as $key => $theme) {
-
-            // 只取当前类型的主题
-            if ($theme->type == $type) $list[$key] = $theme;
+            if ($theme->type == $type) {
+                $list[$key] = $theme;
+            }
         }
 
         return $list;
@@ -79,7 +83,7 @@ class Theme
      * @param  string $name 主题名称
      * @return string
      */
-    public function getAssetsPath($name='')
+    public function getAssetsPath($name=null)
     {
         $assetsPath = $this->app['config']->get('themes.paths.assets', public_path('themes'));
 
@@ -101,24 +105,6 @@ class Theme
         $base = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $this->getAssetsPath($name));
 
         return $this->app['url']->asset($base);
-    }    
-
-    /**
-     * active主题数据
-     * 
-     * @param  string $name      主题名称
-     * @return mixed
-     */
-    public function active($name)
-    {
-        // 获取主题信息
-        if ( isset($this->themes[$name]) ) {
-            $this->active = $this->themes[$name];
-        } else {
-            throw new ThemeNotFoundException("Theme [{$name}] does not exist!");
-        }
-
-        return $this->active;
     }
 
     /**
@@ -133,7 +119,6 @@ class Theme
 
         // 获取主题信息
         if ( isset($this->themes[$name]) ) {
-            
             $theme = $this->themes[$name];
         }
 
@@ -163,20 +148,39 @@ class Theme
     /**
      * 获取主题的 asset url，如：Theme::assets('[default:]test/shortcut.png')
      *
-     * @param string $asset
-     *
+     * @param string $asset url
+     * @param string $name theme name
      * @return string
      */
-    public function asset($asset)
+    public function asset($asset, $name=null)
     {
-        // 如过传入参数不包含主题名称，则使用当前名称
+        // 如过传入参数不包含主题名称，则使用当前名称，否则分解为主题和路径
         if (strpos($asset,':') == false) {
-            $asset = $this->active->name . ':' . $asset;         
+            $name = $name ?? $this->app['current.theme'];
+            $url  = $asset;    
+        } else {
+            list($name, $url) = explode(':', $asset);            
         }
 
-        // 分解参数
-        list($name, $url) = explode(':', $asset);
+        return $this->getAssetsUrl($name) . '/' . ltrim($url, '/');
+    }
 
-        return $this->getAssetsUrl($name) . '/' . $url;
+    /**
+     * 获取主题的文件路径
+     * 
+     * @param string $path
+     * @param string $name theme name
+     * @return string
+     */
+    public function path($path=null, $name=null)
+    {
+        $name = $name ?? $this->app['current.theme'];
+        $path = ltrim($path, DIRECTORY_SEPARATOR);
+
+        if ($path) {
+            return $this->themes[$name]->path . DIRECTORY_SEPARATOR . $path;
+        }
+
+        return $this->themes[$name]->path;
     }
 }
