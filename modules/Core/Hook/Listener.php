@@ -55,22 +55,22 @@ class Listener
         }
 
         // 主题管理
-        if (allow('core.themes.index')) {
+        if (allow('core.theme.index')) {
             $start['themes'] = [
-                'text' => trans('core::themes.title'),
-                'href' => route('core.themes.index'),
+                'text' => trans('core::theme.title'),
+                'href' => route('core.theme.index'),
                 'icon' => 'fa fa-gem bg-primary text-white', 
-                'tips' => trans('core::themes.description'),
+                'tips' => trans('core::theme.description'),
             ];
         }
           
         //模块管理
-        if (allow('core.modules.index')) {
+        if (allow('core.module.index')) {
             $start['modules'] = [
-                'text' => trans('core::modules.title'),
-                'href' => route('core.modules.index'),
+                'text' => trans('core::module.title'),
+                'href' => route('core.module.index'),
                 'icon' => 'fa fa-puzzle-piece bg-primary text-white', 
-                'tips' => trans('core::modules.description'),
+                'tips' => trans('core::module.description'),
             ];
         }
 
@@ -184,14 +184,14 @@ class Listener
             if($module->active) {
                 $manage['disable'] = [
                     'text'     => trans('core::master.disable'),
-                    'data-url' => route('core.modules.disable',[$module->name]),
+                    'data-url' => route('core.module.disable',[$module->name]),
                     'icon'     => 'fa fa-times-circle',
                     'class'    => 'js-confirm',
                 ];              
             } else {
                 $manage['active'] = [
                     'text'     => trans('core::master.active'),
-                    'data-url' => route('core.modules.enable',[$module->name]),
+                    'data-url' => route('core.module.enable',[$module->name]),
                     'icon'     => 'fa fa-check-circle ',
                     'class'    => 'js-confirm',
                 ];                 
@@ -199,9 +199,9 @@ class Listener
 
             // 卸载
             $manage['uninstall'] = [
-                'text'         => trans('core::modules.uninstall'),
-                'data-url'     => route('core.modules.uninstall',[$module->name]),
-                'data-confirm' => trans('core::modules.uninstall.confirm', [$module->title]),
+                'text'         => trans('core::module.uninstall'),
+                'data-url'     => route('core.module.uninstall',[$module->name]),
+                'data-confirm' => trans('core::module.uninstall.confirm', [$module->title]),
                 'icon'         => 'fa fa-trash ',
                 'class'        => 'js-confirm',
             ];              
@@ -209,17 +209,17 @@ class Listener
         } else {
             // 安装
             $manage['install'] = [
-                'text'     => trans('core::modules.install'),
-                'data-url' => route('core.modules.install',[$module->name]),
+                'text'     => trans('core::module.install'),
+                'data-url' => route('core.module.install',[$module->name]),
                 'icon'     => 'fa fa-wrench',
                 'class'    => 'js-confirm',
             ];
 
             // 删除
             $manage['delete'] = [
-                'text'         => trans('core::modules.delete'),
-                'data-url'     => route('core.modules.delete',[$module->name]),
-                'data-confirm' => trans('core::modules.delete.confirm', [$module->title]),
+                'text'         => trans('core::module.delete'),
+                'data-url'     => route('core.module.delete',[$module->name]),
+                'data-confirm' => trans('core::module.delete.confirm', [$module->title]),
                 'icon'         => 'fa fa-times',
                 'class'        => 'js-confirm',
             ];                        
@@ -247,7 +247,7 @@ class Listener
                     'class' => 'disabled',
                 ];
                 $manage['uninstall'] = [
-                    'text'  => trans('core::modules.uninstall'),
+                    'text'  => trans('core::module.uninstall'),
                     'icon'  => 'fa fa-trash ',
                     'class' => 'disabled',
                 ];
@@ -268,7 +268,7 @@ class Listener
     {
         // 核心模块不能卸载
         if (in_array(strtolower($module), config('modules.cores', ['core']))) {
-            $view->error = trans('core::modules.core_operate_forbidden');
+            $view->error = trans('core::module.core_operate_forbidden');
             return false;
         }
 

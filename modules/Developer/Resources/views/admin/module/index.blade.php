@@ -18,9 +18,9 @@
         <table class="table table-nowrap table-hover">
             <thead>
                 <tr>
-                    <td colspan="2">{{trans('core::modules.name.label')}}</td>
-                    <td width="10%">{{trans('core::modules.version.label')}}</td>
-                    <td width="40%" c>{{trans('core::modules.description.label')}}</td>
+                    <td colspan="2">{{trans('core::module.name.label')}}</td>
+                    <td width="10%">{{trans('core::module.version.label')}}</td>
+                    <td width="40%" c>{{trans('core::module.description.label')}}</td>
                     <td width="10%" class="text-center">{{trans('developer::module.edit')}}</td>
                 </tr>
             </thead>        

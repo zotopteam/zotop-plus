@@ -40,6 +40,8 @@ return [
     'disabled'             => '已禁用',
     'active'               => '启用',
     'actived'              => '已启用',
+    'sort'                 => '排序',
+    'sorted'               => '排序成功',
     'operate'              => '操作',
     'operated'             => '操作成功',
     'operate.failed'       => '操作失败',

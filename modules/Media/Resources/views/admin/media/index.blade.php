@@ -89,7 +89,7 @@
                         </div>
                     </td>
                     <td width="10%" class="manage manage-hover text-right">
-                            <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.folder.edit',[$folder->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$folder->name}}">
+                            <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.folder.rename',[$folder->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$folder->name}}">
                                 <i class="fa fa-fw fa-eraser"></i> {{trans('core::folder.rename')}}
                             </a>
                             <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.folder.move', $folder->id)}}" data-select="{{route('media.folder.select',[$folder->parent_id])}}" data-title="{{$folder->name}}">
@@ -135,7 +135,7 @@
                             <i class="fa fa-eye fa-fw"></i> {{trans('media::file.view')}}
                         </a>
                         @endif                 
-                        <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.file.edit',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
+                        <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.file.rename',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
                             <i class="fa fa-fw fa-eraser"></i> {{trans('media::file.rename')}}
                         </a>
                         <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.file.move', $file->id)}}" data-select="{{route('media.folder.select',[$file->folder_id])}}" data-title="{{$file->name}}">

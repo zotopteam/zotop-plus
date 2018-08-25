@@ -11,15 +11,15 @@
         <table class="table table-nowrap table-sortable">
             <thead>
                 <tr>
-                    <td class="text-center" width="5%">{{trans('core::modules.status.label')}}</td>
-                    <td colspan="2">{{trans('core::modules.name.label')}}</td>
-                    <td width="10%">{{trans('core::modules.version.label')}}</td>
-                    <td width="40%">{{trans('core::modules.description.label')}}</td>
+                    <td class="text-center" width="5%">{{trans('core::module.status.label')}}</td>
+                    <td colspan="2">{{trans('core::module.name.label')}}</td>
+                    <td width="10%">{{trans('core::module.version.label')}}</td>
+                    <td width="40%">{{trans('core::module.description.label')}}</td>
                 </tr>
             </thead>        
             <tbody>  
             @foreach($modules as $name=>$module)
-                <tr class="item {{$module->active?'active':'disabled'}}">
+                <tr class="item {{$module->active ? 'active' : 'disabled'}}">
                     <td class="text-center">
                         <i class="fa fa-2x {{$module->active ? 'fa-check-circle text-success' : 'fa-times-circle'}}"></i>
                     </td>
@@ -59,7 +59,7 @@
         </table>
     </div>
     <div class="main-footer">
-        <div class="footer-text">{{trans('core::modules.description')}}</div>
+        <div class="footer-text">{{trans('core::module.description')}}</div>
     </div>
 </div>
 @endsection

@@ -10,7 +10,7 @@ use Theme;
 use Artisan;
 use File;
 
-class ThemesController extends AdminController
+class ThemeController extends AdminController
 {
     /**
      * 首页
@@ -19,8 +19,8 @@ class ThemesController extends AdminController
      */
     public function index($type='')
     {
-        $this->title       = trans('core::themes.title');
-        $this->description = trans('core::themes.description');
+        $this->title       = trans('core::theme.title');
+        $this->description = trans('core::theme.description');
 
         $this->themes      = Theme::getList($type);
 
@@ -47,7 +47,7 @@ class ThemesController extends AdminController
         $this->folders  = $browser->folders();
         $this->files    = $browser->files();
 
-        $this->title    = trans('core::themes.files');
+        $this->title    = trans('core::theme.files');
 
         return $this->view()->with('theme',$theme);
     }   
@@ -67,7 +67,7 @@ class ThemesController extends AdminController
             Artisan::call('theme:publish');
         }
 
-        return $this->success(trans('core::themes.publish.success'));    
+        return $this->success(trans('core::theme.publish.success'));    
     }
 
     /**

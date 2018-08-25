@@ -17,25 +17,25 @@ class Permission
     }
 
     /**
-     * Get the permissions from all the enabled modules
+     * Get the permissions from modules
      * @return array
      */
     public function all()
     {
         $permissions = [];
 
-        foreach ($this->module->enabled() as $moduleEnabled) {
-            $module     = $moduleEnabled->getLowerName();
-            $permission = $moduleEnabled->getFileData('permission.php');
+        foreach ($this->module->getOrdered() as $module) {
+            $name     = $module->getLowerName();
+            $permission = $module->getFileData('permission.php');
 
             // 模块未开启权限不显示
             if (empty($permission)) {
                 continue;
             }
 
-            $permissions[$module] = [
-                'title'       => trans($moduleEnabled->title),
-                'description' => trans($moduleEnabled->description),
+            $permissions[$name] = [
+                'title'       => trans($module->title),
+                'description' => trans($module->description),
                 'permissions' => $permission
             ];       
         }

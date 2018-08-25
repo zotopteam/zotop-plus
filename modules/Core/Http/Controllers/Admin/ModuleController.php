@@ -10,7 +10,7 @@ use Artisan;
 use Filter;
 use Action;
 
-class ModulesController extends AdminController
+class ModuleController extends AdminController
 {
     /**
      * 模块管理
@@ -19,7 +19,7 @@ class ModulesController extends AdminController
      */
     public function index()
     {
-        $this->title   = trans('core::modules.title');
+        $this->title   = trans('core::module.title');
         $this->modules = module();
 
         return $this->view();
@@ -33,6 +33,11 @@ class ModulesController extends AdminController
      */
     public function enable(Request $request, $name)
     {
+        // 禁用前置Hook
+        if (! Filter::fire('module.enabling', $this, $module) ) {
+            return $this->error($this->error ?? trans('core::module.enable.failed', [$module]));
+        }
+
         Module::enable($name);
 
         return $this->success(trans('core::master.actived'), $request->referer());
@@ -44,14 +49,14 @@ class ModulesController extends AdminController
      * @param  string $name 模块名称
      * @return json
      */
-    public function disable(Request $request, $name)
+    public function disable(Request $request, $module)
     {
-        // 卸载前置Hook
-        if (! Filter::fire('module.disabling', $this, $name) ) {
-            return $this->error($this->error);
+        // 禁用前置Hook
+        if (! Filter::fire('module.disabling', $this, $module) ) {
+            return $this->error($this->error ?? trans('core::module.disable.failed', [$module]));
         }    
 
-        Module::disable($name);
+        Module::disable($module);
 
         return $this->success(trans('core::master.disabled'), $request->referer());
     }
@@ -63,7 +68,12 @@ class ModulesController extends AdminController
      * @return json
      */
     public function install(Request $request, $module)
-    {  
+    {
+        // 按照前置Hook
+        if (! Filter::fire('module.installing', $this, $module) ) {
+            return $this->error($this->error ?? trans('core::module.install.failed', [$module]));
+        }
+
         // install
         Artisan::call('module:execute', [
             'action'  => 'install',
@@ -72,7 +82,7 @@ class ModulesController extends AdminController
             '--seed'  => false,
         ]);
 
-        return $this->success(trans('core::modules.installed'), $request->referer());
+        return $this->success(trans('core::module.installed'), $request->referer());
     }
 
     /**
@@ -85,7 +95,7 @@ class ModulesController extends AdminController
     {
         // 卸载前置Hook
         if (! Filter::fire('module.uninstalling', $this, $module) ) {
-            return $this->error($this->error);
+            return $this->error($this->error ?? trans('core::module.uninstall.failed', [$module]));
         }
 
         // install
@@ -96,28 +106,28 @@ class ModulesController extends AdminController
             '--seed'  => false,
         ]);        
 
-        return $this->success(trans('core::modules.uninstalled'), $request->referer());
+        return $this->success(trans('core::module.uninstalled'), $request->referer());
     }
 
     /**
      * 删除模块
      * 
-     * @param  string $name 模块名称
+     * @param  string $module 模块名称
      * @return json
      */
-    public function delete(Request $request, $name)
+    public function delete(Request $request, $module)
     {
         // 卸载前置Hook
-        if (! Filter::fire('module.deleting', $this, $name) ) {
-            return $this->error($this->error);
+        if (! Filter::fire('module.deleting', $this, $module) ) {
+            return $this->error($this->error ?? trans('core::module.delete.failed', [$module]));
         }
         
         // Find Module
-        $module = Module::find($name);
+        $module = Module::find($module);
 
         // 已安装模块禁止删除
         if ($module->active or $module->installed) {
-            return $this->error(trans('core::modules.core_operate_forbidden'));
+            return $this->error(trans('core::module.core_operate_forbidden'));
         }
 
         $module->delete();

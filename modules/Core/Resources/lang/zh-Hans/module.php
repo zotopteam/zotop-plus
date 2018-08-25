@@ -10,14 +10,18 @@ return [
     'description.label'      => '描述', 
     'version.label'          => '版本',    
     
-    'install'                => '安装',
-    'uninstall'              => '卸载',
-    'uninstall.confirm'      => '您确定要卸载 [ :0 ] 吗？',
-    
-    'installed'              => '安装成功',
-    'uninstalled'            => '卸载成功',
     'core_operate_forbidden' => '系统核心模块，禁止操作',
+
+    'install'                => '安装',
+    'installed'              => '安装成功',
+    'install.failed'         => ' [ :0 ] 安装失败',
+
+    'uninstall'              => '卸载',
+    'uninstalled'            => '卸载成功',
+    'uninstall.confirm'      => '您确定要卸载 [ :0 ] 吗？',
+    'uninstall.failed'       => ' [ :0 ] 卸载失败',
 
     'delete'                 => '删除',
     'delete.confirm'         => '您确定要删除 [ :0 ] 吗？删除后不可恢复',
+    'delete.failed'          => ' [ :0 ] 删除失败',
 ];

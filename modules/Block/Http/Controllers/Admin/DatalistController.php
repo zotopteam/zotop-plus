@@ -144,7 +144,7 @@ class DatalistController extends AdminController
         // 更新区块数据
         Datalist::updateBlockData($block_id);
 
-        return $this->success(trans('core::master.operated'), $request->referer());
+        return $this->success(trans('core::master.sorted'), $request->referer());
     }
 
     /**

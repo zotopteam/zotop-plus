@@ -178,7 +178,7 @@ class BlockController extends AdminController
             Block::where('id', $id)->update(['sort' => $i]);
         }
 
-        return $this->success(trans('core::master.operated'));
+        return $this->success(trans('core::master.sorted'));
     }
 
     /**

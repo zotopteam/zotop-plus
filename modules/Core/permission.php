@@ -30,19 +30,19 @@ return [
         'core.config.locale' => 'core::config.locale',
     ],
 
-    'core::modules.title' => [
-        'core.modules.index' => 'core::modules.index',
-        'core.modules.status' => 'core::modules.status',
-        'core.modules.install' => 'core::modules.install',
-        'core.modules.uninstall' => 'core::modules.uninstall',
-        'core.modules.delete' => 'core::modules.delete',
+    'core::module.title' => [
+        'core.module.index' => 'core::module.index',
+        'core.module.status' => 'core::module.status',
+        'core.module.install' => 'core::module.install',
+        'core.module.uninstall' => 'core::module.uninstall',
+        'core.module.delete' => 'core::module.delete',
     ],
 
-    'core::themes.title' => [
-        'core.themes.index' => 'core::themes.index',
-        'core.themes.files' => 'core::themes.files',
-        'core.themes.publish' => 'core::themes.publish',
-        'core.themes.upload' => 'core::themes.upload',
+    'core::theme.title' => [
+        'core.theme.index' => 'core::theme.index',
+        'core.theme.files' => 'core::theme.files',
+        'core.theme.publish' => 'core::theme.publish',
+        'core.theme.upload' => 'core::theme.upload',
     ],
 
     'core::file.title' => [

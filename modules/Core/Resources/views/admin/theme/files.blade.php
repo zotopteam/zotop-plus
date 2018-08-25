@@ -4,7 +4,7 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{route('core.themes.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{route('core.theme.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
         </div>          
         <div class="main-title mx-auto">
             {{$theme->title}} {{$title}}

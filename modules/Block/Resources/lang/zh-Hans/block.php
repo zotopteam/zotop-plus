@@ -3,9 +3,9 @@
 return [
     'title'                       => '区块',
     'about'                       => '定义和管理页面上的小部件',
-
     'uninstall.forbidden'         => '区块尚有数据，禁止卸载',
 
+    'index'                       => '区块列表',
     'create'                      => '新建区块',
     'create.type'                 => '新建:0',
     'save'                        => '保存',

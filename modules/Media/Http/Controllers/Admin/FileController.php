@@ -45,11 +45,11 @@ class FileController extends AdminController
     }
 
     /**
-     * 编辑
+     * 重命名
      *
      * @return Response
      */
-    public function edit(Request $request, $id)
+    public function rename(Request $request, $id)
     {      
         // 保存数据
         if ($request->isMethod('POST')) {
@@ -61,7 +61,7 @@ class FileController extends AdminController
             return $this->success(trans('core::master.updated'), $request->referer());       
         }
 
-        $this->title = trans('media::file.edit');
+        $this->title = trans('media::file.rename');
         $this->id    = $id;
         $this->File = File::findOrFail($id);
 

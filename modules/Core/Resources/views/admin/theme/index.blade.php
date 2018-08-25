@@ -7,11 +7,11 @@
             {{$title}}
         </div>
         <div class="main-action">            
-            <a href="{{route('core.themes.publish')}}" class="btn btn-success js-post" title="{{trans('core::themes.publish.tooltip')}}">
-                <i class="fa fa-sync fa-fw"></i> {{trans('core::themes.publish')}}
+            <a href="{{route('core.theme.publish')}}" class="btn btn-success js-post" title="{{trans('core::theme.publish.tooltip')}}">
+                <i class="fa fa-sync fa-fw"></i> {{trans('core::theme.publish')}}
             </a>
-            <a href="{{route('core.themes.upload')}}" class="btn btn-primary btn-upload">
-                <i class="fa fa-upload fa-fw"></i> {{trans('core::themes.upload')}}
+            <a href="{{route('core.theme.upload')}}" class="btn btn-primary btn-upload">
+                <i class="fa fa-upload fa-fw"></i> {{trans('core::theme.upload')}}
             </a>
         </div>           
     </div>
@@ -31,14 +31,14 @@
                             </div>
                             <div class="card-text text-overflow text-overflow-2 d-none">{{$theme->description}}</div>
                             <div class="card-text manage">
-                                <a href="{{route('core.themes.files', ['theme'=>$theme->name,'dir'=>'/views'])}}" class="manage-item">
-                                    <i class="far fa-file fa-fw"></i> {{trans('core::themes.views')}}
+                                <a href="{{route('core.theme.files', ['theme'=>$theme->name,'dir'=>'/views'])}}" class="manage-item">
+                                    <i class="far fa-file fa-fw"></i> {{trans('core::theme.views')}}
                                 </a>
-                                <a href="{{route('core.themes.files', ['theme'=>$theme->name,'dir'=>'/assets'])}}" class="manage-item">
-                                    <i class="fas fa-file fa-fw"></i> {{trans('core::themes.assets')}}
+                                <a href="{{route('core.theme.files', ['theme'=>$theme->name,'dir'=>'/assets'])}}" class="manage-item">
+                                    <i class="fas fa-file fa-fw"></i> {{trans('core::theme.assets')}}
                                 </a>
-                                <a href="{{route('core.themes.publish', ['theme'=>$theme->name])}}" class="manage-item js-post" title="{{trans('core::themes.publish.tooltip')}}">
-                                    <i class="fa fa-sync fa-fw"></i> {{trans('core::themes.publish')}}
+                                <a href="{{route('core.theme.publish', ['theme'=>$theme->name])}}" class="manage-item js-post" title="{{trans('core::theme.publish.tooltip')}}">
+                                    <i class="fa fa-sync fa-fw"></i> {{trans('core::theme.publish')}}
                                 </a>
                             </div>                                                          
                         </div>

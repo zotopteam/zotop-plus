@@ -72,21 +72,21 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
     });
 
     // 模块管理
-    $router->group(['prefix' =>'modules'], function (Router $router) {
-        $router->get('index','ModulesController@index')->name('core.modules.index')->middleware('allow:core.modules.index');
-        $router->post('enable/{name}','ModulesController@enable')->name('core.modules.enable')->middleware('allow:core.modules.status');
-        $router->post('disable/{name}','ModulesController@disable')->name('core.modules.disable')->middleware('allow:core.modules.status');
-        $router->post('install/{name}','ModulesController@install')->name('core.modules.install')->middleware('allow:core.modules.install');
-        $router->post('uninstall/{name}','ModulesController@uninstall')->name('core.modules.uninstall')->middleware('allow:core.modules.uninstall');
-        $router->post('delete/{name}','ModulesController@delete')->name('core.modules.delete')->middleware('allow:core.modules.delete');
+    $router->group(['prefix' =>'module'], function (Router $router) {
+        $router->get('index','ModuleController@index')->name('core.module.index')->middleware('allow:core.module.index');
+        $router->post('enable/{name}','ModuleController@enable')->name('core.module.enable')->middleware('allow:core.module.status');
+        $router->post('disable/{name}','ModuleController@disable')->name('core.module.disable')->middleware('allow:core.module.status');
+        $router->post('install/{name}','ModuleController@install')->name('core.module.install')->middleware('allow:core.module.install');
+        $router->post('uninstall/{name}','ModuleController@uninstall')->name('core.module.uninstall')->middleware('allow:core.module.uninstall');
+        $router->post('delete/{name}','ModuleController@delete')->name('core.module.delete')->middleware('allow:core.module.delete');
     });
 
     // 主题管理
-    $router->group(['prefix' =>'themes'], function (Router $router) {
-        $router->get('index/{type?}','ThemesController@index')->name('core.themes.index')->middleware('allow:core.themes.index');
-        $router->get('files/{theme?}','ThemesController@files')->name('core.themes.files')->middleware('allow:core.themes.files');
-        $router->any('publish/{theme?}','ThemesController@publish')->name('core.themes.publish')->middleware('allow:core.themes.publish');
-        $router->any('upload','ThemesController@upload')->name('core.themes.upload')->middleware('allow:core.themes.upload');
+    $router->group(['prefix' =>'theme'], function (Router $router) {
+        $router->get('index/{type?}','ThemeController@index')->name('core.theme.index')->middleware('allow:core.theme.index');
+        $router->get('files/{theme?}','ThemeController@files')->name('core.theme.files')->middleware('allow:core.theme.files');
+        $router->any('publish/{theme?}','ThemeController@publish')->name('core.theme.publish')->middleware('allow:core.theme.publish');
+        $router->any('upload','ThemeController@upload')->name('core.theme.upload')->middleware('allow:core.theme.upload');
     });
 
     // 文件管理

@@ -129,6 +129,6 @@ class CategoryController extends AdminController
             Category::where('id', $id)->update(['sort' => $i]);
         }
 
-        return $this->success(trans('core::master.operated'), $request->referer());
+        return $this->success(trans('core::master.sorted'), $request->referer());
     }    
 }

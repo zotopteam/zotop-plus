@@ -77,7 +77,7 @@ class BaseController extends Controller
     /**
      * 模板变量赋值，魔术方法
      *
-     * @param mixed $name 要显示的模板变量
+     * @param mixed $key 要显示的模板变量
      * @param mixed $value 变量的值
      * @return void
      */
@@ -90,13 +90,37 @@ class BaseController extends Controller
      * 取得模板显示变量的值
      * 
      * @access protected
-     * @param string $name 模板显示变量
+     * @param string $key 模板显示变量
      * @return mixed
      */
     public function __get($key)
     {
-        return $this->viewData[$key];
+        return isset($this->viewData[$key]) ? $this->viewData[$key] : null;
     }
+
+    /**
+     * 检测模板变量是否被设定
+     * 
+     * @access protected
+     * @param string $key 模板显示变量
+     * @return bool
+     */
+    public function __isset($key) {
+        return isset($this->viewData[$key]);
+    }
+
+    /**
+     * 删除模板变量
+     * 
+     * @access protected
+     * @param string $key 模板显示变量
+     * @return bool
+     */
+    public function __unset($key) {
+        if (isset($this->viewData[$key])) {
+            unset($this->viewData[$key]);
+        }
+    }    
 
     /**
      * 显示View

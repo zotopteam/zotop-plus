@@ -49,7 +49,7 @@ class FolderController extends AdminController
      *
      * @return Response
      */
-    public function edit(Request $request, $id)
+    public function rename(Request $request, $id)
     {      
         // 保存数据
         if ($request->isMethod('POST')) {
