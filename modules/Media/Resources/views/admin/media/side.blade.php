@@ -6,7 +6,7 @@
         <div class="tree clearfix" id="tree" style="width:100%;overflow:hidden;">     
         </div>
     </div>
-    <div class="divider m-0"></div>
+    <div class="side-divider m-0"></div>
     @foreach(Module::data('media::info') as $i)
     <div class="side-footer justify-content-between align-items-center">
         {{$i['title']}}

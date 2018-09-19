@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('core::layouts.dialog')
 
 @section('content')
     <div class="block-preview">

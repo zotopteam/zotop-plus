@@ -22,7 +22,7 @@ class IndexController extends FrontController
     {
         $block = Block::findOrFail($id)->toArray();
 
-        debug($block);
+        //debug($block);
 
         return $this->view()->with($block);
     }

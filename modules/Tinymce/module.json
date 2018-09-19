@@ -1,0 +1,21 @@
+{
+    "name": "Tinymce",
+    "alias": "tinymce",
+    "title": "tinymce::tinymce.title",
+    "description": "tinymce::tinymce.description",
+    "keywords": [],
+    "version": "1.0.0",
+    "active": 1,
+    "installed": 1,
+    "order": 10,
+    "author": "zotop",
+    "email": "it@zotop.com",
+    "homepage": "http:\/\/www.zotop.com",
+    "providers": [
+        "Modules\\Tinymce\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": [],
+    "files": [
+        "start.php"
+    ]
+}

@@ -438,7 +438,7 @@
 
     $options = $this->getAttribute($attrs, 'options',  [
         'width'         => $this->getAttribute($attrs, 'width', '100%'),
-        'height'        => $this->getAttribute($attrs, 'height', '600'),
+        'height'        => $this->getAttribute($attrs, 'height', '500'),
         'placeholder'   => $this->getAttribute($attrs, 'placeholder', 'coding……'),
         'mode'          => $this->getAttribute($attrs, 'mode', 'text/html'),
         'watch'         => $this->getAttribute($attrs, 'watch', false),
@@ -456,4 +456,43 @@
     return $this->toHtmlString(
         $this->view->make('core::field.code')->with(compact('name', 'value', 'options'))->render()
     );
+});
+
+/**
+ * markdown编辑器
+ */
+\Form::macro('markdown', function($attrs) {
+    $value   = $this->getValue($attrs);
+    $name    = $this->getAttribute($attrs, 'name');
+
+    $options = $this->getAttribute($attrs, 'options',  [
+        'width'              => $this->getAttribute($attrs, 'width', '100%'),
+        'height'             => $this->getAttribute($attrs, 'height', '500'),
+        'placeholder'        => $this->getAttribute($attrs, 'placeholder', 'content……'),
+        'toolbar'            => $this->getAttribute($attrs, 'toolbar', true),
+        'codeFold'           => $this->getAttribute($attrs, 'codeFold', true),
+        'saveHTMLToTextarea' => $this->getAttribute($attrs, 'saveHTMLToTextarea', true),
+        'htmlDecode'         => $this->getAttribute($attrs, 'htmlDecode', 'style,script,iframe|on*'),
+        'theme'              => $this->getAttribute($attrs, 'theme','default'),
+        'path'               => \Module::asset('core:editormd/lib').'/',
+    ]);
+
+    if ($options['height'] == 'auto') {
+        $options['autoHeight'] = true;
+    }
+
+    return $this->toHtmlString(
+        $this->view->make('core::field.markdown')->with(compact('name', 'value', 'options'))->render()
+    );
+});
+
+/**
+ * 编辑器
+ */
+\Form::macro('editor', function($attrs) {
+
+    $attrs['type'] = 'textarea';
+    $attrs['rows'] = 18;
+
+    return $this->field($attrs);
 });

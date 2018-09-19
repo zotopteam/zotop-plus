@@ -25,12 +25,12 @@
     
     <div class="main-body scrollable">
 
-            {form model="$block" route="['block.data', $id]" id="block-form" method="post" autocomplete="off"}
+            {form model="$block" route="['block.data', $id]" id="block-form" method="post" autocomplete="off" class="m-2"}
             
             @if ($block->type == 'code')
                 {field type="code" name="data" height="400" required="required" placeholder="trans('block::block.data.placeholder.code')"}
             @elseif ($block->type == 'html')
-                {field type="textarea" name="data" rows="18" class="rounded-0" required="required" placeholder="trans('block::block.data.placeholder.html')"}
+                {field type="editor" name="data" height="400" required="required" placeholder="trans('block::block.data.placeholder.html')"}
             @elseif ($block->type == 'text')
                 {field type="textarea" name="data" rows="18" class="rounded-0" required="required" placeholder="trans('block::block.data.placeholder.text')"}                
             @endif

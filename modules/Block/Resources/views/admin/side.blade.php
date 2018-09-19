@@ -13,7 +13,7 @@
             @endforeach                                      
         </ul>        
     </div>
-    <div class="divider m-0"></div>
+    <div class="side-divider m-0"></div>
     <div class="side-body">
         <ul class="nav nav-pills nav-side">
             <li class="nav-item">
