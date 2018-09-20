@@ -10,4 +10,5 @@ body{background-color:#FFFFFF;color:#000000;font-family:Verdana,Arial,Helvetica,
 ::selection {background:#0072C6;color:#fff;}
 
 table td{padding:5px;}
+img{max-width:100%;}
 

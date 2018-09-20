@@ -18,5 +18,6 @@ return [
     'operate.result'       => '操作成功 :0, 操作失败：:1',
 
     'insert.from.uploaded' => '已上传',
-    'insert.from.library'  => '媒体库',    
+    'insert.from.library'  => '媒体库',
+    'insert.from.dir'      => '上传目录',    
 ];

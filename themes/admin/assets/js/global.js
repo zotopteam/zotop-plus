@@ -64,6 +64,12 @@ $(function(){
 
             return $.each(errorList, function(index, value) {
 
+                // 处理元素不可见的情况 2018.09.20
+                if ($(value.element).is(':visible') == false) {
+                    $.error(value.message);
+                    return false;
+                }
+
                 $(value.element).removeClass('error').tooltip("dispose");
                 
                 var tooltip = $(value.element).addClass('error').tooltip({

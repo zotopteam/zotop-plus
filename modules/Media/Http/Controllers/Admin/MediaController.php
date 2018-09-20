@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Modules\Media\Models\Folder;
 use Modules\Media\Models\File;
+use Modules\Core\Support\FileBrowser;
 
 class MediaController extends AdminController
 {
@@ -116,7 +117,7 @@ class MediaController extends AdminController
      *
      * @return Response
      */
-    public function uploaded(Request $request)
+    public function selectFromUploaded(Request $request)
     {
         $file = File::query();
 
@@ -144,7 +145,7 @@ class MediaController extends AdminController
      *
      * @return Response
      */
-    public function library(Request $request, $folder_id=0)
+    public function selectFromLibrary(Request $request, $folder_id=0)
     {
         $folder = Folder::where('parent_id', $folder_id);
         $file   = File::where('folder_id', $folder_id);
@@ -182,5 +183,34 @@ class MediaController extends AdminController
 
         $this->title = trans('media::media.insert.from.library',[$request->typename]);
         return $this->view('media::media.select.library');
-    }        
+    }
+
+    /**
+     * 从目录中选择文件
+     *
+     * @return Response
+     */
+    public function selectFromDir(Request $request, $root='public/uploads')
+    {
+        $browser = app(FileBrowser::class, [
+            'root' => $root,
+            'dir'  => $request->input('dir')
+        ]);
+
+        $this->params   = $browser->params;
+        $this->path     = $browser->path;
+        $this->upfolder = $browser->upfolder();
+        $this->position = $browser->position();
+        $this->folders  = $browser->folders();
+        $this->files    = $browser->files()->filter(function($item) use($request) {
+            return $item->type == $request->filetype;
+        });
+
+        // 选择文件个数，默认不限制
+        $this->select = $request->input('select', 0);
+
+        $this->title = trans('media::media.insert.from.library',[$request->typename]);
+
+        return $this->view('media::media.select.dir');
+    }
 }

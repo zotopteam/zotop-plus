@@ -12,7 +12,7 @@ return [
     'save.back'                   => '保存并返回',
     'save.edit'                   => '保存并继续编辑',
     'save.next'                   => '保存并下一步',
-    'data'                        => '内容维护',
+    'data.edit'                   => '内容维护',
     'setting'                     => '设置',
     'preview'                     => '预览',
 
@@ -80,6 +80,7 @@ return [
     'template'                    => '模板',
     'template.help'               => '模板决定区块显示样式',
 
+    'data'                        => '内容',
     'data.placeholder.code'       => '请输入代码……',
     'data.placeholder.text'       => '请输入文本……',
     'data.placeholder.html'       => '请输入内容……',

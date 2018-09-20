@@ -58,7 +58,7 @@
                                     <small class="text-success">{{trans('media::folder.type')}}</small>
                                 </div>
                                 <div class="contextmenu d-none">          
-                                        <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.folder.edit',[$folder->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$folder->name}}">
+                                        <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.folder.rename',[$folder->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$folder->name}}">
                                             <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
                                             <b class="contextmenu-item-text">{{trans('media::folder.rename')}}</b>
                                         </a>                      
@@ -110,7 +110,7 @@
                                             <b class="contextmenu-item-text">{{trans('media::file.view')}}</b>
                                         </a>
                                         @endif                 
-                                        <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.file.edit',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
+                                        <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.file.rename',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
                                             <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
                                             <b class="contextmenu-item-text">{{trans('media::file.rename')}}</b>
                                         </a>                                                                  

@@ -72,7 +72,7 @@
                             </div>
                             <div class="manage">
                                 <a class="manage-item" href="{{route('block.data', $block->id)}}">
-                                    <i class="fa fa-edit"></i> {{trans('block::block.data')}}
+                                    <i class="fa fa-edit"></i> {{trans('block::block.data.edit')}}
                                 </a>                            
                                 <a class="manage-item" href="{{route('block.edit', $block->id)}}">
                                     <i class="fa fa-cog"></i> {{trans('block::block.setting')}}

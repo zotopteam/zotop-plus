@@ -13,7 +13,7 @@
 .mce-path{padding:5px 8px;}
 .mce-wordcount{padding:5px 8px;}
 
-.mce-menubtn.mce-fixed-width.mce-btn-small span {width:auto;}
+.mce-menubtn.mce-fixed-width.mce-btn-small span {width:60px;}
 .mce-btn.mce-active .mce-caret, .mce-btn.mce-active:hover .mce-caret{border-top-color:#0072c6;}
 .mce-menu{margin:1px 0 0;}
 
@@ -31,3 +31,9 @@
 .mce-textbox{border-radius: .25rem;border: 1px solid #ced4da;}
 i.mce-i-checkbox{margin: 0 8px 0 0;border-radius: .25rem;border: 1px solid #ced4da;}
 .mce-checked i.mce-i-checkbox{color:#0072c6;}
+
+.mce-menu-item.mce-disabled, .mce-menu-item.mce-disabled:hover{background:transparent;}
+
+.mce-btn-small .mce-i-fa, .mce-btn-small .mce-i-far, .mce-btn-small .mce-i-fas {font-family: Font Awesome\ 5 Free;font-size: 13px;padding-right: 2px;}
+.mce-btn-small .mce-i-fa, .mce-btn-small .mce-i-fas{font-weight: 900;}
+

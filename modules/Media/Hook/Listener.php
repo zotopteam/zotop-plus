@@ -74,7 +74,10 @@ class Listener
      */
     public function select($tools, $params)
     {
-        @extract($params);
+        $typename = $params['typename'];
+
+        // 删除系统自带的目录选择
+        unset($tools['dir']);
 
         $select = [
             'uploaded'   => [
@@ -88,9 +91,15 @@ class Listener
                 'icon'   => 'fa fa-database',
                 'href'   => route('media.select.library', [0] + $params),
                 'active' => Route::active('media.select.library'),
-            ]
+            ],
+            'dir' => [
+                'text'   => trans('media::media.insert.from.dir',[$typename]),
+                'icon'   => 'fa fa-folder',
+                'href'   => route('media.select.dir', $params),
+                'active' => Route::active('media.select.dir'),
+            ]            
         ];
 
-        return $select + $tools;
+        return array_merge($tools, $select);
     }
 }

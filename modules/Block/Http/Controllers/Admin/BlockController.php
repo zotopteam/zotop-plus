@@ -154,7 +154,7 @@ class BlockController extends AdminController
             return $this->success(trans('core::master.saved'));            
         }
 
-        $this->title    = trans('block::block.data');
+        $this->title    = trans('block::block.data.edit');
         $this->id       = $id;
         $this->block    = Block::findOrFail($id);
         //$this->category = Category::findOrFail($this->block->category_id);

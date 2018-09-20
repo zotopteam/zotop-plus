@@ -7,8 +7,9 @@ $router->group(['prefix'=>'media', 'module'=>'media'], function (Router $router)
     // 首页
     $router->get('index/{folder_id?}/{type?}', 'MediaController@index')->name('media.index');
     $router->any('operate', 'MediaController@operate')->name('media.operate');
-    $router->any('select/uploaded','MediaController@uploaded')->name('media.select.uploaded');
-    $router->any('select/library/{folder?}','MediaController@library')->name('media.select.library');
+    $router->any('select/uploaded','MediaController@selectFromUploaded')->name('media.select.uploaded');
+    $router->any('select/library/{folder?}','MediaController@selectFromLibrary')->name('media.select.library');
+    $router->any('select/dir','MediaController@selectFromDir')->name('media.select.dir');
 
     // 文件夹
     $router->group(['prefix' =>'folder'], function (Router $router) {
