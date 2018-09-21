@@ -26,6 +26,11 @@
     @if(!App::isLocale('en'))
     <script src="{{Theme::asset('lang/'.App::getLocale().'/jquery.validate.js')}}"></script>
     @endif
+    <script type="text/javascript">
+    if (top != self) {
+        top.location = self.location;
+    }        
+    </script>
     @stack('js')
 </body>
 </html>

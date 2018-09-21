@@ -52,7 +52,7 @@
 });
 
 /**
- * 扩展$module->getFileData
+ * 扩展$module->getFileData, 获取存储数组类型的文件数据
  */
 \Nwidart\Modules\Module::macro('getFileData', function($file, array $args=[]) {
     $data = [];
@@ -76,6 +76,10 @@
 
 /**
  * 扩展data方法, 从data目录获取数组文件数据
+ * @param   $name 模块::文件名称
+ * @param   $args 额外参数
+ * @example Module::data('tinymce::tools.default', $attrs)
+ * @return array
  */
 \Nwidart\Modules\Facades\Module::macro('data', function($name, array $args=[]) {
     list($module, $file) = explode('::', $name);

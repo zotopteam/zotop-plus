@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{Theme::asset('css/font-awesome.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
+    <style type="text/css">
+        html,body{width:100%;height:100%;overflow:auto;}
+    </style>
     @stack('css')
 </head>
 <body>

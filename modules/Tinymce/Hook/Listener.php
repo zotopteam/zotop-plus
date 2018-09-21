@@ -48,8 +48,10 @@ class Listener
                 $options['tools'] = array_only(Module::data('tinymce::tools.default', $attrs), explode(' ', $tools));
             }
 
+            // 加载tools插件
             $options['plugins'] = $options['plugins'].' zotop_tools';
 
+            // 加载tools按钮
             foreach (array_keys($options['tools']) as $button) {
                 if (stripos(' '.$options['toolbar'].' ', ' '.$button.' ') === false) {
                     $options['toolbar'] = $options['toolbar'].' '.$button;

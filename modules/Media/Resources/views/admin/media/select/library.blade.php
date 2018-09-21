@@ -87,7 +87,7 @@
                                         @if ($file->isImage())
                                         <img src="{{$file->url()}}" class="align-self-center">
                                         @else
-                                        <i class="fa {{$file->icon()}} fa-6x fa-fw text-warning align-self-center"></i>
+                                        <i class="fa {{$file->icon()}} fa-5x fa-fw text-muted align-self-center"></i>
                                         @endif
                                     </div>
                                 </div>                             
@@ -160,10 +160,12 @@
                 autostart : true, //自动开始
                 multi_selection : true, //是否可以选择多个文件
                 multipart_params: {
-                    'folder_id'  : '{{$folder_id or 0}}',
-                    'module'     : '{{app('current.module')}}',
-                    'controller' : '{{app('current.controller')}}',
-                    'action'     : '{{app('current.action')}}',
+                    'folder_id'  : '{{$folder_id ?? 0}}',
+                    'data_id'    : '{{$params['data_id'] ?? null}}',
+                    'module'     : '{{$params['module'] ?? app('current.module')}}',
+                    'controller' : '{{$params['controller'] ?? app('current.controller')}}',
+                    'action'     : '{{$params['action'] ?? app('current.action')}}',
+                    'field'     : '{{$params['field'] ?? null}}',
                     'user_id'    : '{{Auth::user()->id}}',
                     'token'      : '{{Auth::user()->token}}'
                 },

@@ -174,7 +174,12 @@ class Theme
      */
     public function path($path=null, $name=null)
     {
-        $name = $name ?? $this->app['current.theme'];
+        if (strpos($path, ':') == false) {
+            $name = $name ?? $this->app['current.theme'];
+        } else {
+            list($name, $path) = explode(':', $path);
+        }
+
         $path = ltrim($path, DIRECTORY_SEPARATOR);
 
         if ($path) {

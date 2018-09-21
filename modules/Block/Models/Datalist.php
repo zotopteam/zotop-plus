@@ -12,7 +12,7 @@ class Datalist extends Model
     use UserRelation;
    
     protected $table = 'block_datalist';
-    protected $fillable = ['block_id','resource_id','module','data','user_id','sort','stick','status'];
+    protected $fillable = ['block_id','data_id','module','data','user_id','sort','stick','status'];
 
     /**
      * 属性转换

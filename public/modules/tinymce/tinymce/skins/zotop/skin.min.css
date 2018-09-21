@@ -7,7 +7,8 @@
 .mce-top-part::before{-webkit-box-shadow:none;box-shadow:none;}
 .mce-btn{border-radius: .25rem;}
 .mce-toolbar .mce-btn{background:transparent;}
-.mce-toolbar .mce-btn.mce-active, .mce-toolbar .mce-btn.mce-active:hover, .mce-toolbar .mce-btn.mce-active:focus, .mce-toolbar .mce-btn.mce-active:active{background-color: #fff;border-color: #ccc;}
+.mce-toolbar .mce-btn:hover{background-color:#fff;}
+.mce-toolbar .mce-btn.mce-active, .mce-toolbar .mce-btn.mce-active:hover, .mce-toolbar .mce-btn.mce-active:focus, .mce-toolbar .mce-btn.mce-active:active{background-color:#fff;border-color:#ccc;}
 .mce-toolbar .mce-btn.mce-active button, .mce-toolbar .mce-btn.mce-active:hover button, .mce-toolbar .mce-btn.mce-active i, .mce-toolbar .mce-btn.mce-active:hover i{color:#0072c6;}
 .mce-branding{display:none;}
 .mce-path{padding:5px 8px;}
@@ -34,6 +35,6 @@ i.mce-i-checkbox{margin: 0 8px 0 0;border-radius: .25rem;border: 1px solid #ced4
 
 .mce-menu-item.mce-disabled, .mce-menu-item.mce-disabled:hover{background:transparent;}
 
-.mce-btn-small .mce-i-fa, .mce-btn-small .mce-i-far, .mce-btn-small .mce-i-fas {font-family: Font Awesome\ 5 Free;font-size: 13px;padding-right: 2px;}
+.mce-btn-small .mce-i-fa, .mce-btn-small .mce-i-far, .mce-btn-small .mce-i-fas {font-family: Font Awesome\ 5 Free;font-size: 13px;padding-right: 2px;text-align: center;}
 .mce-btn-small .mce-i-fa, .mce-btn-small .mce-i-fas{font-weight: 900;}
 

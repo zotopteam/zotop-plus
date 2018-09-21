@@ -1,9 +1,9 @@
 <?php
-return [
+$options = [
     'menubar'                   => false,
-    'toolbar'                   => 'undo redo copy paste pastetext searchreplace removeformat onekeyclear | forecolor backcolor | bold italic underline strikethrough blockquote | subscript superscript | formatselect fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | link unlink anchor | image file video audio media | insertdatetime table  charmap emoticons  hr | visualchars nonbreaking codesample template pagebreak | localautosave preview code fullscreen',
+    'toolbar'                   => 'undo redo copy paste pastetext searchreplace removeformat onekeyclear | forecolor backcolor | bold italic underline strikethrough blockquote | subscript superscript | formatselect fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | link unlink anchor | image files video audio media | insertdatetime table  charmap emoticons  hr | visualchars nonbreaking codesample template pagebreak | localautosave preview code fullscreen',
     'plugins'                   => 'advlist autolink lists link image charmap preview anchor searchreplace code fullscreen table hr textcolor colorpicker textpattern imagetools tabfocus codesample wordcount nonbreaking noneditable placeholder localautosave',
-    'tools'                     => 'image file video audio',
+    'tools'                     => 'image files video audio',
     'width'                     => '100%',
     'height'                    => '400',
     'toolbar_items_size'        => 'small',
@@ -22,4 +22,15 @@ return [
     'force_br_newlines'         => false,
     'force_p_newlines'          => true,
     'forced_root_block'         => 'p',
+    'relative_urls'             => false,
+    'content_css'               => [],
 ];
+
+// 加载主题的内容样式
+$theme = config('site.theme', 'default');
+
+if (app('files')->exists(app('theme')->path($theme.':assets/css/content.css'))) {
+    $options['content_css'][] = app('theme')->asset($theme.':css/content.css');
+}
+
+return $options;

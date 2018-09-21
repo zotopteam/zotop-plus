@@ -97,6 +97,17 @@ class Block extends Model
     }
 
     /**
+     * 数据编号
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getDataIdAttribute($value)
+    {        
+        return 'block-'.$this->id;
+    }    
+
+    /**
      * 获取字段，为了排序需要去掉key名
      *
      * @param  string  $value

@@ -8,8 +8,11 @@
             {{$title}}
         </div>        
         <div class="main-action">
+            <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
+                <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
+            </a>        
             @if (request()->input('select', 0) != 1)
-            <a href="javascript:;" class="btn btn-light js-select-all">
+            <a href="javascript:;" class="btn btn-light js-select-all d-none">
                 <i class="fa fa-check-square fa-fw"></i> {{trans('media::media.select.all')}}
             </a>
             @endif
@@ -41,7 +44,7 @@
                                         @if ($file->isImage())
                                         <img src="{{$file->url()}}" class="img-fluid align-self-center">
                                         @else
-                                        <i class="fa {{$file->icon()}} fa-2x fa-fw text-warning"></i>
+                                        <i class="fa {{$file->icon()}} fa-5x fa-fw text-muted align-self-center"></i>
                                         @endif
                                     </div>
                                 </div>                             
@@ -114,17 +117,19 @@
                 autostart : true, //自动开始
                 multi_selection : true, //是否可以选择多个文件
                 multipart_params: {
-                    'folder_id'  : '{{$folder_id or 0}}',
-                    'module'     : '{{app('current.module')}}',
-                    'controller' : '{{app('current.controller')}}',
-                    'action'     : '{{app('current.action')}}',
+                    'folder_id'  : '{{$folder_id ?? 0}}',
+                    'data_id'    : '{{$params['data_id'] ?? null}}',
+                    'module'     : '{{$params['module'] ?? app('current.module')}}',
+                    'controller' : '{{$params['controller'] ?? app('current.controller')}}',
+                    'action'     : '{{$params['action'] ?? app('current.action')}}',
+                    'field'     : '{{$params['field'] ?? null}}',
                     'user_id'    : '{{Auth::user()->id}}',
                     'token'      : '{{Auth::user()->token}}'
                 },
                 filters: {
-                    //max_file_size:'20mb',
+                    max_file_size:'{{$params['maxsize'] ?? 10}}mb',
                     mime_types : [
-                        { title : "select files", extensions : "*"},
+                        { title : "{{$params['typename'] ?? 'select files'}}", extensions : "{{$params['allow'] ?? '*'}}"},
                     ],
                     prevent_duplicates:false //阻止多次上传同一个文件
                 },

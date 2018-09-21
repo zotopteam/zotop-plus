@@ -121,7 +121,7 @@ class MediaController extends AdminController
     {
         $file = File::query();
 
-        $from = $request->only(['module','controller','action','field','dataid','filetype','allow']);
+        $from = $request->only(['module','controller','action','field','data_id','filetype','allow']);
 
         foreach ($from as $key => $value) {        
             if ($key == 'filetype' && $value) {

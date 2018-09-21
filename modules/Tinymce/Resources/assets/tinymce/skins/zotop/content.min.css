@@ -11,4 +11,6 @@ body{background-color:#FFFFFF;color:#000000;font-family:Verdana,Arial,Helvetica,
 
 table td{padding:5px;}
 img{max-width:100%;}
+figure.image{border:0 none;background:transparent;}
+figure.image img{margin:0;}
 
