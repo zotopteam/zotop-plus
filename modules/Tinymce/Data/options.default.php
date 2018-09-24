@@ -1,8 +1,8 @@
 <?php
 $options = [
     'menubar'                   => false,
-    'toolbar'                   => 'undo redo copy paste pastetext searchreplace removeformat onekeyclear | forecolor backcolor | bold italic underline strikethrough blockquote | subscript superscript | formatselect fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | link unlink anchor | image files video audio media | insertdatetime table  charmap emoticons  hr | visualchars nonbreaking codesample template pagebreak | localautosave preview code fullscreen',
-    'plugins'                   => 'advlist autolink lists link image charmap preview anchor searchreplace code fullscreen table hr textcolor colorpicker textpattern imagetools tabfocus codesample wordcount nonbreaking noneditable placeholder localautosave',
+    'toolbar'                   => 'undo redo copy paste pastetext searchreplace removeformat onekeyclear | formatselect fontselect fontsizeselect | forecolor backcolor | bold italic underline strikethrough blockquote | subscript superscript |  alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | link unlink anchor | image files video audio media | insertdatetime table  charmap emoticons  hr | visualchars nonbreaking codesample template pagebreak | localautosave preview code fullscreen',
+    'plugins'                   => 'advlist autolink lists link image media charmap preview anchor searchreplace code fullscreen table hr textcolor colorpicker textpattern imagetools tabfocus codesample wordcount nonbreaking noneditable placeholder localautosave onekeyclear',
     'tools'                     => 'image files video audio',
     'width'                     => '100%',
     'height'                    => '400',

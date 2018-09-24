@@ -1,10 +1,10 @@
 <?php
 // file icon
 return [
-        'image' => 'fa fa-file-image',
-        'files' => 'fa fa-file',
-        'audio' => 'fa fa-file-audio',
-        'video' => 'fa fa-file-video',
+        'image' => 'far fa-image',
+        'files' => 'fas fa-file-alt',
+        'audio' => 'fas fa-volume-up',
+        'video' => 'fas fa-film',
 
         'pdf'   => 'fa fa-file-pdf',
         'doc'   => 'fa fa-file-word',

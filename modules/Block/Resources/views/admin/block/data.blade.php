@@ -30,7 +30,7 @@
             @if ($block->type == 'code')
                 {field type="code" name="data" height="400" required="required" placeholder="trans('block::block.data.placeholder.code')"}
             @elseif ($block->type == 'html')
-                {field type="editor" name="data" height="400" required="required" placeholder="trans('block::block.data.placeholder.html')" data_id="$block->data_id" options="standard"}
+                {field type="editor" name="data" height="400" required="required" placeholder="trans('block::block.data.placeholder.html')" data_id="$block->data_id" options="full"}
             @elseif ($block->type == 'text')
                 {field type="textarea" name="data" rows="18" class="rounded-0" required="required" placeholder="trans('block::block.data.placeholder.text')"}                
             @endif

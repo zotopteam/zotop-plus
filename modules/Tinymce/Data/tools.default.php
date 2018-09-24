@@ -1,20 +1,24 @@
 <?php
-$upload_tools = [
-    'image' => array('type'=>'image','icon'=>'image','text'=>trans('core::file.type.image'),'title'=>trans('core::file.type.image'),'url'=>route('media.select.uploaded')),
-    'files' => array('type'=>'files','icon'=>'fas fa-file','text'=>trans('core::file.type.files'),'title'=>trans('core::file.type.files'),'url'=>route('media.select.uploaded')),
-    'video' => array('type'=>'video','icon'=>'fas fa-film','text'=>trans('core::file.type.video'),'title'=>trans('core::file.type.files'),'url'=>route('media.select.uploaded')),
-    'audio' => array('type'=>'audio','icon'=>'fas fa-volume-up','text'=>trans('core::file.type.audio'),'title'=>trans('core::file.type.files'),'url'=>route('media.select.uploaded')),
-];
+// 上传工具
+$upload_tools = [];
+$upload_types = config('core.upload.types');
 
-foreach($upload_tools as &$t) {
+foreach($upload_types as $type=>$config) {
     
-    $filetype = $t['type'];
+    // 如果未开启上传，则不显示按钮
+    if (! $config['enabled']) {
+        continue;
+    }
 
+    // 类型名称
+    $typename = trans('core::file.type.'.$type);
+
+    // 上传参数
     $params = [
-        'filetype'   => $filetype,
-        'typename'   => trans('core::file.type.'.$filetype),
-        'allow'      => config('core.upload.types.'.$filetype.'.extensions'),
-        'maxsize'    => config('core.upload.types.'.$filetype.'.maxsize'),
+        'filetype'   => $type,
+        'typename'   => $typename,
+        'allow'      => $config['extensions'],
+        'maxsize'    => $config['maxsize'],
         'module'     => app('current.module'),
         'controller' => app('current.controller'),
         'action'     => app('current.action'),
@@ -25,11 +29,14 @@ foreach($upload_tools as &$t) {
         'token'      => Auth::user()->token
     ];
 
-    $t['url'] = route('media.select.uploaded', $params);
+    $upload_tools[$type] = [
+        'text'  => $typename,
+        'icon' => \File::icon($type),
+        'href' => route('media.select.uploaded', $params),
+    ];
 }
 
+// 其它工具
 $other_tools = [];
 
-$tools = array_merge($upload_tools, $other_tools);
-
-return $tools;
+return array_merge($upload_tools, $other_tools);
