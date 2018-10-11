@@ -43,9 +43,9 @@ class Listener
                 $options['tools'] = $tools;
             }
 
-            // 加载部分tools
+            // 加载定义的tools
             if (is_string($tools)) {
-                $options['tools'] = array_only(Module::data('tinymce::tools.default', $attrs), explode(' ', $tools));
+                $options['tools'] = Module::data('tinymce::tools.'.$tools, $attrs);
             }
 
             // 加载tools插件
