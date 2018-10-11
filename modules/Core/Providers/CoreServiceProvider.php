@@ -133,8 +133,8 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function registerFactories($module)
     {
-        if (! app()->environment('production')) {
-            app(Factory::class)->load($module->getPath() . '/Database/Factories');
+        if (! $this->app->environment('production')) {
+            $this->app->make(Factory::class)->load($module->getPath() . '/Database/Factories');
         }
     }
 
@@ -145,17 +145,19 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function registerCommands()
     {
-        $this->commands([
-            \Modules\Core\Console\CreateCommand::class,
-            \Modules\Core\Console\CreateThemeCommand::class,
-            \Modules\Core\Console\MakeHelpersCommand::class,
-            \Modules\Core\Console\MakeMacrosCommand::class,
-            \Modules\Core\Console\MakeTraitCommand::class,
-            \Modules\Core\Console\AdminControllerCommand::class,
-            \Modules\Core\Console\FrontControllerCommand::class,
-            \Modules\Core\Console\RebootCommand::class,
-            \Modules\Core\Console\ExecuteCommand::class,
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Modules\Core\Console\CreateCommand::class,
+                \Modules\Core\Console\CreateThemeCommand::class,
+                \Modules\Core\Console\MakeHelpersCommand::class,
+                \Modules\Core\Console\MakeMacrosCommand::class,
+                \Modules\Core\Console\MakeTraitCommand::class,
+                \Modules\Core\Console\AdminControllerCommand::class,
+                \Modules\Core\Console\FrontControllerCommand::class,
+                \Modules\Core\Console\RebootCommand::class,
+                \Modules\Core\Console\ExecuteCommand::class,
+            ]);
+        }
     }
 
     /**

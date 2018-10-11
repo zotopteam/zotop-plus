@@ -25,6 +25,24 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        parent::register();
+
+        // 注册闭包命令行
+        $consoleRouteFile = $this->getConsoleRouteFile();
+
+        if ($this->app->runningInConsole() && $consoleRouteFile && file_exists($consoleRouteFile)) {
+            require $consoleRouteFile;
+        }
+        
+    }    
+
+    /**
      * 前端路由文件地址
      * 
      * @return mixed
@@ -50,6 +68,15 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
      * @return mixed
      */
     protected function getApiRouteFile()
+    {
+        return false;
+    }
+
+    /**
+     * 闭包命令行文件地址
+     * @return mixed
+     */
+    public function getConsoleRouteFile()
     {
         return false;
     }
