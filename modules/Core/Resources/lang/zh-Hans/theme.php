@@ -15,7 +15,7 @@ return [
     'files'             => '文件管理',
     'views'             => '视图',
     'assets'            => '资源',
-    'publish'           => '发布',
+    'publish'           => '发布资源',
     'publish.success'   => '发布成功',
     'publish.tooltip'   => '发布主题的资源文件',    
     'delete'            => '删除',

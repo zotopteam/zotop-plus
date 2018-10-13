@@ -33,24 +33,22 @@ class RebootCommand extends Command
      */
     public function handle()
     {
-        // 如果是本地或者测试模式或者处于debug状态下，不缓存路由和配置
-        if ($this->laravel->environment('local','testing') OR $this->laravel['config']->get('app.debug')) {
-            $this->call('config:clear');
-            $this->call('route:clear');      
-            $this->call('view:clear');
-        } else {
+        // 生产环境时建立配置和路由缓存
+        if ($this->laravel->environment('production')) {
             $this->call('config:cache');
-            $this->call('route:cache');
-        }        
-
-        // 强制模式，刷新缓存
-        if ($this->option('force')) {
-            $this->call('clear-compiled');         
-            $this->call('view:clear');
-            $this->call('cache:clear');
+            $this->call('route:cache');            
+        } else {
+            $this->call('config:clear');
+            $this->call('route:clear');           
         }
-
-        $this->info("Reboot : success");      
+  
+        $this->call('view:clear');
+        $this->call('cache:clear');
+        $this->call('debugbar:clear');
+        $this->call('log:clear');
+        $this->call('clear-compiled');
+        
+        $this->info("Rebooted!");      
     }
 
 

@@ -36,6 +36,8 @@ return [
         'core.module.install' => 'core::module.install',
         'core.module.uninstall' => 'core::module.uninstall',
         'core.module.delete' => 'core::module.delete',
+        'core.module.publish' => 'core::module.publish',
+        'core.module.upload' => 'core::module.upload',        
     ],
 
     'core::theme.title' => [

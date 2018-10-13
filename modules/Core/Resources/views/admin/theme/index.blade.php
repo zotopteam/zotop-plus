@@ -10,7 +10,7 @@
             <a href="{{route('core.theme.publish')}}" class="btn btn-success js-post" title="{{trans('core::theme.publish.tooltip')}}">
                 <i class="fa fa-sync fa-fw"></i> {{trans('core::theme.publish')}}
             </a>
-            <a href="{{route('core.theme.upload')}}" class="btn btn-primary btn-upload">
+            <a href="{{route('core.theme.upload')}}" class="btn btn-primary btn-upload d-none">
                 <i class="fa fa-upload fa-fw"></i> {{trans('core::theme.upload')}}
             </a>
         </div>           

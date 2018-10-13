@@ -24,4 +24,10 @@ return [
     'delete'                 => '删除',
     'delete.confirm'         => '您确定要删除 [ :0 ] 吗？删除后不可恢复',
     'delete.failed'          => ' [ :0 ] 删除失败',
+
+    'publish'                => '发布资源',
+    'publish.success'        => '发布成功',
+    'publish.tooltip'        => '发布模块的资源文件',
+
+    'upload'                 => '上传模块',
 ];

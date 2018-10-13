@@ -35,6 +35,8 @@ class SystemController extends AdminController
             // 重启系统
             Artisan::call('reboot');
 
+            debug(Artisan::output());
+            
             return $this->success(trans('core::master.operated'));
         }
 

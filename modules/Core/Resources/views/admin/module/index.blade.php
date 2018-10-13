@@ -3,9 +3,17 @@
 @section('content')
 <div class="main">
     <div class="main-header">    
-        <div class="main-title">
+        <div class="main-title mr-auto">
             {{$title}}
         </div>
+        <div class="main-action">            
+            <a href="{{route('core.module.publish')}}" class="btn btn-success js-post" title="{{trans('core::module.publish.tooltip')}}">
+                <i class="fa fa-sync fa-fw"></i> {{trans('core::module.publish')}}
+            </a>
+            <a href="{{route('core.module.upload')}}" class="btn btn-primary btn-upload d-none">
+                <i class="fa fa-upload fa-fw"></i> {{trans('core::module.upload')}}
+            </a>
+        </div>        
     </div>
     <div class="main-body scrollable">        
         <table class="table table-nowrap table-sortable">

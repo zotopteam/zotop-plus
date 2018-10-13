@@ -133,5 +133,33 @@ class ModuleController extends AdminController
         $module->delete();
 
         return $this->success(trans('core::master.deleted'), $request->referer());
-    }       
+    }
+
+    /**
+     * 资源发布
+     *
+     * @return Response
+     */
+    public function publish($module='')
+    {
+        if ($module) {
+            Artisan::call("module:publish", [
+                'module' => $module
+            ]);
+        } else {
+            Artisan::call('module:publish');
+        }
+
+        return $this->success(trans('core::module.publish.success'));    
+    }
+
+    /**
+     * 上传主题
+     *
+     * @return Response
+     */
+    public function upload()
+    {
+  
+    }             
 }

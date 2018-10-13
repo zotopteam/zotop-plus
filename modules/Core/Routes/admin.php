@@ -79,6 +79,8 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->post('install/{name}','ModuleController@install')->name('core.module.install')->middleware('allow:core.module.install');
         $router->post('uninstall/{name}','ModuleController@uninstall')->name('core.module.uninstall')->middleware('allow:core.module.uninstall');
         $router->post('delete/{name}','ModuleController@delete')->name('core.module.delete')->middleware('allow:core.module.delete');
+        $router->any('publish/{name?}','ModuleController@publish')->name('core.module.publish')->middleware('allow:core.module.publish');
+        $router->any('upload','ModuleController@upload')->name('core.module.upload')->middleware('allow:core.module.upload');      
     });
 
     // 主题管理

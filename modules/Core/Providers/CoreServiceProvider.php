@@ -50,6 +50,19 @@ class CoreServiceProvider extends ServiceProvider
             $this->registerFactories($module);
         }
 
+        // 定时任务
+        $this->app->booted(function () {
+            $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
+
+            // 非产品环境时执行定时任务测试
+            if (! $this->app->environment('production')) {
+                $schedule->command('schedule:test')->name('schedule_test')->withoutOverlapping()->everyMinute();
+            }
+        });
+
+        // 事件监听
+        //$this->app['events']->listen(TestEvent::class, TestEventListen::class);      
+
         // 模板中的权限指令
         Blade::if('allow', function ($permission) {
             return allow($permission);
@@ -145,19 +158,17 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function registerCommands()
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                \Modules\Core\Console\CreateCommand::class,
-                \Modules\Core\Console\CreateThemeCommand::class,
-                \Modules\Core\Console\MakeHelpersCommand::class,
-                \Modules\Core\Console\MakeMacrosCommand::class,
-                \Modules\Core\Console\MakeTraitCommand::class,
-                \Modules\Core\Console\AdminControllerCommand::class,
-                \Modules\Core\Console\FrontControllerCommand::class,
-                \Modules\Core\Console\RebootCommand::class,
-                \Modules\Core\Console\ExecuteCommand::class,
-            ]);
-        }
+        $this->commands([
+            \Modules\Core\Console\CreateCommand::class,
+            \Modules\Core\Console\CreateThemeCommand::class,
+            \Modules\Core\Console\MakeHelpersCommand::class,
+            \Modules\Core\Console\MakeMacrosCommand::class,
+            \Modules\Core\Console\MakeTraitCommand::class,
+            \Modules\Core\Console\AdminControllerCommand::class,
+            \Modules\Core\Console\FrontControllerCommand::class,
+            \Modules\Core\Console\RebootCommand::class,
+            \Modules\Core\Console\ExecuteCommand::class,
+        ]);
     }
 
     /**
