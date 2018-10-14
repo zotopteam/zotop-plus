@@ -2,7 +2,8 @@
 
 namespace Modules\Core\Support;
 
-class Action extends Hook {
+class Action extends Hook
+{
 
 	/**
 	 * 过滤器钩子触发
@@ -13,18 +14,11 @@ class Action extends Hook {
 	 */
 	public function fire($hook, $param=null)
 	{
-		
-		if ( $callbacks = $this->listeners($hook) ) {
+		$args = func_get_args();
 
-			// 获取全部参数
-			$args = func_get_args();
-
-			// 调用全部回调
-			foreach($callbacks as $callback) {
-				call_user_func_array($this->callback($callback), array_slice($args, 1));
-			}			
-		}
-
+		$this->listeners($hook)->each(function ($listener) use($args) {
+			call_user_func_array($this->callback($listener['callback']), array_slice($args, 1));
+		});
 	}
 
 }

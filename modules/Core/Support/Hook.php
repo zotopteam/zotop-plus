@@ -1,15 +1,23 @@
 <?php
-
 namespace Modules\Core\Support;
 
-abstract class Hook {
+
+abstract class Hook
+{
 
 	/**
 	 * 存储hook
 	 * 
 	 * @var array
 	 */
-	protected $listeners = [];
+	protected $listeners = null;
+
+	/**
+	 * 初始化 listeners
+	 */
+	public function __construct() {
+		$this->listeners = collect([]);
+	}
 
 	/**
 	 * 监听Hook
@@ -21,20 +29,13 @@ abstract class Hook {
 	 */
 	public function listen($hook, $callback, $priority = 20)
 	{
-		$i = 0;
+		$this->listeners->push([
+            'hook'      => $hook,
+            'callback'  => $callback,
+            'priority'  => $priority		
+		]);
 
-		$uniquePriority = $priority;
-
-		do {
-
-			if (isset( $this->listeners[$hook][$uniquePriority])) {
-				$i += 0.1;
-				$uniquePriority = $priority + $i;
-			}
-
-		} while( isset( $this->listeners[$hook][$uniquePriority] ) );
-
-		$this->listeners[$hook][$uniquePriority] = $callback;
+		return $this;
 	}
 
 	/**
@@ -44,16 +45,7 @@ abstract class Hook {
 	 */
 	public function listeners($hook)
 	{
-		$listeners = isset($this->listeners[$hook]) ? $this->listeners[$hook] : [];
-
-		if ($listeners) {			
-			// 排序
-			uksort($listeners, function($a, $b) {
-				return strnatcmp($a,$b);
-			});
-		}
-
-		return $listeners;
+		return $this->listeners->where('hook', $hook)->sortBy('priority');
 	}
 
 	/**

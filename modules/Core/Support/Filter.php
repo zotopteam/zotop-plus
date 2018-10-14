@@ -2,31 +2,33 @@
 
 namespace Modules\Core\Support;
 
-class Filter extends Hook {
+class Filter extends Hook
+{
+
+	/**
+	 * 返回值
+	 * @var null
+	 */
+	protected $value = null;
 
 	/**
 	 * 过滤器钩子触发
 	 * 
 	 * @param  string $hook  钩子名称
 	 * @param  mixed $param  值
-	 * @return mixed         总是返$param
+	 * @return mixed
 	 */
 	public function fire($hook, $param)
 	{
-		if ( $callbacks = $this->listeners($hook) ) {
+		$args = func_get_args();
 
-			// 获取全部参数
-			$args = func_get_args();
+		$this->value = $param;
 
-			// 调用全部回调
-			foreach($callbacks as $callback) {
+		$this->listeners($hook)->each(function ($listener) use($args) {
+			$args[1] = $this->value;
+			$this->value = call_user_func_array($this->callback($listener['callback']), array_slice($args, 1));
+		});
 
-				$args[1] = $param;
-
-				$param = call_user_func_array($this->callback($callback), array_slice($args, 1));
-			}			
-		}
-
-		return $param;
+		return $this->value;
 	}
 }

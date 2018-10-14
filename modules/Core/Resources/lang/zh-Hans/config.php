@@ -83,9 +83,5 @@ return [
     'admin_prefix.label'      => '后台前缀',
     'admin_prefix.help'       => '更改后将改变系统后台的URL地址前缀，默认为：admin',  
     
-    'safe.log'                => '系统日志',
-    'log.label'               => '日志模式',
-    'log.help'                => '',
-    'log_level.label'         => '日志级别',
-    'log_level.help'          => '',  
+    'safe.admin'                => '后台安全',
 ];

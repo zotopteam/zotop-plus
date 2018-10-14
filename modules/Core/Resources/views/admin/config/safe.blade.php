@@ -42,6 +42,8 @@
                     @endif
                 </div>
             </div>
+
+            <div class="form-title row">{{trans('core::config.safe.admin')}}</div>
             
             <div class="form-group row">
                 <label for="admin_prefix" class="col-2 col-form-label required">{{trans('core::config.admin_prefix.label')}}</label>
@@ -55,34 +57,6 @@
                     @endif
                 </div>
             </div>
-
-            <div class="form-title row">{{trans('core::config.safe.log')}}</div>
-
-            <div class="form-group row">
-                <label for="log" class="col-2 col-form-label required">{{trans('core::config.log.label')}}</label>
-                <div class="col-8">
-                    {field type="select" name="log" options="Module::data('core::config.logs')"}
-                    
-                    @if ($errors->has('log'))
-                    <span class="form-help text-error">{{ $errors->first('log') }}</span>
-                    @else
-                    <span class="form-help">{{trans('core::config.log.help')}}</span>
-                    @endif
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="log_level" class="col-2 col-form-label required">{{trans('core::config.log_level.label')}}</label>
-                <div class="col-8">
-                    {field type="select" name="log_level" options="Module::data('core::config.log_levels')"}
-                    
-                    @if ($errors->has('log_level'))
-                    <span class="form-help text-error">{{ $errors->first('log_level') }}</span>
-                    @else
-                    <span class="form-help">{{trans('core::config.log_level.help')}}</span>
-                    @endif
-                </div>
-            </div>                                                           
 
             {/form}           
         </div>
