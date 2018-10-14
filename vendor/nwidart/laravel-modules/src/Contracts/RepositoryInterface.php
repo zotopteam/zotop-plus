@@ -44,14 +44,14 @@ interface RepositoryInterface
      *
      * @return mixed
      */
-    public function enabled();
+    public function allEnabled();
 
     /**
      * Get list of disabled modules.
      *
      * @return mixed
      */
-    public function disabled();
+    public function allDisabled();
 
     /**
      * Get count from all modules.
@@ -62,10 +62,10 @@ interface RepositoryInterface
 
     /**
      * Get all ordered modules.
-     *
+     * @param string $direction
      * @return mixed
      */
-    public function getOrdered();
+    public function getOrdered($direction = 'asc');
 
     /**
      * Get modules by the given status.
@@ -93,4 +93,11 @@ interface RepositoryInterface
      * @return mixed
      */
     public function findOrFail($name);
+
+    public function getModulePath($moduleName);
+
+    /**
+     * @return \Illuminate\Filesystem\Filesystem
+     */
+    public function getFiles();
 }

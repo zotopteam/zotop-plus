@@ -2,7 +2,7 @@
     {{Form::text($name,$value,$attrs)}}
     <span class="input-group-append">
         <button type="button" tabindex="-1" class="btn btn-light btn-icon-text btn-upload btn-progress">
-            <i class="btn-icon fa fa-fw {{$icon or 'fa-upload'}}"></i>
+            <i class="btn-icon fa fa-fw {{$icon ?? 'fa-upload'}}"></i>
             <b class="btn-text">{{$button}}</b>
             <div class="progress d-none">
               <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div>
@@ -15,7 +15,7 @@
         <div class="dropdown-menu dropdown-menu-primary dropdown-menu-right">
             @foreach($tools as $tool)
             <a class="dropdown-item js-upload-field-select" href="javascript:;" data-url="{{$tool['href']}}" data-title="{{$select}}">
-                <i class="dropdown-item-icon {{$tool['icon'] or ''}}"></i>
+                <i class="dropdown-item-icon {{$tool['icon'] ?? ''}}"></i>
                 <b class="dropdown-item-text">{{$tool['text']}}</b>
             </a>
             @endforeach

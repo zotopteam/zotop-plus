@@ -55,9 +55,9 @@
                     @if (in_array($v['type'], ['title','text','textarea']))
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">{{trans('block::block.fields.length')}}</span></div>
-                        <input type="number" name="fields[{{$k}}][minlength]" class="form-control required" value="{{$v['minlength'] or 0}}">
+                        <input type="number" name="fields[{{$k}}][minlength]" class="form-control required" value="{{$v['minlength'] ?? 0}}">
                         <div class="input-group-prepend"><span class="input-group-text">-</span></div>
-                        <input type="number" name="fields[{{$k}}][maxlength]" class="form-control required" value="{{$v['maxlength'] or 255}}">
+                        <input type="number" name="fields[{{$k}}][maxlength]" class="form-control required" value="{{$v['maxlength'] ?? 255}}">
                         <div class="input-group-append"><span class="input-group-text">{{trans('block::block.fields.length.unit')}}</span></div>
                     </div>
                     @endif
@@ -76,9 +76,9 @@
                    
                         <div class="input-group my-2" data-depend="#field-settings-type-{{$k}}" data-when="value=thunmb,crop" data-then="show">
                             <div class="input-group-prepend"><span class="input-group-text">{{trans('block::block.fields.width_height')}}</span></div>
-                            <input type="number" name="fields[{{$k}}][resize][width]" class="form-control required" value="{{$v['resize']['width'] or ''}}">
+                            <input type="number" name="fields[{{$k}}][resize][width]" class="form-control required" value="{{$v['resize']['width'] ?? ''}}">
                             <div class="input-group-prepend"><span class="input-group-text">-</span></div>
-                            <input type="number" name="fields[{{$k}}][resize][height]" class="form-control required" value="{{$v['resize']['height'] or ''}}">
+                            <input type="number" name="fields[{{$k}}][resize][height]" class="form-control required" value="{{$v['resize']['height'] ?? ''}}">
                             <div class="input-group-append"><span class="input-group-text">px</span></div>
                         </div>
 
@@ -96,13 +96,13 @@
                     <div class="field-settings-more">
                         <div class="input-group my-2">
                             <div class="input-group-prepend"><span class="input-group-text">{{trans('block::block.fields.rows')}}</span></div>
-                            <input type="number" name="fields[{{$k}}][rows]" class="form-control required" value="{{$v['rows'] or 3}}">
+                            <input type="number" name="fields[{{$k}}][rows]" class="form-control required" value="{{$v['rows'] ?? 3}}">
                         </div>                      
                     </div>                      
                     @endif
                 </td>
                 <td>
-                    <input type="text" name="fields[{{$k}}][placeholder]" class="form-control" value="{{$v['placeholder'] or ''}}">
+                    <input type="text" name="fields[{{$k}}][placeholder]" class="form-control" value="{{$v['placeholder'] ?? ''}}">
                 </td>
             </tr>
             @endforeach          

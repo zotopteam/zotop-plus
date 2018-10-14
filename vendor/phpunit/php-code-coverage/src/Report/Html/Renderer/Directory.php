@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\CodeCoverage\Report\Html;
 
 use SebastianBergmann\CodeCoverage\Node\AbstractNode as Node;
@@ -16,13 +15,13 @@ use SebastianBergmann\CodeCoverage\Node\Directory as DirectoryNode;
 /**
  * Renders a directory node.
  */
-class Directory extends Renderer
+final class Directory extends Renderer
 {
     /**
-     * @param DirectoryNode $node
-     * @param string        $file
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
-    public function render(DirectoryNode $node, $file)
+    public function render(DirectoryNode $node, string $file): void
     {
         $template = new \Text_Template($this->templatePath . 'directory.html', '{{', '}}');
 
@@ -41,20 +40,14 @@ class Directory extends Renderer
         $template->setVar(
             [
                 'id'    => $node->getId(),
-                'items' => $items
+                'items' => $items,
             ]
         );
 
         $template->renderTo($file);
     }
 
-    /**
-     * @param Node $node
-     * @param bool $total
-     *
-     * @return string
-     */
-    protected function renderItem(Node $node, $total = false)
+    protected function renderItem(Node $node, bool $total = false): string
     {
         $data = [
             'numClasses'                   => $node->getNumClassesAndTraits(),
@@ -68,7 +61,7 @@ class Directory extends Renderer
             'testedMethodsPercent'         => $node->getTestedFunctionsAndMethodsPercent(false),
             'testedMethodsPercentAsString' => $node->getTestedFunctionsAndMethodsPercent(),
             'testedClassesPercent'         => $node->getTestedClassesAndTraitsPercent(false),
-            'testedClassesPercentAsString' => $node->getTestedClassesAndTraitsPercent()
+            'testedClassesPercentAsString' => $node->getTestedClassesAndTraitsPercent(),
         ];
 
         if ($total) {

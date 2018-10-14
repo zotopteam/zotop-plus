@@ -56,7 +56,7 @@
                             <tr>
                                 <td class="text-left">{{trans('installer.check.permission',[$key])}}</td>
                                 <td class="text-center">{{$val[0]}}</td>
-                                <td class="text-center">{{$val[1] or trans('installer.check.notfound')}}</td>
+                                <td class="text-center">{{$val[1] ?? trans('installer.check.notfound')}}</td>
                             </tr> 
                             @endforeach                                                                                                         
                         @endif                            

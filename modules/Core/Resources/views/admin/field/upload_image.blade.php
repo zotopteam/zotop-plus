@@ -15,7 +15,7 @@
         <div class="dropdown-menu dropdown-menu-primary dropdown-menu-right">
             @foreach($tools as $tool)
             <a class="dropdown-item" href="#">
-                <i class="dropdown-item-icon fa fa-fw {{$tool['icon'] or ''}}"></i>
+                <i class="dropdown-item-icon fa fa-fw {{$tool['icon'] ?? ''}}"></i>
                 <b class="dropdown-item-text">{{$tool['text']}}</b>
             </a>
             @endforeach

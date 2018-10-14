@@ -5,9 +5,9 @@
         {{-- $v 数组，图片卡片模式 0=图片地址 1=图片标题（可选） 2=图片描述（可选） --}}
         {{-- $v 字符，文字卡片模式 --}}
         @if (is_array($v))
-        <div class="card card-md bg-light" title="{{$v[2] or ''}}" data-toggle="tooltip">
+        <div class="card card-md bg-light" title="{{$v[2] ?? ''}}" data-toggle="tooltip">
             <div class="card-image">
-                <img class="card-img-top img-fluid" src="{{$v[0]}}" alt="{{$v[2] or ''}}">
+                <img class="card-img-top img-fluid" src="{{$v[0]}}" alt="{{$v[2] ?? ''}}">
             </div>
             @if (isset($v[1]) && $v[1])
             <div class="card-body text-overflow">

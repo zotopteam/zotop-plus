@@ -42,4 +42,14 @@ class RouteServiceProvider extends CoreRouteServiceProvider
     {
         return __DIR__ . '/../Routes/api.php';
     }
+
+    /**
+     * 闭包命令行文件地址，没有返回false
+     * 
+     * @return mixed
+     */
+    public function getConsoleRouteFile()
+    {
+        require __DIR__ . '/../Routes/console.php';
+    }    
 }

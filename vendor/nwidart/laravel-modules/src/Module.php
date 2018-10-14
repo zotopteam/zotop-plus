@@ -14,7 +14,7 @@ abstract class Module extends ServiceProvider
     /**
      * The laravel|lumen application instance.
      *
-     * @var \Illuminate\Contracts\Foundation\Application|Laravel\Lumen\Application
+     * @var \Illuminate\Contracts\Foundation\Application|\Laravel\Lumen\Application
      */
     protected $app;
 
@@ -48,13 +48,13 @@ abstract class Module extends ServiceProvider
     {
         parent::__construct($app);
         $this->name = $name;
-        $this->path = realpath($path);
+        $this->path = $path;
     }
 
     /**
      * Get laravel instance.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|Laravel\Lumen\Application
+     * @return \Illuminate\Contracts\Foundation\Application|\Laravel\Lumen\Application
      */
     public function getLaravel()
     {
@@ -264,7 +264,7 @@ abstract class Module extends ServiceProvider
      */
     protected function fireEvent($event)
     {
-        $this->app['events']->fire(sprintf('modules.%s.' . $event, $this->getLowerName()), [$this]);
+        $this->app['events']->dispatch(sprintf('modules.%s.' . $event, $this->getLowerName()), [$this]);
     }
     /**
      * Register the aliases from this module.
@@ -323,28 +323,6 @@ abstract class Module extends ServiceProvider
     public function enabled() : bool
     {
         return $this->isStatus(1);
-    }
-
-    /**
-     * Alternate for "enabled" method.
-     *
-     * @return bool
-     * @deprecated
-     */
-    public function active()
-    {
-        return $this->isStatus(1);
-    }
-
-    /**
-     * Determine whether the current module not activated.
-     *
-     * @return bool
-     * @deprecated
-     */
-    public function notActive()
-    {
-        return !$this->active();
     }
 
     /**

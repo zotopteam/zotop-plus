@@ -5,7 +5,7 @@ use Illuminate\Routing\Router;
 $router->group(['prefix'=>'tinymce', 'module'=>'tinymce'], function (Router $router) {
     
     // 首页
-    $router->get('/', 'IndexController@index')->name('tinymce.index')->middleware('allow:tinymce.index');
+    //$router->get('/', 'IndexController@index')->name('tinymce.index')->middleware('allow:tinymce.index');
 
     // 单个路由示例
     // $router->get('test2', 'IndexController@test2')->name('tinymce.test2')->middleware('allow:tinymce.test2');

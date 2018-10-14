@@ -4,11 +4,8 @@ use Illuminate\Routing\Router;
 // $MODULE_NAME$ 模块后台路由
 $router->group(['prefix'=>'$LOWERCASE_MODULE_NAME$', 'module'=>'$LOWERCASE_MODULE_NAME$'], function (Router $router) {
     
-    // 首页
-    $router->get('/', 'IndexController@index')->name('$LOWERCASE_MODULE_NAME$.index')->middleware('allow:$LOWERCASE_MODULE_NAME$.index');
-
     // 单个路由示例
-    // $router->get('test2', 'IndexController@test2')->name('$LOWERCASE_MODULE_NAME$.test2')->middleware('allow:$LOWERCASE_MODULE_NAME$.test2');
+    //$router->get('/', 'IndexController@index')->name('$LOWERCASE_MODULE_NAME$.index')->middleware('allow:$LOWERCASE_MODULE_NAME$.index');
 
     // 群组路由示例
     // $router->group(['prefix' =>'example'], function (Router $router) {

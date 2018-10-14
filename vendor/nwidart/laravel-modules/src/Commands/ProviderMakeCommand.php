@@ -3,6 +3,7 @@
 namespace Nwidart\Modules\Commands;
 
 use Illuminate\Support\Str;
+use Nwidart\Modules\Module;
 use Nwidart\Modules\Support\Config\GenerateConfigReader;
 use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Traits\ModuleCommandTrait;
@@ -71,6 +72,7 @@ class ProviderMakeCommand extends GeneratorCommand
     {
         $stub = $this->option('master') ? 'scaffold/provider' : 'provider';
 
+        /** @var Module $module */
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
         return (new Stub('/' . $stub . '.stub', [
@@ -85,7 +87,7 @@ class ProviderMakeCommand extends GeneratorCommand
             'PATH_LANG'         => GenerateConfigReader::read('lang')->getPath(),
             'PATH_CONFIG'       => GenerateConfigReader::read('config')->getPath(),
             'MIGRATIONS_PATH'   => GenerateConfigReader::read('migration')->getPath(),
-            'FACTORIES_PATH'   => GenerateConfigReader::read('factory')->getPath(),
+            'FACTORIES_PATH'    => GenerateConfigReader::read('factory')->getPath(),
         ]))->render();
     }
 

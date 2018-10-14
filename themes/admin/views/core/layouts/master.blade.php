@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf_token" content="{{ csrf_token() }}"/>
-    <title>{{config('site.name')}} {{$title or ''}} {{config('app.name')}} </title>
+    <title>{{config('site.name')}} {{$title ?? ''}} {{config('app.name')}} </title>
     <link href="{{Theme::asset('favicon.ico')}}" rel="shortcut icon" type="image/x-icon">
     <link rel="stylesheet" href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{Theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
@@ -47,7 +47,7 @@
                     </li>
 
                     @foreach(Filter::fire('global.navbar',[]) as $navbar)                    
-                    <li class="item {{$navbar['class'] or ''}} {{$navbar['active'] ? 'active' : ''}}">
+                    <li class="item {{$navbar['class'] ?? ''}} {{$navbar['active'] ? 'active' : ''}}">
                         <a href="{{$navbar['href']}}">{{$navbar['text']}}</a>
                     </li>
                     @endforeach

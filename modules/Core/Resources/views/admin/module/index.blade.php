@@ -38,8 +38,8 @@
                         <div class="title"> <b class="text-lg">{{$module->title}}</b> <span class="text-muted">{{$name}}</span></div>
                         <div class="manage">
                             @foreach(filter::fire('module.manage', [], $module) as $s)
-                            <a href="{{$s['href'] or 'javascript:;'}}" class="manage-item {{$s['class'] or ''}}" {!!Html::attributes(array_except($s,['icon','text','href','class']))!!}>
-                                <i class="{{$s['icon'] or ''}} fa-fw"></i> {{$s['text']}}
+                            <a href="{{$s['href'] ?? 'javascript:;'}}" class="manage-item {{$s['class'] ?? ''}}" {!!Html::attributes(array_except($s,['icon','text','href','class']))!!}>
+                                <i class="{{$s['icon'] ?? ''}} fa-fw"></i> {{$s['text']}}
                             </a>
                             @endforeach
                         </div>

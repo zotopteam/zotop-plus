@@ -201,7 +201,7 @@
                 autostart : true, //自动开始
                 multi_selection : true, //是否可以选择多个文件
                 multipart_params: {
-                    'folder_id'  : '{{$folder_id or 0}}',
+                    'folder_id'  : '{{$folder_id ?? 0}}',
                     'module'     : '{{app('current.module')}}',
                     'controller' : '{{app('current.controller')}}',
                     'action'     : '{{app('current.action')}}',

@@ -11,7 +11,7 @@
     <div class="side-footer justify-content-between align-items-center">
         {{$i['title']}}
         @if(isset($i['badge']))
-        <span class="badge {{$i['badge_class'] or 'badge-primary'}} badge-pill">{{$i['badge']}}</span>
+        <span class="badge {{$i['badge_class'] ?? 'badge-primary'}} badge-pill">{{$i['badge']}}</span>
         @endif
     </div>
     @endforeach
@@ -60,7 +60,7 @@ $(function(){
         }        
     })
     @if(Route::is('media.index'))
-    $("#tree").fancytree("getTree").activateKey('{{$folder_id or 0}}').setExpanded(true);
+    $("#tree").fancytree("getTree").activateKey('{{$folder_id ?? 0}}').setExpanded(true);
     @endif
 });
 </script>

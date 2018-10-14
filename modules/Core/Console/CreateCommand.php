@@ -68,11 +68,12 @@ class CreateCommand extends Command
     protected $createFiles = [
         'start.stub'              => 'start.php',
         'config.stub'             => 'config.php',
-        'modulejson.stub'         => 'module.json',
+        'module-json.stub'        => 'module.json',
         'module.png'              => 'module.png',
         'routes-front.stub'       => 'Routes/front.php',
         'routes-admin.stub'       => 'Routes/admin.php',
         'routes-api.stub'         => 'Routes/api.php',
+        'routes-console.stub'     => 'Routes/console.php',
         'route-provider.stub'     => 'Providers/RouteServiceProvider.php',        
         'lang/en/module.php'      => 'Resources/lang/en/$LOWERCASE_MODULE_NAME$.php',
         'lang/zh-Hans/module.php' => 'Resources/lang/zh-Hans/$LOWERCASE_MODULE_NAME$.php',
