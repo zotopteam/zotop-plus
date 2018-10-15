@@ -1,0 +1,25 @@
+{
+    "name": "zotop/content",
+    "description": "",
+    "authors": [
+        {
+            "name": "Zotop Team",
+            "email": "cms@zotop.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Content\\Providers\\ContentServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Content\\": ""
+        }
+    }
+}

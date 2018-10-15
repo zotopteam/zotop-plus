@@ -1,0 +1,22 @@
+{
+    "name": "Content",
+    "alias": "content",
+    "title": "content::content.title",
+    "description": "content::content.description",
+    "keywords": [],
+    "version": "1.0.0",
+    "active": 1,
+    "installed": 1,
+    "order": 4,
+    "author": "zotop",
+    "email": "it@zotop.com",
+    "homepage": "http:\/\/www.zotop.com",
+    "providers": [
+        "Modules\\Content\\Providers\\ContentServiceProvider",
+        "Modules\\Content\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": [],
+    "files": [
+        "start.php"
+    ]
+}
