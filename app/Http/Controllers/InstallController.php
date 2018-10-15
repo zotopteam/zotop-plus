@@ -151,7 +151,7 @@ class InstallController extends Controller
      */
     public function message(array $msg)
     {
-        exit(json_encode($msg));
+        return response()->json($msg);
     }
 
     /**
@@ -202,8 +202,20 @@ class InstallController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function welcome()
-    {               
+    public function welcome(Request $request)
+    {
+        // 重新生成 generate
+        Artisan::call('key:generate');
+
+        // 设置当前域名
+        Artisan::call('env:set',[
+            'key'   => 'APP_URL',
+            'value' => $request->root()
+        ]);
+
+        // 清理缓存
+        Artisan::call('reboot');
+
         return $this->view();
     }
 
@@ -212,7 +224,7 @@ class InstallController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function check()
+    public function check(Request $request)
     {
         $check = true;
         $error = [];
@@ -277,10 +289,13 @@ class InstallController extends Controller
         if ($request->isMethod('POST')) {
             
             // 缓存站点设置，安装完成时最后写入
-            Cache::put('install.site', $request->input('site'), 60*24);
+            $request->session()->put('install.site', $request->input('site'));
 
             // 缓存管理员数据，安装完成时最后写入
-            Cache::put('install.admin', $request->input('admin'), 60*24);
+            $request->session()->put('install.admin', $request->input('admin'));
+
+            // 保存session
+            $request->session()->save();
 
             // 测试数据库是否能正常连接
             $env    = $request->input('env');           
@@ -300,20 +315,18 @@ class InstallController extends Controller
             try {
                 app('db')->reconnect()->getPdo();
 
-                Artisan::call('key:generate');
-                Artisan::call('env:set',['key' => 'APP_URL', 'value'=>$request->root()]);
-
                 foreach ($env as $key => $value) {
                     Artisan::call('env:set',['key' => $key, 'value'=>$value]);  
-                }                             
+                }
 
                 return $this->success('success', route("install.{$this->next}"));
 
             } catch (PDOException $e) {
-
                 return $this->error($e->getMessage());
             }
         }
+
+        $request->session()->put('install.test', ['aaaa'=>'bbbb']);
 
         return $this->view();
     }
@@ -340,7 +353,6 @@ class InstallController extends Controller
                     return $this->success('success', route("install.{$this->next}"));
 
                 } catch (Exception $e) {
-
                     return $this->error($e->getMessage());
                 }
             }
@@ -410,10 +422,10 @@ class InstallController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function finished()
+    public function finished(Request $request)
     {
-        $this->site  = Cache::get('install.site');
-        $this->admin = Cache::get('install.admin');
+        $this->site  = $request->session()->get('install.site');
+        $this->admin = $request->session()->get('install.admin');
 
         // 完成安装以前，写入网站设置
         if ($this->app['installed'] == false) {

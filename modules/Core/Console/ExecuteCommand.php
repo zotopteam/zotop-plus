@@ -126,7 +126,7 @@ class ExecuteCommand extends Command
         // Update module.json
         $module->json()->set('active', 1)->set('installed', 1)->save();
 
-        $this->call('reboot');      
+        $this->call('reboot');   
         
         $this->info("success");
     }

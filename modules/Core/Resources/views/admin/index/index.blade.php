@@ -36,7 +36,11 @@
         </span>
 
         <span class="footer-text">
-            v{{config('app.version')}}
+            <span class="badge badge-primary">v{{config('app.version')}}</span>
+            <span class="badge badge-success">{{config('app.env')}}</span>
+            @if(config('app.debug'))
+            <span class="badge badge-warning">debug</span>
+            @endif
         </span>        
     </div>
 </div>

@@ -191,8 +191,6 @@ class ConfigController extends AdminController
             // 更改后台地址，本地或者测试环境下，route 已经加载，无法重新载入, 改用url生成
             // $this->app['config']->set('app.admin_prefix', $request->input('admin_prefix', 'admin'));
             // $redirectTo = route('core.config.safe');
-            // exit($redirectTo);
-            // return null;
 
             $redirectTo = url($request->input('admin_prefix', 'admin').'/core/config/safe');
 

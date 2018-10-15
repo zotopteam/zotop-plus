@@ -107,7 +107,7 @@
                         </div>                        
                         <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>
                     </td>
-                    <td>{{$file->meta->title or ''}}</td>
+                    <td>{{$file->meta->title ?? ''}}</td>
                     <td class="manage manage-hover text-right">
                         @switch($file->mime)
                             @case('image')

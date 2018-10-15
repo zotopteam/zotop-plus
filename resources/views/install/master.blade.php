@@ -9,9 +9,9 @@
         <link rel="icon" type="image/png" href="{{ asset('installer/favicon-16x16.png') }}" sizes="16x16"/>
         <link rel="icon" type="image/png" href="{{ asset('installer/favicon-32x32.png') }}" sizes="32x32"/>
         <link rel="icon" type="image/png" href="{{ asset('installer/favicon-96x96.png') }}" sizes="96x96"/>        
-        <link href="{{ asset('installer/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
-        <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-        <link href="{{ asset('installer/global.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('installer/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('installer/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('installer/css/global.css') }}" rel="stylesheet" type="text/css">
 
         @stack('css')
     </head>
@@ -57,12 +57,12 @@
             </g>
         </svg>
 
-        <script src="{{asset('installer/jquery.min.js')}}"></script>
-        <script src="{{asset('installer/popper.min.js')}}"></script>   
-        <script src="{{asset('installer/bootstrap.min.js')}}"></script>
-        <script src="{{asset('installer/jquery.validate.min.js')}}"></script>
-        <script src="{{asset('installer/jquery.dialog.js')}}"></script>        
-        <script src="{{asset('installer/global.js')}}"></script>
+        <script src="{{asset('installer/js/jquery.min.js')}}"></script>
+        <script src="{{asset('installer/js/popper.min.js')}}"></script>
+        <script src="{{asset('installer/js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('installer/js/jquery.validate.min.js')}}"></script>
+        <script src="{{asset('installer/js/jquery.dialog.js')}}"></script>        
+        <script src="{{asset('installer/js/global.js')}}"></script>
         @stack('js')                  
     </body>
 </html>
