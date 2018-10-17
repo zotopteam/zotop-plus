@@ -5,7 +5,6 @@ namespace Modules\Developer\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
-use Modules\Developer\Support\Table;
 use Modules\Core\Support\Migration\Schema;
 use Module;
 use Artisan;
@@ -19,11 +18,26 @@ class TableController extends AdminController
      */
     public function index($module)
     {
-        $this->module  = module($module);
+        $module  = module($module);
 
-        // 获取模块的数据表
-        $this->tables = Table::module($module);
+        $schema = new Schema();
+        $tables = $schema->getTables();
 
+        // 如果module.json  中包含 tables，优先获取
+        if (is_array($module->tables)) {
+            $moduleTables = $module->tables;
+            $tables = array_filter($tables, function($table) use($moduleTables) {
+                return in_array($table, $moduleTables);
+            });
+        } else {
+            $moduleName = $module->getLowerName();
+            $tables = array_filter($tables, function($table) use($moduleName) {
+                return $table == $moduleName || starts_with($table, $moduleName.'_');
+            });
+        }        
+
+        $this->module = $module;
+        $this->tables = $tables;
         $this->title = trans('developer::table.title');
 
         return $this->view();
@@ -37,7 +51,9 @@ class TableController extends AdminController
     public function create($module)
     {
         $this->module  = module($module);
-
+        $this->fields = [
+            ['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>true, 'autoIncrement'=>true, 'index'=>'primary', 'default'=>'', 'comment'=>'']
+        ];
         $this->title = trans('developer::table.create');
 
         return $this->view();
@@ -51,10 +67,6 @@ class TableController extends AdminController
      */
     public function store(Request $request)
     {
-        $table = new Table;
-        $table->fill($request->all());
-        $table->save();
-
         return $this->success(trans('core::master.created'), route('developer.table.index'));
     }
 
@@ -148,4 +160,60 @@ class TableController extends AdminController
         
         return $this->success(trans('core::master.created'));
     }
+
+    /**
+     * 字段显示和添加
+     * 
+     * @param  Request $request
+     * @param  string  $action  动作
+     * @return Response
+     */
+    public function fields(Request $request, $action='')
+    {
+        $fields = $request->input('fields', []);
+
+        $default = ['name'=>'', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'autoIncrement'=>'', 'index'=>'', 'default'=>'', 'comment'=>''];
+
+        $fields = collect($fields)->map(function ($field, $key) use($default) {
+            return $field + $default;
+        });
+
+        // 添加时字段数组尾部增加一条数据
+        if ($action == 'add') {
+            $fields->push($default);
+        }
+
+        if ($action == 'add_timestamps') {
+
+            if ($fields->where('name','created_at')->where('type','timestamp')->count() > 0 && $fields->where('name','updated_at')->where('type','timestamp')->count() > 0) {
+                abort(403, trans('core::master.existed'));
+            }
+
+            $fields = $fields->filter(function($field, $key) {
+                return ! in_array($field['name'], ['created_at', 'updated_at']);
+            });
+
+            $fields->push(array_merge($default, ['name'=>'created_at','type'=>'timestamp']));
+            $fields->push(array_merge($default, ['name'=>'updated_at','type'=>'timestamp']));
+        }
+
+        if ($action == 'add_softdeletes') {
+
+            if ($fields->where('name','deleted_at')->where('type','timestamp')->count() > 0) {
+                abort(403, trans('core::master.existed'));
+            }
+
+            $fields = $fields->filter(function($field, $key) {
+                return $field['name'] != 'deleted_at';
+            });
+
+            $fields[] = array_merge($default, ['name'=>'deleted_at','type'=>'timestamp']);
+        }
+
+
+
+        $this->fields = $fields->toArray();
+
+        return $this->view();
+    }    
 }

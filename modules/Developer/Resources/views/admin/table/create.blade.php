@@ -33,7 +33,9 @@
             <div class="form-group">
                 <label for="columns" class="form-label required">{{trans('developer::table.columns')}}</label>
                 <div class="form-field">
-                      
+                    <div class="fields">
+                        <i class="fa fa-spinner fa-spin"></i>
+                    </div>    
                 </div>
             </div>
 
@@ -42,7 +44,7 @@
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
-        <div class="mr-auto">
+        <div class="ml-auto">
             {field type="submit" form="table-form" value="trans('core::master.save')" class="btn btn-primary"}
         </div>
     </div>
@@ -70,6 +72,15 @@
                 });
             }            
         });
-    })
+    });
+
+    // 加载字段
+    $(function(){
+        $('.fields').load('{{route('developer.table.fields')}}', {
+            'fields': {!! json_encode($fields) !!}
+        }, function(){
+            $(window).trigger('resize');
+        });
+    });
 </script>
 @endpush

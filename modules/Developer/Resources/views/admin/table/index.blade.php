@@ -8,7 +8,7 @@
             {{$title}}
         </div>
         <div class="main-action">
-            <a href="{{route('developer.table.create',[$module])}}" class="btn btn-primary d-none">
+            <a href="{{route('developer.table.create',[$module])}}" class="btn btn-primary">
                 <i class="fa fa-plus"></i> {{trans('core::master.create')}}
             </a>
         </div>        
