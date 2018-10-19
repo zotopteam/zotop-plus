@@ -39,8 +39,8 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
     // table group
     $router->group(['prefix' =>'module/table','middleware'=>'allow:developer.table'], function (Router $router) {
         $router->get('index/{module}','TableController@index')->name('developer.table.index');
-        $router->get('create/{module}','TableController@create')->name('developer.table.create');
-        $router->get('edit/{module}/{table}','TableController@edit')->name('developer.table.edit');
+        $router->any('create/{module}','TableController@create')->name('developer.table.create');
+        $router->any('edit/{module}/{table}','TableController@edit')->name('developer.table.edit');
         $router->delete('destroy/{module}/{table}','TableController@destroy')->name('developer.table.destroy');
         $router->any('migration/{module}/{table}','TableController@migration')->name('developer.table.migration');
         $router->any('fields/{action?}','TableController@fields')->name('developer.table.fields');

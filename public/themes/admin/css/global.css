@@ -253,7 +253,7 @@ label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 1px * 3);padd
 [type=checkbox]{margin-top:.1rem;}
 [type=checkbox]:before{content:'\f0c8';}
 [type=checkbox]:checked:before{content:'\f14a';color:#0072c6;} 
-[type=checkbox]:disabled,[type=radio]:disabled{border-color:#d8d8d8;}
+[type=checkbox]:disabled,[type=radio]:disabled{color:#ccc;}
 [type=checkbox]:disabled:checked:before,[type=radio]:disabled:checked:before{color:#ccc;}
 [type=checkbox]+span,[type=radio]+span{vertical-align:text-top;margin-left:.25rem;}
 [type=checkbox]:checked+span,[type=radio]:checked+span{color:#0072c6;}

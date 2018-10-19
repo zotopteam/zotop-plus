@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Modules\Core\Support\Migration\Schema;
+use Modules\Core\Support\Migration\Table;
 use Module;
 use Artisan;
 
@@ -40,6 +41,19 @@ class TableController extends AdminController
         $this->tables = $tables;
         $this->title = trans('developer::table.title');
 
+        // $table = new Table('test');
+        // $table->drop();
+        // $table->create([
+        //     ['name'=>'id', 'type'=>'bigint', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
+        //     ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
+        //     ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
+        //     ['name'=>'content', 'type'=>'text', 'length'=>'100', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
+        //     ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
+        //     ['name'=>'enum', 'type'=>'enum', 'length'=>'y,n,c', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'enum'],
+        //     ['name'=>'sort', 'type'=>'mediumInteger', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
+        //     ['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'3', 'comment'=>'status'],
+        // ]);       
+
         return $this->view();
     }
 
@@ -48,26 +62,66 @@ class TableController extends AdminController
      * 
      * @return Response
      */
-    public function create($module)
-    {
+    public function create(Request $request, $module)
+    {        
         $this->module  = module($module);
+
+        // 保存数据
+        if ($request->isMethod('POST')) {
+
+            $request->validate([
+                'name'   => ['required', 'string'],
+                'fields' => ['required', 'array'],
+            ],[],[
+                'name' => trans('developer::table.name'),
+                'fields' => trans('developer::table.columns'),
+            ]);
+
+            $name   = $request->input('name');
+            $fields = $request->input('fields', []);
+
+            $table = new Table($name);
+
+            //$table->drop();
+            $moduleName = $this->module->getLowerName();
+
+            $request->validate([
+                'name' => [function($attribute, $value, $fail) use($table, $moduleName) {
+                    // 表名必须等于模块名称或者已经模块名称加下划线开头
+                    if (!($value == $moduleName || starts_with($value, $moduleName.'_')) || ends_with($value, '_')) {
+                        return $fail(trans('developer::table.name.error', [$moduleName]));
+                    }
+                    // 检查数据表是否存在
+                    if ($table->exists() == true) {
+                        return $fail(trans('developer::table.exists', [$value]));
+                    }
+                }],
+            ]);
+
+            $table->create($fields);
+
+            if ($table->exists()) {
+                return $this->success(trans('core::master.created'), route('developer.table.edit', [$module, $name]));
+            }
+
+            return $this->success(trans('core::master.create.failed'));
+        }
+
         $this->fields = [
-            ['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>true, 'autoIncrement'=>true, 'index'=>'primary', 'default'=>'', 'comment'=>'']
+            //['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'primary', 'default'=>'', 'comment'=>'']
+            ['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
+            ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
+            ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
+            ['name'=>'content', 'type'=>'text', 'length'=>'100', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
+            ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
+            ['name'=>'enum', 'type'=>'enum', 'length'=>'y,n,c', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'enum'],
+            ['name'=>'sort', 'type'=>'mediumint', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
+            ['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'3', 'comment'=>'status'],            
         ];
+
         $this->title = trans('developer::table.create');
 
         return $this->view();
-    }
-
-    /**
-     * 保存
-     *
-     * @param  Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        return $this->success(trans('core::master.created'), route('developer.table.index'));
     }
 
     /**
@@ -90,7 +144,7 @@ class TableController extends AdminController
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit(Request $request, $module, $table)
     {
         $this->title = trans('developer::developer.edit');
         $this->id    = $id;
@@ -172,8 +226,10 @@ class TableController extends AdminController
     {
         $fields = $request->input('fields', []);
 
-        $default = ['name'=>'', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'autoIncrement'=>'', 'index'=>'', 'default'=>'', 'comment'=>''];
+        // 默认字段结构
+        $default = ['name'=>'', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>''];
 
+        // 补充传入数据结构
         $fields = collect($fields)->map(function ($field, $key) use($default) {
             return $field + $default;
         });
@@ -183,12 +239,15 @@ class TableController extends AdminController
             $fields->push($default);
         }
 
+        // 添加时间戳 created_at 和 updated_at
         if ($action == 'add_timestamps') {
 
+            // 检查 created_at 和 updated_at 是否已经存在
             if ($fields->where('name','created_at')->where('type','timestamp')->count() > 0 && $fields->where('name','updated_at')->where('type','timestamp')->count() > 0) {
                 abort(403, trans('core::master.existed'));
             }
 
+            // 为防止字段类型被更改，过滤 created_at 和 updated_at 并重新添加
             $fields = $fields->filter(function($field, $key) {
                 return ! in_array($field['name'], ['created_at', 'updated_at']);
             });
@@ -197,12 +256,15 @@ class TableController extends AdminController
             $fields->push(array_merge($default, ['name'=>'updated_at','type'=>'timestamp']));
         }
 
+        // 添加软删除
         if ($action == 'add_softdeletes') {
 
+            // 检查 deleted_at 是否已经存在
             if ($fields->where('name','deleted_at')->where('type','timestamp')->count() > 0) {
                 abort(403, trans('core::master.existed'));
             }
 
+            // 为防止字段类型被更改，过滤 deleted_at 并重新添加
             $fields = $fields->filter(function($field, $key) {
                 return $field['name'] != 'deleted_at';
             });
@@ -210,9 +272,8 @@ class TableController extends AdminController
             $fields[] = array_merge($default, ['name'=>'deleted_at','type'=>'timestamp']);
         }
 
-
-
-        $this->fields = $fields->toArray();
+        $this->increments = $fields->where('increments','increments')->first()['name'];
+        $this->fields     = $fields->toArray();
 
         return $this->view();
     }    

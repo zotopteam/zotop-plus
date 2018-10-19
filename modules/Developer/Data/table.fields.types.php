@@ -12,30 +12,30 @@ $numbers = [
     'float',
     'double',
 
-    'bit',
+    //'bit',
     'boolean',
-    'serial'
+    //'serial'
 ];
 
 $strings = [
     'char',
     'varchar',
 
-    'tinytext',
+    //'tinytext',
     'text',
     'mediumtext',
     'longtext',
 
     'binary',
-    'varbinary',
+    // 'varbinary',
 
-    'tinyblob',
-    'blob',
-    'mediumblob',
-    'longblob',      
+    // 'tinyblob',
+    // 'blob',
+    // 'mediumblob',
+    // 'longblob',      
 
     'enum',
-    'set',
+    //'set', 暂不支持 set 类型
 ];
 
 $datetime = [
