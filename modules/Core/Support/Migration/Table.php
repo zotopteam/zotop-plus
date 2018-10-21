@@ -94,6 +94,16 @@ class Table {
 	}
 
 	/**
+	 * 重命名数据表
+	 * 
+	 * @return bool
+	 */
+	public function rename($name)
+	{
+		return Schema::rename($this->table, $name);
+	}
+
+	/**
 	 * 删除表是否存在
 	 * 
 	 * @return bool
@@ -112,8 +122,6 @@ class Table {
 	 */
 	public function create(Array $fields, Array $indexes=[])
 	{
-		//$fields = $this->convertFields($fields);
-
 		$fields = array_map([$this, 'convertFieldToColumn'], $fields);
 
 		Schema::create($this->table, function (Blueprint $table) use ($fields) {
@@ -150,16 +158,88 @@ class Table {
 		return true;
 	}
 
+	public function update(Array $fields, Array $indexes=[])
+	{
+		$columns = $this->columns();
+
+		debug('current',$columns);
+		debug('new',$fields);
+	}
+
 
 	/**
 	 * 获取表的字段
 	 * 
-	 * @param  string $table 表名，不含前缀
 	 * @return array
 	 */
-	public function fields()
+	public function columns()
 	{
+		$columns = [];
+		$fieldTypeMap = array_flip($this->fieldTypeMap);
+		$column_list = $this->schema->listTableColumns($this->prefix.$this->table);
 
+		foreach ($column_list as $name=>$column) {
+			
+			$columns[$name]['name']       = $column->getName();
+			$columns[$name]['type']       = $column->getType()->getName();
+			$columns[$name]['length']     = $column->getLength();
+			$columns[$name]['default']    = $column->getDefault();
+			$columns[$name]['nullable']   = $column->getNotNull() ? '' : 'nullable';
+			$columns[$name]['unsigned']   = $column->getUnsigned() ? 'unsigned' : '';
+			$columns[$name]['increments'] = $column->getAutoincrement() ? 'increments' : '';
+			$columns[$name]['index']      = '';
+			$columns[$name]['comment']    = $column->getComment();
+
+			if ($columns[$name]['type'] == 'string' && $column->getFixed()) {
+				$columns[$name]['type'] = 'char';
+			}
+
+			if (isset($fieldTypeMap[$columns[$name]['type']])) {
+				$columns[$name]['type'] = $fieldTypeMap[$columns[$name]['type']];
+			}
+
+			if (in_array($columns[$name]['type'] , ['decimal', 'float', 'double'])) {
+				$columns[$name]['length'] = $column->getPrecision().','.$column->getScale();
+			}
+
+			if (in_array($columns[$name]['type'] , ['tinytext', 'text', 'mediumtext','bigtext'])) {
+				$columns[$name]['length'] = null;
+			}
+		}
+
+		debug($columns);
+		
+		return $columns;
+	}
+
+	/**
+	 * 获取表的索引
+	 * 
+	 * @return array
+	 */
+	public function indexes()
+	{
+		$indexes = [];
+		$index_list = $this->schema->listTableIndexes($this->prefix.$this->table);
+
+		foreach ($index_list as $key => $index) {
+
+			$indexes[$key]['name']    = $index->getName();
+			$indexes[$key]['columns'] = $index->getColumns();
+			$indexes[$key]['type']    = 'index';
+
+			if ( $index->isUnique() ) {
+				$indexes[$key]['type'] = 'unique';
+			}
+
+			if ( $index->isPrimary() ) {
+				$indexes[$key]['type'] = 'primary';
+			}		
+		}
+
+		debug($indexes);
+
+		return $indexes;	
 	}
 
 	protected function convertFieldToColumn($field)
@@ -216,7 +296,7 @@ class Table {
 			$convert['arguments'] = explode(',', $field['length'] ?: 'Y,N');
 		}	
 
-		debug($convert);
+		
 		return $convert;
 	}
 }

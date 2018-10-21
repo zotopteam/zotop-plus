@@ -237,7 +237,7 @@ $(function(){
                 input.select();
                 input.focus();
                 $dialog.loading(false);
-                $.error(jqXHR.responseJSON.newvalue[0]);
+                $.error(jqXHR.responseJSON.errors[name][0]);
             });
             return false;
         }, value, type).title(title);

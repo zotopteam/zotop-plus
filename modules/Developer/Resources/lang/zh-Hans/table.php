@@ -4,7 +4,11 @@ return [
     'title'                       => '数据表',
     'description'                 => '模块数据表管理，数据表前缀需要为模块名',
     'index'                       => '数据表列表',
-    'create'                      => '创建数据表',
+    'create'                      => '创建',
+    'edit'                        => '修改',
+    'structure'                   => '结构',
+    'rename'                      => '重命名',
+    'drop'                        => '删除',
 
     'exists'                      => '数据表 :0 已经存在',
 
@@ -17,20 +21,20 @@ return [
 
     'migration'                   => '生成迁移',
 
-    'fields.name'                 => '名字',
-    'fields.type'                 => '类型',
-    'fields.length'               => '长度/值',
-    'fields.nullable'             => '空',
-    'fields.index'                => '索引',
-    'fields.unsigned'             => '无符号',
-    'fields.increments'           => '自增',
-    'fields.default'              => '默认值',
-    'fields.comment'              => '注释',
+    'column.name'                 => '名字',
+    'column.type'                 => '类型',
+    'column.length'               => '长度/值',
+    'column.nullable'             => '空',
+    'column.index'                => '索引',
+    'column.unsigned'             => '无符号',
+    'column.increments'           => '自增',
+    'column.default'              => '默认值',
+    'column.comment'              => '注释',
 
-    'fields.add'                  => '添加新字段',
-    'fields.add_timestamps'       => '添加时间戳',
-    'fields.add_softdeletes'      => '添加软删除',
+    'column.add'                  => '添加新字段',
+    'column.add_timestamps'       => '添加时间戳',
+    'column.add_softdeletes'      => '添加软删除',
 
-    'fields.validator.fieldname'  => '长度2-20，允许小写英文字母、数字和下划线，并且仅能字母开头，不以下划线结尾',
-    'fields.validator.uniquename' => '标识已经存在，请使用其它标识',    
+    'column.validator.columnname'  => '长度2-20，允许小写英文字母、数字和下划线，并且仅能字母开头，不以下划线结尾',
+    'column.validator.uniquename' => '标识已经存在，请使用其它标识',
 ];

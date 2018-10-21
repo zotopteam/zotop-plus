@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label for="name" class="form-label required">{{trans('developer::table.name')}}</label>
                 <div class="form-field">
-                    {field type="text" name="name" required="required"}
+                    {field type="text" name="name" required="required" value="$name"}
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -33,7 +33,7 @@
             <div class="form-group">
                 <label for="columns" class="form-label required">{{trans('developer::table.columns')}}</label>
                 <div class="form-field">
-                    <div class="fields">
+                    <div class="columns">
                         <i class="fa fa-spinner fa-spin"></i>
                     </div>    
                 </div>
@@ -76,8 +76,8 @@
 
     // 加载字段
     $(function(){
-        $('.fields').load('{{route('developer.table.fields')}}', {
-            'fields': {!! json_encode($fields) !!}
+        $('.columns').load('{{route('developer.table.columns')}}', {
+            'columns': {!! json_encode($columns) !!}
         }, function(){
             $(window).trigger('resize');
         });
