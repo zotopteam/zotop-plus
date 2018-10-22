@@ -45,7 +45,7 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->any('rename/{module}/{table}','TableController@rename')->name('developer.table.rename');
         $router->delete('drop/{module}/{table}','TableController@drop')->name('developer.table.drop');
         $router->any('operate/{module}/{table}/{action}','TableController@operate')->name('developer.table.operate');
-        $router->any('migration/{module}/{table}','TableController@migration')->name('developer.table.migration');
+        $router->any('migration/{module}/{table}/{action}','TableController@migration')->name('developer.table.migration');
         $router->any('columns/{action?}','TableController@columns')->name('developer.table.columns');
     });    
 

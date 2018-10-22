@@ -16,7 +16,6 @@
 
             {form route="['developer.table.create', $module]" id="table-form" method="post" autocomplete="off"}
 
-
             <div class="form-group">
                 <label for="name" class="form-label required">{{trans('developer::table.name')}}</label>
                 <div class="form-field">
@@ -30,13 +29,8 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="columns" class="form-label required">{{trans('developer::table.columns')}}</label>
-                <div class="form-field">
-                    <div class="columns">
-                        <i class="fa fa-spinner fa-spin"></i>
-                    </div>    
-                </div>
+            <div class="columns">
+                <i class="fa fa-spinner fa-spin"></i>
             </div>
 
             {/form}
@@ -77,7 +71,8 @@
     // 加载字段
     $(function(){
         $('.columns').load('{{route('developer.table.columns')}}', {
-            'columns': {!! json_encode($columns) !!}
+            'columns': {!! json_encode($columns) !!},
+            'indexes': {!! json_encode($indexes) !!}
         }, function(){
             $(window).trigger('resize');
         });

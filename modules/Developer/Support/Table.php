@@ -186,11 +186,7 @@ class Table
 
 				// 修改器
 				foreach ($modifiers as $modifier => $argument) {
-					if ($argument === true) {
-						$result->$modifier();
-					} else {
-						$result->$modifier($argument);
-					}
+					call_user_func_array([$result, $modifier], $argument);
 				}
 			}
 
@@ -302,7 +298,7 @@ class Table
 	}
 
 	/**
-	 * 格式化字段为标准格式，转化键名，填充单一字段的 index
+	 * 格式化字段为标准格式
 	 * 
 	 * @param  array $columns 字段
 	 * @return array
@@ -322,6 +318,31 @@ class Table
 	}
 
 	/**
+	 * 格式化索引为标准格式
+	 * 
+	 * @param  array $columns 字段
+	 * @return array
+	 */
+	public function formatIndexes($indexes)
+	{
+		$format = [];
+		foreach ($indexes as $index) {
+			if (in_array($index['type'], ['primary', 'index', 'unique']) && $index['columns']) {
+
+				$index['columns'] = is_array($index['columns']) ? array_values($index['columns']) : explode(',', $index['columns']);
+				$name = implode('_', array_sort($index['columns']));
+
+				$format[$name]['type']    =  $index['type'];
+				$format[$name]['columns'] =  $index['columns'];
+				$format[$name]['name']    =  $name;
+			}
+		}
+
+		return $format;
+	}
+
+
+	/**
 	 * 转化字段为 Bluepoint 友好格式
 	 * @param  array $column 字段
 	 * @return array
@@ -332,16 +353,26 @@ class Table
 
 		$convert['method']     = $this->columnTypeMap[$column['type']] ?? $column['type'];
 
-		$convert['arguments'] = [];
-		$convert['arguments']['name'] = $column['name'];
+		// 可用的字段类型方法的第一个参数总是字段名称
+		$convert['arguments'] = [$column['name']];
 		
+		// 存储修改器，方法名称=>参数数组
 		$convert['modifiers'] = [];
-		$convert['modifiers']['nullable'] = (bool)$column['nullable'];
-		$convert['modifiers']['default']  = $column['default'] ? $column['default'] : null;
-		$convert['modifiers']['comment']  = $column['comment'];
+
+		if ($column['nullable']) {
+			$convert['modifiers']['nullable'] = [];
+		}
+
+		if ($column['default']) {
+			$convert['modifiers']['default'] = [$column['default']];
+		}
+
+		if ($column['comment']) {
+			$convert['modifiers']['comment'] = [$column['comment']];
+		}
 
 		if ($column['index'] && !$column['increments']) {
-			$convert['modifiers'][$column['index']] = $column['name'];
+			$convert['modifiers'][$column['index']] = [$column['name']];
 		}
 
 		// 数字类型，数字类型在Laravel中不能设置长度，只能按照类型长度
@@ -351,9 +382,12 @@ class Table
 				$convert['method'] = 'increments';
 			} else {
 				// Laravel 的数字函数没有长度参数
-				//$convert['arguments']['length']  = (int)$column['length'];
-				$convert['modifiers']['default']  = (int)$column['default'];
-				$convert['modifiers']['unsigned'] = (bool)$column['unsigned'];
+				//$convert['arguments']['length']  = [intval($column['length'])];
+				$convert['modifiers']['default']  = [intval($column['default'])];
+
+				if ($column['unsigned']) {
+					$convert['modifiers']['unsigned'] = [];
+				}
 			}
 		} 		
 
@@ -367,17 +401,20 @@ class Table
 
 			// decimal, float, double 最多两个参数（长度、精度）
 			if ($total > $places) {
-				$convert['arguments']['total']  = $total;
-				$convert['arguments']['places'] = $places;
+				$convert['arguments'][]  = $total;
+				$convert['arguments'][] = $places;
 			}
 
-			$convert['modifiers']['default']  = (float)$column['default'];
-			$convert['modifiers']['unsigned'] = (bool)$column['unsigned'];
+			$convert['modifiers']['default']  = [floatval($column['default'])];
+
+			if ($column['unsigned']) {
+				$convert['modifiers']['unsigned'] = [];
+			}
 		}
 
 		// 字符串类型如果设置了长度，加入长度参数
 		if (in_array($convert['method'], ['string', 'char']) && intval($column['length'])) {
-			$convert['arguments']['length']  = (int)$column['length'];
+			$convert['arguments'][]  = intval($column['length']);
 		}
 
 		// enum 类型 暂不支持
@@ -385,8 +422,6 @@ class Table
 		// 	$convert['arguments'] = explode(',', $column['length'] ?: 'Y,N');
 		// }
 		
-		$convert['arguments'] = array_values($convert['arguments']);
-
 		return $convert;
 	}
 
@@ -399,13 +434,19 @@ class Table
 
 		// 方法的参数：primary, index, unique 函数的最多允许两个参数
 		// 单一索引第一个参数为字段名称，符合索引第一个参数为字段名称数组
-		// 第二个参数为索引名称
-		if (count($index['columns']) == 1) {
-			$convert['arguments']  = [$index['columns'][0], $index['name']];
-		} else {
-			$convert['arguments']  = [$index['columns'], $index['name']];
+		$convert['arguments'] = [];
+		$convert['arguments'][] = (count($index['columns']) == 1) ? reset($index['columns']) : $index['columns'];
+
+		// 第二个参数为索引名称 primary 类型不能设置名称
+		if ($convert['method'] != 'primary') {
+			$convert['arguments'][] = $index['name'];
 		}
-		
+
 		return $convert;	
+	}
+
+	public function __toString()
+	{
+		return $this->table;
 	}
 }

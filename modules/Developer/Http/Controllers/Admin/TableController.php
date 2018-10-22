@@ -41,19 +41,19 @@ class TableController extends AdminController
         $this->tables = $tables;
         $this->title = trans('developer::table.title');
 
-        $table = Table::find('test');
-        $table->drop();
-        $table->create([
-            ['name'=>'id', 'type'=>'bigint', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
-            ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
-            ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
-            ['name'=>'content', 'type'=>'text', 'length'=>'100', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
-            ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
-            ['name'=>'sort', 'type'=>'mediumInteger', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
-            ['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'3', 'comment'=>'status'],
-        ],[
-            ['name'=>'sort_status','type'=>'index','columns'=>['sort','status']]
-        ]);       
+        // $table = Table::find('test');
+        // $table->drop();
+        // $table->create([
+        //     ['name'=>'id', 'type'=>'bigint', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
+        //     ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
+        //     ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
+        //     ['name'=>'content', 'type'=>'text', 'length'=>'100', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
+        //     ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
+        //     ['name'=>'sort', 'type'=>'mediumInteger', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
+        //     ['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'3', 'comment'=>'status'],
+        // ],[
+        //     ['name'=>'sort_status','type'=>'index','columns'=>['sort','status']]
+        // ]);       
 
         return $this->view();
     }
@@ -94,13 +94,18 @@ class TableController extends AdminController
         $this->name   = 'test';
         $this->columns = [
             ['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
-            ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
-            ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
-            ['name'=>'content', 'type'=>'text', 'length'=>'100', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
-            ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
+            // ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
+            // ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
+            // ['name'=>'content', 'type'=>'text', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
+            // ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
             ['name'=>'sort', 'type'=>'mediumint', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
             ['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'3', 'comment'=>'status'],            
         ];
+
+        $this->indexes = [
+            ['name'=>'sort_status','type'=>'index','columns'=>['sort','status']]
+        ];
+
 
         $this->title = trans('developer::table.create');
 
@@ -115,12 +120,19 @@ class TableController extends AdminController
         $this->module = $module;
 
         $migrate = new Migrate($module, $table);
-        $migrate->createTableMigration(true);
 
+        // 获取迁移文件
+        $this->migrations = $migrate->getMigrationFiles();
+
+        // 获取更新日志
+        $this->updatelogs = $migrate->get();
+
+        // 获取数据表字段、索引和主键
         $table = Table::find($table);
 
         $this->columns = $table->columns();
         $this->indexes = $table->indexes();
+        $this->primary = collect($this->indexes)->where('type','primary')->first()['columns'];
 
         return $this->view();
     }
@@ -131,24 +143,35 @@ class TableController extends AdminController
             $request->validate(['name'=>['required', 'string', new TableName($module)]],[],['name'=>trans('developer::table.name')]);            
         }
 
-        $migrate = new Migrate($module, $table);
-
         $table = Table::find($table);
         $columns = $table->columns();
+        $indexes = $table->indexes();
+
+        // 迁移日志
+        // 迁移日志参数
+        $arguments = [];
 
         switch ($action) {
             case 'rename':
                 $table->rename($request->name);
-                $migrate->put(['action'=>$action,'from'=>$table->name(), 'to'=>$request->name]);
+                $arguments['from'] = $table->name();
+                $arguments['to']   = $request->name;
                 break;
             case 'dropColumn':
                 $table->dropColumn($request->name);
-                $migrate->put(['action'=>$action, 'column'=>$columns[$request->name]]);
-                break;                
+                $arguments['column'] = $columns[$request->name];
+                break;
+            case 'timestamps':
+                $table->timestamps();
+                break;                               
             default:
                 # code...
                 break;
         }
+
+        // 保存迁移日志
+        $migrate = new Migrate($module, $table);
+        $migrate->put(['action'=>$action, 'arguments'=>$arguments]);
 
         return $this->success(trans('core::master.operated'), route('developer.table.structure',[$module, $table->name()])); 
     }
@@ -191,33 +214,25 @@ class TableController extends AdminController
      * 从已有表生成为migration迁移文件
      * @return Response
      */
-    public function migration($module, $table)
+    public function migration($module, $table, $action)
     {
-        //$migrate = new Migrate($module, $table);
+        $migrate = new Migrate($module, $table);
 
-        // 组装生成文件名称
-        $table = strtolower($table);
-        $path = app('modules')->getModulePath($module).'Database/Migrations/';
-        $path = realpath($path);
-        
-        $schema = new \Modules\Core\Support\Migration\Schema();
-        
-        $filename = $schema->getFileName($table, 'create');
-
-        // 删除已经存在的文件，TODO：数据表中已经迁移问题处理
-        foreach (app('files')->files($path) as $file) {
-            if (strpos($file, $filename)) {
-                app('files')->delete($file);
-            }
+        if ($action == 'override') {
+            $migrate->createTableMigration(true);
         }
 
-        $filepath = $path.'/'.date('Y_m_d_His', strtotime( '+1 second' )).'_'.$filename.'.php';
+        if ($action == 'create') {
+           $migrate->createTableMigration(false); 
+        }
 
-        $create = $schema->getCreateTable($table);
+        if ($action == 'update') {
+            $migrate->updateTableMigration();
+            return $this->success(trans('core::master.operated'));
 
-        app('files')->put($filepath, $create);
+        }        
         
-        return $this->success(trans('core::master.created'));
+        return $this->success(trans('core::master.operated'), route('developer.table.structure',[$module, $table]));
     }
 
     /**
@@ -228,16 +243,24 @@ class TableController extends AdminController
      * @return Response
      */
     public function columns(Request $request, $action='')
-    {        
-        $columns = $request->input('columns', []);
+    {
+        $table = new Table();
 
-        // 默认字段结构
         $default = ['name'=>'', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>''];
 
-        // 补充传入数据结构
-        $columns = collect($columns)->map(function ($column, $key) use($default) {
-            return $column + $default;
-        });
+        $columns = $request->input('columns', []);
+        $indexes = $request->input('indexes', []);
+
+        // 默认字段结构
+        $columns = $table->formatColumns($columns);
+        $indexes = $table->formatIndexes($indexes);
+
+        // 集合
+        $columns = collect($columns);
+        $indexes = collect($indexes);
+
+        //自增
+        $increments = $columns->where('increments','increments')->first()['name'];
 
         // 添加时字段数组尾部增加一条数据
         if ($action == 'add') {
@@ -249,7 +272,7 @@ class TableController extends AdminController
 
             // 检查 created_at 和 updated_at 是否已经存在
             if ($columns->where('name','created_at')->where('type','timestamp')->count() > 0 && $columns->where('name','updated_at')->where('type','timestamp')->count() > 0) {
-                abort(403, trans('core::master.existed'));
+                abort(403, trans('developer::table.column.exists'));
             }
 
             // 为防止字段类型被更改，过滤 created_at 和 updated_at 并重新添加
@@ -266,7 +289,7 @@ class TableController extends AdminController
 
             // 检查 deleted_at 是否已经存在
             if ($columns->where('name','deleted_at')->where('type','timestamp')->count() > 0) {
-                abort(403, trans('core::master.existed'));
+                abort(403, trans('developer::table.column.exists'));
             }
 
             // 为防止字段类型被更改，过滤 deleted_at 并重新添加
@@ -277,8 +300,48 @@ class TableController extends AdminController
             $columns[] = array_merge($default, ['name'=>'deleted_at','type'=>'timestamp']);
         }
 
-        $this->increments = $columns->where('increments','increments')->first()['name'];
+        // 添加索引
+        if (in_array($action, ['primary','index','unique'])) {
+            
+            $indexColumns = $columns->where('select', 'select')->pluck('name')->all();
+            $indexName    = implode('_', array_sort($indexColumns));
+
+            if (empty($indexColumns)) {
+                abort(403, trans('developer::table.index.unselect'));
+            }
+
+            if ($indexes->where('name', $indexName)->count() > 0) {
+                abort(403, trans('developer::table.index.exists'));
+            }
+
+            $indexes->push([
+                'type'    => $action,
+                'columns' => $indexColumns,
+                'name'    => $indexName,
+            ]);
+        }
+
+        // 索引处理
+        $indexes = $indexes->filter(function($value, $key) use ($columns, $increments) {
+            // 如果有自增，过滤掉主键
+            if ($increments && $value['type'] == 'primary') {
+                return false;
+            }
+            // 去掉包含不存在字段的索引
+            $names = $columns->pluck('name')->all();
+            $exists = true;
+            foreach ($value['columns'] as $v) {
+                if (! in_array($v, $names)) {
+                    $exists = false;
+                    break;
+                }
+            }
+            return $exists;
+        });
+
         $this->columns    = $columns->toArray();
+        $this->indexes    = $indexes->toArray();
+        $this->increments = $increments;         
 
         //debug($this->columns);
 

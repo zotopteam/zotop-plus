@@ -10,9 +10,28 @@
             {{$title}} : {{$table}}
         </div>
         <div class="main-action">
+            @if ($migrations)
+            <a class="btn btn-danger js-confirm" href="{{route('developer.table.migration', [$module, $table, 'override'])}}">
+                <i class="fa fa-database"></i> {{trans('developer::table.migration.override')}}
+            </a>
+            @else
+            <a class="btn btn-success js-confirm" href="{{route('developer.table.migration', [$module, $table, 'create'])}}">
+                <i class="fa fa-database"></i> {{trans('developer::table.migration.create')}}
+            </a>            
+            @endif
+
+            @if ($updatelogs)
+            <a class="btn btn-success js-post" href="{{route('developer.table.migration', [$module, $table, 'update'])}}">
+                <i class="fa fa-database"></i> {{trans('developer::table.migration.update')}}
+            </a>                   
+            @endif
+
             <a class="btn btn-primary js-prompt" href="{{route('developer.table.operate', [$module, $table, 'rename'])}}" data-prompt="{{trans('developer::table.name')}}" data-name="name" data-value="{{$table}}">
                 <i class="fa fa-fw fa-eraser"></i> {{trans('developer::table.rename')}}
-            </a>               
+            </a>                      
+            <a class="btn btn-primary js-delete" href="javascript:;" data-url="{{route('developer.table.drop', [$module, $table])}}">
+                <i class="fa fa-times"></i> {{trans('developer::table.drop')}}
+            </a>                           
         </div>            
     </div>
     
@@ -39,7 +58,7 @@
                 <tr>
                     <td class="drag"></td>
                     <td class="text-center">
-                        @if (in_array($v['name'], $indexes['primary']['columns']))
+                        @if ($primary && in_array($v['name'], $primary))
                             <i class="fa fa-key fa-1x text-warning"></i>
                         @endif                        
                     </td>
@@ -79,9 +98,11 @@
                         {{$v['comment'] ?? ''}}
                     </td>
                     <td class="manage">
+                        @if (count($columns) >1)                        
                         <a href="javascript:;" class="manage-item js-drop" data-url="{{route('developer.table.operate', [$module, $table, 'dropColumn'])}}" data-name="{{$v['name']}}">
                             <i class="fa fa-times"></i> {{trans('core::master.delete')}}
-                        </a>    
+                        </a>
+                        @endif  
                     </td>                
                 </tr>
                 @endforeach          

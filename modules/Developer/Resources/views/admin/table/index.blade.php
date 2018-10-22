@@ -35,20 +35,8 @@
 
                         </td>
                         <td class="manage">
-                            <a class="manage-item js-confirm" href="{{route('developer.table.migration', [$module, $table])}}">
-                                <i class="fa fa-database"></i> {{trans('developer::table.migration')}}
-                            </a>                        
-                            <a class="manage-item" href="{{route('developer.table.edit', [$module, $table])}}">
-                                <i class="fa fa-edit"></i> {{trans('developer::table.edit')}}
-                            </a>
                             <a class="manage-item" href="{{route('developer.table.structure', [$module, $table])}}">
                                 <i class="fa fa-edit"></i> {{trans('developer::table.structure')}}
-                            </a>                            
-                            <a class="manage-item js-prompt" href="{{route('developer.table.rename', [$module, $table])}}" data-prompt="{{trans('developer::table.name')}}" data-name="name" data-value="{{$table}}">
-                                <i class="fa fa-fw fa-eraser"></i> {{trans('developer::table.rename')}}
-                            </a>                            
-                            <a class="manage-item js-delete" href="javascript:;" data-url="{{route('developer.table.drop', [$module, $table])}}">
-                                <i class="fa fa-times"></i> {{trans('developer::table.drop')}}
                             </a>
                         </td>
                     </tr>

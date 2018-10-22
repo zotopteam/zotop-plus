@@ -96,7 +96,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .text-success,.text-publish{color:#00bc3e!important;}
 .text-error,.text-trash,.text-danger,.text-important{color:#f00!important;}
 .text-warning{color:#ffd740!important;}
-.text-muted{color:#ccc!important;}
+.text-muted{color:#cccccc!important;}
 
 .text-overflow{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;box-sizing:border-box;}
 .text-overflow-2{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
@@ -309,6 +309,7 @@ textarea{resize:none;}
 .badge-danger{background-color:#ff0000;border-radius:0.5rem;}
 
 .btn{cursor:pointer;}
+.btn-sm{font-size:0.75rem;}
 .btn-secondary{border-color:rgba(0,0,0,.15);}
 .btn-outline{border-color:rgba(255,255,255,.25);}
 .btn-outline:hover,.btn-outline:focus,.btn-outline:active{background:rgba(255,255,255,.15);}

@@ -309,6 +309,7 @@ textarea{resize:none;}
 .badge-danger{background-color:#ff0000;border-radius:0.5rem;}
 
 .btn{cursor:pointer;}
+.btn-sm{font-size:0.75rem;}
 .btn-secondary{border-color:rgba(0,0,0,.15);}
 .btn-outline{border-color:rgba(255,255,255,.25);}
 .btn-outline:hover,.btn-outline:focus,.btn-outline:active{background:rgba(255,255,255,.15);}
