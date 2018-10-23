@@ -17,7 +17,9 @@ return [
     'name.error'                  => '数据表名称必须等于 :0 或者以 :0_ 开头，不能包含特殊字符或者以下划线结尾',
 
     'columns'                     => '数据表字段',
+    'columns.count'               => '字段数量：:0',
     'indexes'                     => '数据表索引',
+    'indexes.count'               => '索引数量：:0',
 
     'migration.create'            => '生成创建迁移',
     'migration.override'          => '覆盖创建迁移',

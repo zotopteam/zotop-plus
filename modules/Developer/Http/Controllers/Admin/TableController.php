@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Modules\Developer\Support\Table;
 use Modules\Developer\Support\Migrate;
+use Modules\Developer\Support\Structure;
 use Modules\Developer\Rules\TableName;
 use Module;
 use Artisan;
@@ -79,10 +80,11 @@ class TableController extends AdminController
             ]);
 
             $name    = $request->input('name');
-            $columns = $request->input('columns', []);            
+            $columns = $request->input('columns', []);
+            $indexes = $request->input('indexes', []);            
 
             $table = Table::find($name);
-            $table->create($columns);
+            $table->create($columns, $indexes);
 
             if ($table->exists()) {
                 return $this->success(trans('core::master.created'), route('developer.table.structure', [$module, $name]));
@@ -94,12 +96,12 @@ class TableController extends AdminController
         $this->name   = 'test';
         $this->columns = [
             ['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
-            // ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
-            // ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
-            // ['name'=>'content', 'type'=>'text', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
-            // ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
+            ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
+            ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
+            ['name'=>'content', 'type'=>'text', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
+            ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
             ['name'=>'sort', 'type'=>'mediumint', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
-            ['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'3', 'comment'=>'status'],            
+            ['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'1', 'comment'=>'status'],            
         ];
 
         $this->indexes = [
@@ -130,9 +132,11 @@ class TableController extends AdminController
         // 获取数据表字段、索引和主键
         $table = Table::find($table);
 
-        $this->columns = $table->columns();
-        $this->indexes = $table->indexes();
-        $this->primary = collect($this->indexes)->where('type','primary')->first()['columns'];
+        $this->columns        = $table->columns();
+        $this->indexes        = $table->indexes();
+        $this->primaryColumns = collect($this->indexes)->where('type','primary')->first()['columns'];
+        $this->indexColumns   = collect($this->indexes)->where('type','index')->pluck('columns')->flatten()->all();
+        $this->uniqueColumns  = collect($this->indexes)->where('type','unique')->pluck('columns')->flatten()->all();
 
         return $this->view();
     }
@@ -243,6 +247,41 @@ class TableController extends AdminController
      * @return Response
      */
     public function columns(Request $request, $action='')
+    {
+        $structure = new Structure(
+            $request->input('columns', []),
+            $request->input('indexes', [])
+        );
+
+        if (in_array($action,['addBlank','addTimestamps','addSoftdeletes'])) {
+            $structure->$action();
+        }
+
+        // 添加索引
+        if (in_array($action, ['primary','index','unique'])) {
+            $structure->addIndex([
+                'type' => $action,
+                'columns' => $structure->columns()->where('select', 'select')->pluck('name')->all()
+            ]);
+        }    
+
+        $this->columns    = $structure->columns()->toArray();
+        $this->indexes    = $structure->indexes()->toArray();
+        $this->increments = $structure->increments();
+
+        //debug($this->columns);
+
+        return $this->view();
+    }
+
+    /**
+     * 字段显示和添加
+     * 
+     * @param  Request $request
+     * @param  string  $action  动作
+     * @return Response
+     */
+    public function columns_old(Request $request, $action='')
     {
         $table = new Table();
 

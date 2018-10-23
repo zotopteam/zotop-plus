@@ -8,13 +8,13 @@
                         <td class="drag"></td>
                         <td width="2%" class="text-center">{{trans('developer::table.column.index')}}</td>
                         <td width="15%">{{trans('developer::table.column.name')}}</td>
-                        <td width="15%">{{trans('developer::table.column.type')}}</td>
-                        <td width="10%">{{trans('developer::table.column.length')}}</td>
-                        <td width="4%" class="text-center">{{trans('developer::table.column.nullable')}}</td>
-                        <td width="4%" class="text-center">{{trans('developer::table.column.unsigned')}}</td>
-                        <td width="4%" class="text-center">{{trans('developer::table.column.increments')}}</td>
+                        <td width="10%">{{trans('developer::table.column.type')}}</td>
+                        <td width="8%">{{trans('developer::table.column.length')}}</td>
+                        <td width="5%" class="text-center">{{trans('developer::table.column.nullable')}}</td>
+                        <td width="5%" class="text-center">{{trans('developer::table.column.unsigned')}}</td>
+                        <td width="5%" class="text-center">{{trans('developer::table.column.increments')}}</td>
                         <!-- <td width="15%">{{trans('developer::table.column.index')}}</td> -->
-                        <td>{{trans('developer::table.column.default')}}</td>
+                        <td width="10%">{{trans('developer::table.column.default')}}</td>
                         <td>{{trans('developer::table.column.comment')}}</td>
                         <td width="2%"></td>
                     </tr>
@@ -24,14 +24,14 @@
                     <tr>
                         <td class="drag"></td>
                         <td class="text-center">
-                            @if ($increments == $v['name'])
+                            @if ($increments && $increments == $v['name'])
                                 <input type="checkbox" disabled>
                             @else
                                 <input type="checkbox" name="columns[{{$k}}][select]" value="select">
                             @endif
                         </td>
                         <td>
-                            <input type="text" name="columns[{{$k}}][name]" class="form-control column-check required" value="{{$v['name']}}" columnname="true" uniquename="true">
+                            <input type="text" name="columns[{{$k}}][name]" class="form-control required" value="{{$v['name']}}" columnname="true" uniquename="true">
                         </td>
                         <td>
                             {field type="select" name="columns['.$k.'][type]" options="Module::data('developer::table.column.types')" value="$v['type']" class="column-check"}
@@ -83,13 +83,13 @@
                     <tr>
                         <td></td>
                         <td colspan="10">
-                            <a class="btn btn-success btn-sm column-action"  href="javascript:;" data-url="{{route('developer.table.columns','add')}}">
+                            <a class="btn btn-success btn-sm column-action"  href="javascript:;" data-url="{{route('developer.table.columns','addBlank')}}">
                                 <i class="fa fa-plus fa-fw"></i> {{trans('developer::table.column.add')}} 
                             </a>
-                            <a class="btn btn-primary btn-sm column-action" href="javascript:;" data-url="{{route('developer.table.columns','add_timestamps')}}">
+                            <a class="btn btn-primary btn-sm column-action" href="javascript:;" data-url="{{route('developer.table.columns','addTimestamps')}}">
                                 <i class="fa fa-plus fa-fw"></i> {{trans('developer::table.column.add_timestamps')}} 
                             </a>
-                            <a class="btn btn-primary btn-sm column-action"  href="javascript:;" data-url="{{route('developer.table.columns','add_softdeletes')}}">
+                            <a class="btn btn-primary btn-sm column-action"  href="javascript:;" data-url="{{route('developer.table.columns','addSoftdeletes')}}">
                                 <i class="fa fa-plus fa-fw"></i> {{trans('developer::table.column.add_softdeletes')}} 
                             </a>
                             @if (! $increments)

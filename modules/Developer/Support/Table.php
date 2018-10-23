@@ -205,7 +205,7 @@ class Table
 		$columns = [];
 		$columnTypeMap = array_flip($this->columnTypeMap);
 		$column_list = $this->schema->listTableColumns($this->prefix.$this->table);
-
+		//debug($this->schema->listTableDetails($this->prefix.$this->table));
 		foreach ($column_list as $name=>$column) {
 			
 			$columns[$name]['name']       = $column->getName();
@@ -230,7 +230,7 @@ class Table
 				$columns[$name]['length'] = $column->getPrecision().','.$column->getScale();
 			}
 
-			if (in_array($columns[$name]['type'] , ['tinytext', 'text', 'mediumtext','bigtext'])) {
+			if (in_array($columns[$name]['type'] , ['tinytext', 'text', 'mediumtext','bigtext','date','time','year','datetime','timestamp'])) {
 				$columns[$name]['length'] = null;
 			}
 		}

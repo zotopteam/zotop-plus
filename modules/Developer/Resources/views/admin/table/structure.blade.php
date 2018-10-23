@@ -36,94 +36,145 @@
     </div>
     
     <div class="main-body scrollable">
-        <table class="table table-sm table-sortable table-nowrap table-striped table-hover table-border table-columns">
-            <thead>
-                <tr>
-                    <td class="drag"></td>
-                    <td width="2%"></td>
-                    <td width="15%">{{trans('developer::table.column.name')}}</td>
-                    <td width="15%">{{trans('developer::table.column.type')}}</td>
-                    <td width="10%">{{trans('developer::table.column.length')}}</td>
-                    <td width="4%" class="text-center">{{trans('developer::table.column.nullable')}}</td>
-                    <td width="4%" class="text-center">{{trans('developer::table.column.unsigned')}}</td>
-                    <td width="4%" class="text-center">{{trans('developer::table.column.increments')}}</td>
-                    <td width="15%">{{trans('developer::table.column.index')}}</td>
-                    <td>{{trans('developer::table.column.default')}}</td>
-                    <td>{{trans('developer::table.column.comment')}}</td>
-                    <td width="2%"></td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($columns as $k=>$v)
-                <tr>
-                    <td class="drag"></td>
-                    <td class="text-center">
-                        @if ($primary && in_array($v['name'], $primary))
-                            <i class="fa fa-key fa-1x text-warning"></i>
-                        @endif                        
-                    </td>
-                    <td>
-                        <strong>{{$v['name']}}</strong>
-                    </td>
-                    <td>{{$v['type']}}</td>
-                    <td>{{$v['length'] ?? ''}}</td>
-                    <td class="text-center">
-                        @if($v['nullable'])
-                            <i class="fa fa-check-circle fa-1x text-success"></i>
-                        @else
-                            <i class="fa fa-times-circle fa-1x text-muted"></i>                            
-                        @endif      
-                    </td>
-                    <td class="text-center">
-                        @if($v['unsigned'])
-                            <i class="fa fa-check-circle fa-1x text-success"></i>
-                        @else
-                            <i class="fa fa-times-circle fa-1x text-muted"></i>                            
-                        @endif
-                    </td>
-                    <td class="text-center">
-                        @if($v['increments'])
-                            <i class="fa fa-check-circle fa-1x text-success"></i>
-                        @else
-                            <i class="fa fa-times-circle fa-1x text-muted"></i>
-                        @endif
-                    </td>
-                    <td>
-                        {{$v['index'] ?? ''}}
-                    </td>                                                
-                    <td>
-                        {{$v['default'] ?? ''}}
-                    </td>
-                    <td>
-                        {{$v['comment'] ?? ''}}
-                    </td>
-                    <td class="manage">
-                        @if (count($columns) >1)                        
-                        <a href="javascript:;" class="manage-item js-drop" data-url="{{route('developer.table.operate', [$module, $table, 'dropColumn'])}}" data-name="{{$v['name']}}">
-                            <i class="fa fa-times"></i> {{trans('core::master.delete')}}
-                        </a>
-                        @endif  
-                    </td>                
-                </tr>
-                @endforeach          
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td colspan="11">
-                        <a class="btn btn-primary btn-sm field-add" data-type='' href="javascript:;">
-                            <i class="fa fa-plus fa-fw"></i><b>{{trans('developer::table.column.add')}}</b>
-                        </a>
-                        <a class="btn btn-primary btn-sm field-add" data-type='timestamps' href="javascript:;">
-                            <i class="fa fa-plus fa-fw"></i><b>{{trans('developer::table.column.add_timestamps')}}</b>
-                        </a>
-                        <a class="btn btn-primary btn-sm field-add" data-type='softdeletes' href="javascript:;">
-                            <i class="fa fa-plus fa-fw"></i><b>{{trans('developer::table.column.add_softdeletes')}}</b>
-                        </a>                                        
-                    </td>
-                </tr>             
-            </tfoot>
-        </table>
+        
+            <div class="card m-3">
+                <div class="card-header">
+                    <b>{{trans('developer::table.columns')}}</b>
+                    <p class="card-text">
+                        {{trans('developer::table.columns.count',[count($columns)])}}
+                    </p>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-sm table-sortable table-nowrap table-striped table-hover table-columns">
+                        <thead>
+                            <tr>
+                                <td width="2%"></td>
+                                <td width="15%">{{trans('developer::table.column.name')}}</td>
+                                <td width="10%">{{trans('developer::table.column.type')}}</td>
+                                <td width="5%">{{trans('developer::table.column.length')}}</td>
+                                <td width="8%" class="text-center">{{trans('developer::table.column.nullable')}}</td>
+                                <td width="8%" class="text-center">{{trans('developer::table.column.unsigned')}}</td>
+                                <td width="8%" class="text-center">{{trans('developer::table.column.increments')}}</td>
+                                <td width="10%">{{trans('developer::table.column.default')}}</td>
+                                <td>{{trans('developer::table.column.comment')}}</td>
+                                <td width="2%"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($columns as $k=>$v)
+                            <tr>
+                                <td class="text-center">
+                                    @if ($primaryColumns && in_array($v['name'], $primaryColumns))
+                                        <i class="fa fa-key fa-1x text-warning"></i>
+                                    @endif
+                                    @if ($uniqueColumns && in_array($v['name'], $uniqueColumns))
+                                        <i class="fa fa-key fa-1x text-important"></i>
+                                    @endif                                    
+                                    @if ($indexColumns && in_array($v['name'], $indexColumns))
+                                        <i class="fa fa-key fa-1x text-success"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    <strong>{{$v['name']}}</strong>
+                                </td>
+                                <td>{{$v['type']}}</td>
+                                <td>{{$v['length'] ?? ''}}</td>
+                                <td class="text-center">
+                                    @if($v['nullable'])
+                                        <i class="fa fa-check-circle fa-1x text-success"></i>
+                                    @else
+                                        <i class="fa fa-times-circle fa-1x text-muted"></i>                            
+                                    @endif      
+                                </td>
+                                <td class="text-center">
+                                    @if($v['unsigned'])
+                                        <i class="fa fa-check-circle fa-1x text-success"></i>
+                                    @else
+                                        <i class="fa fa-times-circle fa-1x text-muted"></i>                            
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if($v['increments'])
+                                        <i class="fa fa-check-circle fa-1x text-success"></i>
+                                    @else
+                                        <i class="fa fa-times-circle fa-1x text-muted"></i>
+                                    @endif
+                                </td>                                              
+                                <td>
+                                    {{$v['default'] ?? ''}}
+                                </td>
+                                <td>
+                                    {{$v['comment'] ?? ''}}
+                                </td>
+                                <td class="manage">
+                                    @if (count($columns) >1)                        
+                                    <a href="javascript:;" class="manage-item d-none js-drop" data-url="{{route('developer.table.operate', [$module, $table, 'dropColumn'])}}" data-name="{{$v['name']}}">
+                                        <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                                    </a>
+                                    @endif  
+                                </td>                
+                            </tr>
+                            @endforeach          
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td colspan="11">                                     
+                                </td>
+                            </tr>             
+                        </tfoot>
+                    </table>                    
+                </div>
+            </div>
+
+            <div class="card m-3">
+                <div class="card-header">
+                    <b>{{trans('developer::table.indexes')}}</b>
+                    <p class="card-text">
+                        {{trans('developer::table.indexes.count',[count($indexes)])}}
+                    </p>                    
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-sm table-sortable table-nowrap table-striped table-hover table-indexes">
+                        <thead>
+                            <tr>
+                                <td width="2%"></td>
+                                <td width="15%">{{trans('developer::table.index.name')}}</td>
+                                <td width="15%">{{trans('developer::table.index.type')}}</td>
+                                <td>{{trans('developer::table.index.columns')}}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($indexes as $k=>$v)
+                            <tr>
+                                <td class="text-center">
+                                    @if ($v['type'] == 'primary')
+                                        <i class="fa fa-key fa-1x text-warning"></i>
+                                    @endif
+                                    @if ($v['type'] == 'unique')
+                                        <i class="fa fa-key fa-1x text-important"></i>
+                                    @endif                                    
+                                    @if ($v['type'] == 'index')
+                                        <i class="fa fa-key fa-1x text-success"></i>
+                                    @endif                                                         
+                                </td>
+                                <td>
+                                    <strong>{{$v['name']}}</strong>
+                                </td>
+                                <td>{{$v['type']}}</td>
+                                <td>{{implode(',', $v['columns'])}}</td>            
+                            </tr>
+                            @endforeach          
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>             
+                        </tfoot>
+                    </table>
+                </div>
+            </div>                    
+        
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
