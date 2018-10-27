@@ -4,6 +4,8 @@ namespace Modules\Developer\Support;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Schema\Blueprint;
+use Doctrine\DBAL\Types\Type;
+
 
 class Table
 {
@@ -33,16 +35,18 @@ class Table
 	 */
     private $registerTypes = [
     	// Mysql types
-        'enum'     => 'string',
-        'json'     => 'text',
-        'jsonb'    => 'text',
-        'bit'      => 'boolean',
+        'enum'      => 'enum',
+        'json'      => 'text',
+        'jsonb'     => 'text',
+        'bit'       => 'boolean',
         // Postgres types
-        '_text'    => 'text',
-        '_int4'    => 'integer',
-        '_numeric' => 'float',
-        'cidr'     => 'string',
-        'inet'     => 'string',
+        '_text'     => 'text',
+        '_int4'     => 'integer',
+        '_numeric'  => 'float',
+        'cidr'      => 'string',
+        'inet'      => 'string',
+        'timestamp' => 'timestamp',
+        'year'      => 'year',
     ];
 
 	/**
@@ -67,6 +71,10 @@ class Table
 	 */
 	public function __construct()
 	{
+        Type::addType('year', 'Modules\Developer\Support\Types\YearType');
+        Type::addType('timestamp', 'Modules\Developer\Support\Types\TimestampType');
+        Type::addType('enum', 'Modules\Developer\Support\Types\EnumType');
+
 		$prefix = DB::getTablePrefix();
 
         $schema = Schema::getConnection()->getDoctrineSchemaManager();
@@ -233,6 +241,10 @@ class Table
 			if (in_array($columns[$name]['type'] , ['tinytext', 'text', 'mediumtext','bigtext','date','time','year','datetime','timestamp'])) {
 				$columns[$name]['length'] = null;
 			}
+
+            if (in_array($columns[$name]['type'], ['enum'])) {
+                $columns[$name]['length'] = $column->getType()->getAllowed($this->prefix.$this->table, $columns[$name]['name']);
+            }
 		}
 
 		//debug($columns);
@@ -417,10 +429,10 @@ class Table
 			$convert['arguments'][]  = intval($column['length']);
 		}
 
-		// enum 类型 暂不支持
-		// if (in_array($convert['type'], ['enum'])) {
-		// 	$convert['arguments'] = explode(',', $column['length'] ?: 'Y,N');
-		// }
+		// enum 类型
+		if (in_array($convert['method'], ['enum'])) {
+			$convert['arguments'][] = explode(',', $column['length'] ?: 'Y,N');
+		}
 		
 		return $convert;
 	}

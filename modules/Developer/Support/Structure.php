@@ -309,4 +309,6 @@ class Structure
 
 		return false;
 	}
+
+	
 }
