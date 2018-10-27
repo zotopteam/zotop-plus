@@ -29,18 +29,57 @@ class Structure
 	protected $increments;
 
 	/**
-	 * 字段
+	 * 字段默认格式
+	 * 
 	 * @var collection
 	 */
-	protected $columnDefault = ['name'=>'', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>''];
-
+	protected static $columnFormatDefault = [
+		'name'       => '',
+		'type'       => 'varchar',
+		'length'     => '',
+		'nullable'   => '',
+		'unsigned'   => '',
+		'increments' => '',
+		'index'      => '',
+		'default'    => '',
+		'comment'    => ''
+	];
 
 	/**
-	 * @param string $database
-	 * @param bool   $ignoreIndexNames
-	 * @param bool   $ignoreForeignKeyNames
+	 * 数据库字段类型 对应的 laravel 迁移函数
+	 * @var array
 	 */
-	public function __construct(array $columns, array $indexes)
+	protected static $columnTypeMap = [
+		'tinyint'    => 'tinyInteger',
+		'smallint'   => 'smallInteger',
+		'mediumint'  => 'mediumInteger',
+		'int'        => 'integer',
+		'bigint'     => 'bigInteger',
+	    'mediumtext' => 'mediumText',
+	    'longtext'   => 'longText',
+		'varchar'    => 'string',
+		'datetime'   => 'dateTime',
+		'blob'       => 'binary',
+	];
+
+	/**
+	 * 自增类型转换
+	 * @var array
+	 */
+	protected static $incrementsMap = [
+		'tinyInteger'   => 'tinyIncrements',
+		'smallInteger'  => 'smallIncrements',
+		'mediumInteger' => 'mediumIncrements',
+		'bigInteger'    => 'bigIncrements',
+		'integer'       => 'increments',		
+	];
+
+	/**
+	 * 初始化
+	 * @param array $columns 字段数组
+	 * @param array $indexes 索引数组
+	 */
+	public function __construct(array $columns = [], array $indexes = [])
 	{
 		// $this->table = $table;
 
@@ -58,6 +97,18 @@ class Structure
 
 		debug($this->indexes->all());
 	}
+
+	/**
+	 * 获取实例
+	 * 
+	 * @param array $columns 字段数组
+	 * @param array $indexes 索引数组
+	 * @return this
+	 */
+	public static function instance(array $columns=[], array $indexes =[])
+	{
+		return new static($columns, $indexes);
+	}	
 
 	/**
 	 * 获取columns集合
@@ -191,13 +242,13 @@ class Structure
 	 * @param  array $column
 	 * @return array
 	 */
-	public function formatColumn(array $column)
+	public static function formatColumn(array $column)
 	{
 		if (in_array($column['name'], ['created_at','updated_at', 'deleted_at'])) {
 			$column['type'] = 'timestamp';
 		}
 
-		return array_merge($this->columnDefault, $column);
+		return array_merge(static::$columnFormatDefault, $column);
 	}
 
 	/**
@@ -205,7 +256,7 @@ class Structure
 	 * @param  array $index
 	 * @return array
 	 */
-	public function formatIndex(array $index)
+	public static function formatIndex(array $index)
 	{
 		$index['columns'] = is_array($index['columns']) ? array_values($index['columns']) : explode(',', $index['columns']);
 		$index['columns'] = array_sort(array_unique($index['columns']));
@@ -244,7 +295,7 @@ class Structure
 	 */
 	public function addBlank()
 	{
-		$this->columns->push($this->columnDefault);
+		$this->columns->push(static::$columnFormatDefault);
 		return true;
 	}
 
@@ -310,5 +361,178 @@ class Structure
 		return false;
 	}
 
-	
+	/**
+	 * 将类型type转化为laravel支持的函数名称
+	 * 
+	 * @param  [type] $type [description]
+	 * @return [type]       [description]
+	 */
+	public static function convertTypeToMethod($type)
+	{
+		return static::$columnTypeMap[$type] ?? $type;
+	}
+
+	/**
+	 * 将类型type转化为数据库（mysql）支持的名称
+	 * 
+	 * @param  [type] $type [description]
+	 * @return [type]       [description]
+	 */
+	public static function convertTypeToDatabase($type)
+	{
+		static $databaseTypeMap = null;
+
+		if (empty($databaseTypeMap)) {
+			$databaseTypeMap = array_flip(static::$columnTypeMap);
+		}
+
+		return $databaseTypeMap[$type] ?? $type;
+	}
+
+	/**
+	 * 转化字段为 laravel 友好格式
+	 * 
+	 * @param  array $column 字段
+	 * @return array
+	 */
+	public static function convertColumnToLaravel($column)
+	{
+		$convert = [];
+
+		// 可用方法
+		$convert['method']     = static::convertTypeToMethod($column['type']);
+
+		// 可用的字段类型方法的第一个参数总是字段名称
+		$convert['arguments'] = [$column['name']];
+		
+		// 存储修改器，方法名称=>参数数组
+		$convert['modifiers'] = [];
+
+		if ($column['nullable']) {
+			$convert['modifiers']['nullable'] = [];
+		}
+
+		if ($column['default']) {
+			$convert['modifiers']['default'] = [$column['default']];
+		}
+
+		if ($column['comment']) {
+			$convert['modifiers']['comment'] = [$column['comment']];
+		}
+
+		//  自增字段或者 'text','mediumText','longText' 类型字段不使用索引
+		if ($column['index'] && !$column['increments'] && !in_array($convert['method'], ['text','mediumText','longText'])) {
+			$convert['modifiers'][$column['index']] = [$column['name']];
+		}
+
+		// 数字类型，数字类型在Laravel中不能设置长度，只能按照类型长度
+		if (in_array($convert['method'], ['tinyInteger', 'smallInteger', 'integer', 'bigInteger', 'mediumInteger'])) {
+			
+			if ($column['increments']) {
+				$convert['method'] = static::$incrementsMap[$convert['method']];
+			} else {
+				// Laravel 的数字函数没有长度参数
+				//$convert['arguments']['length']  = [intval($column['length'])];
+				$convert['modifiers']['default']  = [intval($column['default'])];
+
+				if ($column['unsigned']) {
+					$convert['modifiers']['unsigned'] = [];
+				}
+			}
+		} 		
+
+		// 浮点类型的参数返回数组  [10,2] 或者数字 10 (精度默认2) ，允许浮点
+		if (in_array($convert['method'], ['decimal', 'float', 'double']) && $column['length']) {
+			
+			list($total, $places) = explode(',', $column['length'].',2');
+			
+			$total  = (intval($total) >= 1 && intval($total) <= 255) ? intval($total) : 8;
+			$places = (intval($places) >= 0 && intval($places) <= 30) ? intval($places) : 2;
+
+			// decimal, float, double 最多两个参数（长度、精度）
+			if ($total > $places) {
+				$convert['arguments'][]  = $total;
+				$convert['arguments'][] = $places;
+			}
+
+			$convert['modifiers']['default']  = [floatval($column['default'])];
+
+			if ($column['unsigned']) {
+				$convert['modifiers']['unsigned'] = [];
+			}
+		}
+
+		// 字符串类型如果设置了长度，加入长度参数
+		if (in_array($convert['method'], ['string', 'char']) && intval($column['length'])) {
+			$convert['arguments'][]  = intval($column['length']);
+		}
+
+		// enum 类型
+		if (in_array($convert['method'], ['enum'])) {
+			$convert['arguments'][] = explode(',', $column['length'] ?: 'Y,N');
+		}
+		
+		return $convert;
+	}
+
+	/**
+	 * 转化索引为 laravel 友好格式
+	 * 
+	 * @param  array $column 字段
+	 * @return array
+	 */	
+	public static function convertIndexToLaravel($index)
+	{
+		$convert = [];
+
+		// 方法名称：primary, index, unique
+		$convert['method']   = $index['type'];
+
+		// 方法的参数：primary, index, unique 函数的最多允许两个参数
+		// 单一索引第一个参数为字段名称，符合索引第一个参数为字段名称数组
+		$convert['arguments'] = [];
+		$convert['arguments'][] = (count($index['columns']) == 1) ? reset($index['columns']) : $index['columns'];
+
+		// 第二个参数为索引名称 primary 类型不能设置名称
+		if ($convert['method'] != 'primary') {
+			$convert['arguments'][] = $index['name'];
+		}
+
+		return $convert;	
+	}
+
+	/**
+	 * 将Structure转化为 laravel 友好格式
+	 * 
+	 * @return [type] [description]
+	 */
+	public function convertToLaravel()
+	{
+		$convert = [];
+
+		// 获取非单一索引并转化
+		$indexes = $this->indexes->filter(function($index) {
+
+			// 获取全部的单一索引字段直接附加在字段上，最终转化时，直接作为 modifier 执行
+			if ($single = (count($index['columns']) == 1)) {
+				$this->columns->transform(function($column) use ($index) {
+					if ($column['name'] == $index['columns'][0]) {
+						$column['index'] = $index['type'];
+					}
+					return $column;
+				});
+			}
+
+			return ! $single;
+		})->map(function($index) {
+			return static::convertIndexToLaravel($index);
+		})->toArray();
+
+		// 转化字段
+		$columns = $this->columns->map(function($column) {
+			return static::convertColumnToLaravel($column);
+		})->toArray();
+
+		return array_merge($columns, $indexes);
+	}
 }

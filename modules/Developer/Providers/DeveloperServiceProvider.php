@@ -30,7 +30,7 @@ class DeveloperServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->registerCommands();
     }
 
     /**
@@ -42,4 +42,16 @@ class DeveloperServiceProvider extends ServiceProvider
     {
         return [];
     }
+
+    /**
+     * 注册命令行
+     * 
+     * @return void
+     */
+    public function registerCommands()
+    {
+        $this->commands([
+            \Modules\Developer\Console\MigrateFilesCommand::class,
+        ]);
+    }    
 }

@@ -59,6 +59,18 @@
                     </td>
 
                     <td class="manage manage-hover text-right">
+                        @if(in_array(File::name($file), $migrations))
+                      <a href="javascript:;" class="manage-item js-post" data-url="{{route('developer.migration.migrate.file',[$name,'refresh','file'=>path_base($file)])}}">
+                            <i class="fa fa-sync fa-fw text-primary"></i> {{trans('developer::migration.file.refresh')}}
+                        </a>
+                        <a href="javascript:;" class="manage-item js-post" data-url="{{route('developer.migration.migrate.file',[$name,'reset','file'=>path_base($file)])}}">
+                            <i class="fa fa-reply fa-fw text-primary"></i> {{trans('developer::migration.file.reset')}}
+                        </a>
+                        @else
+                        <a href="javascript:;" class="manage-item js-post" data-url="{{route('developer.migration.migrate.file',[$name,'migrate','file'=>path_base($file)])}}">
+                            <i class="fa fa-share fa-fw text-primary"></i> {{trans('developer::migration.file.migrate')}}
+                        </a>                         
+                        @endif             
                         <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.file.editor',['file'=>path_base($file)])}}"  data-width="80%" data-height="80%">
                             <i class="fa fa-pen-square fa-fw text-primary"></i> {{trans('core::file.edit')}}
                         </a>

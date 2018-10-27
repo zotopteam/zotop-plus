@@ -12,6 +12,7 @@
     "email": "hankx_chen@qq.com",
     "homepage": "http:\/\/www.zotop.com",
     "providers": [
+        "Modules\\Developer\\Providers\\DeveloperServiceProvider",
         "Modules\\Developer\\Providers\\RouteServiceProvider"
     ],
     "aliases": [],

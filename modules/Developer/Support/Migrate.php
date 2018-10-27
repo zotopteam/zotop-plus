@@ -137,12 +137,8 @@ class Migrate
 	{
 		$blueprintUp = [];
 
-		// 创建字段
-		$columns = $this->table->columns();
-		$indexes = $this->table->indexes();
-
-		$bluepoints = $this->table->convertColumnsIndexes($columns, $indexes);
-		$bluepoints = array_merge($bluepoints['columns'], $bluepoints['indexes']);
+		// 转换字段和索引为 laravel 的方法和属性
+		$bluepoints = Structure::instance($this->table->columns(), $this->table->indexes())->convertToLaravel();
 
 		$blueprintUp = [];
 

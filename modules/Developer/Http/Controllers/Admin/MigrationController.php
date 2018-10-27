@@ -120,5 +120,16 @@ class MigrationController extends AdminController
         ]);
 
         return $this->success(trans('core::master.operated'),route('developer.migration.index',[$module]));
-    }        
+    }
+
+    public function migrateFile(Request $request, $module, $action)
+    {
+        Artisan::call('migrate:files', [
+            'files'   => $request->input('file'),
+            '--mode'  => $action,
+            '--force' => true
+        ]);
+
+        return $this->success(trans('core::master.operated'),route('developer.migration.index',[$module]));
+    }     
 }

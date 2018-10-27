@@ -5,7 +5,7 @@ return [
     'index'         => '迁移列表',
     'create'        => '创建迁移',
     'execute'       => '执行命令',
-    'migrate'       => '执行迁移',
+    'migrate'       => '迁移全部',
     'migrated'      => '已迁移',
     'migrate.tips'  => '运行当前模块所有未运行过的迁移',
     'rollback'      => '回滚一步',
@@ -18,4 +18,8 @@ return [
     'artisan'       => 'Artisan命令', 
     'name'          => '迁移文件名称',
     'name.help'     => '如：create_test_table，创建成功后，可以编写该迁移文件，然后执行迁移',
+
+    'file.migrate'  => '迁移',
+    'file.reset'    => '回滚',
+    'file.refresh'  => '回滚迁移',
 ];
