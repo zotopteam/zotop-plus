@@ -108,7 +108,7 @@ class Structure
 	public static function instance(array $columns=[], array $indexes =[])
 	{
 		return new static($columns, $indexes);
-	}	
+	}
 
 	/**
 	 * 获取columns集合
@@ -244,11 +244,17 @@ class Structure
 	 */
 	public static function formatColumn(array $column)
 	{
+		$column = array_merge(static::$columnFormatDefault, $column);
+
 		if (in_array($column['name'], ['created_at','updated_at', 'deleted_at'])) {
 			$column['type'] = 'timestamp';
 		}
 
-		return array_merge(static::$columnFormatDefault, $column);
+		if (in_array($column['type'], ['boolean', 'tinyint', 'int', 'mediumint','bigin','tinytext', 'text', 'mediumtext','bigtext','date','time','year','datetime','timestamp'])) {
+			$column['length'] = null;
+		}		
+
+		return $column;
 	}
 
 	/**

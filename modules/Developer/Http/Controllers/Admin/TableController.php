@@ -82,13 +82,16 @@ class TableController extends AdminController
             ]);
 
             $name    = $request->input('name');
-            $columns = $request->input('columns', []);
-            $indexes = $request->input('indexes', []);            
 
-            $table = Table::find($name);
-            $table->create($columns, $indexes);
+            // 创建迁移文件并迁移
+            $migrate = Migrate::instance($module, $name, Structure::instance(
+                $request->columns,
+                $request->indexes
+            ));
 
-            if ($table->exists()) {
+            $migrate->createTable(true);
+
+            if (Table::find($name)->exists()) {
                 return $this->success(trans('core::master.created'), route('developer.table.structure', [$module, $name]));
             }
 
@@ -116,24 +119,26 @@ class TableController extends AdminController
         return $this->view();
     }
 
-
+    /**
+     * 表结构
+     * 
+     * @param  Request $request
+     * @param  string  $module  module name
+     * @param  string  $table   table name
+     * @return Response
+     */
     public function structure(Request $request, $module, $table)
     {
-        $this->title  = trans('developer::table.structure');
-        $this->table  = $table;
-        $this->module = $module;
-
-        $migrate = new Migrate($module, $table);
+        // 获取数据表字段、索引和主键
+        $table   = Table::find($table);
 
         // 获取迁移文件
-        $this->migrations = $migrate->getMigrationFiles();
+        $migrate = Migrate::instance($module, $table);
 
-        // 获取更新日志
-        $this->updatelogs = $migrate->get();
-
-        // 获取数据表字段、索引和主键
-        $table = Table::find($table);
-
+        $this->title          = trans('developer::table.structure');
+        $this->table          = $table;
+        $this->module         = $module;
+        $this->migrations     = $migrate->getMigrationFiles();
         $this->columns        = $table->columns();
         $this->indexes        = $table->indexes();
         $this->primaryColumns = collect($this->indexes)->where('type','primary')->first()['columns'];
@@ -143,65 +148,74 @@ class TableController extends AdminController
         return $this->view();
     }
 
-    public function operate(Request $request, $module, $table, $action)
-    {
-        if (in_array($action, ['rename'])) {
-            $request->validate(['name'=>['required', 'string', new TableName($module)]],[],['name'=>trans('developer::table.name')]);            
-        }
 
-        $table = Table::find($table);
-        $columns = $table->columns();
-        $indexes = $table->indexes();
-
-        // 迁移日志
-        // 迁移日志参数
-        $arguments = [];
-
-        switch ($action) {
-            case 'rename':
-                $table->rename($request->name);
-                $arguments['from'] = $table->name();
-                $arguments['to']   = $request->name;
-                break;
-            case 'dropColumn':
-                $table->dropColumn($request->name);
-                $arguments['column'] = $columns[$request->name];
-                break;
-            case 'timestamps':
-                $table->timestamps();
-                break;                               
-            default:
-                # code...
-                break;
-        }
-
-        // 保存迁移日志
-        $migrate = new Migrate($module, $table);
-        $migrate->put(['action'=>$action, 'arguments'=>$arguments]);
-
-        return $this->success(trans('core::master.operated'), route('developer.table.structure',[$module, $table->name()])); 
-    }
-
-    /**
-     * 重命名
+   /**
+     * 编辑
      *
      * @return Response
      */
-    public function rename(Request $request, $module, $table)
+    public function edit(Request $request, $module, $table)
     {
-        $request->validate([
-            'name'   => ['required', 'string', new TableName($module)],
-        ],[],[
-            'name' => trans('developer::table.name'),
-        ]);
+        // 保存数据
+        if ($request->isMethod('POST')) {
 
-        $name = $request->input('name');
+            $name    = $request->input('name');
+
+            // 如果重命名，则验证新名称
+            if ($name != $table) {
+                $request->validate([
+                    'name'    => ['required', 'string', new TableName($module)],
+                    'columns' => ['required', 'array'],
+                ],[],[
+                    'name'    => trans('developer::table.name'),
+                    'columns' => trans('developer::table.columns'),
+                ]);                
+            }
+
+            // 创建更新并迁移
+            $migrate = Migrate::instance($module, $table, Structure::instance(
+                $request->input('columns', []),
+                $request->input('indexes', [])
+            ));
+
+            $migrate->updateTable($name);
+
+            return $this->success(trans('core::master.updated'), route('developer.table.structure', [$module, $name]));
+        }
+
+
+
+        // 创建更新并迁移
+        // $migrate = Migrate::instance($module, $table, Structure::instance(
+        //     [
+        //         ['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
+        //         ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
+        //         ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
+        //         ['name'=>'content', 'type'=>'text', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
+        //         //['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
+        //         ['field'=>'sort', 'name'=>'sort2', 'type'=>'mediumint', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
+        //         //['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'1', 'comment'=>'status'],
+        //         ['field'=>'', 'name'=>'newfield', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'1', 'comment'=>'status'],            
+        //     ],
+        //     [
+        //         ['name'=>'sort_status','type'=>'index','columns'=>['sort','status']]
+        //     ]
+        // ));
+
+        // $migrate->updateTable('test_new2');     
 
         $table = Table::find($table);
-        $table->rename($name);
 
-        return $this->success(trans('core::master.operated'), route('developer.table.index',[$module]));        
-    }
+        $this->columns = $table->columns();
+        $this->indexes = $table->indexes();
+        $this->title   = trans('developer::table.edit');
+        $this->module  = $module;
+        $this->name    = $table->name();
+        $this->columns = $table->columns();
+        $this->indexes = $table->indexes();        
+
+        return $this->view();
+    }    
 
     /**
      * 删除
@@ -210,8 +224,11 @@ class TableController extends AdminController
      */
     public function drop(Request $request, $module, $table)
     {
-        $table = Table::find($table);
-        $table->drop();
+        // $table = Table::find($table);
+        // $table->drop();
+
+        $migrate = Migrate::instance($module, $table);
+        $migrate->dropTable(); 
 
         return $this->success(trans('core::master.deleted'), route('developer.table.index',[$module]));        
     }
@@ -225,15 +242,15 @@ class TableController extends AdminController
         $migrate = new Migrate($module, $table);
 
         if ($action == 'override') {
-            $migrate->createTableMigration(true);
+            $migrate->createTable(true);
         }
 
         if ($action == 'create') {
-           $migrate->createTableMigration(false); 
+           $migrate->createTable(false); 
         }
 
         if ($action == 'update') {
-            $migrate->updateTableMigration();
+            $migrate->updateTable();
             return $this->success(trans('core::master.operated'));
 
         }        

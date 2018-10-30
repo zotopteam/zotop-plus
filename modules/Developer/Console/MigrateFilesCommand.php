@@ -64,7 +64,7 @@ class MigrateFilesCommand extends Command
 
             // 复制迁移文件到临时文件夹
             foreach ($files as $file) {
-                $file   = base_path($file);
+                $file   = str_start($file, $this->laravel->basePath());
 
                 if ($this->laravel['files']->exists($file) && $this->laravel['files']->copy($file, $path .'/'. basename($file))) {
                     $this->line("Migrate file: {$file}");

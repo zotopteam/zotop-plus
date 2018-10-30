@@ -20,14 +20,8 @@
             </a>            
             @endif
 
-            @if ($updatelogs)
-            <a class="btn btn-success js-post" href="{{route('developer.table.migration', [$module, $table, 'update'])}}">
-                <i class="fa fa-database"></i> {{trans('developer::table.migration.update')}}
-            </a>                   
-            @endif
-
-            <a class="btn btn-primary js-prompt" href="{{route('developer.table.operate', [$module, $table, 'rename'])}}" data-prompt="{{trans('developer::table.name')}}" data-name="name" data-value="{{$table}}">
-                <i class="fa fa-fw fa-eraser"></i> {{trans('developer::table.rename')}}
+            <a class="btn btn-primary" href="{{route('developer.table.edit', [$module, $table])}}">
+                <i class="fa fa-fw fa-pen-square"></i> {{trans('developer::table.edit')}}
             </a>                      
             <a class="btn btn-primary js-delete" href="javascript:;" data-url="{{route('developer.table.drop', [$module, $table])}}">
                 <i class="fa fa-times"></i> {{trans('developer::table.drop')}}
@@ -107,11 +101,7 @@
                                     {{$v['comment'] ?? ''}}
                                 </td>
                                 <td class="manage">
-                                    @if (count($columns) >1)                        
-                                    <a href="javascript:;" class="manage-item d-none js-drop" data-url="{{route('developer.table.operate', [$module, $table, 'dropColumn'])}}" data-name="{{$v['name']}}">
-                                        <i class="fa fa-times"></i> {{trans('core::master.delete')}}
-                                    </a>
-                                    @endif  
+
                                 </td>                
                             </tr>
                             @endforeach          

@@ -219,7 +219,6 @@ class Table
 			$columns[$name]['nullable']   = $column->getNotNull() ? '' : 'nullable';
 			$columns[$name]['unsigned']   = $column->getUnsigned() ? 'unsigned' : '';
 			$columns[$name]['increments'] = $column->getAutoincrement() ? 'increments' : '';
-			$columns[$name]['index']      = '';
 			$columns[$name]['comment']    = $column->getComment();
 
             // 将类型转化为数据库支持支持的格式
@@ -236,7 +235,7 @@ class Table
 			}
 
             // 文本类型和时间类型在laravel中没有长度
-			if (in_array($columns[$name]['type'] , ['tinytext', 'text', 'mediumtext','bigtext','date','time','year','datetime','timestamp'])) {
+			if (in_array($columns[$name]['type'] , ['boolean', 'tinyint', 'int', 'mediumint','bigin','tinytext', 'text', 'mediumtext','bigtext','date','time','year','datetime','timestamp'])) {
 				$columns[$name]['length'] = null;
 			}
 
@@ -251,11 +250,19 @@ class Table
 		return $columns;
 	}
 
+	/**
+	 * 删除字段
+	 * 
+	 * @param  string $column 字段名称
+	 * @return bool
+	 */
 	public function dropColumn($column)
 	{
 		Schema::table($this->table, function (Blueprint $table) use ($column) {
 		    $table->dropColumn($column);
-		});		
+		});
+
+		return true;	
 	}
 
 	/**

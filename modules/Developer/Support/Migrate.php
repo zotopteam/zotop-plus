@@ -5,125 +5,128 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Schema\Blueprint;
 use Modules\Developer\Support\Table;
+use Modules\Developer\Support\Structure;
+use Modules\Developer\Support\StructureDiff;
 use Module;
+use Artisan;
 
 
 class Migrate
 {
 	protected $module;
 	protected $table;
+	protected $structure;
 	protected $filesystem;
-	protected $dir;
-	protected $filepath;
 	protected $migrations;
-	protected $migrationsTable;
 
-	public function __construct($module, $table)
+	public function __construct($module, $table, $structure=null)
 	{
 		$this->module     = Module::find($module);
 		$this->table      = Table::find($table);
 		$this->filesystem = app('files');
-		$this->dir        = dirname(__DIR__).'/Database/Migrates/'.$module;
-		$this->filepath   = $this->dir.'/'.$table.'.php';
 		$this->migrations = $this->module->getPath().'/Database/Migrations';
-		$this->migrationsTable = app('db')->table(config('database.migrations'));
+		$this->structure  = $structure;
 	}
 
 	/**
-	 * 获取修改记录
+	 * 获取实例
 	 * 
-	 * @return [type] [description]
+	 * @return this
 	 */
-	public function get()
+	public static function instance($module, $table, $structure=null)
 	{
-		$data = [];
-
-		if ($this->filesystem->exists($this->filepath)) {
-			$data = require $this->filepath;
-			$data = is_array($data) ? $data : [];
-		}
-
-		return $data;
-	}	
+		return new static($module, $table, $structure);
+	}		
 
 	/**
-	 * 保存修改记录
-	 * 
-	 * @return [type] [description]
-	 */
-	public function put(array $item)
-	{		
-        // 如果不存在，尝试创建
-        if (!$this->filesystem->isDirectory($dir = $this->dir)) {
-            $this->filesystem->makeDirectory($dir, 0775, true);
-        }
-
-		// 追加新元素
-		$data = $this->get();
-
-		array_push($data, $item + [
-			'created_at' => (string)now()
-		]);
-
-		// 如果是重命名，删除原有的文件，创建新名文件
-		if ($item['action'] == 'rename') {
-			$this->filesystem->delete($this->filepath);
-			$this->filepath   = $this->dir.'/'.$item['to'].'.php';
-		}
-
-        $this->filesystem->put($this->filepath, "<?php\nreturn ".var_export($data, true).";");
-
-        return true;
-	}
-
-	/**
-	 * 删除迁移日志
-	 * 
-	 * @return bool
-	 */
-	public function delete()
-	{
-		// 删除迁移日志
-		$this->filesystem->delete($this->filepath);
-
-		// 日志文件夹为空时，删除文件夹
-		if (! $this->filesystem->files($this->dir)) {
-			$this->filesystem->deleteDirectory($this->dir);
-		}
-
-		return true;
-	}
-
-	/**
-	 * 常见表迁移文件
+	 * 创建表迁移文件，如果已经存在并覆盖创建迁移，则会删除该全部迁移文件
 	 * 
 	 * @param  boolean $override 覆盖已有迁移文件
 	 * @param  string  $template 模板路径
 	 * @return bool
 	 */
-	public function createTableMigration($override=false, $template=null)
+	public function createTable($override=false, $template=null)
 	{
-		$migrations = $this->getMigrationFiles();
+		$content = $this->getCreateTableMigration($template);
 
-		if ($migrations) {
+		// 检查是否存在迁移文件
+		if ($migrations = $this->getMigrationFiles()) {
 
 			// 如果不允许覆盖，则返回false
 			if (! $override) {
 				return false;
 			}
-			
-			// 允许覆盖的时候，删除全部迁移文件，包含update迁移
-			array_map([$this->filesystem, 'delete'], $migrations);
 
-			// 允许覆盖时候，删除更新日志文件
-			$this->delete();
+			// 允许覆盖的时候，删除全部迁移文件，包含update迁移
+			Artisan::call('migrate:files', [
+				'files'  => $migrations,
+				'--mode' => 'reset'
+			]);
+
+			array_map([$this->filesystem, 'delete'], $migrations);
 		}
 
-		$this->filesystem->put(
-			$this->getMigrationFilePath('create'),
-			$this->getCreateTableMigration($template)
-		);
-		
+		$file =  tap($this->getMigrationFilePath('create'), function($file) use ($content) {
+			$this->filesystem->put($file, $content);
+		});
+
+		Artisan::call('migrate:files', [
+			'files'  => $file,
+			'--mode' => 'migrate'
+		]);
+
+		return true;
+	}
+
+	/**
+	 * 创建更新迁移
+	 * @return bool
+	 */
+	public function updateTable($newname=null, $template=null)
+	{
+		$content = $this->getUpdateTableMigration($newname, $template);
+
+		dd($content);
+
+		// $file =  tap($this->getMigrationFilePath('update'), function($file) use ($content) {
+		// 	$this->filesystem->put($file, $content);
+		// });
+
+		// Artisan::call('migrate:files', [
+		// 	'files'  => $file,
+		// 	'--mode' => 'migrate'
+		// ]);		
+
+		return true;
+	}
+	/**
+	 * 删除全部迁移
+	 * @return bool
+	 */
+
+	public function dropTable($template=null)
+	{
+		$content = $this->getDropTableMigration($template);
+
+		if ($migrations = $this->getMigrationFiles()) {
+
+			Artisan::call('migrate:files', [
+				'files'  => $migrations,
+				'--mode' => 'reset'
+			]);
+
+			array_map([$this->filesystem, 'delete'], $migrations);
+		}
+
+		$file =  tap($this->getMigrationFilePath('drop'), function($file) use ($content) {
+			$this->filesystem->put($file, $content);
+		});
+
+		Artisan::call('migrate:files', [
+			'files'  => $file,
+			'--mode' => 'migrate'
+		]);		
+
 		return true;
 	}
 
@@ -135,15 +138,17 @@ class Migrate
 	 */
 	public function getCreateTableMigration($template=null)
 	{
-		$blueprintUp = [];
-
 		// 转换字段和索引为 laravel 的方法和属性
-		$bluepoints = Structure::instance($this->table->columns(), $this->table->indexes())->convertToLaravel();
+		if (! $this->structure) {
+			$this->structure = Structure::instance($this->table->columns(), $this->table->indexes());
+		}
+
+		$bluepoints = $this->structure->convertToLaravel();
 
 		$blueprintUp = [];
 
 		foreach($bluepoints as $bluepoint) {
-			$blueprintUp[] = $this->convertBluepointToString($bluepoint);
+			$blueprintUp[] = $this->convertToBluepoints($bluepoint);
 		}
 
 		$blueprintUp = implode(PHP_EOL."\t\t\t", $blueprintUp);
@@ -161,45 +166,42 @@ class Migrate
 	}
 
 	/**
-	 * 生成更新迁移
-	 * @return bool
+	 * 获取表的更新迁移内容
+	 * 
+	 * @param  string $template
+	 * @return string
 	 */
-	public function updateTableMigration($template=null)
-	{
-		$this->filesystem->put(
-			$this->getMigrationFilePath('update'),
-			$this->getUpdateTableMigration($template)
-		);
-
-		// 删除更新日志文件
-		$this->delete();	
-
-		return true;
-	}
-
-	/**
-	 * 获取更新迁移的内容
-	 * @return array
-	 */
-	public function getUpdateTableMigration($template=null)
+	public function getUpdateTableMigration($newname=null, $template=null)
 	{
 		$blueprintUp   = [];
 		$blueprintDown = [];
 
-		$update_list = $this->get();
+		if ($this->table->name() != $newname) {
+			$bluepoint = $this->getRenameBlueprint($this->table->name(), $newname);
+			$blueprintUp[]   = $bluepoint['up'];
+			$blueprintDown[] = $bluepoint['down'];
+		}
+
+		// 数据表结构
+		$structure = Structure::instance($this->table->columns(), $this->table->indexes());
 		
-		foreach($update_list as $update) {
-			$method    = 'get'.ucfirst($update['action']).'Blueprint';
-			$arguments = $update['arguments'];
-
-			$bluepoints = call_user_func_array([$this, $method], $arguments);
-
-			$blueprintUp[]   = $bluepoints['blueprintUp'];
-			$blueprintDown[] = $bluepoints['blueprintDown'];
+		// 获取差异更新结构
+		$diffrents = StructureDiff::instance($structure, $this->structure)->get();
+		
+		if ($diffrents) {
+			$blueprintUp[]   = "Schema::create('".$newname."', function (Blueprint \$table) {";
+			$blueprintDown[] = "Schema::create('".$newname."', function (Blueprint \$table) {";
+			foreach($diffrents as $action => $arguments) {
+				$bluepoint = call_user_func_array([$this, 'get'.ucwords($action).'Blueprint'], $arguments);
+				$blueprintUp[]   = $bluepoint['up'];
+				$blueprintDown[] = $bluepoint['down'];
+			}
+			$blueprintUp[]   = "});";
+			$blueprintDown[] = "});";
 		}
 
 		$blueprintUp = implode(PHP_EOL."\t\t\t", $blueprintUp);
-		$blueprintDown = implode(PHP_EOL."\t\t\t", $blueprintDown);
+		$blueprintDown = implode(PHP_EOL."\t\t\t", $blueprintDown);		
 
 		$template  = $template ?: __DIR__ .'/stubs/update_table.stub';
 		$name = $this->getMigrationFileName('update');
@@ -212,7 +214,51 @@ class Migrate
 		];
 
 		return $this->compile($template, $data);
+	}	
+
+	/**
+	 * 获取表的迁移内容
+	 * 
+	 * @param  string $template
+	 * @return string
+	 */
+	public function getDropTableMigration($template=null)
+	{
+		// 转换字段和索引为 laravel 的方法和属性
+		$bluepoints = Structure::instance($this->table->columns(), $this->table->indexes())->convertToLaravel();
+
+		$blueprintDown = [];
+
+		foreach($bluepoints as $bluepoint) {
+			$blueprintDown[] = $this->convertToBluepoints($bluepoint);
+		}
+
+		$blueprintDown = implode(PHP_EOL."\t\t\t", $blueprintDown);
+
+		$template  = $template ?: __DIR__ .'/stubs/drop_table.stub';
+		$name = $this->getMigrationFileName('drop');
+
+		$data = [
+			'CLASS' => ucwords(camel_case($name)),
+			'TABLE' => $this->table->name(),
+			'DOWN'    => $blueprintDown,
+		];
+
+		return $this->compile($template, $data);
 	}
+
+	/**
+	 * 重命名
+	 * 
+	 * @return array
+	 */
+	public function getRenameBlueprint($from, $to)
+	{
+		$blueprintUp   = sprintf("Schema::rename(%s, %s);", $this->convertToBluepointsArgument($from), $this->convertToBluepointsArgument($to));
+		$blueprintDown = sprintf("Schema::rename(%s, %s);", $this->convertToBluepointsArgument($to), $this->convertToBluepointsArgument($from));
+
+		return ['up'=>$blueprintUp, 'down'=>$blueprintDown];
+	}	
 
 	/**
 	 * 获取更新迁移的内容
@@ -221,16 +267,16 @@ class Migrate
 	public function getDropColumnBlueprint($column)
 	{
 		// 删除字段
-		$blueprintUp = sprintf("\$table->%s(%s);", 'dropColumn', $this->convertArgument($column['name']));
+		$blueprintUp = sprintf("\$table->%s(%s);", 'dropColumn', $this->convertToBluepointsArgument($column['name']));
 
 		// 还原字段
-		$blueprintDown = $this->table->convertColumn($column);
-		$blueprintDown = $this->convertBluepointToString($blueprintDown);
+		$blueprintDown = Structure::convertColumnToLaravel($column);
+		$blueprintDown = $this->convertToBluepoints($blueprintDown);
 
 		// debug('blueprintUp', $blueprintUp);
 		// debug('blueprintDown',$blueprintDown);
 
-		return ['blueprintUp'=>$blueprintUp, 'blueprintDown'=>$blueprintDown];
+		return ['up'=>$blueprintUp, 'down'=>$blueprintDown];
 	}
 
 	/**
@@ -239,7 +285,7 @@ class Migrate
 	 * @param  array $bluepoint
 	 * @return string
 	 */
-	public function convertBluepointToString($bluepoint)
+	public function convertToBluepoints($bluepoint)
 	{
 		$output = '';
 
@@ -248,7 +294,7 @@ class Migrate
 		$modifiers = $bluepoint['modifiers'] ?? [];
 
 		// 转换参数
-		$arguments = array_map([$this, 'convertArgument'], $arguments);
+		$arguments = array_map([$this, 'convertToBluepointsArgument'], $arguments);
 		
 		if (count($arguments) == 3) {
 			$output = sprintf("\$table->%s(%s, %s, %s)", $method, $arguments[0], $arguments[1], $arguments[2]);
@@ -265,7 +311,7 @@ class Migrate
 		// 修改器
 		foreach ($modifiers as $modifier => $argument) {
 			if ($argument) {
-				$output .= sprintf("->%s(%s)", $modifier, $this->convertArgument($argument[0]));
+				$output .= sprintf("->%s(%s)", $modifier, $this->convertToBluepointsArgument($argument[0]));
 			} else {
 				$output .= sprintf("->%s()", $modifier);
 			}
@@ -285,7 +331,7 @@ class Migrate
 	 * @param  [type] $argument [description]
 	 * @return [type]           [description]
 	 */
-	public function convertArgument($argument)
+	public function convertToBluepointsArgument($argument)
 	{
 		if (is_array($argument)) {
 			return "['".implode("','", $argument)."']";
@@ -310,9 +356,11 @@ class Migrate
 		if (! isset($names[$type])) {
 
 			if ($type == 'create') {
-				$name = 'create_'. $this->table->name() .'_table';
+				$name = 'create_'. $this->table->name() .'_table_'.time();
 			} else if ($type == 'update') {
-				$name = 'update_'. $this->table->name() .'_table_'.date('YmdHis');
+				$name = 'update_'. $this->table->name() .'_table_'.time();
+			} else if ($type == 'drop') {
+				$name = 'drop_'. $this->table->name() .'_table_'.time();				
 			} else {
 				$name = $this->table->name() .'_table';
 			}
@@ -350,7 +398,7 @@ class Migrate
 		
 		foreach ($this->filesystem->files($this->migrations) as $file) {
             if (strpos($file, $name)) {
-                $files[] = $file;
+                $files[] = (string)$file;
             }
         }
 
