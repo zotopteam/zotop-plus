@@ -181,28 +181,7 @@ class TableController extends AdminController
             $migrate->updateTable($name);
 
             return $this->success(trans('core::master.updated'), route('developer.table.structure', [$module, $name]));
-        }
-
-
-
-        // 创建更新并迁移
-        // $migrate = Migrate::instance($module, $table, Structure::instance(
-        //     [
-        //         ['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
-        //         ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
-        //         ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
-        //         ['name'=>'content', 'type'=>'text', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
-        //         //['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
-        //         ['field'=>'sort', 'name'=>'sort2', 'type'=>'mediumint', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
-        //         //['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'1', 'comment'=>'status'],
-        //         ['field'=>'', 'name'=>'newfield', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'1', 'comment'=>'status'],            
-        //     ],
-        //     [
-        //         ['name'=>'sort_status','type'=>'index','columns'=>['sort','status']]
-        //     ]
-        // ));
-
-        // $migrate->updateTable('test_new2');     
+        }   
 
         $table = Table::find($table);
 
@@ -212,7 +191,7 @@ class TableController extends AdminController
         $this->module  = $module;
         $this->name    = $table->name();
         $this->columns = $table->columns();
-        $this->indexes = $table->indexes();        
+        $this->indexes = $table->indexes();
 
         return $this->view();
     }    
@@ -288,6 +267,7 @@ class TableController extends AdminController
         $this->columns    = $structure->columns();
         $this->indexes    = $structure->indexes();
         $this->increments = $structure->increments();
+        $this->primary    = collect($this->indexes)->where('type','primary')->first();
 
         //debug($this->columns);
 

@@ -10,7 +10,8 @@ class $CLASS$ extends Migration
 	 *
 	 * @return void
 	 */
-	public function up() {
+	public function up()
+	{
 		
 		$UP$
 		
@@ -22,7 +23,8 @@ class $CLASS$ extends Migration
 	 *
 	 * @return void
 	 */
-	public function down() {
+	public function down()
+	{
 
 		$DOWN$
 		

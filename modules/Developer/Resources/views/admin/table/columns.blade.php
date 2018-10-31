@@ -92,7 +92,7 @@
                             <a class="btn btn-primary btn-sm column-action"  href="javascript:;" data-url="{{route('developer.table.columns','addSoftdeletes')}}">
                                 <i class="fa fa-plus fa-fw"></i> {{trans('developer::table.column.add_softdeletes')}} 
                             </a>
-                            @if (! $increments)
+                            @if (! $increments && ! $primary)
                             <a class="btn btn-primary btn-sm column-action"  href="javascript:;" data-url="{{route('developer.table.columns','primary')}}">
                                 <i class="fa fa-key fa-fw"></i> {{trans('developer::table.index.primary')}} 
                             </a>
@@ -202,7 +202,14 @@ $(function(){
 
     // 删除字段
     $('.index-delete').on('click',function(e){
-        $(e.target).parents('tr').remove();        
+        $(e.target).parents('tr').remove();
+        var post = $('form.form').serialize();
+        $.post("{{route('developer.table.columns')}}", post, function(result){
+            $('.columns').html(result);
+            $(window).trigger('resize');
+        }).fail(function(jqXHR){
+            $.error(jqXHR.responseJSON.message);
+        });              
     });  
 });
 

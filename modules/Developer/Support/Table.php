@@ -289,9 +289,7 @@ class Table
 				$indexes[$key]['type'] = 'primary';
 			}		
 		}
-
-		//debug($indexes);
-
+		
 		return $indexes;	
 	}
 

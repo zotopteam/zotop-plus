@@ -95,7 +95,7 @@ class Structure
 			return $this->formatIndex($index);
 		});
 
-		debug($this->indexes->all());
+		// debug($this->indexes->all());
 	}
 
 	/**
@@ -216,8 +216,8 @@ class Structure
 	 */
 	public function existsIndex($index)
 	{	
-        // 如果有自增，则不能添加主键索引
-        if ($this->increments() && $index['type'] == 'primary') {
+        // 如果有自增或者已经有主键，则不能添加主键索引
+        if ($index['type'] == 'primary' && ($this->increments() || $this->indexes->where('type','primary')->count()>0)) {
             return true;
         }
 
@@ -267,11 +267,14 @@ class Structure
 		$index['columns'] = is_array($index['columns']) ? array_values($index['columns']) : explode(',', $index['columns']);
 		$index['columns'] = array_sort(array_unique($index['columns']));
 
-		if ($index['type'] == 'primary') {
-			$index['name'] = 'PRIMARY';
-		} else {
-			$index['name'] = implode('_', $index['columns']);
+		if (!isset($index['name']) || empty($index['name'])) {
+			if ($index['type'] == 'primary') {
+				$index['name'] = 'PRIMARY';
+			} else {
+				$index['name'] = implode('_', $index['columns']);
+			}
 		}
+
 
 		return $index;
 	}	
@@ -399,9 +402,10 @@ class Structure
 	 * 转化字段为 laravel 友好格式
 	 * 
 	 * @param  array $column 字段
+	 * @param  bool $change 是否追加change为modifier
 	 * @return array
 	 */
-	public static function convertColumnToLaravel($column)
+	public static function convertColumnToLaravel($column, $change = false)
 	{
 		$convert = [];
 
@@ -476,6 +480,11 @@ class Structure
 		// enum 类型
 		if (in_array($convert['method'], ['enum'])) {
 			$convert['arguments'][] = explode(',', $column['length'] ?: 'Y,N');
+		}
+
+		// change
+		if ($change) {
+			$convert['modifiers']['change'] = [];
 		}
 		
 		return $convert;
