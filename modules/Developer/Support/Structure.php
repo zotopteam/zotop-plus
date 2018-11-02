@@ -250,9 +250,13 @@ class Structure
 			$column['type'] = 'timestamp';
 		}
 
-		if (in_array($column['type'], ['boolean', 'tinyint', 'int', 'mediumint','bigin','tinytext', 'text', 'mediumtext','bigtext','date','time','year','datetime','timestamp'])) {
+		if (! in_array($column['type'], ['char', 'varchar', 'float', 'double','decimal','enum'])) {
 			$column['length'] = null;
-		}		
+		}
+
+		if ($column['increments']) {
+			$column['default'] = null;
+		}
 
 		return $column;
 	}
@@ -440,9 +444,11 @@ class Structure
 			
 			if ($column['increments']) {
 				$convert['method'] = static::$incrementsMap[$convert['method']];
+				
+				if ($change) {
+					$convert['modifiers']['default']  = [null];
+				}
 			} else {
-				// Laravel 的数字函数没有长度参数
-				//$convert['arguments']['length']  = [intval($column['length'])];
 				$convert['modifiers']['default']  = [intval($column['default'])];
 
 				if ($column['unsigned']) {

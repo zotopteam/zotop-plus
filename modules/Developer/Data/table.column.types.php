@@ -34,7 +34,8 @@ $strings = [
     // 'mediumblob',
     // 'longblob',      
 
-    //'enum',
+    'enum',
+    'json',
     //'set', 暂不支持 set 类型
 ];
 

@@ -60,7 +60,7 @@
                     }
                     $('.form-submit').prop('disabled',false);
                     return false;
-                },'json').fail(function(jqXHR){
+                }, 'json').fail(function(jqXHR){
                     $('.form-submit').prop('disabled',false);
                     return validator.showErrors(jqXHR.responseJSON.errors);
                 });

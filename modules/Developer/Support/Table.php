@@ -53,6 +53,7 @@ class Table
      */
     private $customTypes = [
         'enum'      => 'Modules\Developer\Support\Types\EnumType',
+        'json'      => 'Modules\Developer\Support\Types\JsonType',
         'year'      => 'Modules\Developer\Support\Types\YearType',
         'timestamp' => 'Modules\Developer\Support\Types\TimestampType',
     ];
@@ -229,19 +230,24 @@ class Table
 				$columns[$name]['type'] = 'char';
 			}
 
+            // 去除laravel中没有长度参数的类型
+			if (! in_array($columns[$name]['type'], ['char', 'varchar', 'float', 'double','decimal','enum'])) {
+				$columns[$name]['length'] = null;
+			}
+
             // 获取浮点类型的精度
 			if (in_array($columns[$name]['type'] , ['decimal', 'float', 'double'])) {
 				$columns[$name]['length'] = $column->getPrecision().','.$column->getScale();
 			}
 
-            // 文本类型和时间类型在laravel中没有长度
-			if (in_array($columns[$name]['type'] , ['boolean', 'tinyint', 'int', 'mediumint','bigin','tinytext', 'text', 'mediumtext','bigtext','date','time','year','datetime','timestamp'])) {
-				$columns[$name]['length'] = null;
-			}
-
             // 获取enum类型的允许值
             if (in_array($columns[$name]['type'], ['enum'])) {
                 $columns[$name]['length'] = $column->getType()->getAllowed($this->prefix.$this->table, $columns[$name]['name']);
+            }
+
+            // 自增字段无默认值
+            if ($columns[$name]['increments']) {
+            	$columns[$name]['default'] = null;
             }
 		}
 

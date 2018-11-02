@@ -70,10 +70,15 @@ class Migrate
 			$this->filesystem->put($file, $content);
 		});
 
-		Artisan::call('migrate:files', [
-			'files'  => $file,
-			'--mode' => 'migrate'
-		]);
+		try {
+			Artisan::call('migrate:files', [
+				'files'  => $file,
+				'--mode' => 'migrate'
+			]);			
+		} catch (Exception $e) {
+			$this->filesystem->delete($file);
+			abort(500, $e->getMessage());
+		}
 
 		return true;
 	}
@@ -86,18 +91,21 @@ class Migrate
 	{
 		$content = $this->getUpdateTableMigration($newname, $template);
 
-		// dd($content);
-
 		if ($content) {
 
 			$file =  tap($this->getMigrationFilePath('update'), function($file) use ($content) {
 				$this->filesystem->put($file, $content);
 			});
 
-			Artisan::call('migrate:files', [
-				'files'  => $file,
-				'--mode' => 'migrate'
-			]);
+			try {
+				Artisan::call('migrate:files', [
+					'files'  => $file,
+					'--mode' => 'migrate'
+				]);
+			} catch (\Exception $e) {
+				$this->filesystem->delete($file);
+				abort(500, $e->getMessage());
+			}
 
 			return true;
 		}		
@@ -127,10 +135,15 @@ class Migrate
 			$this->filesystem->put($file, $content);
 		});
 
-		Artisan::call('migrate:files', [
-			'files'  => $file,
-			'--mode' => 'migrate'
-		]);		
+		try {
+			Artisan::call('migrate:files', [
+				'files'  => $file,
+				'--mode' => 'migrate'
+			]);		
+		} catch (\Exception $e) {
+			$this->filesystem->delete($file);
+			abort(500, $e->getMessage());
+		}
 
 		return true;
 	}
@@ -178,19 +191,9 @@ class Migrate
 	 */
 	public function getUpdateTableMigration($newname=null, $template=null)
 	{
-		$up   = [];
-		$down = [];
-
 		// 未传入表的新名称时，为不改变表名称
 		if (empty($newname)) {
 			$newname = $this->table->name();
-		}
-
-		// 重命名数据表
-		if ($this->table->name() != $newname) {
-			$bluepoint = $this->getRenameBlueprint($this->table->name(), $newname);
-			$up[]   = $bluepoint['up'];
-			$down[] = $bluepoint['down'];
 		}
 
 		// 数据表结构
@@ -199,17 +202,8 @@ class Migrate
 		// 获取差异更新结构
 		$diffrents = StructureDiff::instance($structure, $this->structure)->get();
 		
-		if ($diffrents->count()) {
-			$up[]   = "Schema::table('".$newname."', function (Blueprint \$table) {";
-			$down[] = "Schema::table('".$this->table->name()."', function (Blueprint \$table) {";
-			foreach($diffrents as $diff) {
-				$bluepoint       = call_user_func_array([$this, 'get'.ucwords($diff['method']).'Blueprint'], $diff['arguments']);
-				$up[]   = "\t".$bluepoint['up'];
-				$down[] = "\t".$bluepoint['down'];
-			}
-			$up[]   = "});";
-			$down[] = "});";
-		}
+		$up        = $this->getUpdateTableUpBlueprint($diffrents, $newname);
+		$down      = $this->getUpdateTableDownBlueprint($diffrents, $newname);
 
 		if ($up && $down) {
 
@@ -230,7 +224,7 @@ class Migrate
 		}
 
 		return null;
-	}	
+	}
 
 	/**
 	 * 获取表的迁移内容
@@ -263,17 +257,100 @@ class Migrate
 		return $this->compile($template, $data);
 	}
 
+	public function getUpdateTableUpBlueprint($diffrents, $newname)
+	{
+		$bluepoint = [];
+
+		// 重命名表
+		if ($this->table->name() != $newname) {
+			$bluepoint[] = $this->getRenameBlueprint($this->table->name(), $newname);
+		}
+
+		if ($diffrents->count()) {
+			$bluepoint[]   = "Schema::table('".$newname."', function (Blueprint \$table) {";
+			
+			$diffrents->where('action', 'dropIndex')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getDropIndexBlueprint($diff['index']);
+			});
+
+			$diffrents->where('action', 'dropColumn')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getDropColumnBlueprint($diff['column']);
+			});
+
+			$diffrents->where('action', 'renameColumn')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getRenameColumnBlueprint($diff['from'], $diff['to']);
+			});
+
+			$diffrents->where('action', 'addColumn')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getAddColumnBlueprint($diff['column']);
+			});			
+
+			$diffrents->where('action', 'addIndex')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getAddIndexBlueprint($diff['index']);
+			});
+
+			$diffrents->where('action', 'changeColumn')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getChangeColumnBlueprint($diff['to']);
+			});											
+
+			$bluepoint[] = "});";
+		}
+
+		return $bluepoint;
+	}
+
+	public function getUpdateTableDownBlueprint($diffrents, $newname)
+	{
+		$bluepoint = [];
+
+		// 重命名表
+		if ($this->table->name() != $newname) {
+			$bluepoint[] = $this->getRenameBlueprint($newname, $this->table->name());
+		}
+
+		if ($diffrents->count()) {
+			$bluepoint[]   = "Schema::table('".$this->table->name()."', function (Blueprint \$table) {";
+
+			$diffrents->where('action', 'dropColumn')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getAddColumnBlueprint($diff['column']);
+			});
+
+			$diffrents->where('action', 'dropIndex')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getAddIndexBlueprint($diff['index']);
+			});
+
+			$diffrents->where('action', 'addIndex')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getDropIndexBlueprint($diff['index']);
+			});
+
+			$diffrents->where('action', 'addColumn')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getDropColumnBlueprint($diff['column']);
+			});
+
+			$diffrents->where('action', 'renameColumn')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getRenameColumnBlueprint($diff['to'], $diff['from']);
+			});
+
+			$diffrents->where('action', 'changeColumn')->each(function($diff) use(&$bluepoint) {
+				$bluepoint[] = "\t".$this->getChangeColumnBlueprint($diff['from']);
+			});				
+
+			$bluepoint[] = "});";
+		}
+
+		return $bluepoint;
+	}
+
 	/**
-	 * 重命名
+	 * 重命名数据表
 	 * 
-	 * @return array
+	 * @return string
 	 */
 	public function getRenameBlueprint($from, $to)
 	{
-		$up   = sprintf("Schema::rename(%s, %s);", $this->convertToBluepointsArgument($from), $this->convertToBluepointsArgument($to));
-		$down = sprintf("Schema::rename(%s, %s);", $this->convertToBluepointsArgument($to), $this->convertToBluepointsArgument($from));
+		$bluepoint = sprintf("Schema::rename(%s, %s);", $this->convertToBluepointsArgument($from), $this->convertToBluepointsArgument($to));
 
-		return ['up'=>$up, 'down'=>$down];
+		return $bluepoint;
 	}	
 
 	/**
@@ -285,16 +362,8 @@ class Migrate
 	public function getDropColumnBlueprint($column)
 	{
 		// 删除字段
-		$up = sprintf("\$table->%s(%s);", 'dropColumn', $this->convertToBluepointsArgument($column['name']));
-
-		// 还原字段
-		$down = Structure::convertColumnToLaravel($column);
-		$down = $this->convertToBluepoints($down);
-
-		// debug('up', $up);
-		// debug('down',$down);
-
-		return ['up'=>$up, 'down'=>$down];
+		$bluepoint = sprintf("\$table->%s(%s);", 'dropColumn', $this->convertToBluepointsArgument($column['name']));
+		return $bluepoint;
 	}
 
 	/**
@@ -306,13 +375,10 @@ class Migrate
 	public function getAddColumnBlueprint($column)
 	{
 		// 新增字段
-		$up = Structure::convertColumnToLaravel($column);
-		$up = $this->convertToBluepoints($up);
+		$column = Structure::convertColumnToLaravel($column);
+		$bluepoint = $this->convertToBluepoints($column);
 
-		// 删除字段
-		$down = sprintf("\$table->%s(%s);", 'dropColumn', $this->convertToBluepointsArgument($column['name']));
-
-		return ['up'=>$up, 'down'=>$down];		
+		return $bluepoint;		
 	}
 
 	/**
@@ -324,10 +390,9 @@ class Migrate
 	 */
 	public function getRenameColumnBlueprint($from, $to)
 	{
-		$up   = sprintf("\$table->%s(%s, %s);", 'renameColumn', $this->convertToBluepointsArgument($from), $this->convertToBluepointsArgument($to));
-		$down = sprintf("\$table->%s(%s, %s);", 'renameColumn', $this->convertToBluepointsArgument($to), $this->convertToBluepointsArgument($from));
+		$bluepoint   = sprintf("\$table->%s(%s, %s);", 'renameColumn', $this->convertToBluepointsArgument($from), $this->convertToBluepointsArgument($to));
 
-		return ['up'=>$up, 'down'=>$down];
+		return $bluepoint;
 	}
 
 	/**
@@ -337,51 +402,39 @@ class Migrate
 	 * @param  string $to   字段新名称
 	 * @return array
 	 */	
-	public function getChangeColumnBlueprint($from, $to)
+	public function getChangeColumnBlueprint($column)
 	{
 		// up
-		$up = Structure::convertColumnToLaravel($to, true);
-		$up = $this->convertToBluepoints($up);
+		$bluepoint = Structure::convertColumnToLaravel($column, true);
+		$bluepoint = $this->convertToBluepoints($bluepoint);
 
-		// down
-		$down = Structure::convertColumnToLaravel($from, true);
-		$down = $this->convertToBluepoints($down);		
-
-		return ['up'=>$up, 'down'=>$down];	
+		return $bluepoint;	
 	}
 
 	/**
 	 * 删除索引迁移语句
 	 * @param  array $index 索引数组
-	 * @return array
+	 * @return string
 	 */
 	public function getDropIndexBlueprint($index)
 	{
 		// up
-		$up = sprintf("\$table->%s(%s);", 'drop'.ucwords($index['type']), $this->convertToBluepointsArgument($index['name']));
+		$bluepoint = sprintf("\$table->%s(%s);", 'drop'.ucwords($index['type']), $this->convertToBluepointsArgument($index['name']));
 
-		// down
-		$down = Structure::convertIndexToLaravel($index);
-		$down = $this->convertToBluepoints($down);		
-
-		return ['up'=>$up, 'down'=>$down];
+		return $bluepoint;
 	}
 
 	/**
 	 * 添加索引迁移语句
 	 * @param  array $index 索引数组
-	 * @return array
+	 * @return string
 	 */
 	public function getAddIndexBlueprint($index)
 	{
-		// up
-		$up = Structure::convertIndexToLaravel($index);
-		$up = $this->convertToBluepoints($up);
-
-		// down
-		$down = sprintf("\$table->%s(%s);", 'drop'.ucwords($index['type']), $this->convertToBluepointsArgument($index['name']));
-
-		return ['up'=>$up, 'down'=>$down];		
+		$index = Structure::convertIndexToLaravel($index);
+		$bluepoint = $this->convertToBluepoints($index);	
+		
+		return $bluepoint;
 	}
 
 	/**
@@ -444,6 +497,10 @@ class Migrate
 
 		if (is_numeric($argument)) {
 			return $argument;
+		}
+
+		if ($argument === null) {
+			return 'null';
 		}
 
 		return "'".$argument."'";		

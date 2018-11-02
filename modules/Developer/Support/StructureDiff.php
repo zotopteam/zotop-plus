@@ -7,7 +7,7 @@ class StructureDiff
 	protected $oldColumns;
 	protected $newColumns;
 	protected $oldIndexes;
-	protected $newIndexes;	
+	protected $newIndexes;
 	protected $diff;
 
 	/**
@@ -58,19 +58,19 @@ class StructureDiff
 		// 新结构的key中不存在于老结构key中的为新增字段
 		$this->newColumns->diffKeys($this->oldColumns)->each(function($item, $key) {
 			$this->newColumns->forget($key);
-			$this->diff->push(['method'=>'addColumn', 'arguments'=>['column'=>$item]]);
+			$this->diff->push(['action'=>'addColumn', 'column'=>$item]);
 		});
 
 		// 老结构的key中不存在于新结构key中的为删除字段
 		$this->oldColumns->diffKeys($this->newColumns)->each(function($item, $key) {
 			$this->oldColumns->forget($key);
-			$this->diff->push(['method'=>'dropColumn', 'arguments'=>['column'=>$item]]);
+			$this->diff->push(['action'=>'dropColumn', 'column'=>$item]);
 		});
 
 		// 新结构中key不等于name的为重命名字段
 		$this->newColumns->filter(function($item, $key) {
 			if ($key != $item['name']) {
-				$this->diff->push(['method'=>'renameColumn', 'arguments'=>['from'=>$key, 'to'=>$item['name']]]);
+				$this->diff->push(['action'=>'renameColumn', 'from'=>$key, 'to'=>$item['name']]);
 				return true;
 			}
 			return false;
@@ -85,7 +85,7 @@ class StructureDiff
 
 			// 如果字段存在，且排除重命名的情况下字段结构不一致，那么为修改字段属性
 			if ($oldColumn && array_except($oldColumn,'name') != array_except($item, 'name')) {
-				$this->diff->push(['method'=>'changeColumn', 'arguments'=>['from'=>$oldColumn, 'to'=>$item]]);
+				$this->diff->push(['action'=>'changeColumn', 'from'=>$oldColumn, 'to'=>$item]);
 				return true;
 			}
 
@@ -95,13 +95,13 @@ class StructureDiff
 		// 新结构的key中不存在于老结构key中的为新增索引
 		$this->newIndexes->diffKeys($this->oldIndexes)->each(function($item, $key) {
 			$this->newIndexes->forget($key);
-			$this->diff->push(['method'=>'addIndex', 'arguments'=>['index'=>$item]]);
+			$this->diff->push(['action'=>'addIndex', 'index'=>$item]);
 		});
 
 		// 老结构的key中不存在于新结构key中的为删除索引
 		$this->oldIndexes->diffKeys($this->newIndexes)->each(function($item, $key) {
 			$this->oldIndexes->forget($key);
-			$this->diff->push(['method'=>'dropIndex', 'arguments'=>['index'=>$item]]);
+			$this->diff->push(['action'=>'dropIndex', 'index'=>$item]);
 		});
 
 		// 主键改变无法通过名称判断
@@ -109,8 +109,8 @@ class StructureDiff
 		$oldPrimary = $this->oldIndexes->where('type','primary')->first();
 
 		if ($newPrimary != $oldPrimary) {
-			$this->diff->push(['method'=>'dropIndex', 'arguments'=>['index'=>$oldPrimary]]);
-			$this->diff->push(['method'=>'addIndex', 'arguments'=>['index'=>$newPrimary]]);
+			$this->diff->push(['action'=>'dropIndex', 'index'=>$oldPrimary]);
+			$this->diff->push(['action'=>'addIndex', 'index'=>$newPrimary]);
 		}
 
 		//dd($this->diff);

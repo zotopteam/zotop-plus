@@ -5,6 +5,11 @@ $(function(){
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+        },
+        error: function(jqXHR) {
+            if (jqXHR.status == 500) {
+                $.alert(jqXHR.responseJSON.message || jqXHR.responseText);
+            }
         }
     });
 });

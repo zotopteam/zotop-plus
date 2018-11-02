@@ -12,6 +12,9 @@ use Modules\Developer\Rules\TableName;
 use Module;
 use Artisan;
 
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+
 class TableController extends AdminController
 {
     /**
@@ -181,7 +184,15 @@ class TableController extends AdminController
             $migrate->updateTable($name);
 
             return $this->success(trans('core::master.updated'), route('developer.table.structure', [$module, $name]));
-        }   
+        }
+
+        // $aaa = rescue(function(){
+        //     Schema::table('test', function (Blueprint $table) {
+        //         $table->primary('id');
+        //         $table->increments('id')->default(null)->change();
+        //     });
+                     
+        // }, false);
 
         $table = Table::find($table);
 

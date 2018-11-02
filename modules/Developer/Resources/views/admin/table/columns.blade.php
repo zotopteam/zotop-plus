@@ -13,7 +13,6 @@
                         <td width="5%" class="text-center">{{trans('developer::table.column.nullable')}}</td>
                         <td width="5%" class="text-center">{{trans('developer::table.column.unsigned')}}</td>
                         <td width="5%" class="text-center">{{trans('developer::table.column.increments')}}</td>
-                        <!-- <td width="15%">{{trans('developer::table.column.index')}}</td> -->
                         <td width="10%">{{trans('developer::table.column.default')}}</td>
                         <td>{{trans('developer::table.column.comment')}}</td>
                         <td width="2%"></td>
@@ -37,7 +36,11 @@
                             {field type="select" name="columns['.$k.'][type]" options="Module::data('developer::table.column.types')" value="$v['type']" class="column-check"}
                         </td>
                         <td>
+                            @if (in_array($v['type'], ['char', 'varchar', 'float', 'double','decimal','enum']))
                             <input type="text" name="columns[{{$k}}][length]" class="form-control" value="{{$v['length'] ?? ''}}" class="column-check">
+                            @else
+                            <input type="text" name="columns[{{$k}}][length]" class="form-control" readonly="readonly">
+                            @endif
                         </td>
                         <td class="text-center">
                             @if (! $v['increments'])
@@ -59,14 +62,13 @@
                             @else
                             <input type="checkbox" disabled>                    
                             @endif
-                        </td>
-<!--                         <td>
-                            @if (! ends_with($v['type'], 'text'))
-                            {field type="select" name="columns['.$k.'][index]" options="Module::data('developer::table.column.indexes')" value="$v['index']" class="column-check"}
-                            @endif
-                        </td>  -->                                               
+                        </td>                                          
                         <td>
+                            @if (! $v['increments'])
                             <input type="text" name="columns[{{$k}}][default]" class="form-control" value="{{$v['default'] ?? ''}}">
+                            @else
+                            <input type="text" name="columns[{{$k}}][default]" class="form-control" readonly="readonly">
+                            @endif
                         </td>
                         <td>
                             <input type="text" name="columns[{{$k}}][comment]" class="form-control" value="{{$v['comment'] ?? ''}}">

@@ -369,7 +369,7 @@
 			content : '<div class="msg-icon"><i class="fa fa-exclamation-triangle"></i></div><div class="msg-content">'+content+'</div>',
 			ok      : true,
 			onclose : callback
-		});
+		}, true);
 	};
 
 	/**

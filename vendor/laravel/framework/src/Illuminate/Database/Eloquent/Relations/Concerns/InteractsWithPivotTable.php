@@ -427,7 +427,7 @@ trait InteractsWithPivotTable
      */
     public function newPivotStatementForId($id)
     {
-        return $this->newPivotQuery()->where($this->relatedPivotKey, $id);
+        return $this->newPivotQuery()->whereIn($this->relatedPivotKey, $this->parseIds($id));
     }
 
     /**
@@ -507,7 +507,7 @@ trait InteractsWithPivotTable
      */
     protected function castKeys(array $keys)
     {
-        return (array) array_map(function ($v) {
+        return array_map(function ($v) {
             return $this->castKey($v);
         }, $keys);
     }
