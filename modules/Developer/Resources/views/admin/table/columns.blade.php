@@ -15,6 +15,7 @@
                         <td width="5%" class="text-center">{{trans('developer::table.column.increments')}}</td>
                         <td width="10%">{{trans('developer::table.column.default')}}</td>
                         <td>{{trans('developer::table.column.comment')}}</td>
+                        <td class="d-none"></td>
                         <td width="2%"></td>
                     </tr>
                 </thead>
@@ -30,7 +31,7 @@
                             @endif
                         </td>
                         <td>
-                            <input type="text" name="columns[{{$k}}][name]" class="form-control required" value="{{$v['name']}}" columnname="true" uniquename="true">
+                            <input type="text" name="columns[{{$k}}][name]" class="form-control form-control-name required" value="{{$v['name']}}" columnname="true" uniquename="true">
                         </td>
                         <td>
                             {field type="select" name="columns['.$k.'][type]" options="Module::data('developer::table.column.types')" value="$v['type']" class="column-check"}
@@ -72,6 +73,9 @@
                         </td>
                         <td>
                             <input type="text" name="columns[{{$k}}][comment]" class="form-control" value="{{$v['comment'] ?? ''}}">
+                        </td>
+                        <td class="d-none">
+                            <input type="text" name="columns[{{$k}}][after]" class="form-control form-control-after" value="{{$v['after'] ?? ''}}">
                         </td>
                         <td class="text-center">
                             <a href="javascript:;" class="btn btn-danger btn-sm column-delete" data-column="{{$k}}">
@@ -237,6 +241,20 @@ $(function(){
 //表格行排序 sortable
 $(function(){
 
+    // 拖动停止更新当前的字段的after
+    var dragstop = function(evt, ui, tr) {
+        
+        ui.item.parent().find('tr').each(function(i) {
+            var prev = $(this).prev().find('input.form-control-name');
+
+            if (prev.length) {
+                $(this).find('input.form-control-after').val(prev.val());
+            } else {
+                $(this).find('input.form-control-after').val('__FIRST__');
+            }
+        })
+    };  
+
     $("table.table-sortable").each(function(index,table){
         $(table).sortable({
             items: "tbody > tr",
@@ -249,8 +267,12 @@ $(function(){
                 });
                 return tr;
             },
-            update:function(){
-
+            start:function (event,ui) {
+                ui.item.data('originalIndex', ui.item.prop('rowIndex'));
+                ui.item.data('originalAfter', ui.item.find('input.form-control-after').val());
+            },
+            stop:function(event,ui){
+                dragstop.apply(this, Array.prototype.slice.call(arguments).concat(ui.item));
             }
         });        
     });

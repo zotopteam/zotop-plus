@@ -1,9 +1,9 @@
 @extends('core::layouts.master')
 
 @section('content')
-<div class="main scrollable bg-primary">
-    <div class="jumbotron full-width bg-primary text-white text-center align-self-center">
-        <div class="container-fluid">
+<div class="d-flex full-width full-height bg-primary justify-content-center">
+    <div class="jumbotron bg-primary text-white align-self-center">
+        <div class="container-fluid text-center">
             <h1>{{config('app.title')}}</h1>
             <p>{{config('app.description')}}</p>
             <div class="p-3">

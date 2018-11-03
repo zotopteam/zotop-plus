@@ -57,7 +57,7 @@ class Migrate
 				return false;
 			}
 
-			// 允许覆盖的时候，删除全部迁移文件，包含update迁移
+			// 允许覆盖的时候，删除全部迁移文件，包含update迁移，只保留最终生成的create迁移
 			Artisan::call('migrate:files', [
 				'files'  => $migrations,
 				'--mode' => 'reset'
@@ -66,16 +66,25 @@ class Migrate
 			array_map([$this->filesystem, 'delete'], $migrations);
 		}
 
+		// 生成迁移文件
 		$file = tap($this->getMigrationFilePath('create'), function($file) use ($content) {
 			$this->filesystem->put($file, $content);
 		});
 
 		try {
+			// 迁移文件
 			Artisan::call('migrate:files', [
 				'files'  => $file,
 				'--mode' => 'migrate'
-			]);			
+			]);
+
+			// 回滚迁移 ，验证down
+			Artisan::call('migrate:files', [
+				'files'  => $file,
+				'--mode' => 'refresh'
+			]);					
 		} catch (Exception $e) {
+			// 迁移失败，删除生成的迁移文件
 			$this->filesystem->delete($file);
 			abort(500, $e->getMessage());
 		}
@@ -93,16 +102,25 @@ class Migrate
 
 		if ($content) {
 
+			// 生成迁移文件
 			$file =  tap($this->getMigrationFilePath('update'), function($file) use ($content) {
 				$this->filesystem->put($file, $content);
 			});
 
 			try {
+				// 迁移文件
 				Artisan::call('migrate:files', [
 					'files'  => $file,
 					'--mode' => 'migrate'
 				]);
+
+				// 回滚迁移 ，验证down
+				Artisan::call('migrate:files', [
+					'files'  => $file,
+					'--mode' => 'refresh'
+				]);		
 			} catch (\Exception $e) {
+				// 迁移失败，删除迁移文件
 				$this->filesystem->delete($file);
 				abort(500, $e->getMessage());
 			}
@@ -120,7 +138,8 @@ class Migrate
 	public function dropTable($template=null)
 	{
 		$content = $this->getDropTableMigration($template);
-
+ 
+		// 删除表时，回滚所有该表已经迁移的文件，并删除该表的迁移文件
 		if ($migrations = $this->getMigrationFiles()) {
 
 			Artisan::call('migrate:files', [
@@ -131,15 +150,23 @@ class Migrate
 			array_map([$this->filesystem, 'delete'], $migrations);
 		}
 
+		// 生成迁移文件
 		$file = tap($this->getMigrationFilePath('drop'), function($file) use ($content) {
 			$this->filesystem->put($file, $content);
 		});
 
 		try {
+			// 迁移文件
 			Artisan::call('migrate:files', [
 				'files'  => $file,
 				'--mode' => 'migrate'
-			]);		
+			]);
+
+			// 回滚迁移 ，验证down
+			Artisan::call('migrate:files', [
+				'files'  => $file,
+				'--mode' => 'refresh'
+			]);			
 		} catch (\Exception $e) {
 			$this->filesystem->delete($file);
 			abort(500, $e->getMessage());

@@ -52,6 +52,7 @@ class DeveloperServiceProvider extends ServiceProvider
     {
         $this->commands([
             \Modules\Developer\Console\MigrateFilesCommand::class,
+            \Modules\Developer\Console\MakeTableModelCommand::class,
         ]);
     }    
 }

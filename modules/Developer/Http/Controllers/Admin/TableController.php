@@ -130,23 +130,27 @@ class TableController extends AdminController
      * @param  string  $table   table name
      * @return Response
      */
-    public function structure(Request $request, $module, $table)
+    public function manage(Request $request, $module, $table)
     {
         // 获取数据表字段、索引和主键
         $table   = Table::find($table);
-
         // 获取迁移文件
         $migrate = Migrate::instance($module, $table);
 
-        $this->title          = trans('developer::table.structure');
+        $module = Module::find($module);
+
+        $model = $module->getExtraPath('Models').'/'.studly_case($table->name()).'.php';
+
+        $this->title          = trans('developer::table.manage');
         $this->table          = $table;
         $this->module         = $module;
         $this->migrations     = $migrate->getMigrationFiles();
-        $this->columns        = $table->columns();
-        $this->indexes        = $table->indexes();
-        $this->primaryColumns = collect($this->indexes)->where('type','primary')->first()['columns'];
-        $this->indexColumns   = collect($this->indexes)->where('type','index')->pluck('columns')->flatten()->all();
-        $this->uniqueColumns  = collect($this->indexes)->where('type','unique')->pluck('columns')->flatten()->all();
+        $this->columns        = $table->columns(true);
+        $this->indexes        = $table->indexes(true);
+        $this->primaryColumns = $this->indexes->where('type','primary')->first()['columns'];
+        $this->indexColumns   = $this->indexes->where('type','index')->pluck('columns')->flatten()->all();
+        $this->uniqueColumns  = $this->indexes->where('type','unique')->pluck('columns')->flatten()->all();
+        $this->model          = app('files')->exists($model);
 
         return $this->view();
     }
@@ -183,7 +187,7 @@ class TableController extends AdminController
 
             $migrate->updateTable($name);
 
-            return $this->success(trans('core::master.updated'), route('developer.table.structure', [$module, $name]));
+            return $this->success(trans('core::master.updated'), route('developer.table.manage', [$module, $name]));
         }
 
         // $aaa = rescue(function(){
@@ -237,16 +241,27 @@ class TableController extends AdminController
 
         if ($action == 'create') {
            $migrate->createTable(false); 
-        }
-
-        if ($action == 'update') {
-            $migrate->updateTable();
-            return $this->success(trans('core::master.operated'));
-
-        }        
+        }     
         
-        return $this->success(trans('core::master.operated'), route('developer.table.structure',[$module, $table]));
+        return $this->success(trans('core::master.operated'), route('developer.table.manage',[$module, $table]));
     }
+
+    /**
+     * 从已有表生成为model文件
+     * @return Response
+     */
+    public function model($module, $table, $action)
+    {
+        $force = ($action == 'override') ? true : false;
+        
+        Artisan::call('module:make-table-model', [
+            'module'  => $module,
+            'table'   => $table,
+            '--force' => $force
+        ]);  
+        
+        return $this->success(trans('core::master.operated'), route('developer.table.manage',[$module, $table]));
+    }    
 
     /**
      * 字段显示和添加

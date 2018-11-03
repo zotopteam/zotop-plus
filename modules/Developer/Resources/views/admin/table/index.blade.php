@@ -35,8 +35,8 @@
 
                         </td>
                         <td class="manage">
-                            <a class="manage-item" href="{{route('developer.table.structure', [$module, $table])}}">
-                                <i class="fa fa-edit"></i> {{trans('developer::table.structure')}}
+                            <a class="manage-item" href="{{route('developer.table.manage', [$module, $table])}}">
+                                <i class="fa fa-edit"></i> {{trans('developer::table.manage')}}
                             </a>
                         </td>
                     </tr>

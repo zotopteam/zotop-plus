@@ -6,7 +6,7 @@ return [
     'index'                       => '数据表列表',
     'create'                      => '创建',
     'edit'                        => '修改',
-    'structure'                   => '结构',
+    'manage'                      => '管理',
     'rename'                      => '重命名',
     'drop'                        => '删除',
 
@@ -23,7 +23,9 @@ return [
 
     'migration.create'            => '生成创建迁移',
     'migration.override'          => '覆盖创建迁移',
-    'migration.update'            => '生成更新迁移',
+
+    'model.create'                => '生成模型文件',
+    'model.override'              => '覆盖模型文件',
 
     'column.name'                 => '名字',
     'column.type'                 => '类型',
@@ -39,7 +41,7 @@ return [
     'column.add_timestamps'       => '时间戳',
     'column.add_softdeletes'      => '软删除',
 
-    'column.exists'                => '字段已经存在',
+    'column.exists'               => '字段已经存在',
 
     'column.validator.columnname' => '长度2-20，允许小写英文字母、数字和下划线，并且仅能字母开头，不以下划线结尾',
     'column.validator.uniquename' => '标识已经存在，请使用其它标识',

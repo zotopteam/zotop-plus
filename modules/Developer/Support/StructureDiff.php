@@ -128,6 +128,9 @@ class StructureDiff
 	{
 		$format = [];
 		
+		// 'after' laravel 不支持 after('test_column')->change() , 暂时从此处去掉
+		// 如果要修改顺序，手动在 migration 文件中使用
+		// DB::statement("ALTER TABLE profile MODIFY COLUMN last_name VARCHAR(255) AFTER first_name");
 		foreach (['name', 'type', 'length', 'nullable', 'unsigned', 'index', 'increments', 'default', 'comment'] as $key) {
 			$format[$key] = $column[$key] ?? null;
 		}

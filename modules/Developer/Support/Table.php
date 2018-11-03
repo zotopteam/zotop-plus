@@ -52,10 +52,15 @@ class Table
      * @var array
      */
     private $customTypes = [
-        'enum'      => 'Modules\Developer\Support\Types\EnumType',
-        'json'      => 'Modules\Developer\Support\Types\JsonType',
-        'year'      => 'Modules\Developer\Support\Types\YearType',
-        'timestamp' => 'Modules\Developer\Support\Types\TimestampType',
+        'enum'          => 'Modules\Developer\Support\Types\EnumType',
+        'json'          => 'Modules\Developer\Support\Types\JsonType',
+        'year'          => 'Modules\Developer\Support\Types\YearType',
+        'char'          => 'Modules\Developer\Support\Types\CharType',
+        'tinyint'       => 'Modules\Developer\Support\Types\TinyintType',
+        'tinyinteger'   => 'Modules\Developer\Support\Types\TinyintegerType',
+        'mediumint'     => 'Modules\Developer\Support\Types\MediumintType',
+        'mediuminteger' => 'Modules\Developer\Support\Types\MediumintegerType',
+        'timestamp'     => 'Modules\Developer\Support\Types\TimestampType',
     ];
 
 	/**
@@ -118,12 +123,18 @@ class Table
 
 		if (empty($instance)) {
 			$instance = new static;
-			$instance->table = $table;
+			$instance->table = str_after($table, $instance->prefix);
 		}
 
 		return $instance;
 	}
 
+    /**
+     * 获取表名称
+     * 
+     * @param  boolean $prefix 是否包含前缀
+     * @return string
+     */
 	public function name($prefix=false)
 	{
 		return $prefix ? $this->prefix.$this->table : $this->table;
@@ -204,12 +215,14 @@ class Table
 	 * 
 	 * @return array
 	 */
-	public function columns()
+	public function columns($collection = false)
 	{
 		$columns = [];
 
  		$column_list = $this->schema->listTableColumns($this->prefix.$this->table);
 		//debug($this->schema->listTableDetails($this->prefix.$this->table));
+
+        // $after = '__FIRST__';
 
 		foreach ($column_list as $name=>$column) {
 			
@@ -221,6 +234,7 @@ class Table
 			$columns[$name]['unsigned']   = $column->getUnsigned() ? 'unsigned' : '';
 			$columns[$name]['increments'] = $column->getAutoincrement() ? 'increments' : '';
 			$columns[$name]['comment']    = $column->getComment();
+            // $columns[$name]['after']      = $after;
 
             // 将类型转化为数据库支持支持的格式
             $columns[$name]['type'] = Structure::convertTypeToDatabase($columns[$name]['type']);
@@ -249,11 +263,13 @@ class Table
             if ($columns[$name]['increments']) {
             	$columns[$name]['default'] = null;
             }
+
+            // $after = $columns[$name]['name'];
 		}
 
 		//debug($columns);
 		
-		return $columns;
+		return $collection ? collect($columns) : $columns;
 	}
 
 	/**
@@ -276,7 +292,7 @@ class Table
 	 * 
 	 * @return array
 	 */
-	public function indexes()
+	public function indexes($collection = false)
 	{
 		$indexes = [];
 		$index_list = $this->schema->listTableIndexes($this->prefix.$this->table);
@@ -296,9 +312,13 @@ class Table
 			}		
 		}
 		
-		return $indexes;	
+		return $collection ? collect($indexes) : $indexes;	
 	}
 
+    /**
+     * __toString 返回数据表名称
+     * @return string
+     */
 	public function __toString()
 	{
 		return $this->table;

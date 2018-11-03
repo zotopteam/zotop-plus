@@ -10,6 +10,16 @@
             {{$title}} : {{$table}}
         </div>
         <div class="main-action">
+            @if ($model)
+            <a class="btn btn-danger js-confirm" href="{{route('developer.table.model', [$module, $table, 'override'])}}">
+                <i class="fa fa-cube"></i> {{trans('developer::table.model.override')}}
+            </a>
+            @else
+            <a class="btn btn-success js-confirm" href="{{route('developer.table.model', [$module, $table, 'create'])}}">
+                <i class="fa fa-cube"></i> {{trans('developer::table.model.create')}}
+            </a>            
+            @endif
+
             @if ($migrations)
             <a class="btn btn-danger js-confirm" href="{{route('developer.table.migration', [$module, $table, 'override'])}}">
                 <i class="fa fa-database"></i> {{trans('developer::table.migration.override')}}
@@ -35,8 +45,11 @@
                 <div class="card-header">
                     <b>{{trans('developer::table.columns')}}</b>
                     <p class="card-text">
-                        {{trans('developer::table.columns.count',[count($columns)])}}
-                    </p>
+                        <span class="mr-3">{{trans('developer::table.columns.count',[count($columns)])}}</span>
+                        <span class="ml-3">
+                            ['{{$columns->implode('name', "','")}}']
+                        </span>
+                    </p>                
                 </div>
                 <div class="card-body p-0">
                     <table class="table table-sm table-sortable table-nowrap table-striped table-hover table-columns">
@@ -101,7 +114,7 @@
                                     {{$v['comment'] ?? ''}}
                                 </td>
                                 <td class="manage">
-
+                                    
                                 </td>                
                             </tr>
                             @endforeach          

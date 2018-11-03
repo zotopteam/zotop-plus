@@ -42,7 +42,8 @@ class Structure
 		'increments' => '',
 		'index'      => '',
 		'default'    => '',
-		'comment'    => ''
+		'comment'    => '',
+		'after'      => '',
 	];
 
 	/**
@@ -486,6 +487,15 @@ class Structure
 		// enum 类型
 		if (in_array($convert['method'], ['enum'])) {
 			$convert['arguments'][] = explode(',', $column['length'] ?: 'Y,N');
+		}
+
+		// position
+		if (isset($column['after']) && $column['after']) {
+			if ($column['after'] == '__FIRST__') {
+				$convert['modifiers']['first'] = [];
+			} else {
+				$convert['modifiers']['after'] = [$column['after']];
+			}
 		}
 
 		// change

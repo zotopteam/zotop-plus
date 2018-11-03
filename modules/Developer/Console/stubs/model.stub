@@ -1,0 +1,47 @@
+<?php
+namespace $NAMESPACE$;
+
+use Illuminate\Database\Eloquent\Model;
+
+class $CLASS$ extends Model
+{
+	
+    /**
+     * 与模型关联的数据表。
+     *
+     * @var string
+     */
+    protected $table = '$TABLE$';
+	
+	
+    /**
+     * 可以被批量赋值的属性。
+     *
+     * @var array
+     */
+    protected $fillable = $FILLABLE$;
+	
+	
+    /**
+     * 不可被批量赋值的属性。
+     *
+     * @var array
+     */
+    protected $guarded = $GUARDES$;
+	
+	
+    /**
+     * 属性转换
+     *
+     * @var array
+     */
+    //protected $casts = [];
+	
+	
+    /**
+     * 执行模型是否自动维护时间戳.
+     *
+     * @var bool
+     */
+    //public $timestamps = false;	
+}

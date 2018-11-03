@@ -16,7 +16,7 @@ class MigrateFilesCommand extends Command
     protected $signature = 'migrate:files 
                             {files* : Files path sperate by space.}
                             {--f|force : Force the operation to run when in production}
-                            {--m|mode=migrate :  Set migrate exection mode, supported : migrate, refresh, rollback}';
+                            {--m|mode=migrate :  Set migrate exection mode, supported : migrate, refresh, reset}';
 
     /**
      * The console command description.
