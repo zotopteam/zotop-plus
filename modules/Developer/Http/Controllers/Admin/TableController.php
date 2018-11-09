@@ -95,7 +95,7 @@ class TableController extends AdminController
             $migrate->createTable(true);
 
             if (Table::find($name)->exists()) {
-                return $this->success(trans('core::master.created'), route('developer.table.structure', [$module, $name]));
+                return $this->success(trans('core::master.created'), route('developer.table.manage', [$module, $name]));
             }
 
             return $this->error(trans('core::master.create.failed'));
@@ -105,7 +105,7 @@ class TableController extends AdminController
         $this->columns = [
             ['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
             ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
-            ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
+            ['name'=>'image', 'type'=>'varchar', 'length'=>'100', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
             ['name'=>'content', 'type'=>'text', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
             ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
             ['name'=>'sort', 'type'=>'mediumint', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
@@ -190,18 +190,8 @@ class TableController extends AdminController
             return $this->success(trans('core::master.updated'), route('developer.table.manage', [$module, $name]));
         }
 
-        // $aaa = rescue(function(){
-        //     Schema::table('test', function (Blueprint $table) {
-        //         $table->primary('id');
-        //         $table->increments('id')->default(null)->change();
-        //     });
-                     
-        // }, false);
-
         $table = Table::find($table);
 
-        $this->columns = $table->columns();
-        $this->indexes = $table->indexes();
         $this->title   = trans('developer::table.edit');
         $this->module  = $module;
         $this->name    = $table->name();

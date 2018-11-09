@@ -75,14 +75,8 @@ class Migrate
 			// 迁移文件
 			Artisan::call('migrate:files', [
 				'files'  => $file,
-				'--mode' => 'migrate'
-			]);
-
-			// 回滚迁移 ，验证down
-			Artisan::call('migrate:files', [
-				'files'  => $file,
-				'--mode' => 'refresh'
-			]);					
+				'--mode' => 'migrate-refresh'
+			]);				
 		} catch (Exception $e) {
 			// 迁移失败，删除生成的迁移文件
 			$this->filesystem->delete($file);
@@ -111,14 +105,8 @@ class Migrate
 				// 迁移文件
 				Artisan::call('migrate:files', [
 					'files'  => $file,
-					'--mode' => 'migrate'
-				]);
-
-				// 回滚迁移 ，验证down
-				Artisan::call('migrate:files', [
-					'files'  => $file,
-					'--mode' => 'refresh'
-				]);		
+					'--mode' => 'migrate-refresh'
+				]);	
 			} catch (\Exception $e) {
 				// 迁移失败，删除迁移文件
 				$this->filesystem->delete($file);
@@ -159,14 +147,8 @@ class Migrate
 			// 迁移文件
 			Artisan::call('migrate:files', [
 				'files'  => $file,
-				'--mode' => 'migrate'
-			]);
-
-			// 回滚迁移 ，验证down
-			Artisan::call('migrate:files', [
-				'files'  => $file,
-				'--mode' => 'refresh'
-			]);			
+				'--mode' => 'migrate-refresh'
+			]);		
 		} catch (\Exception $e) {
 			$this->filesystem->delete($file);
 			abort(500, $e->getMessage());
@@ -278,7 +260,7 @@ class Migrate
 		$data = [
 			'CLASS' => ucwords(camel_case($name)),
 			'TABLE' => $this->table->name(),
-			'DOWN'    => $down,
+			'DOWN'  => $down,
 		];
 
 		return $this->compile($template, $data);
@@ -290,37 +272,47 @@ class Migrate
 
 		// 重命名表
 		if ($this->table->name() != $newname) {
-			$bluepoint[] = $this->getRenameBlueprint($this->table->name(), $newname);
+			$bluepoint[] = $this->getRenameBlueprint($this->table->name(), $newname)."\r\n";
 		}
 
 		if ($diffrents->count()) {
-			$bluepoint[]   = "Schema::table('".$newname."', function (Blueprint \$table) {";
-			
-			$diffrents->where('action', 'dropIndex')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getDropIndexBlueprint($diff['index']);
+
+			// 由于laravel 的 某些schema 无法一次性执行，所以改为每次执行一种类型
+			$codes = [];
+
+			$diffrents->where('action', 'dropIndex')->each(function($diff) use(&$codes) {
+				$codes['dropIndex'][] = $this->getDropIndexBlueprint($diff['index']);
 			});
 
-			$diffrents->where('action', 'dropColumn')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getDropColumnBlueprint($diff['column']);
+			$diffrents->where('action', 'dropColumn')->each(function($diff) use(&$codes) {
+				$codes['dropColumn'][] = $this->getDropColumnBlueprint($diff['column']);
 			});
 
-			$diffrents->where('action', 'renameColumn')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getRenameColumnBlueprint($diff['from'], $diff['to']);
+			$diffrents->where('action', 'renameColumn')->each(function($diff) use(&$codes) {
+				$codes['renameColumn'][] = $this->getRenameColumnBlueprint($diff['from'], $diff['to']);
 			});
 
-			$diffrents->where('action', 'addColumn')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getAddColumnBlueprint($diff['column']);
+			$diffrents->where('action', 'addColumn')->each(function($diff) use(&$codes) {
+				$codes['addColumn'][] = $this->getAddColumnBlueprint($diff['column']);
 			});			
 
-			$diffrents->where('action', 'addIndex')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getAddIndexBlueprint($diff['index']);
+			$diffrents->where('action', 'addIndex')->each(function($diff) use(&$codes) {
+				$codes['addIndex'][] = $this->getAddIndexBlueprint($diff['index']);
 			});
 
-			$diffrents->where('action', 'changeColumn')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getChangeColumnBlueprint($diff['to']);
-			});											
+			$diffrents->where('action', 'changeColumn')->each(function($diff) use(&$codes) {
+				$codes['changeColumn'][] = $this->getChangeColumnBlueprint($diff['to']);
+			});
 
-			$bluepoint[] = "});";
+			foreach ($codes as $action=>$code) {
+				$bluepoint[] = "//".$action;
+				$bluepoint[] = "Schema::table('".$newname."', function (Blueprint \$table) {";
+				foreach ($code as $c) {
+					$bluepoint[] = "\t".$c;
+				}
+				$bluepoint[] = "});\r\n";
+			}
+			
 		}
 
 		return $bluepoint;
@@ -332,37 +324,45 @@ class Migrate
 
 		// 重命名表
 		if ($this->table->name() != $newname) {
-			$bluepoint[] = $this->getRenameBlueprint($newname, $this->table->name());
+			$bluepoint[] = $this->getRenameBlueprint($newname, $this->table->name())."\r\n";;
 		}
 
 		if ($diffrents->count()) {
-			$bluepoint[]   = "Schema::table('".$this->table->name()."', function (Blueprint \$table) {";
 
-			$diffrents->where('action', 'dropColumn')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getAddColumnBlueprint($diff['column']);
+			$codes = [];
+
+			$diffrents->where('action', 'dropColumn')->each(function($diff) use(&$codes) {
+				$codes['dropColumn'][] = $this->getAddColumnBlueprint($diff['column']);
 			});
 
-			$diffrents->where('action', 'dropIndex')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getAddIndexBlueprint($diff['index']);
+			$diffrents->where('action', 'dropIndex')->each(function($diff) use(&$codes) {
+				$codes['dropIndex'][] = $this->getAddIndexBlueprint($diff['index']);
 			});
 
-			$diffrents->where('action', 'addIndex')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getDropIndexBlueprint($diff['index']);
+			$diffrents->where('action', 'addIndex')->each(function($diff) use(&$codes) {
+				$codes['addIndex'][] = $this->getDropIndexBlueprint($diff['index']);
 			});
 
-			$diffrents->where('action', 'addColumn')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getDropColumnBlueprint($diff['column']);
+			$diffrents->where('action', 'addColumn')->each(function($diff) use(&$codes) {
+				$codes['addColumn'][] = $this->getDropColumnBlueprint($diff['column']);
 			});
 
-			$diffrents->where('action', 'renameColumn')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getRenameColumnBlueprint($diff['to'], $diff['from']);
+			$diffrents->where('action', 'renameColumn')->each(function($diff) use(&$codes) {
+				$codes['renameColumn'][] = $this->getRenameColumnBlueprint($diff['to'], $diff['from']);
 			});
 
-			$diffrents->where('action', 'changeColumn')->each(function($diff) use(&$bluepoint) {
-				$bluepoint[] = "\t".$this->getChangeColumnBlueprint($diff['from']);
+			$diffrents->where('action', 'changeColumn')->each(function($diff) use(&$codes) {
+				$codes['changeColumn'][] = $this->getChangeColumnBlueprint($diff['from']);
 			});				
 
-			$bluepoint[] = "});";
+			foreach ($codes as $action=>$code) {
+				$bluepoint[] = "//".$action;
+				$bluepoint[] = "Schema::table('".$this->table->name()."', function (Blueprint \$table) {";
+				foreach ($code as $c) {
+					$bluepoint[] = "\t".$c;
+				}
+				$bluepoint[] = "});\r\n";
+			}
 		}
 
 		return $bluepoint;

@@ -5,7 +5,7 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\IntegerType;
-
+use DB;
 
 class TinyintType extends IntegerType
 {
@@ -52,6 +52,27 @@ class TinyintType extends IntegerType
         $unsigned   = ! empty($fieldDeclaration['unsigned']) ? ' UNSIGNED' : '';
         $increments = ! empty($fieldDeclaration['autoincrement']) ? ' AUTO_INCREMENT' : '';
 
-        return 'TINYINT'.$unsigned.$increments;
+        return 'TINYINT(3)'.$unsigned.$increments;
+    }
+
+    /**
+     * 如果字段为 tinyint(1) ，则为boolean字段
+     * 
+     * @param  string $table  表名（包含前缀）
+     * @param  string $column 字段名称
+     * @return boolean
+     */
+    public function isBoolean($table, $column)
+    {
+        $boolean = false;
+
+        $result = DB::select("show columns from ".$table." where Field = '".$column."'");
+
+        if ($result && $result[0]->Type == 'tinyint(1)') {
+            $boolean = true;
+        }
+
+        // 获取数据表允许的值
+        return $boolean;
     }
 }

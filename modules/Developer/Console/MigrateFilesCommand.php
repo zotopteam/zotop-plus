@@ -45,7 +45,7 @@ class MigrateFilesCommand extends Command
         // 迁移模式
         $mode = $this->option('mode');
 
-        if (! in_array($mode, ['migrate', 'refresh', 'reset']) ) {
+        if (! in_array($mode, ['migrate', 'refresh', 'reset', 'migrate-refresh']) ) {
             $this->error("Invalid migrate mode: {$mode}");
             return false;
         }
@@ -56,7 +56,7 @@ class MigrateFilesCommand extends Command
         $files = array_wrap($this->argument('files'));
 
         // 临时迁移文件夹路径
-        $path = storage_path('temp/migrate-files-'.date('YmdHis'));
+        $path = storage_path('temp/migrate-files-'.$mode.'-'.date('YmdHis').rand(1000,9999));
 
         try {
             // 创建临时文件夹
@@ -75,12 +75,16 @@ class MigrateFilesCommand extends Command
 
             // 迁移选项：文件夹为相对路径
             $options = [
-                '--path' => str_replace(base_path(), '', $path),
+                '--path'  => str_replace(base_path(), '', $path),
                 '--force' => $this->option('force')
             ];
 
             // 迁移
             switch ($mode) {
+                 case 'migrate':
+                    // 迁移文件
+                    $this->callSilent('migrate', $options);                    
+                    break; 
                  case 'reset':
                     //回滚所有文件迁移
                     $this->callSilent('migrate:reset', $options);
@@ -88,10 +92,11 @@ class MigrateFilesCommand extends Command
                  case 'refresh':
                     // 回滚并迁移
                     $this->callSilent('migrate:refresh', $options);
-                    break;                 
-                 default:
-                    // 迁移所有文件
+                    break;
+                case 'migrate-refresh':
+                    // 迁移并回滚迁移，用于验证up和down
                     $this->callSilent('migrate', $options);
+                    $this->callSilent('migrate:refresh', $options);
                     break;
             }     
 

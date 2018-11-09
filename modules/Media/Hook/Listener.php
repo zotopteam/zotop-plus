@@ -50,8 +50,9 @@ class Listener
             
             // 合并信息
             $fileinfo = array_merge($params, $return, [
-                'user_id' => Auth::user()->id,
-                'token'   => Auth::user()->token
+                'parent_id' => $params['folder_id'] ?? 0,
+                'user_id'   => Auth::user()->id,
+                'token'     => Auth::user()->token
             ]);
 
             // 保存文件信息

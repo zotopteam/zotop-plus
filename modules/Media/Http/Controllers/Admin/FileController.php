@@ -92,11 +92,11 @@ class FileController extends AdminController
 
         $file = File::findOrFail($id);
 
-        if ($file->folder_id == $folder_id) {
+        if ($file->parent_id == $folder_id) {
             return $this->error(trans('media::file.move.unchange', [$file->name]));
         }
 
-        $file->folder_id = $folder_id;
+        $file->parent_id = $folder_id;
         $file->save();
 
         return $this->success(trans('core::master.operated'), $request->referer());        

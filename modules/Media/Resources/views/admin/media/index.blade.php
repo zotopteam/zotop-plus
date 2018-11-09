@@ -75,79 +75,75 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($folders as $folder)
-                <tr class="folder-item" data-url="{{route('media.index', $folder->id)}}">
+            @foreach($media as $m)
+                <tr class="js-media-open" data-type="{{$m->type}}" data-url="{{$m->url}}" data-title="{{$m->name}}">
                     <td class="select">
-                        <input type="checkbox" name="folder_ids[]" value="{{$folder->id}}" data-type="folder" class="select">
-                    </td>
-                    <td width="1%" class="text-center pr-2">
-                        <i class="fa fa-fw fa-2x fa-folder text-warning"></i>
-                    </td>
-                    <td class="pl-2">
-                        <div class="title text-lg">
-                             <a href="{{route('media.index', $folder->id)}}">{{$folder->name}}</a>
-                        </div>
-                    </td>
-                    <td width="10%" class="manage manage-hover text-right">
-                            <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.folder.rename',[$folder->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$folder->name}}">
-                                <i class="fa fa-fw fa-eraser"></i> {{trans('core::folder.rename')}}
-                            </a>
-                            <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.folder.move', $folder->id)}}" data-select="{{route('media.folder.select',[$folder->parent_id])}}" data-title="{{$folder->name}}">
-                                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::folder.move')}}
-                            </a>                               
-                            <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $folder->id)}}">
-                                <i class="fa fa-fw fa-times"></i> {{trans('core::master.delete')}}
-                            </a>                        
-                    </td>
-                    <td>{{trans('media::folder.type')}}</td>
-                    <td></td>
-                    <td>{{$folder->createdAt()}}</td>
-                </tr>
-            @endforeach
-
-            @foreach($files as $file)
-                <tr>
-                    <td class="select">
-                        <input type="checkbox" name="file_ids[]" value="{{$file->id}}" data-type="file" class="select">
+                        @if ($m->isFolder())
+                        <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="folder" class="select">
+                        @else
+                        <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="file" class="select">
+                        @endif
                     </td>                
                     <td width="1%" class="text-center pr-2">
-                        @if ($file->isImage())
-                            <a href="javascript:;" class="js-image" data-url="{{$file->url()}}" data-title="{{$file->name}}">
-                                <div class="icon icon-32"><img src="{{$file->preview(32,32)}}"></div>
-                            </a>
+                        @if ($m->isFolder())
+                            <i class="fa fa-fw fa-2x fa-folder text-warning"></i>
+                        @elseif ($m->isImage())
+                            <div class="icon icon-32"><img src="{{preview(public_path($m->path),32,32)}}"></div>
                         @else
-                            <i class="fa {{$file->icon()}} fa-2x fa-fw text-warning"></i>
+                            <i class="fa {{$m->icon}} fa-2x fa-fw text-warning"></i>
                         @endif                        
                     </td>                
                     <td width="50%" class="pl-2">
                         <div class="title text-md text-wrap">
-                            {{$file->name}}
+                            {{$m->name}}
                         </div>
                         <div class="description">
-                            @if ($file->isImage())
-                            {{$file->width}}px × {{$file->height}}px
+                            @if ($m->isImage())
+                            {{$m->width}}px × {{$m->height}}px
                             @endif
                         </div>
                     </td>
                     <td width="10%" class="manage manage-hover text-right">
-                        @if ($file->isImage())
-                        <a href="javascript:;" class="manage-item js-image" data-url="{{$file->url()}}" data-title="{{$file->name}}">
-                            <i class="fa fa-eye fa-fw"></i> {{trans('media::file.view')}}
-                        </a>
-                        @endif                 
-                        <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.file.rename',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
-                            <i class="fa fa-fw fa-eraser"></i> {{trans('media::file.rename')}}
-                        </a>
-                        <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.file.move', $file->id)}}" data-select="{{route('media.folder.select',[$file->folder_id])}}" data-title="{{$file->name}}">
-                            <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
-                        </a>                        
-                        <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $file->id)}}">
-                            <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
-                        </a>                        
+
+                        @if ($m->isFolder())
+                           <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.folder.rename',[$m->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$m->name}}">
+                                <i class="fa fa-fw fa-eraser"></i> {{trans('core::folder.rename')}}
+                            </a>
+                            <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.folder.move', $m->id)}}" data-select="{{route('media.folder.select',[$m->parent_id])}}" data-title="{{$m->name}}">
+                                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::folder.move')}}
+                            </a>                               
+                            <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $m->id)}}">
+                                <i class="fa fa-fw fa-times"></i> {{trans('core::master.delete')}}
+                            </a>                        
+                        @else
+                            @if ($m->isImage())
+                            <a href="javascript:;" class="manage-item js-image" data-url="{{$m->url}}" data-title="{{$m->name}}">
+                                <i class="fa fa-eye fa-fw"></i> {{trans('media::file.view')}}
+                            </a>
+                            @endif            
+                            <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.file.rename',[$m->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$m->name}}">
+                                <i class="fa fa-fw fa-eraser"></i> {{trans('media::file.rename')}}
+                            </a>
+                            <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.file.move', $m->id)}}" data-select="{{route('media.folder.select',[$m->folder_id])}}" data-title="{{$m->name}}">
+                                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
+                            </a>                        
+                            <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $m->id)}}">
+                                <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
+                            </a>
+                        @endif                      
                     </td>
-                    <td>{{trans('core::file.type.'.$file->type)}}</td>
-                    <td>{{$file->size()}}</td>
-                    <td>{{$file->createdAt()}}</td>
+                    <td>
+                        @if ($m->isFolder())
+                        {{trans('media::folder.type')}}
+                        @else
+                        {{trans('core::file.type.'.$m->type)}}
+                        @endif
+                    </td>
+                    <td>{{$m->size_human}}</td>
+                    <td>
+                        <b>{{$m->user->username}}</b>
+                        <div class="text-sm">{{$m->created_at_human}}</div>
+                    </td>
                 </tr>
             @endforeach
 
@@ -180,7 +176,7 @@
             </button>
         </div>    
 
-        {{ $files->links('core::pagination.default') }}
+        {{ $media->links('core::pagination.default') }}
     </div>
 </div>
 @endsection
@@ -277,14 +273,29 @@
     }
 
     $(function(){
-        // 文件夹双击
-        $('.folder-item').on('dblclick',function(){
-            location.href = $(this).data('url');
-            return false;
+
+        // 双击
+        $(document).on('dblclick', '.js-media-open', function(event) {
+            event.preventDefault();
+
+            var type  = $(this).data('type');
+            var url   = $(this).data('url');
+            var title = $(this).data('title');
+            var info  = $(this).data('info');
+
+            if (type == 'folder') {
+                location.href = url;
+            }
+
+            if (type == 'image') {
+                $.image(url, title).statusbar(info);
+            }
+
+            event.stopPropagation();
         });
 
         // 文件夹和文件移动
-        $('.js-move').on('click',function(){
+        $('.js-move').on('click',function(event){
             var title  = $(this).text() + $(this).data('title');
             var move   = $(this).data('url');
             var select = $(this).data('select');
@@ -294,6 +305,8 @@
                     dialog.close().remove();
                 });
             });
+
+            event.stopPropagation();
         });
 
         // 选择

@@ -5,6 +5,7 @@ namespace Modules\Media\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
+use Modules\Media\Models\Media;
 use Modules\Media\Models\Folder;
 use Modules\Media\Models\File;
 use Modules\Core\Support\FileBrowser;
@@ -24,30 +25,28 @@ class MediaController extends AdminController
         $this->keywords  = $request->input('keywords');
         $this->folder    = Folder::find($folder_id);
         $this->parents   = Folder::parents($folder_id, true);
-
-        $folder = Folder::query();
-
-        if ($this->keywords) {
-            $folder->where('name', 'like', '%'.$this->keywords.'%');
-        } else {
-            $folder->where('parent_id', $folder_id);
-        }
-
-        $this->folders   = $folder->orderby('sort', 'desc')->orderby('created_at', 'asc')->get();         
-
-        $file = File::query();
         
+
+        $media = Media::with('user');
+
         if ($this->keywords) {
-            $file->where('name', 'like', '%'.$this->keywords.'%');
+            $media->where('name', 'like', '%'.$this->keywords.'%');
         } else {
-            $file->where('folder_id',$folder_id);
+            $media->where('parent_id', $folder_id);
         }
 
-        if ($this->type) {
-            $file->where('type',$this->type);
-        }
+        $this->media = $media->orderby('sort', 'desc')->paginate(100);
 
-        $this->files = $file->orderby('created_at', 'desc')->paginate(25);
+        $this->media->getCollection()->transform(function($item) {
+            if ($item->isFolder()) {
+                $item->url = route('media.index', $item->id);
+            } else {
+                $item->url = url($item->url);
+            }
+            
+            return $item;
+        });
+
 
         return $this->view();
     }
@@ -60,31 +59,30 @@ class MediaController extends AdminController
      */
     public function operate(Request $request)
     {
-        $success    = 0;
-        $errors     = [];
-        $operate    = $request->input('operate');
-        $folder_ids = $request->input('folder_ids',[]);
-        $file_ids   = $request->input('file_ids',[]);
+        $success = 0;
+        $errors  = [];
+        $operate = $request->input('operate');
+        $ids     = $request->input('ids', []);
 
         switch ($operate) {
             case 'move':
                 $move_folder_id = $request->input('move_folder_id');
-                Folder::whereIn('id', $folder_ids)->get()->each(function($item, $key) use($move_folder_id, &$success, &$errors) {
+                Folder::whereIn('id', $ids)->get()->each(function($item, $key) use($move_folder_id, &$success, &$errors) {
                     $item->parent_id = $move_folder_id;
                     $item->save() ? $success++ : array_push($errors, $item->error);
                 });
 
-                File::whereIn('id', $file_ids)->get()->each(function($item, $key) use($move_folder_id, &$success, &$errors) {
-                    $item->folder_id = $move_folder_id;
+                File::whereIn('id', $ids)->get()->each(function($item, $key) use($move_folder_id, &$success, &$errors) {
+                    $item->parent_id = $move_folder_id;
                     $item->save() ? $success++ : array_push($errors, $item->error);
                 });                
                 break;
             case 'delete':
-                Folder::whereIn('id', $folder_ids)->get()->each(function($item, $key) use(&$success, &$errors) {
+                Folder::whereIn('id', $ids)->get()->each(function($item, $key) use(&$success, &$errors) {
                     $item->delete() ? $success++ : array_push($errors, $item->error);
                 });
 
-                File::whereIn('id', $file_ids)->get()->each(function($item, $key) use(&$success, &$errors)  {
+                File::whereIn('id', $ids)->get()->each(function($item, $key) use(&$success, &$errors)  {
                     $item->delete() ? $success++ : array_push($errors, $item->error);
                 });
                 break;
@@ -134,7 +132,7 @@ class MediaController extends AdminController
         }
         
         $this->params = $request->all();
-        $this->files  = $file->orderby('created_at', 'desc')->paginate(24);
+        $this->files  = $file->orderby('sort', 'desc')->paginate(24);
         $this->title  = trans('media::media.insert.from.uploaded',[$request->typename]);
         
         return $this->view('media::media.select.uploaded');
@@ -147,39 +145,51 @@ class MediaController extends AdminController
      */
     public function selectFromLibrary(Request $request, $folder_id=0)
     {
-        $folder = Folder::where('parent_id', $folder_id);
-        $file   = File::where('folder_id', $folder_id);
-
-        // 文件类型
-        if ($filetype = $request->input('filetype')) {
-            $file->where('type', $filetype);
-        }
-
-        // 允许的扩展名
-        if ($allow = $request->input('allow')) {
-            $file->whereIn('extension', explode(',', $allow));
-        }    
-
+        // 参数
         $this->params    = $params = $request->all();
-        $this->folder_id = $folder_id;
-        $this->folder    = Folder::find($folder_id);
-        $this->files     = $file->orderby('created_at', 'desc')->paginate(48);
-        $this->folders   = $folder->orderby('sort', 'desc')->orderby('created_at', 'desc')->get()->map(function($folder) use($params) {
-            $folder->url = route('media.select.library', [$folder->id] + $params);
-            return $folder;
-        });
 
+        // 当前文件夹编号
+        $this->folder_id = $folder_id;
+
+        // 当前文件夹信息
+        $this->folder    = Folder::find($folder_id);
+
+        // 文件夹路径
         $this->parents   = Folder::parents($folder_id, true)->map(function($folder) use($params) {
             $folder->url = route('media.select.library', [$folder->id] + $params);
             return $folder;
         });
 
+        // 根目录
         $this->root_url = route('media.select.library', [0] + $params);
 
-        if ($this->folder) { 
+        // 上级url
+        if ($this->folder) {
             $this->parent_url = route('media.select.library', [$this->folder->parent_id] + $params);
+        } else {
+            $this->parent_url = null;
         }
 
+        // 查询数据并分页
+        $this->media = Media::where('parent_id', $folder_id)->where(function($query) use ($request) {
+            if ($request->filetype) {
+                $query->where('type', 'folder')->orWhere('type', $request->filetype);
+            }
+        })->where(function($query) use ($request) {
+            if ($request->allow) {
+                $query->whereNull('extension')->orWhereIn('extension', explode(',', $request->allow));
+            }
+        })->orderby('sort', 'desc')->paginate(48);
+
+        // 补充url字段
+        $this->media->getCollection()->transform(function($item) use ($params) {
+            if ($item->isFolder()) {
+                $item->link = route('media.select.library', [$item->id] + $params);
+            } else {
+                $item->link = url($item->url);
+            }
+            return $item;
+        });
 
         $this->title = trans('media::media.insert.from.library',[$request->typename]);
         return $this->view('media::media.select.library');

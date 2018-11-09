@@ -56,6 +56,7 @@ class Table
         'json'          => 'Modules\Developer\Support\Types\JsonType',
         'year'          => 'Modules\Developer\Support\Types\YearType',
         'char'          => 'Modules\Developer\Support\Types\CharType',
+        'float'         => 'Modules\Developer\Support\Types\FloatType',
         'tinyint'       => 'Modules\Developer\Support\Types\TinyintType',
         'tinyinteger'   => 'Modules\Developer\Support\Types\TinyintegerType',
         'mediumint'     => 'Modules\Developer\Support\Types\MediumintType',
@@ -79,6 +80,8 @@ class Table
             $this->registerTypes[$type] = $type;
             if (! Type::hasType($type)) {
                 Type::addType($type, $class);
+            } else {
+                Type::overrideType($type, $class);
             }
         }
 
@@ -257,6 +260,11 @@ class Table
             // 获取enum类型的允许值
             if (in_array($columns[$name]['type'], ['enum'])) {
                 $columns[$name]['length'] = $column->getType()->getAllowed($this->prefix.$this->table, $columns[$name]['name']);
+            }
+
+            // 获取tinyint字段长度，用于区分是tinyint还是boolean
+            if (in_array($columns[$name]['type'], ['tinyint'])) {
+                $columns[$name]['type'] = $column->getType()->isBoolean($this->prefix.$this->table, $columns[$name]['name']) ? 'boolean' : $columns[$name]['type'];
             }
 
             // 自增字段无默认值

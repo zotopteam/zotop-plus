@@ -1,38 +1,30 @@
 <?php
-
 namespace Modules\Media\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Modules\Media\Models\Media;
 use Modules\Core\Traits\Nestable;
-use Format;
 
-class Folder extends Model
+class Folder extends Media
 {
     use Nestable;
-    
-    /**
-     * 与模型关联的数据表
-     *
-     * @var string
-     */
-    protected $table = 'media_folders';    
-    protected $fillable = ['parent_id','name','settings','sort','disabled','created_at','updated_at'];
-
-    /**
-     * 属性转换
-     *
-     * @var array
-     */
-    protected $casts = [
-        'settings' => 'array',
-    ];
 
     /**
      * boot
      */
     public static function boot()
     {
-        parent::boot();    
+        parent::boot();
+
+        // auto-sets values on creation
+        static::creating(function ($query) {
+            $query->type = 'folder';
+            $query->sort = time() + pow(10,9);
+        });
+
+        static::addGlobalScope('folder', function (Builder $builder) {
+            $builder->where('type', '=', 'folder');
+        });             
     
         // 为安全考虑，禁止删除非空文件夹
         static::deleting(function($folder) {
@@ -60,7 +52,7 @@ class Folder extends Model
      */
     public function files()
     {
-        return $this->hasMany('Modules\Media\Models\File', 'folder_id', 'id');
+        return $this->hasMany('Modules\Media\Models\File', 'parent_id', 'id');
     }  
 
     /**
@@ -71,16 +63,4 @@ class Folder extends Model
         return $this->hasMany('Modules\Media\Models\Folder', 'parent_id', 'id');
     }
 
-    /**
-     * 获取格式化后的时间
-     * 
-     * @return string
-     */
-    public function createdAt($human = false)
-    {
-        if ($human) {
-            return Format::date($this->created_at, 'datetime human');
-        }
-        return Format::date($this->created_at, 'datetime');
-    }    
 }

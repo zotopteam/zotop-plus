@@ -190,9 +190,9 @@ class Structure
 			if (array_has($index, ['type','columns']) && in_array($index['type'], ['primary', 'index', 'unique'])) {
 
 		        // 如果有自增，则主键索引无效
-		        if ($this->increments() && $index['type'] == 'primary') {
-		            return false;
-		        }
+		        // if ($this->increments() && $index['type'] == 'primary') {
+		        //     return false;
+		        // }
 
 				// 格式化索引字段
 				$columns = is_array($index['columns']) ? array_values($index['columns']) : explode(',', $index['columns']);
@@ -441,7 +441,7 @@ class Structure
 		}
 
 		// 数字类型，数字类型在Laravel中不能设置长度，只能按照类型长度
-		if (in_array($convert['method'], ['tinyInteger', 'smallInteger', 'integer', 'bigInteger', 'mediumInteger'])) {
+		if (in_array($convert['method'], ['boolean', 'tinyInteger', 'smallInteger', 'integer', 'bigInteger', 'mediumInteger'])) {
 			
 			if ($column['increments']) {
 				$convert['method'] = static::$incrementsMap[$convert['method']];

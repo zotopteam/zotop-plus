@@ -24,15 +24,15 @@
             <a class="btn btn-danger js-confirm" href="{{route('developer.table.migration', [$module, $table, 'override'])}}">
                 <i class="fa fa-database"></i> {{trans('developer::table.migration.override')}}
             </a>
+            <a class="btn btn-primary" href="{{route('developer.table.edit', [$module, $table])}}">
+                <i class="fa fa-fw fa-pen-square"></i> {{trans('developer::table.edit')}}
+            </a>            
             @else
             <a class="btn btn-success js-confirm" href="{{route('developer.table.migration', [$module, $table, 'create'])}}">
                 <i class="fa fa-database"></i> {{trans('developer::table.migration.create')}}
             </a>            
             @endif
-
-            <a class="btn btn-primary" href="{{route('developer.table.edit', [$module, $table])}}">
-                <i class="fa fa-fw fa-pen-square"></i> {{trans('developer::table.edit')}}
-            </a>                      
+                    
             <a class="btn btn-primary js-delete" href="javascript:;" data-url="{{route('developer.table.drop', [$module, $table])}}">
                 <i class="fa fa-times"></i> {{trans('developer::table.drop')}}
             </a>                           

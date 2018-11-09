@@ -44,7 +44,7 @@
                                         @if ($file->isImage())
                                         <img src="{{$file->url()}}" class="img-fluid align-self-center">
                                         @else
-                                        <i class="fa {{$file->icon()}} fa-5x fa-fw text-muted align-self-center"></i>
+                                        <i class="fa {{$file->icon}} fa-5x fa-fw text-muted align-self-center"></i>
                                         @endif
                                     </div>
                                 </div>                             
@@ -54,14 +54,14 @@
                                     {{$file->name}}
                                 </div>
                                 <div class="card-text">
-                                    <small class="text-success">{{$file->size()}}</small>
+                                    <small class="text-success">{{$file->size_human}}</small>
                                     @if ($file->isImage())
                                     <small>{{$file->width}}px × {{$file->height}}px</small>
                                     @endif
                                 </div>
                                 <div class="contextmenu d-none">
                                         @if ($file->isImage())
-                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->url()}}" data-title="{{$file->name}}" data-info="{{$file->size()}} / {{$file->width}}px × {{$file->height}}px">
+                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->url()}}" data-title="{{$file->name}}" data-info="{{$file->size_human}} / {{$file->width}}px × {{$file->height}}px">
                                             <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
                                             <b class="contextmenu-item-text">{{trans('media::file.view')}}</b>
                                         </a>

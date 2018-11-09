@@ -12,7 +12,7 @@
                 <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
             </a>
             <a href="javascript:;" class="btn btn-outline-primary btn-icon-only js-prompt" data-url="{{route('media.folder.create',[$folder_id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" title="{{trans('media::folder.create')}}">
-                <i class="fa fa-fw fa-folder"></i>
+                <i class="fa fa-fw fa-folder"></i> {{trans('media::folder.create')}}
             </a>
             <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('core::master.refresh')}}">
                 <i class="fa fa-sync"></i>
@@ -38,88 +38,76 @@
     <div class="main-body scrollable p-2" id="file-upload-dragdrop">
         
         <div class="container-fluid">
-            <div class="row">
-            @foreach($folders as $folder)
+            <div class="row">         
+            @foreach($media as $m)
                 <div class="col-sm-4 col-md-3 col-xl-2 p-1">
-                    <label class="card-check d-block cur-p m-0" data-type="folder" data-url="{{$folder->url}}">  
+                    <label class="card-check d-block m-0" data-type="{{$m->isFolder() ? 'folder' : 'file'}}" data-url="{{$m->link}}">
+                        @if (request()->input('select', 0) == 1)
+                        <input type="radio" name="file_ids[]" value="{{$m->id}}" class="form-control form-control-check">
+                        @else
+                        <input type="checkbox" name="file_ids[]" value="{{$m->id}}" class="form-control form-control-check">
+                        @endif             
                         <div class="card card-md bg-light js-contextmenu">
                             <div class="card-image">
                                 <div class="card-thumb pos-r">
+                                    @if ($m->isFolder())
                                     <div class="pos-a pos-full d-flex justify-content-center bg-white">
                                         <i class="fa fa-folder fa-6x fa-fw text-warning align-self-center"></i>
                                     </div>
-                                </div>                             
-                            </div>
-                            <div class="card-body p-2">
-                                <div class="card-text text-md text-overflow">
-                                    {{$folder->name}}
-                                </div>
-                                <div class="card-text text-xs">
-                                    <small class="text-success">{{trans('media::folder.type')}}</small>
-                                </div>
-                                <div class="contextmenu d-none">          
-                                        <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.folder.rename',[$folder->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$folder->name}}">
-                                            <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::folder.rename')}}</b>
-                                        </a>                      
-                                        <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $folder->id)}}">
-                                            <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::folder.delete')}}</b>
-                                        </a>
-                                </div>
-                            </div>                           
-                        </div>
-                    </label>
-                </div>
-            @endforeach            
-            @foreach($files as $file)
-                <div class="col-sm-4 col-md-3 col-xl-2 p-1">
-                    <label class="card-check d-block m-0" data-type="file">
-                        @if (request()->input('select', 0) == 1)
-                        <input type="radio" name="file_ids[]" value="{{$file->id}}" class="form-control form-control-check">
-                        @else
-                        <input type="checkbox" name="file_ids[]" value="{{$file->id}}" class="form-control form-control-check">
-                        @endif               
-                        <div class="card card-md bg-light js-contextmenu">
-                            <div class="card-image">
-                                <div class="card-thumb pos-r">
+                                    @else
                                     <div class="pos-a pos-full d-flex justify-content-center bg-image-preview">
-                                        @if ($file->isImage())
-                                        <img src="{{$file->url()}}" class="align-self-center">
+                                        @if ($m->isImage())
+                                        <img src="{{$m->link}}" class="align-self-center">
                                         @else
-                                        <i class="fa {{$file->icon()}} fa-5x fa-fw text-muted align-self-center"></i>
+                                        <i class="fa {{$m->icon}} fa-5x fa-fw text-muted align-self-center"></i>
                                         @endif
                                     </div>
+                                    @endif
                                 </div>                             
                             </div>
                             <div class="card-body p-2">
                                 <div class="card-text text-md text-overflow">
-                                    {{$file->name}}
+                                    {{$m->name}}
                                 </div>
                                 <div class="card-text text-xs">
-                                    <small class="text-success">{{trans('core::file.type.'.$file->type)}}</small>
-                                    <small class="text-info">{{$file->size()}}</small>
-                                    @if ($file->isImage())
-                                    <small>{{$file->width}}px × {{$file->height}}px</small>
+                                    @if($m->isFolder())
+                                    <small class="text-success">{{trans('media::folder.type')}}</small>
+                                    @else
+                                    <small class="text-success">{{trans('core::file.type.'.$m->type)}}</small>
+                                    @endif
+                                    <small class="text-info">{{$m->size_human}}</small>
+                                    @if ($m->isImage())
+                                    <small>{{$m->width}}px × {{$m->height}}px</small>
                                     @endif
                                 </div>
                                 <div class="contextmenu d-none">
-                                        @if ($file->isImage())
-                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->url()}}" data-title="{{$file->name}}" data-info="{{$file->size()}} / {{$file->width}}px × {{$file->height}}px">
-                                            <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::file.view')}}</b>
-                                        </a>
-                                        @endif                 
-                                        <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.file.rename',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
-                                            <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::file.rename')}}</b>
-                                        </a>                                                                  
-                                        <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $file->id)}}">
-                                            <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::file.delete')}}</b>
-                                        </a>
+                                        @if($m->isFolder())
+                                            <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.folder.rename',[$m->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$m->name}}">
+                                                <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
+                                                <b class="contextmenu-item-text">{{trans('media::folder.rename')}}</b>
+                                            </a>                      
+                                            <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $m->id)}}">
+                                                <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
+                                                <b class="contextmenu-item-text">{{trans('media::folder.delete')}}</b>
+                                            </a>                                            
+                                        @else
+                                            @if ($m->isImage())
+                                            <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$m->link}}" data-title="{{$m->name}}" data-info="{{$m->size_human}} / {{$m->width}}px × {{$m->height}}px">
+                                                <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
+                                                <b class="contextmenu-item-text">{{trans('media::file.view')}}</b>
+                                            </a>
+                                            @endif                 
+                                            <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.file.rename',[$m->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$m->name}}">
+                                                <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
+                                                <b class="contextmenu-item-text">{{trans('media::file.rename')}}</b>
+                                            </a>                                                                  
+                                            <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $m->id)}}">
+                                                <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
+                                                <b class="contextmenu-item-text">{{trans('media::file.delete')}}</b>
+                                            </a>
+                                        @endif
                                 </div>
-                                <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>
+                                <textarea name="data" class="d-none">{!! json_encode($m) !!}</textarea>
                             </div>                           
                         </div>
                     </label>
@@ -130,9 +118,9 @@
         </div>
 
     </div><!-- main-body -->
-    @if ($files->lastPage() > 1)  
+    @if ($media->lastPage() > 1)  
     <div class="main-footer text-sm p-1">
-        {{ $files->appends($params)->links('core::pagination.default') }}
+        {{ $media->appends($params)->links('core::pagination.default') }}
     </div>
     @endif
 </div>
@@ -165,7 +153,7 @@
                     'module'     : '{{$params['module'] ?? app('current.module')}}',
                     'controller' : '{{$params['controller'] ?? app('current.controller')}}',
                     'action'     : '{{$params['action'] ?? app('current.action')}}',
-                    'field'     : '{{$params['field'] ?? null}}',
+                    'field'      : '{{$params['field'] ?? null}}',
                     'user_id'    : '{{Auth::user()->id}}',
                     'token'      : '{{Auth::user()->token}}'
                 },

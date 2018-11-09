@@ -3,7 +3,7 @@
         {{trans('media::media.title')}}   
     </div>
     <div class="side-body scrollable">
-        <div class="tree clearfix" id="tree" style="width:100%;overflow:hidden;">     
+        <div class="tree clearfix" id="tree" style="width:100%;overflow:hidden;">
         </div>
     </div>
     <div class="side-divider m-0"></div>
@@ -27,7 +27,7 @@ $(function(){
     $("#tree").fancytree({
         extensions: ["glyph","wide"],
         source: {!! json_encode(Module::data('media::tree')) !!},
-        //minExpandLevel: 2,
+        minExpandLevel: 2,
         checkbox: false,
         selectMode: 3,
         toggleEffect:false,

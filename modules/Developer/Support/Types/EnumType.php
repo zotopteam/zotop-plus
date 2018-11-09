@@ -18,6 +18,13 @@ class EnumType extends Type
         return 'enum';
     }
 
+    /**
+     * 获取enum字段的允许数据
+     * 
+     * @param  string $table  表名（包含前缀）
+     * @param  string $column 字段名称
+     * @return string
+     */
     public function getAllowed($table, $column)
     {
         $allowed = '';
