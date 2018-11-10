@@ -264,14 +264,11 @@ class Listener
      * @param  stiring $module 模块名称
      * @return mixed
      */
-    public function moduleManageCoreForbidden($view, $module)
+    public function moduleManageCoreForbidden($module)
     {
         // 核心模块不能卸载
         if (in_array(strtolower($module), config('modules.cores', ['core']))) {
-            $view->error = trans('core::module.core_operate_forbidden');
-            return false;
-        }
-
-        return $view;       
+            abort(403,trans('core::module.core_operate_forbidden'));
+        }      
     }
 }

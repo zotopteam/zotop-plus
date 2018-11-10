@@ -139,7 +139,7 @@ class TableController extends AdminController
 
         $module = Module::find($module);
 
-        $model = $module->getExtraPath('Models').'/'.studly_case($table->name()).'.php';
+        $model = $module->getExtraPath('Models').'/'.studly_case(str_after($table->name(), $module->getLowerName().'_')).'.php';
 
         $this->title          = trans('developer::table.manage');
         $this->table          = $table;

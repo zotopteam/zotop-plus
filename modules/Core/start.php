@@ -27,9 +27,9 @@
 /**
  * 卸载、禁用，删除前验证是否为核心模块
  */
-\Filter::listen('module.uninstalling', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
-\Filter::listen('module.deleting', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
-\Filter::listen('module.disabling', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
+\Action::listen('module.uninstalling', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
+\Action::listen('module.deleting', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
+\Action::listen('module.disabling', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
 
 /**
  * 扩展 Request::referer 功能
@@ -499,4 +499,27 @@
     $attrs['rows'] = 18;
 
     return $this->field($attrs);
+});
+
+
+/**
+ * icon 选择器
+ */
+\Form::macro('icon', function($attrs) {
+
+    $value = $this->getValue($attrs);
+    $id    = $this->getId($attrs);
+    $name  = $this->getAttribute($attrs, 'name');
+
+    $options = $this->getAttribute($attrs, 'options',  [
+        'icon'            => $value,
+        'cols'            => $this->getAttribute($attrs, 'cols', 10),
+        'rows'            => $this->getAttribute($attrs, 'rows', 5),
+        'iconset'         => $this->getAttribute($attrs, 'iconset', 'fontawesome5'),
+        'selectedClass'   => $this->getAttribute($attrs, 'selectedClass', 'btn-success'),
+    ]);
+
+    return $this->toHtmlString(
+        $this->view->make('core::field.icon')->with(compact('name', 'value', 'id', 'attrs', 'options'))->render()
+    );
 });

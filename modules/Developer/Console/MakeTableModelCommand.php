@@ -93,8 +93,8 @@ class MakeTableModelCommand extends Command
      */
     public function getModelName()
     {
-        // 模型名称为表名的驼峰格式
-        return studly_case($this->table->name());
+        // 模型名称为去掉模块前缀后的表名的驼峰格式
+        return studly_case(str_after($this->table->name(), $this->module->getLowerName().'_'));
     }
 
     /**

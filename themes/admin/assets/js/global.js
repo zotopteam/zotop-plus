@@ -7,9 +7,9 @@ $(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
         },
         error: function(jqXHR) {
-            if (jqXHR.status == 500) {
+            if (jqXHR.status == 500 || jqXHR.status == 403 ) {
                 $.alert(jqXHR.responseJSON.message || jqXHR.responseText);
-            }
+            }          
         }
     });
 });

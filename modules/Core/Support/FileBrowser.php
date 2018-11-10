@@ -56,15 +56,19 @@ class FileBrowser
      * 
      * @param string $root 根目录，默认为上传目录
      */
-    public function __construct(Request $request, $root='public/uploads', $dir='')
+    public function __construct(Request $request, $root='public/uploads', $dir='', $autoCreate=false)
     {
         $this->root       = $root;
         $this->dir        = $dir ?: $request->input('dir');
         $this->path       = $this->root.'/'.trim($this->dir,'/');
-        $this->realpath   = realpath(base_path($this->path));
+        $this->realpath   = base_path($this->path);
         $this->route      = app('router')->getCurrentRoute()->getName();
         $this->parameters = app('router')->getCurrentRoute()->parameters();
         $this->params     = $request->all();
+
+        if ($autoCreate && !File::isDirectory($this->realpath)) {
+            File::makeDirectory($this->realpath, 0775, true);
+        }
     }
 
     /**

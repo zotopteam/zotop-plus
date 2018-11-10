@@ -27,8 +27,9 @@ class SiteController extends AdminController
         $root   = $views.'/'.$module;
 
         $browser = app(FileBrowser::class, [
-            'root' => $root,
-            'dir'  => $request->input('dir')
+            'root'       => $root,
+            'dir'        => $request->input('dir'),
+            'autoCreate' => true
         ]);
 
         $this->params   = $browser->params;

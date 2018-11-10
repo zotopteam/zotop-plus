@@ -108,7 +108,8 @@ body.blur > *:not(.ui-popup):not(.ui-popup-backdrop){filter: blur(1.5px);overflo
 .ui-alert .msg-icon, .ui-confirm .msg-icon{font-size:5rem;display:block;text-align:center;}
 .ui-alert .msg-content,.ui-confirm .msg-content{padding: 1rem 3rem;text-align:center;font-size:1.25rem;font-weight:bold;line-height:2;min-width:500px;max-width:800px;max-height:400px;overflow:auto;word-wrap:break-word;}
 .ui-alert .msg-content b,.ui-confirm .msg-content b{color:#ff0000;margin:0 0.5rem;}
-.ui-alert .msg-content{text-align:left;font-weight:normal;line-height:1.8;min-width:500px;max-width:800px;max-height:300px;}
+.ui-alert .msg-content{font-weight:normal;line-height:1.8;min-width:500px;max-width:800px;max-height:300px;}
+.ui-alert .msg-content>span {display:inline-block;text-align:left;word-break: break-all;}
 .ui-alert .ui-dialog-content{color:#0072c6;}
 .ui-confirm .ui-dialog-content{color:#ff6600;}
 

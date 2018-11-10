@@ -28,17 +28,15 @@ class ModuleController extends AdminController
     /**
      * 启用模块
      * 
-     * @param  string $name 模块名称
+     * @param  string $module 模块名称
      * @return json
      */
-    public function enable(Request $request, $name)
+    public function enable(Request $request, $module)
     {
-        // 禁用前置Hook
-        if (! Filter::fire('module.enabling', $this, $module) ) {
-            return $this->error($this->error ?? trans('core::module.enable.failed', [$module]));
-        }
+        // 启用前置Hook
+        Action::fire('module.enabling', $module);
 
-        Module::enable($name);
+        Module::enable($module);
 
         return $this->success(trans('core::master.actived'), $request->referer());
     }
@@ -52,9 +50,7 @@ class ModuleController extends AdminController
     public function disable(Request $request, $module)
     {
         // 禁用前置Hook
-        if (! Filter::fire('module.disabling', $this, $module) ) {
-            return $this->error($this->error ?? trans('core::module.disable.failed', [$module]));
-        }    
+        Action::fire('module.disabling', $module);
 
         Module::disable($module);
 
@@ -69,10 +65,8 @@ class ModuleController extends AdminController
      */
     public function install(Request $request, $module)
     {
-        // 按照前置Hook
-        if (! Filter::fire('module.installing', $this, $module) ) {
-            return $this->error($this->error ?? trans('core::module.install.failed', [$module]));
-        }
+        // 安装前置Hook
+        Action::fire('module.installing', $module);
 
         // install
         Artisan::call('module:execute', [
@@ -94,9 +88,7 @@ class ModuleController extends AdminController
     public function uninstall(Request $request, $module)
     {
         // 卸载前置Hook
-        if (! Filter::fire('module.uninstalling', $this, $module) ) {
-            return $this->error($this->error ?? trans('core::module.uninstall.failed', [$module]));
-        }
+        Action::fire('module.uninstalling', $module);
 
         // install
         Artisan::call('module:execute', [
@@ -117,10 +109,8 @@ class ModuleController extends AdminController
      */
     public function delete(Request $request, $module)
     {
-        // 卸载前置Hook
-        if (! Filter::fire('module.deleting', $this, $module) ) {
-            return $this->error($this->error ?? trans('core::module.delete.failed', [$module]));
-        }
+        // 删除前置Hook
+        Action::fire('module.deleting', $module);
         
         // Find Module
         $module = Module::find($module);
@@ -142,6 +132,9 @@ class ModuleController extends AdminController
      */
     public function publish($module='')
     {
+        // 发布前置Hook
+        Action::fire('module.publish', $module);
+
         if ($module) {
             Artisan::call("module:publish", [
                 'module' => $module

@@ -1,6 +1,8 @@
 @extends('core::layouts.master')
 
 @section('content')
+@include('content::content.side')
+
 <div class="main">
     <div class="main-header">
         <div class="main-title mr-auto">

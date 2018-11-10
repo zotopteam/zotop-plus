@@ -5,7 +5,7 @@ namespace Modules\Content\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
-//use Modules\Content\Models\Content;
+use Modules\Content\Models\Content;
 
 class ContentController extends AdminController
 {
@@ -18,12 +18,9 @@ class ContentController extends AdminController
     {
         $this->title = trans('content::content.title');
 
-        // 全部获取
-        //$this->contents = Content::all();
-        // 部分获取
-        //$this->contents = Content::with('some')->where('key','value')->orderby('id','asc')->get();        
+       
         // 分页获取
-        //$this->contents = Content::with('some')->where('key','value')->orderby('id','asc')->paginate(25);
+        $this->contents = Content::with('user')->orderby('id','asc')->paginate(25);
 
         return $this->view();
     }

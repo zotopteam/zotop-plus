@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContentTable1541338953 extends Migration
+class CreateContentTable1541835140 extends Migration
 {
 	/**
 	 * Run the migrations.

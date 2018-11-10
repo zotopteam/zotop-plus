@@ -366,7 +366,7 @@
 			fixed   : true,
 			padding : 0,
 			title   : dialog.defaults.alertText,
-			content : '<div class="msg-icon"><i class="fa fa-exclamation-triangle"></i></div><div class="msg-content">'+content+'</div>',
+			content : '<div class="msg-icon"><i class="fa fa-exclamation-triangle"></i></div><div class="msg-content"><span>'+content+'</span></div>',
 			ok      : true,
 			onclose : callback
 		}, true);
