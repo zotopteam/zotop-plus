@@ -1,15 +1,16 @@
 /*! Global js */
 
-// Laravel的VerifyCsrfToken验证
+// Ajax 全局
 $(function(){
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
         },
         error: function(jqXHR) {
-            if (jqXHR.status == 500 || jqXHR.status == 403 ) {
-                $.alert(jqXHR.responseJSON.message || jqXHR.responseText);
-            }          
+            // 422 为表单验证提示，在每次提交时候单独处理
+            if (jqXHR.status != 422 ) {
+                $.alert(jqXHR.responseJSON.message || jqXHR.responseText).title(jqXHR.statusText);
+            }        
         }
     });
 });
@@ -291,7 +292,7 @@ $(function(){
 
     $("table.table-sortable").each(function(index,table){
         $(table).sortable({
-            items: "tbody > tr",
+            items: "tbody > tr:not(.ui-sortable-disabled)",
             handle: "td.drag",
             axis: "y",
             placeholder:"ui-sortable-placeholder",

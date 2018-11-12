@@ -5,7 +5,10 @@ namespace Modules\Content\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
-//use Modules\Content\Models\Field;
+use Modules\Content\Models\Model;
+use Modules\Content\Models\Field;
+use Modules\Content\Support\ModelHelper;
+use Module;
 
 class FieldController extends AdminController
 {
@@ -14,19 +17,44 @@ class FieldController extends AdminController
      *
      * @return Response
      */
-    public function index()
+    public function index($modelId)
     {
-        $this->title = trans('content::content.title');
+        //ModelHelper::fieldInit($modelId);
 
-        // 全部获取
-        //$this->fields = Field::all();
-        // 部分获取
-        //$this->fields = Field::with('some')->where('key','value')->orderby('id','asc')->get();        
-        // 分页获取
-        //$this->fields = Field::with('some')->where('key','value')->orderby('id','asc')->paginate(25);
+        $this->model = Model::findOrFail($modelId);
+        $this->title = trans('content::field.title');
+        $this->fields = Field::where('model_id',$modelId)->orderby('sort','asc')->get();        
+
+        // 左边允许一行多个
+        $this->main = $this->fields->filter(function($item){
+            return $item['col'] == 0;
+        })->values();
+
+        // 右边只允许一行一个
+        $this->side = $this->fields->filter(function($item){
+            return $item['col'] == 1;
+        })->values();  
 
         return $this->view();
     }
+
+    /**
+     * 删除
+     *
+     * @return Response
+     */
+    public function sort(Request $request, $modelId)
+    {
+        foreach ($request->ids as $sort=>$id) {
+            Field::where('id', $id)->update([
+                'col'  => $request->col,
+                'row'  => $sort,
+                'sort' => $sort,
+            ]);
+        }
+
+        return $this->success(trans('core::master.operated'));        
+    }    
 
     /**
      * 新建
@@ -35,7 +63,7 @@ class FieldController extends AdminController
      */
     public function create()
     {
-        $this->title = trans('content::content.create');
+        $this->title = trans('content::field.create');
 
         $this->field = Field::findOrNew(0);
 
@@ -65,7 +93,7 @@ class FieldController extends AdminController
      */
     public function show($id)
     {
-        $this->title = trans('content::content.show');
+        $this->title = trans('content::field.show');
 
         $this->field = Field::findOrFail($id);
 
@@ -77,11 +105,13 @@ class FieldController extends AdminController
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($modelId, $id)
     {
-        $this->title = trans('content::content.edit');
+        $this->title = trans('content::field.edit');
+
         $this->id    = $id;
         $this->field = Field::findOrFail($id);
+        $this->model = Model::findOrFail($this->field->model_id);
 
         return $this->view();
     }
@@ -106,11 +136,53 @@ class FieldController extends AdminController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($modelId, $id)
     {
         $field = Field::findOrFail($id);
+
+        if ($field->system) {
+            abort(403, 'system cant destroy');
+        }
+
         $field->delete();
 
-        return $this->success(trans('core::master.deleted'), route('content.field.index'));        
+        return $this->success(trans('core::master.deleted'), route('content.field.index', $modelId));        
     }
+
+    /**
+     * 启用和禁用
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function status($modelId, $id)
+    {
+        $field = Field::findOrFail($id);
+        $field->disabled = $field->disabled ? 0 : 1;
+        $field->save();
+
+        return $this->success(trans('core::master.operated'), route('content.field.index', $modelId));
+    }
+
+    /**
+     * 字段属性
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function settings(Request $request, $modelId)
+    {
+        $this->field = array_object($request->field);
+
+        $types = Module::data('content::field.types');
+
+        $view = array_get($types, $this->field->type.'.view');
+
+        // 标题不允许设置任何属性
+        if (empty($view)) {
+            return '';
+        }
+
+        return $this->view($view);
+    }      
 }

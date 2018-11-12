@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Modules\Content\Models\Model;
 use Modules\Content\Http\Requests\ModelRequest;
+use Modules\Content\Support\ModelHelper;
 use Module;
 use File;
 
@@ -23,18 +24,7 @@ class ModelController extends AdminController
 
         $this->models = Model::with('user')->orderby('sort','asc')->get();
 
-        $this->import = collect([]);
-
-        // 获取未导入的模型
-        foreach (File::files(realpath(__DIR__.'/../../../Database/Models/')) as $file) {
-            $import = json_decode(File::get($file));
-
-            if (isset($import->model->id) && $this->models->where('id', $import->model->id)->count() == 0) {
-                $this->import->put(path_base($file), $import->model);
-            }
-        }
-
-        debug($this->import);
+        $this->import = ModelHelper::getImport($this->models->pluck('id')->all());
 
         return $this->view();
     }
@@ -153,20 +143,13 @@ class ModelController extends AdminController
      */
     public function export($id)
     {
-        $model = Model::findOrFail($id);
+        return ModelHelper::export($id); 
+    }
 
-        // 导出的内容
-        $content = [
-            'model'    => $model->toArray(),
-            'field'    => [],
-            'template' => ''
-        ];
+    public function import(Request $request)
+    {
+        ModelHelper::import(base_path($request->file)); 
 
-        // 写入临时文件
-        $file = tap(storage_path("temp/{$id}.model"), function($file) use ($content) {
-            app('files')->put($file, json_encode($content));
-        }); 
-
-        return response()->download($file)->deleteFileAfterSend(true);
+        return $this->success(trans('core::master.operated'), route('content.model.index'));
     }
 }

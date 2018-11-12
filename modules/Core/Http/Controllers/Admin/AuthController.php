@@ -134,6 +134,5 @@ class AuthController extends AdminController
         $request->session()->regenerate();
 
         return $this->success(trans('core::auth.logout.success'), route('admin.login'));
-        //return redirect(route('admin.login'));
     }
 }

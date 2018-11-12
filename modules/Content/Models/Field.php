@@ -19,7 +19,7 @@ class Field extends Model
      *
      * @var array
      */
-    protected $fillable = ['modelid','control','label','name','type','length','default','notnull','unique','settings','tips','base','post','search','system','listorder','disabled'];
+    protected $fillable = ['model_id','label','type','name','length','default','required','unique','settings','help','post','search','system','col','row','sort','disabled'];
 	
 	
     /**
@@ -35,7 +35,9 @@ class Field extends Model
      *
      * @var array
      */
-    //protected $casts = [];
+    protected $casts = [
+        'settings' => 'json'
+    ];
 	
 	
     /**

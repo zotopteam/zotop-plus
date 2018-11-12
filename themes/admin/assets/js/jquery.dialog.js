@@ -348,7 +348,7 @@
 			fixed   : true,
 			padding : 0,
 			title   : dialog.defaults.confirmText,
-			content : '<div class="msg-icon"><i class="fa fa-question-circle"></i></div><div class="msg-content">'+content+'</div>',
+			content : '<div class="msg-icon"><i class="fa fa-question-circle"></i></div><div class="msg-content"><span>'+content+'</span></div>',
 			ok      : ok,
 			cancel  : cancel || $.noop
 		},true);

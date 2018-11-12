@@ -1,10 +1,12 @@
 @extends('core::layouts.master')
 
 @section('content')
-@include('content::content.side')
 
 <div class="main">
     <div class="main-header">
+        <div class="main-back">
+            <a href="{{route('content.content.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+        </div>    
         <div class="main-title mr-auto">
             {{$title}}
         </div>
@@ -83,7 +85,7 @@
                     </tr>
                 @endforeach
                 @foreach($import as $file=>$model)
-                    <tr class="item disabled">
+                    <tr class="item disabled ui-sortable-disabled">
                         <td></td>
                         <td class="text-center">
                             <i class="{{$model->icon}} fa-2x text-muted"></i>
@@ -93,7 +95,7 @@
                                 {{$model->name}}
                             </div>
                             <div class="manage">
-                                <a class="manage-item" href="{{route('content.model.import', ['file'=>$file])}}">
+                                <a class="manage-item js-confirm" href="{{route('content.model.import', ['file'=>$file])}}">
                                     <i class="fa fa-file-import"></i> {{trans('content::model.import')}}
                                 </a>
                             </div>

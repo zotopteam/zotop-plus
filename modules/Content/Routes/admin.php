@@ -28,13 +28,16 @@ $router->group(['prefix'=>'content', 'module'=>'content'], function (Router $rou
 
     // 字段管理
     $router->group(['prefix' =>'field'], function (Router $router) {
-        $router->get('index','FieldController@index')->name('content.field.index')->middleware('allow:content.field.index');
-        $router->get('create','FieldController@create')->name('content.field.create')->middleware('allow:content.field.create');
+        $router->get('index/{model_id}','FieldController@index')->name('content.field.index')->middleware('allow:content.field.index');
+        $router->any('sort/{model_id}','FieldController@sort')->name('content.field.sort')->middleware('allow:content.field.sort');
+        $router->get('create/{model_id}','FieldController@create')->name('content.field.create')->middleware('allow:content.field.create');
         $router->post('store','FieldController@store')->name('content.field.store')->middleware('allow:content.field.store');
-        $router->get('show/{id}','FieldController@show')->name('content.field.show')->middleware('allow:content.field.show');
-        $router->get('edit/{id}','FieldController@edit')->name('content.field.edit')->middleware('allow:content.field.edit');
+        $router->get('show/{model_id}/{id}','FieldController@show')->name('content.field.show')->middleware('allow:content.field.show');
+        $router->get('edit/{model_id}/{id}','FieldController@edit')->name('content.field.edit')->middleware('allow:content.field.edit');
         $router->put('update/{id}','FieldController@update')->name('content.field.update')->middleware('allow:content.field.update');
-        $router->delete('destroy/{id}','FieldController@destroy')->name('content.field.destroy')->middleware('allow:content.field.destroy');
+        $router->delete('destroy/{model_id}/{id}','FieldController@destroy')->name('content.field.destroy')->middleware('allow:content.field.destroy');
+        $router->any('status/{model_id}/{id}','FieldController@status')->name('content.field.status')->middleware('allow:content.field.status');
+        $router->any('settings/{model_id}','FieldController@settings')->name('content.field.settings');
     });
     
 });

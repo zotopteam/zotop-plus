@@ -15,21 +15,98 @@
         <div class="container-fluid">
 
             {form model="$field" route="['content.field.store', $id]" id="field-form" method="put" autocomplete="off"}
+            
+             {field type="hidden" name="model_id" required="required"}
 
             <div class="form-title row">{{trans('content::field.form.base')}}</div>
 
             <div class="form-group row">
-                <label for="title" class="col-2 col-form-label required">{{trans('content::field.title.label')}}</label>
-                <div class="col-4">
-                    {field type="text" name="title" required="required"}
+                <label for="label" class="col-2 col-form-label required">{{trans('content::field.label.label')}}</label>
+                <div class="col-8">
+                    {field type="text" name="label" required="required"}
 
-                    @if ($errors->has('title'))
-                    <span class="form-help text-error">{{ $errors->first('title') }}</span>
+                    @if ($errors->has('label'))
+                    <span class="form-help text-error">{{ $errors->first('label') }}</span>
                     @else
-                    <span class="form-help">{{trans('content::field.title.help')}}</span>                     
+                    <span class="form-help">{{trans('content::field.label.help')}}</span>                     
                     @endif                       
                 </div>
             </div>
+
+            <div class="form-group row">
+                <label for="name" class="col-2 col-form-label required">{{trans('content::field.name.label')}}</label>
+                <div class="col-8">
+                    @if ($field->system)
+                        {field type="translate" name="name" source="label" format="id" disabled="disabled"}
+                    @else
+                        {field type="translate" name="name" source="label" format="id" required="required" maxlength="64"}
+                    @endif
+
+                    @if ($errors->has('name'))
+                    <span class="form-help text-error">{{ $errors->first('name') }}</span>
+                    @else
+                    <span class="form-help">{{trans('content::field.name.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="help" class="col-2 col-form-label">{{trans('content::field.help.label')}}</label>
+                <div class="col-8">
+                    {field type="text" name="help"}
+
+                    @if ($errors->has('help'))
+                    <span class="form-help text-error">{{ $errors->first('help') }}</span>
+                    @else
+                    <span class="form-help">{{trans('content::field.help.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
+
+            <div id="field-settings">
+                <i class="fa fa-spinner fa-spin d-none"></i>
+            </div>            
+
+            <div class="form-group row">
+                <label for="default" class="col-2 col-form-label">{{trans('content::field.default.label')}}</label>
+                <div class="col-8">
+                    {field type="textarea" name="default" rows="2"}
+
+                    @if ($errors->has('default'))
+                    <span class="form-help text-error">{{ $errors->first('default') }}</span>
+                    @else
+                    <span class="form-help">{{trans('content::field.default.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
+
+            <div class="form-title row">{{trans('content::field.form.other')}}</div>
+
+            <div class="form-group row">
+                <label for="post" class="col-2 col-form-label">{{trans('content::field.post.label')}}</label>
+                <div class="col-8">
+                    {field type="bool" name="post"}
+
+                    @if ($errors->has('post'))
+                    <span class="form-help text-error">{{ $errors->first('post') }}</span>
+                    @else
+                    <span class="form-help">{{trans('content::field.post.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="col" class="col-2 col-form-label">{{trans('content::field.col.label')}}</label>
+                <div class="col-8">
+                    {field type="bool" name="col"}
+
+                    @if ($errors->has('col'))
+                    <span class="form-help text-error">{{ $errors->first('col') }}</span>
+                    @else
+                    <span class="form-help">{{trans('content::field.col.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>         
 
             {/form}
 
@@ -44,6 +121,21 @@
 @endsection
 
 @push('js')
+<script type="text/javascript">
+    function show_settings(type) {
+        var field = {!! json_encode($field) !!};
+            field.type = type;
+
+        $.post("{{route('content.field.settings', $model->id)}}", {field:field}, function(html){
+            $('#field-settings').html(html);
+            $(window).trigger('resize');
+        });
+    }
+
+    $(function(){
+        show_settings('{{$field->type}}');
+    });
+</script>
 <script type="text/javascript">
     $(function(){
         $('form.form').validate({

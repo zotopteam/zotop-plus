@@ -32,6 +32,7 @@ if (! function_exists('array_object')) {
     
     /**
      * 数组转对象
+     * 
      * @param  array $array 数组
      * @return mixed
      */
@@ -39,9 +40,9 @@ if (! function_exists('array_object')) {
     {
         if (is_array($array)) {
             return (object)array_map(__FUNCTION__, $array);
-        } else {
-            return $array;
         }
+
+        return $array;
     }
 }
 

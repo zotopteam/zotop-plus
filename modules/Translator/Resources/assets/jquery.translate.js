@@ -25,7 +25,7 @@
             btn.on('click',function(e){
                 e.preventDefault();
 
-                if (btn.hasClass('disabled')) {
+                if (btn.hasClass('disabled') || target.is(':disabled')) {
                     return false;
                 }
 

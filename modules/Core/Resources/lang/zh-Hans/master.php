@@ -10,7 +10,7 @@ return [
     'created'              => '添加成功',
     'create.failed'        => '添加失败',
     'created_at'           => '创建时间',
-    'existed'              => '已经存在',
+    'existed'              => ':0 已经存在',
     'edit'                 => '修改',
     'update'               => '修改',
     'updating'             => '正在修改...',    
