@@ -82,7 +82,7 @@ class FieldController extends AdminController
         $field->fill($request->all());
         $field->save();
 
-        return $this->success(trans('core::master.created'), route('content.field.index'));
+        return $this->success(trans('core::master.created'), route('content.field.index', $request->model_id));
     }
 
     /**
@@ -128,7 +128,7 @@ class FieldController extends AdminController
         $field->fill($request->all());        
         $field->save();
 
-        return $this->success(trans('core::master.updated'), route('content.field.index'));
+        return $this->success(trans('core::master.updated'), route('content.field.index', $request->model_id));
     }
 
     /**
@@ -172,17 +172,27 @@ class FieldController extends AdminController
      */
     public function settings(Request $request, $modelId)
     {
-        $this->field = array_object($request->field);
-
         $types = Module::data('content::field.types');
 
-        $view = array_get($types, $this->field->type.'.view');
+        $this->field = array_object($request->field);
+        $this->type  = array_object(array_get($types, $this->field->type));
 
-        // 标题不允许设置任何属性
-        if (empty($view)) {
-            return '';
+        // 如果有定义属性视图
+        if ($this->type->view ?? false) {
+
+            if (is_string($this->type->view)) {
+                $this->type->view = explode('&&', $this->type->view);
+            } else {
+                $this->type->view = (array)$this->type->view;
+            }
+
+            if (count($this->type->view) == 1) {
+                return $this->view(reset($this->type->view));
+            }
+
+            return $this->view();
         }
 
-        return $this->view($view);
+        return null;
     }      
 }

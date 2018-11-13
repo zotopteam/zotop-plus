@@ -84,7 +84,7 @@ class ModelHelper
         $model = new Model;
         $model->fill($data['model']);
         $model->sort = Model::max('sort') + 1;
-        $model->save(); 
+        $model->save();
 
         return true;
     }
@@ -97,12 +97,15 @@ class ModelHelper
     public static function fieldInit($modelId)
     {
         $system = Module::data('content::field.system');
+        $types  = Module::data('content::field.types');
 
         Field::where('model_id', $modelId)->delete();
 
+        // 插入模块的系统字段，合并字段默认设置
         foreach ($system as $field) {
             Field::create(array_merge($field, [
                 'model_id' => $modelId,
+                'settings' => array_get($types, $field['type'].'.settings', []),
                 'system'   => 1,
             ]));
         }

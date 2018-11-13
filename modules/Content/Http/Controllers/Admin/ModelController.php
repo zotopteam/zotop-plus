@@ -55,7 +55,10 @@ class ModelController extends AdminController
         $model = new Model;
         $model->fill($request->all());
         $model->sort = Model::max('sort') + 1;
-        $model->save();
+
+        if ($model->save()) {
+            ModelHelper::fieldInit($model->id);
+        }
 
         return $this->success(trans('core::master.created'), route('content.model.index'));
     } 

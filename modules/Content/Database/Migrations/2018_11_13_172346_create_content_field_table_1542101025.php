@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContentFieldTable1542038699 extends Migration
+class CreateContentFieldTable1542101025 extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -21,10 +21,7 @@ class CreateContentFieldTable1542038699 extends Migration
 			$table->string('label', 100)->comment('显示的标签名称');
 			$table->string('type', 100)->comment('控件类型，如text，number等');
 			$table->string('name', 100)->nullable()->comment('数据库中的字段名称');
-			$table->integer('length')->nullable()->comment('字段长度')->default(0)->unsigned();
 			$table->text('default')->nullable()->comment('默认值');
-			$table->boolean('required')->nullable()->default(1)->comment('是否必填，1：是，0：否');
-			$table->tinyInteger('unique')->nullable()->comment('是否唯一，1：唯一，0：允许重复')->default(0);
 			$table->text('settings')->nullable()->comment('字段其它设置，如radio，select等的选项');
 			$table->string('help', 255)->nullable()->comment('字段提示信息');
 			$table->boolean('post')->nullable()->default(1)->comment('是否允许前台填写提交，0：不允许，1：允许');

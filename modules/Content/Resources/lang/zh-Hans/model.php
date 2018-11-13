@@ -9,6 +9,9 @@ return [
     'export'            => '导出',
     'import'            => '导入',
 
+    'delete.notempty'   => '已经有自定义字段或者已经有该模型数据，禁止删除',
+    'dirtyid.forbidden' => '已经有自定义字段或者已经有该模型数据，无法修改模型标识',
+
     'name.label'        => '模型名称',
     'name.help'         => '可读名称，如： 页面、文章、产品、下载等',
 
