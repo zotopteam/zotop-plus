@@ -123,7 +123,7 @@
 @push('js')
 <script type="text/javascript">
     function show_settings(type) {
-        var field = {!! json_encode($field) !!};
+        var field = @json($field);
             field.type = type;
 
         $.post("{{route('content.field.settings', $model->id)}}", {field:field}, function(html){

@@ -406,7 +406,7 @@
 });
 
 /**
- * 是/否
+ * 启用/禁用
  */
 \Form::macro('enable', function($attrs){
     // options

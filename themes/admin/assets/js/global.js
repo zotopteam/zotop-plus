@@ -28,6 +28,7 @@ $(function(){
     // 窗口改变大小时，重置滚动条，如果页面内元素高度发生改变，使用触发 $(window).trigger('resize')
     $(window).resize(function(){
         $(".scrollable").getNiceScroll().resize();
+        $('.tooltip').remove();
     });
 
     // maxlength
@@ -294,23 +295,27 @@ $(function(){
         $(table).sortable({
             items: "tbody > tr:not(.ui-sortable-disabled)",
             handle: "td.drag",
-            axis: "y",
+            axis: "y",   
             placeholder:"ui-sortable-placeholder",
-            helper: function(e,tr){
-                tr.children().each(function(){
+            helper: function(e, ui) {
+                ui.children().each(function(){
                     $(this).width($(this).width());
                 });
-                return tr;
+                return ui;
             },
-            update:function(){
-                var action = $(this).parents('form').attr('action');
-                var data   = $(this).parents('form').serialize();
-
-                $.post(action, data, function(msg){
-                    $.msg(msg);
-                },'json');
+            start: function(e, ui){
+                ui.placeholder.height(ui.helper[0].scrollHeight);
+            },           
+            update:function() {
+                // 如果是表单内拖动，自动提交表单
+                var form = $(this).parents('form');
+                if (form.length) {
+                    $.post(form.attr('action'), form.serialize(), function(msg){
+                        $.msg(msg);
+                    },'json');                    
+                }
             }
         });        
-    });
+    }).disableSelection();
 
 });

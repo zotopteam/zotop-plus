@@ -19,8 +19,6 @@ class FieldController extends AdminController
      */
     public function index($modelId)
     {
-        //ModelHelper::fieldInit($modelId);
-
         $this->model = Model::findOrFail($modelId);
         $this->title = trans('content::field.title');
         $this->fields = Field::where('model_id',$modelId)->orderby('sort','asc')->get();        
@@ -61,11 +59,14 @@ class FieldController extends AdminController
      * 
      * @return Response
      */
-    public function create()
+    public function create($modelId)
     {
         $this->title = trans('content::field.create');
 
         $this->field = Field::findOrNew(0);
+        $this->model = Model::findOrFail($modelId);
+
+        $this->field->type = 'select';     
 
         return $this->view();
     }

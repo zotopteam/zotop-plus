@@ -40,11 +40,12 @@ class ModelHelper
     public static function export($id)
     {
         $model = Model::findOrFail($id);
+        $field = $model->field()->get();
 
         // 导出的内容
         $content = [
             'model'    => $model->toArray(),
-            'field'    => [],
+            'field'    => $field->toArray(),
             'template' => ''
         ];
 
@@ -85,6 +86,10 @@ class ModelHelper
         $model->fill($data['model']);
         $model->sort = Model::max('sort') + 1;
         $model->save();
+
+        foreach ($data['field'] as $field) {
+            Field::create($field);
+        }
 
         return true;
     }

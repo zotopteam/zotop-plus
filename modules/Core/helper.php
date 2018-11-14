@@ -46,6 +46,24 @@ if (! function_exists('array_object')) {
     }
 }
 
+if (! function_exists('object_array')) {
+    
+    /**
+     * 对象转数组
+     * 
+     * @param  array $array 数组
+     * @return mixed
+     */
+    function object_array($object)
+    {
+        if (is_object($object)) {
+            $object = array_map(__FUNCTION__, (array)$object);
+        }
+
+        return $object;
+    }
+}
+
 if (! function_exists('array_merge_deep')) {
     /**
      * 深层次合并数组

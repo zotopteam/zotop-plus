@@ -66,12 +66,18 @@ class Model extends BaseModel
 
         // 为安全考虑，禁止删除非空的模型
         static::deleting(function($model) {
+
+            // 如果有自定义字段，不能删除
             if (Field::where('model_id', $model->id)->where('system', 0)->count()) {
                 abort(403, trans('content::model.delete.notempty'));
             }
+
+            // 如果已经有数据，不能删除
             if (Content::where('model_id', $model->id)->count()) {
                 abort(403, trans('content::model.delete.notempty'));
             }
+
+            Field::where('model_id', $model->id)->delete();          
         });
 
         // 模型有自定义字段和数据后，禁止修改模型标识 id

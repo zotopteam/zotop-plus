@@ -21,18 +21,6 @@ $types  = [
     ],
 
     // 开放控件，可选择并创建这些类型
-    'template' => [
-        'name'     => trans('content::field.type.template'),
-        'view'     => ['content::field.settings.required'],
-        'type'     => 'varchar',
-        'settings' => ['maxlength'=>100]
-    ],
-    'url' => [
-        'name'     => trans('content::field.type.url'),
-        'view'     => ['content::field.settings.required'],
-        'type'     => 'varchar',
-        'settings' => ['maxlength'=>255]
-    ],
     'text' => [
         'name'     => trans('content::field.type.text'),
         'view'     => ['content::field.settings.ranglength','content::field.settings.required'],
@@ -49,6 +37,28 @@ $types  = [
         'view' => ['content::field.settings.length'],
         'type' => 'int'
     ],
+    'editor' => [
+        'name' => trans('content::field.type.editor'),
+        'view' => ['content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark'],
+        'type' => 'text'
+    ],
+    'image' => [
+        'name'     => trans('content::field.type.image'),
+        'view'     => ['content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark'],
+        'type'     => 'varchar',
+        'settings' => ['maxlength'=>255,'resize'=>0,'watermark'=>0]
+    ],
+    'gallery' => [
+        'name'     => trans('content::field.type.gallery'),
+        'view'     => ['content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark', 'content::field.settings.fileslength'],
+        'type'     => 'text',
+        'settings' => ['min'=>0,'max'=>999,'resize'=>0,'watermark'=>0]
+    ],
+    'files' => [
+        'name' => trans('content::field.type.files'),
+        'view' => ['content::field.settings.required'],
+        'type' => 'varchar'
+    ],
     'radiogroup' => [
         'name' => trans('content::field.type.radiogroup'),
         'view' => ['content::field.settings.options','content::field.settings.required'],
@@ -62,29 +72,9 @@ $types  = [
     'select' => [
         'name' => trans('content::field.type.select'),
         'view' => ['content::field.settings.options','content::field.settings.required'],
-        'type' => 'varchar'
-    ],
-    'editor' => [
-        'name' => trans('content::field.type.editor'),
-        'view' => ['content::field.settings.required'],
-        'type' => 'text'
-    ],
-    'image' => [
-        'name'     => trans('content::field.type.image'),
-        'view'     => ['content::field.settings.required'],
-        'type'     => 'varchar',
-        'settings' => ['maxlength'=>255]
-    ],
-    'gallery' => [
-        'name' => trans('content::field.type.gallery'),
-        'view' => ['content::field.settings.required'],
-        'type' => 'text'
-    ],
-    'files' => [
-        'name' => trans('content::field.type.files'),
-        'view' => ['content::field.settings.required'],
-        'type' => 'varchar'
-    ],
+        'type' => 'varchar',
+        //'settings' => ['options'=>[['text'=>'yes','value'=>'222'],['text'=>'no','value'=>'111']]]
+    ],    
     'date' => [
         'name' => trans('content::field.type.date'),
         'view' => ['content::field.settings.required'],
@@ -99,6 +89,18 @@ $types  = [
         'name' => trans('content::field.type.email'),
         'view' => ['content::field.settings.required'],
         'type' => 'varchar'
+    ],
+    'url' => [
+        'name'     => trans('content::field.type.url'),
+        'view'     => ['content::field.settings.required'],
+        'type'     => 'varchar',
+        'settings' => ['maxlength'=>255]
+    ],    
+    'template' => [
+        'name'     => trans('content::field.type.template'),
+        'view'     => ['content::field.settings.required'],
+        'type'     => 'varchar',
+        'settings' => ['maxlength'=>100]
     ],
 ];
 
