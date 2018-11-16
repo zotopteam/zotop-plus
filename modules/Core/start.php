@@ -52,39 +52,41 @@
 });
 
 /**
- * 扩展$module->getFileData, 获取存储数组类型的文件数据
+ * 扩展$module->getFileData, 获取文件返回的数据
  */
-\Nwidart\Modules\Module::macro('getFileData', function($file, array $args=[]) {
-    $data = [];
+\Nwidart\Modules\Module::macro('getFileData', function($file, array $args=[], $default=null) {
+
     $file = $this->getExtraPath($file);
-    if ($this->app['files']->isFile($file)) {
-        $data = value(function() use ($file, $args) {
-            @extract($args);
-            $data = require $file;
-            return is_array($data) ? $data : [];
-        });
+
+    if (! $this->app['files']->isFile($file)) {
+        return $default;
     }
-    return $data;
+
+    return value(function() use ($file, $args) {
+        @extract($args);
+        return require $file;
+    });
 });
 
 /**
- * 扩展Module::getFileData方法, 获取数组文件数据
+ * 扩展Module::getFileData方法, 获取文件返回数据
  */
-\Nwidart\Modules\Facades\Module::macro('getFileData', function($module, $file, array $args=[]) {
-    return $this->find($module)->getFileData($file, $args);
+\Nwidart\Modules\Facades\Module::macro('getFileData', function($module, $file, array $args=[], $default=null) {
+    return $this->find($module)->getFileData($file, $args, $default);
 });
 
 /**
- * 扩展data方法, 从data目录获取数组文件数据
+ * 扩展data方法, 从data目录获取文件返回的数据
+ * 
  * @param   $name 模块::文件名称
  * @param   $args 额外参数
  * @example Module::data('tinymce::tools.default', $attrs)
  * @return array
  */
-\Nwidart\Modules\Facades\Module::macro('data', function($name, array $args=[]) {
+\Nwidart\Modules\Facades\Module::macro('data', function($name, array $args=[], $default=null) {
     list($module, $file) = explode('::', $name);
-    $data = static::getFileData($module, "Data/{$file}.php", $args);
-    return \Filter::fire($name, $data, $args);
+    $data = static::getFileData($module, "Data/{$file}.php", $args, $default);
+    return \Filter::fire($name, $data, $args, $default);
 });
 
 /**

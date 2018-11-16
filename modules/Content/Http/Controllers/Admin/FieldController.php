@@ -8,6 +8,7 @@ use Modules\Core\Base\AdminController;
 use Modules\Content\Models\Model;
 use Modules\Content\Models\Field;
 use Modules\Content\Support\ModelHelper;
+use Modules\Content\Http\Requests\FieldRequest;
 use Module;
 
 class FieldController extends AdminController
@@ -17,11 +18,11 @@ class FieldController extends AdminController
      *
      * @return Response
      */
-    public function index($modelId)
+    public function index($model_id)
     {
-        $this->model = Model::findOrFail($modelId);
+        $this->model = Model::findOrFail($model_id);
         $this->title = trans('content::field.title');
-        $this->fields = Field::where('model_id',$modelId)->orderby('sort','asc')->get();        
+        $this->fields = Field::where('model_id',$model_id)->orderby('sort','asc')->get();        
 
         // 左边允许一行多个
         $this->main = $this->fields->filter(function($item){
@@ -41,7 +42,7 @@ class FieldController extends AdminController
      *
      * @return Response
      */
-    public function sort(Request $request, $modelId)
+    public function sort(Request $request, $model_id)
     {
         foreach ($request->ids as $sort=>$id) {
             Field::where('id', $id)->update([
@@ -59,14 +60,17 @@ class FieldController extends AdminController
      * 
      * @return Response
      */
-    public function create($modelId)
+    public function create($model_id)
     {
         $this->title = trans('content::field.create');
 
         $this->field = Field::findOrNew(0);
-        $this->model = Model::findOrFail($modelId);
+        $this->model = Model::findOrFail($model_id);
 
-        $this->field->type = 'select';     
+        $this->field->model_id = $model_id;
+        $this->field->system   = 0; // 新建字段为自定义字段
+        $this->field->col      = 0; // 默认在主区域显示
+
 
         return $this->view();
     }
@@ -77,7 +81,7 @@ class FieldController extends AdminController
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(FieldRequest $request)
     {
         $field = new Field;
         $field->fill($request->all());
@@ -106,7 +110,7 @@ class FieldController extends AdminController
      *
      * @return Response
      */
-    public function edit($modelId, $id)
+    public function edit($model_id, $id)
     {
         $this->title = trans('content::field.edit');
 
@@ -123,7 +127,7 @@ class FieldController extends AdminController
      * @param  Request $request
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(FieldRequest $request, $id)
     {
         $field = Field::findOrFail($id);
         $field->fill($request->all());        
@@ -137,7 +141,7 @@ class FieldController extends AdminController
      *
      * @return Response
      */
-    public function destroy($modelId, $id)
+    public function destroy($model_id, $id)
     {
         $field = Field::findOrFail($id);
 
@@ -147,7 +151,7 @@ class FieldController extends AdminController
 
         $field->delete();
 
-        return $this->success(trans('core::master.deleted'), route('content.field.index', $modelId));        
+        return $this->success(trans('core::master.deleted'), route('content.field.index', $model_id));        
     }
 
     /**
@@ -156,13 +160,13 @@ class FieldController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function status($modelId, $id)
+    public function status($model_id, $id)
     {
         $field = Field::findOrFail($id);
         $field->disabled = $field->disabled ? 0 : 1;
         $field->save();
 
-        return $this->success(trans('core::master.operated'), route('content.field.index', $modelId));
+        return $this->success(trans('core::master.operated'), route('content.field.index', $model_id));
     }
 
     /**
@@ -171,9 +175,9 @@ class FieldController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function settings(Request $request, $modelId)
+    public function settings(Request $request, $model_id)
     {
-        $types = Module::data('content::field.types');
+        $types = Module::data('content::field.types', $request->field);
 
         $this->field = array_object($request->field);
         $this->type  = array_object(array_get($types, $this->field->type));

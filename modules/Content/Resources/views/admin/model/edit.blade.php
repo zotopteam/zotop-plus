@@ -38,11 +38,7 @@
                 <label for="id" class="col-2 col-form-label required">{{trans('content::model.id.label')}}</label>
                 <div class="col-8">
                     
-                    @if($model->field()->system(false)->count() || $model->content()->count())
-                    {field type="translate" name="id" source="name" format="id" required="required" maxlength="64" disabled="disabled"}
-                    @else
                     {field type="translate" name="id" source="name" format="id" required="required" maxlength="64"}
-                    @endif
 
                     @if ($errors->has('id'))
                     <span class="form-help text-error">{{ $errors->first('id') }}</span>

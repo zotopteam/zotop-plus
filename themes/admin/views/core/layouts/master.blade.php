@@ -69,7 +69,7 @@
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user-circle"></i> <span class="hidden-md-down">{{Auth::user()->username}}</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-primary dropdown-menu-right">
+                        <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="{{route('core.mine.edit')}}">
                                 <i class="dropdown-item-icon fa fa-user fa-fw"></i>
                                 <b class="dropdown-item-text">{{trans('core::mine.edit')}}</b>

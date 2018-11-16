@@ -425,6 +425,8 @@ class Structure
 
 		if ($column['nullable']) {
 			$convert['modifiers']['nullable'] = [];
+		} else {
+			$convert['modifiers']['nullable'] = [false];
 		}
 
 		if ($column['default']) {

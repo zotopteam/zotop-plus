@@ -6,7 +6,7 @@
     <div class="main-header">
         @if (empty($keywords))
         @if ($folder_id)
-        <div class="main-back">
+        <div class="main-back d-none">
             <a href="javascript:history.go(-1);"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
         </div>        
         <div class="main-title mr-auto">{{$folder->name}}</div>
@@ -95,7 +95,11 @@
                     </td>                
                     <td width="50%" class="pl-2">
                         <div class="title text-md text-wrap">
+                            @if ($m->isFolder())
+                            <a href="{{$m->url}}">{{$m->name}}</a>
+                            @else
                             {{$m->name}}
+                            @endif
                         </div>
                         <div class="description">
                             @if ($m->isImage())
@@ -141,8 +145,8 @@
                     </td>
                     <td>{{$m->size_human}}</td>
                     <td>
-                        <b>{{$m->user->username}}</b>
-                        <div class="text-sm">{{$m->created_at_human}}</div>
+                        <span class="font-weight-bold d-block username">{{$m->user->username}}</span>
+                        <span class="font-weight-light text-sm created_at" title="{{$m->created_at}}" data-toggle="tooltip">{{$m->created_at_human}}</span>
                     </td>
                 </tr>
             @endforeach

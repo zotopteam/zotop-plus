@@ -5,7 +5,8 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
 use Modules\Core\Traits\UserRelation;
 use Modules\Content\Models\Field;
 use Modules\Content\Models\Content;
-
+use Modules\Content\Support\ModelTable;
+use Modules\Content\Support\ModelHelper;
 
 class Model extends BaseModel
 {
@@ -67,37 +68,37 @@ class Model extends BaseModel
         // 为安全考虑，禁止删除非空的模型
         static::deleting(function($model) {
 
-            // 如果有自定义字段，不能删除
-            if (Field::where('model_id', $model->id)->where('system', 0)->count()) {
-                abort(403, trans('content::model.delete.notempty'));
-            }
-
             // 如果已经有数据，不能删除
             if (Content::where('model_id', $model->id)->count()) {
                 abort(403, trans('content::model.delete.notempty'));
             }
 
-            Field::where('model_id', $model->id)->delete();          
+            // 删除字段
+            Field::where('model_id', $model->id)->delete();
+
+            // 删除关联表
+            $table = ModelTable::find($model->id);
+            $table->drop();                    
         });
 
-        // 模型有自定义字段和数据后，禁止修改模型标识 id
+        // 修改模型标识 id 时对应的关联数据
         static::updating(function($model) {
             // 如果id改变
             if ($model->isDirty('id')) {
 
-                // 有自定义字段时（已经生成自定义字段的附属表），禁止修改
-                if (Field::where('model_id', $model->getOriginal('id'))->where('system', 0)->count()) {
-                    abort(403, trans('content::model.dirtyid.forbidden'));
-                }
-
-                // 有数据的时候禁止修改
-                if (Content::where('model_id', $model->getOriginal('id'))->count()) {
-                    abort(403, trans('content::model.dirtyid.forbidden'));
-                }
-
+                // 修改字段关联
                 Field::where('model_id', $model->getOriginal('id'))->update([
                     'model_id' => $model->id
                 ]);
+
+                // 修改数据关联
+                Content::where('model_id', $model->getOriginal('id'))->update([
+                    'model_id' => $model->id
+                ]);
+
+                // 修改表名称
+                $table = ModelTable::find($model->getOriginal('id'));
+                $table->rename($model->id);   
             }
         });      
     }
@@ -117,5 +118,4 @@ class Model extends BaseModel
     {
         return $this->hasMany('Modules\Content\Models\Content', 'model_id', 'id');
     }
-
 }

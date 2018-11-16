@@ -4,8 +4,8 @@ use Illuminate\Routing\Router;
 // Content 模块后台路由
 $router->group(['prefix'=>'content', 'module'=>'content'], function (Router $router) {
 
-    $router->get('index','ContentController@index')->name('content.content.index')->middleware('allow:content.content.index');
-    $router->get('create','ContentController@create')->name('content.content.create')->middleware('allow:content.content.create');
+    $router->get('index/{parent_id?}','ContentController@index')->name('content.content.index')->middleware('allow:content.content.index');
+    $router->get('{parent_id}/create/{model_id}','ContentController@create')->name('content.content.create')->middleware('allow:content.content.create');
     $router->post('store','ContentController@store')->name('content.content.store')->middleware('allow:content.content.store');
     $router->get('show/{id}','ContentController@show')->name('content.content.show')->middleware('allow:content.content.show');
     $router->get('edit/{id}','ContentController@edit')->name('content.content.edit')->middleware('allow:content.content.edit');

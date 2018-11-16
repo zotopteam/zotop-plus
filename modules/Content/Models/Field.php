@@ -2,6 +2,7 @@
 namespace Modules\Content\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Content\Support\ModelTable;
 use Module;
 
 class Field extends Model
@@ -55,21 +56,73 @@ class Field extends Model
     {
         parent::boot();
 
+        // 新增设置
+        static::creating(function($field) {
+
+            // 预处理数据
+            $field = static::preproccess($field);
+            $field->sort = static::where('model_id', $field->model_id)->max('sort') + 1;  
+
+            // 创建自定义字段
+            if (! $field->system) {
+                $table = ModelTable::find($field->model_id);
+                $table->addColumn($field);
+            }
+
+            unset($field->method);
+        });
+
         // 更新设置
         static::updating(function($field) {
             
-            $types = Module::data('content::field.types');
-
-            // 合并默认设置
-            if ($settings = array_get($types, $field->type.'.settings')) {
-                $field->settings = array_merge($settings, $field->settings);
-            }
+            $field = static::preproccess($field);
 
             // 更新自定义字段
-            // ……
+            if (! $field->system) {
+                
+                $table = ModelTable::find($field->model_id);
+                
+                if ($field->isDirty('name')) {
+                    $table->renameColumn($field->getOriginal('name'), $field->name);
+                }
+
+                $table->changeColumn($field);
+            }
             
-        });      
+            unset($field->method);
+        });
+
+        static::deleting(function($field) {
+            // 不允许删除系统字段
+            if ($field->system) {
+                abort(403,'Can not delete system field!');
+            }
+
+            // 删除字段
+            $table = ModelTable::find($field->model_id);
+            $table->dropColumn($field->name);
+        });    
     }
+
+    /**
+     * 预处理字段，完善字段数据
+     * @param  object $field 字段对象
+     * @return object
+     */
+    public static function preproccess($field)
+    {
+        $types = Module::data('content::field.types', $field->toArray());
+
+        // 合并默认设置
+        if ($settings = array_get($types, $field->type.'.settings')) {
+            $field->settings = array_merge($settings, $field->settings);
+        }
+
+        // 补充字段创建方法名称 (对应laravel的数据迁移方法名称)
+        $field->method = array_get($types, $field->type.'.method');
+
+        return $field;
+    }    
 
     /**
      * 查询系统或者自定义字段
@@ -81,5 +134,5 @@ class Field extends Model
     public function scopeSystem($query, $system=true)
     {
         return $query->where('system', ($system ? 1 : 0));
-    }    
+    }
 }

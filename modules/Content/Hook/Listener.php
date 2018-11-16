@@ -41,4 +41,24 @@ class Listener
 
         return $navbar;
     }
+
+    /**
+     * 字段类型滤器
+     * @param  array $types 当前字段类型
+     * @param  array $args 参数
+     * @return array
+     */
+    public function types($types, $args)
+    {
+        if ($args['model_id'] == 'category') {
+            $types['models'] = [
+                'name'     => trans('content::field.type.models'),
+                'view'     => '',
+                'method'   => 'text',
+                'settings' => ['required'=>1]
+            ];
+        }
+
+        return $types;
+    }
 }

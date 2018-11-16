@@ -12,6 +12,11 @@
     $value = $this->getValue($attrs);
     $id    = $this->getId($attrs);
     $name  = $this->getAttribute($attrs, 'name', 'editor', false);
+    
+    // 支持rows高度模式
+    if ($rows  = $this->getAttribute($attrs, 'rows', 0)) {
+        $attrs['height'] = $rows * 35;
+    }
 
     // 编辑器属性，可以为字符串和数组，默认为full模式
     $options = $this->getAttribute($attrs, 'options', 'full', false);
@@ -23,6 +28,6 @@
     debug($options);
 
     return $this->toHtmlString(
-        $this->view->make('tinymce::field.editor')->with(compact('id', 'name', 'value', 'options'))->render()
+        $this->view->make('tinymce::field.editor')->with(compact('id', 'name', 'value', 'rows', 'options'))->render()
     );
 });

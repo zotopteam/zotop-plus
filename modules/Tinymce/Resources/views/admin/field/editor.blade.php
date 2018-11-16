@@ -10,7 +10,7 @@
 
     <script type="text/javascript">
     $(function(){
-        $('#{{$id}}').tinymce({!! json_encode($options) !!});
+        $('#{{$id}}').tinymce(@json($options));
     });        
     </script>
 @endpush

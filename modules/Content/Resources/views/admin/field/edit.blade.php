@@ -7,7 +7,7 @@
             <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
         </div>
         <div class="main-title mr-auto">
-            {{$title}}
+            {{$title}} : {{$model->name}} ({{$model->id}})
         </div>
     </div>
     
@@ -37,6 +37,7 @@
                 <label for="name" class="col-2 col-form-label required">{{trans('content::field.name.label')}}</label>
                 <div class="col-8">
                     @if ($field->system)
+                        {field type="hidden" name="name"}
                         {field type="translate" name="name" source="label" format="id" disabled="disabled"}
                     @else
                         {field type="translate" name="name" source="label" format="id" required="required" maxlength="64"}
@@ -62,6 +63,24 @@
                     @endif                       
                 </div>
             </div>
+            
+            @if($field->system)
+            {field type="hidden" name="type" required="required"}
+            @else
+            <div class="form-group row">
+                <label for="type" class="col-2 col-form-label">{{trans('content::field.type.label')}}</label>
+                <div class="col-8">
+
+                    {field type="select" name="type" options="Module::data('content::field.type.options', $field->toArray())" required="required"}
+
+                    @if ($errors->has('type'))
+                    <span class="form-help text-error">{{ $errors->first('type') }}</span>
+                    @else
+                    <span class="form-help">{{trans('content::field.type.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>
+            @endif          
 
             <div id="field-settings">
                 <i class="fa fa-spinner fa-spin d-none"></i>
@@ -134,6 +153,10 @@
 
     $(function(){
         show_settings('{{$field->type}}');
+
+        $('[name=type]').on('change', function(){
+            show_settings($(this).val());
+        });        
     });
 </script>
 <script type="text/javascript">

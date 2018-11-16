@@ -59,25 +59,18 @@ class BladeCompiler extends LaravelBladeCompiler
      */
     protected function compileDotArray($value)
     {
-        // 正则匹配所有{……$var.name……}或者{……$var.name.key……}的字符
-        //数组允许使用的变量名称类型
-        // return preg_replace_callback("/\{(.+?)\}/s", function($match) {
-        //     $str = $match[1];
-        //     if (preg_match_all('/\$(([a-zA-Z0-9_]+)((\.[a-zA-Z0-9_]+|(?R))+))/s', $str, $matches, PREG_OFFSET_CAPTURE) ){
-                
-        //         while ($matches[0]) {
-        //             $match = array_pop($matches[0]);
-        //             $match = $match[0]; // 取出 $aaa.bbb.ccc
-        //             $vars  = explode('.', $match);
-        //             $first = array_shift($vars);
-        //             $array = $first . '[\'' . implode('\'][\'', $vars) . '\']';
+        // 正则匹配所有 $var.name…… 或者 $var.name.key 的字符        
+        if (preg_match_all('/\$(([a-zA-Z0-9_]+)((\.[a-zA-Z0-9_]+|(?R))+))/s', $value, $matches, PREG_OFFSET_CAPTURE)) {
+            while ($matches[0]) {
+                $match = array_pop($matches[0]);
+                $match = $match[0];
+                $vars  = explode('.', $match);
+                $first = array_shift($vars);
+                $array = $first . '[\'' . implode('\'][\'', $vars) . '\']';
+                $value = str_replace($match, $array, $value);
+            }        
+        }
 
-        //             $str = str_replace($match, $array, $str);
-        //         }        
-        //     }
-        //     return '{'.$str.'}';
-        // }, $value);
-        
         return $value;
     }
 

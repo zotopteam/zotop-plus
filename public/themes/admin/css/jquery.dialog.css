@@ -32,7 +32,7 @@ body.blur > *:not(.ui-popup):not(.ui-popup-backdrop){filter: blur(1.5px);overflo
 .ui-dialog-statusbar .label{vertical-align:middle;}
 .ui-dialog-button{float:right;white-space:nowrap;}
 /*2014-5-30*/
-.ui-dialog-button .btn{margin-left:0.5rem;padding:0.5rem 1.25rem;}
+.ui-dialog-button .btn{margin-left:0.5rem;padding:0.35rem 1.25rem;}
 .ui-popup-top-left .ui-dialog,
 .ui-popup-top .ui-dialog,
 .ui-popup-top-right .ui-dialog{top:-0.5rem;}

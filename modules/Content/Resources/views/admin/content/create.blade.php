@@ -11,26 +11,52 @@
         </div>
     </div>
     
-    <div class="main-body scrollable">
+    <div class="main-body bg-light scrollable">
         <div class="container-fluid">
 
             {form model="$content" route="content.content.store" id="content-form" method="post" autocomplete="off"}
-
-            <div class="form-title row">{{trans('content::content.form.base')}}</div>
-
-            <div class="form-group row">
-                <label for="title" class="col-2 col-form-label required">{{trans('content::content.title.label')}}</label>
-                <div class="col-4">
-                    {field type="text" name="title" required="required"}
-
-                    @if ($errors->has('title'))
-                    <span class="form-help text-error">{{ $errors->first('title') }}</span>
-                    @else
-                    <span class="form-help">{{trans('content::content.title.help')}}</span>                     
-                    @endif                       
-                </div>
+            
+            <div class="d-none">
+            @foreach ($fields->hidden as $item)
+            {{form::field($item.field)}}
+            @endforeach
             </div>
 
+            <div class="row">
+                <div class="{{$fields->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}}">
+                    @foreach ($fields->main as $item)
+                        <div class="form-group">
+                            <label for="{{$item.for}}" class="form-label {{$item.required ? 'required' : ''}}">
+                                {{$item.label}}
+                            </label>
+                            
+                            {{form::field($item.field)}}
+
+                            @if($item.help) 
+                                <span class="form-help">{{$item.help}}</span>
+                            @endif
+                        </div>                        
+                    @endforeach                    
+                </div>
+
+                @if ($fields->side->count())
+                <div class="col-3 col-md-3 col-sm-12">
+                    @foreach ($fields->side as $item)
+                        <div class="form-group">
+                            <label for="{{$item.for}}" class="form-label {{$item.required ? 'required' : ''}}">
+                                {{$item.label}}
+                            </label>
+                            
+                            {{form::field($item.field)}}
+
+                            @if($item.help) 
+                                <span class="form-help">{{$item.help}}</span>
+                            @endif
+                        </div>                        
+                    @endforeach                    
+                </div>
+                @endif
+            </div>
             {/form}
 
         </div>

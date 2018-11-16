@@ -7,7 +7,7 @@
             <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
         </div>
         <div class="main-title mr-auto">
-            {{$title}}
+            {{$title}} : {{$model->name}} ({{$model->id}})
         </div>
     </div>
     
@@ -16,7 +16,8 @@
 
             {form model="$field" route="content.field.store" id="field-form" method="post" autocomplete="off"}
 
-             {field type="hidden" name="model_id" required="required"}
+            {field type="hidden" name="model_id" required="required"}
+            {field type="hidden" name="system" required="required"}
 
             <div class="form-title row">{{trans('content::field.form.base')}}</div>
 
@@ -67,7 +68,7 @@
                 <label for="type" class="col-2 col-form-label">{{trans('content::field.type.label')}}</label>
                 <div class="col-8">
 
-                    {field type="select" name="type" options="Module::data('content::field.type.options')" required="required"}
+                    {field type="select" name="type" options="Module::data('content::field.type.options', $field->toArray())" required="required"}
 
                     @if ($errors->has('type'))
                     <span class="form-help text-error">{{ $errors->first('type') }}</span>

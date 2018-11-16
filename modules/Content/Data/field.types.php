@@ -4,19 +4,19 @@ $types  = [
     'title' => [
         'name'     => trans('content::field.type.title'),
         'view'     => ['content::field.settings.ranglength'],
-        'type'     => '',
+        'method'   => '',
         'settings' => ['maxlength'=>255, 'required'=>1]
     ],
     'keywords' => [
-        'name' => trans('content::field.type.keywords'),
-        'view' => '',
-        'type' => '',
+        'name'     => trans('content::field.type.keywords'),
+        'view'     => '',
+        'method'   => '',
         'settings' => ['maxlength'=>100]
     ],
     'summary' => [
         'name'     => trans('content::field.type.summary'),
         'view'     => ['content::field.settings.ranglength','content::field.settings.rows','content::field.settings.required'],
-        'type'     => '',
+        'method'   => '',
         'settings' => ['maxlength'=>100]
     ],
 
@@ -24,82 +24,82 @@ $types  = [
     'text' => [
         'name'     => trans('content::field.type.text'),
         'view'     => ['content::field.settings.ranglength','content::field.settings.required'],
-        'type'     => 'varchar',
+        'method'   => 'string',
         'settings' => ['maxlength'=>255]
     ],
     'textarea' => [
-        'name' => trans('content::field.type.textarea'),
-        'view' => ['content::field.settings.ranglength','content::field.settings.rows','content::field.settings.required'],
-        'type' => 'varchar'
+        'name'   => trans('content::field.type.textarea'),
+        'view'   => ['content::field.settings.ranglength','content::field.settings.rows','content::field.settings.required'],
+        'method' => 'string'
     ],
     'number' => [
-        'name' => trans('content::field.type.number'),
-        'view' => ['content::field.settings.length'],
-        'type' => 'int'
+        'name'   => trans('content::field.type.number'),
+        'view'   => ['content::field.settings.length'],
+        'method' => 'integer'
     ],
     'editor' => [
-        'name' => trans('content::field.type.editor'),
-        'view' => ['content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark'],
-        'type' => 'text'
+        'name'     => trans('content::field.type.editor'),
+        'view'     => ['content::field.settings.rows','content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark'],
+        'method'   => 'text',
+        'settings' => ['rows'=>10,'resize'=>1,'watermark'=>1]
     ],
     'image' => [
         'name'     => trans('content::field.type.image'),
         'view'     => ['content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark'],
-        'type'     => 'varchar',
+        'method'   => 'string',
         'settings' => ['maxlength'=>255,'resize'=>0,'watermark'=>0]
     ],
     'gallery' => [
         'name'     => trans('content::field.type.gallery'),
         'view'     => ['content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark', 'content::field.settings.fileslength'],
-        'type'     => 'text',
+        'method'   => 'text',
         'settings' => ['min'=>0,'max'=>999,'resize'=>0,'watermark'=>0]
     ],
     'files' => [
-        'name' => trans('content::field.type.files'),
-        'view' => ['content::field.settings.required'],
-        'type' => 'varchar'
+        'name'   => trans('content::field.type.files'),
+        'view'   => ['content::field.settings.required'],
+        'method' => 'string'
     ],
     'radiogroup' => [
-        'name' => trans('content::field.type.radiogroup'),
-        'view' => ['content::field.settings.options','content::field.settings.required'],
-        'type' => 'varchar'
+        'name'   => trans('content::field.type.radiogroup'),
+        'view'   => ['content::field.settings.options','content::field.settings.required'],
+        'method' => 'string'
     ],
     'checkboxgroup' => [
-        'name' => trans('content::field.type.radiogroup'),
-        'view' => ['content::field.settings.options','content::field.settings.required'],
-        'type' => 'varchar'
+        'name'   => trans('content::field.type.radiogroup'),
+        'view'   => ['content::field.settings.options','content::field.settings.required'],
+        'method' => 'string'
     ],
     'select' => [
-        'name' => trans('content::field.type.select'),
-        'view' => ['content::field.settings.options','content::field.settings.required'],
-        'type' => 'varchar',
-        //'settings' => ['options'=>[['text'=>'yes','value'=>'222'],['text'=>'no','value'=>'111']]]
+        'name'   => trans('content::field.type.select'),
+        'view'   => ['content::field.settings.options','content::field.settings.required'],
+        'method' => 'string',
     ],    
     'date' => [
-        'name' => trans('content::field.type.date'),
-        'view' => ['content::field.settings.required'],
-        'type' => 'date'
+        'name'   => trans('content::field.type.date'),
+        'view'   => ['content::field.settings.required'],
+        'method' => 'date'
     ],
     'datetime' => [
-        'name' => trans('content::field.type.datetime'),
-        'view' => ['content::field.settings.required'],
-        'type' => 'datetime'
+        'name'   => trans('content::field.type.datetime'),
+        'view'   => ['content::field.settings.required'],
+        'method' => 'datetime'
     ],
     'email' => [
-        'name' => trans('content::field.type.email'),
-        'view' => ['content::field.settings.required'],
-        'type' => 'varchar'
+        'name'   => trans('content::field.type.email'),
+        'view'   => ['content::field.settings.required'],
+        'method' => 'string'
     ],
     'url' => [
         'name'     => trans('content::field.type.url'),
         'view'     => ['content::field.settings.required'],
-        'type'     => 'varchar',
+        'method'   => 'string',
         'settings' => ['maxlength'=>255]
     ],    
     'template' => [
         'name'     => trans('content::field.type.template'),
         'view'     => ['content::field.settings.required'],
-        'type'     => 'varchar',
+        'method'   => 'string',
         'settings' => ['maxlength'=>100]
     ],
 ];

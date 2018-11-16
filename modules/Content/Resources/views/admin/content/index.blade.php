@@ -5,14 +5,46 @@
 
 <div class="main">
     <div class="main-header">
+        @if($keywords = request('keywords'))
+            <div class="main-back">
+                <a href="{{route('content.content.index',$parent->id)}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            </div>
+            <div class="main-title mr-auto">
+                {{$parent->title}}
+            </div>                    
+            <div class="main-title mr-auto">
+                {{trans('core::master.searching', [$keywords])}}
+            </div>        
+        @else
         <div class="main-title mr-auto">
-            {{$title}}
+            {{$parent->title}}
         </div>
         <div class="main-action">
-            <a href="{{route('content.content.create')}}" class="btn btn-primary">
-                <i class="fa fa-plus"></i> {{trans('core::master.create')}}
-            </a>
-        </div>        
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-plus"></i> {{trans('content::content.create')}}
+                </button>
+                <div class="dropdown-menu dropdown-menu-primary">
+                    @foreach(Module::data('content::menu.create', get_defined_vars()) as $model)
+                        <a class="dropdown-item" href="{{route('content.content.create',[$parent->id, $model->id])}}" title="{{$model->description}}" data-placement="left">
+                            <i class="dropdown-item-icon {{$model->icon}} fa-fw"></i>
+                            <b class="dropdown-item-text">{{$model->name}}</b>
+                        </a>
+                    @endforeach
+                </div>
+            </div>       
+        </div>
+        @endif
+        <div class="main-action">
+            {form route="['content.content.index',$parent->id]" class="form-inline form-search" method="get"}
+                <div class="input-group">
+                    <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('core::master.keywords.placeholder')}}" required="required" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
+                    </div>
+                </div>
+            {/form}
+        </div>              
     </div>
     <div class="main-body scrollable">
         @if($contents->count() == 0)

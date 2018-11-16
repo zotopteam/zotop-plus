@@ -116,7 +116,7 @@
 @push('css')
 <style type="text/css">
     .field-container{min-height:360px;margin:0!important;}
-    .field-card{cursor:move;padding:0.5rem 2.5rem!important;margin: 0.5rem!important;width:auto;background-position:0.75rem center;}
+    .field-card{cursor:move;padding:0.5rem 0.5rem 0.5rem 2.5rem!important;margin: 0.5rem!important;width:auto;background-position:0.75rem center;}
     .field-card-placeholder{border:solid 1px green;min-height:60px;}
     .manage{font-size:.75rem;margin-top:0.5rem;}
 </style>

@@ -4,7 +4,7 @@ return [
     'description'        => '内容模型字段管理',
 
     'create'             => '新建字段',
-    'edit'               => '设置',
+    'edit'               => '修改字段',
 
     'system.title'       => '标题',
     'system.image'       => '图像',
@@ -23,7 +23,9 @@ return [
     'label.help'         => '可读名称，如：“名称”，“地址”，“联系电话”',
 
     'name.label'         => '字段名',
-    'name.help'          => '字段唯一标识，如： title、content，只允许英文字符和数字，最大长度32位',
+    'name.help'          => '字段唯一标识，如： title、content，只允许英文字符和数字和下划线，最大长度64位',
+    'name.exists'        => '字段名必须唯一， :0 已经存在',
+    'name.regex'         => '只允许英文字符（小写）和数字和下划线（_），必须以英文字符开头，不能以下划线结尾，最大长度64位',
 
     'help.label'         => '输入提示',
     'help.help'          => '显示在字段下方作为表单输入提示',
@@ -45,6 +47,7 @@ return [
     'type.email'         => '电子邮件',
     'type.date'          => '日期',    
     'type.datetime'      => '日期+时间',
+    'type.models'        => '内容模型',
 
 
     'default.label'      => '默认值',
