@@ -31,7 +31,7 @@ return [
     'name.regex'         => '只允许英文字符（小写）和数字和下划线（_），必须以英文字符开头，不能以下划线结尾，最大长度64位',
 
     'help.label'         => '输入提示',
-    'help.help'          => '显示在字段下方作为表单输入提示',
+    'help.help'          => '在字段下方显示，表单输入的帮助或者提示信息',
 
     'type.label'         => '表单控件',
     'type.help'          => '请选择字段对应的表单控件类型',
@@ -56,9 +56,11 @@ return [
     'type.datetime'      => '日期+时间',
     'type.models'        => '内容模型',
 
-
     'default.label'      => '默认值',
-    'default.help'       => '多个默认值用英文逗号“,”隔开',  
+    'default.help'       => '多个默认值用英文逗号“,”隔开',
+
+    'placeholder.label'  => '占位提示',
+    'placeholder.help'   => '在输入框中显示，描述输入字段预期值的提示信息', 
 
     'post.label'         => '前台投稿',
     'post.help'          => '',

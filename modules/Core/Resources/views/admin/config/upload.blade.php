@@ -178,9 +178,12 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <div class="input-group">
+                        <div class="input-group input-color">
                             <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.font.color')}}</span></div>
                             {field type="text" name="image[watermark][font][color]"}
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-light btn-color"><i class="fa fa-palette fa-fw"></i></button>
+                            </div>
                         </div>                
                     </div>                
                 </div>            
@@ -301,57 +304,72 @@
 
 @endsection
 
+@push('css')
+    @once('SPECTURM_CSS_INIT')
+    <link rel="stylesheet" href="{{Module::asset('core:spectrum/spectrum.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{Module::asset('core:spectrum/spectrum.zotop.css')}}" rel="stylesheet">
+    @endonce
+@endpush
+
 @push('js')
-<script type="text/javascript">
+    @once('SPECTURM_JS_INIT')
+    <script type="text/javascript" src="{{Module::asset('core:spectrum/spectrum.js')}}"></script>
+    <script type="text/javascript" src="{{Module::asset('core:spectrum/field_color.js')}}"></script>
+    @endonce
+    <script type="text/javascript">
 
-    $(function(){
-        $('#watermark-test').on('click',function(){
-            var data = $('form.form').serialize();
-            var title = $(this).text();
-            var dialog = $.dialog({
-                    title: title,
-                    content: '',
-                    width: '50%',
-                    height: '60%',
-                    ok: true,
-                    padding:0
-            }, true).loading(true);
-
-            $.post("{{route('core.config.watermarktest')}}", data, function(msg){
-                dialog.content('<a href="'+msg.content+'" target="_blank">' +
-                 '  <div class="image-preview bg-image-preview full-height full-width d-flex justify-content-center p-3">' +
-                 '      <img src="'+msg.content+'" class="align-self-center">' +
-                 '  </div>'+
-                 '</a>');
-            },'json');
+        $(function(){
+            $('.input-color').field_color({allowEmpty:false});
         });
-    });
 
-    $(function(){
-        $('form.form').validate({       
-            submitHandler:function(form){                
-                var validator = this;
+        $(function(){
+            $('#watermark-test').on('click',function(){
+                var data = $('form.form').serialize();
+                var title = $(this).text();
+                var dialog = $.dialog({
+                        title: title,
+                        content: '',
+                        width: '50%',
+                        height: '60%',
+                        ok: true,
+                        padding:0
+                }, true).loading(true);
 
-                $('.form-submit').prop('disabled',true);
-
-                $.post($(form).attr('action'), $(form).serialize(), function(msg){
-                    
-                    $.msg(msg);
-
-                    if ( msg.state && msg.url ) {
-                        location.href = msg.url;
-                        return true;
-                    }
-
-                    $('.form-submit').prop('disabled',false);
-                    return false;
-
-                },'json').fail(function(jqXHR){                    
-                    $('.form-submit').prop('disabled',false);
-                    return validator.showErrors(jqXHR.responseJSON.errors);
-                });
-            }            
+                $.post("{{route('core.config.watermarktest')}}", data, function(msg){
+                    dialog.content('<a href="'+msg.content+'" target="_blank">' +
+                     '  <div class="image-preview bg-image-preview full-height full-width d-flex justify-content-center p-3">' +
+                     '      <img src="'+msg.content+'" class="align-self-center">' +
+                     '  </div>'+
+                     '</a>');
+                },'json');
+            });
         });
-    })
-</script>
+
+        $(function(){
+            $('form.form').validate({       
+                submitHandler:function(form){                
+                    var validator = this;
+
+                    $('.form-submit').prop('disabled',true);
+
+                    $.post($(form).attr('action'), $(form).serialize(), function(msg){
+                        
+                        $.msg(msg);
+
+                        if ( msg.state && msg.url ) {
+                            location.href = msg.url;
+                            return true;
+                        }
+
+                        $('.form-submit').prop('disabled',false);
+                        return false;
+
+                    },'json').fail(function(jqXHR){                    
+                        $('.form-submit').prop('disabled',false);
+                        return validator.showErrors(jqXHR.responseJSON.errors);
+                    });
+                }            
+            });
+        })
+    </script>
 @endpush

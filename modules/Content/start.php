@@ -19,9 +19,16 @@
  */
 \Form::macro('content_title', function($attrs) {
 
-    $attrs['type'] = 'text';
+    $value = $this->getValue($attrs);
+    $id    = $this->getId($attrs);
+    $name  = $this->getAttribute($attrs, 'name');
 
-    return $this->field($attrs);
+    // 选项
+    $options = $this->getAttribute($attrs, 'options',  []);
+
+    return $this->toHtmlString(
+        $this->view->make('content::field.types.content_title')->with(compact('name', 'value', 'id', 'attrs', 'options'))->render()
+    );
 });
 
 /**

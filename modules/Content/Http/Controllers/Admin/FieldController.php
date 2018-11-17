@@ -68,6 +68,7 @@ class FieldController extends AdminController
         $this->model = Model::findOrFail($model_id);
 
         $this->field->model_id = $model_id;
+        $this->field->type     = 'text'; // 新建字段默认为text类型
         $this->field->system   = 0; // 新建字段为自定义字段
         $this->field->col      = 0; // 默认在主区域显示
 

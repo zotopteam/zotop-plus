@@ -3,19 +3,19 @@ $types  = [
     // 内置控件，没有type 不可选择并创建这些类型
     'title' => [
         'name'     => trans('content::field.type.title'),
-        'view'     => ['content::field.settings.ranglength'],
+        'view'     => ['content::field.settings.ranglength','content::field.settings.placeholder'],
         'method'   => '',
         'settings' => ['maxlength'=>255, 'required'=>1]
     ],
     'keywords' => [
         'name'     => trans('content::field.type.keywords'),
-        'view'     => '',
+        'view'     => ['content::field.settings.placeholder'],
         'method'   => '',
         'settings' => ['maxlength'=>100]
     ],
     'summary' => [
         'name'     => trans('content::field.type.summary'),
-        'view'     => ['content::field.settings.ranglength','content::field.settings.rows','content::field.settings.required'],
+        'view'     => ['content::field.settings.placeholder','content::field.settings.ranglength','content::field.settings.rows','content::field.settings.required'],
         'method'   => '',
         'settings' => ['maxlength'=>100]
     ],
@@ -23,29 +23,29 @@ $types  = [
     // 开放控件，可选择并创建这些类型
     'text' => [
         'name'     => trans('content::field.type.text'),
-        'view'     => ['content::field.settings.ranglength','content::field.settings.required'],
+        'view'     => ['content::field.settings.placeholder','content::field.settings.ranglength','content::field.settings.required'],
         'method'   => 'string',
         'settings' => ['maxlength'=>255]
     ],
     'textarea' => [
         'name'   => trans('content::field.type.textarea'),
-        'view'   => ['content::field.settings.ranglength','content::field.settings.rows','content::field.settings.required'],
+        'view'   => ['content::field.settings.placeholder','content::field.settings.ranglength','content::field.settings.rows','content::field.settings.required'],
         'method' => 'string'
     ],
     'number' => [
         'name'   => trans('content::field.type.number'),
-        'view'   => ['content::field.settings.length'],
+        'view'   => ['content::field.settings.placeholder','content::field.settings.length'],
         'method' => 'integer'
     ],
     'editor' => [
         'name'     => trans('content::field.type.editor'),
-        'view'     => ['content::field.settings.rows','content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark'],
+        'view'     => ['content::field.settings.placeholder','content::field.settings.rows','content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark'],
         'method'   => 'text',
         'settings' => ['rows'=>10,'resize'=>1,'watermark'=>1]
     ],
     'upload_image' => [
         'name'     => trans('content::field.type.image'),
-        'view'     => ['content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark'],
+        'view'     => ['content::field.settings.placeholder','content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark'],
         'method'   => 'string',
         'settings' => ['maxlength'=>255,'resize'=>0,'watermark'=>0]
     ],
@@ -57,7 +57,7 @@ $types  = [
     ],
     'upload_files' => [
         'name'   => trans('content::field.type.files'),
-        'view'   => ['content::field.settings.required'],
+        'view'   => ['content::field.settings.placeholder','content::field.settings.required'],
         'method' => 'string'
     ],
     'radiogroup' => [
@@ -77,28 +77,28 @@ $types  = [
     ],    
     'date' => [
         'name'   => trans('content::field.type.date'),
-        'view'   => ['content::field.settings.required'],
+        'view'   => ['content::field.settings.placeholder','content::field.settings.required'],
         'method' => 'date'
     ],
     'datetime' => [
         'name'   => trans('content::field.type.datetime'),
-        'view'   => ['content::field.settings.required'],
+        'view'   => ['content::field.settings.placeholder','content::field.settings.required'],
         'method' => 'datetime'
     ],
     'email' => [
         'name'   => trans('content::field.type.email'),
-        'view'   => ['content::field.settings.required'],
+        'view'   => ['content::field.settings.placeholder','content::field.settings.required'],
         'method' => 'string'
     ],
     'url' => [
         'name'     => trans('content::field.type.url'),
-        'view'     => ['content::field.settings.required'],
+        'view'     => ['content::field.settings.placeholder','content::field.settings.required'],
         'method'   => 'string',
         'settings' => ['maxlength'=>255]
     ],    
     'template' => [
         'name'     => trans('content::field.type.template'),
-        'view'     => ['content::field.settings.required'],
+        'view'     => ['content::field.settings.placeholder','content::field.settings.required'],
         'method'   => 'string',
         'settings' => ['maxlength'=>100]
     ],

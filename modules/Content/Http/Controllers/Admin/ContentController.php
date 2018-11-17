@@ -42,6 +42,9 @@ class ContentController extends AdminController
         $this->content->parent_id = $parent_id;
         $this->content->model_id  = $model_id;
 
+        $this->content->title  = '测试一下标题';
+        $this->content->title_style  = 'font-weight:bold;color:#0066cc';
+
         $this->title   = trans('content::content.create.model', [$this->model->name]);
 
         return $this->view();

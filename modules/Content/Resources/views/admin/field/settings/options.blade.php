@@ -1,14 +1,14 @@
     <div class="form-group row">
         <label for="settings-options" class="col-2 col-form-label">{{trans('content::field.options.label')}}</label>
-        <div class="col-6">
+        <div class="col-8">
             <div class="settings-options">
-                <table class="table table-border table-nowrap table-sortable table-hover">
+                <table class="table table-border table-nowrap table-sortable table-hover form-control">
                     <thead>
                         <tr>
-                            <td class="drag"></td>
+                            <td width="10%" class="drag"></td>
                             <td>{{trans('content::field.options.text')}}</td>
-                            <td>{{trans('content::field.options.value')}}</td>
-                            <td></td>
+                            <td width="35%">{{trans('content::field.options.value')}}</td>
+                            <td width="2%"></td>
                         </tr>
                     </thead>
                     <tbody>

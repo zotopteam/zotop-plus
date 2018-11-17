@@ -51,18 +51,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label for="help" class="col-2 col-form-label">{{trans('content::field.help.label')}}</label>
-                <div class="col-8">
-                    {field type="text" name="help"}
 
-                    @if ($errors->has('help'))
-                    <span class="form-help text-error">{{ $errors->first('help') }}</span>
-                    @else
-                    <span class="form-help">{{trans('content::field.help.help')}}</span>                     
-                    @endif                       
-                </div>
-            </div>
 
             <div class="form-group row">
                 <label for="type" class="col-2 col-form-label">{{trans('content::field.type.label')}}</label>
@@ -76,7 +65,20 @@
                     <span class="form-help">{{trans('content::field.type.help')}}</span>                     
                     @endif                       
                 </div>
-            </div>            
+            </div>
+
+            <div class="form-group row">
+                <label for="help" class="col-2 col-form-label">{{trans('content::field.help.label')}}</label>
+                <div class="col-8">
+                    {field type="text" name="help"}
+
+                    @if ($errors->has('help'))
+                    <span class="form-help text-error">{{ $errors->first('help') }}</span>
+                    @else
+                    <span class="form-help">{{trans('content::field.help.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>                      
 
             <div id="field-settings">
                 <i class="fa fa-spinner fa-spin d-none"></i>
