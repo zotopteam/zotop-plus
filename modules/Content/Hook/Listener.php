@@ -50,12 +50,12 @@ class Listener
      */
     public function types($types, $args)
     {
-        if ($args['model_id'] == 'category') {
+        if (in_array($args['model_id'], ['category'])) {
             $types['models'] = [
                 'name'     => trans('content::field.type.models'),
                 'view'     => '',
                 'method'   => 'text',
-                'settings' => ['required'=>1]
+                'settings' => ['required'=>1],
             ];
         }
 

@@ -35,7 +35,34 @@ class FormBuilder extends LaravelFormBuilder
         $options['class'] = isset($options['class']) ? 'form '.$options['class'] : 'form';
 
         return parent::open($options).$referer;
-    }	
+    }
+
+    /**
+     * 检查类型是否存在
+     * 
+     * @param  string  $type 类型名称
+     * @return boolean
+     */
+    public function hasType($type)
+    {
+        return $this->hasMacro($type) || method_exists($this, $type);
+    }
+
+    /**
+     * 依次查找类型，直到找到，找不到返回text
+     * @param  array $types 类型
+     * @return string
+     */
+    public function findType(...$types)
+    {
+        foreach ($types as $type) {
+            if ($this->hasType($type)) {
+                return $type;
+            }
+        }
+
+        return 'text';
+    }
 
     /**
      * 统一字段的调用方式 by hankx_chen
@@ -54,44 +81,29 @@ class FormBuilder extends LaravelFormBuilder
         }
 
         // 如果不存在的，直接显示text
-        $type = method_exists($this, $type) ? $type : 'text';
+        $type  = method_exists($this, $type) ? $type : 'text';
+        $name  = array_pull($options, 'name');
+        $value = array_pull($options, 'value');
 
-        // 按钮
         if ( in_array($type, ['submit','cancel'.'reset','button']) ) {
-            $name  = array_pull($options, 'name');
-            $value = array_pull($options, 'value');
             return $this->button($value, $options);
         }
 
-        // 调用已经存在的字段
-        if ( in_array($type, ['text','textarea','hidden','email','tel','number','date','datetime','datetimeLocal','time','url','color']) ) {
-            $name  = array_pull($options,'name');
-            $value = array_pull($options, 'value');
-            return $this->$type($name, $value, $options);
-        }
-
         if ( in_array($type, ['file','password']) ) {
-            $name  = array_pull($options, 'name');
-            $value = array_pull($options, 'value');
             return $this->$type($name, $options);
         }
 
-        if ( in_array($type, ['select','selectRange']) ) {
-            $name  = array_pull($options, 'name');
-            $value = array_pull($options, 'value');           
+        if ( in_array($type, ['select','selectRange']) ) {        
             $list  = array_pull($options, 'options', []);
             return $this->$type($name, $list, $value, $options);
         }
 
-        if ( in_array($type, ['radio','checkbox']) ) {
-            $name    = array_pull($options, 'name');
-            $value   = array_pull($options, 'value');           
+        if ( in_array($type, ['radio','checkbox']) ) {       
             $checked = array_pull($options, 'checked', null);            
-            //$checked = in_array(strtolower($checked),['checked','true','1']) ? true : false;// 此处待斟酌，应该有更好的实现方式 by hankx_chen 2017年4月5日
             return $this->$type($name, $value, $checked, $options);
         }
 
-        return $this->$type($options);        
+        return $this->$type($name, $value, $options);        
     }
 
     /**
@@ -146,11 +158,12 @@ class FormBuilder extends LaravelFormBuilder
         // 处理多个可能的键名
         if (is_array($key)) {
             foreach ($key as $k) {
-                if (array_has($options, $key)) {
+                if (array_has($options, $k)) {
                     return static::getAttribute($options, $k, $default, $pull);
                 }
             }
         }
+
         // 如果存在键名，取出
         if (array_has($options, $key)) {
             // 是否从原数组中删除
@@ -161,6 +174,7 @@ class FormBuilder extends LaravelFormBuilder
             }
             return $value;
         }
+
         return $default;      
     }
 
@@ -248,21 +262,6 @@ class FormBuilder extends LaravelFormBuilder
         $options['class'] = empty($options['class']) ? "form-{$options['type']}" : "form-{$options['type']} ".$options['class'];
         
         return parent::button($value, $options); 
-    }       
-
-
-    /**
-     * 手机号字段
-     * 
-     * @param  array  $attrs 标签数组
-     * @return mixed
-     */
-    public function mobile(Array $attrs)
-    {
-        $name  = array_pull($attrs,'name');
-        $value = $this->getValue($attrs);
-
-        return $this->input('text', $name, $value, $attrs);
     }
 
 }

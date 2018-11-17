@@ -6,53 +6,27 @@
         <div class="main-back">
             <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
         </div>
-        <div class="main-title mr-auto">
-            {{$title}}
-        </div>
+        <div class="main-title">
+            {{$title}} : {{$parent->title}}
+        </div>     
     </div>
     
     <div class="main-body bg-light scrollable">
         <div class="container-fluid">
 
             {form model="$content" route="content.content.store" id="content-form" method="post" autocomplete="off"}
-            
-            <div class="d-none">
-            @foreach ($fields->hidden as $item)
-            {{form::field($item.field)}}
-            @endforeach
-            </div>
 
             <div class="row">
-                <div class="{{$fields->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}}">
-                    @foreach ($fields->main as $item)
-                        <div class="form-group">
-                            <label for="{{$item.for}}" class="form-label {{$item.required ? 'required' : ''}}">
-                                {{$item.label}}
-                            </label>
-                            
-                            {{form::field($item.field)}}
-
-                            @if($item.help) 
-                                <span class="form-help">{{$item.help}}</span>
-                            @endif
-                        </div>                        
+                <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}}">
+                    @foreach ($form->main as $item)
+                        @include('content::content.field')
                     @endforeach                    
                 </div>
 
-                @if ($fields->side->count())
+                @if ($form->side->count())
                 <div class="col-3 col-md-3 col-sm-12">
-                    @foreach ($fields->side as $item)
-                        <div class="form-group">
-                            <label for="{{$item.for}}" class="form-label {{$item.required ? 'required' : ''}}">
-                                {{$item.label}}
-                            </label>
-                            
-                            {{form::field($item.field)}}
-
-                            @if($item.help) 
-                                <span class="form-help">{{$item.help}}</span>
-                            @endif
-                        </div>                        
+                    @foreach ($form->side as $item)
+                        @include('content::content.field')                       
                     @endforeach                    
                 </div>
                 @endif

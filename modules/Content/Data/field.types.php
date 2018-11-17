@@ -43,7 +43,7 @@ $types  = [
         'method'   => 'text',
         'settings' => ['rows'=>10,'resize'=>1,'watermark'=>1]
     ],
-    'image' => [
+    'upload_image' => [
         'name'     => trans('content::field.type.image'),
         'view'     => ['content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark'],
         'method'   => 'string',
@@ -55,7 +55,7 @@ $types  = [
         'method'   => 'text',
         'settings' => ['min'=>0,'max'=>999,'resize'=>0,'watermark'=>0]
     ],
-    'files' => [
+    'upload_files' => [
         'name'   => trans('content::field.type.files'),
         'view'   => ['content::field.settings.required'],
         'method' => 'string'

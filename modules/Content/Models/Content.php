@@ -45,5 +45,36 @@ class Content extends Model
      *
      * @var bool
      */
-    //public $timestamps = false;	
+    //public $timestamps = false;
+    //
+    
+    /**
+     * 获取父级数据
+     * 
+     * @param  int $id 父级别编号
+     * @return \Illuminate\Database\Eloquent\Model|static
+     */
+    private function parent($id)
+    {
+        $parent = static::findOrNew($id);
+
+        if (! $parent->exists) {
+            $parent->id    = $id;
+            $parent->title = trans('content::content.root');
+        }
+
+        return $parent;
+    }
+
+    /**
+     * Handle dynamic static method calls into the method.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public static function __callStatic($method, $parameters)
+    {
+        return (new static)->$method(...$parameters);
+    }    
 }

@@ -20,19 +20,29 @@
             {{$parent->title}}
         </div>
         <div class="main-action">
+            @php($menus = Module::data('content::menu.create', get_defined_vars()))
+            @if($menus->count()>1)
             <div class="btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-plus"></i> {{trans('content::content.create')}}
                 </button>
                 <div class="dropdown-menu dropdown-menu-primary">
-                    @foreach(Module::data('content::menu.create', get_defined_vars()) as $model)
+                    @foreach($menus as $model)
                         <a class="dropdown-item" href="{{route('content.content.create',[$parent->id, $model->id])}}" title="{{$model->description}}" data-placement="left">
                             <i class="dropdown-item-icon {{$model->icon}} fa-fw"></i>
                             <b class="dropdown-item-text">{{$model->name}}</b>
                         </a>
                     @endforeach
                 </div>
-            </div>       
+            </div>
+            @else
+                @foreach($menus as $model)
+                    <a class="btn btn-primary" href="{{route('content.content.create',[$parent->id, $model->id])}}" title="{{$model->description}}">
+                        <i class="btn-icon fa fa-plus fa-fw"></i>
+                        <b class="btn-text">{{$model->name}}</b>
+                    </a>
+                @endforeach            
+            @endif     
         </div>
         @endif
         <div class="main-action">

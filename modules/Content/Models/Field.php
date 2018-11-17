@@ -77,6 +77,11 @@ class Field extends Model
             
             $field = static::preproccess($field);
 
+            // 必填字段不允许禁用
+            if (array_get($field->settings, 'required') && $field->disabled) {
+                abort(403, trans('content::field.disable.required'));
+            }
+
             // 更新自定义字段
             if (! $field->system) {
                 
@@ -111,7 +116,7 @@ class Field extends Model
      */
     public static function preproccess($field)
     {
-        $types = Module::data('content::field.types', $field->toArray());
+        $types = static::types($field->model_id);
 
         // 合并默认设置
         if ($settings = array_get($types, $field->type.'.settings')) {
@@ -122,7 +127,24 @@ class Field extends Model
         $field->method = array_get($types, $field->type.'.method');
 
         return $field;
-    }    
+    }
+
+    /**
+     * 获取模型支持的字段类型
+     * 
+     * @param  string $model_id 模型编号
+     * @return array
+     */
+    public static function types($model_id)
+    {
+        static $types = [];
+
+        if (empty($types)) {
+            $types = Module::data('content::field.types', ['model_id'=>$model_id]);
+        }
+
+        return $types;
+    }   
 
     /**
      * 查询系统或者自定义字段
@@ -134,5 +156,16 @@ class Field extends Model
     public function scopeSystem($query, $system=true)
     {
         return $query->where('system', ($system ? 1 : 0));
+    }
+
+    /**
+     * 获取字段类型名称
+     * @return string
+     */
+    public function getTypeNameAttribute($value)
+    {
+        $types = static::types($this->model_id);
+
+        return array_get($types, $this->type.'.name');
     }
 }

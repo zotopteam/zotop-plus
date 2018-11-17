@@ -6,6 +6,9 @@ return [
     'create'             => '新建字段',
     'edit'               => '修改字段',
 
+    'disable.required'   => '必填项不能禁用',
+    'delete.required'    => '必填项不能删除',
+
     'system.title'       => '标题',
     'system.image'       => '图像',
     'system.keywords'    => '关键词',
@@ -31,7 +34,11 @@ return [
     'help.help'          => '显示在字段下方作为表单输入提示',
 
     'type.label'         => '表单控件',
-    'type.help'          => '请选择字段对应的表单控件类型',    
+    'type.help'          => '请选择字段对应的表单控件类型',
+
+    'type.title'         => '标题',
+    'type.keywords'      => '关键词',
+    'type.summary'       => '摘要',    
     'type.text'          => '单行文本',
     'type.textarea'      => '多行文本',
     'type.number'        => '数字',

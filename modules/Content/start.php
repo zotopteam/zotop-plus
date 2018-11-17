@@ -15,9 +15,40 @@
 \Filter::listen('content::field.types', 'Modules\Content\Hook\Listener@types');
 
 /**
- * 编辑器
+ * 标题控件
  */
-\Form::macro('summary', function($attrs) {
+\Form::macro('content_title', function($attrs) {
+
+    $attrs['type'] = 'text';
+
+    return $this->field($attrs);
+});
+
+/**
+ * 关键词控件
+ */
+\Form::macro('content_keywords', function($attrs) {
+
+    $attrs['type'] = 'text';
+
+    return $this->field($attrs);
+});
+
+/**
+ * 摘要控件
+ */
+\Form::macro('content_summary', function($attrs) {
+
+    $attrs['type'] = 'textarea';
+    $attrs['rows'] = $attrs['rows'] ?? 4;
+
+    return $this->field($attrs);
+});
+
+/**
+ * 内容模型选择器
+ */
+\Form::macro('content_models', function($attrs) {
 
     $attrs['type'] = 'textarea';
     $attrs['rows'] = $attrs['rows'] ?? 4;

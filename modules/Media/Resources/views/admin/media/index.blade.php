@@ -18,7 +18,7 @@
                 <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
             </a>
             <a href="javascript:;" class="btn btn-outline-primary js-prompt" data-url="{{route('media.folder.create',[$folder_id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name">
-                <i class="fa fa-fw fa-folder"></i> {{trans('media::folder.create')}}
+                <i class="fa fa-fw fa-folder-plus"></i> {{trans('media::folder.create')}}
             </a>
         </div>
         @else

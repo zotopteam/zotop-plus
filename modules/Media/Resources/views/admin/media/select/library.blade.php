@@ -12,7 +12,7 @@
                 <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
             </a>
             <a href="javascript:;" class="btn btn-outline-primary btn-icon-only js-prompt" data-url="{{route('media.folder.create',[$folder_id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" title="{{trans('media::folder.create')}}">
-                <i class="fa fa-fw fa-folder"></i> {{trans('media::folder.create')}}
+                <i class="fa fa-fw fa-folder-plus"></i> {{trans('media::folder.create')}}
             </a>
             <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('core::master.refresh')}}">
                 <i class="fa fa-sync"></i>

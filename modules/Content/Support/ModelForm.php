@@ -3,6 +3,7 @@ namespace Modules\Content\Support;
 
 use Modules\Content\Models\Model;
 use Modules\Content\Models\Field;
+use Form;
 
 class ModelForm
 {
@@ -31,12 +32,6 @@ class ModelForm
     public $side;
 
     /**
-     * 隐藏字段
-     * @var array
-     */      
-    public $hidden;
-
-    /**
      * 初始化
      */
     public function __construct()
@@ -55,22 +50,16 @@ class ModelForm
         $instance->fields = Field::where('model_id', $model_id)->orderby('sort','asc')->get();
 
         $instance->main = $instance->fields->filter(function($item){
-            return $item['col'] == 0 && $item['disabled'] == 0;
+            return $item['col'] == 0;
         })->values()->transform(function($item) {
             return static::convert($item);
         });
 
         $instance->side = $instance->fields->filter(function($item){
-            return $item['col'] == 1 && $item['disabled'] == 0;
+            return $item['col'] == 1;
         })->values()->transform(function($item) {
             return static::convert($item);
-        });
-
-        $instance->hidden = $instance->fields->filter(function($item){
-            return $item['disabled'] == 1;
-        })->values()->transform(function($item) {
-            return static::convert($item);
-        });                        
+        });                   
 
         return $instance;
     }
@@ -87,9 +76,10 @@ class ModelForm
         $convert['help']     = $item->help;
         $convert['for']      = $item->name;        
         $convert['required'] = (bool)array_get($item->settings, 'required');
+        $convert['disabled'] = (bool)$item->disabled;
 
         $convert['field']['name']  = $item->name;
-        $convert['field']['type']  = $item->type;
+        $convert['field']['type']  = Form::findType('content_'.$item->model_id.'_'.$item->type, 'content_'.$item->type, $item->type);
         //$convert['field']['value'] = $item->default;
 
         foreach($item->settings as $key=>$val) {

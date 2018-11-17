@@ -177,7 +177,7 @@ class FieldController extends AdminController
      */
     public function settings(Request $request, $model_id)
     {
-        $types = Module::data('content::field.types', $request->field);
+        $types = Field::types($request->field['model_id']);
 
         $this->field = array_object($request->field);
         $this->type  = array_object(array_get($types, $this->field->type));

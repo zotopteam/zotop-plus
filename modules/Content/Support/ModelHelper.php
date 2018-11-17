@@ -96,20 +96,18 @@ class ModelHelper
 
     /**
      * 初始化
-     * @param  [type] $modelId [description]
+     * @param  [type] $model_id [description]
      * @return [type]          [description]
      */
-    public static function fieldInit($modelId)
-    {
+    public static function fieldInit($model_id)
+    {   
+        $types  = Field::types($model_id);
         $system = Module::data('content::field.system');
-        $types  = Module::data('content::field.types');
-
-        Field::where('model_id', $modelId)->delete();
-
+        
         // 插入模块的系统字段，合并字段默认设置
         foreach ($system as $field) {
             Field::create(array_merge($field, [
-                'model_id' => $modelId,
+                'model_id' => $model_id,
                 'settings' => array_get($types, $field['type'].'.settings', []),
                 'system'   => 1,
             ]));
