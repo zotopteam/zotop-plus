@@ -1,4 +1,4 @@
-<div class="input-group input-datetime" id="translate-{{$id}}">    
+<div class="input-group" id="translate-{{$id}}">    
     {{Form::text($name,$value,$attrs)}}
     <div class="input-group-append">
         <span class="input-group-text btn btn-translate disabled">
@@ -14,7 +14,7 @@
     @endonce
     <script type="text/javascript">
     $(function(){
-        $("#translate-{{$id}}").translate({!!json_encode($options)!!});  
+        $("#translate-{{$id}}").translate(@json($options));  
     });
     </script>
 @endpush

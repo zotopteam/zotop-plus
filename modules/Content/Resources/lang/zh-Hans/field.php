@@ -14,7 +14,8 @@ return [
     'system.keywords'    => '关键词',
     'system.summary'     => '摘要',
     'system.template'    => '模板',
-    'system.url'         => '链接', 
+    'system.url'         => '链接',
+    'system.slug'        => '别名', 
 
     'layout.main'        => '主区域',
     'layout.side'        => '侧边区域',
@@ -38,7 +39,8 @@ return [
 
     'type.title'         => '标题',
     'type.keywords'      => '关键词',
-    'type.summary'       => '摘要',    
+    'type.summary'       => '摘要',
+    'type.slug'          => '别名',    
     'type.text'          => '单行文本',
     'type.textarea'      => '多行文本',
     'type.number'        => '数字',
@@ -59,8 +61,8 @@ return [
     'default.label'      => '默认值',
     'default.help'       => '多个默认值用英文逗号“,”隔开',
 
-    'placeholder.label'  => '占位提示',
-    'placeholder.help'   => '在输入框中显示，描述输入字段预期值的提示信息', 
+    'placeholder.label'  => '占位符',
+    'placeholder.help'   => '字段在被输入值之前显示在其中的文字。这个提示通常是一个示例值，或是期望格式的简要描述', 
 
     'post.label'         => '前台投稿',
     'post.help'          => '',

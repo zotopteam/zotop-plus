@@ -27,7 +27,7 @@ if (! function_exists('translate_alias')) {
      * @param  string $separator 分隔符
      * @return string
      */
-    function translate_alias($text, $separator='-')
+    function translate_slug($text, $separator='-')
     {  
         $alias = translate($text, 'auto', 'en');
         $alias = str_replace(' ', $separator, $alias);

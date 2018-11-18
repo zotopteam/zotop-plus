@@ -32,6 +32,18 @@
 });
 
 /**
+ * 别名控件
+ */
+\Form::macro('content_slug', function($attrs) {
+
+    $attrs['type']   = 'translate';
+    $attrs['source'] = 'title';
+    $attrs['format'] = 'slug';
+
+    return $this->field($attrs);
+});
+
+/**
  * 关键词控件
  */
 \Form::macro('content_keywords', function($attrs) {

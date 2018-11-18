@@ -21,7 +21,7 @@ class Content extends Model
      *
      * @var array
      */
-    protected $fillable = ['parent_id','model_id','title','title_style','url','image','keywords','summary','template','hits','comments','status','stick','sort','user_id'];
+    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','url','template','hits','comments','status','stick','sort','user_id'];
 	
 	
     /**

@@ -19,7 +19,12 @@ $types  = [
         'method'   => '',
         'settings' => ['maxlength'=>100]
     ],
-
+    'slug' => [
+        'name'     => trans('content::field.type.slug'),
+        'view'     => ['content::field.settings.required'],
+        'method'   => '',
+        'settings' => ['maxlength'=>64]
+    ],
     // 开放控件，可选择并创建这些类型
     'text' => [
         'name'     => trans('content::field.type.text'),

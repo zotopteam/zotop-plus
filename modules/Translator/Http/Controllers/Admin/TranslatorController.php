@@ -24,10 +24,10 @@ class TranslatorController extends AdminController
         $format    = $request->input('format');
 
         // 判断转换翻译格式
-        if (in_array(strtolower($format), ['alias', 'permalink'])) {
-            $value = translate_alias($source, $separator ?: '-');
+        if (in_array(strtolower($format), ['slug', 'permalink'])) {
+            $value = translate_slug($source, $separator ?: '-');
         } elseif (in_array(strtolower($format), ['id', 'key', 'fieldname'])) {
-            $value = translate_alias($source, $separator ?: '_');
+            $value = translate_slug($source, $separator ?: '_');
         } else {
             $value = translate($source, $from ?: null, $to ?: null);
         }

@@ -11,7 +11,7 @@
     $.fn.translate = function (options) {
         var options = options || {};
         return this.each(function () {
-            var source = $('#' + options.source);
+            var source = $('[name=' + options.source+']');
             var target = $(this).find('input');
             var btn    = $(this).find('.btn-translate');
 

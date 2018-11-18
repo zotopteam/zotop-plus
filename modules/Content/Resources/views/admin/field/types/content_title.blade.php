@@ -1,4 +1,4 @@
-<div class="input-group input-title-style" id="{{$id}}">    
+<div class="input-group input-title-style" id="content-title-{{$id}}">    
     {{Form::text($name, $value, $attrs)}}
     {{Form::hidden($name.'_style')}}
     <div class="input-group-append">
@@ -22,7 +22,7 @@
     @endonce
     <script type="text/javascript">
     $(function(){
-         $('#{{$id}}').input_style(@json($options));
+         $('#content-title-{{$id}}').input_style(@json($options));
     });
     </script>
 @endpush
