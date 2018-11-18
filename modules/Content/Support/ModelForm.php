@@ -31,16 +31,16 @@ class ModelForm
      */    
     public $side;
 
-    /**
-     * 初始化
-     */
-    public function __construct()
-    {
-
-    }
 
     /**
-     * [get description]
+     * 默认值
+     * @var array
+     */    
+    public $default = [];
+
+    /**
+     * 获取表单
+     * 
      * @param  [type] $model_id [description]
      * @return [type]           [description]
      */
@@ -49,19 +49,37 @@ class ModelForm
         $instance  = new static;
         $instance->fields = Field::where('model_id', $model_id)->orderby('sort','asc')->get();
 
-        $instance->main = $instance->fields->filter(function($item){
-            return $item['col'] == 0;
+        $instance->main = $instance->fields->filter(function($item) {
+            return intval($item['col']) == 0;
         })->values()->transform(function($item) {
             return static::convert($item);
         });
 
-        $instance->side = $instance->fields->filter(function($item){
-            return $item['col'] == 1;
+        $instance->side = $instance->fields->filter(function($item) {
+            return intval($item['col']) == 1;
         })->values()->transform(function($item) {
             return static::convert($item);
-        });                   
+        });
+
+        $instance->default = $instance->fields->filter(function($item) {
+            return trim($item['default']) != '';
+        })->pluck('default', 'name')->toArray();                
 
         return $instance;
+    }
+
+    /**
+     * 合并默认值到对象
+     * @param  object $object 对象
+     * @return object
+     */
+    public function default($object)
+    {
+        foreach ($this->default as $key => $value) {
+            $object->$key = $value;
+        }
+
+        return $object;
     }
 
     /**
@@ -79,8 +97,11 @@ class ModelForm
         $convert['disabled'] = (bool)$item->disabled;
 
         $convert['field']['name']  = $item->name;
-        $convert['field']['type']  = Form::findType('content_'.$item->model_id.'_'.$item->type, 'content_'.$item->type, $item->type);
-        //$convert['field']['value'] = $item->default;
+        $convert['field']['type']  = Form::findType(
+            'content_'.$item->model_id.'_'.$item->type,
+            'content_'.$item->type,
+            $item->type
+        );
 
         foreach($item->settings as $key=>$val) {
 
@@ -88,7 +109,7 @@ class ModelForm
                 $val = intval($val);
             }
 
-            if (in_array($key, ['options'])) {
+            if (in_array($key, ['options']) && in_array($item->type, ['select','radiogroup', 'checkboxgroup'])) {
                 $val = static::convertOptions($val);
             }
 

@@ -25,7 +25,7 @@ class Model extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['id','icon','name','description','module','model','template','posts','sort','disabled','user_id'];
+    protected $fillable = ['id','icon','name','table','description','module','model','template','nestable','posts','sort','disabled','user_id'];
 	
 	
     /**

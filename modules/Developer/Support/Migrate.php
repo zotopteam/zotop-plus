@@ -522,6 +522,10 @@ class Migrate
 			return "['".implode("','", $argument)."']";
 		}
 
+		if (is_bool($argument)) {
+			return $argument ? 'true' : 'false';
+		}
+
 		if (is_numeric($argument)) {
 			return $argument;
 		}

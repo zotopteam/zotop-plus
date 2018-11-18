@@ -7,36 +7,42 @@
             var bold  = $(this).find('button.btn-bold');
             var color = $(this).find('button.btn-color');
 
+            var get_style = function (name) {
+                return input.get(0).style[name];
+            }
+
+            var set_style = function (name, value) {
+                input.get(0).style[name] = value;
+                style.val(input.attr('style'));
+            }
+
             bold.addClass(function(){
-                if(input.css('font-weight') == 'bold' || input.css('font-weight') == '700') {
+                if(get_style('font-weight') == 'bold' || get_style('font-weight') == '700') {
                     return 'active';
                 }
             }).on('click',function(e){
                 e.preventDefault();
 
-                if(input.css('font-weight') == 'bold' || input.css('font-weight') == '700') {
+                if(get_style('font-weight') == 'bold' || get_style('font-weight') == '700') {
                     bold.removeClass('active');
-                    input.css('font-weight', '');
+                    set_style('font-weight', '');
                 } else {
                     bold.addClass('active');
-                    input.css('font-weight', 'bold');
+                    set_style('font-weight', 'bold');
                 }
-
-                style.val(input.attr('style'));
             });           
 
             var changecolor = function(value) {
                 if(value) {
                     value = value.toHexString();
                     color.addClass('active');
-                    color.find('i').css({'color':value});
-                    input.css({'color':value});
+                    color.find('i').css('color', value);
+                    set_style('color', value);
                 } else {
                     color.removeClass('active');
-                    color.find('i').css({'color':''});
-                    input.css({'color':''});
+                    color.find('i').css('color', '');
+                    set_style('color', '');
                 }
-                style.val(input.attr('style')); 
             }
 
             // 色板属性
@@ -69,9 +75,10 @@
 
             options = $.extend({}, defaults, options);
             
-            color.addClass(function(){
-                if(input.css('color')) {
-                    color.find('i').css('color', input.css('color'));
+            color.addClass(function() {
+                var style_color = get_style('color');
+                if(style_color) {
+                    color.find('i').css('color', style_color);
                     return 'active';
                 }
             }).spectrum(options);

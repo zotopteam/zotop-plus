@@ -57,7 +57,7 @@
                                     <i class="fa fa-cog"></i> {{trans('content::model.edit')}}
                                 </a>
                                 <a class="manage-item" href="{{route('content.field.index', $model->id)}}">
-                                    <i class="fa fa-align-justify"></i> {{trans('content::field.title')}}
+                                    <i class="fa fa-bars"></i> {{trans('content::field.title')}}
                                 </a>
                                 <a class="manage-item" href="{{route('content.model.export', $model->id)}}">
                                     <i class="fa fa-file-export"></i> {{trans('content::model.export')}}

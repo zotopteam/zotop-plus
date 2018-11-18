@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Schema\Blueprint;
 use Doctrine\DBAL\Types\Type;
+use Modules\Content\Models\Model;
 use Filter;
 
 class ModelTable
@@ -166,15 +167,18 @@ class ModelTable
         // 新表名称
         $newtable = $this->model_table_prefix.$model_id;
 
-		Schema::rename($this->table, $newtable);
+        if (Schema::hasTable($newtable)) {
+            abort(403, trans('core.master.exists', [$newtable]));
+        }
 
-		if (Schema::hasTable($newtable)) {
-			$this->model_id = $model_id;
-            $this->table    = $newtable;
-			return true;
-		}
+        if (Schema::hasTable($this->table)) {
+            Schema::rename($this->table, $newtable);
+            Model::where('id', $this->model_id)->update(['table'=>$newtable]);
+        }
 
-		return false;
+        $this->model_id = $model_id;
+        $this->table    = $newtable;
+        return true;
 	}
 
 	/**
@@ -203,6 +207,8 @@ class ModelTable
             //外键约束，TODO: 未知错误,暂时屏蔽
             //$table->foreign('content_id')->references('id')->on('content');
 		});
+
+        Model::where('id', $this->model_id)->update(['table'=>$this->table]);
 
 		return true;
 	}
