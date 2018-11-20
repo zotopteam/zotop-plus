@@ -19,10 +19,12 @@ class CreateContentModelTable1542521976 extends Migration
         	$table->char('id', 64)->nullable(false)->comment('模型ID，如：news')->unique('id');
 			$table->string('icon', 255)->nullable()->default('fa-file')->comment('图标');
 			$table->char('name', 64)->nullable(false)->comment('名称');
-			$table->char('table', 64)->nullable()->comment('扩展表名称');
 			$table->string('description', 255)->nullable()->comment('说明');
 			$table->char('module', 64)->nullable()->comment('模块');
 			$table->char('model', 255)->nullable()->comment('模型');
+			$table->char('table', 64)->nullable()->comment('扩展表名称');
+			$table->text('fillable')->nullable()->comment('扩展表可填充字段');
+			$table->text('casts')->nullable()->comment('扩展表属性转换');			
 			$table->string('template', 100)->nullable()->comment('详细页面模版');
 			$table->boolean('nestable')->nullable()->comment('可嵌套，0=否 1=是')->default(0);
 			$table->integer('posts')->nullable()->comment('数据量')->default(0)->unsigned();

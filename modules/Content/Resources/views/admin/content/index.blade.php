@@ -60,17 +60,23 @@
         @if($contents->count() == 0)
             <div class="nodata">{{trans('core::master.nodata')}}</div>
         @else
-            <table class="table table-nowrap table-hover">
+            <table class="table table-nowrap table-sortable table-hover">
                 <thead>
                 <tr>
-                    <th width="1%">{{trans('content::content.title.label')}}</th>
-                    <td></td>
+                    <td class="drag"></td>
+                    <td colspan="2">{{trans('content::content.title.label')}}</td>
+                    <td width="10%"></td>
+                    <td width="10%"></td>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($contents as $content)
                     <tr>
-                        <td>
+                        <td class="drag"></td>
+                        <td class="px-2" width="1%">
+                            <i class="{{$content->model->icon}} fa-fw fa-2x text-warning"></i>
+                        </td>
+                        <td class="px-2">
                             <div class="title text-lg">
                                 {{$content->title}}
                             </div>
@@ -83,7 +89,13 @@
                                 </a>
                             </div>
                         </td>
-                        <td></td>
+                        <td>
+                            {{$content->status}}
+                        </td>
+                        <td>
+                            <strong>{{$content->user->username}}</strong>
+                            <div>{{$content->updated_at}}</div>                            
+                        </td>
                     </tr>
                 @endforeach
 

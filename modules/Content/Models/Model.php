@@ -1,14 +1,14 @@
 <?php
 namespace Modules\Content\Models;
 
-use Illuminate\Database\Eloquent\Model as BaseModel;
+use Illuminate\Database\Eloquent\Model as LaravelModel;
 use Modules\Core\Traits\UserRelation;
 use Modules\Content\Models\Field;
 use Modules\Content\Models\Content;
 use Modules\Content\Support\ModelTable;
 use Modules\Content\Support\ModelHelper;
 
-class Model extends BaseModel
+class Model extends LaravelModel
 {
     use UserRelation;
 	
@@ -25,7 +25,7 @@ class Model extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['id','icon','name','table','description','module','model','template','nestable','posts','sort','disabled','user_id'];
+    protected $fillable = ['id','icon','name','description','module','model','table','fillable','casts','template','nestable','posts','sort','disabled','user_id'];
 	
 	
     /**
@@ -41,7 +41,10 @@ class Model extends BaseModel
      *
      * @var array
      */
-    //protected $casts = [];
+    protected $casts = [
+        'fillable' => 'array',
+        'casts'    => 'array',
+    ];
 	
 	
     /**
@@ -65,20 +68,9 @@ class Model extends BaseModel
     {
         parent::boot();
 
-        // 为安全考虑，禁止删除非空的模型
-        static::deleting(function($model) {
-
-            // 如果已经有数据，不能删除
-            if (Content::where('model_id', $model->id)->count()) {
-                abort(403, trans('content::model.delete.notempty'));
-            }
-
-            // 删除字段
-            Field::where('model_id', $model->id)->delete();
-
-            // 删除关联表
-            $table = ModelTable::find($model->id);
-            $table->drop();                    
+        // 创建模型
+        static::creating(function($model) {
+            $model->module = $model->module ?: 'content';
         });
 
         // 修改模型标识 id 时对应的关联数据
@@ -100,7 +92,33 @@ class Model extends BaseModel
                 $table = ModelTable::find($model->getOriginal('id'));
                 $table->rename($model->id);   
             }
-        });      
+        });
+
+        // 为安全考虑，禁止删除非空的模型
+        static::deleting(function($model) {
+
+            // 如果已经有数据，不能删除
+            if (Content::where('model_id', $model->id)->count()) {
+                abort(403, trans('content::model.delete.notempty'));
+            }
+
+            // 删除字段
+            Field::where('model_id', $model->id)->delete();
+
+            // 删除关联表
+            $table = ModelTable::find($model->id);
+            $table->drop();                    
+        });
+
+        // 保存模型时
+        static::saved(function($model) {
+            ModelHelper::refreshExtend($model);
+        });
+
+        // 删除模型时
+        // static::deleted(function($model) {
+        //     ModelHelper::deleteExtend($model);
+        // });       
     }
 
     /**

@@ -20,6 +20,8 @@ class FieldController extends AdminController
      */
     public function index($model_id)
     {
+        //Field::sync($model_id);
+
         $this->model = Model::findOrFail($model_id);
         $this->title = trans('content::field.title');
         $this->fields = Field::where('model_id',$model_id)->orderby('sort','asc')->get();        

@@ -22,7 +22,7 @@ class ContentController extends AdminController
         $this->parent = Content::parent($parent_id);
 
         // 分页获取
-        $this->contents = Content::with('user')->orderby('sord','desc')->paginate(25);
+        $this->contents = Content::with('user')->where('parent_id', $parent_id)->orderby('sort','desc')->paginate(25);
 
         return $this->view();
     }
@@ -41,9 +41,12 @@ class ContentController extends AdminController
         $this->content = Content::findOrNew(0);
         $this->content->parent_id = $parent_id;
         $this->content->model_id  = $model_id;
+        $this->content->status    = 'publish';
 
-        // $this->content->title  = '测试一下标题';
-        // $this->content->title_style  = 'font-weight:700;color:rgb(223,123,123)';
+        $this->content->title  = '测试一下标题';
+        $this->content->title_style  = 'font-weight:700;color:rgb(223,123,123)';
+        $this->content->content  = '<b>test test</b>';
+        $this->content->image = '/uploads/201712141004590000007286.jpg';
 
         $this->content = $this->form->default($this->content);
 
@@ -92,6 +95,10 @@ class ContentController extends AdminController
         $this->title = trans('content::content.edit');
         $this->id    = $id;
         $this->content = Content::findOrFail($id);
+
+        $this->parent = Content::parent($this->content->parent_id);
+        $this->model  = Model::find($this->content->model_id);
+        $this->form   = ModelForm::get($this->content->model_id);        
 
         return $this->view();
     }

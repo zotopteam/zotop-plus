@@ -40,7 +40,8 @@ $types  = [
     'number' => [
         'name'   => trans('content::field.type.number'),
         'view'   => ['content::field.settings.placeholder','content::field.settings.length'],
-        'method' => 'integer'
+        'method' => 'integer',
+        'cast'   => 'integer',
     ],
     'editor' => [
         'name'     => trans('content::field.type.editor'),
@@ -58,6 +59,7 @@ $types  = [
         'name'     => trans('content::field.type.gallery'),
         'view'     => ['content::field.settings.required', 'content::field.settings.resize', 'content::field.settings.watermark', 'content::field.settings.fileslength'],
         'method'   => 'text',
+        'cast'     => 'array',
         'settings' => ['min'=>0,'max'=>999,'resize'=>0,'watermark'=>0]
     ],
     'upload_files' => [
@@ -73,7 +75,8 @@ $types  = [
     'checkboxgroup' => [
         'name'   => trans('content::field.type.radiogroup'),
         'view'   => ['content::field.settings.options','content::field.settings.required'],
-        'method' => 'string'
+        'method' => 'string',
+        'cast'   => 'array',
     ],
     'select' => [
         'name'   => trans('content::field.type.select'),

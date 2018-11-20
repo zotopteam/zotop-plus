@@ -6,38 +6,45 @@
         <div class="main-back">
             <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
         </div>
-        <div class="main-title mr-auto">
-            {{$title}}
+        <div class="main-title">
+            {{$title}} : {{$parent->title}}
         </div>
+        <div class="main-action ml-auto">
+             {field type="submit" form="content-form" value="trans('core::master.save')" class="btn btn-primary"}
+        </div>   
     </div>
     
-    <div class="main-body scrollable">
+    <div class="main-body bg-light scrollable">
         <div class="container-fluid">
 
-            {form model="$content" route="['content.content.store', $id]" id="content-form" method="put" autocomplete="off"}
+        {form model="$content" route="['content.content.update', $id]" id="content-form" method="put" autocomplete="off"}
+            
+            {field type="hidden" name="parent_id" required="required"}
+            {field type="hidden" name="model_id" required="required"}
+            {field type="hidden" name="status" required="required"}
 
-            <div class="form-title row">{{trans('content::content.form.base')}}</div>
-
-            <div class="form-group row">
-                <label for="title" class="col-2 col-form-label required">{{trans('content::content.title.label')}}</label>
-                <div class="col-4">
-                    {field type="text" name="title" required="required"}
-
-                    @if ($errors->has('title'))
-                    <span class="form-help text-error">{{ $errors->first('title') }}</span>
-                    @else
-                    <span class="form-help">{{trans('content::content.title.help')}}</span>                     
-                    @endif                       
+            <div class="row">
+                <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}}">
+                    @foreach ($form->main as $item)
+                        @include('content::content.field')
+                    @endforeach                    
                 </div>
-            </div>
 
+                @if ($form->side->count())
+                <div class="col-3 col-md-3 col-sm-12">
+                    @foreach ($form->side as $item)
+                        @include('content::content.field')                       
+                    @endforeach                    
+                </div>
+                @endif
+            </div>
             {/form}
 
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
-            {field type="submit" form="content-form" value="trans('core::master.save')" class="btn btn-primary"}
+           
         </div>
     </div>
 </div>

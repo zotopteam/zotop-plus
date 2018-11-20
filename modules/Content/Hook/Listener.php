@@ -55,7 +55,8 @@ class Listener
                 'name'     => trans('content::field.type.models'),
                 'view'     => '',
                 'method'   => 'text',
-                'settings' => ['required'=>1],
+                'cast'     => 'array',
+                'settings' => ['required'=>1]
             ];
         }
 

@@ -1,9 +1,9 @@
 <?php
-use Modules\Content\Models\Category;
+use Modules\Content\Models\Content;
 
-$tree = Category::select('id','parent_id','title')->orderBy('sort','desc')->get()->map(function($item, $key){
+$tree = Content::select('id','parent_id','title')->where('model_id','category')->orderBy('sort','desc')->get()->map(function($item, $key){
     $item->key    = $item->id;
-    $item->href   = route('media.index',[$item->id]);
+    $item->href   = route('content.content.index',[$item->id]);
     $item->folder = true;
     return $item;
 })->toArray();

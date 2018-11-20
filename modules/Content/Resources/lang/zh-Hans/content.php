@@ -9,4 +9,6 @@ return [
     'create.model' => '新建:0',
     'edit'         => '编辑',
     'edit.model'   => '编辑:0',
+
+    'title.label'  => '标题',
 ];

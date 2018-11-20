@@ -8,13 +8,20 @@
         </div>
         <div class="main-title">
             {{$title}} : {{$parent->title}}
-        </div>     
+        </div>
+        <div class="main-action ml-auto">
+             {field type="submit" form="content-form" value="trans('core::master.save')" class="btn btn-primary"}
+        </div>   
     </div>
     
     <div class="main-body bg-light scrollable">
         <div class="container-fluid">
 
             {form model="$content" route="content.content.store" id="content-form" method="post" autocomplete="off"}
+            
+            {field type="hidden" name="parent_id" required="required"}
+            {field type="hidden" name="model_id" required="required"}
+            {field type="hidden" name="status" required="required"}
 
             <div class="row">
                 <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}}">
@@ -37,7 +44,7 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
-            {field type="submit" form="content-form" value="trans('core::master.save')" class="btn btn-primary"}
+           
         </div>
     </div>
 </div>

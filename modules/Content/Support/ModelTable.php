@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Schema\Blueprint;
 use Doctrine\DBAL\Types\Type;
 use Modules\Content\Models\Model;
+use Modules\Content\Models\Field;
 use Filter;
 
 class ModelTable
@@ -188,7 +189,9 @@ class ModelTable
 	 */
 	public function drop()
 	{
-		return Schema::dropIfExists($this->table);
+		Schema::dropIfExists($this->table);
+
+        return true;        
 	}
 
 	/**
@@ -202,13 +205,10 @@ class ModelTable
 	{
 		Schema::create($this->table, function (Blueprint $table) {
             //创建时自动创建自增id字段和content_id字段
-            $table->increments('id')->comment('id');
-			$table->integer('content_id')->index('content_id')->comment('Content id');
-            //外键约束，TODO: 未知错误,暂时屏蔽
-            //$table->foreign('content_id')->references('id')->on('content');
+			$table->integer('id')->unsigned()->primary('id')->comment('Content id');
+            //外键约束，删除主表数据时，自动删除从表
+            $table->foreign('id')->references('id')->on('content')->onDelete('cascade');
 		});
-
-        Model::where('id', $this->model_id)->update(['table'=>$this->table]);
 
 		return true;
 	}
@@ -235,8 +235,8 @@ class ModelTable
 		    $table->dropColumn($column);
 		});
 
-        // 当前扩展表字段数为2的时候，自动删除扩展表
-        if (count($this->columns()) == 2) {
+        // 当前扩展表字段数为1的时候，自动删除扩展表
+        if (count($this->columns()) == 1) {
             $this->drop();
         }
 

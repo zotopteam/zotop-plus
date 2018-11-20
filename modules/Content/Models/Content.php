@@ -3,10 +3,12 @@ namespace Modules\Content\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\UserRelation;
+use Modules\Content\Support\Modelable;
+use Modules\Content\Extend\Extendable;
 
 class Content extends Model
 {
-	use UserRelation;
+	use UserRelation, Extendable, Modelable;
 
     /**
      * 与模型关联的数据表。
@@ -64,6 +66,14 @@ class Content extends Model
         }
 
         return $parent;
+    }
+
+    /**
+     * 关联的数据
+     */
+    public function model()
+    {
+        return $this->belongsTo('Modules\Content\Models\Model', 'model_id', 'id');
     }
 
     /**

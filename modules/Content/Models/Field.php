@@ -1,11 +1,12 @@
 <?php
 namespace Modules\Content\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model as LaravelModel;
 use Modules\Content\Support\ModelTable;
+use Modules\Content\Models\Model;
 use Module;
 
-class Field extends Model
+class Field extends LaravelModel
 {
 	
     /**
@@ -106,7 +107,17 @@ class Field extends Model
             // 删除字段
             $table = ModelTable::find($field->model_id);
             $table->dropColumn($field->name);
-        });    
+        });
+
+        // 保存后更新model的fillable和casts
+        static::saved(function($field) {
+            static::sync($field->model_id);
+        });
+
+        // 保存后更新model的fillable和casts
+        static::deleted(function($field) {
+            static::sync($field->model_id);
+        });        
     }
 
     /**
@@ -144,7 +155,44 @@ class Field extends Model
         }
 
         return $types;
-    }   
+    }
+
+    /**
+     * 更新模型fillable 和 casts
+     * 
+     * @param  string $model_id 模型编号
+     * @return array
+     */
+    public static function sync($model_id)
+    {
+        $model = Model::find($model_id);
+        $table = ModelTable::find($model_id);
+
+        if ($table->exists()) {
+            $types    = static::types($model_id);
+            $fillable = $table->columns();
+            $casts    = static::where('model_id', $model_id)->whereIn('name', $fillable)->get()->filter(function($item) use($types) {
+                if ($cast = array_get($types, $item->type.'.cast')) {
+                    $item['cast'] = $cast;
+                    return true;
+                }
+                return false;
+            })->pluck('cast','name')->toArray();
+            $tablename = $model->table ?? $table->name();
+            $modelclass = $model->model ?? 'Modules\Content\Models\ContentModel';
+        } else {
+            $fillable = $casts = [];
+            $tablename = $modelclass  = null;
+        }
+
+        $model->table    = $tablename;
+        $model->model    = $modelclass;
+        $model->fillable = $fillable;
+        $model->casts    = $casts;
+        $model->save();
+
+        return true;    
+    } 
 
     /**
      * 查询系统或者自定义字段

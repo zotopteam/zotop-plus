@@ -29,7 +29,7 @@ $(function(){
     // Initialize Fancytree
     $("#tree").fancytree({
         extensions: ["glyph","wide"],
-        source: {!! json_encode(Module::data('content::tree')) !!},
+        source: @json(Module::data('content::tree')),
         minExpandLevel: 2,
         checkbox: false,
         selectMode: 3,
@@ -63,7 +63,7 @@ $(function(){
         }        
     })
     @if(Route::is('content.content.index'))
-    $("#tree").fancytree("getTree").activateKey('{{$parent_id ?? 0}}').setExpanded(true);
+    $("#tree").fancytree("getTree").activateKey('{{$parent->id ?? 0}}').setExpanded(true);
     @endif
 });
 </script>

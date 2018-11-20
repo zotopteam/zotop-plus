@@ -112,6 +112,49 @@ class ModelHelper
                 'system'   => 1,
             ]));
         }
-
     }
+
+
+    public static function refreshExtend($model)
+    {
+        if ($model->isDirty('id')) {
+            app('files')->delete(dirname(__DIR__).'/Extend/'.studly_case($model->getOriginal('id')).'Model.php');
+        }
+        
+        $path = dirname(__DIR__).'/Extend/'.studly_case($model->id).'Model.php';
+
+        if ($model->table) {
+
+            $model->fillable = "[".implode(", ", array_map(function($val) {
+                 return "'".$val."'";
+            }, $model->fillable))."]";
+
+            $model->casts = "[".implode(',', array_map(function($val, $key) {
+                return "'".$key."' => '".$val."'";
+            }, $model->casts, array_keys($model->casts)))."]";
+
+            $content = view('content::model.stub.extend')->with([
+                'model' => $model,
+            ])->render();
+
+            app('files')->put($path, "<?php\r\n".$content);
+        } else {
+            app('files')->delete($path);
+        }
+
+        static::refreshExtendable();
+    }
+
+    private static function refreshExtendable()
+    {
+        $path = dirname(__DIR__).'/Extend/Extendable.php';
+
+        $models = Model::where('disabled', 0)->whereNotNull('table')->orderby('sort','asc')->get();
+
+        $content = view('content::model.stub.extendable')->with([
+            'models' => $models,
+        ])->render();
+
+        app('files')->put($path, "<?php\r\n".$content);
+    }   
 }
