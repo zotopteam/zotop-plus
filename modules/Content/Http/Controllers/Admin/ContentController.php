@@ -43,11 +43,6 @@ class ContentController extends AdminController
         $this->content->model_id  = $model_id;
         $this->content->status    = 'publish';
 
-        $this->content->title  = '测试一下标题';
-        $this->content->title_style  = 'font-weight:700;color:rgb(223,123,123)';
-        $this->content->content  = '<b>test test</b>';
-        $this->content->image = '/uploads/201712141004590000007286.jpg';
-
         $this->content = $this->form->default($this->content);
 
         $this->title   = trans('content::content.create.model', [$this->model->name]);
@@ -67,7 +62,7 @@ class ContentController extends AdminController
         $content->fill($request->all());
         $content->save();
 
-        return $this->success(trans('core::master.created'), route('content.content.index'));
+        return $this->success(trans('core::master.created'), route('content.content.index', $content->parent_id));
     }
 
     /**
@@ -118,7 +113,58 @@ class ContentController extends AdminController
         $content->fill($request->all());        
         $content->save();
 
-        return $this->success(trans('core::master.updated'), route('content.content.index'));
+        return $this->success(trans('core::master.updated'), route('content.content.index', $content->parent_id));
+    }
+
+    /**
+     * 更改状态
+     *
+     * @return Response
+     */
+    public function status($id, $status)
+    {
+        $content = Content::findOrFail($id);
+        $content->status = $status;
+        $content->save();
+
+        return $this->success(trans('core::master.operated'), route('content.content.index', $content->parent_id));        
+    }
+
+    /**
+     * 置顶和取消置顶
+     *
+     * @return Response
+     */
+    public function stick($id)
+    {
+        $content = Content::findOrFail($id);
+        $content->stick = $content->stick ? 0 : 1;
+        $content->save();
+
+        return $this->success(trans('core::master.operated'), route('content.content.index', $content->parent_id));        
+    }      
+
+    /**
+     * 排序
+     *
+     * @return json
+     */
+    public function sort(Request $request, $parent_id)
+    {
+        $id    = $request->input('id');
+        $sort  = $request->input('sort');
+        $stick = $request->input('stick');
+
+        // 将当前列表 $sort 之前的数据的 sort 全部加 1， 为拖动的数据保留出位置
+        Content::withoutTimestamps()->where('parent_id', $parent_id)->where('sort','>=', $sort)->increment('sort', 1);        
+
+        // 更新当前数据的排序和置顶信息，如果排在置顶数据之前，自动置顶，如果排在非置顶数据后，自动取消置顶
+        Content::where('id', $id)->update([
+            'sort'  => $sort,
+            'stick' => $stick,
+        ]);
+        
+        return $this->success(trans('core::master.sorted'), $request->referer());
     }
 
     /**
@@ -131,6 +177,6 @@ class ContentController extends AdminController
         $content = Content::findOrFail($id);
         $content->delete();
 
-        return $this->success(trans('core::master.deleted'), route('content.content.index'));        
+        return $this->success(trans('core::master.deleted'), route('content.content.index', $content->parent_id));        
     }
 }

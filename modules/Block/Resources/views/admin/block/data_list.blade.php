@@ -131,7 +131,7 @@
 
             //console.log(oldindex+'---'+newindex+'--'+ neworder +'--'+ newstick);
 
-            $.post('{{route('block.datalist.sort', $block->id)}}',{id:id,sort:newsort,stick:newstick},function(data){
+            $.post('{{route('block.datalist.sort', $block->id)}}', {id:id,sort:newsort,stick:newstick}, function(data) {
                 $.msg(data);
             },'json');      
         };  
@@ -148,6 +148,7 @@
                 return tr;
             },
             start:function (event,ui) {
+                ui.placeholder.height(ui.helper[0].scrollHeight);
                 ui.item.data('originalIndex', ui.item.prop('rowIndex'));
             },      
             stop:function(event,ui){

@@ -18,6 +18,9 @@
         $attrs['height'] = $rows * 35;
     }
 
+    // 设置数据编号
+    $attrs['data_id'] = $this->getDataId($attrs);
+
     // 编辑器属性，可以为字符串和数组，默认为full模式
     $options = $this->getAttribute($attrs, 'options', 'full', false);
     $options = \Filter::fire('tinymce.editor.options', $options, $attrs);

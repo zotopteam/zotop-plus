@@ -48,6 +48,9 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .fa-md{font-size:3rem;}
 .fa-lg{font-size:4rem;}
 
+.fa-loading{animation: fa-spin 2s infinite linear;}
+.fa-loading:before{content: "\f110"!important;}
+
 .w-auto,.mw-auto{width:auto!important;}
 .h-auto,.mh-auto{height:auto!important;}
 

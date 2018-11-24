@@ -73,28 +73,33 @@
                 </thead>
                 <tbody>
                 @foreach($contents as $content)
-                    <tr>
+                    <tr data-id="{{$content->id}}" data-sort="{{$content->sort}}" data-stick="{{$content->stick}}">
                         <td class="drag"></td>
                         <td class="text-center px-2" width="5%">
                             @if ($content->image)
-                            <div class="icon icon-md">
-                                <img src="{{$content->image}}">
-                            </div>
+                            <a href="javascript:;" class="js-image" data-url="{{$content->image}}" data-title="{{$content->title}}">
+                                <div class="icon icon-md">
+                                    <img src="{{$content->image}}">
+                                </div>
+                            </a>
                             @else
                             <i class="{{$content->model->icon}} fa-md text-warning"></i>
                             @endif
                         </td>
                         <td class="px-2">
                             <div class="title text-lg">
-                                {{$content->title}}
+                                @if ($content->model->nestable)
+                                    <a href="{{route('content.content.index', $content->id)}}">{{$content->title}}</a>
+                                @else
+                                    {{$content->title}}
+                                @endif
                             </div>
                             <div class="manage">
-                                <a class="manage-item" href="{{route('content.content.edit', $content->id)}}">
-                                    <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                                @foreach(Filter::fire('content.manage', [], $content) as $s)
+                                <a href="{{$s.herf ?? 'javascript:;'}}" class="manage-item {{$s.class ?? ''}}" {!!Html::attributes(array_except($s,['icon','text','href','class']))!!}>
+                                    <i class="{{$s.icon ?? ''}} fa-fw"></i> {{$s.text}}
                                 </a>
-                                <a class="manage-item js-delete" href="javascript:;" data-url="{{route('content.content.destroy', $content->id)}}">
-                                    <i class="fa fa-times"></i> {{trans('core::master.delete')}}
-                                </a>
+                                @endforeach
                             </div>
                         </td>
                         <td><strong>{{$content->user->username}}</strong></td>
@@ -130,3 +135,51 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+<script type="text/javascript">
+    $(function(){
+        // 拖动停止更新当前的排序及当前数据之前的数据
+        var dragstop = function(evt, ui, tr) {
+            
+            var oldindex = tr.data('originalIndex');
+            var newindex = tr.prop('rowIndex');
+            
+            if(oldindex == newindex) { return; }
+
+            var prev = ui.item.siblings('tr').eq(newindex-2); // 排到这一行之后
+            var next = ui.item.siblings('tr').eq(newindex-1); // 排到这一行之前
+
+            var id = tr.data('id');
+            var newsort = ( newindex==1 || prev.data('sort') < next.data('sort') ) ? next.data('sort') + 1 : prev.data('sort');
+            var newstick = ( newindex < oldindex ) ? next.data('stick') : prev.data('stick');
+
+            //console.log(oldindex+'---'+newindex+'--'+ neworder +'--'+ newstick);
+
+            $.post('{{route('content.content.sort', $parent->id)}}',{id:id, sort:newsort, stick:newstick}, function(data) {
+                $.msg(data);
+            },'json');      
+        };  
+
+        $("table.table-sortable").sortable({
+            items: "tbody > tr",
+            handle: "td.drag",
+            axis: "y",
+            placeholder:"ui-sortable-placeholder",
+            helper: function(e,tr){
+                tr.children().each(function(){
+                    $(this).width($(this).width());
+                });
+                return tr;
+            },
+            start:function (event,ui) {
+                ui.placeholder.height(ui.helper[0].scrollHeight);
+                ui.item.data('originalIndex', ui.item.prop('rowIndex'));
+            },      
+            stop:function(event,ui){
+                dragstop.apply(this, Array.prototype.slice.call(arguments).concat(ui.item));
+            }
+        });
+    })
+</script>
+@endpush

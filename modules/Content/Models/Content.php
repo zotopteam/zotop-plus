@@ -50,6 +50,27 @@ class Content extends Model
      */
     //public $timestamps = false;
 
+    /**
+     * boot
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        // 保存前数据处理
+        static::saving(function($content) {
+            $content->slug = $content->slug ?: null;
+            $content->sort = $content->sort ?: time();
+
+            // 发布和定时发布的时间必须大于当前时间，其他状态发布时间为空
+            if (in_array($content->status, ['publish', 'feature']) && $now = now()) {
+                $content->publish_at = $content->publish_at > $now ? $content->publish_at : $now;
+            } else {
+                $content->publish_at = null;
+            }
+
+        });
+    }    
 
     /**
      * 关联的模型数据
@@ -97,6 +118,16 @@ class Content extends Model
     }
 
     /**
+     * 获取内容状态图标
+     * @param  mixed $value
+     * @return string
+     */
+    public function getDataIdAttribute($value)
+    {
+        return 'content-'.$this->id;
+    }
+
+    /**
      * 排序 ，查询结果按照stick(置顶)、sort(排序)和id(编号)倒序
      * 
      * @param \Illuminate\Database\Eloquent\Builder $query
@@ -105,7 +136,17 @@ class Content extends Model
     public function scopeSort($query)
     {
         return $query->orderby('stick', 'desc')->orderby('sort', 'desc')->orderby('id', 'desc');
-    }    
+    }
+
+    /**
+     * 不更新时间戳
+     * @return this
+     */
+    public function scopeWithoutTimestamps()
+    {
+        $this->timestamps = false;
+        return $this;
+    }      
     
     /**
      * 获取父级数据

@@ -15,6 +15,12 @@
 \Filter::listen('content::field.types', 'Modules\Content\Hook\Listener@types');
 
 /**
+ * 内容管理操作
+ */
+\Filter::listen('content.manage', 'Modules\Content\Hook\Listener@contentManage', 100);
+
+
+/**
  * 标题控件
  */
 \Form::macro('content_title', function($attrs) {

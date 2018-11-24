@@ -185,5 +185,15 @@ class Datalist extends Model
         }
 
         return '';
-    }         
+    }
+
+    /**
+     * 不更新时间戳
+     * @return this
+     */
+    public function scopeWithoutTimestamps()
+    {
+        $this->timestamps = false;
+        return $this;
+    }            
 }

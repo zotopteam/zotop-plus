@@ -135,7 +135,7 @@ class DatalistController extends AdminController
         $stick = $request->input('stick');
 
         // 将当前列表 $sort 之前的数据的 sort 全部加 1， 为拖动的数据保留出位置
-        Datalist::where('block_id', $block_id)->where('sort','>=', $sort)->increment('sort', 1);        
+        Datalist::withoutTimestamps()->where('block_id', $block_id)->where('sort','>=', $sort)->increment('sort', 1);        
 
         // 更新当前数据的排序和置顶信息，如果排在置顶数据之前，自动置顶，如果排在非置顶数据后，自动取消置顶
         Datalist::where('id', $id)->update([

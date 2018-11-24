@@ -4,6 +4,10 @@ return [
         'name'  => trans('content::content.status.publish'),
         'icon'  => 'fa fa-check-circle text-success',
     ],
+    'future' => [
+        'name'  => trans('content::content.status.future'),
+        'icon'  => 'fa fa-clock text-warning',
+    ],     
     'draft' => [
         'name'  => trans('content::content.status.draft'),
         'icon'  => 'fa fa-life-ring text-primary',
@@ -19,9 +23,5 @@ return [
     'trash' => [
         'name'  => trans('content::content.status.trash'),
         'icon'  => 'fa fa-trash-alt text-muted',
-    ],
-    'future' => [
-        'name'  => trans('content::content.status.future'),
-        'icon'  => 'fa fa-clock text-warning',
-    ],                      
+    ],                     
 ];

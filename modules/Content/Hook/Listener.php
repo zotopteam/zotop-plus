@@ -2,6 +2,7 @@
 namespace Modules\Content\Hook;
 
 use Route;
+use Modules\Content\Models\Content;
 
 class Listener
 {
@@ -61,5 +62,71 @@ class Listener
         }
 
         return $types;
+    }
+
+    public function contentManage($manage, $content)
+    {
+        // 下级节点
+        if ($content->model->nestable) {
+            $manage['nestable'] = [
+                'text' => trans('content::content.children'),
+                'herf' => route('content.content.index', [$content->id]),
+                'icon' => 'fas fa-folder-open',
+            ];
+        }
+
+        // 修改
+        $manage['edit'] = [
+            'text' => trans('core::master.edit'),
+            'herf' => route('content.content.edit', [$content->id]),
+            'icon' => 'fas fa-edit',
+        ];
+
+        // foreach (Content::status() as $status => $value) {
+        //     if ($status == $content->status) {
+        //         continue;
+        //     }
+        //     $manage[$status] = [
+        //         'text'  => $value['name'],
+        //         'herf'  => route('content.content.status', [$content->id, $status]),
+        //         'icon'  => $value['icon'],
+        //         'class' => 'js-post',
+        //     ];              
+        // }
+
+
+        // 回收站中的数据可以永久删除
+        if ($content->status == 'trash') {
+            $manage['delete'] = [
+                'text'     => trans('content::content.destroy'),
+                'data-url' => route('content.content.destroy', [$content->id]),
+                'icon'     => 'fa fa-times',
+                'class'    => 'js-confirm',
+            ];
+        } else {
+
+            // 置顶和取消置顶
+            $manage['stick'] = $content->stick ? [
+                'text'  => trans('content::content.unstick'),
+                'herf'  => route('content.content.stick', [$content->id]),
+                'icon'  => 'fa fa-arrow-circle-down',
+                'class' => 'js-post',
+            ] : [
+                'text'  => trans('content::content.stick'),
+                'herf'  => route('content.content.stick', [$content->id]),
+                'icon'  => 'fa fa-arrow-circle-up',
+                'class' => 'js-post',
+            ];
+
+            // 回收站           
+            $manage['trash'] = [
+                'text'     => trans('content::content.status.trash'),
+                'data-url' => route('content.content.status', [$content->id, 'trash']),
+                'icon'     => 'fa fa-trash-alt',
+                'class'    => 'js-post',
+            ];            
+        }
+
+        return $manage;
     }
 }

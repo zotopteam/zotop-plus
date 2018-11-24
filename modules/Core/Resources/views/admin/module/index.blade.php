@@ -39,7 +39,7 @@
                     <td class="pl-2">
                         <div class="title"> <b class="text-lg">{{$module->title}}</b> <span class="text-muted">{{$name}}</span></div>
                         <div class="manage">
-                            @foreach(filter::fire('module.manage', [], $module) as $s)
+                            @foreach(Filter::fire('module.manage', [], $module) as $s)
                             <a href="{{$s['href'] ?? 'javascript:;'}}" class="manage-item {{$s['class'] ?? ''}}" {!!Html::attributes(array_except($s,['icon','text','href','class']))!!}>
                                 <i class="{{$s['icon'] ?? ''}} fa-fw"></i> {{$s['text']}}
                             </a>

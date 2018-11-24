@@ -191,8 +191,8 @@
     $icon     = $this->getAttribute($attrs, 'icon', 'fa-upload');
     $button   = $this->getAttribute($attrs, 'button', trans('core::field.upload.button',[$typename]));
     $folder   = $this->getAttribute($attrs, 'folder', '');
-    $data_id  = $this->getAttribute($attrs, 'data_id', '');
-
+    $data_id  = $this->getDataId($attrs);
+    
     // 附加参数
     $params = $this->getAttribute($attrs, 'params',  [
         'select'     => 1,

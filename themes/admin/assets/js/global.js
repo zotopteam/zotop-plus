@@ -142,16 +142,16 @@ $(function(){
         var data = $(this).data('post') || {};
 
         if ( icon.length > 0 ){
-            icon.addClass('fa-spin fa-spinner');
+            icon.addClass('fa-loading');
         }else{
             $.loading();
         }       
         
-        $.post(href, data, function(msg){
+        $.post(href, data, function(msg) {
             $.msg(msg);
 
-            if ( icon.length > 0 ){
-                icon.removeClass('fa-spin fa-spinner');
+            if (icon.length > 0) {
+                icon.removeClass('fa-loading');
             }          
         },'json');
 

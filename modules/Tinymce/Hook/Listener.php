@@ -30,6 +30,12 @@ class Listener
         return $options;
     }
 
+    /**
+     * 最佳自定义工具条
+     * @param  array $options 扩展属性
+     * @param  array $attrs 标签属性
+     * @return array
+     */
     public function tools($options, $attrs)
     {
         $tools = isset($attrs['tools']) ? $attrs['tools'] : $options['tools'];

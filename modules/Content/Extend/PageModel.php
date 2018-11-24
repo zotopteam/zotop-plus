@@ -5,7 +5,7 @@ use Modules\Content\Models\ContentModel as ContentModel;
 
 /**
  * 内容扩展模型：页面 page
- * 自动创建时间：2018-11-23 09:43:41
+ * 自动创建时间：2018-11-24 21:10:36
  */
 class PageModel extends ContentModel
 {
