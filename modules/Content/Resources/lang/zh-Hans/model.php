@@ -12,6 +12,8 @@ return [
     'delete.notempty'     => '该模型数据已经有内容数据，禁止删除',
     //'dirtyid.forbidden' => '已经有自定义字段或者已经有该模型数据，无法修改模型标识',
 
+    'select.label'          => '选择模型',
+    
     'name.label'          => '模型名称',
     'name.help'           => '可读名称，如： 页面、文章、产品、下载等',
 
@@ -23,5 +25,8 @@ return [
     'description.help'    => '模型说明，最大255个字符',   
 
     'template.label'      => '内容页面模板',
-    'template.help'       => '内容的详细页面模板，如果没有内容页（如“链接”模型）则无需填写此项',        
+    'template.help'       => '内容的详细页面模板，如果没有内容页（如“链接”模型）则无需填写此项',
+
+    'nestable.label'      => '允许多级嵌套',
+    'nestable.help'       => '多级嵌套模型允许添加子节点，如“分类”下面可以添加子分类或者页面等',            
 ];

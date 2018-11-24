@@ -23,7 +23,7 @@ $types  = [
         'name'     => trans('content::field.type.slug'),
         'view'     => ['content::field.settings.required'],
         'method'   => '',
-        'settings' => ['maxlength'=>64]
+        'settings' => ['maxlength'=>64, 'unique'=>1]
     ],
     // 开放控件，可选择并创建这些类型
     'text' => [

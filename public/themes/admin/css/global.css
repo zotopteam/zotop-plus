@@ -37,6 +37,17 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .cur-m{cursor:move;}
 .cur-d{cursor:disabled;}
 
+.f-1{font-size:1rem;}
+.f-2{font-size:2rem;}
+.f-3{font-size:3rem;}
+.f-4{font-size:4rem;}
+.f-5{font-size:5rem;}
+
+.fa-xs{font-size:1rem;}
+.fa-sm{font-size:2rem;}
+.fa-md{font-size:3rem;}
+.fa-lg{font-size:4rem;}
+
 .w-auto,.mw-auto{width:auto!important;}
 .h-auto,.mh-auto{height:auto!important;}
 
@@ -228,8 +239,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 
 .table-inside>tbody>tr:last-child>td{border:0 none;}
 
-.table.form-control{padding:.5rem;border:1px solid rgba(0,0,0,.15);border-radius:.25rem;}
-.table.form-control tr:last-child td{border:0 none;}
+
 /*空数据*/
 .nodata{color:#999;font-size:1.2rem;height:100%;width:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;}
 .nodata:before{font-family:'Font Awesome 5 Free';font-weight:400;content:'\f059';font-size:6rem;color:#ebebeb;}
@@ -253,6 +263,8 @@ label.form-label {cursor:pointer;font-weight:bold;}
 .form-field {}
 .form-control{min-width:3rem;}
 .form-control[disabled], fieldset[disabled] .form-control {cursor: not-allowed;}
+
+div.form-control{padding:.35rem;}
 
 label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 2px);padding-bottom:calc(.5rem - 2px);padding-right:1rem;}
 
@@ -342,6 +354,14 @@ textarea{resize:none;}
 .breadcrumb-item+.breadcrumb-item::before{font-family:'Font Awesome 5 Free';font-weight:900;content:'\f105'}
 .breadcrumb-extra+.breadcrumb-item::before{content:''}
 .breadcrumb-item:hover{text-decoration:none!important;}
+
+/*icon*/
+.icon {display:flex;justify-content:center;overflow:hidden;}
+.icon img{max-width:100%;max-height:100%;align-self:center;}
+.icon-xs {width:1rem;height:1rem;}
+.icon-sm {width:2rem;height:2rem;}
+.icon-md {width:3rem;height:3rem;}
+.icon-lg {width:4rem;height:4rem;}
 
 /*shortcut*/
 .shortcut{border:1px solid transparent;color:#666;background:transparent;margin:0;padding:0.5rem;display:block;overflow:hidden;zoom:1;border-radius:0.25rem;position:relative;text-align:left;}

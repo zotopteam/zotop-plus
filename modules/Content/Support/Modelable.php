@@ -53,7 +53,7 @@ trait Modelable
         if (! array_key_exists($model_id, $extends)) {
 
             if ($class = $this->getExtendModelClass($model_id)) {
-                $model = new $class;
+                $model = $class::findOrNew($this->getKey());
             }  else {
                 $model = null;
             }
@@ -95,12 +95,12 @@ trait Modelable
     public function fill(array $attributes)
     {
         // 去除空值，保存为null
-        $attributes = array_filter($attributes, function($item) {
-            if (is_string($item) && trim($item) === '') {
-                return false;
-            }
-            return true;
-        });
+        // $attributes = array_filter($attributes, function($item) {
+        //     if (is_string($item) && trim($item) === '') {
+        //         return false;
+        //     }
+        //     return true;
+        // });
 
         parent::fill($attributes);
 
@@ -121,7 +121,7 @@ trait Modelable
     public function save(array $options = [])
     {
         if (parent::save($options) && $extendModel = $this->getExtendModel()) {
-            $extendModel->updateOrCreate(['id'=>$this->id], $extendModel->getAttributes());
+            $extendModel->save();
             return true;
         }
 
@@ -147,5 +147,24 @@ trait Modelable
         }
 
         return null;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setAttribute($key, $value)
+    {
+        parent::setAttribute($key, $value);
+
+        if ($extend = $this->getExtendModel()) {
+            if ($extend->isFillable($key)) {
+                $extend->setAttribute($key, $value);
+            }
+        }
+
+        return $this;
     }
 }

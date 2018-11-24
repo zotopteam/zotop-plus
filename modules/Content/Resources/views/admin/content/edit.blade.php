@@ -10,6 +10,9 @@
             {{$title}} : {{$parent->title}}
         </div>
         <div class="main-action ml-auto">
+             {field type="submit" form="content-form" value="trans('content::content.status.draft')" class="btn btn-light" rel="draft"}
+             {field type="submit" form="content-form" value="trans('content::content.status.publish')" class="btn btn-success" rel="publish"}
+             {field type="submit" form="content-form" value="trans('content::content.status.future')" class="btn btn-primary d-none" rel="future"}
              {field type="submit" form="content-form" value="trans('core::master.save')" class="btn btn-primary"}
         </div>   
     </div>
@@ -43,7 +46,9 @@
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
-        <div class="mr-auto">
+        <div class="mr-auto text-xs">
+           {{trans('content::content.status.label')}} :
+           <i class="{{$content->status_icon}} fa-fw"></i> {{$content->status_name}}
            
         </div>
     </div>
@@ -53,6 +58,16 @@
 @push('js')
 <script type="text/javascript">
     $(function(){
+
+        $('.form-submit').on('click', function(event) {
+            event.preventDefault();
+            var rel = $(this).attr('rel');
+            if (rel) {
+                $('form.form').find('[name=status]').val(rel);
+            }
+            $('form.form').submit();
+        })
+
         $('form.form').validate({
             submitHandler:function(form){                
                 var validator = this;

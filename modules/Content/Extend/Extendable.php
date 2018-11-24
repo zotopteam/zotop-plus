@@ -34,4 +34,14 @@ trait Extendable
     }
     
     
+    /**
+     * 获取内容表和模型[产品]的一对一关联
+     * The relation of the model: product
+     */
+    public function ProductRelation()
+    {
+        return $this->hasOne('Modules\Content\Extend\ProductModel', 'id', 'id');
+    }
+    
+    
 }

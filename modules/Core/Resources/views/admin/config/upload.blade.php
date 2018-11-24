@@ -19,32 +19,33 @@
             <div class="form-group row">
                 <label for="types" class="col-2 col-form-label required">{{trans('core::config.upload.types.label')}}</label>
                 <div class="col-8">
-                
-                    <table class="table table-nowrap form-control">
-                        <thead>
-                            <tr>
-                                <th width="10%">{{trans('core::config.upload.types.type')}}</th>
-                                <th>{{trans('core::config.upload.types.extensions')}}</th>
-                                <th width="25%">{{trans('core::config.upload.types.maxsize')}}</th>
-                                <th width="12%" class="text-center">{{trans('core::config.upload.types.enabled')}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (Module::data('core::file.types') as $type=>$name)
-                            <tr>
-                                <td>{{$name}}</td>
-                                <td>{field type="text" name="upload[types]['.$type.'][extensions]"}</td>
-                                <td>
-                                    <div class="input-group">
-                                        {field type="number" name="upload[types]['.$type.'][maxsize]" min="0" required="required}
-                                        <div class="input-group-append"><span class="input-group-text">MB</span></div>
-                                    </div>
-                                </td>
-                                <td class="text-center">{field type="toggle" name="upload[types]['.$type.'][enabled]"}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="form-control">
+                        <table class="table table-inside table-nowrap table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="10%">{{trans('core::config.upload.types.type')}}</th>
+                                    <th>{{trans('core::config.upload.types.extensions')}}</th>
+                                    <th width="25%">{{trans('core::config.upload.types.maxsize')}}</th>
+                                    <th width="12%" class="text-center">{{trans('core::config.upload.types.enabled')}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Module::data('core::file.types') as $type=>$name)
+                                <tr>
+                                    <td>{{$name}}</td>
+                                    <td>{field type="text" name="upload[types]['.$type.'][extensions]"}</td>
+                                    <td>
+                                        <div class="input-group">
+                                            {field type="number" name="upload[types]['.$type.'][maxsize]" min="0" required="required}
+                                            <div class="input-group-append"><span class="input-group-text">MB</span></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">{field type="toggle" name="upload[types]['.$type.'][enabled]"}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                                        
                     @if ($errors->has('types'))
                     <span class="form-help text-error">{{ $errors->first('types') }}</span>

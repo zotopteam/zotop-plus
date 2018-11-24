@@ -19,7 +19,7 @@
             <div class="form-group row">
                 <label for="name" class="col-2 col-form-label required">{{trans('content::model.name.label')}}</label>
                 <div class="col-8">
-                    <div class="input-group mb-3">
+                    <div class="input-group">
                         <div class="input-group-prepend">
                             {field type="icon" name="icon" required="required"}
                         </div>
@@ -72,6 +72,19 @@
                     @endif                       
                 </div>
             </div>
+
+            <div class="form-group row">
+                <label for="nestable" class="col-2 col-form-label required">{{trans('content::model.nestable.label')}}</label>
+                <div class="col-8">
+                    {field type="toggle" name="nestable" required="required"}
+
+                    @if ($errors->has('nestable'))
+                    <span class="form-help text-error">{{ $errors->first('nestable') }}</span>
+                    @else
+                    <span class="form-help">{{trans('content::model.nestable.help')}}</span>                     
+                    @endif                       
+                </div>
+            </div>             
 
             {/form}
 

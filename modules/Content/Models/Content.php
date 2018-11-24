@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Traits\UserRelation;
 use Modules\Content\Support\Modelable;
 use Modules\Content\Extend\Extendable;
+use Module;
 
 class Content extends Model
 {
@@ -48,7 +49,63 @@ class Content extends Model
      * @var bool
      */
     //public $timestamps = false;
-    //
+
+
+    /**
+     * 关联的模型数据
+     */
+    public function model()
+    {
+        return $this->belongsTo('Modules\Content\Models\Model', 'model_id', 'id');
+    }
+
+    /**
+     * 获取内容的状态
+     * 
+     * @param  string $model_id 模型编号
+     * @return array
+     */
+    public static function status()
+    {
+        static $status = [];
+
+        if (empty($status)) {
+            $status = Module::data('content::content.status');
+        }
+
+        return $status;
+    }
+
+    /**
+     * 获取内容状态名称
+     * @param  mixed $value
+     * @return string
+     */
+    public function getStatusNameAttribute($value)
+    {
+        return array_get(static::status(), $this->status.'.name');
+    }
+
+    /**
+     * 获取内容状态图标
+     * @param  mixed $value
+     * @return string
+     */
+    public function getStatusIconAttribute($value)
+    {
+        return array_get(static::status(), $this->status.'.icon');
+    }
+
+    /**
+     * 排序 ，查询结果按照stick(置顶)、sort(排序)和id(编号)倒序
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSort($query)
+    {
+        return $query->orderby('stick', 'desc')->orderby('sort', 'desc')->orderby('id', 'desc');
+    }    
     
     /**
      * 获取父级数据
@@ -66,14 +123,6 @@ class Content extends Model
         }
 
         return $parent;
-    }
-
-    /**
-     * 关联的数据
-     */
-    public function model()
-    {
-        return $this->belongsTo('Modules\Content\Models\Model', 'model_id', 'id');
     }
 
     /**

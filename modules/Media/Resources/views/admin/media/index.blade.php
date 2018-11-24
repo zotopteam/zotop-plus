@@ -65,8 +65,8 @@
         <table class="table table-nowrap table-hover table-select">
             <thead>
             <tr>
-                <th class="select">
-                    <input type="checkbox" class="select-all">
+                <th class="select px-2">
+                    <input type="checkbox" class="select-all text-muted">
                 </th>
                 <th colspan="3">{{trans('media::media.name')}}</th>
                 <th width="10%">{{trans('media::media.type')}}</th>
@@ -77,20 +77,20 @@
             <tbody>
             @foreach($media as $m)
                 <tr class="js-media-open" data-type="{{$m->type}}" data-url="{{$m->url}}" data-title="{{$m->name}}">
-                    <td class="select">
+                    <td class="select px-2">
                         @if ($m->isFolder())
-                        <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="folder" class="select">
+                        <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="folder" class="select text-muted">
                         @else
-                        <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="file" class="select">
+                        <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="file" class="select text-muted">
                         @endif
                     </td>                
                     <td width="1%" class="text-center pr-2">
                         @if ($m->isFolder())
-                            <i class="fa fa-fw fa-2x fa-folder text-warning"></i>
+                            <i class="fa fa-folder fa-md text-warning"></i>
                         @elseif ($m->isImage())
-                            <div class="icon icon-32"><img src="{{preview(public_path($m->path),32,32)}}"></div>
+                            <div class="icon icon-md"><img src="{{$m->url}}"></div>
                         @else
-                            <i class="fa {{$m->icon}} fa-2x fa-fw text-warning"></i>
+                            <i class="fa {{$m->icon}} fa-md text-warning"></i>
                         @endif                        
                     </td>                
                     <td width="50%" class="pl-2">

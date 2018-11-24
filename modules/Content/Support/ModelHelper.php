@@ -96,8 +96,8 @@ class ModelHelper
 
     /**
      * 初始化
-     * @param  [type] $model_id [description]
-     * @return [type]          [description]
+     * @param  string $model_id 模型编号
+     * @return bool
      */
     public static function fieldInit($model_id)
     {   
@@ -112,15 +112,22 @@ class ModelHelper
                 'system'   => 1,
             ]));
         }
+
+        return true;
     }
 
-
+    /**
+     * 刷新模型扩展类
+     * 
+     * @param  model $model 模型实例
+     * @return null
+     */
     public static function refreshExtend($model)
     {
         if ($model->isDirty('id')) {
             app('files')->delete(dirname(__DIR__).'/Extend/'.studly_case($model->getOriginal('id')).'Model.php');
         }
-        
+
         $path = dirname(__DIR__).'/Extend/'.studly_case($model->id).'Model.php';
 
         if ($model->table) {
@@ -145,6 +152,11 @@ class ModelHelper
         static::refreshExtendable();
     }
 
+    /**
+     * 刷新模型扩展关联关系
+     * 
+     * @return null
+     */
     private static function refreshExtendable()
     {
         $path = dirname(__DIR__).'/Extend/Extendable.php';

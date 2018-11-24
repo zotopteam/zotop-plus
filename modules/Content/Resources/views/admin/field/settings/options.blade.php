@@ -1,14 +1,14 @@
     <div class="form-group row">
         <label for="settings-options" class="col-2 col-form-label">{{trans('content::field.options.label')}}</label>
         <div class="col-8">
-            <div class="settings-options">
-                <table class="table table-border table-nowrap table-sortable table-hover form-control">
+            <div class="settings-options form-control">
+                <table class="table table-nowrap table-sortable table-hover">
                     <thead>
                         <tr>
                             <td width="10%" class="drag"></td>
                             <td>{{trans('content::field.options.text')}}</td>
-                            <td width="35%">{{trans('content::field.options.value')}}</td>
-                            <td width="2%"></td>
+                            <td width="40%">{{trans('content::field.options.value')}}</td>
+                            <td width="10%"></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,7 +34,7 @@
                         <td>
                             <input type="text" class="form-control required" name="settings[options][:index][value]" value=":value" placeholder="{{trans('content::field.options.value')}}">
                         </td>
-                        <td><a href="javascript:;" class="settings-options-delete"> <i class="fa fa-times"></i> </a></td>
+                        <td class="text-center"><a href="javascript:;" class="settings-options-delete"> <i class="fa fa-times"></i> </a></td>
                     </tr>            
                 </script>                
             </div>                

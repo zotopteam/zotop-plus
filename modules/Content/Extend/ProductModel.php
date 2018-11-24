@@ -4,24 +4,24 @@ namespace Modules\Content\Extend;
 use Modules\Content\Models\ContentModel as ContentModel;
 
 /**
- * 内容扩展模型：页面 page
- * 自动创建时间：2018-11-23 09:43:41
+ * 内容扩展模型：产品 product
+ * 自动创建时间：2018-11-23 15:40:17
  */
-class PageModel extends ContentModel
+class ProductModel extends ContentModel
 {
     /**
      * 与模型关联的数据表。
      *
      * @var  string
      */
-    protected $table = 'content_model_page';
+    protected $table = 'content_model_product';
 
     /**
      * 可以被批量赋值的属性。
      *
      * @var  array
      */
-    protected $fillable = ['id', 'content'];
+    protected $fillable = ['id', 'option'];
 
     /**
      * 不可被批量赋值的属性。

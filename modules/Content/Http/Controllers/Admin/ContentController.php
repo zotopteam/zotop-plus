@@ -22,7 +22,7 @@ class ContentController extends AdminController
         $this->parent = Content::parent($parent_id);
 
         // 分页获取
-        $this->contents = Content::with('user')->where('parent_id', $parent_id)->orderby('sort','desc')->paginate(25);
+        $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->sort()->paginate(25);
 
         return $this->view();
     }
@@ -92,13 +92,16 @@ class ContentController extends AdminController
      */
     public function edit($id)
     {
-        $this->title = trans('content::content.edit');
         $this->id    = $id;
         $this->content = Content::findOrFail($id);
 
+        //dd($this->content->categoryRelation->exists);
+
         $this->parent = Content::parent($this->content->parent_id);
         $this->model  = Model::find($this->content->model_id);
-        $this->form   = ModelForm::get($this->content->model_id);        
+        $this->form   = ModelForm::get($this->content->model_id);     
+
+        $this->title   = trans('content::content.edit.model', [$this->model->name]);   
 
         return $this->view();
     }

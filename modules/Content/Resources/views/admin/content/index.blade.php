@@ -65,7 +65,9 @@
                 <tr>
                     <td class="drag"></td>
                     <td colspan="2">{{trans('content::content.title.label')}}</td>
-                    <td width="10%"></td>
+                    <td width="5%">{{trans('content::content.user.label')}}</td>
+                    <td></td>
+                    <td width="5%">{{trans('content::content.status.label')}}</td>
                     <td width="10%"></td>
                 </tr>
                 </thead>
@@ -73,8 +75,14 @@
                 @foreach($contents as $content)
                     <tr>
                         <td class="drag"></td>
-                        <td class="px-2" width="1%">
-                            <i class="{{$content->model->icon}} fa-fw fa-2x text-warning"></i>
+                        <td class="text-center px-2" width="5%">
+                            @if ($content->image)
+                            <div class="icon icon-md">
+                                <img src="{{$content->image}}">
+                            </div>
+                            @else
+                            <i class="{{$content->model->icon}} fa-md text-warning"></i>
+                            @endif
                         </td>
                         <td class="px-2">
                             <div class="title text-lg">
@@ -89,12 +97,22 @@
                                 </a>
                             </div>
                         </td>
+                        <td><strong>{{$content->user->username}}</strong></td>
+                        <td></td>
                         <td>
-                            {{$content->status}}
+                            <i class="{{$content->status_icon}} fa-fw fa-2x" title="{{$content->status_name}}" data-toggle="tooltip"></i>
                         </td>
                         <td>
-                            <strong>{{$content->user->username}}</strong>
-                            <div>{{$content->updated_at}}</div>                            
+                            @if (in_array($content->status,['publish']))
+                            <div>{{trans('content::content.publish_at.label')}}</div>
+                            <div>{{$content->publish_at}}</div>
+                            @elseif (in_array($content->status,['future']))
+                            <div>{{trans('content::content.status.future')}}</div>
+                            <div>{{$content->publish_at}}</div>                            
+                            @else
+                            <div>{{trans('content::content.updated_at.label')}}</div>
+                            <div>{{$content->updated_at}}</div>
+                            @endif                            
                         </td>
                     </tr>
                 @endforeach

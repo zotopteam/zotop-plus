@@ -33,8 +33,9 @@ class CreateContentTable1542556465 extends Migration
 			$table->tinyInteger('stick')->nullable()->comment('是否固顶，0：不固顶，1：固顶')->index('stick')->default(0)->unsigned();
 			$table->integer('sort')->nullable()->comment('排序')->index('sort')->default(0)->unsigned();
 			$table->integer('user_id')->nullable()->comment('用户编号')->default(0)->unsigned();
-			$table->timestamp('created_at')->nullable();
-			$table->timestamp('updated_at')->nullable();
+			$table->timestamp('publish_at')->nullable()->comment('发布时间');
+			$table->timestamp('created_at')->nullable()->comment('更新时间');
+			$table->timestamp('updated_at')->nullable()->comment('创建时间');
 
             $table->comment = '';             
         });

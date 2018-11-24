@@ -31,8 +31,10 @@
                     <td class="text-center">
                         <i class="fa fa-2x {{$module->active ? 'fa-check-circle text-success' : 'fa-times-circle'}}"></i>
                     </td>
-                    <td width="1%" class="icon icon-sm pr-2">
-                        <img src="{{preview($module->getExtraPath('/module.png'), 48, 48)}}">
+                    <td width="1%" class="pr-2">
+                        <div class="icon icon-md">
+                            <img src="{{preview($module->getExtraPath('/module.png'), 48, 48)}}">
+                        </div>
                     </td>
                     <td class="pl-2">
                         <div class="title"> <b class="text-lg">{{$module->title}}</b> <span class="text-muted">{{$name}}</span></div>
