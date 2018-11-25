@@ -31,6 +31,10 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .pos-r{position:relative;}
 .pos-a{position:absolute;}
 .pos-f{position:fixed;}
+.pos-t-0{top:0;}
+.pos-r-0{right:0;}
+.pos-l-0{left:0;}
+.pos-b-0{bottom:0;}
 .pos-full{top:0;right:0;left:0;bottom:0}
 
 .cur-p{cursor:pointer;}
@@ -103,7 +107,8 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 
 .dropdown-menu-primary{border-color:#005cbf;}
 .dropdown-menu-primary .dropdown-item{color:#0062cc;padding:0.5rem 0.75rem;border-radius:2px;transition:all 0.2s ease-out 0s;white-space:nowrap;display:block;}
-.dropdown-menu-primary .dropdown-item:hover{background-color:#0062cc;color:#fff;text-decoration:none;}
+.dropdown-menu-primary .dropdown-item:hover{background-color:#0062cc;color:#fff!important;text-decoration:none;}
+.dropdown-menu-primary .dropdown-item:hover * {color:#fff!important;}
 
 .dropdown-menu.dropdown-caret:before{border-bottom:7px solid rgba(0, 0, 0, 0.2); border-left:7px solid transparent; border-right:7px solid transparent; content:""; display:inline-block; left:9px; position:absolute; top:-7px;}
 .dropdown-menu.dropdown-caret:after{border-bottom:6px solid #FFFFFF; border-left:6px solid transparent; border-right:6px solid transparent; content:""; display:inline-block; left:10px; position:absolute; top:-6px;}
@@ -168,6 +173,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 
 
 .manage{font-size:0.875rem;margin-top:0.5rem;}
+.manage-item{display:inline-block;}
 .manage-item:hover,.manage-item:focus{text-decoration:none;outline:0 none;}
 .manage-item+.manage-item::before{display:inline-block;padding-right:.5rem;padding-left:.5rem;color:#dddddd;content:"|";}
 .manage-hover{}
@@ -199,6 +205,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .table>tbody>tr>td .manage{font-size:0.75rem;}
 .table>tbody>tr>td .select-icon{color:#efefef;cursor:pointer;}
 
+.table>tbody>tr.hover{background-color:#FFFFDB!important;}
 .table>tbody>tr.selected{background-color:#ECF9FF!important;}
 .table>tbody>tr.selected .select-icon{color:#00bc3e;}
 .table>tbody>tr.disabled{background-color:#fafafa!important;cursor:not-allowed;color:#999!important;}

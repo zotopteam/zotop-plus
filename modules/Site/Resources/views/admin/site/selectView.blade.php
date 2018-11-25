@@ -63,13 +63,13 @@
                 @foreach($folders as $folder)
                 <tr data-type="folder" data-href="{{$folder->href}}">
                     <td></td>
-                    <td width="1%" class="icon icon-sm pr-1">
+                    <td width="1%" class="pr-2">
                         <a href="{{$folder->href}}">
-                            <i class="fa fa-folder fa-2x fa-fw text-warning"></i>
+                            <i class="fa fa-folder fa-md text-warning"></i>
                         </a>
                     </td>
                     <td class="name pl-2">
-                        <a href="{{$folder->href}}">{{$folder->name}}</a>
+                        <a href="{{$folder->href}}"><strong>{{$folder->name}}</strong></a>
                     </td>
                     <td></td>
                     <td class="manage manage-hover text-right">
@@ -88,17 +88,19 @@
                 @foreach($files as $path=>$file)
                 <tr data-type="file">
                     <td class="text-center">
-                        <i class=" select-icon fa fa-check-circle fa-2x"></i>
+                        <i class="select-icon fa fa-check-square fa-2x"></i>
                     </td>
-                    <td width="1%" class="icon icon-sm pr-1">
+                    <td width="1%" class="pr-2">
                         @if($file->type == 'image')
-                        <div class="icon"><img src="{{preview($file->realpath,32,32)}}" width="32"></div>
+                        <div class="icon icon-md"><img src="{{preview($file->realpath,48,48)}}"></div>
                         @else
-                        <i class="fa {{$file->icon}} fa-2x fa-fw text-warning"></i>
+                        <i class="fa {{$file->icon}} fa-md text-warning"></i>
                         @endif
                     </td>
                     <td class="name pl-2">
-                        <div class="title text-md text-wrap">{{$file->view}}</div>
+                        <div class="title text-md text-wrap">
+                            <strong>{{$file->view}}</strong>
+                        </div>
                         <div class="description">
                             @if($file->type == 'image') {{$file->width}}px × {{$file->height}}px @endif
                         </div>

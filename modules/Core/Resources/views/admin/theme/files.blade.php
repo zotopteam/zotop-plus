@@ -54,16 +54,15 @@
             <tbody>
                 @foreach($folders as $folder)
                 <tr data-type="folder" data-href="{{$folder->href}}">
-                    <td width="1%" class="icon icon-sm pr-1">
+                    <td width="1%" class="text-center pr-1">
                         <a href="{{$folder->href}}">
-                            <i class="fa fa-folder fa-2x fa-fw text-warning"></i>
+                            <i class="fa fa-folder fa-md text-warning"></i>
                         </a>
                     </td>
-                    <td class="name pl-2">
+                    <td class="name pl-2 text-lg">
                         <a href="{{$folder->href}}">{{$folder->name}}</a>
                     </td>
                     <td class="manage manage-hover text-right">
-
                         <a href="javascript:;" class="manage-item js-prompt" data-url="{{route('core.folder.rename',['folder'=>$folder->path])}}" data-prompt="{{trans('core::folder.name')}}" data-value="{{$folder->name}}">
                             <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::folder.rename')}}
                         </a>
@@ -79,15 +78,15 @@
                 @endforeach            
                 @foreach($files as $file)
                 <tr data-type="file">
-                    <td width="1%" class="icon icon-sm pr-1">
+                    <td width="1%" class="text-center pr-1">
                         @if($file->type == 'image')
-                        <div class="icon bg-image-preview"><img src="{{preview($file->realpath,32,32)}}" width="32"></div>
+                        <div class="icon icon-md bg-image-preview"><img src="{{preview($file->realpath,48,48)}}"></div>
                         @else
-                        <i class="fa {{$file->icon}} fa-2x fa-fw text-warning"></i>
+                        <i class="fa {{$file->icon}} fa-md text-warning"></i>
                         @endif
                     </td>
                     <td class="name pl-2">
-                        <div class="title text-md text-wrap">{{$file->name}}</div>
+                        <div class="title text-lg text-wrap">{{$file->name}}</div>
                         <div class="description">
                             @if($file->type == 'image') {{$file->width}}px × {{$file->height}}px @endif
                         </div>

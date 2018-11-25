@@ -66,66 +66,73 @@ class Listener
 
     public function contentManage($manage, $content)
     {
+        // 查看和预览
+        $manage['view'] = [
+            'text' => $content->status == 'publish' ? trans('content::content.view') : trans('content::content.preview'),
+            'href' => $content->url,
+            'icon' => 'fas fa-eye',
+            'attr' => ['target' => '_blank']
+        ];
+
         // 下级节点
         if ($content->model->nestable) {
             $manage['nestable'] = [
                 'text' => trans('content::content.children'),
-                'herf' => route('content.content.index', [$content->id]),
-                'icon' => 'fas fa-folder-open',
+                'href' => route('content.content.index', [$content->id]),
+                'icon' => 'fas fa-folder-open text-warning',
             ];
         }
 
         // 修改
         $manage['edit'] = [
             'text' => trans('core::master.edit'),
-            'herf' => route('content.content.edit', [$content->id]),
+            'href' => route('content.content.edit', [$content->id]),
             'icon' => 'fas fa-edit',
         ];
-
-        // foreach (Content::status() as $status => $value) {
-        //     if ($status == $content->status) {
-        //         continue;
-        //     }
-        //     $manage[$status] = [
-        //         'text'  => $value['name'],
-        //         'herf'  => route('content.content.status', [$content->id, $status]),
-        //         'icon'  => $value['icon'],
-        //         'class' => 'js-post',
-        //     ];              
-        // }
-
 
         // 回收站中的数据可以永久删除
         if ($content->status == 'trash') {
             $manage['delete'] = [
                 'text'     => trans('content::content.destroy'),
-                'data-url' => route('content.content.destroy', [$content->id]),
+                'href' => route('content.content.destroy', [$content->id]),
                 'icon'     => 'fa fa-times',
-                'class'    => 'js-confirm',
+                'class'    => 'js-delete',
             ];
-        } else {
-
-            // 置顶和取消置顶
-            $manage['stick'] = $content->stick ? [
-                'text'  => trans('content::content.unstick'),
-                'herf'  => route('content.content.stick', [$content->id]),
-                'icon'  => 'fa fa-arrow-circle-down',
-                'class' => 'js-post',
-            ] : [
-                'text'  => trans('content::content.stick'),
-                'herf'  => route('content.content.stick', [$content->id]),
-                'icon'  => 'fa fa-arrow-circle-up',
-                'class' => 'js-post',
-            ];
-
-            // 回收站           
-            $manage['trash'] = [
-                'text'     => trans('content::content.status.trash'),
-                'data-url' => route('content.content.status', [$content->id, 'trash']),
-                'icon'     => 'fa fa-trash-alt',
-                'class'    => 'js-post',
-            ];            
         }
+
+        $manage['sort'] = [
+            'text'  => trans('content::content.sort'),
+            'href'  => route('content.content.sort', ['parent_id'=>$content->parent_id, 'id'=>$content->id]),
+            'icon'  => 'fa fa-sort-amount-up',
+            'class' => 'js-open',
+            'attr'  => ['data-width' => '80%','data-height' => '80%']
+        ];        
+
+
+        foreach (Content::status() as $status => $value) {
+            if ($status == $content->status) {
+                continue;
+            }
+            $manage[$status] = [
+                'text'  => $value['name'],
+                'href'  => route('content.content.status', [$content->id, $status]),
+                'icon'  => $value['icon'],
+                'class' => $status == 'future' ? 'js-future' : 'js-post',
+            ];              
+        }
+
+        // 置顶和取消置顶
+        $manage['stick'] = $content->stick ? [
+            'text'  => trans('content::content.unstick'),
+            'href'  => route('content.content.stick', [$content->id]),
+            'icon'  => 'fa fa-arrow-circle-down',
+            'class' => 'js-post',
+        ] : [
+            'text'  => trans('content::content.stick'),
+            'href'  => route('content.content.stick', [$content->id]),
+            'icon'  => 'fa fa-arrow-circle-up',
+            'class' => 'js-post',
+        ];    
 
         return $manage;
     }

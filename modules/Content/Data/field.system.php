@@ -6,7 +6,7 @@ $field = [
     ['label'=>trans('content::field.system.keywords'), 'name'=>'keywords', 'type'=>'keywords'],
     ['label'=>trans('content::field.system.summary'), 'name'=>'summary', 'type'=>'summary'],
     ['label'=>trans('content::field.system.template'), 'name'=>'template', 'type'=>'template'],
-    ['label'=>trans('content::field.system.url'), 'name'=>'url', 'type'=>'url'],
+    ['label'=>trans('content::field.system.link'), 'name'=>'link', 'type'=>'link'],
 ];
 
 return $field;

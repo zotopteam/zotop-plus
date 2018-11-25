@@ -64,7 +64,8 @@
                 <thead>
                 <tr>
                     <td class="drag"></td>
-                    <td colspan="2">{{trans('content::content.title.label')}}</td>
+                    <td colspan="3">{{trans('content::content.title.label')}}</td>
+                    <td width="5%"></td>
                     <td width="5%">{{trans('content::content.user.label')}}</td>
                     <td></td>
                     <td width="5%">{{trans('content::content.status.label')}}</td>
@@ -89,19 +90,53 @@
                         <td class="px-2">
                             <div class="title text-lg">
                                 @if ($content->model->nestable)
-                                    <a href="{{route('content.content.index', $content->id)}}">{{$content->title}}</a>
+                                    <a href="{{route('content.content.index', $content->id)}}">
+                                        {{$content->title}}
+                                    </a>
                                 @else
                                     {{$content->title}}
                                 @endif
                             </div>
                             <div class="manage">
-                                @foreach(Filter::fire('content.manage', [], $content) as $s)
-                                <a href="{{$s.herf ?? 'javascript:;'}}" class="manage-item {{$s.class ?? ''}}" {!!Html::attributes(array_except($s,['icon','text','href','class']))!!}>
-                                    <i class="{{$s.icon ?? ''}} fa-fw"></i> {{$s.text}}
-                                </a>
-                                @endforeach
+                                @if ($manage = Filter::fire('content.manage', [], $content))
+                                    @if ($flatten = array_slice($manage, 0, 5))
+                                        @foreach ($flatten as $k=>$s)
+                                        <div class="manage-item">
+                                            <a href="{{$s.href ?? 'javascript:;'}}" class="{{$s.class ?? ''}}" {!!Html::attributes($s.attr ?? [])!!}>
+                                                <i class="{{$s.icon ?? ''}} fa-fw"></i> {{$s.text ?? ''}}
+                                            </a>
+                                        </div>
+                                        @endforeach                                
+                                    @endif
+                                    
+                                    @if ($dropdown = array_slice($manage, 5))
+                                        <div class="manage-item dropdown">
+                                            <a href="javascript:;" data-toggle="dropdown">
+                                                <i class="fa fa-ellipsis-h fa-fw"></i><i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-primary">
+                                                @foreach ($dropdown as $k=>$s)
+                                                    <a href="{{$s.href ?? 'javascript:;'}}" class="dropdown-item {{$s.class ?? ''}}" {!!Html::attributes($s.attr ?? [])!!}>
+                                                        <i class="dropdown-item-icon {{$s.icon ?? ''}} fa-fw"></i>
+                                                        <b class="dropdown-item-text">{{$s.text ?? ''}}</b>
+                                                    </a>                                            
+                                                @endforeach
+                                            </div>                                                                                  
+                                        </div>
+                                    @endif
+                                @endif
                             </div>
                         </td>
+                        <td width="1%">
+                            <a href="javascript:;" class="js-post" data-url="{{route('content.content.stick', [$content->id])}}">
+                            @if ($content->stick)
+                                <i class="fa fa-arrow-circle-up fa-2x text-primary" rel="stick-down" title="{{trans('content::content.unstick')}}" data-toggle="tooltip"></i>
+                            @else
+                                <i class="fa fa-arrow-circle-up fa-2x text-muted" rel="stick-up" title="{{trans('content::content.stick')}}" data-toggle="tooltip"></i>
+                            @endif
+                            </a>
+                        </td>
+                        <td>{{$content->model->name}}</td>
                         <td><strong>{{$content->user->username}}</strong></td>
                         <td></td>
                         <td>
@@ -112,7 +147,12 @@
                             <div>{{trans('content::content.publish_at.label')}}</div>
                             <div>{{$content->publish_at}}</div>
                             @elseif (in_array($content->status,['future']))
-                            <div>{{trans('content::content.status.future')}}</div>
+                            <div>
+                                
+                                <a class="js-future" href="{{route('content.content.status', [$content->id, $content->status])}}" data-value="{{$content->publish_at}}">
+                                   {{trans('content::content.status.future')}} <i class="fa fa-pen-square"></i>
+                                </a>
+                            </div>
                             <div>{{$content->publish_at}}</div>                            
                             @else
                             <div>{{trans('content::content.updated_at.label')}}</div>
@@ -135,8 +175,76 @@
     </div>
 </div>
 @endsection
-
+@push('css')
+<link rel="stylesheet" href="{{Module::asset('core:datetimepicker/jquery.datetimepicker.css')}}" rel="stylesheet">
+@endpush
 @push('js')
+<script type="text/javascript" src="{{Module::asset('core:datetimepicker/jquery.datetimepicker.js')}}"></script>
+<script type="text/javascript">
+    $(function(){
+        $('[rel=stick-down]').on('mouseover', function(){
+            $(this).removeClass('fa-arrow-circle-up').addClass('fa-arrow-circle-down');
+        }).on('mouseout', function(){
+            $(this).removeClass('fa-arrow-circle-down').addClass('fa-arrow-circle-up');
+        });
+
+        $('[rel=stick-up]').on('mouseover', function(){
+            $(this).removeClass('text-muted').addClass('text-primary');
+        }).on('mouseout', function(){
+            $(this).removeClass('text-primary').addClass('text-muted');
+        })        
+    });
+
+    $(function(){
+
+        // 定时发布
+        $(document).on('click', 'a.js-future', function(event) {
+            event.preventDefault();
+            var tr = $(this).parents('tr').addClass('hover');
+            var href = $(this).attr('href');
+            var value = $(this).data('value');
+            var dialog = $.dialog({
+                id: 'publish_at',
+                title : $(this).text(),
+                align: 'right',
+                content : function() {
+                    return '<div class="p-3">'+
+                        '<div class="mb-2">{{ trans('content::content.status.future.help') }}</div>'+
+                        '<input type="text" name="publish_at" class="form-control mb-2" placeholder="{{now()}}">'+
+                        '</div>';
+                },
+                onshow : function() {
+                    this._$('content').find('[name=publish_at]').datetimepicker({
+                        format:'Y-m-d H:i',
+                        inline:true,
+                        lang:'{{App::getLocale()}}',
+                        minDate:new Date()
+                    }).show().val(value).get(0).focus();
+                },
+                onclose: function() {
+                    tr.removeClass('hover');
+                },
+                ok : function() {
+                    var publish_at = this._$('content').find('[name=publish_at]');
+
+                    if (!publish_at.val()) {
+                        publish_at.get(0).focus();
+                        this.shake();
+                    } else {
+                        $.post(href, {publish_at:publish_at.val()}, function(msg) {
+                            $.msg(msg);
+                            msg.state && dialog.close();
+                        },'json');                        
+                    }
+
+                    return false;
+                },
+                cancel : $.noop
+            }, true);
+            event.stopPropagation();
+        })
+    });
+</script>
 <script type="text/javascript">
     $(function(){
         // 拖动停止更新当前的排序及当前数据之前的数据

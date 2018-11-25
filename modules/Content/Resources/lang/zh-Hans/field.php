@@ -14,7 +14,7 @@ return [
     'system.keywords'    => '关键词',
     'system.summary'     => '摘要',
     'system.template'    => '模板',
-    'system.url'         => '链接',
+    'system.link'        => '链接',
     'system.slug'        => '别名', 
 
     'layout.main'        => '主区域',

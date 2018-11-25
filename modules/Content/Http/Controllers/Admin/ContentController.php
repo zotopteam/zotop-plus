@@ -19,7 +19,7 @@ class ContentController extends AdminController
      */
     public function index($parent_id=0)
     {
-        $this->parent = Content::parent($parent_id);
+        $this->parent = Content::findParent($parent_id);
 
         // 分页获取
         $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->sort()->paginate(25);
@@ -34,7 +34,7 @@ class ContentController extends AdminController
      */
     public function create($parent_id, $model_id)
     {
-        $this->parent = Content::parent($parent_id);
+        $this->parent = Content::findParent($parent_id);
         $this->model  = Model::find($model_id);
         $this->form   = ModelForm::get($model_id);
 
@@ -92,7 +92,7 @@ class ContentController extends AdminController
 
         //dd($this->content->categoryRelation->exists);
 
-        $this->parent = Content::parent($this->content->parent_id);
+        $this->parent = Content::findParent($this->content->parent_id);
         $this->model  = Model::find($this->content->model_id);
         $this->form   = ModelForm::get($this->content->model_id);     
 
@@ -121,10 +121,15 @@ class ContentController extends AdminController
      *
      * @return Response
      */
-    public function status($id, $status)
+    public function status(Request $request, $id, $status)
     {
         $content = Content::findOrFail($id);
         $content->status = $status;
+
+        if ($status == 'future') {
+            $content->publish_at = $request->input('publish_at');
+        }
+
         $content->save();
 
         return $this->success(trans('core::master.operated'), route('content.content.index', $content->parent_id));        
@@ -151,20 +156,31 @@ class ContentController extends AdminController
      */
     public function sort(Request $request, $parent_id)
     {
-        $id    = $request->input('id');
-        $sort  = $request->input('sort');
-        $stick = $request->input('stick');
+        if ($request->isMethod('POST')) {
 
-        // 将当前列表 $sort 之前的数据的 sort 全部加 1， 为拖动的数据保留出位置
-        Content::withoutTimestamps()->where('parent_id', $parent_id)->where('sort','>=', $sort)->increment('sort', 1);        
+            $id    = $request->input('id');
+            $sort  = $request->input('sort');
+            $stick = $request->input('stick');
 
-        // 更新当前数据的排序和置顶信息，如果排在置顶数据之前，自动置顶，如果排在非置顶数据后，自动取消置顶
-        Content::where('id', $id)->update([
-            'sort'  => $sort,
-            'stick' => $stick,
-        ]);
-        
-        return $this->success(trans('core::master.sorted'), $request->referer());
+            // 将当前列表 $sort 之前的数据的 sort 全部加 1， 为拖动的数据保留出位置
+            Content::withoutTimestamps()->where('parent_id', $parent_id)->where('sort','>=', $sort)->increment('sort', 1);        
+
+            // 更新当前数据的排序和置顶信息，如果排在置顶数据之前，自动置顶，如果排在非置顶数据后，自动取消置顶
+            Content::where('id', $id)->update([
+                'sort'  => $sort,
+                'stick' => $stick,
+            ]);
+            
+            return $this->success(trans('core::master.sorted'), $request->referer());
+        }
+
+        $this->id       = $request->input('id');
+        $this->parent   = Content::findParent($parent_id);
+        $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->when($request->keywords, function($query, $keywords){
+            return $query->where('title', 'like', '%'.$keywords.'%');
+        })->sort()->paginate(25);
+
+        return $this->view();        
     }
 
     /**

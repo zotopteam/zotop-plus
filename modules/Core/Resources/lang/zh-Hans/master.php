@@ -58,4 +58,7 @@ return [
     'search.placeholder'   => '请输入关键词',    
     'searching'            => '搜索: “:0”',
     'lastmodify'           => '最后更新',
+    'select'               => '选择',
+    'select.min'           => '至少选择 :0 项',
+    'select.max'           => '最多选择 :0 项',
 ];

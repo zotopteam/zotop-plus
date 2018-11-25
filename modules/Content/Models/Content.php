@@ -63,7 +63,7 @@ class Content extends Model
             $content->sort = $content->sort ?: time();
 
             // 发布和定时发布的时间必须大于当前时间，其他状态发布时间为空
-            if (in_array($content->status, ['publish', 'feature']) && $now = now()) {
+            if (in_array($content->status, ['publish', 'future']) && $now = now()) {
                 $content->publish_at = $content->publish_at > $now ? $content->publish_at : $now;
             } else {
                 $content->publish_at = null;
@@ -79,6 +79,24 @@ class Content extends Model
     {
         return $this->belongsTo('Modules\Content\Models\Model', 'model_id', 'id');
     }
+
+    /**
+     * 关联子级别
+     * @return [type] [description]
+     */
+    public function children()
+    {
+        return $this->hasMany('Modules\Content\Models\Content', 'parent_id', 'id');
+    }
+
+    /**
+     * 关联父级别
+     * @return [type] [description]
+     */
+    public function parent()
+    {
+        return $this->belongsTo('Modules\Content\Models\Content', 'parent_id', 'id');
+    }    
 
     /**
      * 获取内容的状态
@@ -128,6 +146,42 @@ class Content extends Model
     }
 
     /**
+     * 获取内容的视图文件
+     * @param  mixed $value
+     * @return string
+     */
+    public function getViewAttribute($value)
+    {
+        if ($this->template) {
+            return $this->template;
+        }
+
+        if (isset($this->parent->models)) {
+            return array_get($this->parent->models, $this->model_id.'.template');
+        }
+
+        return $this->model->template;
+    }
+
+    /**
+     * 获取内容url地址
+     * @param  mixed $value
+     * @return string
+     */
+    public function getUrlAttribute($value)
+    {
+        if ($this->link) {
+            return $this->link;
+        }
+
+        if ($this->status == 'publish') {
+            return $this->slug ? route('content.slug', $this->slug) : route('content.show', $this->id);
+        }
+
+        return route('content.preview', $this->id);
+    }
+
+    /**
      * 排序 ，查询结果按照stick(置顶)、sort(排序)和id(编号)倒序
      * 
      * @param \Illuminate\Database\Eloquent\Builder $query
@@ -154,7 +208,7 @@ class Content extends Model
      * @param  int $id 父级别编号
      * @return \Illuminate\Database\Eloquent\Model|static
      */
-    private function parent($id)
+    private function findParent($id)
     {
         $parent = static::findOrNew($id);
 

@@ -13,8 +13,7 @@ $router->group(['prefix'=>'content', 'module'=>'content'], function (Router $rou
     $router->delete('destroy/{id}','ContentController@destroy')->name('content.content.destroy')->middleware('allow:content.content.destroy');
     $router->any('status/{id}/{status}','ContentController@status')->name('content.content.status')->middleware('allow:content.content.status');
     $router->any('stick/{id}','ContentController@stick')->name('content.content.stick')->middleware('allow:content.content.stick');
-    $router->post('sort/{parent_id?}','ContentController@sort')->name('content.content.sort')->middleware('allow:content.content.sort');
-
+    $router->any('sort/{parent_id}','ContentController@sort')->name('content.content.sort')->middleware('allow:content.content.sort');
 
     // 模型管理
     $router->group(['prefix' =>'model'], function (Router $router) {
