@@ -23,7 +23,7 @@ class CoreUserTableSeeder extends Seeder
         // 调用工厂
         $users = factory(User::class)->times(100)->make()->each(function($user, $index) use ($faker) {
             $user->gender  = $faker->randomElement([0,1,2]);
-            $user->modelid = 'admin';
+            $user->model_id = 'admin';
         });
 
         // 开启hidden字段

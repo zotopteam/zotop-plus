@@ -95,7 +95,7 @@
                         @endif
                     </td>
                     <td class="name pl-2">
-                        <div class="title text-md text-wrap">{{$file['name']}}</div>
+                        <div class="title text-md">{{$file['name']}}</div>
                         <div class="description">
                             @if($file['type'] == 'image') {{$file['info'][0]}}px × {{$file['info'][1]}}px @endif
                         </div>

@@ -5,7 +5,7 @@ use Modules\Content\Models\ContentModel as ContentModel;
 
 /**
  * 内容扩展模型：分类 category
- * 自动创建时间：2018-11-23 14:40:22
+ * 自动创建时间：2018-11-26 23:54:51
  */
 class CategoryModel extends ContentModel
 {

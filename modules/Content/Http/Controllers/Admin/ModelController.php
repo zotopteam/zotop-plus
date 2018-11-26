@@ -51,11 +51,7 @@ class ModelController extends AdminController
      * @return Response
      */
     public function store(ModelRequest $request)
-    {
-        $request->merge([
-            'nestable' => $request->nestable ?? 0
-        ]);
-                
+    {                
         $model = new Model;
         $model->fill($request->all());
         $model->sort = Model::max('sort') + 1;
@@ -89,10 +85,6 @@ class ModelController extends AdminController
      */
     public function update(ModelRequest $request, $id)
     {
-        $request->merge([
-            'nestable' => $request->nestable ?? 0
-        ]);
-
         $model = Model::findOrFail($id);
         $model->fill($request->all());       
         $model->save();

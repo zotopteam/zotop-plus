@@ -56,6 +56,21 @@
             {/form}
         </div>              
     </div>
+    @if (empty($keywords))    
+    <div class="main-header breadcrumb text-xs p-2 m-0">
+        @if ($parent->id)
+        <a href="{{route('content.content.index',[$parent->parent_id])}}" class="breadcrumb-item breadcrumb-extra">
+            <i class="fa fa-fw fa-arrow-up"></i>{{trans('content::content.up')}}
+        </a>
+        @else
+        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('content::content.up')}}</a>
+        @endif
+        <a class="breadcrumb-item" href="{{route('content.content.index')}}">{{trans('content::content.root')}}</a>
+        @foreach($parents as $p)
+        <a class="breadcrumb-item" href="{{route('content.content.index', $p->id)}}">{{$p->title}}</a> 
+        @endforeach      
+    </div>
+    @endif    
     <div class="main-body scrollable">
         @if($contents->count() == 0)
             <div class="nodata">{{trans('core::master.nodata')}}</div>
@@ -88,7 +103,7 @@
                             @endif
                         </td>
                         <td class="px-2">
-                            <div class="title text-lg">
+                            <div class="title">
                                 @if ($content->model->nestable)
                                     <a href="{{route('content.content.index', $content->id)}}">
                                         {{$content->title}}

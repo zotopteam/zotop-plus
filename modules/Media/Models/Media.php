@@ -81,7 +81,7 @@ class Media extends Model
 
     /**
      * 判定文件类型
-     * @param  mixed $modelid 模型编号
+     * @param  mixed $type 类型
      * @return boolean
      */
     public function isType($type)

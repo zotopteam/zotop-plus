@@ -98,7 +98,7 @@
                         @endif
                     </td>
                     <td class="name pl-2">
-                        <div class="title text-md text-wrap">
+                        <div class="title text-md">
                             <strong>{{$file->view}}</strong>
                         </div>
                         <div class="description">

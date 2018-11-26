@@ -27,7 +27,7 @@
                 @foreach($translators as $translator)
                     <tr>
                         <td>
-                            <div class="title text-lg">
+                            <div class="title">
                                 {{$translator->title}}
                             </div>
                             <div class="manage">

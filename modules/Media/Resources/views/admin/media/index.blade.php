@@ -45,7 +45,7 @@
         <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>        
     </div>
     @if (empty($keywords))    
-    <div class="main-header breadcrumb m-0">
+    <div class="main-header breadcrumb text-xs p-2 m-0">
         @if ($folder_id)
         <a href="{{route('media.index',[$folder->parent_id])}}" class="breadcrumb-item breadcrumb-extra">
             <i class="fa fa-fw fa-arrow-up"></i>{{trans('media::folder.up')}}
@@ -94,7 +94,7 @@
                         @endif                        
                     </td>                
                     <td width="50%" class="pl-2">
-                        <div class="title text-md text-wrap">
+                        <div class="title text-md">
                             @if ($m->isFolder())
                             <a href="{{$m->url}}">{{$m->name}}</a>
                             @else

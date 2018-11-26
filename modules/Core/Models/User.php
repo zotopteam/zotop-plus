@@ -15,7 +15,7 @@ class User extends Authenticatable
      * 
      * @var array
      */
-    protected $fillable   = ['username','password','email','mobile','modelid','nickname','gender','avatar','sign','login_times','login_at','login_ip','disabled','token','remember_token','created_at','updated_at'];
+    protected $fillable   = ['username','password','email','mobile','model_id','nickname','gender','avatar','sign','login_times','login_at','login_ip','disabled','token','remember_token','created_at','updated_at'];
     
     /**
      * 禁止写入的字段
@@ -45,16 +45,16 @@ class User extends Authenticatable
 
     /**
      * 判定当前用户的model
-     * @param  mixed $modelid 模型编号
+     * @param  mixed $model_id 模型编号
      * @return boolean
      */
-    public function isModel($modelid)
+    public function isModel($model_id)
     {
-        if (is_array($modelid)) {
-            return in_array($this->modelid, $modelid) ? true : false;
+        if (is_array($model_id)) {
+            return in_array($this->model_id, $model_id) ? true : false;
         }
 
-        return $this->modelid == $modelid ? true : false;
+        return $this->model_id == $model_id ? true : false;
     }
 
     /**

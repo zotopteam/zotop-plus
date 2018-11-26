@@ -383,16 +383,18 @@
  * 是/否 开关
  */
 \Form::macro('toggle', function($attrs) {
-    $name = $this->getAttribute($attrs, 'name');
-    $value = $this->getAttribute($attrs, 'value', 1);
+    $value   = $this->getValue($attrs);
+    $id      = $this->getId($attrs);
+    $name    = $this->getAttribute($attrs, 'name');
+
+    $enable  = $this->getAttribute($attrs, 'enable', 1);
+    $disable = $this->getAttribute($attrs, 'disable', 0);
     
-    $checked = $this->getAttribute($attrs, 'checked');
-    $checked = in_array(strtolower($checked), ['checked','true']) ? true : null;
+    $class   = $this->getAttribute($attrs, 'class');
 
-    $class = $this->getAttribute($attrs, 'class');
-    $class = trim('toggle '.$class);
-
-    return $this->checkbox($name, 1, $checked, compact('class'));
+    return $this->toHtmlString(
+        $this->view->make('core::field.toggle')->with(compact('name', 'value', 'id', 'enable', 'disable', 'class'))->render()
+    );
 });
 
 /**

@@ -34,7 +34,7 @@ class Core extends Migration
             $table->string('password', 64)->comment('密码');
             $table->string('email', 200)->nullable()->unique()->comment('邮箱');
             $table->string('mobile', 50)->nullable()->unique()->comment('手机号');
-            $table->string('modelid', 64)->comment('模型编号：如admin或者member');
+            $table->string('model_id', 64)->comment('模型编号：如super,admin或者member');
             $table->string('nickname',100)->nullable()->comment('昵称');            
             $table->boolean('gender')->default(0)->unsigned()->comment('性别 0=保密 1=男 2=女');
             $table->string('avatar',255)->nullable()->comment('头像');
@@ -79,7 +79,7 @@ class Core extends Migration
             $table->increments('id');
             $table->string('name')->unique()->comment('角色名称');
             //$table->string('slug')->unique()->comment('机读名称');
-            //$table->string('modelid', 64)->comment('角色模型：如admin或者member');
+            //$table->string('model_id', 64)->comment('角色模型：如admin或者member');
             $table->string('description')->nullable()->comment('角色描述');
             $table->text('permissions')->nullable()->comment('角色权限');
             $table->boolean('disabled')->default(0)->unsigned()->comment('禁用 0=否 1=禁用');

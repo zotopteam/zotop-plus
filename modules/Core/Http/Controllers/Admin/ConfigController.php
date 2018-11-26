@@ -41,8 +41,6 @@ class ConfigController extends AdminController
 
             //设置toggle未选择时enabled为0
             $config = $request->all();
-            $config = data_fill($config,'upload.types.*.enabled',0);
-            $config = data_fill($config,'image.*.enabled',0);
 
             // 写入配置组
             $this->config('core', $config);
@@ -67,7 +65,6 @@ class ConfigController extends AdminController
         // 生成加水印后图片预览
         if ($request->isMethod('POST')) {
             $config = $request->input('image.watermark');
-            $config = $config + ['enabled'=>0]; 
             $source = resource_path('watermark/test.jpg');
             $target = 'previews/watermarks/test.jpg';
 

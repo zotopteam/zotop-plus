@@ -67,7 +67,7 @@
                     <tr>
                         <td class="drag"> <input type="hidden" name="sort[]" value="{{$block->id}}"/> </td>
                         <td>
-                            <div class="title text-lg">
+                            <div class="title">
                                 {{$block->name}}
                             </div>
                             <div class="manage">

@@ -18,7 +18,7 @@ class AdministratorController extends AdminController
     public function index()
     {
         $this->title = trans('core::administrator.title');
-        $this->users = User::with('roles')->whereIn('modelid',['super','admin'])->orderby('id','asc')->paginate(10);
+        $this->users = User::with('roles')->whereIn('model_id',['super','admin'])->orderby('id','asc')->paginate(10);
 
         return $this->view();
     }
@@ -46,7 +46,7 @@ class AdministratorController extends AdminController
     {
         $user = new User;
         $user->fill($request->all());
-        $user->modelid  = 'admin';
+        $user->model_id  = 'admin';
         $user->password = \Hash::make($user->password);
         $user->save();
         $user->roles()->attach($request->input('roles'));

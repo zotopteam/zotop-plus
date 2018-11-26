@@ -4,7 +4,7 @@
             <tr>
                 <td width="10%" class="drag"></td>
                 <td class="pl-2">
-                    <div class="title text-lg">
+                    <div class="title">
                         {{$field->label}} ({{$field->name}})
                     </div>
                     <div class="manage">

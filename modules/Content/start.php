@@ -82,15 +82,11 @@
     $models = \Modules\Content\Models\Model::where('disabled', '0')->orderBy('sort', 'asc')->get();
 
     $models = $models->transform(function($item) use ($name, $value) {
-
         $item->template = array_get($value, $item->id.'.template', $item->template);
-        $item->enabled = array_get($value, $item->id.'.enabled', $value ? 0 : 1);
-
+        $item->enabled  = array_get($value, $item->id.'.enabled', $value ? 0 : 1);
         return $item;
     })->keyBy('id');
     
-    debug($models->toArray());
-
     return $this->toHtmlString(
         $this->view->make('content::field.types.content_models')->with(compact('name', 'value', 'id', 'attrs', 'models'))->render()
     );

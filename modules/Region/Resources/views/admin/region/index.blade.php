@@ -44,7 +44,7 @@
                         @endif                        
                     </td>
                 	<td>
-                        <div class="title text-lg">{{$region->title}}</div>
+                        <div class="title">{{$region->title}}</div>
                         <div class="manage">
                             <a href="{{route('region.index', $region->id)}}" class="manage-item"><i class="fa fa-sitemap"></i> {{trans('region::region.child')}}</a>
                             <a href="javascript:;" data-url="{{route('region.edit', $region->id)}}" data-width="800" data-height="300" class="manage-item js-open"><i class="fa fa-edit"></i> {{trans('region::region.edit')}}</a>

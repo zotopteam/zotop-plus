@@ -18,7 +18,7 @@
             </a>            
         </div>           
     </div>
-    <div class="main-header breadcrumb m-0">
+    <div class="main-header breadcrumb text-xs p-2 m-0">
 
         @if($upfolder)
         <a href="{{$upfolder->href}}" class="breadcrumb-item breadcrumb-extra">
@@ -86,7 +86,7 @@
                         @endif
                     </td>
                     <td class="name pl-2">
-                        <div class="title text-lg text-wrap">{{$file->name}}</div>
+                        <div class="title">{{$file->name}}</div>
                         <div class="description">
                             @if($file->type == 'image') {{$file->width}}px × {{$file->height}}px @endif
                         </div>

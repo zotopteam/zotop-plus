@@ -35,7 +35,7 @@
                                     </div>
                                 </a>
                             @endif                        
-                            <div class="title text-lg">
+                            <div class="title">
                                 {{$datalist->title}}
                             </div>
                             <div class="manage">

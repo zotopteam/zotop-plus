@@ -29,7 +29,7 @@
                     <tr>
                         <td width="1%" class="icon icon-sm pr-2"><div class="fa fa-table fa-2x text-primary"></div></td>
                         <td class="pl-2">
-                            <div class="title text-lg">
+                            <div class="title">
                                 {{$table}}
                             </div>
 

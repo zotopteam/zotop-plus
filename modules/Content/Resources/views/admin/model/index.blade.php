@@ -49,7 +49,7 @@
                              
                         </td>
                         <td>
-                            <div class="title text-lg mb-1">
+                            <div class="title mb-1">
                                 {{$model->name}}
                             </div>
                             <div class="manage">
@@ -91,7 +91,7 @@
                             <i class="{{$model->icon}} fa-2x text-muted"></i>
                         </td>
                         <td>
-                            <div class="title text-lg mb-1">
+                            <div class="title mb-1">
                                 {{$model->name}}
                             </div>
                             <div class="manage">

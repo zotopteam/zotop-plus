@@ -27,7 +27,7 @@
                 @foreach($$PLURAL_MODEL$ as $$LOWER_MODEL$)
                     <tr>
                         <td>
-                            <div class="title text-lg">
+                            <div class="title">
                                 {{$$LOWER_MODEL$->title}}
                             </div>
                             <div class="manage">

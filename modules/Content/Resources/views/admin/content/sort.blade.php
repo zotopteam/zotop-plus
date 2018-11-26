@@ -65,7 +65,7 @@
                             @endif
                         </td>
                         <td class="px-2">
-                            <div class="title text-lg">
+                            <div class="title">
                                 {{$content->title}}
                             </div>
                         </td>

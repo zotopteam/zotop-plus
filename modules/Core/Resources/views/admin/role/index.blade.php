@@ -32,7 +32,7 @@
                             <i class="fa fa-2x {{$role->disabled ? 'fa-times-circle text-error' : 'fa-check-circle text-success'}}"></i>
                         </td>
                         <td>
-                            <div class="title text-lg">
+                            <div class="title">
                                 {{$role->name}}
                             </div>
                             <div class="manage">

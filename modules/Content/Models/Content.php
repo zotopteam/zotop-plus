@@ -116,6 +116,33 @@ class Content extends Model
     }
 
     /**
+     * 获取节点的全部父编号
+     * 
+     * @param  mixed  $id         编号
+     * @param  boolean $self      是否包含自身
+     * @param  array   $parentIds 传递自身
+     * @return array
+     */
+    public static function parentIds($id, $self=false, &$parentIds=[])
+    {
+        static $instance = null;
+
+        if (empty($instance)) {
+            $instance = new static;
+        }
+
+        if ($self) {
+            $parentIds[] = $id;
+        }
+
+        if ($parentId = $instance->where('id', $id)->value('parent_id')) {
+            $instance->parentIds($parentId, true, $parentIds);
+        }
+
+        return array_reverse($parentIds);                
+    }
+
+    /**
      * 获取内容状态名称
      * @param  mixed $value
      * @return string
@@ -200,24 +227,13 @@ class Content extends Model
     {
         $this->timestamps = false;
         return $this;
-    }      
-    
-    /**
-     * 获取父级数据
-     * 
-     * @param  int $id 父级别编号
-     * @return \Illuminate\Database\Eloquent\Model|static
-     */
-    private function findParent($id)
+    }
+
+    public function scopeParents($query, $id, $self=false)
     {
-        $parent = static::findOrNew($id);
-
-        if (! $parent->exists) {
-            $parent->id    = $id;
-            $parent->title = trans('content::content.root');
-        }
-
-        return $parent;
+        $parentIds = static::parentIds($id, $self);
+        
+        return $query->whereIn('id', $parentIds);
     }
 
     /**

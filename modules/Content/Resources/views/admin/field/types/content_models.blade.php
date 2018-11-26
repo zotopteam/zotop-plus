@@ -1,5 +1,5 @@
 <div class="form-control">
-    <table class="table table-inside table-nowrap table-hover">
+    <table class="table table-sm table-inside table-nowrap table-hover">
     <thead>
         <tr>
             <td width="15%">{{trans('content::model.name.label')}}</td>
@@ -19,11 +19,7 @@
                 @endif
             </td>
             <td class="text-center">
-                @if ($model->enabled)
-                    {field type="toggle" name="$name.'['.$model->id.'][enabled]'" value="1" checked="checked"}
-                @else
-                    {field type="toggle" name="$name.'['.$model->id.'][enabled]'" value="1"}
-                @endif
+                {field type="toggle" name="$name.'['.$model->id.'][enabled]'" value="$model->enabled"}
             </td>
         </tr>
         @endforeach

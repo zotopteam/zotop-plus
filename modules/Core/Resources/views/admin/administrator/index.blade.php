@@ -37,7 +37,7 @@
                             <i class="fa fa-2x {{$user->disabled ? 'fa-times-circle text-error' : 'fa-check-circle text-success'}}"></i>
                         </td>
                         <td>
-                            <div class="title text-lg">
+                            <div class="title">
                                 {{$user->username}}
                             </div>
                             @if ($user->isSuper())

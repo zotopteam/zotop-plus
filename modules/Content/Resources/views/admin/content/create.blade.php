@@ -7,13 +7,20 @@
             <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
         </div>
         <div class="main-title">
-            {{$title}} : {{$parent->title}}
+            {{$title}}
+        </div>
+        <div class="main-breadcrumb breadcrumb text-xs p-1 px-2 m-0 mx-2">
+            <a class="breadcrumb-item" href="{{route('content.content.index')}}">{{trans('content::content.root')}}</a>
+            @foreach($parents as $p)
+            <a class="breadcrumb-item" href="{{route('content.content.index', $p->id)}}">{{$p->title}}</a> 
+            @endforeach              
         </div>
         <div class="main-action ml-auto">
-             {field type="submit" form="content-form" value="trans('core::master.save')" class="btn btn-primary"}
-        </div>   
-    </div>
-    
+             {field type="submit" form="content-form" value="trans('content::content.status.draft')" class="btn btn-light" rel="draft"}
+             {field type="submit" form="content-form" value="trans('content::content.status.publish')" class="btn btn-success" rel="publish"}
+             {field type="submit" form="content-form" value="trans('content::content.status.future')" class="btn btn-primary d-none" rel="future"}
+        </div>
+    </div>  
     <div class="main-body bg-light scrollable">
         <div class="container-fluid">
 
@@ -22,6 +29,7 @@
             {field type="hidden" name="parent_id" required="required"}
             {field type="hidden" name="model_id" required="required"}
             {field type="hidden" name="status" required="required"}
+            {field type="hidden" name="publish_at"}
 
             <div class="row">
                 <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}}">
@@ -43,9 +51,10 @@
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
-        <div class="mr-auto">
-           
-        </div>
+        <div class="mr-auto text-xs">
+           {{trans('content::content.status.label')}} :
+           <i class="{{$content->status_icon}} fa-fw"></i> {{$content->status_name}}
+        </div>    
     </div>
 </div>
 @endsection
@@ -53,6 +62,16 @@
 @push('js')
 <script type="text/javascript">
     $(function(){
+
+        $('.form-submit').on('click', function(event) {
+            event.preventDefault();
+            var rel = $(this).attr('rel');
+            if (rel) {
+                $('form.form').find('[name=status]').val(rel);
+            }
+            $('form.form').submit();
+        })
+
         $('form.form').validate({
             submitHandler:function(form){                
                 var validator = this;

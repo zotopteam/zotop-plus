@@ -43,7 +43,7 @@ class AuthController extends AdminController
     // {
     //     $credentials = $request->only($this->username(), 'password');
     //     $credentials = array_merge($credentials, [
-    //         'modelid'  => ['super','admin'],
+    //         'model_id'  => ['super','admin'],
     //         'disabled' => 0
     //     ]);
 
@@ -62,9 +62,9 @@ class AuthController extends AdminController
          $credentials = $credentials + ['disabled'=>0];
 
         return $this->guard()->attempt(
-            $credentials + ['modelid'=>'super'], $request->filled('remember')
+            $credentials + ['model_id'=>'super'], $request->filled('remember')
         ) || $this->guard()->attempt(
-            $credentials + ['modelid'=>'admin'], $request->filled('remember')
+            $credentials + ['model_id'=>'admin'], $request->filled('remember')
         );
     }
 

@@ -55,7 +55,7 @@
                         @endif                        
                     </td>                
                     <td width="50%" class="pl-2">
-                        <div class="title text-md text-wrap">
+                        <div class="title text-md">
                             {{$file->name}}
                         </div>
                         <div class="description">

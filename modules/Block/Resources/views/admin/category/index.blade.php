@@ -35,7 +35,7 @@
                     <tr>
                         <td class="drag"> <input type="hidden" name="sort[]" value="{{$category->id}}"/> </td>
                         <td>
-                            <div class="title text-lg">
+                            <div class="title">
                                 {{$category->name}}
                             </div>
                             <div class="manage">

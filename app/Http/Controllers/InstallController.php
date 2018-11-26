@@ -435,7 +435,7 @@ class InstallController extends Controller
                 'username'       => $this->admin['username'],
             ],[
                 'password'       => \Hash::make($this->admin['password']),
-                'modelid'        => 'super',
+                'model_id'        => 'super',
                 'email'          => $this->admin['email'],
                 'mobile'         => '',
                 'remember_token' => str_random(10),

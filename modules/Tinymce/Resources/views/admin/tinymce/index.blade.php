@@ -27,7 +27,7 @@
                 @foreach($tinymces as $tinymce)
                     <tr>
                         <td>
-                            <div class="title text-lg">
+                            <div class="title">
                                 {{$tinymce->title}}
                             </div>
                             <div class="manage">

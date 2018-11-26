@@ -19,7 +19,13 @@ class ContentController extends AdminController
      */
     public function index($parent_id=0)
     {
-        $this->parent = Content::findParent($parent_id);
+        // 获取父分类
+        $this->parent = Content::findOrNew($parent_id);
+        $this->parent->id = $this->parent->id ?? 0;
+        $this->parent->title = $this->parent->title ?? trans('content::content.root');
+
+        // 获取全部父级
+        $this->parents = Content::parents($parent_id, true)->get();
 
         // 分页获取
         $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->sort()->paginate(25);
@@ -34,14 +40,20 @@ class ContentController extends AdminController
      */
     public function create($parent_id, $model_id)
     {
-        $this->parent = Content::findParent($parent_id);
+        $this->parent = Content::findOrNew($parent_id);
+        $this->parent->id = $this->parent->id ?? 0;
+        $this->parent->title = $this->parent->title ?? trans('content::content.root');
+
+        // 获取全部父级
+        $this->parents = Content::parents($parent_id, true)->get();
+
         $this->model  = Model::find($model_id);
         $this->form   = ModelForm::get($model_id);
 
         $this->content = Content::findOrNew(0);
         $this->content->parent_id = $parent_id;
         $this->content->model_id  = $model_id;
-        $this->content->status    = 'publish';
+        $this->content->status    = 'draft';
 
         $this->content = $this->form->default($this->content);
 
@@ -90,9 +102,13 @@ class ContentController extends AdminController
         $this->id    = $id;
         $this->content = Content::findOrFail($id);
 
-        //dd($this->content->categoryRelation->exists);
+        $this->parent = Content::findOrNew($this->content->parent_id);
+        $this->parent->id = $this->parent->id ?? 0;
+        $this->parent->title = $this->parent->title ?? trans('content::content.root');
 
-        $this->parent = Content::findParent($this->content->parent_id);
+        // 获取全部父级
+        $this->parents = Content::parents($id, false)->get();
+
         $this->model  = Model::find($this->content->model_id);
         $this->form   = ModelForm::get($this->content->model_id);     
 
@@ -132,7 +148,7 @@ class ContentController extends AdminController
 
         $content->save();
 
-        return $this->success(trans('core::master.operated'), route('content.content.index', $content->parent_id));        
+        return $this->success(trans('core::master.operated'), $request->referer());        
     }
 
     /**
@@ -175,7 +191,11 @@ class ContentController extends AdminController
         }
 
         $this->id       = $request->input('id');
-        $this->parent   = Content::findParent($parent_id);
+        
+        $this->parent   = Content::findOrNew($parent_id);
+        $this->parent->id = $this->parent->id ?? 0;
+        $this->parent->title = $this->parent->title ?? trans('content::content.root');
+
         $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->when($request->keywords, function($query, $keywords){
             return $query->where('title', 'like', '%'.$keywords.'%');
         })->sort()->paginate(25);

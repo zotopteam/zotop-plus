@@ -19,7 +19,7 @@ class Listener
                 'text'  => trans('content::content.title'),
                 'href'  => route('content.content.index'),
                 'icon'  => 'fa fa-newspaper bg-success text-white', 
-                'tips'  => trans('core::mine.edit.description'),
+                'tips'  => trans('content::content.description'),
             ];
         }
       

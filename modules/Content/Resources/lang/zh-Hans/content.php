@@ -4,6 +4,7 @@ return [
     'title'              => '内容',
     'description'        => '内容管理',
     'root'               => '内容管理',
+    'position'           => '位置',
 
     'create'             => '新建',
     'create.model'       => '新建:0',
@@ -16,6 +17,7 @@ return [
     'view'               => '查看',
     'preview'            => '预览',
     'sort'               => '排序',
+    'up'                 => '上级',
 
     'sort.help'          => '调整内容排列在当前对话框中选中的内容之前',
 
