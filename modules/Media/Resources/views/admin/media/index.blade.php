@@ -172,15 +172,15 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-success js-operate" data-operate="move" data-select="{{route('media.folder.select',[$folder_id])}}">
+            <button type="button" class="btn btn-success js-select-operate" data-operate="move" data-select="{{route('media.folder.select',[$folder_id])}}">
                 <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
             </button>
-            <button type="button" class="btn btn-danger js-operate" data-operate="delete" data-confirm="{{trans('core::master.delete.confirm')}}">
+            <button type="button" class="btn btn-danger js-select-operate" data-operate="delete" data-confirm="{{trans('core::master.delete.confirm')}}">
                 <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
             </button>
         </div>    
 
-        {{ $media->links('core::pagination.default') }}
+        {{ $media->appends($_GET)->links('core::pagination.default') }}
     </div>
 </div>
 @endsection
@@ -194,7 +194,6 @@
     $('.file-upload').each(function(){
         var self = $(this);
         var url = self.data('url');
-        var progress = $('.progress');
         var success = 0;
         var options = {
                 url : url,
@@ -215,9 +214,11 @@
                     ],
                     prevent_duplicates:false //阻止多次上传同一个文件
                 },
+                started : function(up){
+                    self.data('progress', $.progress());
+                },
                 progress : function(up,file){
-                    progress.removeClass('d-none');
-                    progress.find('.progress-bar').width(up.total.percent+'%').html(up.total.percent+'%');
+                    self.data('progress').percent(up.total.percent);
                 },
                 uploaded : function(up, file, response){
                     // 单个文件上传完成 返回信息在 response 中
@@ -230,9 +231,8 @@
                 },                
                 complete : function(up, files){
                     // 全部上传完成
-                    progress.addClass('d-none')
-                    progress.find('.progress-bar').width('0%').html('');
-                    
+                    self.data('progress').close().remove();
+
                     if (success > 0) {
                         location.reload();
                     }
@@ -304,7 +304,7 @@
             var move   = $(this).data('url');
             var select = $(this).data('select');
 
-            movedata(title, select, function(dialog){
+            movedata(title, select, function(dialog) {
                 postdata(move, {folder_id:dialog.selected_folder_id}, function(){
                     dialog.close().remove();
                 });
@@ -330,7 +330,7 @@
                 selectTable.select("[data-type="+ $(this).data('type') +"]",true);
             });          
 
-            $('.js-operate').on('click', function() {   
+            $('.js-select-operate').on('click', function() {   
                 if ($(this).hasClass('disabled')) {
                     return false;
                 }

@@ -229,12 +229,31 @@ class Content extends Model
         return $this;
     }
 
+    /**
+     * 获取父级
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  int  $id    节点编号
+     * @param  boolean $self  是否包含自身
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeParents($query, $id, $self=false)
     {
         $parentIds = static::parentIds($id, $self);
         
         return $query->whereIn('id', $parentIds);
     }
+
+    /**
+     * 获取发布的信息
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublish($query)
+    {
+        return $query->where('status', 'publish');
+    }    
 
     /**
      * Handle dynamic static method calls into the method.

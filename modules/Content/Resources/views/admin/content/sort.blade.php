@@ -5,27 +5,35 @@
 <div class="main">
     <div class="main-header">
         @if($keywords = request('keywords'))
+            <div class="main-back">
+                <a href="{{route('content.content.sort',[$parent->id, 'id'=>$id])}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            </div>           
             <div class="main-title mr-auto">
                 {{$parent->title}}
-            </div>                    
-            <div class="main-title mr-auto">
+            </div>                          
+            <div class="main-title mx-auto">
                 {{trans('core::master.searching', [$keywords])}}
             </div>        
         @else
-        <div class="main-title mr-auto">
+        <div class="main-title">
             {{$parent->title}}
         </div>
+        @if ($parent->id)
+        <div class="main-breadcrumb breadcrumb text-xs p-1 px-2 m-0 mx-2">
+            <span class="breadcrumb-item">{{trans('content::content.root')}}</span>
+            @foreach($parents as $p)
+            <span class="breadcrumb-item">{{$p->title}}</span> 
+            @endforeach              
+        </div>
+        @endif        
         @endif
-        <div class="main-action">
+        <div class="main-action ml-auto">
             {form route="['content.content.sort', $parent->id]" class="form-inline form-search" method="get"}
                 <input type="hidden" name="id" value="{{$id}}">
                 <div class="input-group">
                     <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('core::master.keywords.placeholder')}}" required="required" aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i></button>
-                        @if ($keywords)
-                            <a class="btn btn-light" href="{{route('content.content.sort',[$parent->id, 'id'=>$id])}}"> <i class="fa fa-fw fa-times"></i></a>
-                        @endif
                     </div>
                 </div>
             {/form}
@@ -100,11 +108,9 @@
         @endif                       
     </div><!-- main-body -->
     <div class="main-footer">
-        <div class="footer-text mr-auto">
-            {{trans('content::content.sort.help')}}
+        <div class="mx-auto">
+        {{ $contents->appends($_GET)->links('core::pagination.default') }}
         </div>
-
-        {{ $contents->links('core::pagination.default') }}
     </div>
 </div>
 @endsection
@@ -124,6 +130,8 @@ $(function(){
         }
     });    
 
+    // statusbar
+    $dialog.statusbar('{{trans('content::content.sort.help')}}');
 
     // 确定按钮回调
     $dialog.callbacks['ok'] = function () {

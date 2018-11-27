@@ -19,7 +19,7 @@ return [
     'sort'               => '排序',
     'up'                 => '上级',
 
-    'sort.help'          => '调整内容排列在当前对话框中选中的内容之前',
+    'sort.help'          => '调整内容排列到选中的内容之前',
 
     'title.label'        => '标题',
     'user.label'         => '编辑',

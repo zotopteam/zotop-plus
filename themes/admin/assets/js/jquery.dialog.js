@@ -181,29 +181,41 @@
 	 * @param  {Function} callback 回调
 	 * @return {Object} 进度条
 	 */
-	// $.progress = function(percent, callback){
+	$.progress = function(percent, callback){
 		
-	// 	var options = {
-	// 		id      : 'progress',
-	// 		skin    : 'ui-progress',
-	// 		title   : false,
-	// 		content : '<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div><a href="javascript:;" class="close" i="close">&#215;</a></div>',
-	// 		padding : 0,
-	// 		fixed   : true,
-	// 		resize  : false,
-	// 		onclose : callback
-	// 	}
+		var options = {
+			id    : 'progress',
+			skin  : 'ui-progress',
+			title : false,
+			width : '100%',
+			content : function() {
+				return '<div>'+
+							'<i class="progress-icon fa fa-space-shuttle"></i>'+
+							//'<a href="javascript:;" class="close" i="close">&#215;</a>'+
+							'<div class="progress mx-auto">'+
+								'<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div>'+
+							'</div>'+
+						'</div>';
+			},
+			padding : 0,
+			fixed   : true,
+			resize  : false,
+			onclose : callback
+		}
 
-	// 	var dialog = $.dialog(options);
+		var dialog = $.dialog(options, true);
 
-	// 	if ( parseInt(percent) <= 100 ) {
-	// 		dialog._$('content').find('.progress-bar').attr('aria-valuenow', percent).css('width',percent+'%').text(percent+'%');
-	// 		return dialog;
-	// 	} else {
-	// 		$.dialog('progress').close().remove();
-	// 		return true;
-	// 	}		
-	// }
+		// 进度函数
+		dialog.percent = function(percent) {
+			if ( parseInt(percent) <= 100 ) {
+				this.find('.progress-bar').attr('aria-valuenow', percent).css('width',percent+'%').text(percent+'%');
+			} else {
+				console.log('Error Percent:' + percent);
+			}
+		}
+
+		return dialog;
+	}
 
 	/**
 	 * 消息提示

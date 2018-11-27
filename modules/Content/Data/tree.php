@@ -1,7 +1,7 @@
 <?php
 use Modules\Content\Models\Content;
 
-$tree = Content::select('id','parent_id','title')->where('model_id','category')->orderBy('sort','desc')->get()->map(function($item, $key){
+$tree = Content::select('id','parent_id','title')->where('model_id','category')->publish()->sort()->get()->map(function($item, $key){
     $item->key    = $item->id;
     $item->href   = route('content.content.index',[$item->id]);
     $item->folder = true;

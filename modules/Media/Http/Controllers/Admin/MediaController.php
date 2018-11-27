@@ -35,7 +35,7 @@ class MediaController extends AdminController
             $media->where('parent_id', $folder_id);
         }
 
-        $this->media = $media->orderby('sort', 'desc')->paginate(100);
+        $this->media = $media->orderby('sort', 'desc')->paginate(25);
 
         $this->media->getCollection()->transform(function($item) {
             if ($item->isFolder()) {

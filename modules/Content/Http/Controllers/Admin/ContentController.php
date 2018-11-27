@@ -190,12 +190,18 @@ class ContentController extends AdminController
             return $this->success(trans('core::master.sorted'), $request->referer());
         }
 
+        // 当前排序节点
         $this->id       = $request->input('id');
         
+        // 当前排序的父节点
         $this->parent   = Content::findOrNew($parent_id);
         $this->parent->id = $this->parent->id ?? 0;
         $this->parent->title = $this->parent->title ?? trans('content::content.root');
 
+        // 获取全部父节点
+        $this->parents = Content::parents($this->id, false)->get();        
+
+        // 获取当前节点下面的全部数据（包含搜索）
         $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->when($request->keywords, function($query, $keywords){
             return $query->where('title', 'like', '%'.$keywords.'%');
         })->sort()->paginate(25);

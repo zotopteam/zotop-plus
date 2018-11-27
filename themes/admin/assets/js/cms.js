@@ -74,7 +74,7 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
         item      : 'tbody>tr',
         ignore    : '',
         selectall : 'input.select-all',
-        operator  : '.js-operate',
+        operator  : '.js-select-operate',
         onCheck   : $.noop,
         onChange  : $.noop
     }};

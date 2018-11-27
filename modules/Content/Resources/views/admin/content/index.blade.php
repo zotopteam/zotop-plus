@@ -186,7 +186,7 @@
             {{trans('content::content.description')}}
         </div>
 
-        {{ $contents->links('core::pagination.default') }}
+        {{ $contents->appends($_GET)->links('core::pagination.default') }}
     </div>
 </div>
 @endsection

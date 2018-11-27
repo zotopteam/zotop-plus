@@ -110,7 +110,6 @@
     $('.file-upload').each(function(){
         var self = $(this);
         var url = self.data('url');
-        var progress = $('.progress');
         var success = 0;
         var options = {
                 url : url,
@@ -133,9 +132,11 @@
                     ],
                     prevent_duplicates:false //阻止多次上传同一个文件
                 },
+                started : function(up){
+                    self.data('progress', $.progress());
+                },
                 progress : function(up,file){
-                    progress.removeClass('d-none');
-                    progress.find('.progress-bar').width(up.total.percent+'%').html(up.total.percent+'%');
+                    self.data('progress').percent(up.total.percent);
                 },
                 uploaded : function(up, file, response){
                     // 单个文件上传完成 返回信息在 response 中
@@ -148,8 +149,7 @@
                 },                
                 complete : function(up, files){
                     // 全部上传完成
-                    progress.addClass('d-none')
-                    progress.find('.progress-bar').width('0%').html('');
+                    self.data('progress').close().remove();
                     
                     if (success > 0) {
                         location.reload();
