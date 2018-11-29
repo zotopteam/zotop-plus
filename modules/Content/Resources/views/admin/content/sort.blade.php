@@ -62,7 +62,7 @@
                             <i class="select-icon fa fa-check-square fa-2x"></i>
                         </td>
                         <td class="text-center px-2" width="5%">
-                            @if ($content->image)
+                            @if ($content->image && !$content->model->nestable)
                             <a href="javascript:;" class="js-image" data-url="{{$content->image}}" data-title="{{$content->title}}">
                                 <div class="icon icon-md">
                                     <img src="{{$content->image}}">

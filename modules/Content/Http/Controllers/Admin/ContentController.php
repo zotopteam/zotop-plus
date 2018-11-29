@@ -137,7 +137,7 @@ class ContentController extends AdminController
      *
      * @return Response
      */
-    public function status(Request $request, $id, $status)
+    public function status(Request $request, $status, $id)
     {
         $content = Content::findOrFail($id);
         $content->status = $status;
@@ -207,6 +207,53 @@ class ContentController extends AdminController
         })->sort()->paginate(25);
 
         return $this->view();        
+    }
+
+   /**
+     * 移动
+     *
+     * @return Response
+     */
+    public function move(Request $request, $parent_id=null)
+    {
+        if ($request->isMethod('POST')) {
+
+            $id        = $request->input('id');
+            $parent_id = $request->input('parent_id');
+
+            // 获取数据并移动
+            $content = is_array($id) ? Content::whereIn('id', $id) : Content::where('id', $id);
+            $content->get()->each(function($item, $key) use($parent_id) {
+                $item->parent_id = $parent_id;
+                $item->save();
+            });
+
+            return $this->success(trans('core::master.moved'));
+        }
+
+        // 缓存当前选择的节点编号，下次进入时候直接展示该节点
+        if (!is_null($parent_id)) {
+            session(['content_move_parent_id'=>$parent_id]);
+        } else {
+            $parent_id = session('content_move_parent_id', 0);
+        }
+
+        // 当前排序的父节点
+        $this->parent   = Content::findOrNew($parent_id);
+        $this->parent->id = $this->parent->id ?? 0;
+        $this->parent->title = $this->parent->title ?? trans('content::content.root');
+
+        // 获取全部父节点
+        $this->parents = Content::parents($parent_id, true)->get();      
+
+        // 获取当前节点下面的全部数据（包含搜索）
+        $this->contents = Content::whereHas('model', function($query) {
+            $query->where('nestable', 1);
+        })->where('parent_id', $parent_id)->when($request->keywords, function($query, $keywords) {
+            return $query->where('title', 'like', '%'.$keywords.'%');
+        })->sort()->paginate(36);
+
+        return $this->view();
     }
 
     /**

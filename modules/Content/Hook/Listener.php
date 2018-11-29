@@ -68,20 +68,20 @@ class Listener
     {
         // 查看和预览
         $manage['view'] = [
-            'text' => $content->status == 'publish' ? trans('content::content.view') : trans('content::content.preview'),
-            'href' => $content->url,
-            'icon' => 'fas fa-eye',
-            'attr' => ['target' => '_blank']
+            'text'  => $content->status == 'publish' ? trans('content::content.view') : trans('content::content.preview'),
+            'href'  => $content->url,
+            'icon'  => 'fas fa-eye',
+            'attrs' => ['target' => '_blank']
         ];
 
         // 下级节点
-        if ($content->model->nestable) {
-            $manage['nestable'] = [
-                'text' => trans('content::content.children'),
-                'href' => route('content.content.index', [$content->id]),
-                'icon' => 'fas fa-folder-open text-warning',
-            ];
-        }
+        // if ($content->model->nestable) {
+        //     $manage['nestable'] = [
+        //         'text' => trans('content::content.children'),
+        //         'href' => route('content.content.index', [$content->id]),
+        //         'icon' => 'fas fa-folder-open text-warning',
+        //     ];
+        // }
 
         // 修改
         $manage['edit'] = [
@@ -89,6 +89,31 @@ class Listener
             'href' => route('content.content.edit', [$content->id]),
             'icon' => 'fas fa-edit',
         ];
+
+        // 移动
+        $manage['move'] = [
+            'text'  => trans('core::master.move'),
+            'icon'  => 'fas fa-arrows-alt',
+            'class' => 'js-move',
+            'attrs' => ['data-id' => $content->id, 'data-parent_id' => $content->parent_id]
+        ];
+
+        // 复制
+        $manage['copy'] = [
+            'text'  => trans('core::master.copy'),
+            'href' => route('content.content.copy', [$content->id]),            
+            'icon'  => 'fas fa-copy',
+            'class' => 'js-post'
+        ];
+
+        // 排序
+        $manage['sort'] = [
+            'text'  => trans('content::content.sort'),
+            'href'  => route('content.content.sort', ['parent_id'=>$content->parent_id, 'id'=>$content->id]),
+            'icon'  => 'fa fa-sort-amount-up',
+            'class' => 'js-open',
+            'attrs' => ['data-width' => '80%','data-height' => '80%']
+        ];        
 
         // 回收站中的数据可以永久删除
         if ($content->status == 'trash') {
@@ -100,22 +125,13 @@ class Listener
             ];
         }
 
-        $manage['sort'] = [
-            'text'  => trans('content::content.sort'),
-            'href'  => route('content.content.sort', ['parent_id'=>$content->parent_id, 'id'=>$content->id]),
-            'icon'  => 'fa fa-sort-amount-up',
-            'class' => 'js-open',
-            'attr'  => ['data-width' => '80%','data-height' => '80%']
-        ];        
-
-
         foreach (Content::status() as $status => $value) {
             if ($status == $content->status) {
                 continue;
             }
             $manage[$status] = [
                 'text'  => $value['name'],
-                'href'  => route('content.content.status', [$content->id, $status]),
+                'href'  => route('content.content.status', [$status, $content->id]),
                 'icon'  => $value['icon'],
                 'class' => $status == 'future' ? 'js-future' : 'js-post',
             ];              

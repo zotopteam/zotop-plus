@@ -9,7 +9,14 @@ $(function(){
         error: function(jqXHR) {
             // 422 为表单验证提示，在每次提交时候单独处理
             if (jqXHR.status != 422 ) {
-                $.alert(jqXHR.responseJSON.message || jqXHR.responseText).title(jqXHR.statusText);
+                $.alert(jqXHR.responseJSON.message || jqXHR.responseText, function() {
+                    if ($.dialog('confirm')) {
+                        $.dialog('confirm').close().remove();
+                    }
+                    if ($.dialog('message')) {
+                        $.dialog('message').close().remove();
+                    }                    
+                }).title(jqXHR.statusText);
             }        
         }
     });

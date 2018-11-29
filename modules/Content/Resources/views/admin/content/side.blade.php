@@ -28,14 +28,14 @@
 $(function(){
     // Initialize Fancytree
     $("#tree").fancytree({
-        extensions: ["glyph","wide"],
-        source: @json(Module::data('content::tree')),
-        minExpandLevel: 2,
-        checkbox: false,
-        selectMode: 3,
-        toggleEffect:false,
-        autoCollapse:true,
-        clickFolderMode:3, //1:activate, 2:expand, 3:activate and expand, 4:activate (dblclick expands)
+        extensions      : ["glyph","wide","persist"],
+        source          : @json(Module::data('content::tree')),
+        minExpandLevel  : 1,
+        checkbox        : false,
+        selectMode      : 3,
+        toggleEffect    : false,
+        autoCollapse    : true,
+        clickFolderMode : 4, //1:activate, 2:expand, 3:activate and expand, 4:activate (dblclick expands)
         glyph: {preset: "awesome4",map: {
             expanderClosed: "fas fa-angle-right",
             expanderLazy: "fas fa-angle-right",

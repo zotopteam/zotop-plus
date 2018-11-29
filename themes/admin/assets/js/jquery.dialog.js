@@ -145,6 +145,7 @@
 	$.dialog = function (options, modal){
 
 		if (options) {
+			
 			// 获取模式
 			if (typeof options === "string") {
 				return top.dialog.get(options);
@@ -164,10 +165,12 @@
 					});					
 				return dialog.showModal();
 			}
+
 			// follow 模式
 			if (typeof modal === 'object' && modal ) {
 				return top.dialog(options).show(modal);
-			}				
+			}
+
 			return top.dialog(options).show();
 		}
 
@@ -309,7 +312,7 @@
 		var input;
 
 		return $.dialog({
-			id      : 'Prompt',
+			id      : 'prompt',
 			skin    : 'ui-prompt',
 			fixed   : true,
 			padding : 0,
@@ -355,7 +358,7 @@
 	 */
 	$.confirm = function(content, ok, cancel) {
 		return $.dialog({
-			id      : 'Confirm',
+			id      : 'confirm',
 			skin    : 'ui-confirm',
 			fixed   : true,
 			padding : 0,
@@ -373,7 +376,7 @@
 	 */
 	$.alert = function(content, callback) {
 		return $.dialog({
-			id      : 'Alert',
+			id      : 'alert',
 			skin    : 'ui-alert',
 			fixed   : true,
 			padding : 0,
@@ -391,7 +394,7 @@
 	 */
 	$.image = function(url, title, width, height) {
 		return $.dialog({
-			id         : 'Image',
+			id         : 'image',
 			skin       : 'ui-image',
 			width      : (width || '80%'),
 			height     : (height || '80%'),
@@ -400,7 +403,7 @@
 			title      : title,
 			quickClose : false,
 			content    : '<div class="image bg-image-preview"><img src="'+url+'" /></div>',
-			ok         :true
+			ok         : true
 		}, true);
 	};
 

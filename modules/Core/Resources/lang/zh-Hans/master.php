@@ -34,6 +34,8 @@ return [
     'delete.confirm'       => '确认要删除嘛？',
     'copy'                 => '复制',
     'copied'               => '复制成功！',
+    'move'                 => '移动',
+    'moved'                => '移动成功！',
     'status'               => '状态',
     'enable'               => '启用',
     'enabled'              => '已启用',

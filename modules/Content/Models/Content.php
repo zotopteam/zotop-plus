@@ -57,6 +57,14 @@ class Content extends Model
     {
         parent::boot();
 
+        // 更新设置parent_id时，禁止为自身或者自身的子节点
+        static::updating(function($content) {
+            if ($content->parent_id && in_array($content->id, static::parentIds($content->parent_id, true))) {
+                abort(403, trans('content::content.move.forbidden', [$content->title]));
+                return false;
+            }
+        });
+
         // 保存前数据处理
         static::saving(function($content) {
             $content->slug = $content->slug ?: null;
@@ -68,7 +76,12 @@ class Content extends Model
             } else {
                 $content->publish_at = null;
             }
+        });
 
+        static::deleting(function($content) {
+            if ($content->children()->count()) {
+                abort(403, trans('content::content.delete.notempty'));
+            }
         });
     }    
 

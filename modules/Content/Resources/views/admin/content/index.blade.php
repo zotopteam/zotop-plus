@@ -75,10 +75,13 @@
         @if($contents->count() == 0)
             <div class="nodata">{{trans('core::master.nodata')}}</div>
         @else
-            <table class="table table-nowrap table-sortable table-hover">
+            <table class="table table-select table-nowrap table-sortable table-hover">
                 <thead>
                 <tr>
                     <td class="drag"></td>
+                    <td class="select">
+                        <input type="checkbox" class="select-all text-muted">
+                    </td>
                     <td colspan="3">{{trans('content::content.title.label')}}</td>
                     <td width="5%"></td>
                     <td width="5%">{{trans('content::content.user.label')}}</td>
@@ -91,8 +94,11 @@
                 @foreach($contents as $content)
                     <tr data-id="{{$content->id}}" data-sort="{{$content->sort}}" data-stick="{{$content->stick}}">
                         <td class="drag"></td>
+                        <td class="select">
+                            <input type="checkbox" name="ids[]" value="{{$content->id}}" class="select text-muted">
+                        </td>
                         <td class="text-center px-2" width="5%">
-                            @if ($content->image)
+                            @if ($content->image && !$content->model->nestable)
                             <a href="javascript:;" class="js-image" data-url="{{$content->image}}" data-title="{{$content->title}}">
                                 <div class="icon icon-md">
                                     <img src="{{$content->image}}">
@@ -114,24 +120,24 @@
                             </div>
                             <div class="manage">
                                 @if ($manage = Filter::fire('content.manage', [], $content))
-                                    @if ($flatten = array_slice($manage, 0, 5))
+                                    @if ($flatten = array_slice($manage, 0, 6))
                                         @foreach ($flatten as $k=>$s)
                                         <div class="manage-item">
-                                            <a href="{{$s.href ?? 'javascript:;'}}" class="{{$s.class ?? ''}}" {!!Html::attributes($s.attr ?? [])!!}>
+                                            <a href="{{$s.href ?? 'javascript:;'}}" class="{{$s.class ?? ''}}" {!!Html::attributes($s.attrs ?? [])!!}>
                                                 <i class="{{$s.icon ?? ''}} fa-fw"></i> {{$s.text ?? ''}}
                                             </a>
                                         </div>
                                         @endforeach                                
                                     @endif
                                     
-                                    @if ($dropdown = array_slice($manage, 5))
+                                    @if ($dropdown = array_slice($manage, 6))
                                         <div class="manage-item dropdown">
                                             <a href="javascript:;" data-toggle="dropdown">
                                                 <i class="fa fa-ellipsis-h fa-fw"></i><i class="fa fa-angle-down"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-primary">
                                                 @foreach ($dropdown as $k=>$s)
-                                                    <a href="{{$s.href ?? 'javascript:;'}}" class="dropdown-item {{$s.class ?? ''}}" {!!Html::attributes($s.attr ?? [])!!}>
+                                                    <a href="{{$s.href ?? 'javascript:;'}}" class="dropdown-item {{$s.class ?? ''}}" {!!Html::attributes($s.attrs ?? [])!!}>
                                                         <i class="dropdown-item-icon {{$s.icon ?? ''}} fa-fw"></i>
                                                         <b class="dropdown-item-text">{{$s.text ?? ''}}</b>
                                                     </a>                                            
@@ -163,7 +169,6 @@
                             <div>{{$content->publish_at}}</div>
                             @elseif (in_array($content->status,['future']))
                             <div>
-                                
                                 <a class="js-future" href="{{route('content.content.status', [$content->id, $content->status])}}" data-value="{{$content->publish_at}}">
                                    {{trans('content::content.status.future')}} <i class="fa fa-pen-square"></i>
                                 </a>
@@ -182,8 +187,13 @@
         @endif                       
     </div><!-- main-body -->
     <div class="main-footer">
-        <div class="footer-text mr-auto">
-            {{trans('content::content.description')}}
+        <div class="main-action mr-auto">
+            <button type="button" class="btn btn-success js-select-operate disabled" disabled="disabled" data-operate="move">
+                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
+            </button>
+            <button type="button" class="btn btn-danger js-select-operate disabled" disabled="disabled" data-operate="delete" data-confirm="{{trans('core::master.delete.confirm')}}">
+                <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
+            </button>
         </div>
 
         {{ $contents->appends($_GET)->links('core::pagination.default') }}
@@ -196,113 +206,158 @@
 @push('js')
 <script type="text/javascript" src="{{Module::asset('core:datetimepicker/jquery.datetimepicker.js')}}"></script>
 <script type="text/javascript">
-    $(function(){
-        $('[rel=stick-down]').on('mouseover', function(){
-            $(this).removeClass('fa-arrow-circle-up').addClass('fa-arrow-circle-down');
-        }).on('mouseout', function(){
-            $(this).removeClass('fa-arrow-circle-down').addClass('fa-arrow-circle-up');
+
+// move dialog
+function moveDialog(callback) {
+    return $.dialog({
+        id      : 'move-content',
+        title   : '{{ trans('core::master.move') }}',
+        url     : '{{ route('content.content.move')}}',
+        width   : '80%',
+        height  : '80%',
+        padding : 0,
+        ok      : function() {
+            callback(this);
+            return false;
+        },
+        cancel       : $.noop,
+        oniframeload : function() {
+            this.loading(false);
+        },
+        opener       : window
+    }, true).loading(true);        
+}
+
+// move data
+function moveData(id, parent_id, callback) {
+    $.post('{{route('content.content.move')}}', {id:id, parent_id:parent_id}, function(msg) {
+        $.msg(msg);
+        // 操作成功
+        if (msg.state) {
+            callback(); 
+        }
+    });
+}
+
+$(function(){
+
+    // 取消置顶
+    $('[rel=stick-down]').on('mouseover', function(){
+        $(this).removeClass('fa-arrow-circle-up').addClass('fa-arrow-circle-down');
+    }).on('mouseout', function(){
+        $(this).removeClass('fa-arrow-circle-down').addClass('fa-arrow-circle-up');
+    });
+
+    // 置顶
+    $('[rel=stick-up]').on('mouseover', function(){
+        $(this).removeClass('text-muted').addClass('text-primary');
+    }).on('mouseout', function(){
+        $(this).removeClass('text-primary').addClass('text-muted');
+    })        
+
+    // 单个移动
+    $(document).on('click', 'a.js-move', function(event) {
+        event.preventDefault();
+        var id = $(this).data('id');
+        moveDialog(function(dialog) {
+            moveData(id, dialog.parent_id, function(){
+                dialog.close().remove();
+                location.reload();
+            });
         });
-
-        $('[rel=stick-up]').on('mouseover', function(){
-            $(this).removeClass('text-muted').addClass('text-primary');
-        }).on('mouseout', function(){
-            $(this).removeClass('text-primary').addClass('text-muted');
-        })        
+        event.stopPropagation();
     });
+    // 定时发布
+    $(document).on('click', 'a.js-future', function(event) {
+        event.preventDefault();
+        var tr = $(this).parents('tr').addClass('hover');
+        var href = $(this).attr('href');
+        var value = $(this).data('value');
+        var dialog = $.dialog({
+            id: 'publish_at',
+            title : $(this).text(),
+            align: 'right',
+            content : function() {
+                return '<div class="p-3">'+
+                    '<div class="mb-2">{{ trans('content::content.status.future.help') }}</div>'+
+                    '<input type="text" name="publish_at" class="form-control mb-2" placeholder="{{now()}}">'+
+                    '</div>';
+            },
+            onshow : function() {
+                this._$('content').find('[name=publish_at]').datetimepicker({
+                    format:'Y-m-d H:i',
+                    inline:true,
+                    lang:'{{App::getLocale()}}',
+                    minDate:new Date()
+                }).show().val(value).get(0).focus();
+            },
+            onclose: function() {
+                tr.removeClass('hover');
+            },
+            ok : function() {
+                var publish_at = this._$('content').find('[name=publish_at]');
 
-    $(function(){
+                if (!publish_at.val()) {
+                    publish_at.get(0).focus();
+                    this.shake();
+                } else {
+                    $.post(href, {publish_at:publish_at.val()}, function(msg) {
+                        $.msg(msg);
+                        msg.state && dialog.close();
+                    },'json');                        
+                }
 
-        // 定时发布
-        $(document).on('click', 'a.js-future', function(event) {
-            event.preventDefault();
-            var tr = $(this).parents('tr').addClass('hover');
-            var href = $(this).attr('href');
-            var value = $(this).data('value');
-            var dialog = $.dialog({
-                id: 'publish_at',
-                title : $(this).text(),
-                align: 'right',
-                content : function() {
-                    return '<div class="p-3">'+
-                        '<div class="mb-2">{{ trans('content::content.status.future.help') }}</div>'+
-                        '<input type="text" name="publish_at" class="form-control mb-2" placeholder="{{now()}}">'+
-                        '</div>';
-                },
-                onshow : function() {
-                    this._$('content').find('[name=publish_at]').datetimepicker({
-                        format:'Y-m-d H:i',
-                        inline:true,
-                        lang:'{{App::getLocale()}}',
-                        minDate:new Date()
-                    }).show().val(value).get(0).focus();
-                },
-                onclose: function() {
-                    tr.removeClass('hover');
-                },
-                ok : function() {
-                    var publish_at = this._$('content').find('[name=publish_at]');
-
-                    if (!publish_at.val()) {
-                        publish_at.get(0).focus();
-                        this.shake();
-                    } else {
-                        $.post(href, {publish_at:publish_at.val()}, function(msg) {
-                            $.msg(msg);
-                            msg.state && dialog.close();
-                        },'json');                        
-                    }
-
-                    return false;
-                },
-                cancel : $.noop
-            }, true);
-            event.stopPropagation();
-        })
+                return false;
+            },
+            cancel : $.noop
+        }, true);
+        event.stopPropagation();
     });
+});
 </script>
 <script type="text/javascript">
-    $(function(){
-        // 拖动停止更新当前的排序及当前数据之前的数据
-        var dragstop = function(evt, ui, tr) {
-            
-            var oldindex = tr.data('originalIndex');
-            var newindex = tr.prop('rowIndex');
-            
-            if(oldindex == newindex) { return; }
+$(function(){
+    // 拖动停止更新当前的排序及当前数据之前的数据
+    var dragstop = function(evt, ui, tr) {
+        
+        var oldindex = tr.data('originalIndex');
+        var newindex = tr.prop('rowIndex');
+        
+        if(oldindex == newindex) { return; }
 
-            var prev = ui.item.siblings('tr').eq(newindex-2); // 排到这一行之后
-            var next = ui.item.siblings('tr').eq(newindex-1); // 排到这一行之前
+        var prev = ui.item.siblings('tr').eq(newindex-2); // 排到这一行之后
+        var next = ui.item.siblings('tr').eq(newindex-1); // 排到这一行之前
 
-            var id = tr.data('id');
-            var newsort = ( newindex==1 || prev.data('sort') < next.data('sort') ) ? next.data('sort') + 1 : prev.data('sort');
-            var newstick = ( newindex < oldindex ) ? next.data('stick') : prev.data('stick');
+        var id = tr.data('id');
+        var newsort = ( newindex==1 || prev.data('sort') < next.data('sort') ) ? next.data('sort') + 1 : prev.data('sort');
+        var newstick = ( newindex < oldindex ) ? next.data('stick') : prev.data('stick');
 
-            //console.log(oldindex+'---'+newindex+'--'+ neworder +'--'+ newstick);
+        //console.log(oldindex+'---'+newindex+'--'+ neworder +'--'+ newstick);
 
-            $.post('{{route('content.content.sort', $parent->id)}}',{id:id, sort:newsort, stick:newstick}, function(data) {
-                $.msg(data);
-            },'json');      
-        };  
+        $.post('{{route('content.content.sort', $parent->id)}}',{id:id, sort:newsort, stick:newstick}, function(data) {
+            $.msg(data);
+        },'json');      
+    };  
 
-        $("table.table-sortable").sortable({
-            items: "tbody > tr",
-            handle: "td.drag",
-            axis: "y",
-            placeholder:"ui-sortable-placeholder",
-            helper: function(e,tr){
-                tr.children().each(function(){
-                    $(this).width($(this).width());
-                });
-                return tr;
-            },
-            start:function (event,ui) {
-                ui.placeholder.height(ui.helper[0].scrollHeight);
-                ui.item.data('originalIndex', ui.item.prop('rowIndex'));
-            },      
-            stop:function(event,ui){
-                dragstop.apply(this, Array.prototype.slice.call(arguments).concat(ui.item));
-            }
-        });
-    })
+    $("table.table-sortable").sortable({
+        items: "tbody > tr",
+        handle: "td.drag",
+        axis: "y",
+        placeholder:"ui-sortable-placeholder",
+        helper: function(e,tr){
+            tr.children().each(function(){
+                $(this).width($(this).width());
+            });
+            return tr;
+        },
+        start:function (event,ui) {
+            ui.placeholder.height(ui.helper[0].scrollHeight);
+            ui.item.data('originalIndex', ui.item.prop('rowIndex'));
+        },      
+        stop:function(event,ui){
+            dragstop.apply(this, Array.prototype.slice.call(arguments).concat(ui.item));
+        }
+    });
+})
 </script>
 @endpush

@@ -92,7 +92,7 @@ class FolderController extends AdminController
     public function select(Request $request, $id=0)
     {
         // 组装tree数据
-        $tree = Folder::select('id','parent_id','name as title')->orderBy('sort','asc')->get()->map(function($item, $key){
+        $tree = Folder::select('id','parent_id','name as title')->orderBy('sort','desc')->get()->map(function($item, $key){
             $item->key    = $item->id;
             $item->folder = true;
             return $item;

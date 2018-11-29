@@ -65,7 +65,7 @@
         <table class="table table-nowrap table-hover table-select">
             <thead>
             <tr>
-                <th class="select px-2">
+                <th class="select">
                     <input type="checkbox" class="select-all text-muted">
                 </th>
                 <th colspan="3">{{trans('media::media.name')}}</th>
@@ -77,7 +77,7 @@
             <tbody>
             @foreach($media as $m)
                 <tr class="js-media-open" data-type="{{$m->type}}" data-url="{{$m->url}}" data-title="{{$m->name}}">
-                    <td class="select px-2">
+                    <td class="select">
                         @if ($m->isFolder())
                         <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="folder" class="select text-muted">
                         @else
@@ -172,10 +172,10 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-success js-select-operate" data-operate="move" data-select="{{route('media.folder.select',[$folder_id])}}">
+            <button type="button" class="btn btn-success js-select-operate disabled" disabled="disabled" data-operate="move" data-select="{{route('media.folder.select',[$folder_id])}}">
                 <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
             </button>
-            <button type="button" class="btn btn-danger js-select-operate" data-operate="delete" data-confirm="{{trans('core::master.delete.confirm')}}">
+            <button type="button" class="btn btn-danger js-select-operate disabled" disabled="disabled" data-operate="delete" data-confirm="{{trans('core::master.delete.confirm')}}">
                 <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
             </button>
         </div>    
@@ -248,21 +248,21 @@
 <script type="text/javascript">  
     // move dialog
     function movedata(title, select, callback) {
-        $.dialog({
-            title:title,
-            url:select,
-            width:500,
-            height:400,
-            padding:'1rem',
-            ok:function() {
+        return $.dialog({
+            title        : title,
+            url          : select,
+            width        : 500,
+            height       : 400,
+            padding      : '1rem',
+            ok           : function() {
                 callback(this);
                 return false;
             },
-            cancel:$.noop,
-            oniframeload: function() {
+            cancel       : $.noop,
+            oniframeload : function() {
                 this.loading(false);
             },
-            opener:window
+            opener       : window
         }, true).loading(true);        
     }
 
@@ -298,9 +298,9 @@
             event.stopPropagation();
         });
 
-        // 文件夹和文件移动
-        $('.js-move').on('click',function(event){
-            var title  = $(this).text() + $(this).data('title');
+        // 单个文件夹和文件移动
+        $(document).on('click', 'a.js-move',function(event){
+            var title  = $(this).text();
             var move   = $(this).data('url');
             var select = $(this).data('select');
 

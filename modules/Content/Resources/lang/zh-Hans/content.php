@@ -19,8 +19,12 @@ return [
     'sort'               => '排序',
     'up'                 => '上级',
 
+    'delete.notempty'    => '该内容下面尚有子内容，禁止删除',
+    'move.help'          => '移动内容到此处',
+    'move.unchange'      => '[ :0 ] 已经在当前位置',
+    'move.forbidden'     => '不能将 [ :0 ] 移动到自身或其子内容下',   
     'sort.help'          => '调整内容排列到选中的内容之前',
-
+    
     'title.label'        => '标题',
     'user.label'         => '编辑',
 
