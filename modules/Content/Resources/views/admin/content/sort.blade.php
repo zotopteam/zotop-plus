@@ -6,7 +6,9 @@
     <div class="main-header">
         @if($keywords = request('keywords'))
             <div class="main-back">
-                <a href="{{route('content.content.sort',[$parent->id, 'id'=>$id])}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+                <a href="{{route('content.content.sort',[$parent->id, 'id'=>$sort->id])}}">
+                    <i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b>
+                </a>
             </div>           
             <div class="main-title mr-auto">
                 {{$parent->title}}
@@ -29,7 +31,7 @@
         @endif
         <div class="main-action ml-auto">
             {form route="['content.content.sort', $parent->id]" class="form-inline form-search" method="get"}
-                <input type="hidden" name="id" value="{{$id}}">
+                <input type="hidden" name="id" value="{{$sort->id}}">
                 <div class="input-group">
                     <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('core::master.keywords.placeholder')}}" required="required" aria-label="Search">
                     <div class="input-group-append">
@@ -128,10 +130,10 @@ $(function(){
         } else {
             $(this).addClass('selected').siblings(".selected").removeClass('selected'); //单选
         }
-    });    
+    });
 
     // statusbar
-    $dialog.statusbar('{{trans('content::content.sort.help')}}');
+    $dialog.statusbar('{{trans('content::content.sort.help', [str_limit($sort->title,80)])}}');
 
     // 确定按钮回调
     $dialog.callbacks['ok'] = function () {
@@ -143,7 +145,7 @@ $(function(){
             var newsort  = selected.data('sort') + 1;
             var newstick = selected.data('stick');
             
-            $.post('{{route('content.content.sort', $parent->id)}}',{id:{{$id}}, sort:newsort, stick:newstick}, function(msg) {
+            $.post('{{route('content.content.sort', $parent->id)}}',{id:{{$sort->id}}, sort:newsort, stick:newstick}, function(msg) {
                 //$.msg(msg);
 
                 if (msg.state) {

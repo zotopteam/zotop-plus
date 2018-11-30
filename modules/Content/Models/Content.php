@@ -156,6 +156,24 @@ class Content extends Model
     }
 
     /**
+     * 获取父级
+     * 
+     * @param  int  $id    节点编号
+     * @param  boolean $self  是否包含自身
+     * @return Collection
+     */
+    public static function parents($id, $self=false)
+    {
+        $parentIds    = static::parentIds($id, $self);
+        $parentSorts = array_flip($parentIds);
+
+        // 获取父级并排序
+        return (new static)->whereIn('id', $parentIds)->get()->sortBy(function($content) use($parentSorts) {
+            return $parentSorts[$content->id];
+        });
+    }    
+
+    /**
      * 获取内容状态名称
      * @param  mixed $value
      * @return string
@@ -240,21 +258,6 @@ class Content extends Model
     {
         $this->timestamps = false;
         return $this;
-    }
-
-    /**
-     * 获取父级
-     * 
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param  int  $id    节点编号
-     * @param  boolean $self  是否包含自身
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeParents($query, $id, $self=false)
-    {
-        $parentIds = static::parentIds($id, $self);
-        
-        return $query->whereIn('id', $parentIds);
     }
 
     /**

@@ -26,7 +26,7 @@ class ContentServiceProvider extends ServiceProvider
         // 定时任务
         $this->app->booted(function () {
             $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
-            $schedule->command('content:publish-future --schedule')->name('content-publish-future')->withoutOverlapping()->everyMinute();
+            $schedule->command('content:publish-future')->name('content-publish-future')->withoutOverlapping()->everyMinute();
         });
     }    
 

@@ -336,6 +336,7 @@ textarea{resize:none;}
 .btn-group > .btn-light:not(:first-child){border-left:solid 1px rgba(0,0,0,0.1)}
 
 .breadcrumb{background:#f7f7f7;font-size:0.875rem;}
+.breadcrumb-item{max-width:10rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .breadcrumb-item+.breadcrumb-item::before{font-family:'Font Awesome 5 Free';font-weight:900;content:'\f105'}
 .breadcrumb-extra+.breadcrumb-item::before{content:''}
 .breadcrumb-item:hover{text-decoration:none!important;}
@@ -408,13 +409,13 @@ textarea{resize:none;}
 
 
 .main{display:flex;flex-direction:column;position:absolute;top:0;left:0;right:0;bottom:0;}
-.main-header{display:flex;position:relative;text-align:center;border-bottom:1px solid #efefef;background-color:#fff;padding:0.75rem 0.5rem;}
+.main-header{display:flex;border-bottom:1px solid #efefef;background-color:#fff;padding:0.75rem 0.5rem;}
 .main-header > div{align-self: center!important;}
 .main-header .main-back{display:flex;}
 .main-header .main-back a{align-self: center;border-radius:50%;font-size:1.5rem;line-height:1.2;width:1.8rem;height:1.8rem;text-align:center;transition:all 0.2s;}
 .main-header .main-back a:hover{background:#efefef;}
 .main-header .main-back b{display:none;font-size:1rem;}
-.main-header .main-title{font-size:1.4rem;padding:0 0.5rem;text-align: left;}
+.main-header .main-title{font-size:1.4rem;padding:0 0.5rem;max-width:50%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .main-header .main-action{padding:0 0.5rem;}
 .main-header .main-action .breadcrumb{background:transparent;padding:0.25rem 1rem;margin-bottom:0;margin-top:0.1875rem;}
 .main-header .main-action .breadcrumb-item+.breadcrumb-item::before{color:#ccc;}

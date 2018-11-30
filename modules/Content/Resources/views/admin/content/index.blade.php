@@ -92,13 +92,13 @@
                 </thead>
                 <tbody>
                 @foreach($contents as $content)
-                    <tr data-id="{{$content->id}}" data-sort="{{$content->sort}}" data-stick="{{$content->stick}}">
+                    <tr data-id="{{$content->id}}" data-sort="{{$content->sort}}" data-stick="{{$content->stick}}" data-title="{{$content->title}}">
                         <td class="drag"></td>
                         <td class="select">
                             <input type="checkbox" name="ids[]" value="{{$content->id}}" class="select text-muted">
                         </td>
                         <td class="text-center px-2" width="5%">
-                            @if ($content->image && !$content->model->nestable)
+                            @if ($content->image)
                             <a href="javascript:;" class="js-image" data-url="{{$content->image}}" data-title="{{$content->title}}">
                                 <div class="icon icon-md">
                                     <img src="{{$content->image}}">
@@ -264,9 +264,10 @@ $(function(){
                 dialog.close().remove();
                 location.reload();
             });
-        });
+        })
         event.stopPropagation();
     });
+
     // 定时发布
     $(document).on('click', 'a.js-future', function(event) {
         event.preventDefault();

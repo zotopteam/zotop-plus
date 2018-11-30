@@ -25,7 +25,7 @@ class ContentController extends AdminController
         $this->parent->title = $this->parent->title ?? trans('content::content.root');
 
         // 获取全部父级
-        $this->parents = Content::parents($parent_id, true)->get();
+        $this->parents = Content::parents($parent_id, true);
 
         // 分页获取
         $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->sort()->paginate(25);
@@ -45,7 +45,7 @@ class ContentController extends AdminController
         $this->parent->title = $this->parent->title ?? trans('content::content.root');
 
         // 获取全部父级
-        $this->parents = Content::parents($parent_id, true)->get();
+        $this->parents = Content::parents($parent_id, true);
 
         $this->model  = Model::find($model_id);
         $this->form   = ModelForm::get($model_id);
@@ -107,7 +107,7 @@ class ContentController extends AdminController
         $this->parent->title = $this->parent->title ?? trans('content::content.root');
 
         // 获取全部父级
-        $this->parents = Content::parents($id, false)->get();
+        $this->parents = Content::parents($id, false);
 
         $this->model  = Model::find($this->content->model_id);
         $this->form   = ModelForm::get($this->content->model_id);     
@@ -139,16 +139,19 @@ class ContentController extends AdminController
      */
     public function status(Request $request, $status, $id)
     {
-        $content = Content::findOrFail($id);
-        $content->status = $status;
+        if ($request->isMethod('POST')) {
 
-        if ($status == 'future') {
-            $content->publish_at = $request->input('publish_at');
-        }
+            $content = Content::findOrFail($id);
+            $content->status = $status;
 
-        $content->save();
+            if ($status == 'future') {
+                $content->publish_at = $request->input('publish_at');
+            }
 
-        return $this->success(trans('core::master.operated'), $request->referer());        
+            $content->save();
+    
+            return $this->success(trans('core::master.operated'), $request->referer());
+        }       
     }
 
     /**
@@ -191,15 +194,15 @@ class ContentController extends AdminController
         }
 
         // 当前排序节点
-        $this->id       = $request->input('id');
+        $this->sort = Content::findOrFail($request->id);
         
         // 当前排序的父节点
-        $this->parent   = Content::findOrNew($parent_id);
+        $this->parent  = Content::findOrNew($parent_id);
         $this->parent->id = $this->parent->id ?? 0;
         $this->parent->title = $this->parent->title ?? trans('content::content.root');
 
         // 获取全部父节点
-        $this->parents = Content::parents($this->id, false)->get();        
+        $this->parents = Content::parents($request->id, false);        
 
         // 获取当前节点下面的全部数据（包含搜索）
         $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->when($request->keywords, function($query, $keywords){
@@ -244,7 +247,7 @@ class ContentController extends AdminController
         $this->parent->title = $this->parent->title ?? trans('content::content.root');
 
         // 获取全部父节点
-        $this->parents = Content::parents($parent_id, true)->get();      
+        $this->parents = Content::parents($parent_id, true);      
 
         // 获取当前节点下面的全部数据（包含搜索）
         $this->contents = Content::whereHas('model', function($query) {
