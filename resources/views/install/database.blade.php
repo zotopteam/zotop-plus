@@ -5,12 +5,12 @@
         <div class="jumbotron bg-transparent full-width align-self-center text-center">           
             
             @if($installed)
-            <h1>{{trans("installer.$current.installed")}}</h1>
-            <p>{{trans("installer.$current.installed.description", [env('DB_HOST'), env('DB_DATABASE')])}}</p>
+            <h1>{{trans("installer.{$current}.installed")}}</h1>
+            <p>{{trans("installer.{$current}.installed.description", [env('DB_HOST'), env('DB_DATABASE')])}}</p>
             @else
             <h1><i class="fa fa-check-circle fa-lg"></i> </h1>
-            <h1>{{trans("installer.$current")}}</h1>
-            <p>{{trans("installer.$current.description", [env('DB_HOST'), env('DB_DATABASE')])}}</p>
+            <h1>{{trans("installer.{$current}")}}</h1>
+            <p>{{trans("installer.{$current}.description", [env('DB_HOST'), env('DB_DATABASE')])}}</p>
             @endif
       
         </div>
@@ -19,13 +19,13 @@
 
 @section('wizard')
 
-            <a href="{{route("install.$prev")}}" class="btn btn-outline text-white prev d-inline-block mr-auto">
+            <a href="{{route("install.{$prev}")}}" class="btn btn-outline text-white prev d-inline-block mr-auto">
                 <i class="fa fa-angle-left fa-fw"></i> {{trans('installer.prev')}}
             </a>
             
             @if($installed)
-            <button class="btn btn-lg btn-danger btn-override d-inline-block ml-auto" data-confirm="{{trans("installer.$current.override.confirm")}}">
-                <i class="fa fa-warning fa-fw"></i> {{trans("installer.$current.override")}} 
+            <button class="btn btn-lg btn-danger btn-override d-inline-block ml-auto" data-confirm="{{trans("installer.{$current}.override.confirm")}}">
+                <i class="fa fa-warning fa-fw"></i> {{trans("installer.{$current}.override")}} 
             </button>            
             @else              
             <button class="btn btn-lg btn-success btn-init d-inline-block ml-auto">
@@ -37,7 +37,8 @@
 
 @push('js')
 <script type="text/javascript">
-
+$(function(){
+    
     $('.btn-override').on('click',function(){
         
         var self    = $(this);
@@ -98,6 +99,7 @@
             return alert(jqXHR.responseJSON.message);
         });
 
-    });    
+    });
+});    
 </script>
 @endpush

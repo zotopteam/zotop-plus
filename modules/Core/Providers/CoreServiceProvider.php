@@ -60,8 +60,16 @@ class CoreServiceProvider extends ServiceProvider
             }
         });
 
-        // 事件监听
-        //$this->app['events']->listen(TestEvent::class, TestEventListen::class);      
+        // 事件监听，禁止禁用和卸载核心模块
+        $this->app['events']->listen('modules.*.*', function($event, $modules) {
+            if (ends_with($event, 'uninstalling') || ends_with($event, 'disabling')) {
+                foreach ($modules as $module) {
+                    if (in_array($module->getLowerName(), config('modules.cores', ['core']))) {
+                        abort(403,trans('core::module.core_operate_forbidden'));
+                    }
+                }
+            }
+        });      
 
         // 模板中的权限指令
         Blade::if('allow', function ($permission) {
@@ -167,7 +175,6 @@ class CoreServiceProvider extends ServiceProvider
             \Modules\Core\Console\AdminControllerCommand::class,
             \Modules\Core\Console\FrontControllerCommand::class,
             \Modules\Core\Console\RebootCommand::class,
-            \Modules\Core\Console\ExecuteCommand::class,
         ]);
     }
 

@@ -3,6 +3,10 @@ namespace Modules\Content\Extend;
 
 use Modules\Content\Models\ContentModel as ContentModel;
 
+/**
+ * 内容扩展模型：文章 article
+ * 自动创建时间：2018-12-03 00:37:58
+ */
 class ArticleModel extends ContentModel
 {
     /**
@@ -10,7 +14,7 @@ class ArticleModel extends ContentModel
      *
      * @var  string
      */
-    protected $table = 'content_model_article2';
+    protected $table = 'content_model_article';
 
     /**
      * 可以被批量赋值的属性。

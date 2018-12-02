@@ -24,12 +24,6 @@
  */
 \Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManage', 100);
 \Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManageCore', 100);
-/**
- * 卸载、禁用，删除前验证是否为核心模块
- */
-\Action::listen('module.uninstalling', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
-\Action::listen('module.deleting', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
-\Action::listen('module.disabling', 'Modules\Core\Hook\Listener@moduleManageCoreForbidden');
 
 /**
  * 扩展 Request::referer 功能
@@ -55,7 +49,6 @@
  * 扩展$module->getFileData, 获取文件返回的数据
  */
 \Nwidart\Modules\Module::macro('getFileData', function($file, array $args=[], $default=null) {
-
     $file = $this->getExtraPath($file);
 
     if (! $this->app['files']->isFile($file)) {
@@ -66,6 +59,89 @@
         @extract($args);
         return require $file;
     });
+});
+
+/**
+ * 扩展$module->install(), 安装模块
+ */
+\Nwidart\Modules\Module::macro('install', function($force=false, $seed=true) {
+
+    $name   = $this->getLowerName();
+
+    if (!$force && $this->json()->get('installed', 0)) {
+        abort(403, 'This module has been installed');
+    }
+    
+    $this->register();
+
+    $this->fireEvent('installing');
+    
+    // 迁移数据库
+    \Artisan::call('module:migrate', ['module'=>$name, '--force'=>true]);
+
+    if ($seed) {
+        \Artisan::call('module:seed', ['module' => $name, '--force'=>true]);
+    }
+
+    // 载入配置
+    $config = $this->path.'/config.php';
+    if (\File::exists($config) && $configs = require $config) {
+        \Modules\Core\Models\Config::set($name, $configs);
+    }
+
+    // 发布数据
+    \Artisan::call('module:publish', ['module' => $name]);
+
+    // 更新 module.json
+    $this->json()->set('active', 1)->set('installed', 1)->save();
+
+
+    $this->fireEvent('installed');    
+
+    // 重启
+    \Artisan::call('reboot');
+});
+
+/**
+ * 扩展$module->uninstall(), 卸载模块
+ */
+\Nwidart\Modules\Module::macro('uninstall', function() {
+
+    $name = $this->getLowerName();
+
+    // 核心模块不能卸载
+    if (in_array($name, config('modules.cores',['core']))) {
+        abort(403, 'This is a core module that does not allow operation!');
+    }
+
+    $this->fireEvent('uninstalling');
+
+    // 卸载模块数据表
+    \Artisan::call('module:migrate-reset', ['module'=>$name]);
+
+    // 删除模块配置
+    \Modules\Core\Models\Config::forget($name);
+
+    // 删除已经发布的资源文件
+    \File::deleteDirectory(\Module::assetPath($name));
+
+    // 删除模块缓存
+    \File::delete(app()->bootstrapPath("cache/{$this->getSnakeName()}_module.php"));
+
+    // 更新 module.json
+    $this->json()->set('active', 0)->set('installed', 0)->save();
+
+    $this->fireEvent('uninstalled');
+
+    // 重启
+    \Artisan::call('reboot');    
+});
+
+/**
+ * 扩展$module->update(), 升级模块
+ */
+\Nwidart\Modules\Module::macro('update', function() {
+    
 });
 
 /**

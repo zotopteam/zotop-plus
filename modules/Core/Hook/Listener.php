@@ -257,18 +257,4 @@ class Listener
 
         return $manage;
     }
-
-    /**
-     * 禁止卸载、禁用、删除系统模块
-     * @param  view $view 
-     * @param  stiring $module 模块名称
-     * @return mixed
-     */
-    public function moduleManageCoreForbidden($module)
-    {
-        // 核心模块不能卸载
-        if (in_array(strtolower($module), config('modules.cores', ['core']))) {
-            abort(403,trans('core::module.core_operate_forbidden'));
-        }      
-    }
 }

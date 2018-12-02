@@ -34,17 +34,7 @@
 @endsection
 
 @section('wizard')
-
-            <a href="{{route("install.$next")}}" class="btn btn-lg btn-success d-inline-block ml-auto">
-                {{trans('installer.next')}} <i class="fa fa-angle-right fa-fw"></i> 
-            </a>        
-
+    <a href="{{route("install.{$next}")}}" class="btn btn-lg btn-success d-inline-block ml-auto">
+        {{trans('installer.next')}} <i class="fa fa-angle-right fa-fw"></i> 
+    </a>
 @endsection
-
-@push('css')
-
-@endpush
-
-@push('js')
-
-@endpush

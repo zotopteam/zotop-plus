@@ -40,7 +40,7 @@ class InstallServiceProvider extends ServiceProvider
     {
         if ($this->app['installed'] == false) {
 
-            if($this->app['request']->is('install', 'install/*')) {
+            if($this->app['request']->is('install', 'install/*', '_debugbar/*')) {
 
                 // 加载安装路由
                 $this->loadRoutesFrom(base_path('/routes/install.php'));

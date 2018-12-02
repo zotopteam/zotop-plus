@@ -20,10 +20,6 @@
  */
 \Action::listen('block.deleted', 'Modules\Block\Hook\Listener@blockDeleted');
 
-/**
- * 卸载验证
- */
-\Filter::listen('module.uninstalling', 'Modules\Block\Hook\Listener@uninstalling');
 
 if (! function_exists('block_tag')) {
 

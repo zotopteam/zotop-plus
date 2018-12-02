@@ -1,6 +1,7 @@
 <?php
 namespace Modules\Content\Support;
 
+use Illuminate\Support\Facades\Schema;
 use Modules\Content\Models\Model;
 use Modules\Content\Models\Field;
 use File;
@@ -8,9 +9,8 @@ use Module;
 
 class ModelHelper
 {
-
 	/**
-	 * 过滤器钩子触发
+	 * 获取可以导入的模型
 	 * 
 	 * @param  string $hook  钩子名称
 	 * @param  mixed $param  值
@@ -65,6 +65,10 @@ class ModelHelper
      */
     public static function import($file, $override=false)
     {
+        if (! starts_with($file, base_path(''))) {
+            $file = base_path($file);
+        }
+
         $data = json_decode(File::get($file), true);
 
         if (empty($data) || !isset($data['model']['id'])) {
@@ -79,6 +83,9 @@ class ModelHelper
             }
             
             // 删除
+            $data['model']['table'] && Schema::dropIfExists($data['model']['table']);
+            Field::where('model_id', $data['model']['id'])->delete();
+            Model::where('id', $data['model']['id'])->delete();
         }
 
         // 导入模型主体数据

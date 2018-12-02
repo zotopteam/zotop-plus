@@ -68,24 +68,5 @@ class Listener
         }
 
         return $block;
-    }
-
-    /**
-     * 卸载钱检查区块是否允许被卸载
-     * 
-     * @param  view $view 
-     * @param  stiring $module 模块名称
-     * @return mixed
-     */
-    public function uninstalling($view, $module)
-    {
-        // 核心模块不能卸载
-        if (strtolower($module) == 'block' && Block::count()) {
-
-            $view->error = trans('block::block.uninstall.forbidden');
-            return false;
-        }
-
-        return $view;       
-    }      
+    }    
 }

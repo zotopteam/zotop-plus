@@ -54,10 +54,6 @@ class InstallController extends Controller
         // app实例
         $this->app = app();
 
-        if ($this->app->runningInConsole() === true) {
-            return;
-        }
-
         // view实例
         $this->view    = $this->app->make('view');      
         
@@ -399,12 +395,7 @@ class InstallController extends Controller
             if ($name  = $request->input('name')) {
 
                 // install
-                Artisan::call('module:execute', [
-                    'action'  => 'install',
-                    'module'  => $name,
-                    '--force' => true,
-                    '--seed'  => false,
-                ]);
+                Module::findOrFail($name)->install(true);
 
                 return $this->success($name.' install success');
             }

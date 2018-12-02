@@ -4,8 +4,8 @@
     <section class="main scrollable">
         <div class="jumbotron bg-transparent full-width text-center clearfix">          
             
-            <h2>{{trans("installer.$current")}}</h2>
-            <p>{{trans("installer.$current.description")}}</p>
+            <h2>{{trans("installer.{$current}")}}</h2>
+            <p>{{trans("installer.{$current}.description")}}</p>
         
         </div>
 
@@ -76,7 +76,7 @@
 
 @section('wizard')
 
-            <a href="{{route("install.$prev")}}" class="btn btn-outline btn-prev text-white d-inline-block mr-auto">
+            <a href="{{route("install.{$prev}")}}" class="btn btn-outline btn-prev text-white d-inline-block mr-auto">
                 <i class="fa fa-angle-left fa-fw"></i> {{trans('installer.prev')}}
             </a>
             

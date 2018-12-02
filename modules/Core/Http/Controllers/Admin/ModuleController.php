@@ -33,10 +33,7 @@ class ModuleController extends AdminController
      */
     public function enable(Request $request, $module)
     {
-        // 启用前置Hook
-        Action::fire('module.enabling', $module);
-
-        Module::enable($module);
+        Module::findOrFail($module)->enable(); 
 
         return $this->success(trans('core::master.actived'), $request->referer());
     }
@@ -49,10 +46,7 @@ class ModuleController extends AdminController
      */
     public function disable(Request $request, $module)
     {
-        // 禁用前置Hook
-        Action::fire('module.disabling', $module);
-
-        Module::disable($module);
+        Module::findOrFail($module)->disable(); 
 
         return $this->success(trans('core::master.disabled'), $request->referer());
     }
@@ -64,17 +58,8 @@ class ModuleController extends AdminController
      * @return json
      */
     public function install(Request $request, $module)
-    {
-        // 安装前置Hook
-        Action::fire('module.installing', $module);
-
-        // install
-        Artisan::call('module:execute', [
-            'action'  => 'install',
-            'module'  => $module,
-            '--force' => true,
-            '--seed'  => false,
-        ]);
+    {        
+        Module::findOrFail($module)->install(); 
 
         return $this->success(trans('core::module.installed'), $request->referer());
     }
@@ -86,18 +71,9 @@ class ModuleController extends AdminController
      * @return json
      */
     public function uninstall(Request $request, $module)
-    {
-        // 卸载前置Hook
-        Action::fire('module.uninstalling', $module);
-
-        // install
-        Artisan::call('module:execute', [
-            'action'  => 'uninstall',
-            'module'  => $module,
-            '--force' => true,
-            '--seed'  => false,
-        ]);  
-
+    {       
+        Module::findOrFail($module)->uninstall(); 
+        
         return $this->success(trans('core::module.uninstalled'), $request->referer());
     }
 
@@ -109,15 +85,12 @@ class ModuleController extends AdminController
      */
     public function delete(Request $request, $module)
     {
-        // 删除前置Hook
-        Action::fire('module.deleting', $module);
-        
         // Find Module
-        $module = Module::find($module);
+        $module = Module::findOrFail($module);
 
         // 已安装模块禁止删除
-        if ($module->active or $module->installed) {
-            return $this->error(trans('core::module.core_operate_forbidden'));
+        if ($module->active || $module->installed) {
+            return $this->error('Enabled or installed module are forbidden to delete!');
         }
 
         $module->delete();
@@ -132,9 +105,6 @@ class ModuleController extends AdminController
      */
     public function publish($module='')
     {
-        // 发布前置Hook
-        Action::fire('module.publish', $module);
-
         if ($module) {
             Artisan::call("module:publish", [
                 'module' => $module

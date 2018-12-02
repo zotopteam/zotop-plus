@@ -14,16 +14,16 @@ trait UserRelation
     public static function bootUserRelation()
     {
         static::updating(function ($model) {
-            $model->user_id = \Auth::User()->id;
+            $model->user_id = \Auth::User()->id ?? 0;
         });
 
         static::creating(function ($model) {
-            $model->user_id = \Auth::User()->id;
+            $model->user_id = \Auth::User()->id ?? 0;
         });
 
-        // static::addGlobalScope('user', function (Builder $builder) {
-        //     $builder->with('user');
-        // });            
+        static::addGlobalScope('user', function (Builder $builder) {
+            $builder->with('user');
+        });            
     }
 
     public function user()

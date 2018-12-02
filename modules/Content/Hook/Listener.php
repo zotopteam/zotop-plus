@@ -51,15 +51,15 @@ class Listener
      */
     public function types($types, $args)
     {
-        if (in_array($args['model_id'], ['category'])) {
-            $types['models'] = [
-                'name'     => trans('content::field.type.models'),
-                'view'     => '',
-                'method'   => 'text',
-                'cast'     => 'array',
-                'settings' => ['required'=>1]
-            ];
-        }
+        // if (in_array($args['model_id'], ['category'])) {
+        // }
+        $types['models'] = [
+            'name'     => trans('content::field.type.models'),
+            'view'     => '',
+            'method'   => 'text',
+            'cast'     => 'array',
+            'settings' => ['required'=>1]
+        ];     
 
         return $types;
     }

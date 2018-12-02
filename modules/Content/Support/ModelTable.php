@@ -126,15 +126,16 @@ class ModelTable
 	 */
 	public static function find($model_id)
 	{
-		static $instance = null;
+		static $instances = [];
 
-		if (empty($instance)) {
+		if (!isset($instances[$model_id])) {
 			$instance = new static;
 			$instance->model_id = $model_id;
             $instance->table    = $instance->model_table_prefix.$model_id;
+            $instances[$model_id] = $instance;
 		}
 
-		return $instance;
+		return $instances[$model_id];
 	}
 
     /**

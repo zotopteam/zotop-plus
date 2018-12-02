@@ -3,8 +3,8 @@
 @section('content')
     <section class="main d-flex scrollable">    
         <div class="jumbotron bg-transparent full-width align-self-center text-center">          
-            <h1>{{trans("installer.$current")}}</h1>
-            <p class="progress-text">{{trans("installer.$current.description")}}</p>
+            <h1>{{trans("installer.{$current}")}}</h1>
+            <p class="progress-text">{{trans("installer.{$current}.description")}}</p>
             <div class="progress">
                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
             </div>
@@ -27,11 +27,11 @@
 
 @section('wizard-none')
 
-    <a href="{{route("install.$prev")}}" class="btn btn-outline text-white btn-prev d-inline-block mr-auto">
+    <a href="{{route("install.{$prev}")}}" class="btn btn-outline text-white btn-prev d-inline-block mr-auto">
         <i class="fa fa-angle-left fa-fw"></i> {{trans('installer.prev')}}
     </a>
     
-    <a href="{{route("install.$next")}}" class="btn btn-lg btn-success btn-next d-inline-block ml-auto">
+    <a href="{{route("install.{$next}")}}" class="btn btn-lg btn-success btn-next d-inline-block ml-auto">
         {{trans('installer.next')}} <i class="fa fa-angle-right fa-fw"></i> 
     </a>
 
@@ -42,9 +42,8 @@
 @endpush
 
 @push('js')
-
 <script type="text/javascript">
-
+$(function(){
     var modules      = $('.module');
     var count        = modules.length;    
     var progressBar  = $('.progress-bar');
@@ -56,12 +55,12 @@
         var module     = modules.eq(index);
         var title      = module.data('title');
         var name       = module.data('name');
-        var installing = '' + title + ' {{trans("installer.$current.installing")}}';
-        var installed  = '' + title + ' {{trans("installer.$current.installed")}}';
+        var installing = '' + title + ' {{trans("installer.{$current}.installing")}}';
+        var installed  = '' + title + ' {{trans("installer.{$current}.installed")}}';
 
         progressText.html(installing);
 
-        $.post('{{route("install.$current")}}',{name:name},function(msg){
+        $.post('{{route("install.{$current}")}}',{name:name},function(msg){
 
             // 安装成功
             if (msg.state) {
@@ -76,8 +75,8 @@
                 if (index+1 < count) {
                     install(index+1); // 安装下一个
                 } else {
-                    progressText.html('{{trans("installer.$current.completed")}}');
-                    location.href = "{{route("install.$next")}}";
+                    progressText.html('{{trans("installer.{$current}.completed")}}');
+                    location.href = "{{route("install.{$next}")}}";
                 }
             } else {
                 module.addClass('error');
@@ -87,9 +86,8 @@
         },'json');
     }
 
-    $(function(){        
-        install(0);
-    });
+    // 自动开始安装第一个
+    install(0);
+});
 </script>
-
 @endpush

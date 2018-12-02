@@ -149,9 +149,14 @@ class ModelController extends AdminController
         return ModelHelper::export($id); 
     }
 
+    /**
+     * 导入模型
+     * @param  Request $request
+     * @return json
+     */
     public function import(Request $request)
     {
-        ModelHelper::import(base_path($request->file)); 
+        ModelHelper::import($request->file); 
 
         return $this->success(trans('core::master.operated'), route('content.model.index'));
     }

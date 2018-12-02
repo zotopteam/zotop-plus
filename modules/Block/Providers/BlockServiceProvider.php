@@ -3,6 +3,7 @@
 namespace Modules\Block\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Block\Models\Block;
 use Blade;
 
 class BlockServiceProvider extends ServiceProvider
@@ -21,6 +22,11 @@ class BlockServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // 监听卸载
+        $this->app['events']->listen('modules.block.uninstalling', function($module) {
+            abort_if(Block::count() > 0, 403, trans('block::block.uninstall.forbidden'));
+        });
+
         $this->baldeBlockTag();
     }    
 

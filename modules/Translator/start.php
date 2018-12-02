@@ -18,7 +18,7 @@ if (! function_exists('translate')) {
     }
 }
 
-if (! function_exists('translate_alias')) {
+if (! function_exists('translate_slug')) {
 
     /**
      * 别名转换

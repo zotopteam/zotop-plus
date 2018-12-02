@@ -72,16 +72,16 @@
 
 @section('wizard')
 
-            <a href="{{route("install.$prev")}}" class="btn btn-outline text-white prev d-inline-block mr-auto">
+            <a href="{{route("install.{$prev}")}}" class="btn btn-outline text-white prev d-inline-block mr-auto">
                 <i class="fa fa-angle-left fa-fw"></i> {{trans('installer.prev')}}
             </a>
             
             @if($check)
-            <a href="{{route("install.$next")}}" class="btn btn-lg btn-success d-inline-block ml-auto">
+            <a href="{{route("install.{$next}")}}" class="btn btn-lg btn-success d-inline-block ml-auto">
                 {{trans('installer.next')}} <i class="fa fa-angle-right fa-fw"></i> 
             </a>
             @else
-            <a href="{{route("install.$current")}}" class="btn btn-lg btn-primary d-inline-block ml-auto">
+            <a href="{{route("install.{$current}")}}" class="btn btn-lg btn-primary d-inline-block ml-auto">
                 <i class="fa fa-refresh fa-fw"></i> {{trans('installer.retry')}} 
             </a>            
             @endif                      
