@@ -18,7 +18,8 @@ return [
     'preview'            => '预览',
     'sort'               => '排序',
     'up'                 => '上级',
-
+    
+    'delete.confirm'     => '您确定要 永久删除 嘛？',
     'delete.notempty'    => '该内容下面尚有子内容，禁止删除',
     'move.help'          => '移动内容到此处',
     'move.unchange'      => '[ :0 ] 已经在当前位置',

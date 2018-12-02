@@ -72,9 +72,10 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
     // default
     $.selectTable = {options : {
         item      : 'tbody>tr',
-        ignore    : '',
+        ignore    : 'tbody>tr.disabled',
         selectall : 'input.select-all',
         operator  : '.js-select-operate',
+        checkbox  : 'input:checkbox',
         onCheck   : $.noop,
         onChange  : $.noop
     }};
@@ -82,13 +83,23 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
     function selectTable($table, options){
         var self = this;
         var $tr = $table.find(options.item).not(options.ignore);
-        var $checkboxes = $tr.find('input:checkbox');
+        var $checkboxes = $tr.find(options.checkbox);
 
         // API methods
         $.extend(self, {
             //get checked length
             checked : function(){
                 return $checkboxes.filter(':checked').length;
+            },
+            serialize : function(){
+                return $checkboxes.filter(':checked').serialize();
+            },
+            val : function() {
+                var val = [];
+                $checkboxes.filter(':checked').each(function(){
+                    val.push($(this).val());
+                });
+                return val;
             },
             // select special node
             select : function(selector, state){

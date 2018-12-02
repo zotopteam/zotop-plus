@@ -96,7 +96,7 @@ class ModuleController extends AdminController
             'module'  => $module,
             '--force' => true,
             '--seed'  => false,
-        ]);        
+        ]);  
 
         return $this->success(trans('core::module.uninstalled'), $request->referer());
     }

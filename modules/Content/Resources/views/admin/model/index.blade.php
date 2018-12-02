@@ -40,11 +40,9 @@
                         </td>
                         <td class="text-center">
                             @if($model->disabled)
-                            <i class="fa fa-2x fa-times-circle text-muted d-none"></i>
                             <i class="{{$model->icon}} fa-2x text-muted"></i>
                             @else
-                            <i class="{{$model->icon}} fa-2x text-success"></i>
-                            <i class="fa fa-2x fa-check-circle text-success d-none"></i>
+                            <i class="{{$model->icon}} fa-2x text-warning"></i>
                             @endif
                              
                         </td>

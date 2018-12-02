@@ -137,21 +137,28 @@ class ContentController extends AdminController
      *
      * @return Response
      */
-    public function status(Request $request, $status, $id)
+    public function status(Request $request, $status, $id=null)
     {
         if ($request->isMethod('POST')) {
 
-            $content = Content::findOrFail($id);
-            $content->status = $status;
+            // 操作项编号可以通过uri或者post传入
+            $id = $id ?? $request->input('id');
 
-            if ($status == 'future') {
-                $content->publish_at = $request->input('publish_at');
-            }
+            // 单个操作或者批量操作
+            $content = is_array($id) ? Content::whereIn('id', $id) : Content::where('id', $id);
 
-            $content->save();
+            $content->get()->each(function($item, $key) use($request, $status) {
+                $item->status = $status;
+
+                if ($status == 'future') {
+                    $item->publish_at = $request->input('publish_at');
+                }
+
+                $item->save();
+            });
     
             return $this->success(trans('core::master.operated'), $request->referer());
-        }       
+        }     
     }
 
     /**
@@ -264,11 +271,18 @@ class ContentController extends AdminController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id=null)
     {
-        $content = Content::findOrFail($id);
-        $content->delete();
+        // 操作项编号可以通过uri或者post传入
+        $id = $id ?? $request->input('id');
 
-        return $this->success(trans('core::master.deleted'), route('content.content.index', $content->parent_id));        
+        // 单个操作或者批量操作
+        $content = is_array($id) ? Content::whereIn('id', $id) : Content::where('id', $id);
+
+        $content->get()->each(function($item, $key) {
+            $item->delete();
+        });        
+
+        return $this->success(trans('core::master.deleted'), $request->referer());        
     }
 }

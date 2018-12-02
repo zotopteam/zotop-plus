@@ -188,12 +188,25 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="main-action mr-auto">
-            <button type="button" class="btn btn-success js-select-operate disabled" disabled="disabled" data-operate="move">
-                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
+            <button type="button" class="btn btn-outline-success js-select-operate disabled" disabled="disabled" data-operate="move">
+                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('core::master.move')}}
             </button>
-            <button type="button" class="btn btn-danger js-select-operate disabled" disabled="disabled" data-operate="delete" data-confirm="{{trans('core::master.delete.confirm')}}">
-                <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
-            </button>
+
+            <div class="btn-group dropup">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle js-select-operate disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-ellipsis-h fa-fw"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-primary">    
+                @foreach (\Modules\Content\Models\Content::status() as $k=>$s)
+                <a href="javascript:;" class="dropdown-item js-select-operate disabled" disabled="disabled" data-operate="status" data-status="{{$k}}" data-url="{{route('content.content.status',[$k])}}">
+                    <i class="{{$s.icon}} fa-fw"></i> {{$s.name}}
+                </a>
+                @endforeach
+                <a href="javascript:;" class="dropdown-item js-select-operate disabled" disabled="disabled" data-operate="delete" data-confirm="{{trans('content::content.delete.confirm')}}">
+                    <i class="fa fa-times fa-fw"></i> {{trans('content::content.destroy')}}
+                </a>                
+                </div>
+            </div>
         </div>
 
         {{ $contents->appends($_GET)->links('core::pagination.default') }}
@@ -206,6 +219,13 @@
 @push('js')
 <script type="text/javascript" src="{{Module::asset('core:datetimepicker/jquery.datetimepicker.js')}}"></script>
 <script type="text/javascript">
+// post data
+function postData(url, data, callback) {
+    $.post(url, data, function(msg) {
+        $.msg(msg);
+        msg.state && callback(); 
+    });    
+}
 
 // move dialog
 function moveDialog(callback) {
@@ -230,25 +250,52 @@ function moveDialog(callback) {
 
 // move data
 function moveData(id, parent_id, callback) {
-    $.post('{{route('content.content.move')}}', {id:id, parent_id:parent_id}, function(msg) {
-        $.msg(msg);
-        // 操作成功
-        if (msg.state) {
-            callback(); 
-        }
-    });
+    postData('{{route('content.content.move')}}', {id:id, parent_id:parent_id}, callback);
+}
+
+// 定时对话框
+function futureDialog(value, callback) {
+    return $.dialog({
+        id: 'publish_at',
+        title : $(this).text(),
+        content : function() {
+            return '<div class="p-3">'+
+                '<div class="mb-2">{{ trans('content::content.status.future.help') }}</div>'+
+                '<input type="text" name="publish_at" class="form-control mb-2" placeholder="{{now()}}">'+
+                '</div>';
+        },
+        onshow : function() {
+            this._$('content').find('[name=publish_at]').datetimepicker({
+                format:'Y-m-d H:i',
+                inline:true,
+                lang:'{{App::getLocale()}}',
+                minDate:new Date()
+            }).show().val(value).get(0).focus();
+        },
+        ok : function() {
+            var publish_at = this._$('content').find('[name=publish_at]');
+            if (!publish_at.val()) {
+                publish_at.get(0).focus();
+                this.shake();
+            } else {
+                callback(this, publish_at.val());                    
+            }
+            return false;
+        },
+        cancel : $.noop
+    }, true);
 }
 
 $(function(){
 
-    // 取消置顶
+    // 单个取消置顶
     $('[rel=stick-down]').on('mouseover', function(){
         $(this).removeClass('fa-arrow-circle-up').addClass('fa-arrow-circle-down');
     }).on('mouseout', function(){
         $(this).removeClass('fa-arrow-circle-down').addClass('fa-arrow-circle-up');
     });
 
-    // 置顶
+    // 单个置顶
     $('[rel=stick-up]').on('mouseover', function(){
         $(this).removeClass('text-muted').addClass('text-primary');
     }).on('mouseout', function(){
@@ -268,52 +315,67 @@ $(function(){
         event.stopPropagation();
     });
 
-    // 定时发布
+    // 单个定时发布
     $(document).on('click', 'a.js-future', function(event) {
         event.preventDefault();
         var tr = $(this).parents('tr').addClass('hover');
         var href = $(this).attr('href');
         var value = $(this).data('value');
-        var dialog = $.dialog({
-            id: 'publish_at',
-            title : $(this).text(),
-            align: 'right',
-            content : function() {
-                return '<div class="p-3">'+
-                    '<div class="mb-2">{{ trans('content::content.status.future.help') }}</div>'+
-                    '<input type="text" name="publish_at" class="form-control mb-2" placeholder="{{now()}}">'+
-                    '</div>';
-            },
-            onshow : function() {
-                this._$('content').find('[name=publish_at]').datetimepicker({
-                    format:'Y-m-d H:i',
-                    inline:true,
-                    lang:'{{App::getLocale()}}',
-                    minDate:new Date()
-                }).show().val(value).get(0).focus();
-            },
-            onclose: function() {
-                tr.removeClass('hover');
-            },
-            ok : function() {
-                var publish_at = this._$('content').find('[name=publish_at]');
 
-                if (!publish_at.val()) {
-                    publish_at.get(0).focus();
-                    this.shake();
-                } else {
-                    $.post(href, {publish_at:publish_at.val()}, function(msg) {
-                        $.msg(msg);
-                        msg.state && dialog.close();
-                    },'json');                        
-                }
+        futureDialog(value, function(dialog, publish_at) {
+            postData(href, {publish_at:publish_at}, function(){
+                dialog.close().remove();
+            });
+        }).addEventListener('close', function(){
+            tr.removeClass('hover');  
+        });
 
-                return false;
-            },
-            cancel : $.noop
-        }, true);
+        event.stopPropagation();
+    });    
+
+    // 批量操作
+    $(document).on('click','.js-select-operate', function(event) {
+        event.preventDefault();
+        var ids = $('table.table-select').data('selectTable').val();
+        var operate = $(this).data('operate');
+
+        // 移动
+        if (operate == 'move') {
+            moveDialog(function(dialog) {
+                moveData(ids, dialog.parent_id, function(){
+                    dialog.close().remove();
+                    location.reload();
+                });
+            })        
+        }
+
+        // 状态
+        if (operate == 'status') {
+            var url    = $(this).data('url');
+            var status = $(this).data('status');
+
+            if (status == 'future') {
+                futureDialog(null, function(dialog, publish_at) {
+                    postData(url, {id:ids, publish_at:publish_at}, function(){
+                        dialog.close().remove();
+                    });
+                });               
+            } else {
+                postData(url, {id:ids});
+            }
+        }
+
+        // 永久删除
+        if (operate == 'delete') {
+            $.confirm($(this).data('confirm'), function(){
+                postData('{{route('content.content.destroy')}}', {id:ids});
+            })
+        }
+
         event.stopPropagation();
     });
+
+
 });
 </script>
 <script type="text/javascript">

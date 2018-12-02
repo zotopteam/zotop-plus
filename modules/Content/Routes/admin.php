@@ -10,8 +10,8 @@ $router->group(['prefix'=>'content', 'module'=>'content'], function (Router $rou
     $router->get('show/{id}','ContentController@show')->name('content.content.show')->middleware('allow:content.content.show');
     $router->get('edit/{id}','ContentController@edit')->name('content.content.edit')->middleware('allow:content.content.edit');
     $router->put('update/{id}','ContentController@update')->name('content.content.update')->middleware('allow:content.content.update');
-    $router->delete('destroy/{id?}','ContentController@destroy')->name('content.content.destroy')->middleware('allow:content.content.destroy');
-    $router->any('status/{status}/{id}','ContentController@status')->name('content.content.status')->middleware('allow:content.content.status');
+    $router->any('destroy/{id?}','ContentController@destroy')->name('content.content.destroy')->middleware('allow:content.content.destroy');
+    $router->any('status/{status}/{id?}','ContentController@status')->name('content.content.status')->middleware('allow:content.content.status');
     $router->any('stick/{id}','ContentController@stick')->name('content.content.stick')->middleware('allow:content.content.stick');
     $router->any('sort/{parent_id}','ContentController@sort')->name('content.content.sort')->middleware('allow:content.content.sort');
     $router->any('copy/{id}','ContentController@copy')->name('content.content.copy')->middleware('allow:content.content.copy');

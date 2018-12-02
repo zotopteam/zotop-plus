@@ -85,7 +85,7 @@ class ExecuteCommand extends Command
      */
     public function install($module)
     {
-        if (!$this->option('force') && $module->json()->get('installed',0)) {
+        if (!$this->option('force') && $module->json()->get('installed', 0)) {
             $this->info("This module aready installed");
             return false;
         }
@@ -141,7 +141,7 @@ class ExecuteCommand extends Command
     {
         $name = $module->getName();
 
-        if (!$this->option('force') && $module->json()->get('installed',0)) {
+        if (!$this->option('force') && $module->json()->get('installed', 0)) {
             $this->info("This module aready installed");
             return false;
         }
