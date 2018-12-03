@@ -175,7 +175,6 @@ class ModelTable
 
         if (Schema::hasTable($this->table)) {
             Schema::rename($this->table, $newtable);
-            Model::where('id', $this->model_id)->update(['table'=>$newtable]);
         }
 
         $this->model_id = $model_id;

@@ -89,8 +89,11 @@ class Model extends LaravelModel
                 ]);
 
                 // 修改表名称
-                $table = ModelTable::find($model->getOriginal('id'));
-                $table->rename($model->id);   
+                if ($model->table) {
+                    $table = ModelTable::find($model->getOriginal('id'));
+                    $table->rename($model->id);
+                    $model->setAttribute('table', $table->name());
+                }
             }
         });
 
@@ -106,8 +109,11 @@ class Model extends LaravelModel
             Field::where('model_id', $model->id)->delete();
 
             // 删除关联表
-            $table = ModelTable::find($model->id);
-            $table->drop();                    
+            if ($model->table) {
+                $table = ModelTable::find($model->id);
+                $table->drop();
+                $model->setAttribute('table', null);
+            }                    
         });
 
         // 保存模型时
@@ -116,9 +122,9 @@ class Model extends LaravelModel
         });
 
         // 删除模型时
-        // static::deleted(function($model) {
-        //     ModelHelper::deleteExtend($model);
-        // });       
+        static::deleted(function($model) {
+            ModelHelper::refreshExtend($model);
+        });       
     }
 
     /**

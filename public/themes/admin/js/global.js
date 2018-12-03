@@ -9,14 +9,19 @@ $(function(){
         error: function(jqXHR) {
             // 422 为表单验证提示，在每次提交时候单独处理
             if (jqXHR.status != 422 ) {
-                $.alert(jqXHR.responseJSON.message || jqXHR.responseText, function() {
-                    if ($.dialog('confirm')) {
-                        $.dialog('confirm').close().remove();
-                    }
-                    if ($.dialog('message')) {
-                        $.dialog('message').close().remove();
-                    }                    
-                }).title(jqXHR.statusText);
+
+                // 如果从确认弹出，自动关闭确认对话框
+                if ($.dialog('confirm')) {
+                    $.dialog('confirm').close().remove();
+                }
+
+                // 如果消息弹出，自动关闭消息
+                if ($.dialog('message')) {
+                    $.dialog('message').close().remove();
+                }  
+
+                // 弹出警告对话框
+                $.alert(jqXHR.responseJSON.message || jqXHR.responseText).title(jqXHR.statusText);
             }        
         }
     });

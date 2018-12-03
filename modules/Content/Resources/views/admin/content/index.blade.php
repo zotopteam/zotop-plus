@@ -83,7 +83,6 @@
                         <input type="checkbox" class="select-all text-muted">
                     </td>
                     <td colspan="3">{{trans('content::content.title.label')}}</td>
-                    <td width="5%"></td>
                     <td width="5%">{{trans('content::content.user.label')}}</td>
                     <td></td>
                     <td width="5%">{{trans('content::content.status.label')}}</td>
@@ -97,19 +96,21 @@
                         <td class="select">
                             <input type="checkbox" name="ids[]" value="{{$content->id}}" class="select text-muted">
                         </td>
-                        <td class="text-center px-2" width="5%">
-                            @if ($content->image)
+                        @if ($content->image)
+                        <td class="text-center px-2" width="1%">
+                            
                             <a href="javascript:;" class="js-image" data-url="{{$content->image}}" data-title="{{$content->title}}">
                                 <div class="icon icon-md">
                                     <img src="{{$content->image}}">
                                 </div>
                             </a>
-                            @else
-                            <i class="{{$content->model->icon}} fa-md text-warning"></i>
-                            @endif
                         </td>
+                        @else
+                        <td class="p-0"></td>
+                        @endif
                         <td class="px-2">
                             <div class="title">
+                                <i class="{{$content->model->icon}} fa-fw text-warning" title="{{$content->model->name}}" data-toggle="tooltip"></i> 
                                 @if ($content->model->nestable)
                                     <a href="{{route('content.content.index', $content->id)}}">
                                         {{$content->title}}
@@ -157,7 +158,6 @@
                             @endif
                             </a>
                         </td>
-                        <td>{{$content->model->name}}</td>
                         <td><strong>{{$content->user->username}}</strong></td>
                         <td></td>
                         <td>

@@ -41,7 +41,7 @@ class ModelRequest extends FormRequest
             return [
                 'id'       => 'required|check_id|max:64|unique:content_model,id,'.$id.',id',
                 'name'     => 'required|max:64',
-                'template' => 'required|max:100', 
+                'template' => 'max:100', 
             ];
         }
 

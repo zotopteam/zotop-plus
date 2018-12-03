@@ -34,9 +34,8 @@ class ContentServiceProvider extends ServiceProvider
         // 监听安装
         $this->app['events']->listen('modules.content.installed', function($module) {
             // 导入系统自带的模型
-            app('view')->addNamespace('content', [$module->getPath().'/Resources/views/admin']);
-            foreach (\File::files($module->getPath().'/Database/Models/') as $file) {
-                ModelHelper::import($file, true);
+            foreach (['category','page','article','link'] as $model) {
+                ModelHelper::import($module->getPath().'/Support/models/'.$model.'.model', true);
             }
         });        
 

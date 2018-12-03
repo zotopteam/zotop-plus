@@ -5,7 +5,7 @@ use Modules\Content\Models\ContentModel as ContentModel;
 
 /**
  * 内容扩展模型：文章 article
- * 自动创建时间：2018-12-03 00:37:58
+ * 自动创建时间：2018-12-03 12:09:23
  */
 class ArticleModel extends ContentModel
 {

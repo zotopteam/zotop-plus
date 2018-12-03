@@ -466,6 +466,8 @@
     $enable  = $this->getAttribute($attrs, 'enable', 1);
     $disable = $this->getAttribute($attrs, 'disable', 0);
     
+    $value  = $value ?? $disable;
+    
     $class   = $this->getAttribute($attrs, 'class');
 
     return $this->toHtmlString(

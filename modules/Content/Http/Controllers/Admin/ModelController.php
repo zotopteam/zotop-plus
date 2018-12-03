@@ -56,6 +56,8 @@ class ModelController extends AdminController
         $model->fill($request->all());
         $model->sort = Model::max('sort') + 1;
 
+        debug($request->nestable);
+
         if ($model->save()) {
             ModelHelper::fieldInit($model->id);
         }

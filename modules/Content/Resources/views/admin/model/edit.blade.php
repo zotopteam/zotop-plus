@@ -49,7 +49,7 @@
             </div>            
 
             <div class="form-group row">
-                <label for="description" class="col-2 col-form-label required">{{trans('content::model.description.label')}}</label>
+                <label for="description" class="col-2 col-form-label">{{trans('content::model.description.label')}}</label>
                 <div class="col-8">
                     {field type="textarea" name="description" maxlength="255" rows="3"}
 
@@ -62,9 +62,9 @@
             </div>
 
             <div class="form-group row">
-                <label for="template" class="col-2 col-form-label required">{{trans('content::model.template.label')}}</label>
+                <label for="template" class="col-2 col-form-label">{{trans('content::model.template.label')}}</label>
                 <div class="col-8">
-                    {field type="template" name="template" required="required"}
+                    {field type="template" name="template"}
 
                     @if ($errors->has('template'))
                     <span class="form-help text-error">{{ $errors->first('template') }}</span>
@@ -75,9 +75,9 @@
             </div>
 
             <div class="form-group row">
-                <label for="nestable" class="col-2 col-form-label required">{{trans('content::model.nestable.label')}}</label>
+                <label for="nestable" class="col-2 col-form-label">{{trans('content::model.nestable.label')}}</label>
                 <div class="col-8">
-                    {field type="toggle" name="nestable" required="required"}
+                    {field type="toggle" name="nestable"}
 
                     @if ($errors->has('nestable'))
                     <span class="form-help text-error">{{ $errors->first('nestable') }}</span>

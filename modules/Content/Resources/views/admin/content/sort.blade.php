@@ -39,7 +39,12 @@
                     </div>
                 </div>
             {/form}
-        </div>              
+        </div>
+        <div class="main-action">
+            <a href="javascript:location.reload()" class="btn btn-light" title="{{trans('core::master.refresh')}}">
+                <span class="fa fa-sync"></span>
+            </a>
+        </div>                     
     </div>
     <div class="main-body scrollable">
         @if($contents->count() == 0)
@@ -50,7 +55,6 @@
                 <tr>
                     <td width="1%"></td>
                     <td colspan="3">{{trans('content::content.title.label')}}</td>
-                    <td width="5%"></td>
                     <td width="5%">{{trans('content::content.user.label')}}</td>
                     <td></td>
                     <td width="5%">{{trans('content::content.status.label')}}</td>
@@ -63,19 +67,20 @@
                         <td class="text-center">
                             <i class="select-icon fa fa-check-square fa-2x"></i>
                         </td>
-                        <td class="text-center px-2" width="5%">
-                            @if ($content->image && !$content->model->nestable)
+                        @if ($content->image)
+                        <td class="text-center px-2" width="1%">
                             <a href="javascript:;" class="js-image" data-url="{{$content->image}}" data-title="{{$content->title}}">
                                 <div class="icon icon-md">
                                     <img src="{{$content->image}}">
                                 </div>
                             </a>
-                            @else
-                            <i class="{{$content->model->icon}} fa-md text-warning"></i>
-                            @endif
                         </td>
+                        @else
+                        <td class="p-0"></td>
+                        @endif
                         <td class="px-2">
                             <div class="title">
+                                <i class="{{$content->model->icon}} fa-fw text-warning" title="{{$content->model->name}}" data-toggle="tooltip"></i>
                                 {{$content->title}}
                             </div>
                         </td>
@@ -84,7 +89,6 @@
                                 <i class="fa fa-arrow-circle-up fa-2x text-primary"></i>
                             @endif                        
                         </td>
-                        <td>{{$content->model->name}}</td>
                         <td><strong>{{$content->user->username}}</strong></td>
                         <td></td>
                         <td>

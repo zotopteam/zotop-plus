@@ -21,7 +21,7 @@ class ModelHelper
         $import = collect([]);
 
         // 获取未导入的模型
-        foreach (File::files(realpath(__DIR__.'/../Database/Models/')) as $file) {
+        foreach (File::files(realpath(__DIR__.'/models/')) as $file) {
             $data = json_decode(File::get($file));
 
             if (isset($data->model->id) && !in_array($data->model->id, $exclude)) {
@@ -137,7 +137,7 @@ class ModelHelper
 
         $path = dirname(__DIR__).'/Extend/'.studly_case($model->id).'Model.php';
 
-        if ($model->table) {
+        if ($model->table && $model->fillable) {
 
             $model->fillable = "[".implode(", ", array_map(function($val) {
                  return "'".$val."'";
@@ -147,7 +147,7 @@ class ModelHelper
                 return "'".$key."' => '".$val."'";
             }, $model->casts, array_keys($model->casts)))."]";
 
-            $content = view('content::model.stub.extend')->with([
+            $content = view()->file(__DIR__.'/stubs/extend.blade.php')->with([
                 'model' => $model,
             ])->render();
 
@@ -168,9 +168,11 @@ class ModelHelper
     {
         $path = dirname(__DIR__).'/Extend/Extendable.php';
 
-        $models = Model::where('disabled', 0)->whereNotNull('table')->orderby('sort','asc')->get();
+        $models = Model::where('disabled', 0)->whereNotNull('table')->orderby('sort','asc')->get()->filter(function($model) {
+            return count($model->fillable);
+        });
 
-        $content = view('content::model.stub.extendable')->with([
+        $content = view()->file(__DIR__.'/stubs/extendable.blade.php')->with([
             'models' => $models,
         ])->render();
 

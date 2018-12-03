@@ -24,7 +24,7 @@ class Content extends Model
      *
      * @var array
      */
-    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','url','template','hits','comments','status','stick','sort','user_id'];
+    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','link','template','hits','comments','status','stick','sort','user_id'];
 	
 	
     /**
@@ -229,7 +229,7 @@ class Content extends Model
     public function getUrlAttribute($value)
     {
         if ($this->link) {
-            return $this->link;
+            return url($this->link);
         }
 
         if ($this->status == 'publish') {

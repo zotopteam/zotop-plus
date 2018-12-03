@@ -62,7 +62,7 @@ class Field extends LaravelModel
 
             // 预处理数据
             $field = static::preproccess($field);
-            $field->sort = static::where('model_id', $field->model_id)->max('sort') + 1;  
+            $field->sort = $field->sort ?? static::where('model_id', $field->model_id)->max('sort') + 1;  
 
             // 创建自定义字段
             if (! $field->system) {

@@ -25,7 +25,7 @@ class CreateContentTable1542556465 extends Migration
 			$table->text('image')->nullable()->comment('缩略图');
 			$table->string('keywords', 100)->nullable()->comment('关键词');
 			$table->string('summary', 1000)->nullable()->comment('摘要');
-			$table->string('url', 255)->nullable()->comment('链接');
+			$table->string('link', 255)->nullable()->comment('链接');
 			$table->string('template', 100)->nullable()->comment('模版');
 			$table->integer('hits')->nullable()->comment('点击数')->default(0)->unsigned();
 			$table->integer('comments')->nullable()->comment('评论数')->default(0)->unsigned();
