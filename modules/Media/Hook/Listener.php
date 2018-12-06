@@ -3,8 +3,7 @@ namespace Modules\Media\Hook;
 
 use Route;
 use Auth;
-use Modules\Media\Models\Folder;
-use Modules\Media\Models\File;
+use Modules\Media\Models\Media;
 
 class Listener
 {
@@ -50,17 +49,17 @@ class Listener
             
             // 合并信息
             $fileinfo = array_merge($params, $return, [
-                'parent_id' => $params['folder_id'] ?? 0,
+                'parent_id' => $params['parent_id'] ?? $params['folder_id'] ?? 0,
                 'user_id'   => Auth::user()->id,
                 'token'     => Auth::user()->token
             ]);
 
             // 保存文件信息
-            $file = new File;
-            $file->fill($fileinfo);
-            $file->save();
+            $media = new Media;
+            $media->fill($fileinfo);
+            $media->save();
 
-            return $return + ['id'=>$file->id];
+            return $return + ['id'=>$media->id];
         }
         
         return $result;

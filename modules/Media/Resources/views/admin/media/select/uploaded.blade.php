@@ -9,7 +9,7 @@
         </div>        
         <div class="main-action">
             <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
-                <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
+                <i class="fa fa-fw fa-upload"></i> {{trans('core::file.upload')}}
             </a>        
             @if (request()->input('select', 0) != 1)
             <a href="javascript:;" class="btn btn-light js-select-all d-none">
@@ -42,7 +42,7 @@
                                 <div class="card-thumb pos-r">
                                     <div class="pos-a pos-full d-flex justify-content-center bg-image-preview">
                                         @if ($file->isImage())
-                                        <img src="{{$file->url()}}" class="img-fluid align-self-center">
+                                        <img src="{{$file->url}}" class="img-fluid align-self-center">
                                         @else
                                         <i class="fa {{$file->icon}} fa-5x fa-fw text-muted align-self-center"></i>
                                         @endif
@@ -61,18 +61,18 @@
                                 </div>
                                 <div class="contextmenu d-none">
                                         @if ($file->isImage())
-                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->url()}}" data-title="{{$file->name}}" data-info="{{$file->size_human}} / {{$file->width}}px × {{$file->height}}px">
+                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->url}}" data-title="{{$file->name}}" data-info="{{$file->size_human}} / {{$file->width}}px × {{$file->height}}px">
                                             <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::file.view')}}</b>
+                                            <b class="contextmenu-item-text">{{trans('core::master.view')}}</b>
                                         </a>
                                         @endif                 
-                                        <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.file.rename',[$file->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$file->name}}">
+                                        <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$file->id])}}"  data-prompt="{{trans('core::file.name')}}" data-name="name" data-value="{{$file->name}}">
                                             <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::file.rename')}}</b>
+                                            <b class="contextmenu-item-text">{{trans('core::master.rename')}}</b>
                                         </a>                      
-                                        <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $file->id)}}">
+                                        <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.destroy', $file->id)}}">
                                             <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
-                                            <b class="contextmenu-item-text">{{trans('media::file.delete')}}</b>
+                                            <b class="contextmenu-item-text">{{trans('core::master.delete')}}</b>
                                         </a>
                                 </div>
                                 <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>

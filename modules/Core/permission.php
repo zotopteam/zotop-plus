@@ -50,15 +50,15 @@ return [
     'core::file.title' => [
         'core.file.editor' => 'core::file.editor',
         'core.file.create' => 'core::file.create',
-        'core.file.delete' => 'core::file.delete',
-        'core.file.copy' => 'core::file.copy',
-        'core.file.rename' => 'core::file.rename',
+        'core.file.delete' => 'core::master.delete',
+        'core.file.copy' => 'core::master.copy',
+        'core.file.rename' => 'core::master.rename',
         'core.file.upload' => 'core::file.upload',
     ],
 
     'core::folder.title' => [
         'core.folder.create' => 'core::folder.create',
-        'core.folder.delete' => 'core::folder.delete',
-        'core.folder.rename' => 'core::folder.rename',
+        'core.folder.delete' => 'core::master.delete',
+        'core.folder.rename' => 'core::master.rename',
     ]    
 ];

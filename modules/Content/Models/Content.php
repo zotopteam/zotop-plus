@@ -83,7 +83,7 @@ class Content extends Model
                 abort(403, trans('content::content.delete.notempty'));
             }
         });
-    }    
+    }  
 
     /**
      * 关联的模型数据

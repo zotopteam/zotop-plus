@@ -33,21 +33,130 @@ class Media extends Model
      */
     protected $guarded = ['id'];
 	
-	
+
     /**
-     * 属性转换
-     *
-     * @var array
+     * boot
      */
-    //protected $casts = [];
-	
-	
+    public static function boot()
+    {
+        parent::boot();
+
+        // 创建时保存排序，文件夹在最前面
+        static::creating(function ($media) {
+            $media->sort = $media->sort ?: time();
+
+            // 文件夹排序在前面
+            if ($media->type == 'folder') {
+                $media->sort += pow(10,9);
+            }
+        });
+
+        // 更新设置parent_id时，禁止为自身或者自身的子节点
+        static::updating(function($media) {
+            if ($media->parent_id && in_array($media->id, static::parentIds($media->parent_id, true))) {
+                abort(403, trans('media::media.move.forbidden', [$media->name]));
+                return false;
+            }
+        });
+
+        static::deleting(function($media) {
+            if ($media->children()->count()) {
+                abort(403, trans('media::media.delete.notempty', [$media->name]));
+            }
+        });
+
+        // 删除文件和文件的缩略图、预览图
+        static::deleted(function($file) {
+
+            //文件真实路径
+            if ($file->path) {
+                
+                // 获取文件的真实路径 TODO:暂时放publick中，后续增加多位置存储
+                $path = public_path($file->path);
+                    
+                // 预览图和缩略图位置
+                $temp = md5($path);
+                $temp = substr($temp, 0, 2).'/'.substr($temp, 2, 2).'/'.$temp;
+
+                app('files')->deleteDirectory(public_path('previews/'.$temp));
+                app('files')->delete($path);
+            }
+        });        
+    }    
+
     /**
-     * 执行模型是否自动维护时间戳.
-     *
-     * @var bool
+     * 关联子级别
+     * @return [type] [description]
      */
-    //public $timestamps = false;
+    public function children()
+    {
+        return $this->hasMany('Modules\Media\Models\Media', 'parent_id', 'id');
+    }
+
+    /**
+     * 关联父级别
+     * @return [type] [description]
+     */
+    public function parent()
+    {
+        return $this->belongsTo('Modules\Media\Models\Media', 'parent_id', 'id');
+    }
+
+    /**
+     * 排序 ，查询结果sort(排序)和id(编号)倒序
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSort($query)
+    {
+        return $query->orderby('sort', 'desc')->orderby('id', 'desc');
+    }            
+
+    /**
+     * 获取节点的全部父编号
+     * 
+     * @param  mixed  $id         编号
+     * @param  boolean $self      是否包含自身
+     * @param  array   $parentIds 传递自身
+     * @return array
+     */
+    public static function parentIds($id, $self=false, &$parentIds=[])
+    {
+        static $instance = null;
+
+        if (empty($instance)) {
+            $instance = new static;
+        }
+
+        if ($self) {
+            $parentIds[] = $id;
+        }
+
+        if ($parentId = $instance->where('id', $id)->value('parent_id')) {
+            $instance->parentIds($parentId, true, $parentIds);
+        }
+
+        return array_reverse($parentIds);                
+    }
+
+    /**
+     * 获取父级
+     * 
+     * @param  int  $id    节点编号
+     * @param  boolean $self  是否包含自身
+     * @return Collection
+     */
+    public static function parents($id, $self=false)
+    {
+        $parentIds    = static::parentIds($id, $self);
+        $parentSorts = array_flip($parentIds);
+
+        // 获取父级并排序
+        return (new static)->whereIn('id', $parentIds)->get()->sortBy(function($media) use($parentSorts) {
+            return $parentSorts[$media->id];
+        });
+    }
 
     /**
      * 获取友好的创建日期。
@@ -58,6 +167,7 @@ class Media extends Model
     {
         return Format::date($this->created_at, 'datetime human');
     }
+
 
     /**
      * 获取友好的文件大小

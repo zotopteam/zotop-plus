@@ -60,7 +60,7 @@ $(function(){
         }        
     })
     @if(Route::is('media.index'))
-    $("#tree").fancytree("getTree").activateKey('{{$folder_id ?? 0}}').setExpanded(true);
+    $("#tree").fancytree("getTree").activateKey('{{$parent_id ?? 0}}').setExpanded(true);
     @endif
 });
 </script>

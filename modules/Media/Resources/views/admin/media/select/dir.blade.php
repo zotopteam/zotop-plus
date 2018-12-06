@@ -65,7 +65,7 @@
                 @foreach($folders as $folder)
                 <tr data-type="folder" data-href="{{$folder->href}}">
                     <td></td>
-                    <td width="1%" class="icon icon-sm pr-1">
+                    <td width="1%" class="pr-1">
                         <a href="{{$folder->href}}">
                             <i class="fa fa-folder fa-2x fa-fw text-warning"></i>
                         </a>
@@ -76,11 +76,11 @@
                     <td class="manage manage-hover text-right">
 
                         <a href="javascript:;" class="manage-item js-prompt" data-url="{{route('core.folder.rename',['folder'=>$folder->path])}}" data-prompt="{{trans('core::folder.name')}}" data-value="{{$folder->name}}">
-                            <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::folder.rename')}}
+                            <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::master.rename')}}
                         </a>
 
                         <a href="javascript:;" class="manage-item js-delete" data-url="{{route('core.folder.delete',['folder'=>$folder->path])}}">
-                            <i class="fa fa-trash fa-fw text-primary"></i> {{trans('core::folder.delete')}}
+                            <i class="fa fa-trash fa-fw text-primary"></i> {{trans('core::master.delete')}}
                         </a>                        
                     </td>
                     <td width="10%">{{$folder->typename}}</td>
@@ -93,11 +93,11 @@
                     <td class="text-center">
                         <i class=" select-icon fa fa-check-circle fa-2x"></i>
                     </td>                
-                    <td width="1%" class="icon icon-sm pr-1">
+                    <td width="1%" class="pr-1">
                         @if($file->type == 'image')
-                        <div class="icon"><img src="{{preview($file->realpath,32,32)}}" width="32"></div>
+                        <div class="icon icon-md"><img src="{{preview($file->realpath,32,32)}}" width="32"></div>
                         @else
-                        <i class="fa {{$file->icon}} fa-2x fa-fw text-warning"></i>
+                        <i class="{{$file->icon}} fa-2x fa-fw text-warning"></i>
                         @endif
                     </td>
                     <td class="name pl-2">
@@ -111,12 +111,12 @@
                         @switch($file->mime)
                             @case('image')
                                 <a href="javascript:;" class="manage-item js-image" data-url="{{$file->url ?: preview($file->realpath)}}" data-title="{{$file->name}}">
-                                    <i class="fa fa-eye fa-fw text-primary"></i> {{trans('core::file.view')}}
+                                    <i class="fa fa-eye fa-fw text-primary"></i> {{trans('core::master.view')}}
                                 </a>
                                 @break
                             @case('text')
                                 <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.file.editor',['file'=>$file->path])}}"  data-width="80%" data-height="60%">
-                                    <i class="fa fa-edit fa-fw text-primary"></i> {{trans('core::file.edit')}}
+                                    <i class="fa fa-edit fa-fw text-primary"></i> {{trans('core::master.edit')}}
                                 </a>
                                 @break
                         @endswitch
@@ -127,15 +127,15 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a href="javascript:;" class="dropdown-item js-post" data-url="{{route('core.file.copy',['file'=>$file->path])}}">
-                                    <i class="fa fa-copy fa-fw text-primary"></i> {{trans('core::file.copy')}}
+                                    <i class="fa fa-copy fa-fw text-primary"></i> {{trans('core::master.copy')}}
                                 </a>
 
                                 <a href="javascript:;" class="dropdown-item js-prompt" data-url="{{route('core.file.rename',['file'=>$file->path])}}" data-prompt="{{trans('core::file.name')}}" data-value="{{$file->name}}">
-                                    <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::file.rename')}}
+                                    <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::master.rename')}}
                                 </a>
 
                                 <a href="javascript:;" class="dropdown-item js-delete" data-url="{{route('core.file.delete',['file'=>$file->path])}}">
-                                    <i class="fa fa-times fa-fw text-primary"></i> {{trans('core::file.delete')}}
+                                    <i class="fa fa-times fa-fw text-primary"></i> {{trans('core::master.delete')}}
                                 </a>                            
                             </div>
                         </div>                                           

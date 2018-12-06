@@ -72,7 +72,7 @@
                         </a>                         
                                     
                         <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.file.editor',['file'=>path_base($file)])}}"  data-width="80%" data-height="80%">
-                            <i class="fa fa-pen-square fa-fw text-primary"></i> {{trans('core::file.edit')}}
+                            <i class="fa fa-pen-square fa-fw text-primary"></i> {{trans('core::master.edit')}}
                         </a>
                         <div class="dropdown d-inline-block manage-item">
                             <a href="javascript:;" data-toggle="dropdown">
@@ -81,13 +81,13 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a href="javascript:;" class="dropdown-item js-post" data-url="{{route('core.file.copy',['file'=>path_base($file)])}}">
-                                    <i class="fa fa-copy fa-fw text-primary"></i> {{trans('core::file.copy')}}
+                                    <i class="fa fa-copy fa-fw text-primary"></i> {{trans('core::master.copy')}}
                                 </a>
                                 <a href="javascript:;" class="dropdown-item js-prompt" data-url="{{route('core.file.rename',['file'=>path_base($file)])}}" data-prompt="{{trans('core::file.name')}}" data-value="{{basename($file)}}">
-                                    <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::file.rename')}}
+                                    <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::master.rename')}}
                                 </a>
                                 <a href="javascript:;" class="dropdown-item js-delete" data-url="{{route('core.file.delete',['file'=>path_base($file)])}}">
-                                    <i class="fa fa-trash fa-fw text-primary"></i> {{trans('core::file.delete')}}
+                                    <i class="fa fa-trash fa-fw text-primary"></i> {{trans('core::master.delete')}}
                                 </a>
                             </div>                            
                         </div>

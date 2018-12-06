@@ -35,7 +35,7 @@ class FileController extends AdminController
         }        
         
 
-        $this->title   = trans('core::file.edit');        
+        $this->title   = trans('core::master.edit');        
         $this->content = File::get($this->path);
         $this->mode    = File::extension($this->path);
 

@@ -9,32 +9,29 @@
         </div>
         <div class="main-action">
             <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
-                <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
+                <i class="fa fa-fw fa-upload"></i> {{trans('core::file.upload')}}
             </a>
-            <a href="javascript:;" class="btn btn-outline-primary btn-icon-only js-prompt" data-url="{{route('media.folder.create',[$folder_id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" title="{{trans('media::folder.create')}}">
-                <i class="fa fa-fw fa-folder-plus"></i> {{trans('media::folder.create')}}
+            <a href="javascript:;" class="btn btn-outline-primary btn-icon-only js-prompt" data-url="{{route('media.create',[$parent_id,'folder'])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" title="{{trans('core::folder.create')}}">
+                <i class="fa fa-fw fa-folder-plus"></i> {{trans('core::folder.create')}}
             </a>
             <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('core::master.refresh')}}">
                 <i class="fa fa-sync"></i>
             </a>        
         </div>        
     </div>
-    <div class="main-header breadcrumb m-0 p-2 text-sm">
-        @if ($folder_id)
+    <div class="main-header breadcrumb m-0 p-2 text-xs">
+        @if ($parent_id)
         <a href="{{$parent_url}}" class="breadcrumb-item breadcrumb-extra">
-            <i class="fa fa-fw fa-arrow-up"></i>{{trans('media::folder.up')}}
+            <i class="fa fa-fw fa-arrow-up"></i>{{trans('media::media.up')}}
         </a>
         @else
-        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('media::folder.up')}}</a>
+        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('media::media.up')}}</a>
         @endif
         <a class="breadcrumb-item" href="{{$root_url}}">{{trans('media::media.root')}}</a>
         @foreach($parents as $p)
         <a class="breadcrumb-item" href="{{$p->url}}">{{$p->name}}</a> 
         @endforeach      
     </div>    
-    <div class="main-header progress p-0 rounded-0 d-none">
-        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>        
-    </div>
     <div class="main-body scrollable p-2" id="file-upload-dragdrop">
         
         <div class="container-fluid">
@@ -59,7 +56,7 @@
                                         @if ($m->isImage())
                                         <img src="{{$m->link}}" class="align-self-center">
                                         @else
-                                        <i class="fa {{$m->icon}} fa-5x fa-fw text-muted align-self-center"></i>
+                                        <i class="{{$m->icon}} fa-5x fa-fw text-muted align-self-center"></i>
                                         @endif
                                     </div>
                                     @endif
@@ -71,7 +68,7 @@
                                 </div>
                                 <div class="card-text text-xs">
                                     @if($m->isFolder())
-                                    <small class="text-success">{{trans('media::folder.type')}}</small>
+                                    <small class="text-success">{{trans('core::folder.type')}}</small>
                                     @else
                                     <small class="text-success">{{trans('core::file.type.'.$m->type)}}</small>
                                     @endif
@@ -81,31 +78,29 @@
                                     @endif
                                 </div>
                                 <div class="contextmenu d-none">
-                                        @if($m->isFolder())
-                                            <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.folder.rename',[$m->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$m->name}}">
-                                                <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                                <b class="contextmenu-item-text">{{trans('media::folder.rename')}}</b>
-                                            </a>                      
-                                            <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $m->id)}}">
-                                                <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
-                                                <b class="contextmenu-item-text">{{trans('media::folder.delete')}}</b>
-                                            </a>                                            
-                                        @else
-                                            @if ($m->isImage())
-                                            <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$m->link}}" data-title="{{$m->name}}" data-info="{{$m->size_human}} / {{$m->width}}px × {{$m->height}}px">
-                                                <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
-                                                <b class="contextmenu-item-text">{{trans('media::file.view')}}</b>
-                                            </a>
-                                            @endif                 
-                                            <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.file.rename',[$m->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$m->name}}">
-                                                <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                                <b class="contextmenu-item-text">{{trans('media::file.rename')}}</b>
-                                            </a>                                                                  
-                                            <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $m->id)}}">
-                                                <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
-                                                <b class="contextmenu-item-text">{{trans('media::file.delete')}}</b>
-                                            </a>
+                                        @if ($m->isImage())
+                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$m->link}}" data-title="{{$m->name}}" data-info="{{$m->size_human}} / {{$m->width}}px × {{$m->height}}px">
+                                            <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
+                                            <b class="contextmenu-item-text">{{trans('core::master.view')}}</b>
+                                        </a>
                                         @endif
+
+                                        @if($m->isFolder())
+                                            <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" data-value="{{$m->name}}">
+                                                <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
+                                                <b class="contextmenu-item-text">{{trans('core::master.rename')}}</b>
+                                            </a>                      
+                                        @else
+                                            <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::file.name')}}" data-name="name" data-value="{{$m->name}}">
+                                                <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
+                                                <b class="contextmenu-item-text">{{trans('core::master.rename')}}</b>
+                                            </a>                                                                  
+                                        @endif
+
+                                        <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.destroy', $m->id)}}">
+                                            <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
+                                            <b class="contextmenu-item-text">{{trans('core::master.delete')}}</b>
+                                        </a>                                          
                                 </div>
                                 <textarea name="data" class="d-none">{!! json_encode($m) !!}</textarea>
                             </div>                           
@@ -147,7 +142,7 @@
                 autostart : true, //自动开始
                 multi_selection : true, //是否可以选择多个文件
                 multipart_params: {
-                    'folder_id'  : '{{$folder_id ?? 0}}',
+                    'folder_id'  : '{{$parent_id ?? 0}}',
                     'data_id'    : '{{$params['data_id'] ?? null}}',
                     'module'     : '{{$params['module'] ?? app('current.module')}}',
                     'controller' : '{{$params['controller'] ?? app('current.controller')}}',

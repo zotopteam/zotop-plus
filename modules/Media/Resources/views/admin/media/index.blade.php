@@ -5,20 +5,20 @@
 <div class="main">
     <div class="main-header">
         @if (empty($keywords))
-        @if ($folder_id)
+        @if ($parent_id)
         <div class="main-back d-none">
             <a href="javascript:history.go(-1);"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
         </div>        
-        <div class="main-title mr-auto">{{$folder->name}}</div>
+        <div class="main-title mr-auto">{{$parent->name}}</div>
         @else
         <div class="main-title mr-auto">{{trans('media::media.root')}}</div>
         @endif
         <div class="main-action">
             <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
-                <i class="fa fa-fw fa-upload"></i> {{trans('media::file.upload')}}
+                <i class="fa fa-fw fa-upload"></i> {{trans('core::file.upload')}}
             </a>
-            <a href="javascript:;" class="btn btn-outline-primary js-prompt" data-url="{{route('media.folder.create',[$folder_id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name">
-                <i class="fa fa-fw fa-folder-plus"></i> {{trans('media::folder.create')}}
+            <a href="javascript:;" class="btn btn-outline-primary js-prompt" data-url="{{route('media.create',[$parent_id,'folder'])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name">
+                <i class="fa fa-fw fa-folder-plus"></i> {{trans('core::folder.create')}}
             </a>
         </div>
         @else
@@ -41,17 +41,14 @@
             {/form}
         </div>        
     </div>
-    <div class="main-header progress p-0 rounded-0 d-none">
-        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>        
-    </div>
     @if (empty($keywords))    
     <div class="main-header breadcrumb text-xs p-2 m-0">
-        @if ($folder_id)
-        <a href="{{route('media.index',[$folder->parent_id])}}" class="breadcrumb-item breadcrumb-extra">
-            <i class="fa fa-fw fa-arrow-up"></i>{{trans('media::folder.up')}}
+        @if ($parent_id)
+        <a href="{{route('media.index',[$parent->parent_id])}}" class="breadcrumb-item breadcrumb-extra">
+            <i class="fa fa-fw fa-arrow-up"></i>{{trans('media::media.up')}}
         </a>
         @else
-        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('media::folder.up')}}</a>
+        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('media::media.up')}}</a>
         @endif
         <a class="breadcrumb-item" href="{{route('media.index')}}">{{trans('media::media.root')}}</a>
         @foreach($parents as $p)
@@ -61,7 +58,6 @@
     @endif
     <div class="main-body scrollable" id="file-upload-dragdrop">
 
-        {form route="media.operate" class="form-datalist" method="post"}
         <table class="table table-nowrap table-hover table-select">
             <thead>
             <tr>
@@ -109,36 +105,32 @@
                     </td>
                     <td width="10%" class="manage manage-hover text-right">
 
+                        @if ($m->isImage())
+                        <a href="javascript:;" class="manage-item js-image" data-url="{{$m->url}}" data-title="{{$m->name}}">
+                            <i class="fa fa-eye fa-fw"></i> {{trans('core::master.view')}}
+                        </a>
+                        @endif
+
                         @if ($m->isFolder())
-                           <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.folder.rename',[$m->id])}}"  data-prompt="{{trans('media::folder.name')}}" data-name="name" data-value="{{$m->name}}">
-                                <i class="fa fa-fw fa-eraser"></i> {{trans('core::folder.rename')}}
+                           <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" data-value="{{$m->name}}">
+                                <i class="fa fa-fw fa-eraser"></i> {{trans('core::master.rename')}}
                             </a>
-                            <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.folder.move', $m->id)}}" data-select="{{route('media.folder.select',[$m->parent_id])}}" data-title="{{$m->name}}">
-                                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::folder.move')}}
-                            </a>                               
-                            <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.folder.delete', $m->id)}}">
-                                <i class="fa fa-fw fa-times"></i> {{trans('core::master.delete')}}
-                            </a>                        
                         @else
-                            @if ($m->isImage())
-                            <a href="javascript:;" class="manage-item js-image" data-url="{{$m->url}}" data-title="{{$m->name}}">
-                                <i class="fa fa-eye fa-fw"></i> {{trans('media::file.view')}}
-                            </a>
-                            @endif            
-                            <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.file.rename',[$m->id])}}"  data-prompt="{{trans('media::file.name')}}" data-name="name" data-value="{{$m->name}}">
-                                <i class="fa fa-fw fa-eraser"></i> {{trans('media::file.rename')}}
-                            </a>
-                            <a href="javascript:;" class="manage-item js-move" data-url="{{route('media.file.move', $m->id)}}" data-select="{{route('media.folder.select',[$m->folder_id])}}" data-title="{{$m->name}}">
-                                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
+                            <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::file.name')}}" data-name="name" data-value="{{$m->name}}">
+                                <i class="fa fa-fw fa-eraser"></i> {{trans('core::master.rename')}}
                             </a>                        
-                            <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.file.delete', $m->id)}}">
-                                <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
-                            </a>
-                        @endif                      
+                        @endif
+
+                        <a href="javascript:;" class="manage-item js-move" data-id="{{$m->id}}" data-title="{{$m->name}}">
+                            <i class="fa fa-arrows-alt fa-fw"></i> {{trans('core::master.move')}}
+                        </a>                               
+                        <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.destroy', $m->id)}}">
+                            <i class="fa fa-fw fa-times"></i> {{trans('core::master.delete')}}
+                        </a>                                            
                     </td>
                     <td>
                         @if ($m->isFolder())
-                        {{trans('media::folder.type')}}
+                        {{trans('core::folder.type')}}
                         @else
                         {{trans('core::file.type.'.$m->type)}}
                         @endif
@@ -153,7 +145,6 @@
 
             </tbody>
         </table>
-        {/form}
 
     </div><!-- main-body -->
     <div class="main-footer">
@@ -172,11 +163,11 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-success js-select-operate disabled" disabled="disabled" data-operate="move" data-select="{{route('media.folder.select',[$folder_id])}}">
-                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('media::file.move')}}
+            <button type="button" class="btn btn-success js-select-operate disabled" disabled="disabled" data-operate="move">
+                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('core::master.move')}}
             </button>
-            <button type="button" class="btn btn-danger js-select-operate disabled" disabled="disabled" data-operate="delete" data-confirm="{{trans('core::master.delete.confirm')}}">
-                <i class="fa fa-times fa-fw"></i> {{trans('media::file.delete')}}
+            <button type="button" class="btn btn-danger js-select-operate disabled" disabled="disabled" data-operate="delete">
+                <i class="fa fa-times fa-fw"></i> {{trans('core::master.delete')}}
             </button>
         </div>    
 
@@ -200,7 +191,7 @@
                 autostart : true, //自动开始
                 multi_selection : true, //是否可以选择多个文件
                 multipart_params: {
-                    'folder_id'  : '{{$folder_id ?? 0}}',
+                    'folder_id'  : '{{$parent_id ?? 0}}',
                     'module'     : '{{app('current.module')}}',
                     'controller' : '{{app('current.controller')}}',
                     'action'     : '{{app('current.action')}}',
@@ -245,16 +236,25 @@
         self.plupload(options);
     });
 </script>
-<script type="text/javascript">  
+<script type="text/javascript">
+    // post data
+    function postData(url, data, callback) {
+        $.post(url, data, function(msg) {
+            $.msg(msg);
+            msg.state && callback(); 
+        });    
+    }
+
     // move dialog
-    function movedata(title, select, callback) {
+    function moveDialog(callback) {
         return $.dialog({
-            title        : title,
-            url          : select,
-            width        : 500,
-            height       : 400,
-            padding      : '1rem',
-            ok           : function() {
+            id      : 'move-media',
+            title   : '{{ trans('core::master.move') }}',
+            url     : '{{ route('media.move')}}',
+            width   : '75%',
+            height  : '75%',
+            padding : 0,
+            ok      : function() {
                 callback(this);
                 return false;
             },
@@ -266,15 +266,10 @@
         }, true).loading(true);        
     }
 
-    // post data
-    function postdata(url, data, callback) {
-        $.post(url, data, function(msg) {
-            $.msg(msg);
-            // 操作成功
-            if (msg.state) callback(); 
-            //if (msg.url)  location.href = msg.url;
-        });
-    }
+    // move data
+    function moveData(id, parent_id, callback) {
+        postData('{{route('media.move')}}', {id:id, parent_id:parent_id}, callback);
+    }      
 
     $(function(){
 
@@ -300,13 +295,14 @@
 
         // 单个文件夹和文件移动
         $(document).on('click', 'a.js-move',function(event){
-            var title  = $(this).text();
-            var move   = $(this).data('url');
-            var select = $(this).data('select');
+            event.preventDefault();
 
-            movedata(title, select, function(dialog) {
-                postdata(move, {folder_id:dialog.selected_folder_id}, function(){
+            var id = $(this).data('id');
+            
+            moveDialog(function(dialog) {
+                moveData(id, dialog.parent_id, function(){
                     dialog.close().remove();
+                    location.reload();
                 });
             });
 
@@ -330,32 +326,26 @@
                 selectTable.select("[data-type="+ $(this).data('type') +"]",true);
             });          
 
-            $('.js-select-operate').on('click', function() {   
-                if ($(this).hasClass('disabled')) {
-                    return false;
-                }
-
-                var title   = $(this).text();
+            $(document).on('click','.js-select-operate', function(event) {
+                event.preventDefault();
+                var ids = $('table.table-select').data('selectTable').val();
                 var operate = $(this).data('operate');
-                var form    = $('form.form-datalist');
-                var action  = form.attr('action');
-                var data    = form.serializeArray();
-                    data.push({name:"operate", value:operate});
                 
                 if (operate == 'move') {
-                    movedata(title, $(this).data('select'), function(dialog) {
-                        data.push({name:"move_folder_id", value:dialog.selected_folder_id});
-                        postdata(action, $.param(data), function() {
+                    moveDialog(function(dialog) {
+                        moveData(ids, dialog.parent_id, function(){
                             dialog.close().remove();
+                            location.reload();
                         });
-                    })
-                } else if(operate == 'delete') {
-                    $.confirm($(this).data('confirm'), function(){
-                        postdata(action, $.param(data), $.noop);
-                    })
-                } else {
-                    postdata(action, $.param(data), $.noop);
+                    });
                 }
+
+                // 永久删除
+                if (operate == 'delete') {
+                    $.confirm("{{ trans('core::master.delete.confirm') }}", function(){
+                        postData('{{route('media.destroy')}}', {id:ids});
+                    })
+                }                
             });                 
         });      
     });

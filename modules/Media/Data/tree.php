@@ -1,7 +1,7 @@
 <?php
-use Modules\Media\Models\Folder;
+use Modules\Media\Models\Media;
 
-$tree = Folder::select('id','parent_id','name as title')->orderBy('sort','desc')->get()->map(function($item, $key){
+$tree = Media::where('type','folder')->select('id','parent_id','name as title')->orderBy('sort','desc')->get()->map(function($item, $key){
     $item->key    = $item->id;
     $item->href   = route('media.index',[$item->id]);
     $item->folder = true;

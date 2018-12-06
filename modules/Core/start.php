@@ -202,7 +202,7 @@
             return $icon[$extension];
         }
     }
-    return 'fa-file';
+    return 'fa fa-file';
 });
 
 /**
