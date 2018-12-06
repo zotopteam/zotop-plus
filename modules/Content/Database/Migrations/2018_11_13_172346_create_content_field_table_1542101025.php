@@ -22,13 +22,13 @@ class CreateContentFieldTable1542101025 extends Migration
 			$table->string('type', 100)->comment('控件类型，如text，number等');
 			$table->string('name', 100)->nullable()->comment('数据库中的字段名称');
 			$table->text('default')->nullable()->comment('默认值');
-			$table->text('settings')->nullable()->comment('字段其它设置，如radio，select等的选项');
-			$table->string('help', 255)->nullable()->comment('字段提示信息');
+			$table->text('settings')->nullable()->comment('控件设置，如radio，select等的选项');
+			$table->string('help', 255)->nullable()->comment('控件提示信息');
 			$table->boolean('post')->nullable()->default(1)->comment('是否允许前台填写提交，0：不允许，1：允许');
 			$table->boolean('search')->nullable()->comment('是否允许搜索，0：禁止，1：允许')->default(0);
 			$table->boolean('system')->nullable()->comment('是否为系统字段，0：自定义字段，1：系统字段')->default(0);
-			$table->boolean('col')->nullable()->comment('列位置，0=左列，1=右列')->default(0);
-			$table->integer('row')->nullable()->comment('行位置')->default(0)->unsigned();
+			$table->boolean('position')->nullable()->comment('控件位置，main=主区域 side=侧边区域')->default('main');
+			$table->integer('width')->nullable()->comment('控件宽度，主区域可用')->default('w-100');
 			$table->integer('sort')->nullable()->comment('排序字段')->default(0)->unsigned();
 			$table->boolean('disabled')->nullable()->comment('是否禁用，0：未禁用，1：禁用')->default(0);
 			$table->timestamp('created_at');

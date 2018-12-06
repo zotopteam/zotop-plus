@@ -28,34 +28,30 @@ class FieldController extends AdminController
 
         // 左边允许一行多个
         $this->main = $this->fields->filter(function($item){
-            return $item['col'] == 0;
+            return $item['position'] == 'main';
         })->values();
 
         // 右边只允许一行一个
         $this->side = $this->fields->filter(function($item){
-            return $item['col'] == 1;
+            return $item['position'] == 'side';
         })->values();  
 
         return $this->view();
     }
 
     /**
-     * 删除
+     * 排序
      *
      * @return Response
      */
     public function sort(Request $request, $model_id)
     {
         foreach ($request->ids as $sort=>$id) {
-            Field::where('id', $id)->update([
-                'col'  => $request->col,
-                'row'  => $sort,
-                'sort' => $sort,
-            ]);
+            Field::where('id', $id)->update(['position' => $request->position, 'sort' => $sort]);
         }
 
         return $this->success(trans('core::master.operated'));        
-    }    
+    }     
 
     /**
      * 新建
@@ -91,22 +87,7 @@ class FieldController extends AdminController
         $field->save();
 
         return $this->success(trans('core::master.created'), route('content.field.index', $request->model_id));
-    }
-
-    /**
-     * 显示
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $this->title = trans('content::field.show');
-
-        $this->field = Field::findOrFail($id);
-
-        return $this->view();
-    }    
+    } 
 
     /**
      * 编辑
@@ -133,11 +114,26 @@ class FieldController extends AdminController
     public function update(FieldRequest $request, $id)
     {
         $field = Field::findOrFail($id);
-        $field->fill($request->all());        
+        $field->fill($request->all());    
         $field->save();
 
-        return $this->success(trans('core::master.updated'), route('content.field.index', $request->model_id));
+        return $this->success(trans('core::master.updated'), route('content.field.index', $field->model_id));
     }
+
+    /**
+     * 修改
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function change(Request $request, $id)
+    {
+        $field = Field::findOrFail($id);
+        $field->fill($request->all());      
+        $field->save();
+
+        return $this->success(trans('core::master.operated'), route('content.field.index', $field->model_id));        
+    }      
 
     /**
      * 删除

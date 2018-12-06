@@ -50,13 +50,13 @@ class ModelForm
         $instance->fields = Field::where('model_id', $model_id)->orderby('sort','asc')->get();
 
         $instance->main = $instance->fields->filter(function($item) {
-            return intval($item['col']) == 0;
+            return $item['position'] == 'main';
         })->values()->transform(function($item) {
             return static::convert($item);
         });
 
         $instance->side = $instance->fields->filter(function($item) {
-            return intval($item['col']) == 1;
+            return  $item['position'] == 'side';
         })->values()->transform(function($item) {
             return static::convert($item);
         });
@@ -95,6 +95,7 @@ class ModelForm
         $convert['for']      = $item->name;        
         $convert['required'] = (bool)array_get($item->settings, 'required');
         $convert['disabled'] = (bool)$item->disabled;
+        $convert['width']    = ($item->position == 'side') ? 'w-100' : $item->width;  
 
         $convert['field']['name']  = $item->name;
         $convert['field']['type']  = Form::findType(

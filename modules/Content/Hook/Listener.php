@@ -8,6 +8,7 @@ class Listener
 {
     /**
      * 后台开始菜单扩展
+     * 
      * @param  array $start 已有开始菜单
      * @return array
      */
@@ -28,6 +29,7 @@ class Listener
 
     /**
      * 后台快捷导航扩展
+     * 
      * @param  array $start 已有快捷导航
      * @return array
      */
@@ -45,6 +47,7 @@ class Listener
 
     /**
      * 字段类型滤器
+     * 
      * @param  array $types 当前字段类型
      * @param  array $args 参数
      * @return array
@@ -53,6 +56,8 @@ class Listener
     {
         // if (in_array($args['model_id'], ['category'])) {
         // }
+
+        // models 设置为全局可用
         $types['models'] = [
             'name'     => trans('content::field.type.models'),
             'view'     => '',
@@ -64,6 +69,13 @@ class Listener
         return $types;
     }
 
+    /**
+     * 单条内容管理菜单
+     * 
+     * @param  array $manage  菜单项
+     * @param  model $content 内容数据
+     * @return array
+     */
     public function contentManage($manage, $content)
     {
         // 查看和预览
@@ -112,7 +124,7 @@ class Listener
             'href'  => route('content.content.sort', ['parent_id'=>$content->parent_id, 'id'=>$content->id]),
             'icon'  => 'fa fa-sort-amount-up',
             'class' => 'js-open',
-            'attrs' => ['data-width' => '80%','data-height' => '80%']
+            'attrs' => ['data-width' => '80%','data-height' => '70%']
         ];        
 
         // 回收站中的数据可以永久删除

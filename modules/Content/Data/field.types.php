@@ -25,12 +25,6 @@ $types  = [
         'method'   => '',
         'settings' => ['maxlength'=>64, 'unique'=>1]
     ],
-    'link' => [
-        'name'     => trans('content::field.type.link'),
-        'view'     => ['content::field.settings.placeholder','content::field.settings.required'],
-        'method'   => '',
-        'settings' => ['maxlength'=>255]
-    ],    
     // 开放控件，可选择并创建这些类型
     'text' => [
         'name'     => trans('content::field.type.text'),
@@ -104,6 +98,12 @@ $types  = [
         'view'   => ['content::field.settings.placeholder','content::field.settings.required'],
         'method' => 'string'
     ],
+    'link' => [
+        'name'     => trans('content::field.type.link'),
+        'view'     => ['content::field.settings.placeholder','content::field.settings.required'],
+        'method'   => 'string',
+        'settings' => ['maxlength'=>255]
+    ],        
     'url' => [
         'name'     => trans('content::field.type.url'),
         'view'     => ['content::field.settings.placeholder','content::field.settings.required'],

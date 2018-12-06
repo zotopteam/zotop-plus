@@ -233,8 +233,8 @@ function moveDialog(callback) {
         id      : 'move-content',
         title   : '{{ trans('core::master.move') }}',
         url     : '{{ route('content.content.move')}}',
-        width   : '80%',
-        height  : '80%',
+        width   : '75%',
+        height  : '75%',
         padding : 0,
         ok      : function() {
             callback(this);

@@ -22,7 +22,7 @@ class Field extends LaravelModel
      *
      * @var array
      */
-    protected $fillable = ['model_id','label','type','name','default','settings','help','post','search','system','col','row','sort','disabled'];
+    protected $fillable = ['model_id','label','type','name','default','settings','help','post','search','system','position','width','sort','disabled'];
 	
 	
     /**

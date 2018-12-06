@@ -31,9 +31,6 @@ class ConfigController extends AdminController
         $this->title  = trans('translator::config.title');
         $this->config = Config::get('translator');
 
-        $ddd = translate_alias('你好啊，世界大同尽快取餐！');
-        debug($ddd);
-
         return $this->view();
     }  
 }

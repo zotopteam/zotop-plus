@@ -34,13 +34,16 @@ return [
     'help.label'         => '输入提示',
     'help.help'          => '在字段下方显示，表单输入的帮助或者提示信息',
 
+    'width.label'        => '控件宽度',
+    'width.help'         => '设置控件占据的宽度',
+
     'type.label'         => '表单控件',
     'type.help'          => '请选择字段对应的表单控件类型',
 
     'type.title'         => '标题',
     'type.keywords'      => '关键词',
     'type.summary'       => '摘要',
-    'type.slug'          => '别名',    
+    'type.slug'          => '别名',   
     'type.text'          => '单行文本',
     'type.textarea'      => '多行文本',
     'type.number'        => '数字',
@@ -52,7 +55,8 @@ return [
     'type.select'        => '下拉选择',
     'type.editor'        => '编辑器',    
     'type.template'      => '模板',
-    'type.url'           => '链接',
+    'type.link'          => '链接', 
+    'type.url'           => '网址',
     'type.email'         => '电子邮件',
     'type.date'          => '日期',    
     'type.datetime'      => '日期+时间',
@@ -67,8 +71,8 @@ return [
     'post.label'         => '前台投稿',
     'post.help'          => '',
 
-    'col.label'          => '侧边显示',
-    'col.help'           => '',
+    'position.label'     => '显示位置',
+    'position.help'      => '',
 
     'required.label'     => '必填项',
     'required.help'      => '',

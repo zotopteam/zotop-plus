@@ -113,14 +113,14 @@
             </div>
 
             <div class="form-group row">
-                <label for="col" class="col-2 col-form-label">{{trans('content::field.col.label')}}</label>
+                <label for="position" class="col-2 col-form-label">{{trans('content::field.position.label')}}</label>
                 <div class="col-8">
-                    {field type="bool" name="col"}
+                    {field type="radiogroup" name="position" options="['main'=>trans('content::field.layout.main'),'side' => trans('content::field.layout.side')]"}
 
-                    @if ($errors->has('col'))
-                    <span class="form-help text-error">{{ $errors->first('col') }}</span>
+                    @if ($errors->has('position'))
+                    <span class="form-help text-error">{{ $errors->first('position') }}</span>
                     @else
-                    <span class="form-help">{{trans('content::field.col.help')}}</span>                     
+                    <span class="form-help">{{trans('content::field.position.help')}}</span>                     
                     @endif                       
                 </div>
             </div>  

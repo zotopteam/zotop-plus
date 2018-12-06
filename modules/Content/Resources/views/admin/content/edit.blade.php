@@ -33,14 +33,14 @@
             {field type="hidden" name="publish_at"}
 
             <div class="row">
-                <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}}">
+                <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}} d-flex flex-wrap p-0">
                     @foreach ($form->main as $item)
                         @include('content::content.field')
                     @endforeach                    
                 </div>
 
                 @if ($form->side->count())
-                <div class="col-3 col-md-3 col-sm-12">
+                <div class="col-3 col-md-3 col-sm-12 p-0">
                     @foreach ($form->side as $item)
                         @include('content::content.field')                       
                     @endforeach                    
