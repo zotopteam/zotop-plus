@@ -198,28 +198,6 @@ class FormBuilder extends LaravelFormBuilder
     }
 
     /**
-     * 获取数据编号
-     * @return [type] [description]
-     */
-    public function getDataId(Array $attrs, $default=null)
-    {
-        // 从标签中获取数据编号
-        $data_id = array_pull($attrs, 'data_id', $default);
-
-        // 获取可能的数据编号
-        $data_id = $this->getValueAttribute('data_id', $data_id);
-
-        if (is_null($data_id)) {
-            $data_id = tap(md5(request()->fullUrl()), function($data_id) {
-                session(['data_id'=>$data_id]);
-            });
-        }
-
-        return $data_id;
-    }
-
-
-    /**
      * Override parent ,add default class
      *
      * @param  string $type

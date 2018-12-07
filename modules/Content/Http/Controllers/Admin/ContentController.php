@@ -19,10 +19,14 @@ class ContentController extends AdminController
      */
     public function index($parent_id=0)
     {
-        // 获取父分类
-        $this->parent = Content::findOrNew($parent_id);
-        $this->parent->id = $this->parent->id ?? 0;
-        $this->parent->title = $this->parent->title ?? trans('content::content.root');
+        // 获取父节点
+        if ($parent_id) {
+            $this->parent = Content::findOrFail($parent_id);
+        } else {
+            $this->parent = new Content;
+            $this->parent->id = 0;
+            $this->parent->title = trans('content::content.root');            
+        }
 
         // 获取全部父级
         $this->parents = Content::parents($parent_id, true);
@@ -40,9 +44,14 @@ class ContentController extends AdminController
      */
     public function create($parent_id, $model_id)
     {
-        $this->parent = Content::findOrNew($parent_id);
-        $this->parent->id = $this->parent->id ?? 0;
-        $this->parent->title = $this->parent->title ?? trans('content::content.root');
+        // 获取父节点
+        if ($parent_id) {
+            $this->parent = Content::findOrFail($parent_id);
+        } else {
+            $this->parent = new Content;
+            $this->parent->id = 0;
+            $this->parent->title = trans('content::content.root');            
+        }
 
         // 获取全部父级
         $this->parents = Content::parents($parent_id, true);
@@ -102,9 +111,14 @@ class ContentController extends AdminController
         $this->id    = $id;
         $this->content = Content::findOrFail($id);
 
-        $this->parent = Content::findOrNew($this->content->parent_id);
-        $this->parent->id = $this->parent->id ?? 0;
-        $this->parent->title = $this->parent->title ?? trans('content::content.root');
+        // 获取父节点
+        if ($this->content->parent_id) {
+            $this->parent = Content::findOrFail($this->content->parent_id);
+        } else {
+            $this->parent = new Content;
+            $this->parent->id = 0;
+            $this->parent->title = trans('content::content.root');            
+        }
 
         // 获取全部父级
         $this->parents = Content::parents($id, false);
@@ -203,10 +217,14 @@ class ContentController extends AdminController
         // 当前排序节点
         $this->sort = Content::findOrFail($request->id);
         
-        // 当前排序的父节点
-        $this->parent  = Content::findOrNew($parent_id);
-        $this->parent->id = $this->parent->id ?? 0;
-        $this->parent->title = $this->parent->title ?? trans('content::content.root');
+        // 获取父节点
+        if ($parent_id) {
+            $this->parent = Content::findOrFail($parent_id);
+        } else {
+            $this->parent = new Content;
+            $this->parent->id = 0;
+            $this->parent->title = trans('content::content.root');            
+        }
 
         // 获取全部父节点
         $this->parents = Content::parents($request->id, false);        
@@ -249,9 +267,13 @@ class ContentController extends AdminController
         }
 
         // 当前排序的父节点
-        $this->parent   = Content::findOrNew($parent_id);
-        $this->parent->id = $this->parent->id ?? 0;
-        $this->parent->title = $this->parent->title ?? trans('content::content.root');
+        if ($parent_id) {
+            $this->parent = Content::findOrFail($parent_id);
+        } else {
+            $this->parent = new Content;
+            $this->parent->id = 0;
+            $this->parent->title = trans('content::content.root');            
+        }
 
         // 获取全部父节点
         $this->parents = Content::parents($parent_id, true);      

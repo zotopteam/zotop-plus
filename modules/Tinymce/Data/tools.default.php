@@ -15,9 +15,9 @@ foreach($upload_types as $type=>$config) {
 
     // 上传参数
     $params = [
-        'filetype'   => $type,
+        'type'       => $type,
         'typename'   => $typename,
-        'allow'      => $config['extensions'],
+        'extension'  => $config['extensions'],
         'maxsize'    => $config['maxsize'],
         'module'     => app('current.module'),
         'controller' => app('current.controller'),

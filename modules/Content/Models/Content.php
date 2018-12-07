@@ -144,11 +144,11 @@ class Content extends Model
             $instance = new static;
         }
 
-        if ($self) {
+        if ($id && $self) {
             $parentIds[] = $id;
         }
 
-        if ($parentId = $instance->where('id', $id)->value('parent_id')) {
+        if ($id && $parentId = $instance->where('id', $id)->value('parent_id')) {
             $instance->parentIds($parentId, true, $parentIds);
         }
 
@@ -166,11 +166,15 @@ class Content extends Model
     {
         $parentIds    = static::parentIds($id, $self);
         $parentSorts = array_flip($parentIds);
-
+        
         // 获取父级并排序
-        return (new static)->whereIn('id', $parentIds)->get()->sortBy(function($content) use($parentSorts) {
-            return $parentSorts[$content->id];
-        });
+        if ($parentIds) {
+            return (new static)->whereIn('id', $parentIds)->get()->sortBy(function($content) use($parentSorts) {
+                return $parentSorts[$content->id];
+            });
+        }
+
+        return collect([]);
     }    
 
     /**
@@ -200,7 +204,11 @@ class Content extends Model
      */
     public function getDataIdAttribute($value)
     {
-        return 'content-'.$this->id;
+        if ($this->id) {
+            return 'content-'.$this->id;
+        }
+        
+        return null;
     }
 
     /**

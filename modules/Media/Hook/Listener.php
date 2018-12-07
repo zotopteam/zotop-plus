@@ -76,7 +76,7 @@ class Listener
     {
         $typename = $params['typename'];
 
-        // 删除系统自带的目录选择
+        // 删除core模块的目录选择
         unset($tools['dir']);
 
         $select = [

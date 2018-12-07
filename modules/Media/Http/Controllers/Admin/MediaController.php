@@ -160,12 +160,21 @@ class MediaController extends AdminController
     {
         $file = Media::where('type', '<>' ,'folder');
 
-        $from = $request->only(['module','controller','action','field','data_id','filetype','allow']);
+        // 当传入的有data_id ，从data_id获取，不从 action和field获取
+        if ($request->data_id) {
+            $from = $request->only(['type','extension','module','controller','data_id']);
+        } else {
+            $from = $request->only(['type','extension','module','controller','action','field']);
+        }
 
-        foreach ($from as $key => $value) {        
-            if ($key == 'filetype' && $value) {
-                $file->where('type', $value);
-            } elseif ($key == 'allow' && $value) {
+        // 筛选条件
+        foreach ($from as $key => $value) {
+            
+            if (empty($value)) {
+                continue;
+            }
+
+            if ($key == 'extension') {
                 $file->whereIn('extension', explode(',', $value));
             } else {
                 $file->where($key, $value);
@@ -174,7 +183,7 @@ class MediaController extends AdminController
         
         $this->params = $request->all();
         $this->files  = $file->orderby('sort', 'desc')->paginate(24);
-        $this->title  = trans('media::media.insert.from.uploaded',[$request->typename]);
+        $this->title  = trans('media::media.insert.from.uploaded', [$request->typename]);
         
         return $this->view('media::media.select.uploaded');
     }
@@ -212,14 +221,10 @@ class MediaController extends AdminController
         }
 
         // 查询数据并分页
-        $this->media = Media::where('parent_id', $parent_id)->where(function($query) use ($request) {
-            if ($request->filetype) {
-                $query->where('type', 'folder')->orWhere('type', $request->filetype);
-            }
-        })->where(function($query) use ($request) {
-            if ($request->allow) {
-                $query->whereNull('extension')->orWhereIn('extension', explode(',', $request->allow));
-            }
+        $this->media = Media::where('parent_id', $parent_id)->when($request->type, function($query, $type){
+            $query->where('type', 'folder')->orWhere('type', $type);
+        })->when($request->extension, function($query, $extension){
+            $query->whereNull('extension')->orWhereIn('extension', explode(',', $extension));
         })->sort()->paginate(48);
 
         // 补充url字段

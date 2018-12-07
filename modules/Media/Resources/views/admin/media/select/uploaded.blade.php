@@ -179,6 +179,8 @@
 
         if (selected.length) {
             this.close(selected).remove(); 
+        } else {
+            $.error('{{ trans('core::master.select.min', [1]) }}');
         }
         
         return false;

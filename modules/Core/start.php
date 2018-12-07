@@ -258,24 +258,28 @@
     $value    = $this->getValue($attrs);
     $name     = $this->getAttribute($attrs, 'name');
     $id       = $this->getIdAttribute($name, $attrs);
+
+    // 上传和选择参数
     $filetype = $this->getAttribute($attrs, 'filetype', 'files');
     $url      = $this->getAttribute($attrs, 'url', route('core.file.upload',[$filetype]));
     $allow    = $this->getAttribute($attrs, 'allow', config('core.upload.types.'.$filetype.'.extensions'));
     $maxsize  = $this->getAttribute($attrs, 'maxsize', config('core.upload.types.'.$filetype.'.maxsize'));
     $typename = $this->getAttribute($attrs, 'typename', trans('core::file.type.'.$filetype));
+    $folder   = $this->getAttribute($attrs, 'folder', '');
+    $data_id  = $this->getAttribute($attrs, 'data_id', $this->getValueAttribute('data_id'));
+    
+    // 界面文字和图标
     $select   = $this->getAttribute($attrs, 'select', trans('core::field.upload.select',[$typename])); 
     $icon     = $this->getAttribute($attrs, 'icon', 'fa-upload');
     $button   = $this->getAttribute($attrs, 'button', trans('core::field.upload.button',[$typename]));
-    $folder   = $this->getAttribute($attrs, 'folder', '');
-    $data_id  = $this->getDataId($attrs);
-    
+
     // 附加参数
     $params = $this->getAttribute($attrs, 'params',  [
         'select'     => 1,
-        'allow'      => $allow,
+        'type'       => $filetype,
+        'typename'   => $typename,        
+        'extension'  => $allow,
         'maxsize'    => $maxsize,
-        'filetype'   => $filetype,
-        'typename'   => $typename,
         'module'     => app('current.module'),
         'controller' => app('current.controller'),
         'action'     => app('current.action'),

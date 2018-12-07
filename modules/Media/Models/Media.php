@@ -129,11 +129,11 @@ class Media extends Model
             $instance = new static;
         }
 
-        if ($self) {
+        if ($id && $self) {
             $parentIds[] = $id;
         }
 
-        if ($parentId = $instance->where('id', $id)->value('parent_id')) {
+        if ($id && $parentId = $instance->where('id', $id)->value('parent_id')) {
             $instance->parentIds($parentId, true, $parentIds);
         }
 
@@ -153,9 +153,13 @@ class Media extends Model
         $parentSorts = array_flip($parentIds);
 
         // 获取父级并排序
-        return (new static)->whereIn('id', $parentIds)->get()->sortBy(function($media) use($parentSorts) {
-            return $parentSorts[$media->id];
-        });
+        if ($parentIds) {
+            return (new static)->whereIn('id', $parentIds)->get()->sortBy(function($media) use($parentSorts) {
+                return $parentSorts[$media->id];
+            });
+        }
+
+        return collect([]);
     }
 
     /**
