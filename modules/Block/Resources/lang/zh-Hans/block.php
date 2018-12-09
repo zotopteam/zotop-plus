@@ -24,9 +24,9 @@ return [
     'name'                        => '名称',
     'name.help'                   => '区块显示名称',
 
-    'code'                        => '唯一代码',
-    'code.help'                   => '区块唯一代码，英文或者数字，最大64个字符',
-    'code.include'                => '调用代码',
+    'slug'                        => '别名',
+    'slug.help'                   => '区块全局唯一别名，英文或者数字，最大64个字符',
+    'slug.include'                => '调用代码',
 
     'type'                        => '类型',
     'type.help'                   => '',

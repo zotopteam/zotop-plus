@@ -21,7 +21,7 @@ class BlockRequest extends FormRequest
             return [
                 'type'        => 'required',
                 'category_id' => 'required',
-                'code'        => 'required|max:64|unique:block',
+                'slug'        => 'required|max:64|unique:block',
                 'template'    => 'required',
             ];
         }
@@ -34,7 +34,7 @@ class BlockRequest extends FormRequest
             return [
                 'type'        => 'required',
                 'category_id' => 'required',
-                'code'        => 'required|max:64|unique:block,code,'.$id.',id',
+                'slug'        => 'required|max:64|unique:block,slug,'.$id.',id',
                 'template'    => 'required',   
             ];
         }
@@ -62,7 +62,7 @@ class BlockRequest extends FormRequest
         return [
             'type'        => trans('block::block.type'),
             'category_id' => trans('block::block.category_id'),
-            'code'        => trans('block::block.code'),
+            'slug'        => trans('block::block.slug'),
             'template'    => trans('block::block.template'),
         ];
     }      

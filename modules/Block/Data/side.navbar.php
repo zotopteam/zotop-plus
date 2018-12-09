@@ -3,7 +3,7 @@ use Modules\Block\Models\Category;
 
 $navbar = [];
 
-$categories = Category::all();
+$categories = Category::sort()->get();
 
 // 获取route中的参数 category_id
 $category_id = request()->route('category_id');
@@ -17,7 +17,7 @@ foreach ($categories as $category) {
     $navbar['category_'.$category->id] = [
         'text'  => $category->name,
         'href'  => route('block.index', $category->id),
-        'icon'  => 'fa fa-cog',
+        'icon'  => 'fa fa-folder',
         'class' => ($category->id == $category_id) ? 'active' : '',
     ];
 }

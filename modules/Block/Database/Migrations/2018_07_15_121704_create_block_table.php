@@ -20,7 +20,7 @@ class CreateBlockTable extends Migration {
         	$table->increments('id')->comment('区块编号');
 			$table->integer('category_id')->unsigned()->nullable()->default(0)->comment('分类编号');
 			$table->char('type', 20)->default('html')->comment('类型，html:内容,list:列表,hand:手动,text:文本');
-			$table->char('code', 64)->unique('code')->comment('区块唯一编码');
+			$table->char('slug', 64)->unique('code')->comment('区块别名');
 			$table->string('name', 100)->comment('区块名称');
 			$table->text('description')->nullable()->comment('说明');
 			$table->integer('rows')->default(0)->comment('行数，0为无限制');

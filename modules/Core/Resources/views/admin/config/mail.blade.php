@@ -219,6 +219,7 @@
                 var data = $('form#config').serialize() +'&'+ $(form).serialize();
 
                 $('.form-submit').prop('disabled',true);
+                $.loading();
                 $.post($(form).attr('action'), data, function(msg){                    
                     $.msg(msg);
                     $('.form-submit').prop('disabled',false);

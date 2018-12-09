@@ -51,7 +51,7 @@
                             </div>
                         </td>
                         <td>{{$category->description}}</td>
-                        <td>{{$category->blocks_count}}</td>
+                        <td>{{$category->block_count}}</td>
                     </tr>
                     @endforeach
                 </tbody>

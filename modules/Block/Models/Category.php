@@ -19,9 +19,13 @@ class Category extends Model
     {
         parent::boot();
 
-        // sort 排序全局作用域
-        static::addGlobalScope('sort', function (Builder $builder) {
-            $builder->orderby('sort', 'asc')->orderby('id', 'asc');
+        // 为安全考虑，禁止删除非空的模型
+        static::deleting(function($category) {
+
+            // 如果已经有数据，不能删除
+            if ($category->block()->count()) {
+                abort(403, trans('block::category.delete.hasblock'));
+            }                   
         });
     }
 
@@ -29,7 +33,18 @@ class Category extends Model
      * 和block的关联
      * @return hasMany
      */
-    public function blocks() {
+    public function block() {
         return $this->hasMany(Block::class, 'category_id', 'id');
-    } 
+    }
+
+    /**
+     * 排序
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSort($query)
+    {
+        return $query->orderby('sort', 'asc')->orderby('id', 'asc');
+    }    
 }

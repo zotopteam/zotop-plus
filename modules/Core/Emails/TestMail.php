@@ -1,5 +1,4 @@
 <?php
-
 namespace Modules\Core\Emails;
 
 use Illuminate\Bus\Queueable;
@@ -18,14 +17,14 @@ class TestMail extends Mailable
      */
     public function __construct()
     {
-        //
+
     }
 
     /**
-     * Build the message.
-     *
-     * @return $this
-     */
+    * Build the message.
+    *
+    * @return $this
+    */
     public function build()
     {
         return $this->view('core::mail.test');

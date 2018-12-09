@@ -117,26 +117,22 @@ class ConfigController extends AdminController
         // 保存数据
         if ($request->isMethod('POST')) {
 
-            if ($to = $request->input('mailtest_sendto')) {
+            // 邮件接收者
+            $to = $request->input('mailtest_sendto');
 
-                // 设置当前参数
-                $this->app['config']->set('mail',$request->all());
+           // 设置当前参数
+            $this->app['config']->set('mail', $request->all());
 
-                // 使用新配置
-                (new \Illuminate\Mail\MailServiceProvider($this->app))->register();
+            // 使用新配置
+            (new \Illuminate\Mail\MailServiceProvider($this->app))->register();
 
-                // 发送邮件
-                try {
-                    $this->app->make('mailer')->to($to)->send(new \Modules\Core\Emails\TestMail());
-                    $msg = $this->success(trans('core::master.operated'));                    
-                } catch (\Swift_TransportException $e) {
-                    $msg = $this->error($e->getMessage());
-                }
-                
-                exit($msg->getContent());                              
-            }
-
-            return $this->error(trans('core::master.forbidden'));
+            // 发送邮件
+            try {
+                $this->app->make('mailer')->to($to)->send(new \Modules\Core\Emails\TestMail());
+                return $this->success(trans('core::master.operated'));             
+            } catch (\Swift_TransportException $e) {
+                abort(403, $e->getMessage());
+            }            
         }
 
         return new \Modules\Core\Emails\TestMail();

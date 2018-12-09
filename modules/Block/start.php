@@ -26,9 +26,9 @@ if (! function_exists('block_tag')) {
     // 解析 {block code="……"} 标签
     function block_tag($attrs)
     {
-        $code  = array_pull($attrs, 'code');
+        $slug  = array_pull($attrs, 'slug');
 
-        $block = \Modules\Block\Models\Block::where('code', $code)->first();
+        $block = \Modules\Block\Models\Block::where('slug', $slug)->first();
 
         // 如果block存在，解析并返回
         if ($block) {
@@ -40,12 +40,12 @@ if (! function_exists('block_tag')) {
                 return $view->make($template)->with($data)->render();
             }
 
-            return '<span class="text-error">'.trans('block::block.view.notexist', [$template, $code]).'</span>';
+            return '<span class="text-error">'.trans('block::block.view.notexist', [$template, $slug]).'</span>';
         }
         
         // 自动创建block
         // coding
         
-        return '<span class="text-error">'.trans('block::block.code.notexist', [$code]).'</span>';
+        return '<span class="text-error">'.trans('block::block.code.notexist', [$slug]).'</span>';
     }
 }

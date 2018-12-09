@@ -57,7 +57,7 @@
                 <tr>
                     <td class="drag"></td>
                     <th>{{trans('block::block.name')}}</th>
-                    <td width="30%" >{{trans('block::block.code.include')}}</td>
+                    <td width="30%" >{{trans('block::block.slug.include')}}</td>
                     <td width="20%" class="text-center">{{trans('block::block.type')}}</td>
                     <td>{{trans('core::master.lastmodify')}}</td>
                 </tr>
@@ -84,9 +84,9 @@
                         </td>
                         <th>
                             <div class="input-group">
-                                <input type="text" id="code_include_{{$block->id}}" class="form-control" value="{{$block->code_include}}">
+                                <input type="text" id="slug_include_{{$block->id}}" class="form-control" value="{{$block->slug_include}}">
                                 <div class="input-group-append">
-                                    <button class="btn btn-light btn-copy" type="button" data-clipboard-target="#code_include_{{$block->id}}" data-success="{{trans('core::master.copied')}}" data-toggle="tooltip" title="{{trans('core::master.copy')}}">
+                                    <button class="btn btn-light btn-copy" type="button" data-clipboard-target="#slug_include_{{$block->id}}" data-success="{{trans('core::master.copied')}}" data-toggle="tooltip" title="{{trans('core::master.copy')}}">
                                         <i class="far fa-copy"></i>
                                     </button>
                                 </div>

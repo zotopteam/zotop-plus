@@ -45,14 +45,14 @@
             </div>
 
             <div class="form-group row">
-                <label for="code" class="col-2 col-form-label required">{{trans('block::block.code')}}</label>
+                <label for="slug" class="col-2 col-form-label required">{{trans('block::block.slug')}}</label>
                 <div class="col-8">
-                    {field type="translate" name="code" source="name" format="id" required="required" maxlength="64"}
+                    {field type="translate" name="slug" source="name" format="slug" required="required" maxlength="64"}
 
-                    @if ($errors->has('code'))
-                    <span class="form-help text-error">{{ $errors->first('code') }}</span>
+                    @if ($errors->has('slug'))
+                    <span class="form-help text-error">{{ $errors->first('slug') }}</span>
                     @else
-                    <span class="form-help">{{trans('block::block.code.help')}}</span>                     
+                    <span class="form-help">{{trans('block::block.slug.help')}}</span>                     
                     @endif                       
                 </div>
             </div>

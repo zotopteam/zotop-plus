@@ -19,7 +19,7 @@ class CategoryController extends AdminController
         $this->title = trans('block::category.title');
     
         // 分页获取
-        $this->categories = Category::withCount('blocks')->get();
+        $this->categories = Category::withCount('block')->sort()->get();
 
         return $this->view();
     }
@@ -105,12 +105,6 @@ class CategoryController extends AdminController
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
-
-        // 如果分类下面有区块，则禁止删除
-        if ( $blocks_count = $category->blocks()->count() ) {
-            return $this->error(trans('block::category.delete.hasblock'));
-        }
-
         $category->delete();
 
         return $this->success(trans('core::master.deleted'), route('block.category.index'));        

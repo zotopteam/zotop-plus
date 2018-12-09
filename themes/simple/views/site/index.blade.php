@@ -3,7 +3,7 @@
 @section('content')
 
         <div class="full-width align-self-center text-center">
-            {block code="picture_list"}
+            {block slug="test-block"}
         </div>
 
 @endsection

@@ -14,7 +14,7 @@ class Block extends Model
     
     protected $table = 'block';
 
-    protected $fillable = ['category_id','type','code','name','description','rows','data','template','interval','fields','commend','sort','user_id','disabled'];
+    protected $fillable = ['category_id','type','slug','name','description','rows','data','template','interval','fields','commend','sort','user_id','disabled'];
 
     /**
      * 属性转换
@@ -34,11 +34,6 @@ class Block extends Model
     protected static function boot()
     {
         parent::boot();
-
-        // sort
-        static::addGlobalScope('sort', function (Builder $builder) {
-            $builder->orderby('sort', 'asc')->orderby('id', 'asc');
-        });
 
         // 保存后
         static::saved(function ($model) {
@@ -75,6 +70,17 @@ class Block extends Model
     }
 
     /**
+     * 排序
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSort($query)
+    {
+        return $query->orderby('sort', 'asc')->orderby('id', 'asc');
+    }    
+
+    /**
      * 区块类型名称
      *
      * @param  string  $value
@@ -91,9 +97,9 @@ class Block extends Model
      * @param  string  $value
      * @return string
      */
-    public function getCodeIncludeAttribute($value)
+    public function getSlugIncludeAttribute($value)
     {        
-        return '{block code="'.$this->code.'"}';
+        return '{block slug="'.$this->slug.'"}';
     }
 
     /**
