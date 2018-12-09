@@ -34,83 +34,78 @@
     </div>    
     <div class="main-body scrollable p-2" id="file-upload-dragdrop">
         
-        <div class="container-fluid">
-            <div class="row">         
-            @foreach($media as $m)
-                <div class="col-sm-4 col-md-3 col-xl-2 p-1">
-                    <label class="card-check d-block m-0" data-type="{{$m->isFolder() ? 'folder' : 'file'}}" data-url="{{$m->link}}">
-                        @if (request()->input('select', 0) == 1)
-                        <input type="radio" name="file_ids[]" value="{{$m->id}}" class="form-control form-control-check">
-                        @else
-                        <input type="checkbox" name="file_ids[]" value="{{$m->id}}" class="form-control form-control-check">
-                        @endif             
-                        <div class="card card-md bg-light js-contextmenu">
-                            <div class="card-image">
-                                <div class="card-thumb pos-r">
-                                    @if ($m->isFolder())
-                                    <div class="pos-a pos-full d-flex justify-content-center bg-white">
-                                        <i class="fa fa-folder fa-6x fa-fw text-warning align-self-center"></i>
-                                    </div>
-                                    @else
-                                    <div class="pos-a pos-full d-flex justify-content-center bg-image-preview">
-                                        @if ($m->isImage())
-                                        <img src="{{$m->link}}" class="align-self-center">
-                                        @else
-                                        <i class="{{$m->icon}} fa-5x fa-fw text-muted align-self-center"></i>
-                                        @endif
-                                    </div>
-                                    @endif
-                                </div>                             
-                            </div>
-                            <div class="card-body p-2">
-                                <div class="card-text text-md text-overflow">
-                                    {{$m->name}}
-                                </div>
-                                <div class="card-text text-xs">
-                                    @if($m->isFolder())
-                                    <small class="text-success">{{trans('core::folder.type')}}</small>
-                                    @else
-                                    <small class="text-success">{{trans('core::file.type.'.$m->type)}}</small>
-                                    @endif
-                                    <small class="text-info">{{$m->size_human}}</small>
-                                    @if ($m->isImage())
-                                    <small>{{$m->width}}px × {{$m->height}}px</small>
-                                    @endif
-                                </div>
-                                <div class="contextmenu d-none">
-                                        @if ($m->isImage())
-                                        <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$m->link}}" data-title="{{$m->name}}" data-info="{{$m->size_human}} / {{$m->width}}px × {{$m->height}}px">
-                                            <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
-                                            <b class="contextmenu-item-text">{{trans('core::master.view')}}</b>
-                                        </a>
-                                        @endif
-
-                                        @if($m->isFolder())
-                                            <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" data-value="{{$m->name}}">
-                                                <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                                <b class="contextmenu-item-text">{{trans('core::master.rename')}}</b>
-                                            </a>                      
-                                        @else
-                                            <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::file.name')}}" data-name="name" data-value="{{$m->name}}">
-                                                <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                                <b class="contextmenu-item-text">{{trans('core::master.rename')}}</b>
-                                            </a>                                                                  
-                                        @endif
-
-                                        <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.destroy', $m->id)}}">
-                                            <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
-                                            <b class="contextmenu-item-text">{{trans('core::master.delete')}}</b>
-                                        </a>                                          
-                                </div>
-                                <textarea name="data" class="d-none">{!! json_encode($m) !!}</textarea>
-                            </div>                           
+        <div class="card-grid">         
+        @foreach($media as $m)     
+            <label class="card-check d-flex flex-column" data-type="{{$m->isFolder() ? 'folder' : 'file'}}" data-url="{{$m->link}}">
+                @if (request()->input('select', 0) == 1)
+                <input type="radio" name="file_ids[]" value="{{$m->id}}" class="form-control form-control-check">
+                @else
+                <input type="checkbox" name="file_ids[]" value="{{$m->id}}" class="form-control form-control-check">
+                @endif             
+                <div class="card bg-light js-contextmenu">
+                    <div class="card-thumb pos-r">
+                        @if ($m->isFolder())
+                        <div class="d-flex justify-content-center bg-white pos-a pos-full">
+                            <i class="fa fa-folder fa-6x fa-fw text-warning align-self-center"></i>
                         </div>
-                    </label>
+                        @elseif ($m->isImage())
+                        <div class="d-flex justify-content-center bg-image-preview pos-a pos-full">
+                            <img src="{{$m->link}}" class="align-self-center">
+                        </div>
+                        @else
+                        <div class="d-flex justify-content-center bg-white pos-a pos-full">
+                        <i class="{{$m->icon}} fa-5x fa-fw text-muted align-self-center"></i>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="card-body p-2">
+                        <div class="card-text text-sm text-overflow">
+                            {{$m->name}}
+                        </div>
+                        <div class="card-text text-xs text-overflow">
+                            @if($m->isFolder())
+                            <small class="text-success">{{trans('core::folder.type')}}</small>
+                            @else
+                            <small class="text-success">{{trans('core::file.type.'.$m->type)}}</small>
+                            @endif
+                            <small class="text-info">{{$m->size_human}}</small>
+                            @if ($m->isImage())
+                            <small>{{$m->width}}px × {{$m->height}}px</small>
+                            @endif
+                        </div>
+                        <div class="contextmenu d-none">
+                                @if ($m->isImage())
+                                <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$m->link}}" data-title="{{$m->name}}" data-info="{{$m->size_human}} / {{$m->width}}px × {{$m->height}}px">
+                                    <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
+                                    <b class="contextmenu-item-text">{{trans('core::master.view')}}</b>
+                                </a>
+                                @endif
+
+                                @if($m->isFolder())
+                                    <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" data-value="{{$m->name}}">
+                                        <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
+                                        <b class="contextmenu-item-text">{{trans('core::master.rename')}}</b>
+                                    </a>                      
+                                @else
+                                    <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::file.name')}}" data-name="name" data-value="{{$m->name}}">
+                                        <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
+                                        <b class="contextmenu-item-text">{{trans('core::master.rename')}}</b>
+                                    </a>                                                                  
+                                @endif
+
+                                <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.destroy', $m->id)}}">
+                                    <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
+                                    <b class="contextmenu-item-text">{{trans('core::master.delete')}}</b>
+                                </a>                                          
+                        </div>
+                        <textarea name="data" class="d-none">{!! json_encode($m) !!}</textarea>
+                    </div>                           
                 </div>
-            @endforeach
-            </div>
-        
+            </label>
+        @endforeach
         </div>
+        
 
     </div><!-- main-body -->
     @if ($media->lastPage() > 1)  
@@ -123,8 +118,15 @@
 
 @push('css')
 <style type="text/css">
+    .card-grid{
+        display: grid;
+        grid-template-columns: repeat(auto-fill,minmax(10rem,1fr));
+        grid-row-gap: .5rem;
+        grid-column-gap: .5rem;
+        padding: .5rem;        
+    }
     .card-thumb{padding-bottom:60%;overflow:hidden;}
-    .card-thumb img{max-width:100%;max-height:100%;}
+    .card-thumb img{max-width:100%;max-height:100%;}    
 </style>
 @endpush
 @push('js')

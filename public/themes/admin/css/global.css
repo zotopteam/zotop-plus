@@ -308,7 +308,7 @@ textarea{resize:none;}
 .card-check img{border-radius:.05rem;}
 .card-check .card-body{padding:.75rem;}
 .card-check .form-control-check{display:none;}
-.card-check .card{border-color:#fff;border-width:3px;cursor:pointer;transition:all 0.2s;}
+.card-check .card{border-color:#fff;border-width:3px;cursor:pointer;transition:all 0.2s;overflow: hidden;}
 .card-check .card:hover,
 .card-check .card:focus{border-color:rgba(0,0,0,0.1);border-color:#66bb00;}
 .card-check .form-control-check:checked + .card{border-color:#66bb00;position:relative;}

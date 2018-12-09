@@ -260,7 +260,7 @@ class MediaController extends AdminController
         $this->position = $browser->position();
         $this->folders  = $browser->folders();
         $this->files    = $browser->files()->filter(function($item) use($request) {
-            return $item->type == $request->filetype;
+            return $item->type == $request->type;
         });
 
         // 选择文件个数，默认不限制
