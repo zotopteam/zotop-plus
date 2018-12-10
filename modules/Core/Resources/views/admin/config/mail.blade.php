@@ -127,6 +127,7 @@
                 </div>
             </div>
             {/form}
+            
             {form route="core.config.mailtest" method="post" id="mailtest" autocomplete="off"}
             <div class="form-title row">{{trans('core::config.mail.test')}}</div>
             <div class="form-group row">
@@ -211,7 +212,7 @@
     });
 
 
-    // 表单提交
+    // 测试邮件发送表单提交
     $(function(){
         $('form#mailtest').validate({       
             submitHandler:function(form){                

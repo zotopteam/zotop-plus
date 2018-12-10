@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'title'             => 'Media title',
+    'title'             => 'Media',
     'description'       => 'Media description',
 ];

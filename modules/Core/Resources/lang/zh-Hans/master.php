@@ -35,6 +35,8 @@ return [
     'delete.confirm'       => '确认要删除嘛？',
     'copy'                 => '复制',
     'copied'               => '复制成功！',
+    'duplicate'            => '复制',
+    'duplicated'           => '复制成功！',
     'move'                 => '移动',
     'moved'                => '移动成功！',
     'rename'               => '重命名',

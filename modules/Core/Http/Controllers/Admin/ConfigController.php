@@ -127,12 +127,9 @@ class ConfigController extends AdminController
             (new \Illuminate\Mail\MailServiceProvider($this->app))->register();
 
             // 发送邮件
-            try {
-                $this->app->make('mailer')->to($to)->send(new \Modules\Core\Emails\TestMail());
-                return $this->success(trans('core::master.operated'));             
-            } catch (\Swift_TransportException $e) {
-                abort(403, $e->getMessage());
-            }            
+            $this->app->make('mailer')->to($to)->send(new \Modules\Core\Emails\TestMail());
+
+            return $this->success(trans('core::master.operated'));                            
         }
 
         return new \Modules\Core\Emails\TestMail();

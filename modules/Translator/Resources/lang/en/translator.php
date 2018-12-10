@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'title'             => 'Translator title',
-    'description'       => 'Translator description',
+    'title'             => 'Translator',
+    'description'       => 'Translator',
 ];

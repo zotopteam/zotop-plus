@@ -102,6 +102,13 @@ class Listener
             'icon' => 'fas fa-edit',
         ];
 
+        // 复制
+        $manage['duplicate'] = [
+            'text'  => trans('core::master.duplicate'),
+            'href' => route('content.content.duplicate', [$content->id]),            
+            'icon'  => 'fas fa-copy',
+        ];        
+
         // 移动
         $manage['move'] = [
             'text'  => trans('core::master.move'),
@@ -110,13 +117,7 @@ class Listener
             'attrs' => ['data-id' => $content->id, 'data-parent_id' => $content->parent_id]
         ];
 
-        // 复制
-        $manage['copy'] = [
-            'text'  => trans('core::master.copy'),
-            'href' => route('content.content.copy', [$content->id]),            
-            'icon'  => 'fas fa-copy',
-            'class' => 'js-post'
-        ];
+
 
         // 排序
         $manage['sort'] = [

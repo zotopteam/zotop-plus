@@ -70,9 +70,11 @@ class Content extends Model
             $content->slug = $content->slug ?: null;
             $content->sort = $content->sort ?: time();
 
-            // 发布和定时发布的时间必须大于当前时间，其他状态发布时间为空
-            if (in_array($content->status, ['publish', 'future']) && $now = now()) {
-                $content->publish_at = $content->publish_at > $now ? $content->publish_at : $now;
+            // 发布为当前时间，定时发布的时间必须大于当前时间，其他状态发布时间为空
+            if ($content->status == 'publish') {
+                $content->publish_at = now();
+            } else if ($content->status == 'future') {
+                $content->publish_at = $content->publish_at > now() ? $content->publish_at : now();
             } else {
                 $content->publish_at = null;
             }

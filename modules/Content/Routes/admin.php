@@ -14,7 +14,7 @@ $router->group(['prefix'=>'content', 'module'=>'content'], function (Router $rou
     $router->any('status/{status}/{id?}','ContentController@status')->name('content.content.status')->middleware('allow:content.content.status');
     $router->any('stick/{id}','ContentController@stick')->name('content.content.stick')->middleware('allow:content.content.stick');
     $router->any('sort/{parent_id}','ContentController@sort')->name('content.content.sort')->middleware('allow:content.content.sort');
-    $router->any('copy/{id}','ContentController@copy')->name('content.content.copy')->middleware('allow:content.content.copy');
+    $router->any('duplicate/{id}','ContentController@duplicate')->name('content.content.duplicate')->middleware('allow:content.content.duplicate');
     $router->any('move/{id?}','ContentController@move')->name('content.content.move')->middleware('allow:content.content.move');
 
     // 模型管理

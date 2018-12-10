@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'title'             => 'Content title',
-    'description'       => 'Content description',
+    'title'             => 'Content',
+    'description'       => 'Content with page、category、news……',
 ];

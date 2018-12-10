@@ -169,7 +169,7 @@
                             <div>{{$content->publish_at}}</div>
                             @elseif (in_array($content->status,['future']))
                             <div>
-                                <a class="js-future" href="{{route('content.content.status', [$content->id, $content->status])}}" data-value="{{$content->publish_at}}">
+                                <a class="js-future" href="{{route('content.content.status', [$content->status,$content->id])}}" data-value="{{$content->publish_at}}">
                                    {{trans('content::content.status.future')}} <i class="fa fa-pen-square"></i>
                                 </a>
                             </div>

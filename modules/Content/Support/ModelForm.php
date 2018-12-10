@@ -119,6 +119,7 @@ class ModelForm
                     $val = (bool)$val;
                 }
                 // TODO 数组格式
+                // coding
             }            
 
             if (in_array($key, ['required'])) {

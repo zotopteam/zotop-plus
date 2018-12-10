@@ -9,6 +9,7 @@ use Modules\Content\Models\Content;
 use Modules\Content\Models\Model;
 use Modules\Content\Models\Field;
 use Modules\Content\Support\ModelForm;
+use Modules\Content\Http\Requests\ContentRequest;
 
 class ContentController extends AdminController
 {
@@ -77,7 +78,7 @@ class ContentController extends AdminController
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(ContentRequest $request)
     {
         $content = new Content;
         $content->fill($request->all());
@@ -137,13 +138,44 @@ class ContentController extends AdminController
      * @param  Request $request
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(ContentRequest $request, $id)
     {
         $content = Content::findOrFail($id);
         $content->fill($request->all());        
         $content->save();
 
         return $this->success(trans('core::master.updated'), route('content.content.index', $content->parent_id));
+    }
+
+    /**
+     * 复制
+     * @param  Request $request [description]
+     * @param  int  $id  编号
+     * @return Response
+     */
+    public function duplicate($id)
+    {
+        $this->id    = $id;
+        $this->content = Content::findOrFail($id);
+
+        // 获取父节点
+        if ($this->content->parent_id) {
+            $this->parent = Content::findOrFail($this->content->parent_id);
+        } else {
+            $this->parent = new Content;
+            $this->parent->id = 0;
+            $this->parent->title = trans('content::content.root');            
+        }
+
+        // 获取全部父级
+        $this->parents = Content::parents($id, false);
+
+        $this->model  = Model::find($this->content->model_id);
+        $this->form   = ModelForm::get($this->content->model_id);     
+
+        $this->title   = trans('content::content.duplicate.model', [$this->model->name]);   
+        
+        return $this->view('content::content.create');        
     }
 
     /**

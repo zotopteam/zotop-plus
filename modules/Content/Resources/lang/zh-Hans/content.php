@@ -10,6 +10,8 @@ return [
     'create.model'       => '新建:0',
     'edit'               => '编辑',
     'edit.model'         => '编辑:0',
+    'duplicate'          => '复制',
+    'duplicate.model'    => '复制:0',   
     'children'           => '下级',
     'stick'              => '置顶',
     'unstick'            => '取消置顶',
@@ -28,6 +30,10 @@ return [
     
     'title.label'        => '标题',
     'user.label'         => '编辑',
+
+    'slug.label'         => '别名',
+    'slug.help'          => '',
+    'slug.regex'         => '只允许英文（小写）字母、数字和中线（-），且必须以英文或者数字开头结尾',
 
     'status.label'       => '状态',
     'status.publish'     => '发布',
