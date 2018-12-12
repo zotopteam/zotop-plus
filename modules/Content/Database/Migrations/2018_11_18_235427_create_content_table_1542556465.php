@@ -29,7 +29,7 @@ class CreateContentTable1542556465 extends Migration
 			$table->string('template', 100)->nullable()->comment('模版');
 			$table->integer('hits')->nullable()->comment('点击数')->default(0)->unsigned();
 			$table->integer('comments')->nullable()->comment('评论数')->default(0)->unsigned();
-			$table->char('status', 32)->nullable()->comment('状态 publish/pending/trash')->index('status');
+			$table->char('status', 32)->nullable()->comment('状态 publish|pending|trash')->index('status');
 			$table->tinyInteger('stick')->nullable()->comment('是否固顶，0：不固顶，1：固顶')->index('stick')->default(0)->unsigned();
 			$table->integer('sort')->nullable()->comment('排序')->index('sort')->default(0)->unsigned();
 			$table->integer('user_id')->nullable()->comment('用户编号')->default(0)->unsigned();

@@ -108,16 +108,6 @@ class ContentRequest extends FormRequest
 
         debug($rules);
 
-        //添加时
-        if ( $request->isMethod('POST') ) {
-        }
-
-        // 修改时
-        if ( $request->isMethod('PUT')  || $request->isMethod('PATCH') )  {
-            
-            $id = $this->route('id');
-        }
-
         return $rules;  
     }
 

@@ -31,7 +31,7 @@ class AdminMiddleware
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
-    {
+    {        
         // 当前主题
         $this->app->singleton('current.theme',function() {
             return config('core.theme', 'admin');

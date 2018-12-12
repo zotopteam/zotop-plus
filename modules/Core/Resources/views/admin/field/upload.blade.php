@@ -9,7 +9,7 @@
             </div>            
         </button>
         @if($tools)
-        <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" tabindex="-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="sr-only">Toggle Dropdown</span>
         </button>
         <div class="dropdown-menu dropdown-menu-primary dropdown-menu-right">

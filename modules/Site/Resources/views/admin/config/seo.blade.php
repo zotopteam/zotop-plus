@@ -73,7 +73,7 @@
             <div class="form-group row">
                 <label for="index_meta" class="col-2 col-form-label">{{trans('site::config.index_meta.label')}}</label>
                 <div class="col-8">
-                    {field type="textarea" name="index_meta" placeholder="trans('site::config.index_meta.placeholder')" rows="5"}
+                    {field type="code" name="index_meta" placeholder="trans('site::config.index_meta.placeholder')" rows="5"}
                     
                     @if ($errors->has('index_meta'))
                     <span class="form-help text-error">{{ $errors->first('index_meta') }}</span>

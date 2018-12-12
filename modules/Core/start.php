@@ -526,6 +526,11 @@
     $value   = $this->getValue($attrs);
     $name    = $this->getAttribute($attrs, 'name');
 
+    // 支持rows高度模式
+    if ($rows  = $this->getAttribute($attrs, 'rows', 0)) {
+        $attrs['height'] = $rows * 25;
+    }
+
     $options = $this->getAttribute($attrs, 'options',  [
         'width'         => $this->getAttribute($attrs, 'width', '100%'),
         'height'        => $this->getAttribute($attrs, 'height', '500'),

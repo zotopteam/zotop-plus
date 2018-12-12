@@ -2,8 +2,8 @@
     {{Form::text($name, $value, $attrs)}}
     {{Form::hidden($name.'_style')}}
     <div class="input-group-append">
-        <button type="button" class="btn btn-light btn-bold"><i class="fa fa-bold fa-fw"></i></button>
-        <button type="button" class="btn btn-light btn-color"><i class="fa fa-palette fa-fw"></i></button>
+        <button type="button" class="btn btn-light btn-bold" tabindex="-1"><i class="fa fa-bold fa-fw"></i></button>
+        <button type="button" class="btn btn-light btn-color" tabindex="-1"><i class="fa fa-palette fa-fw"></i></button>
     </div>
 </div>
 
