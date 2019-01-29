@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Foundation\Bus\PendingDispatch;
@@ -59,10 +58,10 @@ class Excel implements Exporter, Importer
     private $reader;
 
     /**
-     * @param Writer            $writer
-     * @param QueuedWriter      $queuedWriter
-     * @param Reader            $reader
-     * @param Factory $filesystem
+     * @param Writer       $writer
+     * @param QueuedWriter $queuedWriter
+     * @param Reader       $reader
+     * @param Factory      $filesystem
      */
     public function __construct(
         Writer $writer,
@@ -107,6 +106,10 @@ class Excel implements Exporter, Importer
     {
         $writerType = $this->findTypeByExtension($filePath, $writerType);
 
+        if (!$writerType) {
+            throw new NoTypeDetectedException();
+        }
+
         return $this->queuedWriter->store($export, $filePath, $disk, $writerType);
     }
 
@@ -116,8 +119,7 @@ class Excel implements Exporter, Importer
     public function import($import, $filePath, string $disk = null, string $readerType = null)
     {
         $readerType = $this->getReaderType($filePath, $readerType);
-
-        $response =  $this->reader->read($import, $filePath, $readerType, $disk);
+        $response   = $this->reader->read($import, $filePath, $readerType, $disk);
 
         if ($response instanceof PendingDispatch) {
             return $response;
@@ -167,6 +169,10 @@ class Excel implements Exporter, Importer
     {
         $writerType = $this->findTypeByExtension($fileName, $writerType);
 
+        if (!$writerType) {
+            throw new NoTypeDetectedException();
+        }
+
         return $this->writer->export($export, $writerType);
     }
 
@@ -176,7 +182,7 @@ class Excel implements Exporter, Importer
      *
      * @return string|null
      */
-    protected function findTypeByExtension($fileName, string $type = null): string
+    protected function findTypeByExtension($fileName, string $type = null)
     {
         if (null !== $type) {
             return $type;
@@ -201,17 +207,10 @@ class Excel implements Exporter, Importer
      * @param string|null         $readerType
      *
      * @throws NoTypeDetectedException
-     * @return string
+     * @return string|null
      */
-    private function getReaderType($filePath, string $readerType = null): string
+    private function getReaderType($filePath, string $readerType = null)
     {
-        $readerType = $this->findTypeByExtension($filePath, $readerType);
-        $readerType = $readerType ?? IOFactory::identify($filePath);
-
-        if (null === $readerType) {
-            throw new NoTypeDetectedException();
-        }
-
-        return $readerType;
+        return $this->findTypeByExtension($filePath, $readerType);
     }
 }

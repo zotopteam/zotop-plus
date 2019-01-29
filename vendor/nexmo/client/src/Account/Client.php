@@ -15,6 +15,47 @@ class Client implements ClientAwareInterface
 {
     use ClientAwareTrait;
 
+    public function getPrefixPricing($prefix)
+    {
+        $queryString = http_build_query([
+            'prefix' => $prefix
+        ]);
+
+        $request = new Request(
+            $this->getClient()->getRestUrl() . '/account/get-prefix-pricing/outbound?'.$queryString,
+            'GET',
+            'php://temp'
+        );
+
+        $response = $this->client->send($request);
+        $rawBody = $response->getBody()->getContents();
+
+        $body = json_decode($rawBody, true);
+
+        $codeCategory = (int) ($response->getStatusCode()/100);
+        if ($codeCategory != 2) {
+            if ($codeCategory == 4) {
+                throw new Exception\Request($body['error-code-label']);
+            }else if ($codeCategory == 5) {
+                throw new Exception\Server($body['error-code-label']);
+            }
+        }
+
+        if ($body['count'] == 0) {
+            return [];
+        }
+
+        // Multiple countries can match each prefix
+        $prices = [];
+
+        foreach ($body['prices'] as $p) {
+            $prefixPrice = new PrefixPrice();
+            $prefixPrice->jsonUnserialize($p);
+            $prices[] = $prefixPrice;
+        }
+        return $prices;
+    }
+
     public function getSmsPrice($country)
     {
         $body = $this->makePricingRequest($country, 'sms');
@@ -38,7 +79,7 @@ class Client implements ClientAwareInterface
         ]);
 
         $request = new Request(
-            \Nexmo\Client::BASE_REST . '/account/get-pricing/outbound/'.$pricingType.'?'.$queryString,
+            $this->getClient()->getRestUrl() . '/account/get-pricing/outbound/'.$pricingType.'?'.$queryString,
             'GET',
             'php://temp'
         );
@@ -57,7 +98,7 @@ class Client implements ClientAwareInterface
     {
 
         $request = new Request(
-            \Nexmo\Client::BASE_REST . '/account/get-balance',
+            $this->getClient()->getRestUrl() . '/account/get-balance',
             'GET',
             'php://temp'
         );
@@ -82,7 +123,7 @@ class Client implements ClientAwareInterface
         ];
 
         $request = new Request(
-            \Nexmo\Client::BASE_REST . '/account/top-up'
+            $this->getClient()->getRestUrl() . '/account/top-up'
             ,'POST'
             , 'php://temp'
             , ['content-type' => 'application/x-www-form-urlencoded']
@@ -98,13 +139,13 @@ class Client implements ClientAwareInterface
 
     public function listSecrets($apiKey)
     {
-        $body = $this->get( \Nexmo\Client::BASE_API . '/accounts/'.$apiKey.'/secrets');
+        $body = $this->get( $this->getClient()->getApiUrl() . '/accounts/'.$apiKey.'/secrets');
         return SecretCollection::fromApi($body);
     }
 
     public function getSecret($apiKey, $secretId)
     {
-        $body = $this->get( \Nexmo\Client::BASE_API . '/accounts/'.$apiKey.'/secrets/'. $secretId);
+        $body = $this->get( $this->getClient()->getApiUrl() . '/accounts/'.$apiKey.'/secrets/'. $secretId);
         return Secret::fromApi($body);
     }
 
@@ -115,7 +156,7 @@ class Client implements ClientAwareInterface
         ];
 
         $request = new Request(
-            \Nexmo\Client::BASE_API . '/accounts/'.$apiKey.'/secrets'
+            $this->getClient()->getApiUrl() . '/accounts/'.$apiKey.'/secrets'
             ,'POST'
             , 'php://temp'
             , ['content-type' => 'application/json']
@@ -134,7 +175,7 @@ class Client implements ClientAwareInterface
     public function deleteSecret($apiKey, $secretId)
     {
         $request = new Request(
-            \Nexmo\Client::BASE_API . '/accounts/'.$apiKey.'/secrets/'. $secretId
+            $this->getClient()->getApiUrl() . '/accounts/'.$apiKey.'/secrets/'. $secretId
             ,'DELETE'
             , 'php://temp'
             , ['content-type' => 'application/json']

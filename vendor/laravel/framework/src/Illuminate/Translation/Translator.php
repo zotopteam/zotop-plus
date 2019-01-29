@@ -94,7 +94,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      * @param  string  $key
      * @param  array   $replace
      * @param  string  $locale
-     * @return string|array|null
+     * @return string|array
      */
     public function trans($key, array $replace = [], $locale = null)
     {
@@ -108,7 +108,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      * @param  array   $replace
      * @param  string|null  $locale
      * @param  bool  $fallback
-     * @return string|array|null
+     * @return string|array
      */
     public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
@@ -144,7 +144,7 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
      * @param  string  $key
      * @param  array  $replace
      * @param  string  $locale
-     * @return string|array|null
+     * @return string|array
      */
     public function getFromJson($key, array $replace = [], $locale = null)
     {
@@ -244,6 +244,10 @@ class Translator extends NamespacedItemResolver implements TranslatorContract
         if (is_string($line)) {
             return $this->makeReplacements($line, $replace);
         } elseif (is_array($line) && count($line) > 0) {
+            foreach ($line as $key => $value) {
+                $line[$key] = $this->makeReplacements($value, $replace);
+            }
+
             return $line;
         }
     }

@@ -3,6 +3,7 @@
 namespace Illuminate\Database\Eloquent;
 
 use Closure;
+use Exception;
 use BadMethodCallException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
+ * @property-read HigherOrderBuilderProxy $orWhere
+ *
  * @mixin \Illuminate\Database\Query\Builder
  */
 class Builder
@@ -904,7 +907,7 @@ class Builder
      * Call the given local model scopes.
      *
      * @param  array  $scopes
-     * @return mixed
+     * @return static|mixed
      */
     public function scopes(array $scopes)
     {
@@ -933,7 +936,7 @@ class Builder
     /**
      * Apply the scopes to the Eloquent builder instance and return it.
      *
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     * @return static
      */
     public function applyScopes()
     {
@@ -1114,9 +1117,9 @@ class Builder
         $results = [];
 
         foreach ($relations as $name => $constraints) {
-            // If the "relation" value is actually a numeric key, we can assume that no
-            // constraints have been specified for the eager load and we'll just put
-            // an empty Closure with the loader so that we can treat all the same.
+            // If the "name" value is a numeric key, we can assume that no
+            // constraints have been specified. We'll just put an empty
+            // Closure there, so that we can treat them all the same.
             if (is_numeric($name)) {
                 $name = $constraints;
 
@@ -1127,9 +1130,9 @@ class Builder
                             }];
             }
 
-            // We need to separate out any nested includes. Which allows the developers
+            // We need to separate out any nested includes, which allows the developers
             // to load deep relationships using "dots" without stating each level of
-            // the relationship with its own key in the array of eager load names.
+            // the relationship with its own key in the array of eager-load names.
             $results = $this->addNestedWiths($name, $results);
 
             $results[$name] = $constraints;
@@ -1279,6 +1282,23 @@ class Builder
     public function getMacro($name)
     {
         return Arr::get($this->localMacros, $name);
+    }
+
+    /**
+     * Dynamically access builder proxies.
+     *
+     * @param  string  $key
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function __get($key)
+    {
+        if ($key === 'orWhere') {
+            return new HigherOrderBuilderProxy($this, $key);
+        }
+
+        throw new Exception("Property [{$key}] does not exist on the Eloquent builder instance.");
     }
 
     /**

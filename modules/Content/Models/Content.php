@@ -177,7 +177,7 @@ class Content extends Model
         }
 
         return collect([]);
-    }    
+    }
 
     /**
      * 获取内容状态名称
