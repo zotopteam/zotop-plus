@@ -50,20 +50,22 @@ class BlockServiceProvider extends ServiceProvider
         return [];
     }
 
-    public function baldeBlockTag()
+    private function baldeBlockTag()
     {
         // 解析{block ……}
         Blade::extend(function($value)
         {
-            $pattern = sprintf('/(@)?%sblock(\s+[^}]+?)\s*%s(\r?\n)?/s', '{', '}');
+            $pattern = sprintf('/(@)?%sblock(\s+[^}]+?)\s*%s/s', '{', '}');
 
             $callback = function ($matches)  {
 
-                $whitespace = empty($matches[3]) ? '' : $matches[3].$matches[3];
+                // 如果有@符号，@{block……} ，直接去掉@符号返回标签
+                if ($matches[1]) {
+                    return substr($matches[0], 1);
+                }
 
-                $attrs = Blade::convertAttrs($matches[2]);
-
-                return $matches[1] ? substr($matches[0], 1) : "<?php echo block_tag(".$attrs."); ?>{$whitespace}";
+                // 返回解析
+                return '<?php echo block_tag('.Blade::convertAttrs($matches[2]).'); ?>';
             };
 
             return preg_replace_callback($pattern, $callback, $value);

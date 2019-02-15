@@ -50,7 +50,7 @@
                 
                 @foreach($files as $file)
                 <tr>
-                    <td width="1%" class="icon icon-sm pr-2"><div class="fa fa-file fa-{{$file->getExtension()}} fa-2x text-primary"></div> </td>
+                    <td width="1%" class="pr-2"><div class="fa fa-file fa-2x text-primary"></div> </td>
                     <td class="pl-2">
                         <div class="title">{{$file->getFilename()}} </div>
                         <div class="description">

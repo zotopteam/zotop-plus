@@ -2,9 +2,7 @@
 
 @section('content')
 
-        <div class="full-width align-self-center text-center">
-            {block slug="test-block"}
-        </div>
+    <div class="full-width align-self-center text-center">{block slug="test-block"}</div>
 
 @endsection
 

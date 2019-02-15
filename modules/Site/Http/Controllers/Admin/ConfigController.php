@@ -25,7 +25,7 @@ class ConfigController extends AdminController
             // 表单验证
             $this->validate($request, [
                 'name' => 'required',
-                'url'  => 'url'
+                'url'  => 'url|nullable'
             ],[],[
                 'name' => trans('site::config.name.label'),
                 'url'  => trans('site::config.url.label')

@@ -7,6 +7,7 @@ use Modules\Content\Models\Content;
 use Modules\Content\Models\Model;
 use Illuminate\Support\Facades\Schema;
 use Modules\Content\Support\ModelHelper;
+use Blade;
 
 
 class ContentServiceProvider extends ServiceProvider
@@ -48,6 +49,9 @@ class ContentServiceProvider extends ServiceProvider
                 $model->table && Schema::dropIfExists($model->table);
             });
         });
+
+        // 解析模板
+        $this->baldeContentTag();
     }    
 
     /**
@@ -69,4 +73,62 @@ class ContentServiceProvider extends ServiceProvider
     {
         return [];
     }
+
+    private function baldeContentTag()
+    {
+        // 解析{content ……}
+        Blade::extend(function($value)
+        {
+            $pattern = sprintf('/(@)?%scontent(\s+[^}]+?)\s*%s/s', '{', '}');
+
+            $callback = function ($matches)  {
+
+                // 如果有@符号，@{content……} ，直接去掉@符号返回标签
+                if ($matches[1]) {
+                    return substr($matches[0], 1);
+                }
+
+                // 将属性转化为参数
+                $arguments = Blade::convertAttrsToArray($matches[2]);
+
+                // 获取循环变量，默认值为item
+                $item = array_get($arguments, 'item', 'item');
+
+                $content_tag = "\$_contentTagData = content_tag(".Blade::convertArrayToString($arguments).");"; 
+                $content_tag .= "\$__env->addLoop(\$_contentTagData);";
+                $content_tag .= "if(\$_contentTagData) {";
+                $content_tag .= "foreach(\$_contentTagData as \$".$item.") { ";
+                $content_tag .= "\$__env->incrementLoopIndices(); \$loop = \$__env->getLastLoop();";
+
+                // 返回解析
+                return '<?php '.$content_tag.' ?>';
+            };
+
+            return preg_replace_callback($pattern, $callback, $value);
+        });
+
+        // 解析 {/content}
+        Blade::extend(function($value)
+        {
+            $pattern = sprintf('/(@)?%s(empty)%s/s', '{', '}');
+
+            $callback = function ($matches)  {
+                return '<?php } else { ?>';
+            };
+
+            return preg_replace_callback($pattern, $callback, $value);
+        });          
+
+        // 解析 {/content}
+        Blade::extend(function($value)
+        {
+            $pattern = sprintf('/(@)?%s(\/content)%s/s', '{', '}');
+
+            $callback = function ($matches)  {
+                return '<?php } $__env->popLoop(); $loop = $__env->getLastLoop(); } ?>';
+            };
+
+            return preg_replace_callback($pattern, $callback, $value);
+        });              
+    }    
 }

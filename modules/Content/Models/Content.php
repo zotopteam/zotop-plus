@@ -180,6 +180,45 @@ class Content extends Model
     }
 
     /**
+     * 获取节点的全部子节点编号
+     * 
+     * @param  mixed  $id         编号
+     * @param  boolean $self      是否包含自身
+     * @param  mixed   $model_id  子节点类型
+     * @param  array   $childrenIds  传递自身
+     * @return array
+     */    
+    public static function childrenIds($id, $self=false, $model_id=null, &$childrenIds=[])
+    {
+        static $instance = null;
+
+        if (empty($instance)) {
+            $instance = new static;
+        }
+
+        if ($id && $self) {
+            $childrenIds[] = $id;
+        }
+
+        // 查询下级节点
+        $children = $instance->select('id')->where('parent_id', $id)->when($model_id, function($query, $model_id){
+            $model_id = is_string($model_id) ? explode(',', $model_id) : $model_id;
+            return count($model_id) == 1 ? 
+                $query->where('model_id', reset($model_id)) : 
+                $query->whereIn('model_id', $model_id);
+        });
+
+        // 递归获取子节点
+        if ($children_ids = $children->pluck('id')) {
+            foreach ($children_ids as $children_id) {
+                $instance->childrenIds($children_id, true, $model_id, $childrenIds);
+            }
+        }
+
+        return $childrenIds;    
+    }
+
+    /**
      * 获取内容状态名称
      * @param  mixed $value
      * @return string
