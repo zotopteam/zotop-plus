@@ -39,7 +39,22 @@ class BladeCompiler extends LaravelBladeCompiler
      */
     protected $simpleTags = ['{', '}'];
 
-    
+    /**
+     * 扩展tag标签
+     * 
+     * 1，函数：Blade::tag('block', 'block_tag');
+     * 2，类方法：Blade::tag('block', 'Modules\Block\Hook\Listener@block_tag');
+     * 3，匿名函数：Blade::tag('block', function($attrs) {……});
+     * 
+     * @param  string $name 标签名称
+     * @param  mixed $callback 回调
+     * @return null
+     */
+    public function tag($name, $callback)
+    {
+        $this->tags[$name] = $callback;
+    }
+
     /**
      * Execute the user defined extensions.
      *
@@ -48,6 +63,31 @@ class BladeCompiler extends LaravelBladeCompiler
      */
     protected function compileTags($value)
     {
+        if ($this->tags) {
+
+            // 获取全部标签正则
+            $pattern = sprintf('/(@)?%s('.implode('|', array_keys($this->tags)).')(\s+[^}]+?)\s*%s/s', '{', '}');
+
+            debug($pattern);
+
+            // 正则替换
+            return preg_replace_callback($pattern, function($matches) {
+                
+                // 如果有@符号，@{block……} ，直接去掉@符号返回标签
+                if ($matches[1]) {
+                    return substr($matches[0], 1);
+                }
+
+                // 标签回调         
+                $callback = 'Blade::tag_callback_'.$matches[2];
+                $parameters = static::convertAttrs($matches[3]);
+
+                // 返回解析
+                return '<?php echo '.$callback .'('.$parameters.'); ?>';
+
+            }, $value);
+        }
+
         return $value;
     }
 
@@ -165,4 +205,24 @@ class BladeCompiler extends LaravelBladeCompiler
         // 字符串类型加单引号后返回，TODO：可能有些数据需要处理 addslashes($val)
         return "'".$val."'";
     }
+
+
+    public function __call($method, $args)
+    {
+        // tag_callback_block 函数
+        if (starts_with($method, 'tag_callback')) {
+
+            // 获取回调
+            $callback = $this->tags[substr($method, 13)];
+
+            // 如果回调是类函数：字符串且包含@符号
+            if (is_string($callback) && strpos($callback, '@')) {
+                $callback = explode('@', $callback);
+                $callback = array(app('\\' . $callback[0]), $callback[1]);
+            }
+
+            return call_user_func_array($callback, $args);
+        }
+    }
+
 }

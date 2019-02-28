@@ -68,5 +68,5 @@ class Listener
         }
 
         return $block;
-    }    
+    }   
 }

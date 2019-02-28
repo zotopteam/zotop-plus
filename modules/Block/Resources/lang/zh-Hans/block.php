@@ -85,7 +85,6 @@ return [
     'data.placeholder.text'       => '请输入文本……',
     'data.placeholder.html'       => '请输入内容……',
 
-    'code.notexist'               => '区块 :0 不存在',
-    'view.notexist'               => '区块 :1 使用的模板 :0 不存在',    
-
+    'slug.notexist'               => '区块 :0 不存在',
+    'view.notexist'               => '区块 :1 使用的模板 :0 不存在',
 ];

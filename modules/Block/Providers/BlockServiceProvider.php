@@ -53,22 +53,24 @@ class BlockServiceProvider extends ServiceProvider
     private function baldeBlockTag()
     {
         // 解析{block ……}
-        Blade::extend(function($value)
-        {
-            $pattern = sprintf('/(@)?%sblock(\s+[^}]+?)\s*%s/s', '{', '}');
+        Blade::tag('block', function($attrs) {
 
-            $callback = function ($matches)  {
+            $id       = array_pull($attrs, 'id');
+            $slug     = array_pull($attrs, 'slug');
+            $template = array_pull($attrs, 'template');
 
-                // 如果有@符号，@{block……} ，直接去掉@符号返回标签
-                if ($matches[1]) {
-                    return substr($matches[0], 1);
-                }
+            $block = \Modules\Block\Models\Block::where('slug', $slug)->orWhere('id', $id)->firstOrFail();
 
-                // 返回解析
-                return '<?php echo block_tag('.Blade::convertAttrs($matches[2]).'); ?>';
-            };
+            // 如果block存在，解析并返回
+            if ($block) {
+                $data     = $block->toArray();
+                $template = $template ?: array_pull($data, 'template');
 
-            return preg_replace_callback($pattern, $callback, $value);
-        });        
+                return app('view')->make($template)->with($data)->render();
+            }
+            
+            return null;
+        });
+
     }
 }

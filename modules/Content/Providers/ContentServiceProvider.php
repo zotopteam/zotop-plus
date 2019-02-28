@@ -77,58 +77,52 @@ class ContentServiceProvider extends ServiceProvider
     private function baldeContentTag()
     {
         // 解析{content ……}
-        Blade::extend(function($value)
-        {
-            $pattern = sprintf('/(@)?%scontent(\s+[^}]+?)\s*%s/s', '{', '}');
+        Blade::tag('content', function($attrs) {
 
-            $callback = function ($matches)  {
+            $id       = array_pull($attrs, 'id');
+            $slug     = array_pull($attrs, 'slug');
+            $template = array_pull($attrs, 'template');
+            $model    = array_pull($attrs, 'model', '');
+            $children = array_pull($attrs, 'children', 'children');
+            $paginate = array_pull($attrs, 'paginate', false);
+            $size     = array_pull($attrs, 'size', 10);
+            $sort     = array_pull($attrs, 'sort', '');
 
-                // 如果有@符号，@{content……} ，直接去掉@符号返回标签
-                if ($matches[1]) {
-                    return substr($matches[0], 1);
+            $content = Content::where('slug', $slug)->Orwhere('id', $id)->firstOrFail();
+
+            // 如果block存在，解析并返回
+            if ($content) {
+
+                // 获取子节点
+                if ($children) {
+                    $contents = Content::where('parent_id', $content->id);
+
+                    if ($model) {
+                        $models = explode(',', $model);
+                        if (count($models) > 1) {
+                            $contents->whereIn('model_id', $models);
+                        } else {
+                            $contents->where('model_id', $model);
+                        }
+                    }
+
+                    if ($sort) {
+
+                    } else {
+                        $contents->sort();
+                    }
+
+                    if ($paginate) {
+                        $children = $contents->paginate($size);
+                    } else {
+                        $children = $contents->limit($size)->get();
+                    }
                 }
 
-                // 将属性转化为参数
-                $arguments = Blade::convertAttrsToArray($matches[2]);
-
-                // 获取循环变量，默认值为item
-                $item = array_get($arguments, 'item', 'item');
-
-                $content_tag = "\$_contentTagData = content_tag(".Blade::convertArrayToString($arguments).");"; 
-                $content_tag .= "\$__env->addLoop(\$_contentTagData);";
-                $content_tag .= "if(\$_contentTagData) {";
-                $content_tag .= "foreach(\$_contentTagData as \$".$item.") { ";
-                $content_tag .= "\$__env->incrementLoopIndices(); \$loop = \$__env->getLastLoop();";
-
-                // 返回解析
-                return '<?php '.$content_tag.' ?>';
-            };
-
-            return preg_replace_callback($pattern, $callback, $value);
-        });
-
-        // 解析 {/content}
-        Blade::extend(function($value)
-        {
-            $pattern = sprintf('/(@)?%s(empty)%s/s', '{', '}');
-
-            $callback = function ($matches)  {
-                return '<?php } else { ?>';
-            };
-
-            return preg_replace_callback($pattern, $callback, $value);
-        });          
-
-        // 解析 {/content}
-        Blade::extend(function($value)
-        {
-            $pattern = sprintf('/(@)?%s(\/content)%s/s', '{', '}');
-
-            $callback = function ($matches)  {
-                return '<?php } $__env->popLoop(); $loop = $__env->getLastLoop(); } ?>';
-            };
-
-            return preg_replace_callback($pattern, $callback, $value);
-        });              
+                return app('view')->make($template)->with('content', $content)->with('children', $children)->render();
+            }
+            
+            return null;
+        });                     
     }    
 }
