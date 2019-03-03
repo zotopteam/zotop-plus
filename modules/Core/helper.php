@@ -64,6 +64,37 @@ if (! function_exists('object_array')) {
     }
 }
 
+if (! function_exists('str_array')) {
+    
+    /**
+     * 分隔字符串为数组，支持多个分隔符
+     * 
+     * @param array $array 数组
+     * @param array delimiters 分隔符
+     * @return mixed
+     */
+    function str_array($string, ...$delimiters)
+    {
+        if (is_array($string)) {
+            return $string;
+        }
+
+        if (blank($string)) {
+            return [];
+        }
+
+        $array = explode(array_shift($delimiters), $string);
+
+        if ($delimiters) {
+            foreach($array as $key=>$val) {
+                 $array[$key] = str_array($val, ...$delimiters);
+            }         
+        }
+
+        return $array;
+    }
+}
+
 if (! function_exists('array_merge_deep')) {
     /**
      * 深层次合并数组

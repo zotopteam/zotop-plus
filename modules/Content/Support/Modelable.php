@@ -81,7 +81,36 @@ trait Modelable
         }
 
         return null;
-    }    
+    }
+
+    /**
+     * 模型筛选
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeModel($query, $model_id=null, $relationship=true)
+    {
+        if($model_id) {
+            $models =  str_array($model_id, ',');
+
+            if ($relationship) {
+                foreach ($models as $model) {
+                    if ($relation = $this->getExtendRelation($model)) {
+                        $query->with($relation);
+                    }
+                }
+            }
+
+            if (count($models) == 1) {
+                return $query->where('model_id', reset($models));
+            }
+            
+            return $query->whereIn('model_id', $models);         
+        }
+
+        return $this;
+    } 
     
 
     /**
@@ -129,6 +158,24 @@ trait Modelable
     }
 
     /**
+     * 当前模型是否含有属性
+     * @param  string  $key
+     * @return boolean
+     */
+    public function hasAttribute($key)
+    {
+        if (array_key_exists($key, $this->attributes) ||
+            $this->hasGetMutator($key) ||
+            method_exists(self::class, $key) ||
+            method_exists($this, $key) ||
+            $this->relationLoaded($key)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * 获取属性，自动获取扩展模型属性
      * 
      * @param  string $key 属性名称
@@ -136,10 +183,8 @@ trait Modelable
      */
     public function getAttribute($key)
     {
-        $value = parent::getAttribute($key);
-
-        if ($value !== null) {
-            return $value;
+        if ($this->hasAttribute($key)) {
+            return parent::getAttribute($key);
         }
 
         if (parent::getAttribute('id') && $extendRelation = $this->getExtendRelation()) {

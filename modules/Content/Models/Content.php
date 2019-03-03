@@ -294,19 +294,9 @@ class Content extends Model
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSort($query)
+    public function scopeSort($query, $sort=null)
     {
         return $query->orderby('stick', 'desc')->orderby('sort', 'desc')->orderby('id', 'desc');
-    }
-
-    /**
-     * 不更新时间戳
-     * @return this
-     */
-    public function scopeWithoutTimestamps()
-    {
-        $this->timestamps = false;
-        return $this;
     }
 
     /**
@@ -318,7 +308,17 @@ class Content extends Model
     public function scopePublish($query)
     {
         return $query->where('status', 'publish');
-    }    
+    }        
+
+    /**
+     * 不更新时间戳
+     * @return this
+     */
+    public function scopeWithoutTimestamps()
+    {
+        $this->timestamps = false;
+        return $this;
+    }
 
     /**
      * Handle dynamic static method calls into the method.

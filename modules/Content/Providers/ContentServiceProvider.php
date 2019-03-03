@@ -83,39 +83,28 @@ class ContentServiceProvider extends ServiceProvider
             $slug     = array_pull($attrs, 'slug');
             $template = array_pull($attrs, 'template');
             $model    = array_pull($attrs, 'model', '');
-            $children = array_pull($attrs, 'children', 'children');
-            $paginate = array_pull($attrs, 'paginate', false);
-            $size     = array_pull($attrs, 'size', 10);
+            $paginate = array_pull($attrs, 'paginate', 0);
+            $limit    = array_pull($attrs, 'limit', 10);
             $sort     = array_pull($attrs, 'sort', '');
+            $with     = array_pull($attrs, 'with', '');
 
-            $content = Content::where('slug', $slug)->Orwhere('id', $id)->firstOrFail();
+            $content  = Content::where('slug', $slug)->Orwhere('id', $id)->firstOrFail();
+            $children = [];
 
-            // 如果block存在，解析并返回
+            // 如果content存在，解析并返回
             if ($content) {
-
                 // 获取子节点
-                if ($children) {
-                    $contents = Content::where('parent_id', $content->id);
+                if ($paginate || $limit) {
 
-                    if ($model) {
-                        $models = explode(',', $model);
-                        if (count($models) > 1) {
-                            $contents->whereIn('model_id', $models);
-                        } else {
-                            $contents->where('model_id', $model);
-                        }
-                    }
-
-                    if ($sort) {
-
-                    } else {
-                        $contents->sort();
-                    }
+                    $contents = Content::with(str_array($with, ','));
+                    $contents->publish()->where('parent_id', $content->id);
+                    $contents->model($model);
+                    $contents->sort($sort);
 
                     if ($paginate) {
-                        $children = $contents->paginate($size);
+                        $children = $contents->paginate($paginate);
                     } else {
-                        $children = $contents->limit($size)->get();
+                        $children = $contents->limit($limit)->get();
                     }
                 }
 

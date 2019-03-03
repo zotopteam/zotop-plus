@@ -47,10 +47,19 @@
             </g>
         </svg>
     </div>
-
-    @yield('content')
-
     
+    <div class="body">
+        @yield('content')
+    </div>
+    
+    <footer class="footer m-3 text-center">
+        <div class="container">
+            <div class="copyright">
+                {{config('site.copyright')}}
+            </div>
+        </div>
+    </footer>
+
     <script src="{{Theme::asset('js/jquery.min.js')}}"></script>
     <script src="{{Theme::asset('js/tether.min.js')}}"></script>   
     <script src="{{Theme::asset('js/bootstrap.min.js')}}"></script>

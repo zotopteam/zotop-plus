@@ -9,8 +9,9 @@
     <ul class="list-group list-group-flush">
     @foreach ($children as $child)
         <li class="list-group-item">
-            <a href="{{$child->url ?? 'javascript:;'}}" target="_blank">{{$child->title}}</a>
-            <span class="pull-right">{{$child->created_at->format('Y-m-d')}}</span>
+            <a href="{{$child->url}}" target="_blank">{{$child->title}}</a>
+
+            <span class="pull-right">{{$child->source}} {{$child->user->username}} {{$child->created_at->format('Y-m-d')}}</span>
         </li>
     @endforeach
     </ul>
