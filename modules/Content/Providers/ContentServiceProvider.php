@@ -79,39 +79,68 @@ class ContentServiceProvider extends ServiceProvider
         // 解析{content ……}
         Blade::tag('content', function($attrs) {
 
-            $id       = array_pull($attrs, 'id');
-            $slug     = array_pull($attrs, 'slug');
-            $template = array_pull($attrs, 'template');
-            $model    = array_pull($attrs, 'model', '');
-            $paginate = array_pull($attrs, 'paginate', 0);
-            $limit    = array_pull($attrs, 'limit', 10);
-            $sort     = array_pull($attrs, 'sort', '');
-            $with     = array_pull($attrs, 'with', '');
+            $id       = array_get($attrs, 'id', 0); // 内容编号
+            $slug     = array_get($attrs, 'slug', '');  // 内容slug
+            $image    = array_get($attrs, 'image', null); // 图片模式 true=有图模式 false=无图模式           
+            $model    = array_get($attrs, 'model', '');  // 节点模型 article 或者 article,page
+            $type     = array_get($attrs, 'type', 'list'); //类型 list=列表 paginate=分页列表 parents=父节点
+            $self     = array_get($attrs, 'self', true); // 是否获取自身
+            $size     = array_get($attrs, 'size', 10); // 显示条数
+            $sort     = array_get($attrs, 'sort', '');  // 排序方式
+            $with     = array_get($attrs, 'with', ''); // 关联
+            $template = array_get($attrs, 'template', "content::tag.{$type}"); //模板
 
-            $content  = Content::where('slug', $slug)->Orwhere('id', $id)->firstOrFail();
-            $children = [];
+            // 列表及分页列表
+            if (in_array($type, ['list', 'paginate'])) {
 
-            // 如果content存在，解析并返回
-            if ($content) {
-                // 获取子节点
-                if ($paginate || $limit) {
+                $content = collect([]);
 
-                    $contents = Content::with(str_array($with, ','));
-                    $contents->publish()->where('parent_id', $content->id);
-                    $contents->model($model);
-                    $contents->sort($sort);
-
-                    if ($paginate) {
-                        $children = $contents->paginate($paginate);
-                    } else {
-                        $children = $contents->limit($limit)->get();
-                    }
+                if ($self && $slug) {
+                    $content= Content::publish()->where('slug', $slug)->firstOrFail();
+                    $id = $content->id;
+                } elseif ($self && $id) {
+                    $content= Content::publish()->where('id', $id)->firstOrFail();
+                } else {
+                    $id = $slug ? Content::where('slug', $slug)->value('id') : $id;
                 }
 
-                return app('view')->make($template)->with('content', $content)->with('children', $children)->render();
+                $query = Content::with(str_array($with, ','));
+                $query->publish()->where('parent_id', $id);
+                $query->model($model);
+                $query->sort($sort);
+
+                // 获取带封面图片的数据
+                if ($image === true) {
+                    $query->whereNotNull('image');
+                }
+
+                // 获取无封面图片的数据
+                if ($image === false) {
+                    $query->whereNull('image');
+                }
+
+                // 获取分页或者列表数据
+                if ($type == 'paginate') {
+                    $children = $query->paginate($size);
+                } else {
+                    $children = $query->limit($size)->get();
+                }
+
+                return app('view')->make($template)->with('attrs', $attrs)->with('id', $id)->with('content', $content)->with('children', $children)->render();
             }
+
+            // 父路径
+            if ($type == 'parents') {
+
+                // 获取当前内容编号
+                $id = $id ? $id : Content::where('slug', $slug)->value('id');
+                
+                return app('view')->make($template)->with('attrs', $attrs)->with('id', $id)->with('parents', Content::parents($id, $self))->render();
+            }
+
+         
             
             return null;
-        });                     
+        });                   
     }    
 }

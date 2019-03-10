@@ -169,11 +169,11 @@
                             <div>{{$content->publish_at}}</div>
                             @elseif (in_array($content->status,['future']))
                             <div>
-                                <a class="js-future" href="{{route('content.content.status', [$content->status,$content->id])}}" data-value="{{$content->publish_at}}">
-                                   {{trans('content::content.status.future')}} <i class="fa fa-pen-square"></i>
-                                </a>
+                                {{trans('content::content.status.future')}}
                             </div>
-                            <div>{{$content->publish_at}}</div>                            
+                            <a class="js-future" href="{{route('content.content.status', [$content->status,$content->id])}}" data-value="{{$content->publish_at}}">
+                                {{$content->publish_at}} <i class="fa fa-pen-square"></i>
+                            </a>                       
                             @else
                             <div>{{trans('content::content.updated_at.label')}}</div>
                             <div>{{$content->updated_at}}</div>
@@ -215,6 +215,7 @@
 @endsection
 @push('css')
 <link rel="stylesheet" href="{{Module::asset('core:datetimepicker/jquery.datetimepicker.css')}}" rel="stylesheet">
+
 @endpush
 @push('js')
 <script type="text/javascript" src="{{Module::asset('core:datetimepicker/jquery.datetimepicker.js')}}"></script>
@@ -331,7 +332,25 @@ $(function(){
         });
 
         event.stopPropagation();
-    });    
+    });
+
+
+    // $('div.js-future-date').each(function(){       
+    //     var href = $(this).attr('href');
+    //     var value = $(this).data('value');        
+    //     jeDate(this,{
+    //         format:'YYYY-MM-DD hh:mm:ss',
+    //         isClear:false,
+    //         isToday:false,
+    //         donefun:function(obj) {
+    //             postData(href, {publish_at:obj.val}, function(){
+                   
+    //             });
+    //         }
+    //     }).setValue(value);        
+    // });
+
+
 
     // 批量操作
     $(document).on('click','.js-select-operate', function(event) {

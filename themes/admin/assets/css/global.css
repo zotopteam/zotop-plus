@@ -112,8 +112,8 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .dropdown-menu {border-radius:3px;padding:0.25rem;box-shadow:3px 3px 0 rgba(12,12,12,0.03);margin:.25rem 0 0;}
 .dropdown-head {color:#333;padding:0.5rem 10px;margin-bottom:0.25rem;border-bottom:solid 1px #e5e5e5;}
 .dropdown-item{padding:0.5rem;transition:all 0.2s ease-out 0s;white-space:nowrap;border-radius:3px;}
-.dropdown-item-icon{width:1.25rem;text-align:center;margin-right:0.25rem;}
-.dropdown-item-text{font-weight:normal;}
+.dropdown-item .dropdown-item-icon{width:1.25rem;text-align:center;margin-right:0.25rem;color:inherit;}
+.dropdown-item .dropdown-item-text{font-weight:normal;display:inline-block;padding:0rem;color:inherit;}
 
 .dropdown-menu-primary{border-color:#005cbf;}
 .dropdown-menu-primary .dropdown-item{color:#0062cc;padding:0.5rem;border-radius:3px;transition:all 0.2s ease-out 0s;white-space:nowrap;display:block;}
@@ -259,12 +259,12 @@ label.form-label {cursor:pointer;font-weight:bold;}
 .form-control{min-width:3rem;}
 .form-control[disabled], fieldset[disabled] .form-control {cursor: not-allowed;}
 
-div.form-control{padding:.35rem;}
+div.form-control{padding:.35rem;height:auto;}
 
 label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 2px);padding-bottom:calc(.5rem - 2px);padding-right:1rem;}
 
 /*checkbox radio*/
-[type=checkbox],[type=radio] {display:inline-block;text-align:center;font-family:'Font Awesome 5 Free';font-weight:400;font-size:1.2rem;color:#666;background-color:transparent;width:auto;min-width:1.2rem;clear:none;cursor:pointer;vertical-align:middle;outline:0;border:0 none;appearance:none;-webkit-appearance:none;-moz-appearance:none;transition:all 0.5s}
+[type=checkbox],[type=radio] {display:inline-block;text-align:center;font-family:'Font Awesome 5 Free';font-weight:400;font-size:1.2rem;color:#666;background-color:transparent;width:auto;height: auto;min-width:1.2rem;clear:none;cursor:pointer;vertical-align:middle;outline:0;border:0 none;appearance:none;-webkit-appearance:none;-moz-appearance:none;transition:all 0.5s}
 [type=checkbox]:focus,[type=radio]:focus{background-color:transparent;outline:0 none!important;box-shadow:none!important;}
 [type=radio]{margin-top:0rem;}
 [type=radio]:before{content:'\f111';}

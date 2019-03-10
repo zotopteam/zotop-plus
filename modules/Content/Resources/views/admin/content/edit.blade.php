@@ -16,10 +16,12 @@
             @endforeach              
         </div>        
         <div class="main-action ml-auto">
-             {field type="submit" form="content-form" value="trans('content::content.status.draft')" class="btn btn-light" rel="draft"}
-             {field type="submit" form="content-form" value="trans('content::content.status.publish')" class="btn btn-success" rel="publish"}
-             {field type="submit" form="content-form" value="trans('content::content.status.future')" class="btn btn-primary d-none" rel="future"}
-             {field type="submit" form="content-form" value="trans('core::master.save')" class="btn btn-primary"}
+
+            {field type="submit" form="content-form" value="trans('content::content.status.draft')" class="btn btn-light" data-status="draft"}
+            {field type="submit" form="content-form" value="trans('core::master.save')" class="btn btn-primary"}
+
+             {field type="submit" form="content-form" value="trans('content::content.status.publish')" class="btn btn-success" data-status="publish" data-action="back"}
+             {field type="submit" form="content-form" value="trans('content::content.status.future')" class="btn btn-primary d-none" data-status="future" data-action="back"}
         </div>   
     </div>
     <div class="main-body bg-light scrollable">
@@ -31,6 +33,7 @@
             {field type="hidden" name="model_id" required="required"}
             {field type="hidden" name="status" required="required"}
             {field type="hidden" name="publish_at"}
+            {field type="hidden" name="_action"}
 
             <div class="row">
                 <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}} d-flex flex-wrap p-0">
@@ -52,10 +55,7 @@
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
-        <div class="mr-auto text-xs">
-           {{trans('content::content.status.label')}} :
-           <i class="{{$content->status_icon}} fa-fw"></i> {{$content->status_name}}
-        </div>
+
     </div>
 </div>
 @endsection
@@ -66,10 +66,14 @@
 
         $('.form-submit').on('click', function(event) {
             event.preventDefault();
-            var rel = $(this).attr('rel');
-            if (rel) {
-                $('form.form').find('[name=status]').val(rel);
+            var status = $(this).data('status');
+            var action = $(this).data('action');
+            if (status) {
+                $('form.form').find('[name=status]').val(status);
             }
+            if (action) {
+                $('form.form').find('[name=_action]').val(action);
+            }            
             $('form.form').submit();
         })
 

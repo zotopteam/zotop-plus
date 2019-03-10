@@ -16,11 +16,11 @@
 
 			//图片预览
 			if (input.attr('preview') == 'image') {
-				input.popover({placement:'bottom',html:true,trigger:'hover',content:function(){
+				input.popover({placement:'bottom',html:true,trigger:'hover',sanitize:false,content:function(){
 					var value = input.val();
 					var width = $(window).width() * 0.25;
 					var height = $(window).height() * 0.25;
-					return '<div class="image bg-image-preview p-2"><img src="'+ value +'" style="max-width:'+width+'px;max-height:'+height+'px;"/></div>';
+					return '<div class="image bg-image-preview p-3"><img src="'+ value +'" style="max-width:'+width+'px;max-height:'+height+'px;"/></div>';
 				}}).on('show.bs.popover', function () {
 					var value = input.val();
 					if (value && !input.hasClass('error')) {

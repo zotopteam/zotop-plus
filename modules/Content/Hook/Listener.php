@@ -165,4 +165,17 @@ class Listener
 
         return $manage;
     }
+
+    /**
+     * 单条内容管理菜单
+     * 
+     * @param  array $manage  菜单项
+     * @param  model $content 内容数据
+     * @return array
+     */
+    public function contentHit($content)
+    {
+        Content::where('id', $content->id)->increment('hits');
+        return $content;
+    }    
 }

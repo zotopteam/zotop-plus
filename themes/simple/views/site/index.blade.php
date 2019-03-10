@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                {content slug="news-center" with="user" model="article" limit="4" template="content::block.list"}
+                {content type="list" slug="news-center" with="user" model="article" size="4"}
             </div>
         </div>
     </div>

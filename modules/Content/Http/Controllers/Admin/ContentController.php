@@ -84,7 +84,12 @@ class ContentController extends AdminController
         $content->fill($request->all());
         $content->save();
 
-        return $this->success(trans('core::master.created'), route('content.content.index', $content->parent_id));
+        // 保存并返回
+        if ($request->input('_action') == 'back') {
+            return $this->success(trans('core::master.created'), route('content.content.index', $content->parent_id));
+        }
+
+         return $this->success(trans('core::master.created'), route('content.content.edit', $content->id));
     }
 
     /**
@@ -144,7 +149,12 @@ class ContentController extends AdminController
         $content->fill($request->all());        
         $content->save();
 
-        return $this->success(trans('core::master.updated'), route('content.content.index', $content->parent_id));
+        // 保存并返回
+        if ($request->input('_action') == 'back') {
+            return $this->success(trans('core::master.updated'), route('content.content.index', $content->parent_id));
+        }
+
+        return $this->success(trans('core::master.updated'));
     }
 
     /**

@@ -21,7 +21,9 @@
                 <div class="card-title form-tips">
                     {{trans('core::auth.tips')}} 
                 </div>
+
                 <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+
                         <div class="input-group input-group-merge">
                             <label for="username" class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-user fa-fw text-primary"></i></span>

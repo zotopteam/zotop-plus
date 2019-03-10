@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\FrontController;
 use Modules\Content\Models\Content;
+use Filter;
 
 class IndexController extends FrontController
 {
@@ -20,7 +21,7 @@ class IndexController extends FrontController
     }
 
     /**
-     * 预览
+     * 预览内容
      *
      * @return Response
      */
@@ -32,25 +33,31 @@ class IndexController extends FrontController
     }
 
     /**
-     * 详情 id
+     * 详情 通过id查找
      *
      * @return Response
      */
     public function show($id)
     {
-        $this->content = Content::findOrFail($id);
+        $this->content = Content::publish()->where('id', $id)->firstOrFail();
+        $this->content = Filter::fire('content.show', $this->content);
+        $this->title = $this->content->title;
+
 
         return $this->view($this->content->view);
     }
 
     /**
-     * 详情 slug
+     * 详情 通过slug查找
      *
      * @return Response
      */
     public function slug($slug)
     {
-        $this->content = Content::where('slug', $slug)->firstOrFail();
+        $this->content = Content::publish()->where('slug', $slug)->firstOrFail();
+        $this->content = Filter::fire('content.show', $this->content);
+
+        $this->title = $this->content->title;
 
         return $this->view($this->content->view);
     }           

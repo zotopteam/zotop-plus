@@ -2,6 +2,8 @@
 
 @section('content')
 <div class="container">
+    {content type="parents" id="$content->id"}
+
     <div class="content">
         <h1 class="content-title">{{$content->title}}</h1>
         <div class="content-body">{!! $content->content !!}</div>

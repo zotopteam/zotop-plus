@@ -18,6 +18,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Html;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Helpers\ArrayHelper;
 use Illuminate\Contracts\Support\Arrayable;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Imports\EndRowFinder;
@@ -31,6 +32,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
@@ -40,6 +42,7 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Exceptions\ConcernConflictException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 
@@ -53,9 +56,9 @@ class Sheet
     protected $chunkSize;
 
     /**
-     * @var string
+     * @var TemporaryFileFactory
      */
-    protected $tmpPath;
+    protected $temporaryFileFactory;
 
     /**
      * @var object
@@ -72,35 +75,42 @@ class Sheet
      */
     public function __construct(Worksheet $worksheet)
     {
-        $this->worksheet = $worksheet;
-        $this->chunkSize = config('excel.exports.chunk_size', 100);
-        $this->tmpPath   = config('excel.exports.temp_path', sys_get_temp_dir());
+        $this->worksheet            = $worksheet;
+        $this->chunkSize            = config('excel.exports.chunk_size', 100);
+        $this->temporaryFileFactory = app(TemporaryFileFactory::class);
     }
 
     /**
      * @param Spreadsheet $spreadsheet
      * @param string|int  $index
      *
+     * @throws SheetNotFoundException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
      */
     public static function make(Spreadsheet $spreadsheet, $index)
     {
         if (is_numeric($index)) {
-            return Sheet::byIndex($spreadsheet, $index);
+            return self::byIndex($spreadsheet, $index);
         }
 
-        return Sheet::byName($spreadsheet, $index);
+        return self::byName($spreadsheet, $index);
     }
 
     /**
      * @param Spreadsheet $spreadsheet
      * @param int         $index
      *
+     * @throws SheetNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
      */
-    public static function byIndex(Spreadsheet $spreadsheet, int $index)
+    public static function byIndex(Spreadsheet $spreadsheet, int $index): Sheet
     {
+        if (!isset($spreadsheet->getAllSheets()[$index])) {
+            throw SheetNotFoundException::byIndex($index, $spreadsheet->getSheetCount());
+        }
+
         return new static($spreadsheet->getSheet($index));
     }
 
@@ -108,10 +118,15 @@ class Sheet
      * @param Spreadsheet $spreadsheet
      * @param string      $name
      *
+     * @throws SheetNotFoundException
      * @return Sheet
      */
-    public static function byName(Spreadsheet $spreadsheet, string $name)
+    public static function byName(Spreadsheet $spreadsheet, string $name): Sheet
     {
+        if (!$spreadsheet->sheetNameExists($name)) {
+            throw SheetNotFoundException::byName($name);
+        }
+
         return new static($spreadsheet->getSheetByName($name));
     }
 
@@ -147,7 +162,11 @@ class Sheet
                 $startCell = $sheetExport->startCell();
             }
 
-            $this->append([$sheetExport->headings()], $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
+            $this->append(
+                ArrayHelper::ensureMultipleRows($sheetExport->headings()),
+                $startCell ?? null,
+                $this->hasStrictNullComparison($sheetExport)
+            );
         }
 
         if ($sheetExport instanceof WithCharts) {
@@ -321,8 +340,8 @@ class Sheet
      */
     public function fromView(FromView $sheetExport)
     {
-        $tempFile = $this->tempFile();
-        file_put_contents($tempFile, $sheetExport->view()->render());
+        $temporaryFile = $this->temporaryFileFactory->makeLocal();
+        $temporaryFile->put($sheetExport->view()->render());
 
         $spreadsheet = $this->worksheet->getParent();
 
@@ -331,7 +350,9 @@ class Sheet
 
         // Insert content into the last sheet
         $reader->setSheetIndex($spreadsheet->getSheetCount() - 1);
-        $reader->loadIntoExisting($tempFile, $spreadsheet);
+        $reader->loadIntoExisting($temporaryFile->getLocalPath(), $spreadsheet);
+
+        $temporaryFile->delete();
     }
 
     /**
@@ -341,9 +362,7 @@ class Sheet
     public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
     {
         $sheetExport->query()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport, $worksheet) {
-            foreach ($chunk as $row) {
-                $this->appendRow($row, $sheetExport);
-            }
+            $this->appendRows($chunk, $sheetExport);
         });
     }
 
@@ -375,8 +394,6 @@ class Sheet
      * @param array       $rows
      * @param string|null $startCell
      * @param bool        $strictNullComparison
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function append(array $rows, string $startCell = null, bool $strictNullComparison = false)
     {
@@ -472,25 +489,24 @@ class Sheet
     /**
      * @param iterable $rows
      * @param object   $sheetExport
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function appendRows($rows, $sheetExport)
     {
-        $append = [];
-        foreach ($rows as $row) {
+        $rows = (new Collection($rows))->flatMap(function ($row) use ($sheetExport) {
             if ($sheetExport instanceof WithMapping) {
                 $row = $sheetExport->map($row);
             }
 
-            $append[] = static::mapArraybleRow($row);
-        }
+            return ArrayHelper::ensureMultipleRows(
+                static::mapArraybleRow($row)
+            );
+        })->toArray();
 
-        if ($sheetExport instanceof WithCustomStartCell) {
-            $startCell = $sheetExport->startCell();
-        }
-
-        $this->append($append, $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
+        $this->append(
+            $rows,
+            $sheetExport instanceof WithCustomStartCell ? $sheetExport->startCell() : null,
+            $this->hasStrictNullComparison($sheetExport)
+        );
     }
 
     /**
@@ -538,31 +554,6 @@ class Sheet
     }
 
     /**
-     * @param iterable $row
-     * @param object   $sheetExport
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     */
-    protected function appendRow($row, $sheetExport)
-    {
-        if ($sheetExport instanceof WithMapping) {
-            $row = $sheetExport->map($row);
-        }
-
-        $row = static::mapArraybleRow($row);
-
-        if ($sheetExport instanceof WithCustomStartCell) {
-            $startCell = $sheetExport->startCell();
-        }
-
-        if (isset($row[0]) && is_array($row[0])) {
-            $this->append($row, $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
-        } else {
-            $this->append([$row], $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
-        }
-    }
-
-    /**
      * @param string $lower
      * @param string $upper
      *
@@ -574,14 +565,6 @@ class Sheet
         for ($i = $lower; $i !== $upper; $i++) {
             yield $i;
         }
-    }
-
-    /**
-     * @return string
-     */
-    protected function tempFile(): string
-    {
-        return $this->tmpPath . DIRECTORY_SEPARATOR . 'laravel-excel-' . str_random(16);
     }
 
     /**

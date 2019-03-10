@@ -19,6 +19,11 @@
  */
 \Filter::listen('content.manage', 'Modules\Content\Hook\Listener@contentManage', 100);
 
+/**
+ * 内容显示，点击计数
+ */
+\Filter::listen('content.show', 'Modules\Content\Hook\Listener@contentHit', 100);
+
 
 /**
  * 标题控件

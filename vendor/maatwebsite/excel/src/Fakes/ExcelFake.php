@@ -49,8 +49,12 @@ class ExcelFake implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null)
+    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
+        if ($export instanceof ShouldQueue) {
+            return $this->queue($export, $filePath, $disk, $writerType);
+        }
+
         $this->stored[$disk ?? 'default'][$filePath] = $export;
 
         return true;
@@ -59,10 +63,11 @@ class ExcelFake implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null)
+    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
         Queue::fake();
 
+        $this->stored[$disk ?? 'default'][$filePath] = $export;
         $this->queued[$disk ?? 'default'][$filePath] = $export;
 
         return new PendingDispatch(new class {
@@ -76,6 +81,17 @@ class ExcelFake implements Exporter, Importer
     }
 
     /**
+     * @param object $export
+     * @param string $writerType
+     *
+     * @return string
+     */
+    public function raw($export, string $writerType)
+    {
+        return 'RAW-CONTENTS';
+    }
+
+    /**
      * @param object              $import
      * @param string|UploadedFile $file
      * @param string|null         $disk
@@ -85,6 +101,10 @@ class ExcelFake implements Exporter, Importer
      */
     public function import($import, $file, string $disk = null, string $readerType = null)
     {
+        if ($import instanceof ShouldQueue) {
+            return $this->queueImport($import, $file, $disk, $readerType);
+        }
+
         $filePath = ($file instanceof UploadedFile) ? $file->getClientOriginalName() : $file;
 
         $this->imported[$disk ?? 'default'][$filePath] = $import;
@@ -140,7 +160,8 @@ class ExcelFake implements Exporter, Importer
 
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 
-        $this->queued[$disk ?? 'default'][$filePath] = $import;
+        $this->queued[$disk ?? 'default'][$filePath]   = $import;
+        $this->imported[$disk ?? 'default'][$filePath] = $import;
 
         return new PendingDispatch(new class {
             use Queueable;
