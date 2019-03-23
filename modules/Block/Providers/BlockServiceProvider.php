@@ -59,7 +59,7 @@ class BlockServiceProvider extends ServiceProvider
             $slug     = array_pull($attrs, 'slug');
             $template = array_pull($attrs, 'template');
 
-            $block = \Modules\Block\Models\Block::where('slug', $slug)->orWhere('id', $id)->firstOrFail();
+            $block = \Modules\Block\Models\Block::where('slug', $slug)->orWhere('id', $id)->first();
 
             // 如果block存在，解析并返回
             if ($block) {

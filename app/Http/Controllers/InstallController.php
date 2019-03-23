@@ -235,7 +235,6 @@ class InstallController extends Controller
 
         // php extensions
         foreach(config('install.php_extensions', []) as $extension) {
-
             if(!extension_loaded($extension)) {
                 $check = false;
                 $error['php_extensions'][$extension] = false;
@@ -245,7 +244,6 @@ class InstallController extends Controller
         if(function_exists('apache_get_modules') && $apache_get_modules = apache_get_modules()) {
 
             foreach (config('install.apache', []) as $requirement) {
-
                 if(!in_array($requirement, apache_get_modules())) {
                     $check = false;
                     $error['apache'][$requirement] = false;
@@ -258,9 +256,7 @@ class InstallController extends Controller
             $realpath = base_path($path);
 
             if ($this->app['files']->exists($realpath)) {         
-
                 $server_permission = substr(sprintf('%o', fileperms($realpath)), -4);
-
                 if($server_permission < $permission) {
                     $check = false;
                     $error['permissions'][$path] = [$permission, $server_permission];
@@ -318,7 +314,6 @@ class InstallController extends Controller
                 }
 
                 return $this->success('success', route("install.{$this->next}"));
-
             } catch (PDOException $e) {
                 return $this->error($e->getMessage());
             }
@@ -339,31 +334,21 @@ class InstallController extends Controller
             $action = $request->input('action');
 
             // 覆盖安装
-            if ($action == 'override') {        
-                
-                // 覆盖安装
+            if ($action == 'override') {
                 try {
-
-                    Artisan::call('migrate:fresh');        
-
+                    Artisan::call('migrate:fresh');
                     return $this->success('success', route("install.{$this->next}"));
-
                 } catch (Exception $e) {
                     return $this->error($e->getMessage());
                 }
             }
 
-            // 覆盖安装
+            // 初始安装
             if ($action == 'init') {        
-                
-                // 覆盖安装
                 try {
                     Artisan::call('migrate');  
-
                     return $this->success('success', route("install.{$this->next}"));
-
                 } catch (Exception $e) {
-
                     return $this->error($e->getMessage());
                 }
             }
@@ -390,17 +375,12 @@ class InstallController extends Controller
     public function modules(Request $request)
     {
         if ($request->isMethod('POST')) {
-
             // 安装模块
             if ($name  = $request->input('name')) {
-
-                // install
                 Module::findOrFail($name)->install(true);
-
                 return $this->success($name.' install success');
             }
         }
-
 
         $this->modules = module();
 

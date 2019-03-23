@@ -3,8 +3,7 @@
 @section('content')
     
     <div class="full-width align-self-center text-center">
-        {block slug="test-block"}
-        {block id="1" template="block::html"}
+        {block slug="main"}
     </div>
     
     <div class="container">
