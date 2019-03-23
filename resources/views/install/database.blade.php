@@ -25,7 +25,7 @@
             
             @if($installed)
             <button class="btn btn-lg btn-danger btn-override d-inline-block ml-auto" data-confirm="{{trans("installer.{$current}.override.confirm")}}">
-                <i class="fa fa-warning fa-fw"></i> {{trans("installer.{$current}.override")}} 
+                <i class="fa fa-exclamation-triangle fa-fw"></i> {{trans("installer.{$current}.override")}} 
             </button>            
             @else              
             <button class="btn btn-lg btn-success btn-init d-inline-block ml-auto">
@@ -43,8 +43,7 @@ $(function(){
         
         var self    = $(this);
 
-        if (confirm(self.data('confirm'))) {
-
+        $.confirm(self.data('confirm'), function(){
             self.find('.fa').addClass('fa-spin fa-spinner');
             self.prop('disabled',true);
 
@@ -54,7 +53,7 @@ $(function(){
                     location.href = msg.url;
                     return true;
                 } else {
-                    alert(msg.content);
+                    $.alert(msg.content);
                 }
 
                 self.find('.fa').removeClass('fa-spin fa-spinner');
@@ -66,9 +65,10 @@ $(function(){
                 self.find('.fa').removeClass('fa-spin fa-spinner');                    
                 self.prop('disabled',false);
 
-                return alert(jqXHR.responseJSON.message);
-            });
-        }       
+                return $.alert(jqXHR.responseJSON.message);
+            });            
+        })
+    
     });
 
     $('.btn-init').on('click',function(){
@@ -84,7 +84,7 @@ $(function(){
                 location.href = msg.url;
                 return true;
             } else {
-                alert(msg.content);
+                $.alert(msg.content);
             }
 
             self.find('.fa').removeClass('fa-spin fa-spinner');
@@ -96,7 +96,7 @@ $(function(){
             self.find('.fa').removeClass('fa-spin fa-spinner');                    
             self.prop('disabled',false);
 
-            return alert(jqXHR.responseJSON.message);
+            return $.alert(jqXHR.responseJSON.message);
         });
 
     });

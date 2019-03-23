@@ -210,6 +210,8 @@ class InstallController extends Controller
         ]);
 
         // 清理缓存
+        Artisan::call('preview:clear');
+        Artisan::call('thumbnail:clear');
         Artisan::call('reboot');
 
         return $this->view();
@@ -321,8 +323,6 @@ class InstallController extends Controller
                 return $this->error($e->getMessage());
             }
         }
-
-        $request->session()->put('install.test', ['aaaa'=>'bbbb']);
 
         return $this->view();
     }
@@ -438,8 +438,11 @@ class InstallController extends Controller
             // 设置为已安装
             Artisan::call('env:set',['key' => 'APP_INSTALLED', 'value'=>'true']);
 
+            //发布主题
+            Artisan::call('theme:publish');
+
             // 重启系统
-            Artisan::call('reboot');        
+            Artisan::call('reboot');     
         }
 
         return $this->view();

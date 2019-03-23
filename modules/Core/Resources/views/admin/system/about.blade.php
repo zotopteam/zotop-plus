@@ -8,23 +8,23 @@
             <p>{{config('app.description')}}</p>
             <div class="p-3">
                 <a href="{{config('app.homepage')}}" class="btn btn-outline text-white" target="_blank">
-                    <i class="fa fa-globe fa-fw"></i> Homepage
+                    <i class="fas fa-globe fa-fw"></i> Homepage
                 </a>
                 &nbsp;
                 <a href="javascript:;" class="btn btn-outline text-white" target="_blank">
-                    <i class="fa fa-circle-o fa-fw"></i> {{config('app.version')}}
+                    <i class="fas fa-code-branch fa-fw"></i> {{config('app.version')}}
                 </a>
                 &nbsp;
                 <a href="{{config('app.github')}}" class="btn btn-outline text-white" target="_blank">
-                    <i class="fa fa-github fa-fw"></i> Github
+                    <i class="fab fa-github fa-fw"></i> Github
                 </a>
                 &nbsp;
                 <a href="{{config('app.document')}}" class="btn btn-outline text-white" target="_blank">
-                    <i class="fa fa-book fa-fw"></i> Document
+                    <i class="fas fa-book fa-fw"></i> Document
                 </a>                
                 &nbsp;
                 <a href="{{config('app.help')}}" class="btn btn-outline text-white" target="_blank">
-                    <i class="fa fa-question-circle fa-fw"></i> Help
+                    <i class="fas fa-question-circle fa-fw"></i> Help
                 </a>
             </div>
         </div>

@@ -10,7 +10,8 @@
         <link rel="icon" type="image/png" href="{{ asset('installer/favicon-32x32.png') }}" sizes="32x32"/>
         <link rel="icon" type="image/png" href="{{ asset('installer/favicon-96x96.png') }}" sizes="96x96"/>        
         <link href="{{ asset('installer/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
-        <link href="{{ asset('installer/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('installer/css/fontawesome.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('installer/css/jquery.dialog.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('installer/css/global.css') }}" rel="stylesheet" type="text/css">
 
         @stack('css')

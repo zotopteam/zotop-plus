@@ -111,7 +111,7 @@
                         location.href = msg.url;
                         return true;
                     } else {
-                        alert(msg.content);
+                        $.alert(msg.content);
                     }
 
                     $('.form-submit').find('.fa').removeClass('fa-spin fa-spinner');

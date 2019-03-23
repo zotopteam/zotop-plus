@@ -63,7 +63,7 @@ trait Nestable
      *
      * @var string
      */
-    protected static $nested_cache_time = 365*24*60;
+    protected static $nested_cache_time = 365*24*60*60;
 
     /**
      * Boot the Nestable trait for a model.

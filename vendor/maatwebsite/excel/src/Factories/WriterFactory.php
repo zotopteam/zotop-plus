@@ -8,6 +8,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithPreCalculateFormulas;
 
@@ -27,7 +28,7 @@ class WriterFactory
     {
         $writer = IOFactory::createWriter($spreadsheet, $writerType);
 
-        if ($export instanceof WithCharts) {
+        if (static::includesCharts($export)) {
             $writer->setIncludeCharts(true);
         }
 
@@ -54,5 +55,27 @@ class WriterFactory
         );
 
         return $writer;
+    }
+
+    /**
+     * @param $export
+     *
+     * @return bool
+     */
+    private static function includesCharts($export): bool
+    {
+        if ($export instanceof WithCharts) {
+            return true;
+        }
+
+        if ($export instanceof WithMultipleSheets) {
+            foreach ($export->sheets() as $sheet) {
+                if ($sheet instanceof WithCharts) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

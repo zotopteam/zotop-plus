@@ -27,8 +27,8 @@ class CreateContentFieldTable1542101025 extends Migration
 			$table->boolean('post')->nullable()->default(1)->comment('是否允许前台填写提交，0：不允许，1：允许');
 			$table->boolean('search')->nullable()->comment('是否允许搜索，0：禁止，1：允许')->default(0);
 			$table->boolean('system')->nullable()->comment('是否为系统字段，0：自定义字段，1：系统字段')->default(0);
-			$table->boolean('position')->nullable()->comment('控件位置，main=主区域 side=侧边区域')->default('main');
-			$table->integer('width')->nullable()->comment('控件宽度，主区域可用')->default('w-100');
+			$table->string('position', 64)->nullable()->comment('控件位置，main=主区域 side=侧边区域')->default('main');
+			$table->string('width', 64)->nullable()->comment('控件宽度，主区域可用')->default('w-100');
 			$table->integer('sort')->nullable()->comment('排序字段')->default(0)->unsigned();
 			$table->boolean('disabled')->nullable()->comment('是否禁用，0：未禁用，1：禁用')->default(0);
 			$table->timestamp('created_at');

@@ -52,11 +52,11 @@ class Config extends Model
     const CACHE_NAME = 'config_database';
 
     /**
-     * 缓存键名
+     * 缓存时间（单位：秒）
      *
      * @var string
      */
-    const CACHE_TIME = 1440;
+    const CACHE_TIME = 24*60*60;
 
 
 

@@ -217,24 +217,26 @@
                     {{trans('core::image.watermark.position')}}
                 </label>
                 <div class="col-8">
-                    <table class="table table-nowrap form-control d-inline-block w-auto">
-                        <tbody>
-                            <tr>
-                            @foreach (Module::data('core::watermark.position') as $value=>$postion)
-                                <td class="text-center">
-                                    <label class="radio m-0">
-                                    {field type="radio" name="image[watermark][position]" value="$value"}
-                                    {{$postion}}
-                                    </label>
-                                </td>
-                                @if($loop->iteration%3==0 && $loop->iteration < $loop->count)
-                                </tr>
+                    <div class="form-control d-inline-block w-auto">
+                        <table class="table table-nowrap ">
+                            <tbody>
                                 <tr>
-                                @endif
-                            @endforeach
-                            </tr>
-                        </tbody>
-                    </table>
+                                @foreach (Module::data('core::watermark.position') as $value=>$postion)
+                                    <td class="text-center">
+                                        <label class="radio m-0">
+                                        {field type="radio" name="image[watermark][position]" value="$value"}
+                                        {{$postion}}
+                                        </label>
+                                    </td>
+                                    @if($loop->iteration%3==0 && $loop->iteration < $loop->count)
+                                    </tr>
+                                    <tr>
+                                    @endif
+                                @endforeach
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="form-group row">

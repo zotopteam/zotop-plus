@@ -7,11 +7,11 @@
 	/*
 	 * 修改button 及 扩展shake摇头方法
 	*/
-	$.extend(dialog.create.prototype,{
+	$.extend(dialog.prototype, {
 		find: function(e){
 			return this._popup.find(e);
 		},		
-		button:function(args, callback) {
+		button:function(args) {
 	        args = args || [];
 	        var that = this;
 	        var html = '';
@@ -33,15 +33,29 @@
 	                } else {
 	                    number ++;
 	                }
+	                
+	                // 自定义样式
+	                if (!val.class) {
+	                	val.class = val.autofocus ? 'btn-primary' : 'btn-secondary';
+	                }
 
-	                html += '<button type="button" i-id="' + id + '" '+ (val.disabled ? " disabled" :"") + (val.autofocus ? ' autofocus  class="btn btn-primary"' :'class="btn btn-default"') +'>' + val.value + '</button>';
+	                html +=
+	                  '<button'
+	                + ' type="button"'
+	                + ' i-id="' + id + '"'
+	                + style
+	                + (val.disabled ? ' disabled' : '')
+	                + (val.autofocus ? ' autofocus ' : '')
+	                + ' class="btn ' + val.class + '" '
+	                + '>'
+	                +   val.value
+	                + '</button>';
 
 	                that._$('button').on('click', '[i-id=' + id +']', function (event) {                
 	                    var $this = $(this);
 	                    if (!$this.attr('disabled')) {// IE BUG
 	                        that._trigger(id);
-	                    }
-	                
+	                    }	                
 	                    event.preventDefault();
 	                });
 
@@ -53,16 +67,20 @@
 
 	        return this;            
 		},
-		status: function(type, text) {
-
-			text = text || '';
-
-			if (type == 'reset') {
-				this.statusbar('');
+		callback: function(button_id, callback) {
+			if (typeof callback == 'function') {
+				this.callbacks[button_id] = callback;
+			} else {
+				this.callbacks[button_id]();
 			}
-
-			if (type == 'loading') {
-				this.statusbar('<i class="fa fa-spinner fa-spin"></i>' + text);
+			return this;			
+		},
+		loading: function(loading) {
+			
+			if (loading) {
+				this._$('content').append('<div class="ui-dialog-loader"><div class="ui-dialog-loading">loading……</div>')
+			} else {
+				this._$('content').find('.ui-dialog-loader').remove();
 			}
 
 			return this;
@@ -111,7 +129,8 @@
 	 */
 	$.fn.dialog = function (options){
 		options = $.extend(options, {quickClose:true});
-		options.align = options.align || $(this).data('align');
+		options.align  = options.align || $(this).data('align');
+		options.opener = window;
 
 		return this.each(function(){
 			return top.dialog(options).show(this);
@@ -125,12 +144,34 @@
 	 */
 	$.dialog = function (options, modal){
 
-		if ( options ){
+		if (options) {
+			
+			// 获取模式
 			if (typeof options === "string") {
 				return top.dialog.get(options);
-			}else{
-				return top.dialog(options)[modal ? "showModal" :"show"]();
 			}
+
+			// 传递当前窗口
+			options.opener = window;
+
+			// modal 模式
+			if (typeof modal === 'boolean' && modal ) {
+				var dialog = top.dialog(options);
+					dialog.addEventListener('show', function () {
+						$('body').addClass('blur');
+					});					
+					dialog.addEventListener('close', function () {
+						$('body').removeClass('blur');
+					});					
+				return dialog.showModal();
+			}
+
+			// follow 模式
+			if (typeof modal === 'object' && modal ) {
+				return top.dialog(options).show(modal);
+			}
+
+			return top.dialog(options).show();
 		}
 
 		return top.dialog.get(window);
@@ -146,25 +187,37 @@
 	$.progress = function(percent, callback){
 		
 		var options = {
-			id: 'progress',
-			skin: 'ui-progress',
-			title: false,
-			content: '<div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div><a href="javascript:;" class="close" i="close">&#215;</a></div>',
-			padding: 0,
-			fixed: true,
-			resize: false,
-			onclose: callback
+			id    : 'progress',
+			skin  : 'ui-progress',
+			title : false,
+			width : '100%',
+			content : function() {
+				return '<div>'+
+							'<i class="progress-icon fa fa-space-shuttle"></i>'+
+							//'<a href="javascript:;" class="close" i="close">&#215;</a>'+
+							'<div class="progress mx-auto">'+
+								'<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div>'+
+							'</div>'+
+						'</div>';
+			},
+			padding : 0,
+			fixed   : true,
+			resize  : false,
+			onclose : callback
 		}
 
-		var dialog = $.dialog(options);
+		var dialog = $.dialog(options, true);
 
-		if ( parseInt(percent) <= 100 ) {
-			dialog._$('content').find('.progress-bar').attr('aria-valuenow', percent).css('width',percent+'%').text(percent+'%');
-			return dialog;
-		} else {
-			$.dialog('progress').close().remove();
-			return true;
-		}		
+		// 进度函数
+		dialog.percent = function(percent) {
+			if ( parseInt(percent) <= 100 ) {
+				this.find('.progress-bar').attr('aria-valuenow', percent).css('width',percent+'%').text(percent+'%');
+			} else {
+				console.log('Error Percent:' + percent);
+			}
+		}
+
+		return dialog;
 	}
 
 	/**
@@ -172,35 +225,53 @@
 	 * @param   {Json}     (可选) 参数
 	 * @param   {Bool}     (可选) 缓存内容
 	 */
-	$.msg = function(msg){
+	$.msg = function(msg) {
 		//console.log(msg);	
 			
-		if( $.dialog('message') ){
+		if ($.dialog('message')) {
 			$.dialog('message').close().remove();
 		} 
-		
-		if( typeof(msg.state) == 'boolean' ){
-			msg.state = msg.state ? 'success' : 'error';
-		} 
+
+		if (typeof(msg.content) == 'object') {
+			msg.content = msg.content.length > 1 ? '<ul><li>' + msg.content.join('</li><li>') + '</li></ul>' : msg.content.join('');
+		}
+
+		if (msg.type) {
+			msg.skin = msg.skin + ' ui-message-'+ msg.type;
+		}
+
+		msg.icon = msg.icon || 'fa fa-info-circle';
 
 		var options = {
-			id: 'message',
-			skin: 'ui-message ui-message-' + msg.state,
-			title: false,
-			content: '<b class="msg-icon"></b><div class="msg-content">'+ msg.content +'</div><a href="javascript:;" class="close" i="close">&#215;</a>',
-			padding: 0,
-			fixed: true,
-			resize: false,
-			onclose: function(){
-				if( msg.url ) parent.location.href = msg.url;
+			id      : 'message',
+			skin    : 'ui-message ' + msg.skin,
+			title   : false,
+			content : '	<b class="msg-icon"><i class="'+ msg.icon +'"></i></b>' +
+						'<div class="msg-content">'+ msg.content +'</div>'+
+						'<a href="javascript:;" class="close" i="close">&#215;</a>'+
+						'',
+			padding : 0,
+			fixed   : true,
+			resize  : false,
+			onclose : function() {
+				if( msg.url ) {
+					var parentDialog = top.dialog.get(this.opener);
+					if (parentDialog && parentDialog.open) {
+						this.opener.location.href = msg.url;
+					} else {
+						parent.location.href = msg.url;
+					}
+				}
 				if( msg.onclose ) msg.onclose();
 			}
 		};
 
 		var dialog = $.dialog(options);
 
-		if( msg.time > 0 ){
-			setTimeout(function(){dialog.close().remove();}, msg.time*1000);
+		if(msg.time > 0) {
+			setTimeout(function(){
+				dialog.close().remove();
+			}, msg.time*1000);
 		}
 
 		return dialog;
@@ -211,7 +282,7 @@
 	 *
 	 */
 	$.loading = function(content){
-		return $.msg({state: 'loading',	time: 100000, content: content || dialog.defaults.loading});
+		return $.msg({type: 'loading', icon:'fa fa-spinner fa-spin', time: 100000, content: content || dialog.defaults.loadingText});
 	}
 
 	/**
@@ -219,7 +290,7 @@
 	 *
 	 */
 	$.success = function(content, onclose, time){
-		return $.msg({state: 'success',	time: time||2, content: content, onclose: onclose});
+		return $.msg({type: 'success', icon:'fa fa-check-circle', time: time||2, content: content, onclose: onclose});
 	}
 
 	/**
@@ -227,7 +298,7 @@
 	 *
 	 */
 	$.error = function(content, onclose, time){
-		return $.msg({state: 'error', time: time||3, content: content, onclose: onclose});
+		return $.msg({type: 'error', icon:'fa fa-times-circle', time: time||3, content: content, onclose: onclose});
 	}
 
 	/**
@@ -241,12 +312,12 @@
 		var input;
 
 		return $.dialog({
-			id: 'Prompt',
-			skin: 'ui-prompt',
-			fixed: true,
-			padding:'30px 50px',
-			title: dialog.defaults.prompt,
-			content: function(){
+			id      : 'prompt',
+			skin    : 'ui-prompt',
+			fixed   : true,
+			padding : 0,
+			title   : dialog.defaults.promptText,
+			content : function(){
 
 				var field = '<input type="text" class="form-control" value="'+ ( value || '') +'"/>';
 
@@ -255,7 +326,7 @@
 					field = '<textarea class="form-control" rows="5">'+ ( value || '') +'</textarea>';
 				}
 
-				return '<div class="prompt-text">'+ prompt +'</div><div class="prompt-field">'+field+'</div>';
+				return '<div class="prompt-content"><div class="prompt-text">'+ prompt +'</div><div class="prompt-field">'+field+'</div></div>';
 			},
 			onshow: function () {
 				input = this._$('content').find('.form-control')[0];
@@ -263,7 +334,17 @@
 				input.focus();
 			},
 			ok: function () {
-				return ok && ok.call(this, input.value);
+				var value = input.value;
+
+				// 如果输入框为空
+				if ($.trim(value) == '') {
+	                this.shake();
+	                input.select();
+	                input.focus();
+	                return false;
+				}
+
+				return ok && ok.call(this, value, input);
 			},
 			cancel: function () {}
 		},true);
@@ -277,14 +358,14 @@
 	 */
 	$.confirm = function(content, ok, cancel) {
 		return $.dialog({
-			id: 'Confirm',
-			skin: 'ui-confirm',
-			fixed: true,
-			padding:'30px 80px',
-			title: dialog.defaults.confirm,
-			content: '<b class="msg-icon fa fa-question-circle"></b><div class="msg-content">'+content+'</div>',
-			ok: ok,
-			cancel: cancel || function(){}
+			id      : 'confirm',
+			skin    : 'ui-confirm',
+			fixed   : true,
+			padding : 0,
+			title   : dialog.defaults.confirmText,
+			content : '<div class="msg-icon"><i class="fa fa-question-circle"></i></div><div class="msg-content"><span>'+content+'</span></div>',
+			ok      : ok,
+			cancel  : cancel || $.noop
 		},true);
 	};
 
@@ -295,28 +376,47 @@
 	 */
 	$.alert = function(content, callback) {
 		return $.dialog({
-			id: 'Alert',
-			skin: 'ui-alert',
-			fixed: true,
-			padding:'30px 80px',
-			title: dialog.defaults.alert,
-			content: '<b class="msg-icon fa fa-warning"></b><div class="msg-content">'+content+'</div>',
-			ok: true,
-			onclose: callback
-		});
+			id      : 'alert',
+			skin    : 'ui-alert',
+			fixed   : true,
+			padding : 0,
+			title   : dialog.defaults.alertText,
+			content : '<div class="msg-icon"><i class="fa fa-exclamation-triangle"></i></div><div class="msg-content"><span>'+content+'</span></div>',
+			ok      : true,
+			onclose : callback
+		}, true);
+	};
+
+	/**
+	 * 警告
+	 * @param   {String, HTMLElement}   消息内容
+	 * @param   {Function}              (可选) 回调函数
+	 */
+	$.image = function(url, title, width, height) {
+		return $.dialog({
+			id         : 'image',
+			skin       : 'ui-image',
+			width      : (width || '80%'),
+			height     : (height || '80%'),
+			fixed      : true,
+			padding    : 0,
+			title      : title,
+			quickClose : false,
+			content    : '<div class="image bg-image-preview"><img src="'+url+'" /></div>',
+			ok         : true
+		}, true);
 	};
 
 	$.extend(dialog.defaults, {
-		cssUri : '',
-		padding:0,
-		backdropOpacity:.2,
-		okValue: '确认',    
-		cancelValue: '取消',
-		loading: '操作正在执行，请稍候……',
-		confirm: '确认',
-		alert: '警告',
-		prompt: '提示'
+		cssUri          : '',
+		padding         : 0,
+		backdropOpacity : .2,
+		okValue         : '确认',    
+		cancelValue     : '取消',
+		loadingText     : '操作正在执行，请稍候……',
+		confirmText     : '确认',
+		alertText       : '警告',
+		promptText      : '提示'
 	});
 
 }(jQuery));
-
