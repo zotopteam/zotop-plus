@@ -83,6 +83,7 @@
                         <input type="checkbox" class="select-all text-muted">
                     </td>
                     <td colspan="3">{{trans('content::content.title.label')}}</td>
+                    <td width="5%" class="text-center">{{trans('content::content.hits.label')}}</td>
                     <td width="5%">{{trans('content::content.user.label')}}</td>
                     <td></td>
                     <td width="5%">{{trans('content::content.status.label')}}</td>
@@ -158,6 +159,7 @@
                             @endif
                             </a>
                         </td>
+                        <td class="text-center">{{$content->hits}}</td>
                         <td><strong>{{$content->user->username}}</strong></td>
                         <td></td>
                         <td>

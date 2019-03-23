@@ -45,6 +45,8 @@ return [
 
     'status.future.help' => '设置定时发布的时间',
 
+    'hits.label'         => '点击数',
+
     'updated_at.label'   => '最后修改',
     'created_at.label'   => '创建时间',
     'publish_at.label'   => '发布时间',

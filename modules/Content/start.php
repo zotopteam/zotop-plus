@@ -22,8 +22,7 @@
 /**
  * 内容显示，点击计数
  */
-\Filter::listen('content.show', 'Modules\Content\Hook\Listener@contentHit', 100);
-
+\Filter::listen('content.show', 'Modules\Content\Hook\Content@hit', 100);
 
 /**
  * 标题控件

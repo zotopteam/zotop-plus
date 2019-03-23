@@ -23,20 +23,42 @@ abstract class Hook
 	 * 监听Hook
 	 * 
 	 * @param string  $hook      钩子名称
-	 * @param mixed   $callback  回调函数或者回调的
-	 * @param integer $priority  执行优先级，默认为20，越小越靠前执行
+	 * @param mixed   $callback  回调
+	 * @param integer $priority  执行优先级，默认为50，越小越靠前执行
 	 * @return mixed
 	 */
-	public function listen($hook, $callback, $priority = 20)
+	public function listen($hook, $callback, $priority = 50)
 	{
 		$this->listeners->push([
             'hook'      => $hook,
             'callback'  => $callback,
-            'priority'  => $priority		
+            'priority'  => $priority
 		]);
 
 		return $this;
 	}
+
+    /**
+     * 删除hook
+     *
+     * @param string $hook 钩子名称
+     * @param mixed  删除键名（一般为回调名称）
+     * @return mixed
+     */
+    public function forget($hook, $callback=null)
+    {
+    	if ($callback) {
+	        $this->listeners->where('hook', $hook)->where('callback', $callback)->each(function ($listener, $key) {
+	                $this->listeners->forget($key);
+	        });
+        } else {
+	        $this->listeners->where('hook', $hook)->each(function ($listener, $key) {
+	                $this->listeners->forget($key);
+	        });        	
+        }
+
+        return $this;
+    }	    
 
 	/**
 	 * 获取排序过的监听器
