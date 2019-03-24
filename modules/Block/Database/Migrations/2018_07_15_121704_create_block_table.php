@@ -25,7 +25,7 @@ class CreateBlockTable extends Migration {
 			$table->text('description')->nullable()->comment('说明');
 			$table->integer('rows')->default(0)->comment('行数，0为无限制');
 			$table->text('data')->nullable()->comment('数据');
-			$table->text('template')->nullable()->comment('模版');
+			$table->text('view')->nullable()->comment('模版');
 			$table->smallInteger('interval')->nullable()->default(3600)->comment('更新频率，单位秒，0：手动更新');
 			$table->text('fields')->nullable()->comment('字段设置');
 			$table->boolean('commend')->default(0)->comment('是否允许推送，0：不允许，1：允许且需审核，2：允许且无需审核');

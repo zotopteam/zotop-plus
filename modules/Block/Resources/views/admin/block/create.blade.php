@@ -71,14 +71,14 @@
             </div>            
 
             <div class="form-group row">
-                <label for="template" class="col-2 col-form-label required">{{trans('block::block.template')}}</label>
+                <label for="view" class="col-2 col-form-label required">{{trans('block::block.view')}}</label>
                 <div class="col-8">
-                    {field type="template" name="template" required="required"}
+                    {field type="view" name="view" required="required"}
 
-                    @if ($errors->has('template'))
-                    <span class="form-help text-error">{{ $errors->first('template') }}</span>
+                    @if ($errors->has('view'))
+                    <span class="form-help text-error">{{ $errors->first('view') }}</span>
                     @else
-                    <span class="form-help">{{trans('block::block.template.help')}}</span>                     
+                    <span class="form-help">{{trans('block::block.view.help')}}</span>                     
                     @endif                       
                 </div>
             </div>            

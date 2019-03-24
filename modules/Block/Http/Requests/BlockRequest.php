@@ -22,7 +22,7 @@ class BlockRequest extends FormRequest
                 'type'        => 'required',
                 'category_id' => 'required',
                 'slug'        => 'required|max:64|unique:block',
-                'template'    => 'required',
+                'view'    => 'required',
             ];
         }
 
@@ -35,7 +35,7 @@ class BlockRequest extends FormRequest
                 'type'        => 'required',
                 'category_id' => 'required',
                 'slug'        => 'required|max:64|unique:block,slug,'.$id.',id',
-                'template'    => 'required',   
+                'view'    => 'required',   
             ];
         }
 
@@ -63,7 +63,7 @@ class BlockRequest extends FormRequest
             'type'        => trans('block::block.type'),
             'category_id' => trans('block::block.category_id'),
             'slug'        => trans('block::block.slug'),
-            'template'    => trans('block::block.template'),
+            'view'    => trans('block::block.view'),
         ];
     }      
 }

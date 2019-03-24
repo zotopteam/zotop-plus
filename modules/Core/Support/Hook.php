@@ -1,10 +1,12 @@
 <?php
 namespace Modules\Core\Support;
 
+use Illuminate\Support\Traits\Macroable;
 
 abstract class Hook
 {
-
+    use Macroable;
+    
 	/**
 	 * 存储hook
 	 * 

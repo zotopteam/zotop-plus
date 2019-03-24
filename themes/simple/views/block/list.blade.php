@@ -1,13 +1,10 @@
-{{-- title:列表区块默认模板 --}}
-
 <ul class="list-group">
-@foreach ($data as $v)
-    <li class="list-group-item">
-        <div class="image">
-            <img src="{{image($v['image'],300,200)}}">
-        </div>
-        <a href="{{$v['url'] ?? 'javascript:;'}}" target="_blank">{{$v['title']}}</a>
-    </li>
+@foreach ($block->data as $v)
+    @if (isset($v['url']))
+    <li class="list-group-item"><a href="{{$v['url'] ?? 'javascript:;'}}" target="_blank">{{$v['title']}}</a></li>
+    @else
+    <li class="list-group-item">{{$v['title']}}</li>
+    @endif
 @endforeach
 </ul>
 

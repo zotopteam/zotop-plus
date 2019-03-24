@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="block-preview">
-    @include($template)
+    @include($block->view)
     </div>
 @endsection
 

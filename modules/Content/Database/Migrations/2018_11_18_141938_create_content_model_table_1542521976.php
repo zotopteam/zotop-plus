@@ -25,7 +25,7 @@ class CreateContentModelTable1542521976 extends Migration
 			$table->char('table', 64)->nullable()->comment('扩展表名称');
 			$table->text('fillable')->nullable()->comment('扩展表可填充字段');
 			$table->text('casts')->nullable()->comment('扩展表属性转换');			
-			$table->string('template', 100)->nullable()->comment('详细页面模版');
+			$table->string('view', 100)->nullable()->comment('详细页面模版');
 			$table->boolean('nestable')->nullable()->comment('可嵌套，0=否 1=是')->default(0);
 			$table->integer('posts')->nullable()->comment('数据量')->default(0)->unsigned();
 			$table->integer('sort')->nullable()->comment('排序')->default(0);

@@ -62,14 +62,14 @@
             </div>
 
             <div class="form-group row">
-                <label for="template" class="col-2 col-form-label">{{trans('content::model.template.label')}}</label>
+                <label for="view" class="col-2 col-form-label">{{trans('content::model.view.label')}}</label>
                 <div class="col-8">
-                    {field type="template" name="template"}
+                    {field type="view" name="view"}
 
-                    @if ($errors->has('template'))
-                    <span class="form-help text-error">{{ $errors->first('template') }}</span>
+                    @if ($errors->has('view'))
+                    <span class="form-help text-error">{{ $errors->first('view') }}</span>
                     @else
-                    <span class="form-help">{{trans('content::model.template.help')}}</span>                     
+                    <span class="form-help">{{trans('content::model.view.help')}}</span>                     
                     @endif                       
                 </div>
             </div>

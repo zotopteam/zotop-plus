@@ -86,7 +86,7 @@
     $models = \Modules\Content\Models\Model::where('disabled', '0')->orderBy('sort', 'asc')->get();
 
     $models = $models->transform(function($item) use ($name, $value) {
-        $item->template = array_get($value, $item->id.'.template', $item->template);
+        $item->view = array_get($value, $item->id.'.view', $item->view);
         $item->enabled  = array_get($value, $item->id.'.enabled', $value ? 0 : 1);
         return $item;
     })->keyBy('id');

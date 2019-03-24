@@ -18,7 +18,7 @@
             <h1>{{config('site.name')}}</h1>
             <p>{{config('site.slogan')}}</p>
             <div class="p-3">
-                {content template="content::tag.navbar"}
+                {content id="0" view="content::tag.navbar"}
             </div>
             <svg class="animation-wave" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none">
                 <defs>

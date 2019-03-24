@@ -24,8 +24,8 @@ return [
     'description.label'   => '模型说明',
     'description.help'    => '模型说明，最大255个字符',   
 
-    'template.label'      => '内容页面模板',
-    'template.help'       => '内容的详细页面模板，如果没有内容页（如“链接”模型）则无需填写此项',
+    'view.label'      => '内容页面模板',
+    'view.help'       => '内容的详细页面模板，如果没有内容页（如“链接”模型）则无需填写此项',
 
     'nestable.label'      => '允许多级嵌套',
     'nestable.help'       => '多级嵌套模型允许添加子节点，如“分类”下面可以添加子分类或者页面等',            

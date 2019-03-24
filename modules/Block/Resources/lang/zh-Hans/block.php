@@ -77,14 +77,14 @@ return [
     'interval'                    => '更新频率',
     'interval.help'               => '0为手动更新，单位：秒',
     
-    'template'                    => '模板',
-    'template.help'               => '模板决定区块显示样式',
+    'view'                    => '模板',
+    'view.help'               => '模板决定区块显示样式',
 
     'data'                        => '内容',
     'data.placeholder.code'       => '请输入代码……',
     'data.placeholder.text'       => '请输入文本……',
     'data.placeholder.html'       => '请输入内容……',
 
-    'slug.notexist'               => '区块 :0 不存在',
+    'notexist'                    => '区块 :0 不存在',
     'view.notexist'               => '区块 :1 使用的模板 :0 不存在',
 ];

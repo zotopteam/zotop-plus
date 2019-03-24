@@ -56,7 +56,7 @@ class BlockController extends AdminController
         $this->block->category_id = $category_id;
         $this->block->rows        = 0;
         $this->block->interval    = 0;
-        $this->block->template    = Block::type($type, 'template', 'block::'.$type);
+        $this->block->view    = Block::type($type, 'view', 'block::'.$type);
         $this->block->fields      = Block::type($type, 'fields', []);
 
         // 获取创建视图

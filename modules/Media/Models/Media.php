@@ -2,6 +2,7 @@
 namespace Modules\Media\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Modules\Core\Traits\UserRelation;
 use Format;
 
@@ -169,7 +170,12 @@ class Media extends Model
      */
     public function getCreatedAtHumanAttribute()
     {
-        return Format::date($this->created_at, 'datetime human');
+        // 15 天前的直接显示时间
+        if ($this->created_at->addDays(15) < now()) {
+            return $this->created_at;
+        }
+
+        return $this->created_at->diffForHumans();      
     }
 
 

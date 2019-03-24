@@ -25,19 +25,22 @@ class TranslatorController extends AdminController
 
         // 判断转换翻译格式
         if (in_array(strtolower($format), ['slug', 'permalink'])) {
-            $value = translate_slug($source, $separator ?: '-');
+            $separator = $separator ?: '-';
+            $translate = translate_slug($source, $separator);
         } elseif (in_array(strtolower($format), ['id', 'key', 'fieldname'])) {
-            $value = translate_slug($source, $separator ?: '_');
+            $separator = $separator ?: '_';
+            $translate = translate_slug($source, $separator);
         } else {
-            $value = translate($source, $from ?: null, $to ?: null);
+            $translate = translate($source, $from ?: null, $to ?: null);
         }
         
         // 如果有长度限制，截取指定长度
         if ($maxlength = intval($maxlength)) {
-            $value = substr($value, 0, $maxlength);
+            $translate = substr($translate, 0, $maxlength);
+            $translate = trim($translate, $separator);
         }
 
-        return $value;
+        return $translate;
     }
 
 

@@ -1,7 +1,7 @@
-// 单文件上传
+// 视图字段
 (function($) {
 
-	$.fn.template = function(options) {
+	$.fn.view = function(options) {
 
 		return this.each(function() {
 			

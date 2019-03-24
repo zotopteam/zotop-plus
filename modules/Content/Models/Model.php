@@ -25,7 +25,7 @@ class Model extends LaravelModel
      *
      * @var array
      */
-    protected $fillable = ['id','icon','name','description','module','model','table','fillable','casts','template','nestable','posts','sort','disabled','user_id'];
+    protected $fillable = ['id','icon','name','description','module','model','table','fillable','casts','view','nestable','posts','sort','disabled','user_id'];
 	
 	
     /**

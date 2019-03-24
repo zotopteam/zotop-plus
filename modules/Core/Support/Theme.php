@@ -1,9 +1,12 @@
 <?php
 namespace Modules\Core\Support;
 
+use Illuminate\Support\Traits\Macroable;
 
 class Theme
 {
+    use Macroable;
+
     /**
      * The application instance.
      *
@@ -12,9 +15,6 @@ class Theme
     protected $app;
 
     protected $themes = [];
-
-    protected $active = null;
-
 
     /**
      * @param $app  \Illuminate\Contracts\Foundation\Application

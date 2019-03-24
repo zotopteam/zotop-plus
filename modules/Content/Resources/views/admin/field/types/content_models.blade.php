@@ -3,7 +3,7 @@
     <thead>
         <tr>
             <td width="15%">{{trans('content::model.name.label')}}</td>
-            <td>{{trans('content::model.template.label')}}</td>
+            <td>{{trans('content::model.view.label')}}</td>
             <td width="15%" class="text-center">{{trans('content::model.select.label')}}</td>
         </tr>
     </thead>
@@ -14,8 +14,8 @@
                 <strong>{{$model->name}}</strong>
             </td>
             <td>
-                @if ($model->template)                
-                {field type="template" name="$name.'['.$model->id.'][template]'" value="$model->template ?? null" required="required"}
+                @if ($model->view)                
+                {field type="view" name="$name.'['.$model->id.'][view]'" value="$model->view ?? null" required="required"}
                 @endif
             </td>
             <td class="text-center">

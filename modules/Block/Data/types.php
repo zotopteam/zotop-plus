@@ -9,7 +9,7 @@ $types['list'] = [
     'create'   => 'block::block.create_list',
     'edit'     => 'block::block.edit_list',
     'data'     => 'block::block.data_list',
-    'template' => 'block::list',
+    'view' => 'block::list',
     'fields'   => [
         ['show'=>2,'label'=>trans('block::type.list.fields.title'),'type'=>'title','name'=>'title','minlength'=>1,'maxlength'=>50, 'required'=>'required'],
         ['show'=>0,'label'=>trans('block::type.list.fields.url'),'type'=>'link','name'=>'url','required'=>'required'],

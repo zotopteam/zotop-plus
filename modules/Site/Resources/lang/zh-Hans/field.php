@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'template.select'    => '选择',
+    'view.select'    => '选择',
 ];

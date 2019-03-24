@@ -79,16 +79,16 @@ class ContentServiceProvider extends ServiceProvider
         // 解析{content ……}
         Blade::tag('content', function($attrs) {
 
-            $id       = array_get($attrs, 'id', 0); // 内容编号
-            $slug     = array_get($attrs, 'slug', '');  // 内容slug
-            $image    = array_get($attrs, 'image', null); // 图片模式 true=有图模式 false=无图模式           
-            $model    = array_get($attrs, 'model', '');  // 节点模型 article 或者 article,page
-            $type     = array_get($attrs, 'type', 'list'); //类型 list=列表 paginate=分页列表 parents=父节点
-            $self     = array_get($attrs, 'self', true); // 是否获取自身
-            $size     = array_get($attrs, 'size', 10); // 显示条数
-            $sort     = array_get($attrs, 'sort', '');  // 排序方式
-            $with     = array_get($attrs, 'with', ''); // 关联
-            $template = array_get($attrs, 'template', "content::tag.{$type}"); //模板
+            $id    = array_get($attrs, 'id', 0); // 内容编号
+            $slug  = array_get($attrs, 'slug', '');  // 内容slug
+            $image = array_get($attrs, 'image', null); // 图片模式 true=有图模式 false=无图模式           
+            $model = array_get($attrs, 'model', '');  // 节点模型 article 或者 article,page
+            $type  = array_get($attrs, 'type', 'list'); //类型 list=列表 paginate=分页列表 parents=父节点
+            $self  = array_get($attrs, 'self', true); // 是否获取自身
+            $size  = array_get($attrs, 'size', 10); // 显示条数
+            $sort  = array_get($attrs, 'sort', '');  // 排序方式
+            $with  = array_get($attrs, 'with', ''); // 关联
+            $view  = array_get($attrs, 'view', "content::tag.{$type}"); //模板
 
             // 列表及分页列表
             if (in_array($type, ['list', 'paginate'])) {
@@ -126,7 +126,12 @@ class ContentServiceProvider extends ServiceProvider
                     $children = $query->limit($size)->get();
                 }
 
-                return app('view')->make($template)->with('attrs', $attrs)->with('id', $id)->with('content', $content)->with('children', $children)->render();
+                return app('view')->make($view)
+                    ->with('attrs', $attrs)
+                    ->with('id', $id)
+                    ->with('content', $content)
+                    ->with('children', $children)
+                    ->render();
             }
 
             // 父路径
@@ -135,10 +140,12 @@ class ContentServiceProvider extends ServiceProvider
                 // 获取当前内容编号
                 $id = $id ? $id : Content::where('slug', $slug)->value('id');
                 
-                return app('view')->make($template)->with('attrs', $attrs)->with('id', $id)->with('parents', Content::parents($id, $self))->render();
+                return app('view')->make($view)
+                    ->with('attrs', $attrs)
+                    ->with('id', $id)
+                    ->with('parents', Content::parents($id, $self))
+                    ->render();
             }
-
-         
             
             return null;
         });                   

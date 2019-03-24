@@ -116,8 +116,8 @@ $types  = [
         'method'   => 'string',
         'settings' => ['required'=>0, 'maxlength'=>255]
     ],    
-    'template' => [
-        'name'     => trans('content::field.type.template'),
+    'view' => [
+        'name'     => trans('content::field.type.view'),
         'view'     => ['content::field.settings.placeholder','content::field.settings.required'],
         'method'   => 'string',
         'settings' => ['required'=>0, 'maxlength'=>100]

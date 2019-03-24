@@ -24,7 +24,7 @@ class Content extends Model
      *
      * @var array
      */
-    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','link','template','hits','comments','status','stick','sort','user_id'];
+    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','link','view','hits','comments','status','stick','sort','user_id'];
 	
 	
     /**
@@ -259,15 +259,15 @@ class Content extends Model
      */
     public function getViewAttribute($value)
     {
-        if ($this->template) {
-            return $this->template;
+        if ($value) {
+            return $value;
         }
 
         if (isset($this->parent->models)) {
-            return array_get($this->parent->models, $this->model_id.'.template');
+            return array_get($this->parent->models, $this->model_id.'.view');
         }
 
-        return $this->model->template;
+        return $this->model->view;
     }
 
     /**

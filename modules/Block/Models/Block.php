@@ -14,7 +14,7 @@ class Block extends Model
     
     protected $table = 'block';
 
-    protected $fillable = ['category_id','type','slug','name','description','rows','data','template','interval','fields','commend','sort','user_id','disabled'];
+    protected $fillable = ['category_id','type','slug','name','description','rows','data','view','interval','fields','commend','sort','user_id','disabled'];
 
     /**
      * 属性转换

@@ -29,7 +29,7 @@ class ModelRequest extends FormRequest
             return [
                 'id'       => 'required|check_id|max:64|unique:content_model',
                 'name'     => 'required|max:64',
-                'template' => 'required|max:100', 
+                'view' => 'required|max:100', 
             ];
         }
 
@@ -41,7 +41,7 @@ class ModelRequest extends FormRequest
             return [
                 'id'       => 'required|check_id|max:64|unique:content_model,id,'.$id.',id',
                 'name'     => 'required|max:64',
-                'template' => 'max:100', 
+                'view' => 'max:100', 
             ];
         }
 
@@ -68,7 +68,7 @@ class ModelRequest extends FormRequest
         return [
             'id'       => trans('content::model.id.label'),
             'name'     => trans('content::model.name.label'),
-            'template' => trans('content::model.template.label'),
+            'view' => trans('content::model.view.label'),
         ];
     }      
 }

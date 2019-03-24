@@ -55,18 +55,20 @@ class BlockServiceProvider extends ServiceProvider
         // 解析{block ……}
         Blade::tag('block', function($attrs) {
 
-            $id       = array_pull($attrs, 'id');
-            $slug     = array_pull($attrs, 'slug');
-            $template = array_pull($attrs, 'template');
+            $id   = array_get($attrs, 'id');
+            $slug = array_get($attrs, 'slug');
+            $view = array_get($attrs, 'view');
 
-            $block = \Modules\Block\Models\Block::where('slug', $slug)->orWhere('id', $id)->first();
+            if ($id || $slug) {
 
-            // 如果block存在，解析并返回
-            if ($block) {
-                $data     = $block->toArray();
-                $template = $template ?: array_pull($data, 'template');
+                $block = $id ? Block::Where('id', $id)->first() : Block::where('slug', $slug)->first();
 
-                return app('view')->make($template)->with($data)->render();
+                // 如果block存在，解析并返回
+                if ($block) {
+                    return app('view')->make($view ?: $block->view)->with('attrs',$attrs)->with('block',$block)->render();
+                }
+
+                return trans('block::block.notexist', [$id ?: $slug]);
             }
             
             return null;

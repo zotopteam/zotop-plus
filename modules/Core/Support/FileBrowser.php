@@ -2,6 +2,8 @@
 namespace Modules\Core\Support;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Traits\Macroable;
 use Modules\Core\Support\Facades\Format;
 use Filter;
 use File;
@@ -127,7 +129,7 @@ class FileBrowser
             $icon     = 'fa fa-folder';
             $path     = path_base($realpath);
             $size     = '';
-            $time     = Format::date(File::lastModified($realpath), 'datetime');
+            $time     = Carbon::parse(File::lastModified($realpath));
             $href     = route($this->route, $this->parameters + ['dir'=>$this->dir.'/'.$name] + $this->params);
             $typename = trans('core::folder.type');
             $folder   = Filter::fire('core.filebrower.folder',
@@ -147,7 +149,7 @@ class FileBrowser
         foreach (File::files($this->realpath) as $realpath) {
             $name   = $realpath->getFileName();
             $size   = Format::size($realpath->getSize());
-            $time   = Format::date($realpath->getMTime(),'datetime');
+            $time   = Carbon::parse($realpath->getMTime());
             $path   = path_base($realpath);
             $mime   = File::mime($realpath);
             $type   = File::humanType($realpath) ?? 'other';

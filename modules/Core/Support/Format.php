@@ -2,9 +2,12 @@
 namespace Modules\Core\Support;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Traits\Macroable;
 
 class Format
 {
+    use Macroable;
+    
     /**
      * 格式化size为可读格式
      * 

@@ -46,7 +46,7 @@ class ModelHelper
         $content = [
             'model'    => $model->toArray(),
             'field'    => $field->toArray(),
-            'template' => ''
+            'view' => ''
         ];
 
         // 写入临时文件

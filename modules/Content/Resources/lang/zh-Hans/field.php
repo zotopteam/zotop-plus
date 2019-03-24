@@ -13,7 +13,7 @@ return [
     'system.image'       => '图像',
     'system.keywords'    => '关键词',
     'system.summary'     => '摘要',
-    'system.template'    => '模板',
+    'system.view'    => '模板',
     'system.link'        => '链接',
     'system.slug'        => '别名', 
 
@@ -54,7 +54,7 @@ return [
     'type.checkboxgroup' => '多选',
     'type.select'        => '下拉选择',
     'type.editor'        => '编辑器',    
-    'type.template'      => '模板',
+    'type.view'      => '模板',
     'type.link'          => '链接', 
     'type.url'           => '网址',
     'type.email'         => '电子邮件',
