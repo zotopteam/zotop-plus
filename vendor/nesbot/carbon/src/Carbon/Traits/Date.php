@@ -1924,10 +1924,23 @@ trait Date
             return "$start$result";
         }
 
+        if ($number > 9 && $this->translate('alt_numbers.9') !== 'alt_numbers.9') {
+            $result = '';
+            while ($number) {
+                $chunk = $number % 10;
+                $result = $this->translate("alt_numbers.$chunk").$result;
+                $number = floor($number / 10);
+            }
+
+            return $result;
+        }
+
         return $number;
     }
 
     /**
+     * Format in the current language using ISO replacement patterns.
+     *
      * @param string      $format
      * @param string|null $originalFormat provide context if a chunk has been passed alone
      *
@@ -2124,6 +2137,7 @@ trait Date
                     $contextReplacements = [
                         'm' => 'MM',
                         'd' => 'DD',
+                        't' => 'D',
                         'j' => 'D',
                         'N' => 'e',
                         'w' => 'e',
