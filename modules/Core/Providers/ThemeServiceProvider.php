@@ -85,9 +85,7 @@ class ThemeServiceProvider extends ServiceProvider
     public function bladeDirectiveOnce()
     {
         Blade::directive('once', function ($expression) {
-
             $expression = strtoupper($expression);
-
             return "<?php if (! defined({$expression})): ?>\n<?php define({$expression},true); ?>";
         }); 
 

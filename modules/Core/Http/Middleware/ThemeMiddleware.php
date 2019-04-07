@@ -48,6 +48,9 @@ class ThemeMiddleware
         // 注册模块命名空间view
         $this->registerNamespaces();
 
+        // 注册启动文件
+        $this->registerFiles();
+
         return $next($request);
     }
 
@@ -63,7 +66,6 @@ class ThemeMiddleware
 
         // 注册当前模块的views，实现view在模块中寻址
         $this->view->addLocation(Module::getModulePath($this->app['current.module']) . '/Resources/views/'.strtolower($this->app['current.type']));
-         
     }
 
     /**
@@ -74,7 +76,6 @@ class ThemeMiddleware
     protected function registerNamespaces()
     {
         foreach (Module::getOrdered() as $module) {
-
             // 模型名称和路径
             $name = $module->getLowerName();
             $path = $module->getPath();
@@ -87,4 +88,17 @@ class ThemeMiddleware
         }
     }    
 
+    /**
+     * 注册主题文件
+     * 
+     * @return void
+     */
+    protected function registerFiles()
+    {
+        $file = $this->app['theme']->path().'/theme.php';
+
+        if ($this->app['files']->exists($file)) {
+            require $file;
+        }
+    }
 }

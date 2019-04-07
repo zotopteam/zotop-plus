@@ -9,6 +9,9 @@
         <div class="main-title mx-auto">
             {{$title}}
         </div>
+        <div class="main-action">
+            {field type="submit" form="block-form" value="trans('block::block.save.next')" class="btn btn-primary"}
+        </div>        
     </div>
     
     <div class="main-body scrollable">
@@ -121,11 +124,6 @@
 
         </div>
     </div><!-- main-body -->
-    <div class="main-footer">
-        <div class="ml-auto">
-            {field type="submit" form="block-form" value="trans('block::block.save.next')" class="btn btn-primary"}
-        </div>
-    </div>
 </div>
 @endsection
 

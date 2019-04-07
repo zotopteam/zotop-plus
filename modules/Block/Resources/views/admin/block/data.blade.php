@@ -16,7 +16,9 @@
             <a href="javascript:;" class="btn btn-info js-open" data-url="{{route('block.preview', $block->id)}}" data-width="80%" data-height="60%">
                 <i class="fa fa-eye fa-fw"></i> {{trans('block::block.preview')}}
             </a>
-            @endif    
+            @endif
+            {field type="button" form="block-form" value="trans('block::block.save.edit')" class="btn btn-primary btn-save-edit"}
+            {field type="button" form="block-form" value="trans('block::block.save.back')" class="btn btn-success btn-save-back"}             
             <a class="btn btn-info" href="{{route('block.edit', $block->id)}}">
                 <i class="fa fa-cog fa-fw"></i> {{trans('block::block.setting')}}
             </a>            
@@ -47,10 +49,7 @@
 
     </div><!-- main-body -->
     <div class="main-footer">
-        <div class="ml-auto">
-             {field type="button" form="block-form" value="trans('block::block.save.edit')" class="btn btn-primary btn-save-edit"}
-            {field type="button" form="block-form" value="trans('block::block.save.back')" class="btn btn-success btn-save-back"}
-        </div>
+
     </div>
 </div>
 @endsection

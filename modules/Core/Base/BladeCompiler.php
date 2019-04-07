@@ -68,8 +68,6 @@ class BladeCompiler extends LaravelBladeCompiler
             // 获取全部标签正则
             $pattern = sprintf('/(@)?%s('.implode('|', array_keys($this->tags)).')(\s+[^}]+?)\s*%s/s', '{', '}');
 
-            debug($pattern);
-
             // 正则替换
             return preg_replace_callback($pattern, function($matches) {
                 

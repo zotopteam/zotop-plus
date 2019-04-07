@@ -73,6 +73,5 @@ class BlockServiceProvider extends ServiceProvider
             
             return null;
         });
-
     }
 }

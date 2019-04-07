@@ -44,45 +44,32 @@ class FormServiceProvider extends HtmlServiceProvider
     public function bladeFormTag()
     {
         // 解析{form ……}
-        Blade::extend(function($value)
-        {
-            $pattern = sprintf('/(@)?%sform(\s+[^}]+?)\s*%s(\r?\n)?/s', '{', '}');
+        Blade::extend(function ($value) {
+            $pattern = sprintf('/(@)?%sform(\s+[^}]+?)\s*%s/s', '{', '}');
 
-            $callback = function ($matches)  {
-
-                $whitespace = empty($matches[3]) ? '' : $matches[3].$matches[3];
-
+            return preg_replace_callback($pattern, function($matches){
                 $attrs = Blade::convertAttrs($matches[2]);
-
-                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::open(".$attrs."); ?>{$whitespace}";
-            };
-
-            return preg_replace_callback($pattern, $callback, $value);
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::open(".$attrs."); ?>";
+            }, $value);
         });
 
-        // 解析{field ……}
-        Blade::extend(function($value)
-        {
-            $pattern = sprintf('/(@)?%sfield(\s+[^}]+?)\s*%s(\r?\n)?/s', '{', '}');
-
-            $callback = function ($matches)  {
-
-                $whitespace = empty($matches[3]) ? '' : $matches[3].$matches[3];
-
-                $attrs = Blade::convertAttrs($matches[2]);
-
-                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::field(".$attrs."); ?>{$whitespace}";
-            };
-
-            return preg_replace_callback($pattern, $callback, $value);
-        });             
-
         // 解析{/form}
-        Blade::extend(function($value)
-        {
+        Blade::extend(function ($value) {
             $pattern = sprintf('/(@)?%s(\/form)%s/s', '{', '}');
 
-            return preg_replace($pattern, "<?php echo Form::close(); ?>\n", $value);
-        });           
+            return preg_replace_callback($pattern, function ($matches)  {
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::close(); ?>";
+            }, $value);
+        });        
+
+        // 解析{field ……}
+        Blade::extend(function ($value) {
+            $pattern = sprintf('/(@)?%sfield(\s+[^}]+?)\s*%s/s', '{', '}');
+
+            return preg_replace_callback($pattern, function ($matches)  {
+                $attrs = Blade::convertAttrs($matches[2]);
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::field(".$attrs."); ?>";
+            }, $value);
+        });
     }
 }

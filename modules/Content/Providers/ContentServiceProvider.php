@@ -148,6 +148,6 @@ class ContentServiceProvider extends ServiceProvider
             }
             
             return null;
-        });                   
+        });                  
     }    
 }
