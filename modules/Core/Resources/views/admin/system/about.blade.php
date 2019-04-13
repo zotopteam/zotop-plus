@@ -4,26 +4,26 @@
 <div class="d-flex full-width full-height bg-primary justify-content-center">
     <div class="jumbotron bg-primary text-white align-self-center">
         <div class="container-fluid text-center">
-            <h1>{{config('app.title')}}</h1>
-            <p>{{config('app.description')}}</p>
+            <h1>{{config('zotop.name')}}</h1>
+            <p>{{config('zotop.description')}}</p>
             <div class="p-3">
-                <a href="{{config('app.homepage')}}" class="btn btn-outline text-white" target="_blank">
+                <a href="{{config('zotop.homepage')}}" class="btn btn-outline text-white" target="_blank">
                     <i class="fas fa-globe fa-fw"></i> Homepage
                 </a>
                 &nbsp;
                 <a href="javascript:;" class="btn btn-outline text-white" target="_blank">
-                    <i class="fas fa-code-branch fa-fw"></i> {{config('app.version')}}
+                    <i class="fas fa-code-branch fa-fw"></i> {{config('zotop.version')}}
                 </a>
                 &nbsp;
-                <a href="{{config('app.github')}}" class="btn btn-outline text-white" target="_blank">
+                <a href="{{config('zotop.github')}}" class="btn btn-outline text-white" target="_blank">
                     <i class="fab fa-github fa-fw"></i> Github
                 </a>
                 &nbsp;
-                <a href="{{config('app.document')}}" class="btn btn-outline text-white" target="_blank">
+                <a href="{{config('zotop.document')}}" class="btn btn-outline text-white" target="_blank">
                     <i class="fas fa-book fa-fw"></i> Document
                 </a>                
                 &nbsp;
-                <a href="{{config('app.help')}}" class="btn btn-outline text-white" target="_blank">
+                <a href="{{config('zotop.help')}}" class="btn btn-outline text-white" target="_blank">
                     <i class="fas fa-question-circle fa-fw"></i> Help
                 </a>
             </div>

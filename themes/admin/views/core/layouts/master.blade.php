@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf_token" content="{{ csrf_token() }}"/>
-    <title>{{config('site.name')}} {{$title ?? ''}} {{config('app.name')}} </title>
+    <title>{{config('site.name')}} {{$title ?? ''}} {{config('zotop.name')}} </title>
     <link href="{{Theme::asset('favicon.ico')}}" rel="shortcut icon" type="image/x-icon">
     <link rel="stylesheet" href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{Theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
@@ -20,7 +20,7 @@
             <div class="col-sm-6 col-md-7 col-lg-8">
                 <ul class="nav global-navbar tabdropable">
                     <li class="brand dropdown">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{config('app.name')}}</a>
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{config('zotop.name')}}</a>
                         <div class="dropdown-menu dropdown-start">
                             <div class="shortcuts scrollable">
                                 <div class="container-fluid">

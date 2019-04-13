@@ -32,11 +32,11 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <span class="footer-text mr-auto">
-            {{trans('core::master.thanks',[config('app.name')])}}
+            {{trans('core::master.thanks',[config('zotop.name')])}}
         </span>
 
         <span class="footer-text">
-            <span class="badge badge-primary px-2">v{{config('app.version')}}</span>
+            <span class="badge badge-primary px-2">v{{config('zotop.version')}}</span>
             <span class="badge badge-success px-2"><i class="fa fa-server"></i> {{config('app.env')}}</span>
             @if(config('app.debug'))
             <span class="badge badge-warning px-2"> <i class="fa fa-bug"></i> debug</span>

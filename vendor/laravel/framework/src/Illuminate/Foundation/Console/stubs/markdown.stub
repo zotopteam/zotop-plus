@@ -8,5 +8,5 @@ Button Text
 @endcomponent
 
 Thanks,<br>
-{{ config('app.name') }}
+{{ config('zotop.name') }}
 @endcomponent

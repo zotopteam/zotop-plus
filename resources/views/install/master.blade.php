@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="csrf_token" content="{{ csrf_token() }}"/>
-        <title>{{trans('installer.title',[config('app.name')])}}</title>
+        <title>{{trans('installer.title',[config('zotop.name')])}}</title>
         <link rel="icon" type="image/png" href="{{ asset('installer/favicon-16x16.png') }}" sizes="16x16"/>
         <link rel="icon" type="image/png" href="{{ asset('installer/favicon-32x32.png') }}" sizes="32x32"/>
         <link rel="icon" type="image/png" href="{{ asset('installer/favicon-96x96.png') }}" sizes="96x96"/>        
@@ -22,7 +22,7 @@
             <nav  class="navbar navbar-expand-lg navbar-dark bg-transparent">
                 <a class="navbar-brand" href="#">
                     <img src="{{ asset('installer/logo.png') }}" width="30" height="30" class="d-inline-block align-top mr-1" alt="">
-                    {{trans('installer.title',[config('app.name')])}}
+                    {{trans('installer.title',[config('zotop.name')])}}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

@@ -11,16 +11,16 @@
 */
 
 /**
- * 显示当前cms的版本信息
+ * 显示当前版本信息
  */
-Artisan::command('cms:version', function () {
-    $name    = $this->laravel['config']->get('app.name');
-    $version = $this->laravel['config']->get('app.version');
-    $release = $this->laravel['config']->get('app.release');
+Artisan::command('zotop:version', function () {
+    $name    = $this->laravel['config']->get('zotop.name');
+    $version = $this->laravel['config']->get('zotop.version');
+    $release = $this->laravel['config']->get('zotop.release');
 
     $this->info($name.' version:'.$version.'('.$release.')');
 
-})->describe('Show the version of the cms');
+})->describe('Show the version of the zotop');
 
 /**
  * 定时任务测试命令

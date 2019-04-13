@@ -406,7 +406,7 @@ class InstallController extends Controller
                 'username'       => $this->admin['username'],
             ],[
                 'password'       => \Hash::make($this->admin['password']),
-                'model_id'        => 'super',
+                'model_id'       => 'super',
                 'email'          => $this->admin['email'],
                 'mobile'         => '',
                 'remember_token' => str_random(10),
@@ -416,7 +416,7 @@ class InstallController extends Controller
             Config::set('site', $this->site);
 
             // 设置为已安装
-            Artisan::call('env:set',['key' => 'APP_INSTALLED', 'value'=>'true']);
+            Artisan::call('env:set',['key'=>'APP_INSTALLED', 'value'=>'true']);
 
             //发布主题
             Artisan::call('theme:publish');

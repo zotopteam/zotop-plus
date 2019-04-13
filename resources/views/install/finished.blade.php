@@ -4,8 +4,8 @@
     <section class="main d-flex scrollable">  
         <div class="jumbotron bg-transparent full-width align-self-center text-center">           
             <h1><i class="fa fa-check-circle fa-lg"></i></h1>
-            <h1>{{trans("installer.{$current}", [config('app.name')])}}</h1>
-            <p>{{trans("installer.{$current}.description", [config('app.name')])}}</p>
+            <h1>{{trans("installer.{$current}", [config('zotop.name')])}}</h1>
+            <p>{{trans("installer.{$current}.description", [config('zotop.name')])}}</p>
         </div>
     </section>
 @endsection

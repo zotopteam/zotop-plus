@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel CMS',
+    'name' => env('APP_NAME', 'zotop'),
 
     /*
     |--------------------------------------------------------------------------
@@ -34,66 +34,6 @@ return [
     */
 
     'release' => '20190323',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application title
-    |--------------------------------------------------------------------------
-    |
-    | This value is the title of your application. 
-    */
-
-    'title' => 'Laravel CMS',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application description
-    |--------------------------------------------------------------------------
-    |
-    | This value is the description of your application.
-    */
-
-    'description' => '基于Laravel5.8和bootstrap4，支持模块和主题，打造更简洁、更易用的内容管理系统',         
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application homepage
-    |--------------------------------------------------------------------------
-    |
-    | This homepage of your application.
-    */
-
-    'homepage' => 'http://www.zotop.com',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Github
-    |--------------------------------------------------------------------------
-    |
-    | This github url of your application. old: https://coding.net/u/zotop/p/laravel_cms/git
-    */
-
-    'github' => 'https://github.com/zotopteam/zotop-plus',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application help
-    |--------------------------------------------------------------------------
-    |
-    | This help url of your application.
-    */
-
-    'document' => 'http://doc.zotop.com/',  
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application help
-    |--------------------------------------------------------------------------
-    |
-    | This help url of your application.
-    */
-
-    'help' => 'http://help.zotop.com/',       
 
     /*
     |--------------------------------------------------------------------------
