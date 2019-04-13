@@ -26,11 +26,19 @@ class ThemeMiddleware
     protected $view;
 
     /**
+     * translator实例
+     * 
+     * @var object
+     */      
+    protected $translator;    
+
+    /**
      * 初始化
      */
     public function __construct() {
-        $this->app  = app();
-        $this->view = $this->app['view'];
+        $this->app        = app();
+        $this->view       = $this->app['view'];
+        $this->translator = $this->app['translator'];
     }
 
     /**
@@ -43,10 +51,10 @@ class ThemeMiddleware
     public function handle(Request $request, Closure $next)
     {
         // 注册主题和模块view
-        $this->registerThemeViews();
+        $this->registerViews();
 
-        // 注册模块命名空间view
-        $this->registerNamespaces();
+        // 注册语言
+        $this->registerLanguages();
 
         // 注册启动文件
         $this->registerFiles();
@@ -59,34 +67,34 @@ class ThemeMiddleware
      * 
      * @return void
      */
-    protected function registerThemeViews()
+    protected function registerViews()
     {
         // 在主题对应模块下的目录中寻址
         $this->view->addLocation($this->app['theme']->path().'/views/'.strtolower($this->app['current.module']));
 
         // 注册当前模块的views，实现view在模块中寻址
         $this->view->addLocation(Module::getModulePath($this->app['current.module']) . '/Resources/views/'.strtolower($this->app['current.type']));
+
+        //注册模块名称为命名空间，按照命名空间寻址
+        foreach (Module::getOrdered() as $module) {
+            $this->view->addNamespace($module->getLowerName(), [
+                $this->app['theme']->path().'/views/'.$module->getLowerName(),
+                $module->getPath() . '/Resources/views/'.strtolower($this->app['current.type'])
+            ]);
+        }        
     }
 
     /**
-     * 注册资源命名空间，按照命名空间寻址
+     * 注册语言包
      * 
      * @return void
-     */
-    protected function registerNamespaces()
+     */    
+    protected function registerLanguages()
     {
-        foreach (Module::getOrdered() as $module) {
-            // 模型名称和路径
-            $name = $module->getLowerName();
-            $path = $module->getPath();
+        $this->translator->addJsonPath($this->app['theme']->path().'/lang');
 
-            // 注册模块名称为命名空间
-            $this->view->addNamespace($name, [
-                $this->app['theme']->path().'/views/'.$name,
-                $path . '/Resources/views/'.strtolower($this->app['current.type'])
-            ]);
-        }
-    }    
+        $this->translator->addNamespace('theme', $this->app['theme']->path().'/lang');
+    } 
 
     /**
      * 注册主题文件

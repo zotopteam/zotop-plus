@@ -9,9 +9,9 @@
             <h1 class="content-title">{{$content->title}}</h1>
             <div class="content-info text-muted text-sm">
                 <span>{{$content->created_at}}</span>
-                <span>{{$content->author ?? config('site.name')}}</span>
-                <span>{{$content->source ?? config('site.name')}}</span>
-                <span>{{$content->hits}}</span>
+                <span>作者：{{$content->author ?? config('site.name')}}</span>
+                <span>来源：{{$content->source ?? config('site.name')}}</span>
+                <span>点击：{{$content->hits}}</span>
             </div>
         </div>
         <div class="content-body">

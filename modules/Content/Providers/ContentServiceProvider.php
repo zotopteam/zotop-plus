@@ -80,34 +80,43 @@ class ContentServiceProvider extends ServiceProvider
         Blade::tag('content', function($attrs) {
 
             $id    = array_get($attrs, 'id', 0); // 内容编号
-            $slug  = array_get($attrs, 'slug', '');  // 内容slug
+            $slug  = array_get($attrs, 'slug', null);  // 内容slug
             $image = array_get($attrs, 'image', null); // 图片模式 true=有图模式 false=无图模式           
-            $model = array_get($attrs, 'model', '');  // 节点模型 article 或者 article,page
+            $model = array_get($attrs, 'model', null);  // 节点模型 article 或者 article,page
+            $child = array_get($attrs, 'child', null);  // 子节点模型 category 或者 category,folder
             $type  = array_get($attrs, 'type', 'list'); //类型 list=列表 paginate=分页列表 parents=父节点
             $self  = array_get($attrs, 'self', true); // 是否获取自身
             $size  = array_get($attrs, 'size', 10); // 显示条数
-            $sort  = array_get($attrs, 'sort', '');  // 排序方式
-            $with  = array_get($attrs, 'with', ''); // 关联
+            $sort  = array_get($attrs, 'sort', null);  // 排序方式
+            $with  = array_get($attrs, 'with', null); // 关联
             $view  = array_get($attrs, 'view', "content::tag.{$type}"); //模板
 
             // 列表及分页列表
             if (in_array($type, ['list', 'paginate'])) {
 
-                $content = collect([]);
+                $id = $slug ? Content::where('slug', $slug)->value('id') : $id;
 
-                if ($self && $slug) {
-                    $content= Content::publish()->where('slug', $slug)->firstOrFail();
-                    $id = $content->id;
-                } elseif ($self && $id) {
-                    $content= Content::publish()->where('id', $id)->firstOrFail();
+                // 获取自身数据
+                if ($self && $id) {
+                    $content= Content::publish()->where('id', $id)->first();
                 } else {
-                    $id = $slug ? Content::where('slug', $slug)->value('id') : $id;
+                    $content = collect([]);
                 }
 
-                $query = Content::with(str_array($with, ','));
-                $query->publish()->where('parent_id', $id);
-                $query->model($model);
-                $query->sort($sort);
+                // 查询
+                $query = Content::with(str_array($with, ','))->publish()->model($model)->sort($sort);
+
+                // 查询子节点
+                if ($child) {
+                    $childrenIds = Content::childrenIds($id, true, $child);
+                    if (count($childrenIds) == 1) {
+                        $query->where('parent_id', reset($childrenIds));
+                    } else {
+                        $query->whereIn('parent_id', $childrenIds);
+                    }
+                } else {
+                    $query->where('parent_id', $id);
+                }
 
                 // 获取带封面图片的数据
                 if ($image === true) {

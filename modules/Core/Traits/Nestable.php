@@ -297,8 +297,7 @@ trait Nestable
      * 获取节点的一级节点编号，如果本身就是一级节点，返回自身
      * 
      * @param  mixed  $id         编号
-     * @param  mixed  $rootId     默认顶级编号
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return mixed
      */
     public static function topId($id)
     {

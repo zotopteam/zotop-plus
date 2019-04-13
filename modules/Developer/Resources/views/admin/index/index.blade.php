@@ -21,7 +21,7 @@
 
                 <div class="card text-center m-5">                    
                     <div class="card-icon bg-success text-white d-flex justify-content-center align-items-center">
-                        <i class="fa fa-diamond"></i>
+                        <i class="fa fa-gem"></i>
                     </div>
                     <div class="card-body">
                         <a href="{{route('developer.theme.index')}}"> {{trans('developer::theme.title')}}</a>

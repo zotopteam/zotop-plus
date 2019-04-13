@@ -206,10 +206,10 @@ textarea{resize:none;}
 .jumbotron h1{font-size:4rem;margin-bottom:1rem;font-weight:400;line-height:1.5;}
 .jumbotron p{font-size:1.25rem;margin-bottom:1rem;}
 
-.breadcrumb{background:transparent;padding:0.75rem 0;font-size:.875rem;}
+.breadcrumb{background:transparent;padding:0.75rem 0;font-size:.875rem;margin:0;}
 .breadcrumb a{color:#333;}
 
-.content{}
+.content{margin:1rem 0;}
 .content-header{margin-bottom:1rem;}
 .content-title{font-size:2rem;}
 .content-body{padding:1rem 0;}

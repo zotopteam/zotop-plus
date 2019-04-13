@@ -16,7 +16,7 @@ class IndexController extends AdminController
      */
     public function index(Request $request)
     {
-        $this->title  = trans('developer::module.title');
+        $this->title  = trans('developer::developer.title');
 
         return $this->view();
     }

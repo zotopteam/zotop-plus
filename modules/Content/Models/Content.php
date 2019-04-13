@@ -180,6 +180,19 @@ class Content extends Model
     }
 
     /**
+     * 获取节点的一级节点编号，如果本身就是一级节点，返回自身
+     * 
+     * @param  int  $id         编号
+     * @return int
+     */
+    public static function topId($id)
+    {
+        $parentIds = static::parentIds($id, true);
+
+        return reset($parentIds);
+    }
+
+    /**
      * 获取节点的全部子节点编号
      * 
      * @param  mixed  $id         编号
@@ -250,6 +263,32 @@ class Content extends Model
         }
         
         return null;
+    }
+
+    /**
+     * 获取节点的父级节点编号
+     * 
+     * @param  int  $id 编号
+     * @return array
+     */
+    public function getParentIdsIdAttribute($value)
+    {
+        return static::parentIds($this->id, true);
+    }
+
+    /**
+     * 获取节点的一级节点编号，如果本身就是一级节点，返回自身
+     * 
+     * @param  int  $id 编号
+     * @return int
+     */
+    public function getTopIdAttribute($value)
+    {
+        if ($this->parent_id) {
+            return static::topId($this->parent_id);
+        }
+        
+        return $this->id;
     }
 
     /**
