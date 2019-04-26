@@ -331,6 +331,7 @@ class Content extends Model
      * 排序 ，查询结果按照stick(置顶)、sort(排序)和id(编号)倒序
      * 
      * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string|array sort 例如：stick desc,id desc
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSort($query, $sort=null)
@@ -347,7 +348,7 @@ class Content extends Model
     public function scopePublish($query)
     {
         return $query->where('status', 'publish');
-    }        
+    }       
 
     /**
      * 不更新时间戳

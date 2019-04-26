@@ -38,28 +38,26 @@ class InstallServiceProvider extends ServiceProvider
      */
     public function checkInstalled()
     {
-        if ($this->app['installed'] == false) {
-
-            if($this->app['request']->is('install', 'install/*', '_debugbar/*')) {
-
-                // 加载安装路由
-                $this->loadRoutesFrom(base_path('/routes/install.php'));
-
-            } else {
-
-                $env = base_path('.env');
-
-                if (!$this->app['files']->isFile($env)) {              
-
-                    $this->app['files']->copy(base_path('.env.example'), $env);
-                }
-
-                // 强制进入安装
-                header('Location:'.url('install'));
-                
-                exit('The cms has not been installed. Please use the installer to install it');
-            }
-
+        if ($this->app['installed']) {
+            return ;
         }
+
+        if ($this->app['request']->is('install', 'install/*', '_debugbar/*')) {
+            // 加载安装路由
+            $this->loadRoutesFrom(base_path('/routes/install.php'));
+            return ;
+        }
+
+        // 从.env.example复制并生成.env
+        $dot_env = base_path('.env');
+
+        if (!$this->app['files']->isFile($dot_env)) {
+            $this->app['files']->copy(base_path('.env.example'), $dot_env);
+        }
+
+        // 强制进入安装
+        header('Location:'.url('install'));
+        
+        exit('The cms has not been installed. Please use the installer to install it');
     }    
 }

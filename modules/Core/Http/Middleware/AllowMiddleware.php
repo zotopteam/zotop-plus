@@ -14,19 +14,6 @@ use Illuminate\Support\Facades\Auth;
 class AllowMiddleware
 {
     /**
-     * @var Authentication
-     */
-    private $auth;
-
-    /**
-     * Authorization constructor.
-     * @param Authentication $auth
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * @param $request
      * @param \Closure $next
      * @param $permission
@@ -35,12 +22,11 @@ class AllowMiddleware
     public function handle($request, \Closure $next, $permission)
     {
         // 检查用户是否有权限 $permission
-        if (Auth::user()->allow($permission)) {
-            return $next($request);
+        if (! Auth::user()->allow($permission)) {
+            abort(403);
         }
-        
-        // 权限不足
-        return new Response('Forbidden', 403);      
+
+        return $next($request); 
     }
 
 }

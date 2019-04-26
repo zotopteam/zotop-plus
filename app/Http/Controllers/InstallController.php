@@ -416,7 +416,7 @@ class InstallController extends Controller
             Config::set('site', $this->site);
 
             // 设置为已安装
-            Artisan::call('env:set',['key'=>'APP_INSTALLED', 'value'=>'true']);
+            Artisan::call('env:set', ['key'=>'APP_INSTALLED', 'value'=>'true']);
 
             //发布主题
             Artisan::call('theme:publish');

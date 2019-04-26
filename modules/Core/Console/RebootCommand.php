@@ -1,5 +1,4 @@
 <?php
-
 namespace Modules\Core\Console;
 
 use Illuminate\Console\Command;
@@ -33,20 +32,15 @@ class RebootCommand extends Command
      */
     public function handle()
     {
-        // 生产环境时建立配置和路由缓存
-        if ($this->laravel->environment('production')) {
-            $this->call('config:cache');
-            $this->call('route:cache');            
-        } else {
-            $this->call('config:clear');
-            $this->call('route:clear');           
-        }
-  
-        $this->call('view:clear');
-        $this->call('cache:clear');
+        // 清理缓存
         $this->call('debugbar:clear');
         $this->call('log:clear');
-        $this->call('clear-compiled');
+        $this->call('optimize:clear');
+
+        // 生产环境时自动优化系统，建立配置和路由缓存
+        if ($this->laravel->environment('production')) {
+            $this->call('optimize');
+        }
         
         $this->info("Rebooted!");      
     }

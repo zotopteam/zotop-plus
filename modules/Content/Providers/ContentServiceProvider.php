@@ -42,6 +42,8 @@ class ContentServiceProvider extends ServiceProvider
 
         // 监听卸载
         $this->app['events']->listen('modules.content.uninstalling', function($module) {
+
+            //内容数据大于5条时候，禁止卸载模块
             abort_if(Content::count() > 5, 403, trans('content::module.uninstall.forbidden'));
 
             // 卸载所有自动生成的表
@@ -107,16 +109,15 @@ class ContentServiceProvider extends ServiceProvider
                 $query = Content::with(str_array($with, ','))->publish()->model($model)->sort($sort);
 
                 // 查询子节点
-                if ($child) {
+                $query->when($child, function($query, $child) use($id) {
                     $childrenIds = Content::childrenIds($id, true, $child);
                     if (count($childrenIds) == 1) {
-                        $query->where('parent_id', reset($childrenIds));
-                    } else {
-                        $query->whereIn('parent_id', $childrenIds);
+                        return $query->where('parent_id', reset($childrenIds));
                     }
-                } else {
+                    return $query->whereIn('parent_id', $childrenIds);
+                }, function($query) use($id) {
                     $query->where('parent_id', $id);
-                }
+                });
 
                 // 获取带封面图片的数据
                 if ($image === true) {

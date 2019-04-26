@@ -5,6 +5,7 @@ namespace Modules\Core\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Carbon;
 use Route;
 use Filter;
@@ -12,18 +13,21 @@ use Filter;
 class LocaleMiddleware
 {
     /**
-     * app实例
-     * 
-     * @var mixed|\Illuminate\Foundation\Application
-     */       
+     * The application instance.
+     *
+     * @var \Illuminate\Contracts\Foundation\Application
+     */
     protected $app;
 
-
     /**
-     * 初始化
+     * Create a new middleware instance.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return void
      */
-    public function __construct() {
-        $this->app  = app();
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
     }
 
     /**
@@ -51,7 +55,7 @@ class LocaleMiddleware
         $locale = $this->app['current.locale'];
 
         // 当前语言设置
-        if ( $locale && $locale != $this->app->getLocale()) {
+        if ($locale && $locale != $this->app->getLocale()) {
             $this->app->setLocale($locale);            
         }
 

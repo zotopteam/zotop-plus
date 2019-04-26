@@ -5,22 +5,27 @@ namespace Modules\Site\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Foundation\Application;
 use Route;
 
 class FrontMiddleware
 {
     /**
-     * app实例
-     * 
-     * @var mixed|\Illuminate\Foundation\Application
-     */       
-    protected $app;    
+     * The application instance.
+     *
+     * @var \Illuminate\Contracts\Foundation\Application
+     */
+    protected $app;
 
     /**
-     * 初始化
+     * Create a new middleware instance.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return void
      */
-    public function __construct() {
-        $this->app = app();
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
     }
 
     /**

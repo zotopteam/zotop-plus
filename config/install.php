@@ -38,15 +38,14 @@ return [
     |
     */
     'permissions' => [
-        '.env'               => '666',
-        'public/'            => '775',
-        'themes/'            => '775',
-        'config/'            => '775',
-        'modules/'           => '775',
-        'storage/framework/' => '775',
-        'storage/logs/'      => '775',
-        'storage/plupload/'  => '775',
-        'bootstrap/cache/'   => '775',
+        'public/'            => '0755',
+        'themes/'            => '0755',
+        'config/'            => '0755',
+        'modules/'           => '0755',
+        'storage/framework/' => '0755',
+        'storage/logs/'      => '0755',
+        'storage/plupload/'  => '0755',
+        'bootstrap/cache/'   => '0755',
     ],
 
 
