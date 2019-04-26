@@ -19,6 +19,7 @@
         "laravelcollective/html": "^5.8.0",
         "maatwebsite/excel": "^3.1",
         "nwidart/laravel-modules": "^5.0",
+        "guzzlehttp/guzzle": "^6.3",
         "sven/flex-env": "^2.1"
     },
     "require-dev": {
