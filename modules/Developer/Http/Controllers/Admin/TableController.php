@@ -104,15 +104,17 @@ class TableController extends AdminController
         $this->name   = 'test';
         $this->columns = [
             ['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
-            ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
-            ['name'=>'image', 'type'=>'varchar', 'length'=>'100', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
-            ['name'=>'content', 'type'=>'text', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
-            ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
+            ['name'=>'title', 'type'=>'varchar', 'length'=>'200', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'title'],
+            ['name'=>'slug', 'type'=>'char', 'length'=>'128', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'title'],
+            ['name'=>'image', 'type'=>'varchar', 'length'=>'100', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'cover image'],
+            ['name'=>'content', 'type'=>'text', 'length'=>'', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
+            ['name'=>'money', 'type'=>'decimal', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
             ['name'=>'sort', 'type'=>'mediumint', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
             ['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'1', 'comment'=>'status'],            
         ];
 
         $this->indexes = [
+            ['name'=>'slug','type'=>'unique','columns'=>'slug'],
             ['name'=>'sort_status','type'=>'index','columns'=>['sort','status']]
         ];
 

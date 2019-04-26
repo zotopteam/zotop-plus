@@ -180,6 +180,9 @@ class Migrate
 
 		$up = implode(PHP_EOL."\t\t\t", $up);
 
+		//调试代码
+		//dd($bluepoints,$up);
+
 		$template  = $template ?: __DIR__ .'/stubs/create_table.stub';
 		$name = $this->getMigrationFileName('create');
 

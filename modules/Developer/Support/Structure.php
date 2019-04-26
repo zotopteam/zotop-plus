@@ -1,15 +1,9 @@
 <?php
-namespace Modules\Developer\Support;
 
+namespace Modules\Developer\Support;
 
 class Structure
 {
-	/**
-	 * 表名称
-	 * @var string
-	 */
-	protected $table;
-
 	/**
 	 * 字段
 	 * @var collection
@@ -82,21 +76,19 @@ class Structure
 	 */
 	public function __construct(array $columns = [], array $indexes = [])
 	{
-		// $this->table = $table;
-
+		// 校验并格式化字段
 		$this->columns = collect($columns)->filter(function($column) {
 			return $this->validColumn($column);
 		})->map(function($column){
 			return $this->formatColumn($column);
 		});
 
+		// 校验并格式化索引
 		$this->indexes = collect($indexes)->filter(function($index) {
 			return $this->validIndex($index);
 		})->map(function($index) {
 			return $this->formatIndex($index);
 		});
-
-		// debug($this->indexes->all());
 	}
 
 	/**
@@ -135,7 +127,7 @@ class Structure
 	 */
 	public function increments()
 	{
-		return $this->columns->where('increments','increments')->first()['name'];
+		return $this->columns->where('increments', 'increments')->first()['name'];
 	}
 
 	/**
@@ -247,10 +239,12 @@ class Structure
 	{
 		$column = array_merge(static::$columnFormatDefault, $column);
 
+		// 转化创建时间、更新时间和删除时间为 timestamp 类型
 		if (in_array($column['name'], ['created_at','updated_at', 'deleted_at'])) {
 			$column['type'] = 'timestamp';
 		}
 
+		// 去掉不允许长度的 length 属性
 		if (! in_array($column['type'], ['char', 'varchar', 'float', 'double','decimal','enum'])) {
 			$column['length'] = null;
 		}
@@ -323,8 +317,8 @@ class Structure
 		    abort(403, trans('developer::table.column.exists'));
 		}
 
-        $this->addColumn(['name'=>'created_at','type'=>'timestamp']);
-        $this->addColumn(['name'=>'updated_at','type'=>'timestamp']);
+        $this->addColumn(['name'=>'created_at','type'=>'timestamp','nullable'=>'nullable']);
+        $this->addColumn(['name'=>'updated_at','type'=>'timestamp','nullable'=>'nullable']);
 
         return true;
 	}
@@ -334,7 +328,7 @@ class Structure
 	 */
 	public function addSoftdeletes()
 	{
-        $this->addColumn(['name'=>'deleted_at','type'=>'timestamp']);
+        $this->addColumn(['name'=>'deleted_at','type'=>'timestamp','nullable'=>'nullable']);
         return true;
 	}
 
@@ -425,8 +419,6 @@ class Structure
 
 		if ($column['nullable']) {
 			$convert['modifiers']['nullable'] = [];
-		} else {
-			$convert['modifiers']['nullable'] = [false];
 		}
 
 		if ($column['default']) {
@@ -500,8 +492,14 @@ class Structure
 			}
 		}
 
-		// change
+		// 如果是修改数据表
 		if ($change) {
+
+			// 修改为非空字段
+			if(! $column['nullable']) {
+				$convert['modifiers']['nullable'] = [false];
+			}
+
 			$convert['modifiers']['change'] = [];
 		}
 		
