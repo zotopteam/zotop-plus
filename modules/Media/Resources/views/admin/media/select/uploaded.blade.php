@@ -44,10 +44,10 @@
                         </div>
                     </div>                             
                     <div class="card-body p-2">
-                        <div class="card-text text-sm text-overflow">
+                        <div class="card-text text-sm text-truncate">
                             {{$file->name}}
                         </div>
-                        <div class="card-text text-xs text-overflow">
+                        <div class="card-text text-xs text-truncate">
                             <small class="text-success">{{$file->size_human}}</small>
                             @if ($file->isImage())
                             <small>{{$file->width}}px × {{$file->height}}px</small>

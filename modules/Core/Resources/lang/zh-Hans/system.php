@@ -18,6 +18,7 @@ return [
     'environment.server.laravel'             => 'Laravel版本',
     'environment.server.upload_max_filesize' => '最大上传限制',
     'environment.server.server_timezone'     => '服务器时区',
+    'environment.server.disable_functions'   => '禁用函数',
     'environment.server.server_datetime'     => '服务器时间',
     'environment.server.protocol'            => '通信协议',
     'environment.server.port'                => '监听端口',

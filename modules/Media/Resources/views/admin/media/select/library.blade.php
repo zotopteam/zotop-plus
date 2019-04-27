@@ -60,10 +60,10 @@
                     </div>
 
                     <div class="card-body p-2">
-                        <div class="card-text text-sm text-overflow">
+                        <div class="card-text text-sm text-truncate">
                             {{$m->name}}
                         </div>
-                        <div class="card-text text-xs text-overflow">
+                        <div class="card-text text-xs text-truncate">
                             @if($m->isFolder())
                             <small class="text-success">{{trans('core::folder.type')}}</small>
                             @else

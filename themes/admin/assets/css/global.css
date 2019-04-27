@@ -133,14 +133,10 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .text-warning{color:#ffd740!important;}
 .text-muted{color:#cccccc!important;}
 
-.text-overflow{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;box-sizing:border-box;}
-.text-overflow-2{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-.text-overflow-3{white-space:normal;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
-.text-overflow-4{white-space:normal;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;}
-.text-overflow-5{white-space:normal;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;}
-
-.text-wrap{white-space:normal;word-wrap:break-word;word-break:break-all;}
-.text-nowrap{white-space:nowrap;}
+.text-truncate-2{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.text-truncate-3{white-space:normal;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
+.text-truncate-4{white-space:normal;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;}
+.text-truncate-5{white-space:normal;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;}
 
 .text-xs{font-size:0.75rem!important;}
 .text-sm{font-size:0.875rem!important;}
@@ -322,7 +318,7 @@ textarea{resize:none;}
 .radiocards, .checkboxcards{margin:0 -0.25rem;}
 .radiocards .card, .checkboxcards .card{margin:0 .25rem;}
 
-.badge{font-size:70%;line-height:inherit;}
+.badge{font-size:70%;line-height:inherit;padding:.25em .5em;}
 .badge-pill{padding:.25em .7em;}
 .badge-danger{background-color:#ff0000;border-radius:0.5rem;}
 

@@ -60,5 +60,10 @@ return [
         'core.folder.create' => 'core::folder.create',
         'core.folder.delete' => 'core::master.delete',
         'core.folder.rename' => 'core::master.rename',
-    ]    
+    ],
+
+    'core::scheduling.title' => [
+        'core.scheduling.index' => 'core::scheduling.task.list',
+        'core.scheduling.run' => 'core::scheduling.task.run',
+    ],      
 ];

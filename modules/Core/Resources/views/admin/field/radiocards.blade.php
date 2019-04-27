@@ -10,14 +10,14 @@
                 <img class="card-img-top img-fluid" src="{{$v[0]}}" alt="{{$v[2] ?? ''}}">
             </div>
             @if (isset($v[1]) && $v[1])
-            <div class="card-body text-overflow">
+            <div class="card-body text-truncate">
                 {{$v[1]}}                                   
             </div>
             @endif
         </div>
         @else
         <div class="card">
-            <div class="card-body text-overflow">
+            <div class="card-body text-truncate">
                 {{$v}}
             </div>                
         </div>

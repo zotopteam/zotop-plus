@@ -18,5 +18,7 @@ Artisan::command('content:publish-future', function () {
         'status' => 'publish'
     ]);
 
+    $this->info('Publish the future content success!');
+
 })->describe('Publish the future content!');
 

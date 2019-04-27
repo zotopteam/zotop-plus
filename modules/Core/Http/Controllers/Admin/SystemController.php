@@ -54,7 +54,7 @@ class SystemController extends AdminController
 
         $this->server = [
             'php'                 => PHP_VERSION,
-            'os'                  => PHP_OS,
+            'os'                  => PHP_OS . '( ' .php_uname('s') . php_uname('r') . php_uname('v') .' )',
             'server'              => $_SERVER['SERVER_SOFTWARE'],
             'db'                  => config('database.default'),
             
@@ -64,9 +64,9 @@ class SystemController extends AdminController
             'laravel'             => app()::VERSION,
             'upload_max_filesize' => ini_get('upload_max_filesize'),
             'max_execution_time'  => ini_get('max_execution_time').'s',
+            'disable_functions'   => ini_get('disable_functions'),
             'server_timezone'     => config('app.timezone'),
             'server_datetime'     => now(),
-            // 'local_date'       => gmdate('Y年n月j日 H:i:s', time() + 8 * 3600),
             'server_name'         => $_SERVER['SERVER_NAME'],
             'port'                => $_SERVER['SERVER_PORT'],
             'server_addr'         => $_SERVER['SERVER_ADDR'],

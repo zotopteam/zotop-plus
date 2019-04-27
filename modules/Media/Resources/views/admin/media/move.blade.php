@@ -67,7 +67,7 @@
                         <div class="p-2 d-flex">
                             <i class="{{$m->icon}} fa-6x text-warning align-self-center mx-auto"></i>
                         </div>
-                        <div class="p-2 text-overflow">
+                        <div class="p-2 text-truncate">
                             {{$m->name}}
                         </div>
                     </a>

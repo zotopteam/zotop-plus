@@ -29,7 +29,7 @@ Artisan::command('schedule:test', function () {
     $log_filepath = storage_path('logs/schedule_test.log');
     $log_contents = 'Schedule run: '.now()."\n";
     $this->laravel['files']->append($log_filepath, $log_contents);
-    $this->info('ok');
+    $this->info('ok!');
 })->describe('schedule test');
 
 /**

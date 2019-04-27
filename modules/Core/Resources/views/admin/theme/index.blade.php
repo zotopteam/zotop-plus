@@ -26,10 +26,10 @@
                         </div>
                         <div class="card-body">
                             <div class="card-title d-flex flex-row">
-                                <h4 class="mr-auto text-overflow">{{$theme->title}}</h4>
+                                <h4 class="mr-auto text-truncate">{{$theme->title}}</h4>
                                 <small class="py-1 ml-3">{{$theme->version}}</small>
                             </div>
-                            <div class="card-text text-overflow text-overflow-2 d-none">{{$theme->description}}</div>
+                            <div class="card-text text-truncate text-truncate-2 d-none">{{$theme->description}}</div>
                             <div class="card-text manage">
                                 <a href="{{route('core.theme.files', ['theme'=>$theme->name,'dir'=>'/views'])}}" class="manage-item">
                                     <i class="far fa-file fa-fw"></i> {{trans('core::theme.views')}}

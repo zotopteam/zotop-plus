@@ -109,4 +109,9 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->any('rename','FolderController@rename')->name('core.folder.rename')->middleware('allow:core.folder.rename');
     });
 
+    // scheduling group example
+    $router->group(['prefix' =>'scheduling'], function (Router $router) {
+        $router->get('index','SchedulingController@index')->name('core.scheduling.index')->middleware('allow:core.scheduling.index');
+        $router->any('run/{index}','SchedulingController@run')->name('core.scheduling.run')->middleware('allow:core.scheduling.run');
+    });
 });

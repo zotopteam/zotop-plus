@@ -55,9 +55,7 @@ class CoreServiceProvider extends ServiceProvider
             $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
 
             // 非产品环境时执行定时任务测试
-            if (! $this->app->environment('production')) {
-                $schedule->command('schedule:test')->name('schedule_test')->withoutOverlapping()->everyMinute();
-            }
+            $schedule->command('schedule:test')->name('schedule_test')->everyMinute()->withoutOverlapping(1)->environments(['local','testing']);
         });
 
         // 事件监听，禁止禁用和卸载核心模块

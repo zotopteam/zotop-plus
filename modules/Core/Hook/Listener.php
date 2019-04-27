@@ -74,6 +74,16 @@ class Listener
             ];
         }
 
+        //计划任务
+        if (allow('core.scheduling.index')) {
+            $start['scheduling'] = [
+                'text' => trans('core::scheduling.title'),
+                'href' => route('core.scheduling.index'),
+                'icon' => 'fa fa-clock bg-primary text-white', 
+                'tips' => trans('core::scheduling.description'),
+            ];
+        }        
+
         //environment 服务器环境
         $start['environment'] = [
             'text' => trans('core::system.environment.title'),

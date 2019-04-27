@@ -125,9 +125,9 @@
             <table class="table table-sm table-nowrap table-hover table-border table-indexes">
                 <thead>
                     <tr>
-                        <td width="15%">{{trans('developer::table.column.name')}}</td>
-                        <td width="15%">{{trans('developer::table.column.type')}}</td>
-                        <td></td>
+                        <td width="15%">{{trans('developer::table.index.name')}}</td>
+                        <td width="15%">{{trans('developer::table.index.type')}}</td>
+                        <td>{{trans('developer::table.index.columns')}}</td>
                         <td width="2%"></td>
                     </tr>
                 </thead>
@@ -143,7 +143,7 @@
                             <input type="hidden" name="indexes[{{$k}}][type]" value="{{$v['type']}}">
                         </td>
                         <td>
-                            {{implode(',', $v['columns'])}}
+                            {{implode(', ', $v['columns'])}}
                             @foreach($v['columns'] as $c)
                             <input type="hidden" name="indexes[{{$k}}][columns][]" value="{{$c}}">
                             @endforeach        
