@@ -24,7 +24,7 @@ class Media extends Model
      *
      * @var array
      */
-    protected $fillable = ['parent_id','type','name','path','url','extension','mimetype','width','height','size','module','controller','action','field','data_id','user_id','sort'];
+    protected $fillable = ['parent_id','is_folder','type','name','path','url','extension','mimetype','width','height','size','module','controller','action','field','data_id','user_id','sort'];
 	
 	
     /**
@@ -45,11 +45,6 @@ class Media extends Model
         // 创建时保存排序，文件夹在最前面
         static::creating(function ($media) {
             $media->sort = $media->sort ?: time();
-
-            // 文件夹排序在前面
-            if ($media->type == 'folder') {
-                $media->sort += pow(10,9);
-            }
         });
 
         // 更新设置parent_id时，禁止为自身或者自身的子节点
@@ -104,14 +99,14 @@ class Media extends Model
     }
 
     /**
-     * 排序 ，查询结果sort(排序)和id(编号)倒序
+     * 排序 ，查询结果is_folder(是否文件夹), sort(排序)和id(编号)倒序
      * 
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSort($query)
+    public function scopeSort($query, $sort=null)
     {
-        return $query->orderby('sort', 'desc')->orderby('id', 'desc');
+        return $query->orderby('is_folder', 'desc')->orderby('sort', 'desc')->orderby('id', 'desc');
     }            
 
     /**

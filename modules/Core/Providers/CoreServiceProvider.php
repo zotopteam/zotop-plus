@@ -52,6 +52,8 @@ class CoreServiceProvider extends ServiceProvider
 
         // 定时任务
         $this->app->booted(function () {
+
+            // 获取schedule实例
             $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
 
             // 非产品环境时执行定时任务测试
@@ -117,15 +119,6 @@ class CoreServiceProvider extends ServiceProvider
         if ($this->app['installed'] == false && $this->app['files']->isFile($configFile = $module->getPath().'/config.php')) {            
             $this->mergeConfigFrom($configFile, $moduleName);
         }
-        
-        // 注册模块Config目录下的配置
-        // if ($this->app['files']->isDirectory($configPath = $module->getPath().'/Config')) {
-            
-        //     foreach ($this->app['files']->files($configPath) as $configFile) {
-        //         $fileName = basename($configFile,'.php');
-        //         $this->mergeConfigFrom($configFile, "$moduleName.$fileName");
-        //     }
-        // }
     }
 
     /**

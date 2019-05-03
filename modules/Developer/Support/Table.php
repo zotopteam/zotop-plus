@@ -275,7 +275,7 @@ class Table
             // $after = $columns[$name]['name'];
 		}
 
-		//debug($columns);
+		//dd($columns);
 		
 		return $collection ? collect($columns) : $columns;
 	}

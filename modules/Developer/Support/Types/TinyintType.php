@@ -68,11 +68,11 @@ class TinyintType extends IntegerType
 
         $result = DB::select("show columns from ".$table." where Field = '".$column."'");
 
-        if ($result && $result[0]->Type == 'tinyint(1)') {
+        // tinyint类型且长度等于1时为boolean字段
+        if ($result && stripos($result[0]->Type, 'tinyint(1)') !== false) {
             $boolean = true;
         }
 
-        // 获取数据表允许的值
         return $boolean;
     }
 }

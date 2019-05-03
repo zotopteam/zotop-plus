@@ -36,7 +36,7 @@ class MediaController extends AdminController
         $this->media = $media->sort()->paginate(25);
 
         $this->media->getCollection()->transform(function($item) {
-            if ($item->isFolder()) {
+            if ($item->is_folder) {
                 $item->url = route('media.index', $item->id);
             } else {
                 $item->url = url($item->url);
@@ -49,7 +49,7 @@ class MediaController extends AdminController
     }
 
     /**
-     * 新建
+     * 新建文件夹
      * 
      * @return Response
      */
@@ -62,6 +62,7 @@ class MediaController extends AdminController
             $media->fill($request->all());
             $media->parent_id = $parent_id;
             $media->type = $type;
+            $media->is_folder = 1;
             $media->save();
 
             return $this->success(trans('core::master.created'), $request->referer());       

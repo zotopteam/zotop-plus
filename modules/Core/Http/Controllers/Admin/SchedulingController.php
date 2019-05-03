@@ -8,6 +8,7 @@ use Modules\Core\Base\AdminController;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Console\Scheduling\CallbackEvent;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;
 
 class SchedulingController extends AdminController
@@ -26,20 +27,18 @@ class SchedulingController extends AdminController
         return $this->view();
     }
 
-    public function run($index)
+    public function run(Container $app, $index)
     {
         $output = storage_path('logs/schedule-task.output');
 
         // 执行并输出结果
-        $event = app(Schedule::class)->events()[$index];
+        $event = $app->make(Schedule::class)->events()[$index];
         $event->sendOutputTo($output);
-        $event->run(app());
+        $event->run($app);
 
         // 获取输出结果
-        $fs = app('files');
-        if ($fs->exists($output)) {
-            $result = $fs->get($output);
-            $fs->delete($output);
+        if (file_exists($output) && ($result = file_get_contents($output))) {
+            unlink($output);
             return $result;
         }
 
