@@ -2,9 +2,9 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item home"><a href="{{url('/')}}">{{config('site.name')}}</a></li>
-    @foreach ($parents as $parent)
-    <li class="breadcrumb-item {{$id==$parent->id ? 'active' : ''}}">
-        <a href="{{$parent->url}}">{{$parent->title}}</a>
+    @foreach ($contents as $content)
+    <li class="breadcrumb-item {{$attrs.id==$content->id ? 'active' : ''}}">
+        <a href="{{$content->url}}">{{$content->title}}</a>
     </li>
     @endforeach
   </ol>

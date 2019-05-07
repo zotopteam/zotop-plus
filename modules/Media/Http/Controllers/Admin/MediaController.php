@@ -125,7 +125,7 @@ class MediaController extends AdminController
         $this->parents = Media::parents($parent_id, true);      
 
         // 获取当前节点下面的全部数据（包含搜索）
-        $this->media = Media::where('type', 'folder')->where('parent_id', $parent_id)->when($request->keywords, function($query, $keywords) {
+        $this->media = Media::where('is_folder', 1)->where('parent_id', $parent_id)->when($request->keywords, function($query, $keywords) {
             return $query->where('name', 'like', '%'.$keywords.'%');
         })->sort()->paginate(36);
 

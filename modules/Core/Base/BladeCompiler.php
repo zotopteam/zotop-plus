@@ -211,15 +211,18 @@ class BladeCompiler extends LaravelBladeCompiler
         if (starts_with($method, 'tag_callback')) {
 
             // 获取回调
-            $callback = $this->tags[substr($method, 13)];
+            $method   = substr($method, 13);
 
-            // 如果回调是类函数：字符串且包含@符号
-            if (is_string($callback) && strpos($callback, '@')) {
-                $callback = explode('@', $callback);
-                $callback = array(app('\\' . $callback[0]), $callback[1]);
+            if (isset($this->tags[$method]) && $callback = $this->tags[$method]) {
+                
+                // 如果回调是类函数：字符串且包含@符号
+                if (is_string($callback) && strpos($callback, '@')) {
+                    $callback = explode('@', $callback);
+                    $callback = array(app('\\' . $callback[0]), $callback[1]);
+                }
+
+                return call_user_func_array($callback, $args);
             }
-
-            return call_user_func_array($callback, $args);
         }
     }
 
