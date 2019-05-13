@@ -4,10 +4,11 @@ return [
     'skin'   => 'default',
     'upload' => [
         'types' => [
-            'image' => ['enabled'=>1,'maxsize'=>20,'extensions'=>'jpg,jpeg,png,gif'],
-            'files' => ['enabled'=>1,'maxsize'=>20,'extensions'=>'doc,docx,xls,xlsx,ppt,pptx,pps,pdf,txt,rar,zip,7z'],            
-            'video' => ['enabled'=>1,'maxsize'=>20,'extensions'=>'mp4,mpeg,mov,avi,mpg,3gp,3g2'],
-            'audio' => ['enabled'=>1,'maxsize'=>20,'extensions'=>'mp3,midi,mid'],
+            'image'    => ['enabled'=>1,'maxsize'=>20,'extensions'=>'jpg,jpeg,png,gif'],
+            'document' => ['enabled'=>1,'maxsize'=>20,'extensions'=>'doc,docx,xls,xlsx,ppt,pptx,pps,pdf,txt'],
+            'archive'  => ['enabled'=>1,'maxsize'=>20,'extensions'=>'rar,zip,7z'],         
+            'video'    => ['enabled'=>1,'maxsize'=>20,'extensions'=>'mp4,mpeg,mov,avi,mpg,3gp,3g2'],
+            'audio'    => ['enabled'=>1,'maxsize'=>20,'extensions'=>'mp3,midi,mid'],
         ],
         'dir' => 'Y/m',
         'url'  => '',

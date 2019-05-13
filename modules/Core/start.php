@@ -254,31 +254,35 @@
     // 标签预处理
     $attrs = Filter::fire('core.field.upload.attrs', $attrs);
 
+    //获取上传配置
+    $types = collect(config('core.upload.types'));
+
     // 标签参数分解
     $value    = $this->getValue($attrs);
     $name     = $this->getAttribute($attrs, 'name');
     $id       = $this->getIdAttribute($name, $attrs);
 
     // 上传和选择参数
-    $filetype = $this->getAttribute($attrs, 'filetype', 'files');
-    $url      = $this->getAttribute($attrs, 'url', route('core.file.upload',[$filetype]));
-    $allow    = $this->getAttribute($attrs, 'allow', config('core.upload.types.'.$filetype.'.extensions'));
-    $maxsize  = $this->getAttribute($attrs, 'maxsize', config('core.upload.types.'.$filetype.'.maxsize'));
-    $typename = $this->getAttribute($attrs, 'typename', trans('core::file.type.'.$filetype));
+    $filetype = $this->getAttribute($attrs, 'filetype', '');
+
+    $url      = $this->getAttribute($attrs, 'url', route('core.file.upload'));
+    $allow    = $this->getAttribute($attrs, 'allow', $types->implode('extensions',','));
+    $maxsize  = $this->getAttribute($attrs, 'maxsize', 1024);
+    $typename = $this->getAttribute($attrs, 'typename', trans('core::file.type.files'));
     $folder   = $this->getAttribute($attrs, 'folder', '');
     $data_id  = $this->getAttribute($attrs, 'data_id', $this->getValueAttribute('data_id'));
     
     // 界面文字和图标
-    $select   = $this->getAttribute($attrs, 'select', trans('core::field.upload.select',[$typename])); 
+    $select   = $this->getAttribute($attrs, 'select', trans('core::field.upload.select', [$typename])); 
     $icon     = $this->getAttribute($attrs, 'icon', 'fa-upload');
-    $button   = $this->getAttribute($attrs, 'button', trans('core::field.upload.button',[$typename]));
+    $button   = $this->getAttribute($attrs, 'button', trans('core::field.upload.button', [$typename]));
 
     // 附加参数
     $params = $this->getAttribute($attrs, 'params',  [
         'select'     => 1,
         'type'       => $filetype,
         'typename'   => $typename,        
-        'extension'  => $allow,
+        'extensions' => $allow,
         'maxsize'    => $maxsize,
         'module'     => app('current.module'),
         'controller' => app('current.controller'),
@@ -289,6 +293,8 @@
         'user_id'    => Auth::user()->id,
         'token'      => Auth::user()->token
     ]);
+
+    debug($params);
 
     // 选项
     $options = $this->getAttribute($attrs, 'options',  [

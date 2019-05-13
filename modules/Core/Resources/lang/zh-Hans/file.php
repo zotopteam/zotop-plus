@@ -24,10 +24,13 @@ return [
     'type.all'               => '全部',    
     'type.null'              => '文件',
     'type.text'              => '文本',
+    'type.files'             => '文件',
     'type.image'             => '图像',
     'type.audio'             => '音频',
     'type.video'             => '视频',
-    'type.files'             => '文件',
+    'type.document'          => '文档',
+    'type.archive'           => '压缩包',
+    
     'type.other'             => '其它',
 
     'upload.success'         => ':0 上传成功',

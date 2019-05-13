@@ -168,32 +168,26 @@ class FileController extends AdminController
      * @param  string  $type  类型
      * @return array
      */
-    public function upload(Request $request, $type=null)
+    public function upload(Request $request)
     {
         // 获得multipart_params传过来的数据
         $params = $request->all();
 
-        return Plupload::receive('file', function ($tempFile) use($type, $params) {
-
-            //如果没传入文件类型，则从系统上传设置中匹配，获取不到则禁止上传
-            $type = $type ?? $tempFile->getHumanType();
-
-            if (empty($type)) {
-                return ['state'=>false, 'content'=>trans('core::file.upload.error.type', [$params['filename']])];
-            }
+        return Plupload::receive('file', function ($tempFile) use($params) {
 
             // 检查文件扩展名是否被允许
             // 开启了plupload.unique_names，防止中文文件名导致的乱码
             // 此处无法得到真实文件名，真实文件名通过 $params['filename']传递
+            $type      = $tempFile->getHumanType() ?: ($params['type'] ?: 'other');
             $extension = $tempFile->getClientOriginalExtension(); 
-            $allow     = $params['allow'] ?? config("core.upload.types.{$type}.extensions");
+            $allow     = $params['extensions'];
 
             if (! in_array($extension, explode(',', $allow))) {
                 return ['state'=>false, 'content'=>trans('core::file.upload.error.extension', [$params['filename']])];
             }
 
             // 文件上传信息
-            $basepath  = '/uploads/'.$type.'/'.date('Y/m/d',time()).'/';         
+            $basepath  = '/uploads/'.$type.'/'.date(config('core.upload.dir', 'Y/m/d'), time()).'/';    
             $savepath  = public_path($basepath);
             $filename  = date('YmdHisu', time()).rand(1000,9999).'.'.$extension;
 
