@@ -41,8 +41,10 @@ trait ModuleConfig
      * @param  string $value 键值，如：local，如果为null，则为删除
      * @return bool
      */
-    private function setenv($key, $value='')
+    private function env($key, $value='')
     {
+        
+
         $envs = [];
 
         if (is_string($key)) {
@@ -54,11 +56,12 @@ trait ModuleConfig
         }
 
         foreach ($envs as $key => $value) {
-            Artisan::call('env:set',['key' => strtoupper($key), 'value'=>$value]);        
+            Artisan::call('env:set', ['key' => strtoupper($key), 'value'=>$value]);   
         }
 
-        // 重启
-        Artisan::call('reboot');           
+        // 清理配置缓存
+        Artisan::call('config:clear');
+        //Artisan::call('reboot');
 
         return $this;
     }

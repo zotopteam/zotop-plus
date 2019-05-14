@@ -9,10 +9,15 @@ return [
      |
      | Debugbar is enabled by default, when debug is set to true in app.php.
      | You can override the value by setting enable to true or false instead of null.
+     | 
+     | You can provide an array of URI's that must be ignored (eg. 'api/*')
      |
      */
 
-    'enabled' => null,
+    'enabled' => env('DEBUGBAR_ENABLED', null),
+    'except' => [
+        'telescope*'
+    ],
 
     /*
      |--------------------------------------------------------------------------
@@ -61,6 +66,18 @@ return [
      */
 
     'capture_ajax' => true,
+    'add_ajax_timing' => false,
+
+    /*
+     |--------------------------------------------------------------------------
+     | Custom Error Handler for Deprecated warnings
+     |--------------------------------------------------------------------------
+     |
+     | When enabled, the Debugbar shows deprecated warnings for Symfony components
+     | in the Messages tab.
+     |
+     */
+    'error_handler' => false,    
 
     /*
      |--------------------------------------------------------------------------
@@ -92,6 +109,9 @@ return [
         'db'              => true,  // Show database (PDO) queries and bindings
         'views'           => true,  // Views with their data
         'route'           => true,  // Current route information
+        'auth'            => false, // Display Laravel authentication status
+        'gate'            => false, // Display Laravel Gate checks
+        'session'         => true,  // Display session data        
         'laravel'         => true, // Laravel version and environment
         'events'          => true, // All events fired
         'default_request' => false, // Regular or special Symfony request logger
@@ -100,9 +120,7 @@ return [
         'logs'            => false, // Add the latest log messages
         'files'           => false, // Show the included files
         'config'          => true, // Display config settings
-        'auth'            => false, // Display Laravel authentication status
-        'gate'            => false, // Display Laravel Gate checks
-        'session'         => true,  // Display session data
+        'cache'           => true, // Display cache events
     ],
 
     /*
@@ -120,10 +138,10 @@ return [
         ],
         'db' => [
             'with_params'       => true,   // Render SQL with the parameters substituted
-            'timeline'          => false,  // Add the queries to the timeline
-            'backtrace'         => false,  // EXPERIMENTAL: Use a backtrace to find the origin of the query in your files.
+            'timeline'          => true,  // Add the queries to the timeline
+            'backtrace'         => true,  // EXPERIMENTAL: Use a backtrace to find the origin of the query in your files.
             'explain' => [                 // EXPERIMENTAL: Show EXPLAIN output on queries
-                'enabled' => false,
+                'enabled' => true,
                 'types' => ['SELECT'],     // ['SELECT', 'INSERT', 'UPDATE', 'DELETE']; for MySQL 5.6.3+
             ],
             'hints'             => true,    // Show hints for common mistakes

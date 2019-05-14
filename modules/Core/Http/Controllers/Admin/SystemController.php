@@ -21,26 +21,16 @@ class SystemController extends AdminController
     }
 
     /**
-     * 一键刷新
+     * 一键重启
      * 
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
-    public function refresh(Request $request, $mode=null)
+    public function reboot(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            
-            // Hook
-            Action::fire('system.refresh', $mode);
+        // 重启系统
+        Artisan::call('reboot');
 
-            // 重启系统
-            Artisan::call('reboot');
-
-            debug(Artisan::output());
-            
-            return $this->success(trans('core::master.operated'));
-        }
-
-        return $this->view();
+        return $this->success(trans('core::master.operated'), $request->referer());
     }
 
     /**

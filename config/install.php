@@ -10,7 +10,7 @@ return [
     | This is the default Laravel server requirements
     |
     */
-    'php_version' => '7.0.0',
+    'php_version' => '7.2.0',
 
     'php_extensions'=> [
         'openssl',

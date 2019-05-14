@@ -160,9 +160,9 @@ class BaseController extends Controller
         if (\Request::expectsJson()) {
             return response()->json($msg);
         }
-        
+
         // 返回view
-        return $this->with($msg)->view('core::msg');  
+        return $this->with('msg', $msg)->view('core::msg');  
     }
 
     /**
@@ -173,7 +173,7 @@ class BaseController extends Controller
      * @param  integer $time 跳转或者消息提示时间
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function success($msg, $url='', $time=2)
+    public function success($msg, $url='', $time=1)
     {
         return $this->message([
             'state'   => true,

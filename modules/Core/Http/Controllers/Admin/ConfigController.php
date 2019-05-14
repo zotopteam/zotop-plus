@@ -87,7 +87,7 @@ class ConfigController extends AdminController
         if ($request->isMethod('POST')) {
 
             // 写入ENV配置
-            $this->setEnv([
+            $this->env([
                 'MAIL_DRIVER'       => $request->input('driver'),
                 'MAIL_FROM_ADDRESS' => $request->input('from.address'),
                 'MAIL_FROM_NAME'    => $request->input('from.name'),                
@@ -146,7 +146,7 @@ class ConfigController extends AdminController
         if ($request->isMethod('POST')) {
 
             // 写入ENV配置
-            $this->setEnv([
+            $this->env([
                 'APP_LOCALE'      => $request->input('locale'),
                 'APP_TIMEZONE'    => $request->input('timezone'),
                 'APP_DATE_FORMAT' => $request->input('date_format'),
@@ -172,7 +172,7 @@ class ConfigController extends AdminController
         if ($request->isMethod('POST')) {
 
             // 写入ENV配置
-            $this->setEnv([
+            $this->env([
                 'APP_ENV'          => $request->input('env', 'production'),
                 'APP_DEBUG'        => $request->input('debug', 0) ? 'true' : 'false',
                 'APP_ADMIN_PREFIX' => $request->input('admin_prefix', 'admin'),
@@ -181,11 +181,11 @@ class ConfigController extends AdminController
             // 更改后台地址，本地或者测试环境下，route 已经加载，无法重新载入, 改用url生成
             // $this->app['config']->set('app.admin_prefix', $request->input('admin_prefix', 'admin'));
             // $redirectTo = route('core.config.safe');
-
             $redirectTo = url($request->input('admin_prefix', 'admin').'/core/config/safe');
 
             return $this->success(trans('core::master.saved'), $redirectTo);
         }
+
 
         $this->title = trans('core::config.safe');
 

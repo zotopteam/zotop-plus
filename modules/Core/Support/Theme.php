@@ -1,6 +1,7 @@
 <?php
 namespace Modules\Core\Support;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\Macroable;
 
 class Theme
@@ -19,7 +20,7 @@ class Theme
     /**
      * @param $app  \Illuminate\Contracts\Foundation\Application
      */
-    public function __construct($app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }

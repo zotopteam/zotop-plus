@@ -4,6 +4,7 @@ namespace Modules\Core\Console;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Action;
 
 class RebootCommand extends Command
 {
@@ -32,6 +33,9 @@ class RebootCommand extends Command
      */
     public function handle()
     {
+        // 钩子
+        Action::fire('reboot', $this);
+
         // 清理缓存
         $this->call('debugbar:clear');
         $this->call('log:clear');

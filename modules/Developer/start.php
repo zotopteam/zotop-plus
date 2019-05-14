@@ -39,9 +39,7 @@
 /**
  * 安装了开发助手时，一键刷新时发布模块和主题
  */
-\Action::listen('system.refresh', function(){
-    if (allow('developer.module.index') && !app()->environment('production')) {
-        \Artisan::call('module:publish');
-        \Artisan::call('theme:publish');
-    }
+\Action::listen('reboot', function($console) {
+    $console->call('module:publish');
+    $console->call('theme:publish');
 });

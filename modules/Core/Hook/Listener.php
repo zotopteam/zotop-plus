@@ -127,14 +127,14 @@ class Listener
     public function tools($tools)
     {
         // 一键刷新
-        if (allow('core.system.refresh')) {
+        if (allow('core.system.reboot')) {
             $tools['refresh'] = [
-                'icon'     => 'fa fa-magic', 
-                'text'     => trans('core::system.fastrefresh'),
-                'title'    => trans('core::system.fastrefresh.tips'),
+                'icon'     => 'fa fa-sync', 
+                'text'     => trans('core::system.reboot'),
+                'title'    => trans('core::system.reboot.tips'),
                 'href'     => 'javascript:;',
-                'data-url' => route('core.system.refresh',['fast']),
-                'class'    => 'fastclean js-post',
+                'data-url' => route('core.system.reboot'),
+                'class'    => 'js-post',
             ];
         }
         
