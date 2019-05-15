@@ -31,7 +31,7 @@ class Core extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id')->comment('编号');
             $table->string('username', 64)->unique()->comment('用户名');
-            $table->string('password', 64)->comment('密码');
+            $table->string('password', 255)->comment('密码');
             $table->string('email', 200)->nullable()->unique()->comment('邮箱');
             $table->string('mobile', 50)->nullable()->unique()->comment('手机号');
             $table->string('model_id', 64)->comment('模型编号：如super,admin或者member');

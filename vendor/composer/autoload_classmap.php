@@ -1908,6 +1908,7 @@ return array(
     'Illuminate\\Support\\Traits\\ForwardsCalls' => $vendorDir . '/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php',
     'Illuminate\\Support\\Traits\\Localizable' => $vendorDir . '/laravel/framework/src/Illuminate/Support/Traits/Localizable.php',
     'Illuminate\\Support\\Traits\\Macroable' => $vendorDir . '/laravel/framework/src/Illuminate/Support/Traits/Macroable.php',
+    'Illuminate\\Support\\Traits\\Tappable' => $vendorDir . '/laravel/framework/src/Illuminate/Support/Traits/Tappable.php',
     'Illuminate\\Support\\ViewErrorBag' => $vendorDir . '/laravel/framework/src/Illuminate/Support/ViewErrorBag.php',
     'Illuminate\\Translation\\ArrayLoader' => $vendorDir . '/laravel/framework/src/Illuminate/Translation/ArrayLoader.php',
     'Illuminate\\Translation\\FileLoader' => $vendorDir . '/laravel/framework/src/Illuminate/Translation/FileLoader.php',
