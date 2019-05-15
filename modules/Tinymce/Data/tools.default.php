@@ -17,14 +17,14 @@ foreach($upload_types as $type=>$config) {
     $params = [
         'type'       => $type,
         'typename'   => $typename,
-        'extension'  => $config['extensions'],
+        'extensions' => $config['extensions'],
         'maxsize'    => $config['maxsize'],
         'module'     => app('current.module'),
         'controller' => app('current.controller'),
         'action'     => app('current.action'),
         'field'      => array_get($args, 'name'),
         'folder'     => array_get($args, 'folder'),
-        'data_id'    => array_get($args, 'data_id'),
+        'source_id'  => array_get($args, 'source_id'),
         'user_id'    => Auth::user()->id,
         'token'      => Auth::user()->token
     ];

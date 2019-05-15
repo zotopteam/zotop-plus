@@ -24,7 +24,7 @@ class Content extends Model
      *
      * @var array
      */
-    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','link','view','hits','comments','status','stick','sort','user_id'];
+    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','link','view','hits','comments','status','stick','sort','user_id','source_id'];
 	
 	
     /**
@@ -252,17 +252,23 @@ class Content extends Model
     }
 
     /**
-     * 获取内容状态图标
+     * 获取内容数据源编号
      * @param  mixed $value
      * @return string
      */
-    public function getDataIdAttribute($value)
+    public function getSourceIdAttribute($value)
     {
-        if ($this->id) {
-            return 'content-'.$this->id;
+        if ($value) {
+            return $value;
+        }
+
+        static $source_id = null;
+
+        if (empty($source_id)) {
+            $source_id = md5(microtime(true));
         }
         
-        return null;
+        return $source_id;
     }
 
     /**

@@ -31,6 +31,7 @@
             
             {field type="hidden" name="parent_id" required="required"}
             {field type="hidden" name="model_id" required="required"}
+            {field type="hidden" name="source_id" required="required"}
             {field type="hidden" name="status" required="required"}
             {field type="hidden" name="publish_at"}
             {field type="hidden" name="_action"}

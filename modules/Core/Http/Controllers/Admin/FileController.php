@@ -173,14 +173,17 @@ class FileController extends AdminController
         // 获得multipart_params传过来的数据
         $params = $request->all();
 
-        return Plupload::receive('file', function ($tempFile) use($params) {
+        // 获取上传配置
+        $types  = collect(config('core.upload.types'));
+
+        return Plupload::receive('file', function ($tempFile) use($params,$types) {
 
             // 检查文件扩展名是否被允许
             // 开启了plupload.unique_names，防止中文文件名导致的乱码
             // 此处无法得到真实文件名，真实文件名通过 $params['filename']传递
             $type      = $tempFile->getHumanType() ?: ($params['type'] ?: 'other');
             $extension = $tempFile->getClientOriginalExtension(); 
-            $allow     = $params['extensions'];
+            $allow     = $params['extensions'] ?? $types->implode('extensions',',');
 
             if (! in_array($extension, explode(',', $allow))) {
                 return ['state'=>false, 'content'=>trans('core::file.upload.error.extension', [$params['filename']])];

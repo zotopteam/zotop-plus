@@ -6,7 +6,7 @@
         <div class="container-fluid">
             {form model="$datalist" route="block.datalist.store" id="datalist-form" method="post" autocomplete="off"}
             {field type="hidden" name="block_id" required="required"}
-            {field type="hidden" name="data_id" required="required"}
+            {field type="hidden" name="source_id" required="required"}
             {field type="hidden" name="module" required="required"}
             @foreach ($fields as $field)            
             <div class="form-group">

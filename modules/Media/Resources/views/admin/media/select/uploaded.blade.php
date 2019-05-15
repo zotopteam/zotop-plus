@@ -114,18 +114,19 @@
                 multi_selection : true, //是否可以选择多个文件
                 multipart_params: {
                     'folder_id'  : '{{$folder_id ?? 0}}',
-                    'data_id'    : '{{$params['data_id'] ?? null}}',
+                    'source_id'  : '{{$params['source_id'] ?? null}}',
+                    'extensions' : '{{$params['extensions'] ?? null}}',
                     'module'     : '{{$params['module'] ?? app('current.module')}}',
                     'controller' : '{{$params['controller'] ?? app('current.controller')}}',
                     'action'     : '{{$params['action'] ?? app('current.action')}}',
-                    'field'     : '{{$params['field'] ?? null}}',
+                    'field'      : '{{$params['field'] ?? null}}',
                     'user_id'    : '{{Auth::user()->id}}',
                     'token'      : '{{Auth::user()->token}}'
                 },
                 filters: {
                     max_file_size:'{{$params['maxsize'] ?? 10}}mb',
                     mime_types : [
-                        { title : "{{$params['typename'] ?? 'select files'}}", extensions : "{{$params['allow'] ?? '*'}}"},
+                        { title : "{{$params['typename'] ?? 'select files'}}", extensions : "{{$params['extensions'] ?? '*'}}"},
                     ],
                     prevent_duplicates:false //阻止多次上传同一个文件
                 },

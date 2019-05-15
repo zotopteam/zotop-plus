@@ -19,7 +19,9 @@
     }
 
     // 设置数据编号
-    $attrs['data_id'] = $this->getAttribute($attrs, 'data_id', $this->getValueAttribute('data_id'));
+    $attrs['source_id'] = $this->getAttribute($attrs, 'source_id', $this->getValueAttribute('source_id'));
+
+    debug($attrs['source_id']);
 
     // 编辑器属性，可以为字符串和数组，默认为full模式
     $options = $this->getAttribute($attrs, 'options', 'full', false);

@@ -263,14 +263,16 @@
     $id       = $this->getIdAttribute($name, $attrs);
 
     // 上传和选择参数
-    $filetype = $this->getAttribute($attrs, 'filetype', '');
+    $filetype  = $this->getAttribute($attrs, 'filetype');
 
-    $url      = $this->getAttribute($attrs, 'url', route('core.file.upload'));
-    $allow    = $this->getAttribute($attrs, 'allow', $types->implode('extensions',','));
-    $maxsize  = $this->getAttribute($attrs, 'maxsize', 1024);
-    $typename = $this->getAttribute($attrs, 'typename', trans('core::file.type.files'));
-    $folder   = $this->getAttribute($attrs, 'folder', '');
-    $data_id  = $this->getAttribute($attrs, 'data_id', $this->getValueAttribute('data_id'));
+    $url       = $this->getAttribute($attrs, 'url', route('core.file.upload'));
+    $allow     = $this->getAttribute($attrs, 'allow', $types->implode('extensions',','));
+    $maxsize   = $this->getAttribute($attrs, 'maxsize', 1024);
+    $typename  = $this->getAttribute($attrs, 'typename', trans('core::file.type.files'));
+    $folder    = $this->getAttribute($attrs, 'folder', '');
+    $source_id = $this->getAttribute($attrs, 'source_id', $this->getValueAttribute('source_id'));
+
+    debug($source_id);
     
     // 界面文字和图标
     $select   = $this->getAttribute($attrs, 'select', trans('core::field.upload.select', [$typename])); 
@@ -280,7 +282,7 @@
     // 附加参数
     $params = $this->getAttribute($attrs, 'params',  [
         'select'     => 1,
-        'type'       => $filetype,
+        'type'       => $filetype ?: '',
         'typename'   => $typename,        
         'extensions' => $allow,
         'maxsize'    => $maxsize,
@@ -288,13 +290,11 @@
         'controller' => app('current.controller'),
         'action'     => app('current.action'),
         'field'      => $name,
-        'folder'     => $folder,
-        'data_id'    => $data_id,
+        'folder'     => $folder ?: '',
+        'source_id'  => $source_id ?: '',
         'user_id'    => Auth::user()->id,
         'token'      => Auth::user()->token
     ]);
-
-    debug($params);
 
     // 选项
     $options = $this->getAttribute($attrs, 'options',  [

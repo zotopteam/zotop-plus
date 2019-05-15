@@ -32,6 +32,7 @@ class CreateContentTable1542556465 extends Migration
 			$table->char('status', 32)->nullable()->comment('状态 publish|pending|trash')->index('status');
 			$table->tinyInteger('stick')->nullable()->comment('是否固顶，0：不固顶，1：固顶')->index('stick')->default(0)->unsigned();
 			$table->integer('sort')->nullable()->comment('排序')->index('sort')->default(0)->unsigned();
+			$table->string('source_id', 64)->nullable()->comment('源数据编号')->index('source_id');
 			$table->integer('user_id')->nullable()->comment('用户编号')->default(0)->unsigned();
 			$table->timestamp('publish_at')->nullable()->comment('发布时间');
 			$table->timestamp('created_at')->nullable()->comment('更新时间');

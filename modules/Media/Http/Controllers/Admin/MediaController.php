@@ -24,7 +24,6 @@ class MediaController extends AdminController
         $this->parent    = Media::findOrNew($parent_id);
         $this->parents   = Media::parents($parent_id, true);
         
-
         $media = Media::with('user');
 
         if ($this->keywords) {
@@ -161,9 +160,9 @@ class MediaController extends AdminController
     {
         $file = Media::where('type', '<>' ,'folder');
 
-        // 当传入的有data_id ，从data_id获取，不从 action和field获取
-        if ($request->data_id) {
-            $from = $request->only(['type','extension','module','controller','data_id']);
+        // 当传入的有source_id ，从source_id获取，不从 action和field获取
+        if ($request->source_id) {
+            $from = $request->only(['type','extension','module','controller','source_id']);
         } else {
             $from = $request->only(['type','extension','module','controller','action','field']);
         }

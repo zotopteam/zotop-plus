@@ -108,7 +108,7 @@ class Block extends Model
      * @param  string  $value
      * @return string
      */
-    public function getDataIdAttribute($value)
+    public function getSourceIdAttribute($value)
     {        
         return 'block-'.$this->id;
     }    

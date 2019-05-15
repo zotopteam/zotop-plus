@@ -12,7 +12,7 @@ class Datalist extends Model
     use UserRelation;
    
     protected $table = 'block_datalist';
-    protected $fillable = ['block_id','data_id','module','data','user_id','sort','stick','status'];
+    protected $fillable = ['block_id','source_id','module','data','user_id','sort','stick','status'];
 
     /**
      * 属性转换
@@ -73,7 +73,7 @@ class Datalist extends Model
 
             // 如果是上传字段
             if (in_array($field['type'], ['upload', 'upload_image', 'upload_file'])) {
-                $field['data_id'] = $data['data_id'];
+                $field['source_id'] = $data['source_id'];
             }
 
             // 如果是图片字段

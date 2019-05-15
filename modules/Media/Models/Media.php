@@ -24,7 +24,7 @@ class Media extends Model
      *
      * @var array
      */
-    protected $fillable = ['parent_id','is_folder','type','name','path','url','extension','mimetype','width','height','size','module','controller','action','field','data_id','user_id','sort'];
+    protected $fillable = ['parent_id','is_folder','type','name','path','hash','url','extension','mimetype','width','height','size','module','controller','action','field','source_id','user_id','sort'];
 	
 	
     /**

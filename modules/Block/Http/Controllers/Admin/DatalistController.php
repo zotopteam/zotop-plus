@@ -38,13 +38,13 @@ class DatalistController extends AdminController
         $this->datalist = Datalist::findOrNew(0);
 
         // 默认数据赋值
-        $this->datalist->block_id = $this->block->id;
-        $this->datalist->data_id  = $this->block->data_id;
-        $this->datalist->module   = app('current.module');
+        $this->datalist->block_id  = $this->block->id;
+        $this->datalist->source_id = $this->block->source_id;
+        $this->datalist->module    = app('current.module');
 
         // 数据字段
         $this->fields   = Datalist::fields($this->block->fields, [
-            'data_id' => $this->block->data_id
+            'source_id' => $this->block->source_id
         ]);
 
         return $this->view();
@@ -79,7 +79,7 @@ class DatalistController extends AdminController
 
         // 数据字段
         $this->fields   = Datalist::fields($this->block->fields, [
-            'data_id' => $this->block->data_id
+            'source_id' => $this->block->source_id
         ]);     
 
         return $this->view();

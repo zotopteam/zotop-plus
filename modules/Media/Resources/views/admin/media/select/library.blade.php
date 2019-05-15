@@ -145,7 +145,8 @@
                 multi_selection : true, //是否可以选择多个文件
                 multipart_params: {
                     'folder_id'  : '{{$parent_id ?? 0}}',
-                    'data_id'    : '{{$params['data_id'] ?? null}}',
+                    'source_id'  : '{{$params['source_id'] ?? null}}',
+                    'extensions' : '{{$params['extensions'] ?? null}}',
                     'module'     : '{{$params['module'] ?? app('current.module')}}',
                     'controller' : '{{$params['controller'] ?? app('current.controller')}}',
                     'action'     : '{{$params['action'] ?? app('current.action')}}',
