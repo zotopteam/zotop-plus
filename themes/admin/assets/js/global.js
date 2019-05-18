@@ -36,10 +36,10 @@ $(function(){
     },selector:'[data-toggle="tooltip"],a[title]',html:true,trigger:'hover'});   
  
     // niceScroll
-    $('.scrollable').niceScroll();
+    $('.nice-scrollable').niceScroll();
     // 窗口改变大小时，重置滚动条，如果页面内元素高度发生改变，使用触发 $(window).trigger('resize')
     $(window).resize(function(){
-        $(".scrollable").getNiceScroll().resize();
+        $(".nice-scrollable").getNiceScroll().resize();
         $('.tooltip').remove();
     });
 

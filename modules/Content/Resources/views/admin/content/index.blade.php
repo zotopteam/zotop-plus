@@ -170,12 +170,8 @@
                             <div>{{trans('content::content.publish_at.label')}}</div>
                             <div>{{$content->publish_at}}</div>
                             @elseif (in_array($content->status,['future']))
-                            <div>
-                                {{trans('content::content.status.future')}}
-                            </div>
-                            <a class="js-future" href="{{route('content.content.status', [$content->status,$content->id])}}" data-value="{{$content->publish_at}}">
-                                {{$content->publish_at}} <i class="fa fa-pen-square"></i>
-                            </a>                       
+                            <div>{{trans('content::content.status.future')}}</div>
+                            <div>{{$content->publish_at}}</div>                     
                             @else
                             <div>{{trans('content::content.updated_at.label')}}</div>
                             <div>{{$content->updated_at}}</div>
@@ -220,7 +216,6 @@
 
 @endpush
 @push('js')
-<script type="text/javascript" src="{{Module::asset('core:datetimepicker/jquery.datetimepicker.js')}}"></script>
 <script type="text/javascript">
 // post data
 function postData(url, data, callback) {
@@ -256,38 +251,6 @@ function moveData(id, parent_id, callback) {
     postData('{{route('content.content.move')}}', {id:id, parent_id:parent_id}, callback);
 }
 
-// 定时对话框
-function futureDialog(value, callback) {
-    return $.dialog({
-        id: 'publish_at',
-        title : $(this).text(),
-        content : function() {
-            return '<div class="p-3">'+
-                '<div class="mb-2">{{ trans('content::content.status.future.help') }}</div>'+
-                '<input type="text" name="publish_at" class="form-control mb-2" placeholder="{{now()}}">'+
-                '</div>';
-        },
-        onshow : function() {
-            this._$('content').find('[name=publish_at]').datetimepicker({
-                format:'Y-m-d H:i',
-                inline:true,
-                lang:'{{App::getLocale()}}',
-                minDate:new Date()
-            }).show().val(value).get(0).focus();
-        },
-        ok : function() {
-            var publish_at = this._$('content').find('[name=publish_at]');
-            if (!publish_at.val()) {
-                publish_at.get(0).focus();
-                this.shake();
-            } else {
-                callback(this, publish_at.val());                    
-            }
-            return false;
-        },
-        cancel : $.noop
-    }, true);
-}
 
 $(function(){
 
@@ -318,42 +281,6 @@ $(function(){
         event.stopPropagation();
     });
 
-    // 单个定时发布
-    $(document).on('click', 'a.js-future', function(event) {
-        event.preventDefault();
-        var tr = $(this).parents('tr').addClass('hover');
-        var href = $(this).attr('href');
-        var value = $(this).data('value');
-
-        futureDialog(value, function(dialog, publish_at) {
-            postData(href, {publish_at:publish_at}, function(){
-                dialog.close().remove();
-            });
-        }).addEventListener('close', function(){
-            tr.removeClass('hover');  
-        });
-
-        event.stopPropagation();
-    });
-
-
-    // $('div.js-future-date').each(function(){       
-    //     var href = $(this).attr('href');
-    //     var value = $(this).data('value');        
-    //     jeDate(this,{
-    //         format:'YYYY-MM-DD hh:mm:ss',
-    //         isClear:false,
-    //         isToday:false,
-    //         donefun:function(obj) {
-    //             postData(href, {publish_at:obj.val}, function(){
-                   
-    //             });
-    //         }
-    //     }).setValue(value);        
-    // });
-
-
-
     // 批量操作
     $(document).on('click','.js-select-operate', function(event) {
         event.preventDefault();
@@ -372,18 +299,7 @@ $(function(){
 
         // 状态
         if (operate == 'status') {
-            var url    = $(this).data('url');
-            var status = $(this).data('status');
-
-            if (status == 'future') {
-                futureDialog(null, function(dialog, publish_at) {
-                    postData(url, {id:ids, publish_at:publish_at}, function(){
-                        dialog.close().remove();
-                    });
-                });               
-            } else {
-                postData(url, {id:ids});
-            }
+            postData($(this).data('url'), {id:ids});
         }
 
         // 永久删除

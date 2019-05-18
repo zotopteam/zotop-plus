@@ -24,7 +24,7 @@ class Content extends Model
      *
      * @var array
      */
-    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','link','view','hits','comments','status','stick','sort','user_id','source_id'];
+    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','link','view','hits','comments','status','stick','sort','user_id','source_id','publish_at'];
 	
 	
     /**
@@ -67,16 +67,23 @@ class Content extends Model
 
         // 保存前数据处理
         static::saving(function($content) {
-            $content->slug = $content->slug ?: null;
-            $content->sort = $content->sort ?: time();
 
-            // 发布为当前时间，定时发布的时间必须大于当前时间，其他状态发布时间为空
+            $content->slug       = $content->slug ?: null;
+            $content->sort       = $content->sort ?: time();
+
+            // 如果发布时，发布时间大于当前时间，则为定时发布
             if ($content->status == 'publish') {
+                if ($content->publish_at && $content->publish_at > now()) {
+                    $content->status = 'future';
+                } else {
+                    $content->publish_at = now();
+                }
+            }
+
+            // 如果状态为定时，但是没有发布时间，或者发布时间小于当前时间，直接发布
+            if ($content->status == 'future' && (!$content->publish_at || $content->publish_at < now())) {
+                $content->status = 'publish';
                 $content->publish_at = now();
-            } else if ($content->status == 'future') {
-                $content->publish_at = $content->publish_at > now() ? $content->publish_at : now();
-            } else {
-                $content->publish_at = null;
             }
         });
 

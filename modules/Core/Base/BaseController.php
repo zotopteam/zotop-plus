@@ -36,7 +36,7 @@ class BaseController extends Controller
      * 
      * @var array
      */
-    protected $viewData = [];
+    protected $data = [];
 
 
     /**
@@ -66,9 +66,9 @@ class BaseController extends Controller
     public function with($key, $value = null)
     {
         if (is_array($key)) {
-            $this->viewData = array_merge($this->viewData, $key);
+            $this->data = array_merge($this->data, $key);
         } else {
-            $this->viewData[$key] = $value;
+            $this->data[$key] = $value;
         }
 
         return $this;
@@ -83,7 +83,7 @@ class BaseController extends Controller
      */
     public function __set($key, $value)
     {
-        $this->viewData[$key] = $value;
+        $this->data[$key] = $value;
     }
 
     /**
@@ -95,7 +95,7 @@ class BaseController extends Controller
      */
     public function __get($key)
     {
-        return isset($this->viewData[$key]) ? $this->viewData[$key] : null;
+        return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 
     /**
@@ -106,7 +106,7 @@ class BaseController extends Controller
      * @return bool
      */
     public function __isset($key) {
-        return isset($this->viewData[$key]);
+        return isset($this->data[$key]);
     }
 
     /**
@@ -117,8 +117,8 @@ class BaseController extends Controller
      * @return bool
      */
     public function __unset($key) {
-        if (isset($this->viewData[$key])) {
-            unset($this->viewData[$key]);
+        if (isset($this->data[$key])) {
+            unset($this->data[$key]);
         }
     }    
 
@@ -141,7 +141,7 @@ class BaseController extends Controller
         $data = ($data instanceof Arrayable) ? $data->toArray() : $data;
 
         // 合并模板数据
-        $data = array_merge($this->viewData, $data);
+        $data = array_merge($this->data, $data);
 
         // 生成 view
         return $this->view->make($view, $data, $mergeData);
@@ -156,30 +156,33 @@ class BaseController extends Controller
      */
     public function message(array $msg)
     {
+        // 将赋值数据填入消息中备用
+        $msg['data'] = $this->data;
+
         //如果请求为ajax，则输出json数据
         if (\Request::expectsJson()) {
             return response()->json($msg);
         }
 
         // 返回view
-        return $this->with('msg', $msg)->view('core::msg');  
+        return $this->with('msg', $msg)->view('core::msg');
     }
 
     /**
      * 消息提示：success
      * 
-     * @param  mixed  $msg  消息内容
+     * @param  mixed  $content  消息内容 字符串或者数组
      * @param  string  $url  跳转路径
      * @param  integer $time 跳转或者消息提示时间
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function success($msg, $url='', $time=1)
+    public function success($content, $url='', $time=1)
     {
         return $this->message([
             'state'   => true,
             'type'    => 'success',
             'icon'    => 'fa fa-check-circle',
-            'content' => $msg,
+            'content' => $content,
             'url'     => $url,
             'time'    => $time
         ]);
@@ -189,17 +192,17 @@ class BaseController extends Controller
     /**
      * 消息提示：error
      * 
-     * @param  mixed  $msg  消息内容
+     * @param  mixed  $content  消息内容 字符串或者数组
      * @param  integer $time 跳转或者消息提示时间
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function error($msg, $time=5)
+    public function error($content, $time=5)
     {
         return $this->message([
             'state'   => false,
             'type'    => 'error',
             'icon'    => 'fa fa-times-circle',
-            'content' => $msg,
+            'content' => $content,
             'time'    => $time
         ]);
     }

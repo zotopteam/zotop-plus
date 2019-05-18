@@ -86,15 +86,6 @@ class Listener
             'attrs' => ['target' => '_blank']
         ];
 
-        // 下级节点
-        // if ($content->model->nestable) {
-        //     $manage['nestable'] = [
-        //         'text' => trans('content::content.children'),
-        //         'href' => route('content.content.index', [$content->id]),
-        //         'icon' => 'fas fa-folder-open text-warning',
-        //     ];
-        // }
-
         // 修改
         $manage['edit'] = [
             'text' => trans('core::master.edit'),
@@ -117,8 +108,6 @@ class Listener
             'attrs' => ['data-id' => $content->id, 'data-parent_id' => $content->parent_id]
         ];
 
-
-
         // 排序
         $manage['sort'] = [
             'text'  => trans('content::content.sort'),
@@ -139,15 +128,27 @@ class Listener
         }
 
         foreach (Content::status() as $status => $value) {
-            if ($status == $content->status) {
+            // 不显示自身状态和定时发布状态，定时发布取决于发布时间，如果发布时，时间是未来时间，则自动判定为定时发布
+            if ($status == $content->status || $status == 'future' ) {
                 continue;
             }
+
             $manage[$status] = [
                 'text'  => $value['name'],
                 'href'  => route('content.content.status', [$status, $content->id]),
                 'icon'  => $value['icon'],
-                'class' => $status == 'future' ? 'js-future' : 'js-post',
+                'class' => 'js-post',
             ];              
+        }
+
+        // 待审状态时，发布显示通过审核
+        if ($content->status == 'pending') {
+            $manage['publish']['text'] = trans('content::content.status.approved');
+        }
+
+        // 如果状态是future或者发布，不显示发布按钮
+        if ($content->status == 'future') {
+            unset($manage['publish']);
         }
 
         // 置顶和取消置顶

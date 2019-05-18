@@ -135,12 +135,33 @@ class ContentServiceProvider extends ServiceProvider
             }
 
             return app('view')->make($view)
-                ->with('attrs', collect($attrs))
+                ->with('attrs', $attrs)
                 ->with('content', $content)
                 ->with('children', $children)
                 ->render();
 
         });
+
+        // 解析{content_navbar ……}
+        Blade::tag('content_navbar', function($attrs) {
+
+            $id    = array_get($attrs, 'id', 0);
+            $size  = array_get($attrs, 'size', 0); // 显示条数 0=显示全部
+            $view  = array_get($attrs, 'view', 'content::tag.navbar'); //模板
+
+            // 查询
+            $query = Content::publish()->sort()->where('parent_id', $id);
+            $query->when($size, function($query, $size){
+                $query->limit($size);
+            });
+
+            $navbar = $query->get();
+
+            return app('view')->make($view)
+                ->with('attrs', $attrs)
+                ->with('navbar', $navbar)
+                ->render();
+        });        
 
         // 路径 {content_path id="$content->id" self="true" view="content::tag.path"}
         Blade::tag('content_path', function($attrs) {
@@ -151,7 +172,7 @@ class ContentServiceProvider extends ServiceProvider
 
             if ($id) {
                 return app('view')->make($view)
-                    ->with('attrs', collect($attrs))
+                    ->with('attrs', $attrs)
                     ->with('contents', Content::parents($id, $self))
                     ->render(); 
             }

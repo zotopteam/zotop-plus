@@ -20,8 +20,8 @@ return [
         'name'  => trans('content::content.status.pending'),
         'icon'  => 'fa fa-hourglass-half text-info',
     ],
-    'fail' => [
-        'name'  => trans('content::content.status.fail'),
+    'unapproved' => [
+        'name'  => trans('content::content.status.unapproved'),
         'icon'  => 'fa fa-exclamation-triangle text-danger',
-    ],                   
+    ],                     
 ];

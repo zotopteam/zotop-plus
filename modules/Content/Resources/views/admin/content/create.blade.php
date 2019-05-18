@@ -16,9 +16,18 @@
             @endforeach              
         </div>
         <div class="main-action ml-auto">
-             {field type="submit" form="content-form" value="trans('content::content.status.draft')" class="btn btn-light" data-status="draft"}
+            <a href="javascript:;" class="text-decoration-none js-future">
+                <span class="text-primary js-future-label">
+                    <i class="fa fa-clock"></i> {{trans('content::content.status.future')}}
+                </span>
+                <span class="text-secondary d-inline-block js-future-datetime" style="min-width:.1px;">
+                    {{$content->publish_at > now() ? $content->publish_at : null}}
+                </span>
+            </a>
+        </div>        
+        <div class="main-action">
              {field type="submit" form="content-form" value="trans('content::content.status.publish')" class="btn btn-success" data-status="publish" data-action="back"}
-             {field type="submit" form="content-form" value="trans('content::content.status.future')" class="btn btn-primary d-none" data-status="future" data-action="back"}
+             {field type="submit" form="content-form" value="trans('content::content.save.draft')" class="btn btn-primary"}
         </div>
     </div>  
     <div class="main-body bg-light scrollable">
@@ -52,14 +61,29 @@
 
         </div>
     </div><!-- main-body -->
-    <div class="main-footer">  
-    </div>
 </div>
 @endsection
 
 @push('js')
+@once('laydate')
+<script type="text/javascript" src="{{Module::asset('core:laydate/laydate.js')}}"></script>
+@endonce
 <script type="text/javascript">
     $(function(){
+
+        $('.js-future').on('click',function() {
+            laydate.render({
+                elem      : '.js-future-datetime',
+                closeStop : '.js-future-label',
+                type      : 'datetime',
+                btns      : ['clear','confirm'],
+                min       : '{{now()}}',
+                show      : true,
+                done: function(value){
+                    $('[name=publish_at]').val(value);
+                }
+              });            
+        });
 
         $('.form-submit').on('click', function(event) {
             event.preventDefault();
