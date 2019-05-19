@@ -20,7 +20,7 @@
                 <span class="text-primary js-future-label">
                     <i class="fa fa-clock"></i> {{trans('content::content.status.future')}}
                 </span>
-                <span class="text-secondary d-inline-block js-future-datetime" style="min-width:.1px;">
+                <span class="text-secondary d-inline-block js-future-datetime">
                     {{$content->publish_at > now() ? $content->publish_at : null}}
                 </span>
             </a>

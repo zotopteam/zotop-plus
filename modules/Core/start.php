@@ -96,7 +96,7 @@
     $this->json()->set('active', 1)->set('installed', 1)->save();
 
 
-    $this->fireEvent('installed');    
+    $this->fireEvent('installed'); 
 
     // 重启
     \Artisan::call('reboot');
@@ -372,40 +372,51 @@
     $value = $this->getValue($attrs);
     $id    = $this->getId($attrs);
     $name  = $this->getAttribute($attrs, 'name');
+    $icon  = $this->getAttribute($attrs, 'icon', false);
 
     $options = $this->getAttribute($attrs, 'options',  [
-        'inline'     => $this->getAttribute($attrs, 'inline', false),
-        'icon'       => $this->getAttribute($attrs, 'icon', false),
-        'format'     => $this->getAttribute($attrs, 'format', 'Y-m-d'),
-        'timepicker' => $this->getAttribute($attrs, 'time', false),
-        'datepicker' => $this->getAttribute($attrs, 'date', true),
-        'lang'       => $this->getAttribute($attrs, 'lang', App::getLocale()),
-        'minField'   => $this->getAttribute($attrs, 'min-field', false),
-        'maxField'   => $this->getAttribute($attrs, 'max-field', false),
-        'minDate'    => $this->getAttribute($attrs, 'min-date', false),
-        'maxDate'    => $this->getAttribute($attrs, 'max-date', false),
-        'startDate'  => $this->getAttribute($attrs, 'start', false),
+        'type'     => $this->getAttribute($attrs, 'type', 'date'),
+        'position' => $this->getAttribute($attrs, 'position', 'absolute'),
+        'format'   => $this->getAttribute($attrs, 'format', 'yyyy-MM-dd'),
+        'lang'     => $this->getAttribute($attrs, 'lang', App::getLocale()), //TODO:语言问题由于laydate只支持cn和en，需要优化
+        'min'      => $this->getAttribute($attrs, 'min', '1900-1-1'),
+        'max'      => $this->getAttribute($attrs, 'max', '2099-12-31'),
+        'range'    => $this->getAttribute($attrs, 'range', false),
+        'theme'    => $this->getAttribute($attrs, 'theme', '#0072c6'),
+        'btns'     => $this->getAttribute($attrs, 'btns', 'clear,now,confirm'),
+        'trigger'  => $this->getAttribute($attrs, 'trigger', 'click'),
     ]);
 
-    // 追加标签
-    $attrs =  $attrs + [
-        'class'       => 'form-control-date',
-        'data-toggle' => 'date'
-    ];    
+    $options['elem']  = '#'.$id;
+    $options['value'] = $value;
+    $options['btns']  = $options['btns'] && is_string($options['btns']) ? explode(',' , $options['btns']) : ['confirm'];
 
     return $this->toHtmlString(
-        $this->view->make('core::field.datetime')->with(compact('name', 'value', 'id', 'attrs', 'options'))->render()
+        $this->view->make('core::field.date')->with(compact('name', 'value', 'id', 'icon', 'attrs', 'options'))->render()
     );
 });
 
 /**
  * 日期时间选择器
  */
+\Form::macro('year', function($attrs) {
+    $attrs['type']   = 'year';
+    return $this->macroCall('date',  [$attrs]);
+});
+
+/**
+ * 日期时间选择器
+ */
+\Form::macro('month', function($attrs) {
+    $attrs['type']   = 'month';
+    return $this->macroCall('date',  [$attrs]);
+});
+
+/**
+ * 日期时间选择器
+ */
 \Form::macro('datetime', function($attrs) {
-
-    $attrs['format'] = 'Y-m-d H:i';
-    $attrs['time']   = true;
-
+    $attrs['type']   = 'datetime';
     return $this->macroCall('date',  [$attrs]);
 });
 
@@ -413,11 +424,7 @@
  * 时间选择器
  */
 \Form::macro('time', function($attrs) {
-
-    $attrs['format'] = 'H:i';
-    $attrs['time']   = true;
-    $attrs['date']   = false;
-
+    $attrs['type']   = 'time';
     return $this->macroCall('date',  [$attrs]);
 });
 
