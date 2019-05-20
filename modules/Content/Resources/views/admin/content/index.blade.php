@@ -46,7 +46,7 @@
         </div>
         @endif
         <div class="main-action">
-            {form route="['content.content.index',$parent->id]" class="form-inline form-search" method="get"}
+            {form route="content.content.index" class="form-inline form-search" method="get"}
                 <div class="input-group">
                     <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('core::master.keywords.placeholder')}}" required="required" aria-label="Search">
                     <div class="input-group-append">
@@ -196,6 +196,7 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-primary">    
                 @foreach (\Modules\Content\Models\Content::status() as $k=>$s)
+                @continue($k == 'future')
                 <a href="javascript:;" class="dropdown-item js-select-operate disabled" disabled="disabled" data-operate="status" data-status="{{$k}}" data-url="{{route('content.content.status',[$k])}}">
                     <i class="{{$s.icon}} fa-fw"></i> {{$s.name}}
                 </a>
@@ -212,8 +213,6 @@
 </div>
 @endsection
 @push('css')
-<link rel="stylesheet" href="{{Module::asset('core:datetimepicker/jquery.datetimepicker.css')}}" rel="stylesheet">
-
 @endpush
 @push('js')
 <script type="text/javascript">

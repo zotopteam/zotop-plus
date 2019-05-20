@@ -2,14 +2,14 @@
 
 @section('content')
 <div class="container">
-    {content_path id="$content->id"}
+    {content:path id="$content->id"}
     
-    {content_list id="$content->top_id" subdir="false" self="true" current_id="$content->id" model="category" view="content::tag.nav"}
+    {content:list id="$content->top_id" subdir="false" self="true" current_id="$content->id" model="category" view="content::tag.nav"}
 
     <div class="content">
         <h1 class="content-title">{{$content->title}}</h1>
         <div class="content-list">
-            {content_list id="$content->id" subdir="true" paginate="true" model="article,link" size="15"}
+            {content:list id="$content->id" subdir="true" paginate="true" model="article,link" size="15"}
         </div>
     </div>
 </div>

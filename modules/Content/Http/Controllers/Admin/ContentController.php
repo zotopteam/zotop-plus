@@ -18,7 +18,7 @@ class ContentController extends AdminController
      *
      * @return Response
      */
-    public function index($parent_id=0)
+    public function index(Request $request, $parent_id=0)
     {
         // 获取父节点
         if ($parent_id) {
@@ -33,7 +33,11 @@ class ContentController extends AdminController
         $this->parents = Content::parents($parent_id, true);
 
         // 分页获取
-        $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->sort()->paginate(25);
+        $this->contents = Content::with('user','model')->when($request->keywords, function($query, $keywords) {
+            $query->where('title', 'like', '%'.$keywords.'%');
+        }, function($query) use($parent_id) {
+            $query->where('parent_id', $parent_id);
+        })->sort()->paginate(25);
 
         return $this->view();
     }
@@ -205,11 +209,6 @@ class ContentController extends AdminController
 
             $content->get()->each(function($item, $key) use($request, $status) {
                 $item->status = $status;
-
-                if ($status == 'future') {
-                    $item->publish_at = $request->input('publish_at');
-                }
-
                 $item->save();
             });
     

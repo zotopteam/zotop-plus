@@ -54,9 +54,6 @@ class Listener
      */
     public function types($types, $args)
     {
-        // if (in_array($args['model_id'], ['category'])) {
-        // }
-
         // models 设置为全局可用
         $types['models'] = [
             'name'     => trans('content::field.type.models'),
@@ -143,7 +140,7 @@ class Listener
 
         // 待审状态时，发布显示通过审核
         if ($content->status == 'pending') {
-            $manage['publish']['text'] = trans('content::content.status.approved');
+            $manage['publish']['text'] = trans('content::content.status.approved').'&'.$manage['publish']['text'];
         }
 
         // 如果状态是future或者发布，不显示发布按钮

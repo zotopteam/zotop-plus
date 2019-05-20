@@ -1,18 +1,19 @@
 {{-- title:列表区块默认模板 --}}
+@php($self = \Modules\Content\Models\Content::find($attrs.id))
 
 <div class="card">
     <div class="card-header">
-        {{$content->title}}
-        <a class="more float-right" href="{{$content->url}}">
+        {{$self->title}}
+        <a class="more float-right" href="{{$self->url}}">
             <i class="fa fa-ellipsis-h"></i>
         </a>
     </div>
     
     <ul class="list-group list-group-flush">
-    @foreach ($children as $child)
+    @foreach ($list as $item)
         <li class="list-group-item">
-            <a href="{{$child->url}}" {!! $child->title_style ? 'style="'.$child->title_style.'"': '' !!}>{{$child->title}}</a>
-            <span class="float-right">{{$child->source}} {{$child->user->username}} {{$child->created_at->format('Y-m-d')}}</span>
+            <a href="{{$item->url}}" {!! $item->title_style ? 'style="'.$item->title_style.'"': '' !!}>{{$item->title}}</a>
+            <span class="float-right">{{$item->source}} {{$item->user->username}} {{$item->created_at->format('Y-m-d')}}</span>
         </li>
     @endforeach
     </ul>

@@ -557,13 +557,16 @@ class Structure
 			return ! $single;
 		})->map(function($index) {
 			return static::convertIndexToLaravel($index);
-		})->toArray();
+		})->values();
 
 		// 转化字段
 		$columns = $this->columns->map(function($column) {
 			return static::convertColumnToLaravel($column);
-		})->toArray();
+		})->values();
 
-		return array_merge($columns, $indexes);
+		// 合并集合
+		$result = $columns->merge($indexes);
+
+		return $result;
 	}
 }

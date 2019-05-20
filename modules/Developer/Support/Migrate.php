@@ -172,16 +172,12 @@ class Migrate
 
 		$bluepoints = $this->structure->convertToLaravel();
 
-		$up = [];
-
-		foreach($bluepoints as $bluepoint) {
-			$up[] = $this->convertToBluepoints($bluepoint);
-		}
-
-		$up = implode(PHP_EOL."\t\t\t", $up);
+		$up = $bluepoints->transform(function($bluepoint) {
+			return $this->convertToBluepoints($bluepoint);
+		})->implode(PHP_EOL."\t\t\t");
 
 		//调试代码
-		//dd($bluepoints,$up);
+		//dd($bluepoints,'--',$up);
 
 		$template  = $template ?: __DIR__ .'/stubs/create_table.stub';
 		$name = $this->getMigrationFileName('create');
@@ -249,13 +245,9 @@ class Migrate
 		// 转换字段和索引为 laravel 的方法和属性
 		$bluepoints = Structure::instance($this->table->columns(), $this->table->indexes())->convertToLaravel();
 
-		$down = [];
-
-		foreach($bluepoints as $bluepoint) {
-			$down[] = $this->convertToBluepoints($bluepoint);
-		}
-
-		$down = implode(PHP_EOL."\t\t\t", $down);
+		$down = $bluepoints->transform(function($bluepoint) {
+			return $this->convertToBluepoints($bluepoint);
+		})->implode(PHP_EOL."\t\t\t");
 
 		$template = $template ?: __DIR__ .'/stubs/drop_table.stub';
 		$name     = $this->getMigrationFileName('drop');

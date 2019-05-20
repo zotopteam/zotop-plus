@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    {content_path id="$content->id"}
+    {content:path id="$content->id"}
 
     <div class="content">
         <h1 class="content-title">{{$content->title}}</h1>

@@ -77,16 +77,36 @@ class BladeCompiler extends LaravelBladeCompiler
                 }
 
                 // 标签回调         
-                $callback = 'Blade::tag_callback_'.$matches[2];
-                $parameters = static::convertAttrs($matches[3]);
+                $tag   = $matches[2];
+                $attrs = static::convertAttrs($matches[3]);
 
-                // 返回解析
-                return '<?php echo '.$callback .'('.$parameters.'); ?>';
+                return "<?php echo Blade::tagCallback('".$tag."', ".$attrs.", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])); ?>";
 
             }, $value);
         }
 
         return $value;
+    }
+
+    /**
+     * tag 回调
+     * @param  string $tag  tag名称，如block，content:list
+     * @param  array $attrs tag标签
+     * @param  array $vars  页面赋值变量
+     * @return string
+     */
+    public function tagCallback($tag, $attrs, $vars)
+    {
+        if (isset($this->tags[$tag]) && $callback = $this->tags[$tag]) {
+            
+            // 如果回调是类函数：字符串且包含@符号
+            if (is_string($callback) && strpos($callback, '@')) {
+                $callback = explode('@', $callback);
+                $callback = array(app('\\' . $callback[0]), $callback[1]);
+            }
+
+            return call_user_func_array($callback, [$attrs, $vars]);
+        }
     }
 
     /**
@@ -202,28 +222,6 @@ class BladeCompiler extends LaravelBladeCompiler
         }
         // 字符串类型加单引号后返回，TODO：可能有些数据需要处理 addslashes($val)
         return "'".$val."'";
-    }
-
-
-    public function __call($method, $args)
-    {
-        // tag_callback_block 函数
-        if (starts_with($method, 'tag_callback')) {
-
-            // 获取回调
-            $method   = substr($method, 13);
-
-            if (isset($this->tags[$method]) && $callback = $this->tags[$method]) {
-                
-                // 如果回调是类函数：字符串且包含@符号
-                if (is_string($callback) && strpos($callback, '@')) {
-                    $callback = explode('@', $callback);
-                    $callback = array(app('\\' . $callback[0]), $callback[1]);
-                }
-
-                return call_user_func_array($callback, $args);
-            }
-        }
     }
 
 }

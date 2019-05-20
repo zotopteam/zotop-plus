@@ -28,18 +28,19 @@ class TableController extends AdminController
 
         $tables = Table::all();
 
-        // 如果module.json  中包含 tables，优先获取
+        $moduleName = $module->getLowerName();
+        $prefixTables = array_filter($tables, function($table) use($moduleName) {
+            return $table == $moduleName || starts_with($table, $moduleName.'_');
+        });
+
+        // 如果module.json  中包含 tables，合并进模块表中
         if (is_array($module->tables)) {
             $moduleTables = $module->tables;
-            $tables = array_filter($tables, function($table) use($moduleTables) {
+            $moduleTables = array_filter($tables, function($table) use($moduleTables) {
                 return in_array($table, $moduleTables);
             });
-        } else {
-            $moduleName = $module->getLowerName();
-            $tables = array_filter($tables, function($table) use($moduleName) {
-                return $table == $moduleName || starts_with($table, $moduleName.'_');
-            });
-        }        
+            $tables = array_merge($moduleTables, $prefixTables);
+        }      
 
         $this->module = $module;
         $this->tables = $tables;

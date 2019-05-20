@@ -53,7 +53,7 @@ class BlockServiceProvider extends ServiceProvider
     private function baldeBlockTag()
     {
         // 解析{block ……}
-        Blade::tag('block', function($attrs) {
+        Blade::tag('block', function($attrs, $vars) {
 
             $id   = array_get($attrs, 'id');
             $slug = array_get($attrs, 'slug');
@@ -65,7 +65,7 @@ class BlockServiceProvider extends ServiceProvider
 
                 // 如果block存在，解析并返回
                 if ($block) {
-                    return app('view')->make($view ?: $block->view)->with('attrs',$attrs)->with('block',$block)->render();
+                    return app('view')->make($view ?: $block->view)->with($vars)->with('attrs',$attrs)->with('block',$block)->render();
                 }
 
                 return trans('block::block.notexist', [$id ?: $slug]);
