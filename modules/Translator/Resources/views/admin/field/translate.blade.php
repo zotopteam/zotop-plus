@@ -8,10 +8,7 @@
 </div>
 
 @push('js')
-
-    @once('FIELD_TRANSLATE_INIT')
-    <script type="text/javascript" src="{{Module::asset('translator:jquery.translate.js')}}"></script>
-    @endonce
+    @loadjs(Module::asset('translator:jquery.translate.js'))
     <script type="text/javascript">
     $(function(){
         $("#translate-{{$id}}").translate(@json($options));  

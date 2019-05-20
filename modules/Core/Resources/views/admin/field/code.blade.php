@@ -2,17 +2,13 @@
     <textarea name="{{$name}}" style="display:none;">{{$value}}</textarea>
 </div>
 @push('css')
-    @once('editormd_css')
-    <link rel="stylesheet" type="text/css" href="{{Module::asset('core:editormd/css/editormd.min.css')}}">
-    @endonce
+    @loadcss(Module::asset('core:editormd/css/editormd.min.css'))
 @endpush
 @push('js')
-    @once('editormd_js')
-    <script type="text/javascript" src="{{Module::asset('core:editormd/editormd.min.js')}}"></script>
+    @loadjs(Module::asset('core:editormd/editormd.min.js'))
     @if(!App::isLocale('zh-Hans'))
-    <script type="text/javascript" src="{{Module::asset('core:editormd/languages/'.App::getLocale().'.js')}}"></script>
+    @loadjs(Module::asset('core:editormd/languages/'.App::getLocale().'.js'))
     @endif
-    @endonce
 
     <script type="text/javascript">
     $(function(){

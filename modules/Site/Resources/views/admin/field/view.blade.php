@@ -8,9 +8,7 @@
     </span>
 </div>
 @push('js')
-    @once('select-view')
-    <script type="text/javascript" src="{{Module::asset('site:js/jquery.view.js')}}"></script>
-    @endonce
+    @loadjs(Module::asset('site:js/jquery.view.js'))
 
     <script type="text/javascript">
     $(function(){

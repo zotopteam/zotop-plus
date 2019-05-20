@@ -3,10 +3,8 @@
 </div>
 
 @push('js')
-    @once('tinymce_js')
-    <script type="text/javascript" src="{{Module::asset('tinymce:tinymce/tinymce.min.js')}}"></script>
-    <script type="text/javascript" src="{{Module::asset('tinymce:tinymce/jquery.tinymce.min.js')}}"></script>
-    @endonce
+    @loadjs(Module::asset('tinymce:tinymce/tinymce.min.js'))
+    @loadjs(Module::asset('tinymce:tinymce/jquery.tinymce.min.js'))
 
     <script type="text/javascript">
     $(function(){

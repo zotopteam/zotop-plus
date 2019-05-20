@@ -24,15 +24,10 @@
     </span>
 </div>
 @push('js')
-    @once('field_pupload')
-    <script type="text/javascript" src="{{Module::asset('core:plupload/plupload.full.min.js')}}"></script>
-    <script type="text/javascript" src="{{Module::asset('core:plupload/i18n/'.App::getLocale().'.js')}}"></script>
-    <script type="text/javascript" src="{{Module::asset('core:plupload/jquery.plupload.js')}}"></script>
-    @endonce
-
-    @once('field_pupload_single')
-    <script type="text/javascript" src="{{Module::asset('core:plupload/jquery.upload_field.js')}}"></script>
-    @endonce
+    @loadjs(Module::asset('core:plupload/plupload.full.min.js'))
+    @loadjs(Module::asset('core:plupload/i18n/'.App::getLocale().'.js'))
+    @loadjs(Module::asset('core:plupload/jquery.plupload.js'))
+    @loadjs(Module::asset('core:plupload/jquery.upload_field.js'))
 
     <script type="text/javascript">
     $(function(){

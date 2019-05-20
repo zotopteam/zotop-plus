@@ -8,18 +8,13 @@
 </div>
 
 @push('css')
-    @once('SPECTURM_CSS_INIT')
-    <link rel="stylesheet" href="{{Module::asset('core:spectrum/spectrum.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Module::asset('core:spectrum/spectrum.zotop.css')}}" rel="stylesheet">
-    @endonce
+    @loadcss(Module::asset('core:spectrum/spectrum.css'))
+    @loadcss(Module::asset('core:spectrum/spectrum.zotop.css'))    
 @endpush
 
 @push('js')
-
-    @once('SPECTURM_JS_INIT')
-    <script type="text/javascript" src="{{Module::asset('core:spectrum/spectrum.js')}}"></script>
-    <script type="text/javascript" src="{{Module::asset('content:js/input_style.js')}}"></script>
-    @endonce
+    @loadjs(Module::asset('core:spectrum/spectrum.js'))
+    @loadjs(Module::asset('content:js/input_style.js'))
     <script type="text/javascript">
     $(function(){
          $('#content-title-{{$id}}').input_style(@json($options));

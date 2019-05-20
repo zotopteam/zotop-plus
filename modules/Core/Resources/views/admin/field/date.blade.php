@@ -8,11 +8,8 @@
 @endif
 
 @push('js')
-
-    @once('laydate')
-    <script type="text/javascript" src="{{Module::asset('core:laydate/laydate.js')}}"></script>
-    @endonce
+    @loadjs(Module::asset('core:laydate/laydate.js'));
     <script type="text/javascript">
-    laydate.render(@json($options));
+        laydate.render(@json($options));
     </script>
 @endpush

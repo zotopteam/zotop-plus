@@ -70,59 +70,57 @@
 @endsection
 
 @push('js')
-@once('laydate')
-<script type="text/javascript" src="{{Module::asset('core:laydate/laydate.js')}}"></script>
-@endonce
-<script type="text/javascript">
-    $(function(){
+    @loadjs(Module::asset('core:laydate/laydate.js'))
+    <script type="text/javascript">
+        $(function(){
 
-        $('.js-future').on('click',function() {
-            laydate.render({
-                elem      : '.js-future-datetime',
-                closeStop : '.js-future-label',
-                type      : 'datetime',
-                btns      : ['clear','confirm'],
-                min       : '{{now()}}',
-                show      : true,
-                done: function(value){
-                    $('[name=publish_at]').val(value);
-                }
-              });            
-        });
-
-        // 表单提交
-        $('.form-submit').on('click', function(event) {
-            event.preventDefault();
-            var status = $(this).data('status');
-            var action = $(this).data('action');
-            if (status) {
-                $('form.form').find('[name=status]').val(status);
-            }
-            if (action) {
-                $('form.form').find('[name=_action]').val(action);
-            }           
-            $('form.form').submit();
-        });
-
-        // 表单验证
-        $('form.form').validate({
-            submitHandler:function(form){                
-                var validator = this;
-                $('.form-submit').prop('disabled',true);
-                $.post($(form).attr('action'), $(form).serialize(), function(msg){
-                    $.msg(msg);
-                    if ( msg.state && msg.url ) {
-                        location.href = msg.url;
-                        return true;
+            $('.js-future').on('click',function() {
+                laydate.render({
+                    elem      : '.js-future-datetime',
+                    closeStop : '.js-future-label',
+                    type      : 'datetime',
+                    btns      : ['clear','confirm'],
+                    min       : '{{now()}}',
+                    show      : true,
+                    done: function(value){
+                        $('[name=publish_at]').val(value);
                     }
-                    $('.form-submit').prop('disabled',false);
-                    return false;
-                },'json').fail(function(jqXHR){
-                    $('.form-submit').prop('disabled',false);
-                    return validator.showErrors(jqXHR.responseJSON.errors);
-                });
-            }            
-        });
-    })
-</script>
+                  });            
+            });
+
+            // 表单提交
+            $('.form-submit').on('click', function(event) {
+                event.preventDefault();
+                var status = $(this).data('status');
+                var action = $(this).data('action');
+                if (status) {
+                    $('form.form').find('[name=status]').val(status);
+                }
+                if (action) {
+                    $('form.form').find('[name=_action]').val(action);
+                }           
+                $('form.form').submit();
+            });
+
+            // 表单验证
+            $('form.form').validate({
+                submitHandler:function(form){                
+                    var validator = this;
+                    $('.form-submit').prop('disabled',true);
+                    $.post($(form).attr('action'), $(form).serialize(), function(msg){
+                        $.msg(msg);
+                        if ( msg.state && msg.url ) {
+                            location.href = msg.url;
+                            return true;
+                        }
+                        $('.form-submit').prop('disabled',false);
+                        return false;
+                    },'json').fail(function(jqXHR){
+                        $('.form-submit').prop('disabled',false);
+                        return validator.showErrors(jqXHR.responseJSON.errors);
+                    });
+                }            
+            });
+        })
+    </script>
 @endpush

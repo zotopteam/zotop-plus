@@ -4,7 +4,5 @@
 </div>
 
 @push('js')
-    @once('FIELD_TOGGLE_INIT_JS')
-    <script type="text/javascript" src="{{Module::asset('core:js/field_toggle.js')}}"></script>
-    @endonce
+    @loadjs(Module::asset('core:js/field_toggle.js'))
 @endpush
