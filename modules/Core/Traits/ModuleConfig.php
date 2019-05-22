@@ -9,6 +9,11 @@ use Modules\Core\Models\Config;
 
 trait ModuleConfig
 {
+    public static function bootModuleConfig()
+    {
+        debug('bootModuleConfig');
+    }
+
     /**
      * 写入config
      * 
@@ -43,8 +48,6 @@ trait ModuleConfig
      */
     private function env($key, $value='')
     {
-        
-
         $envs = [];
 
         if (is_string($key)) {
@@ -60,8 +63,7 @@ trait ModuleConfig
         }
 
         // 清理配置缓存
-        Artisan::call('config:clear');
-        //Artisan::call('reboot');
+        Artisan::call('config:clear');        
 
         return $this;
     }

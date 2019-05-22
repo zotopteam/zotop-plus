@@ -4,8 +4,8 @@
  */
 \Filter::listen('global.navbar',function($navbar) {
 
-    // 无权限或者production模式下不显示
-    if (allow('developer.index') && !app()->environment('production')) {
+    // 只在本地模式下不显示
+    if (allow('developer.index') && app()->environment('local')) {
         $navbar['developer'] = [
             'text'   => trans('developer::developer.title'),
             'href'   => route('developer.index'),
@@ -21,8 +21,8 @@
  */
 \Filter::listen('global.start',function($navbar){
     
-    // 无权限或者production模式下不显示
-    if (allow('developer.module.index') && !app()->environment('production')) {
+    // 无权限或者非本地模式下不显示
+    if (allow('developer.module.index') && app()->environment('local')) {
         $navbar['developer'] = [
             'text' => trans('developer::module.title'),
             'href' => route('developer.module.index'),

@@ -52,7 +52,23 @@ class BaseController extends Controller
         }
 
         // view实例
-        $this->view   = $this->app['view'];     
+        $this->view   = $this->app['view'];
+
+        static::boot();    
+    }
+
+    /**
+     * Boot all of the bootable traits on the controller
+     */
+    public static function boot()
+    {
+        $class = static::class;
+        foreach (class_uses_recursive($class) as $trait) {
+            $method = 'boot'.class_basename($trait);
+            if (method_exists($class, $method)) {
+                forward_static_call([$class, $method]);
+            }            
+        }
     }
 
 
