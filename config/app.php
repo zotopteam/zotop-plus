@@ -22,7 +22,7 @@ return [
     | This value is the version of your application..
     */
 
-    'version' => '1.6.0323',
+    'version' => '1.6.0523',
 
 
     /*
@@ -33,7 +33,7 @@ return [
     | This value is the release of your application. 
     */
 
-    'release' => '20190323',
+    'release' => '20190523',
 
     /*
     |--------------------------------------------------------------------------
