@@ -383,13 +383,13 @@ textarea{resize:none;}
 
 .global-navbar{float:left;}
 .global-navbar>li{float:left;}
-.global-navbar>li>a{position:relative;display:block;max-width:10rem;padding:0.75rem 1.25rem;color:#fff;font-size:1rem;transition:all 0.2s ease-out 0s;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.global-navbar>li>a{position:relative;display:block;max-width:10rem;padding:0.75rem 1rem;color:#fff;font-size:1rem;transition:all 0.2s ease-out 0s;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .global-navbar>li>a:hover,.global-navbar>li>a:focus{background-color:#0064ae;outline:0 none;text-decoration:none;}
 .global-navbar>li.active>a,.global-navbar>li.active>a:hover,.global-navbar>li.active >a:focus {background-color:#00bcf2;}
 .global-navbar>li.show>a,.global-navbar>li.show>a:hover,.global-navbar>li.show>a:focus {background-color:#0064ae;}
 .global-navbar>li.brand>a{background-image:url(../img/logo.png);background-repeat:no-repeat;background-position:center center;width:3rem;height:3rem;padding:0;text-indent:-500px;background-size:2rem 2rem;}
 .global-navbar>li.sitename>a{min-width:5rem}
-.global-navbar>li>a>.badge{position:absolute;right:2px;top:0.5rem;}
+.global-navbar>li>a>.badge{position:absolute;right:.5rem;top: 0.5rem;transform:scale(.7);vertical-align:baseline;border-radius:.25rem;transform-origin: top right;line-height: 1;}
 
 .global-navbar .dropdown-menu{border:solid 2px #0064ae;border-top:0 none;margin-top:0;border-top-left-radius:0;border-top-right-radius:0;}
 .global-navbar .dropdown-menu .dropdown-item{color:#0072c6;}
@@ -400,7 +400,7 @@ textarea{resize:none;}
 .global-navbar .dropdown-menu-right:after{left:auto;right:0.5rem;}
 .global-navbar .dropdown-start .shortcuts {width:40rem;max-height:26.5rem;padding:0.25rem;}
 
-.global-tools>li>a{padding:0.75rem 1rem;}
+.global-tools>li>a{padding:0.75rem 0.75rem;}
 
 
 /* 侧边区域 side*/

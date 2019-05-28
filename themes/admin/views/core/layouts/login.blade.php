@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{Theme::asset('css/login.css')}}" rel="stylesheet">
     @stack('css')
+
+    <script>
+        window.cms = @json(Filter::fire('window.cms', []));
+    </script>    
 </head>
 <body class="{{app('current.module')}}-{{app('current.controller')}}-{{app('current.action')}}">
     @yield('content')

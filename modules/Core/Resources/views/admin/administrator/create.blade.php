@@ -59,15 +59,26 @@
             
                       
             <div class="form-group row">
-                <label for="nickname" class="col-2 col-form-label required">{{trans('core::administrator.roles.label')}}</label>
-                <div class="col-4">
+                <label for="model_id" class="col-2 col-form-label required">{{trans('core::administrator.roles.label')}}</label>
+                <div class="col-6">
+
+                    {field type="select" name="model_id" options="Module::data('core::administrator.models')" required="required"}
+                    
+                    <div class="mt-2 d-none" data-depend="[name=model_id]" data-when="value=super" data-then="show">
+                        <span class="form-help">{{ trans('core::administrator.model.super.description') }}</span>
+                    </div>
+
+                    <div class="mt-2 d-none" data-depend="[name=model_id]" data-when="value=admin" data-then="show">
+                    <span class="form-help mb-3">{{ trans('core::administrator.model.admin.description') }}</span>
                     @if ($roles = Module::data('core::administrator.roles'))  
-                    {field type="checkboxgroup" name="roles" options="$roles" required="required" minlength="1"}
+                    {field type="checkboxgroup" name="roles" options="$roles" required="required"}
                     @else
                     <div class="form-control-plaintext">
                         <a href="{{route('core.role.index')}}">{{trans('core::role.required')}}</a>
                     </div>
                     @endif
+                    </div>
+
                     @if ($errors->has('roles'))
                     <span class="form-help text-error">{{ $errors->first('roles') }}</span>
                     @endif

@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="{{Theme::asset('css/jquery.dialog.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     @stack('css')
+
+    <script>
+        window.cms = @json(Filter::fire('window.cms', []));
+    </script>       
 </head>
 <body class="dialog {{app('current.module')}}-{{app('current.controller')}}-{{app('current.action')}}">
     <section class="global-body">
@@ -30,7 +34,7 @@
     <script src="{{Theme::asset('lang/'.App::getLocale().'/jquery.validate.js')}}"></script>
     @endif
     <script type="text/javascript">
-    var $dialog = $.dialog();
+        window.$dialog = $.dialog();
     </script>
     @stack('js') 
 </body>

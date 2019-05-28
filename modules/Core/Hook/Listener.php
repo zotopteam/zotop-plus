@@ -1,9 +1,11 @@
 <?php
 namespace Modules\Core\Hook;
 
+use App;
 use Route;
 use Modules\Core\Support\Resize;
 use Modules\Core\Support\Watermark;
+use Auth;
 
 class Listener
 {
@@ -126,20 +128,41 @@ class Listener
      */
     public function tools($tools)
     {
+        $tools['notification'] = [
+            'icon'  => 'fa fa-bell', 
+            //'text'  => trans('core::notification.short'),
+            'title' => trans('core::notification.title'),
+            'href'  => route('core.notifications.index'),
+            'badge' => 0,
+            'class' => 'global-notification'
+        ];
+
         // 一键刷新
         if (allow('core.system.reboot')) {
-            $tools['refresh'] = [
-                'icon'     => 'fa fa-sync', 
-                'text'     => trans('core::system.reboot'),
-                'title'    => trans('core::system.reboot.tips'),
-                'href'     => 'javascript:;',
-                'data-url' => route('core.system.reboot'),
-                'class'    => 'js-post',
+            $tools['reboot'] = [
+                'icon'  => 'fa fa-sync', 
+                //'text'  => trans('core::system.reboot'),
+                'title' => trans('core::system.reboot.tips'),
+                'href'  => route('core.system.reboot'),
+                'class' => 'js-post',
             ];
         }
         
         return $tools;
     }
+
+    /**
+     * 后台快捷工具扩展
+     * @param  array $start 已有快捷工具
+     * @return array
+     */
+    public function windowCms($cms)
+    {
+        $cms['environment']  = App::environment();
+        $cms['user_id']      = intval(Auth::id());
+        $cms['notification'] = ['check' => route('core.notifications.check'), 'interval'=>10]; //单位：秒
+        return $cms;
+    }    
 
     /**
      * 监听上传

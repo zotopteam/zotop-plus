@@ -300,7 +300,6 @@ class Migrate
 			});
 
 			foreach ($codes as $action=>$code) {
-				$bluepoint[] = "//".$action;
 				$bluepoint[] = "Schema::table('".$newname."', function (Blueprint \$table) {";
 				foreach ($code as $c) {
 					$bluepoint[] = "\t".$c;
@@ -351,7 +350,6 @@ class Migrate
 			});				
 
 			foreach ($codes as $action=>$code) {
-				$bluepoint[] = "//".$action;
 				$bluepoint[] = "Schema::table('".$this->table->name()."', function (Blueprint \$table) {";
 				foreach ($code as $c) {
 					$bluepoint[] = "\t".$c;

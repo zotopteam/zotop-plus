@@ -62,6 +62,8 @@ class Table
         'mediumint'     => 'Modules\Developer\Support\Types\MediumintType',
         'mediuminteger' => 'Modules\Developer\Support\Types\MediumintegerType',
         'timestamp'     => 'Modules\Developer\Support\Types\TimestampType',
+        'longtext'     => 'Modules\Developer\Support\Types\LongtextType',
+        'mediumtext'     => 'Modules\Developer\Support\Types\MediumtextType',
     ];
 
 	/**

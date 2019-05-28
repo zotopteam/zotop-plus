@@ -1,2 +1,0 @@
-<?php
-namespace Themes\Default;

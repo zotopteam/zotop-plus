@@ -5,6 +5,8 @@ namespace Modules\Core\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Modules\Core\Models\User;
+use Illuminate\Validation\Factory as ValidationFactory;
+
 
 class AdministratorRequest extends FormRequest
 {
@@ -15,14 +17,16 @@ class AdministratorRequest extends FormRequest
      */
     public function rules(Request $request)
     {
+        $rules = [];
+
         //添加时
         if ( $request->isMethod('POST') ) {
 
-            return [
+            $rules = [
                 'username'         => 'required|unique:users',
                 'password'         => 'required|min:6', 
                 'password_confirm' => 'required|same:password',
-                'roles'            => 'required',                
+                'roles'            => $request->input('model_id') == 'super' ? '' : 'required',                
                 'nickname'         => 'required|max:100|unique:users',
                 'email'            => 'required|unique:users',
                 'mobile'           => 'required|unique:users',
@@ -34,18 +38,19 @@ class AdministratorRequest extends FormRequest
             
             $id = $this->route('id');
 
-            return [
+            $rules = [
                 'username'         => 'required|unique:users,username,'.$id.',id',
                 'password_new'     => 'min:6|nullable', 
                 'password_confirm' => 'same:password_new',
-                'roles'            => User::find($id)->isSuper() ? '' : 'required',
+                'roles'            => $request->input('model_id') == 'super' ? '' : 'required',
                 'nickname'         => 'required|max:100|unique:users,nickname,'.$id.',id',
                 'email'            => 'required|unique:users,email,'.$id.',id', 
                 'mobile'           => 'required|unique:users,mobile,'.$id.',id',    
             ];
+
         }
 
-        return [];  
+        return $rules;  
     }
 
     /**

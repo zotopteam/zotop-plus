@@ -114,4 +114,10 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
         $router->get('index','SchedulingController@index')->name('core.scheduling.index')->middleware('allow:core.scheduling.index');
         $router->any('run/{index}','SchedulingController@run')->name('core.scheduling.run')->middleware('allow:core.scheduling.run');
     });
+
+    // notifications
+    $router->group(['prefix' =>'notifications'], function (Router $router) {
+        $router->get('index','NotificationsController@index')->name('core.notifications.index');
+        $router->any('check','NotificationsController@check')->name('core.notifications.check');
+    });    
 });

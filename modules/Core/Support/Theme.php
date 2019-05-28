@@ -101,7 +101,7 @@ class Theme
      * @param  string $name 主题名称
      * @return string
      */
-    public function getAssetsUrl($name='')
+    public function getAssetsUrl($name=null)
     {
         $base = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $this->getAssetsPath($name));
 
@@ -114,9 +114,10 @@ class Theme
      * @param  [type] $name [description]
      * @return [type]       [description]
      */
-    public function find($name)
+    public function find($name=null)
     {
         $theme = null;
+        $name = $name ?? $this->app['current.theme'];
 
         // 获取主题信息
         if ( isset($this->themes[$name]) ) {
@@ -135,7 +136,7 @@ class Theme
      *
      * @throws ModuleNotFoundException
      */
-    public function findOrFail($name)
+    public function findOrFail($name=null)
     {
         $theme = $this->find($name);
 
@@ -153,11 +154,11 @@ class Theme
      * @param string $name theme name
      * @return string
      */
-    public function asset($asset, $name=null)
+    public function asset($asset)
     {
         // 如过传入参数不包含主题名称，则使用当前名称，否则分解为主题和路径
         if (strpos($asset,':') == false) {
-            $name = $name ?? $this->app['current.theme'];
+            $name = $this->app['current.theme'];
             $url  = $asset;    
         } else {
             list($name, $url) = explode(':', $asset);            
@@ -173,10 +174,10 @@ class Theme
      * @param string $name theme name
      * @return string
      */
-    public function path($path=null, $name=null)
+    public function path($path=null)
     {
         if (strpos($path, ':') == false) {
-            $name = $name ?? $this->app['current.theme'];
+            $name = $this->app['current.theme'];
         } else {
             list($name, $path) = explode(':', $path);
         }

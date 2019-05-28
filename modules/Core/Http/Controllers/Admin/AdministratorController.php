@@ -46,11 +46,15 @@ class AdministratorController extends AdminController
     {
         $user = new User;
         $user->fill($request->all());
-        $user->model_id  = 'admin';
         $user->password = \Hash::make($user->password);
         $user->save();
-        $user->roles()->attach($request->input('roles'));
 
+        if ($request->model_id == 'super') {
+            $user->roles()->detach();
+        } else {
+            $user->roles()->attach($request->input('roles'));
+        }        
+        
         return $this->success(trans('core::master.created'), route('core.administrator.index'));
     }
 
@@ -66,6 +70,8 @@ class AdministratorController extends AdminController
         $this->id    = $id;
         $this->user  = User::findOrFail($id);
 
+        $this->super_count = User::where('model_id', 'super')->count();
+
         return $this->view();
     }
 
@@ -78,6 +84,11 @@ class AdministratorController extends AdminController
     public function update(AdministratorRequest $request, $id)
     {
         $user = User::findOrFail($id);
+
+        if (User::where('model_id', 'super')->count() == 1 && $user->model_id == 'super' && $request->model_id != 'super' ) {
+            return $this->error(trans('core::administrator.model.super.required'));  
+        }
+
         $user->fill($request->all());
 
         // 修改密码
@@ -86,8 +97,12 @@ class AdministratorController extends AdminController
         }
         
         $user->save();
-        $user->roles()->sync($request->input('roles'));
 
+        if ($request->model_id == 'super') {
+            $user->roles()->detach();
+        } else {
+            $user->roles()->sync($request->input('roles'));
+        }
 
         return $this->success(trans('core::master.updated'), route('core.administrator.index'));  
     }

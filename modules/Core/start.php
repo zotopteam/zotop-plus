@@ -15,6 +15,11 @@
 \Filter::listen('global.tools', 'Modules\Core\Hook\Listener@tools');
 
 /**
+ * 全局js变量
+ */
+\Filter::listen('window.cms', 'Modules\Core\Hook\Listener@windowCms');
+
+/**
  * 文件上传
  */
 \Filter::listen('core.file.upload', 'Modules\Core\Hook\Listener@upload');

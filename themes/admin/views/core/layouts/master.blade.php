@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="{{Theme::asset('css/jquery.dialog.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     @stack('css')
+
+    <script>
+        window.cms = @json(Filter::fire('window.cms', []));
+    </script>   
 </head>
 <body class="{{app('current.module')}}-{{app('current.controller')}}-{{app('current.action')}}">
     <header class="global-header">
@@ -55,19 +59,26 @@
             </div>
             <div class="col-sm-6 col-md-5 col-lg-4">
                 <ul class="nav global-navbar global-tools float-right">
-                    
                     @foreach(Filter::fire('global.tools',[]) as $tools)                    
-                    <li>
+                    <li class="global-tool">
                         <a {!!Html::attributes(array_except($tools,['icon','text']))!!}>
-                            @if(isset($tools['icon']))<i class="{{$tools['icon']}} fa-fw"></i>@endif
-                            @if(isset($tools['text']))<span class="d-none d-xl-inline-block">{{$tools['text']}}</span>@endif
+                            @if(isset($tools['badge']))
+                                <span class="global-tool-badge badge {{$tools['badgeClass'] ?? 'badge-danger'}} {{$tools['badge'] ? 'd-block' : 'd-none'}}">
+                                    {{$tools['badge']}}
+                                </span>
+                            @endif
+                            @if(isset($tools['icon']))
+                                <i class="global-tool-icon {{$tools['icon']}} fa-fw"></i>
+                            @endif
+                            @if(isset($tools['text']))
+                                <span class="global-tool-text d-none d-xl-inline-block">{{$tools['text']}}</span
+                            >@endif
                         </a>
                     </li>
                     @endforeach
-                    
-                    <li class="dropdown">
+                    <li class="global-tool dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-user-circle"></i> <span class="hidden-md-down">{{Auth::user()->username}}</span>
+                            <i class="global-tool fa fa-user-circle"></i> <span class="global-tool-text hidden-md-down">{{Auth::user()->username}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="{{route('core.mine.edit')}}">

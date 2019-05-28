@@ -40,7 +40,7 @@
     // 网站首页
     $tools['viewsite'] = [
         'icon'   => 'fa fa-home',
-        'text'   => trans('site::site.view'),
+        //'text'   => trans('site::site.view'),
         'title'  => trans('site::site.view.tips', [config('site.name')]),
         'href'   => config('site.url') ?: route('index'),
         'target' => '_blank',

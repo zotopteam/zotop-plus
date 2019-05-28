@@ -56,19 +56,37 @@
                     @endif                          
                 </div>
             </div>
-            @if (! $user->isSuper())
+            @if ($super_count == 1 && $user->model_id == 'super')
+            {field type="hidden" name="model_id" required="required"}
+            @else                  
             <div class="form-group row">
                 <label for="nickname" class="col-2 col-form-label required">{{trans('core::administrator.roles.label')}}</label>
                 <div class="col-4">
+
+                    {field type="select" name="model_id" options="Module::data('core::administrator.models')" required="required"}
+                    
+                    <div class="mt-2 d-none" data-depend="[name=model_id]" data-when="value=super" data-then="show">
+                        <span class="form-help">{{ trans('core::administrator.model.super.description') }}</span>
+                    </div>
+
+                    <div class="mt-2 d-none" data-depend="[name=model_id]" data-when="value=admin" data-then="show">
+                    <span class="form-help mb-3">{{ trans('core::administrator.model.admin.description') }}</span>
+                    @if ($roles = Module::data('core::administrator.roles'))  
                     {field type="checkboxgroup" name="roles" value="Module::data('core::administrator.roles',[$user])" options="Module::data('core::administrator.roles')" required="required" minlength="1"}
+                    @else
+                    <div class="form-control-plaintext">
+                        <a href="{{route('core.role.index')}}">{{trans('core::role.required')}}</a>
+                    </div>
+                    @endif
+                    </div>
                     
                     @if ($errors->has('roles'))
                     <span class="form-help text-error">{{ $errors->first('roles') }}</span>
                     @endif
                 </div>
-            </div>
+            </div> 
             @endif
-            
+
             <div class="form-title row">{{trans('core::administrator.form.profile')}}</div>            
 
             <div class="form-group row">

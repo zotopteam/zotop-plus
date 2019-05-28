@@ -37,11 +37,11 @@ class FrontMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $this->app->singleton('current.theme',function() {
+        $this->app->singleton('current.theme', function() {
             return config('site.theme', 'default');
         });
 
-        $this->app->singleton('current.locale',function() {
+        $this->app->singleton('current.locale', function() {
             return config('site.locale', $this->app->getLocale());
         });   
 

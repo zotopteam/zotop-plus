@@ -22,8 +22,6 @@ class Core extends Migration
             $table->string('type', 10)->comment('类型');
             $table->primary(['key', 'module']);
 
-            $table->engine = 'InnoDB';
-
             $table->comment = '设置';             
         });   
 
@@ -44,6 +42,7 @@ class Core extends Migration
             $table->string('login_ip', 45)->nullable()->comment('最后登录IP');
             $table->boolean('disabled')->default(0)->unsigned()->comment('禁用 0=否 1=禁用');
             $table->string('token')->nullable()->comment('token');
+            $table->integer('notification_count')->unsigned()->default(0)->comment('消息通知数量');
 
             $table->rememberToken();
             $table->timestamps();

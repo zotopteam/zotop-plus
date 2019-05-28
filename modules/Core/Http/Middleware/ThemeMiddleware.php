@@ -95,10 +95,14 @@ class ThemeMiddleware
      */
     protected function registerFiles()
     {
-        $file = $this->app['theme']->path().'/theme.php';
+        $theme = $this->app['theme']->findOrFail();
+        $files = isset($theme->files) && is_array($theme->files) ? $theme->files : [];
 
-        if ($this->app['files']->exists($file)) {
-            require $file;
+        foreach ($files as $file) {
+            $file = $theme->path.'/'.$file;
+            if ($this->app['files']->exists($file)) {
+                require $file;
+            }
         }
     }
 }

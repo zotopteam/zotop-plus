@@ -7,6 +7,14 @@ $(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
         },
         error: function(jqXHR) {
+            
+            console.log(jqXHR.status);
+
+            if (jqXHR.status == 401 || jqXHR.status == 419) {
+                top.location.reload();
+                return;
+            }
+
             // 422 为表单验证提示，在每次提交时候单独处理
             if (jqXHR.status != 422 ) {
 
@@ -18,8 +26,8 @@ $(function(){
                 // 如果消息弹出，自动关闭消息
                 if ($.dialog('message')) {
                     $.dialog('message').close().remove();
-                }  
-
+                }
+                
                 // 弹出警告对话框
                 $.alert(jqXHR.responseJSON.message || jqXHR.responseText).title(jqXHR.statusText);
             }        
@@ -330,4 +338,27 @@ $(function(){
         });        
     }).disableSelection();
 
+});
+
+$(function(){
+
+    var notification_check = function() {
+
+        var notification = $('.global-notification');
+
+        $.getJSON(cms.notification.check, function(result) {
+            if (result.count) {
+                notification.find('.global-tool-badge').removeClass('d-none').html(result.count);
+                notification.find('.global-tool-icon').addClass('animation-flicker');
+            } else {
+                notification.find('.global-tool-badge').addClass('d-none').html(0);
+                notification.find('.global-tool-icon').removeClass('animation-flicker');
+            }
+        });        
+    }
+
+    if (cms.user_id > 0) {
+        notification_check();
+        window.setInterval(notification_check, cms.notification.interval*1000);
+    }
 });
