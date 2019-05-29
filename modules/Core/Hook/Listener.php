@@ -160,7 +160,10 @@ class Listener
     {
         $cms['environment']  = App::environment();
         $cms['user_id']      = intval(Auth::id());
-        $cms['notification'] = ['check' => route('core.notifications.check'), 'interval'=>10]; //单位：秒
+        $cms['notification'] = [
+            'check'    => route('core.notifications.check'),
+            'interval' => 10, //单位：秒
+        ]; 
         return $cms;
     }    
 

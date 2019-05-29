@@ -31,8 +31,8 @@ class CreateContentFieldTable1542101025 extends Migration
 			$table->string('width', 64)->nullable()->comment('控件宽度，主区域可用')->default('w-100');
 			$table->integer('sort')->nullable()->comment('排序字段')->default(0)->unsigned();
 			$table->boolean('disabled')->nullable()->comment('是否禁用，0：未禁用，1：禁用')->default(0);
-			$table->timestamp('created_at');
-			$table->timestamp('updated_at');
+			$table->timestamp('created_at')->nullable();
+			$table->timestamp('updated_at')->nullable();
 
             $table->comment = '';             
         });

@@ -76,7 +76,7 @@ $types  = [
         'settings' => ['required'=>0, 'maxlength'=>255]
     ],
     'checkboxgroup' => [
-        'name'     => trans('content::field.type.radiogroup'),
+        'name'     => trans('content::field.type.checkboxgroup'),
         'view'     => ['content::field.settings.options','content::field.settings.required'],
         'method'   => 'string',
         'settings' => ['required'=>0, 'maxlength'=>255],

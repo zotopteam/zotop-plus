@@ -40,13 +40,18 @@ class Baidu implements EngineInterface
         debug($translate);
 
         // 返回翻译结果
-        if (is_array($translate) && isset($translate['trans_result'])) {
-            $translate = $translate['trans_result'][0]['dst'];
-        } else {
-            $translate = '';
+        if (is_array($translate)) {
+
+            if (isset($translate['trans_result'])) {
+                return $translate['trans_result'][0]['dst'];
+            }
+
+            if (isset($translate['error_code']) && isset($translate['error_msg'])) {
+                abort(403, 'Unable to translate: '.$translate['error_code'].' '.$translate['error_msg']);
+            }
         }
 
-        return $translate;
+        return null;
     }
 
     /*
@@ -54,18 +59,22 @@ class Baidu implements EngineInterface
      */
     private function getResult($url)
     {
-        if (function_exists('file_get_contents')) {
-            $result = file_get_contents($url);
-        } else {
-            $ch = curl_init();
-            $timeout = 5;
-            curl_setopt ($ch, CURLOPT_URL, $url);
-            curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-            $result = curl_exec($ch);
-            curl_close($ch);
-        }
+        try {
+            if (function_exists('file_get_contents')) {
+                $result = file_get_contents($url);
+            } else {
+                $ch = curl_init();
+                $timeout = 5;
+                curl_setopt ($ch, CURLOPT_URL, $url);
+                curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+                $result = curl_exec($ch);
+                curl_close($ch);
+            }
 
-        return $result;
+            return $result;
+        } catch (\Exception $e) {
+            abort(503, 'Unable to connect to translation server: '.$this->url);
+        }
     }    
 }

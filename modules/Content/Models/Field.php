@@ -129,6 +129,9 @@ class Field extends LaravelModel
     {
         $types = static::types($field->model_id);
 
+        // 字段设置为数组，部分没有字段设置的字段类型处理为空数组
+        $field->settings = is_array($field->settings) ? $field->settings : [];
+
         // 合并默认设置
         if ($settings = array_get($types, $field->type.'.settings')) {
             $field->settings = array_merge($settings, $field->settings);

@@ -27,8 +27,8 @@ class ModelRequest extends FormRequest
         if ( $request->isMethod('POST') ) {
 
             return [
-                'id'       => 'required|check_id|max:64|unique:content_model',
-                'name'     => 'required|max:64',
+                'id'   => 'required|check_id|max:64|unique:content_model',
+                'name' => 'required|max:64',
                 'view' => 'required|max:100', 
             ];
         }
@@ -39,8 +39,8 @@ class ModelRequest extends FormRequest
             $id = $this->route('id');
 
             return [
-                'id'       => 'required|check_id|max:64|unique:content_model,id,'.$id.',id',
-                'name'     => 'required|max:64',
+                'id'   => 'required|check_id|max:64|unique:content_model,id,'.$id.',id',
+                'name' => 'required|max:64',
                 'view' => 'max:100', 
             ];
         }
@@ -66,8 +66,8 @@ class ModelRequest extends FormRequest
     public function attributes()
     {
         return [
-            'id'       => trans('content::model.id.label'),
-            'name'     => trans('content::model.name.label'),
+            'id'   => trans('content::model.id.label'),
+            'name' => trans('content::model.name.label'),
             'view' => trans('content::model.view.label'),
         ];
     }      
