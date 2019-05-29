@@ -181,12 +181,22 @@ class CreateCommand extends Command
             'module'     => $this->moduleName()
         ]);
 
+
         // 前台创建IndexController
         $this->call('module:make-front-controller', [
             'controller' => 'IndexController',
             'module'     => $this->moduleName(),
             '--style'    => 'simple'
+        ]);
+
+
+        // api创建IndexController
+        $this->call('module:make-api-controller', [
+            'controller' => 'IndexController',
+            'module'     => $this->moduleName(),
+            '--style'    => 'simple'
         ]);        
+
 
         // 创建默认的ModuleNameServiceProvider
         $this->call('module:make-provider', [

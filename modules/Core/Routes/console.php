@@ -20,7 +20,7 @@ Artisan::command('zotop:version', function () {
 
     $this->info($name.' version:'.$version.'('.$release.')');
 
-})->describe('Show the version of the zotop');
+})->describe('Show the version of zotop');
 
 /**
  * 定时任务测试命令

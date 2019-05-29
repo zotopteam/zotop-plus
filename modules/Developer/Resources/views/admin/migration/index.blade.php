@@ -60,14 +60,14 @@
 
                     <td class="manage manage-hover text-right">
                         @if(in_array(File::name($file), $migrations))
-                        <a href="javascript:;" class="manage-item js-confirm" data-url="{{route('developer.migration.migrate.file',[$name,'refresh','file'=>path_base($file)])}}">
+                        <a href="javascript:;" class="manage-item js-confirm d-none" data-url="{{route('developer.migration.migrate.file',[$name,'refresh','file'=>path_base($file)])}}">
                             <i class="fa fa-sync fa-fw text-primary"></i> {{trans('developer::migration.file.refresh')}}
                         </a>
-                        <a href="javascript:;" class="manage-item js-confirm" data-url="{{route('developer.migration.migrate.file',[$name,'reset','file'=>path_base($file)])}}">
+                        <a href="javascript:;" class="manage-item js-confirm d-none" data-url="{{route('developer.migration.migrate.file',[$name,'reset','file'=>path_base($file)])}}">
                             <i class="fa fa-reply fa-fw text-primary"></i> {{trans('developer::migration.file.reset')}}
                         </a>
                         @else
-                        <a href="javascript:;" class="manage-item js-confirm" data-url="{{route('developer.migration.migrate.file',[$name,'migrate','file'=>path_base($file)])}}">
+                        <a href="javascript:;" class="manage-item js-confirm d-none" data-url="{{route('developer.migration.migrate.file',[$name,'migrate','file'=>path_base($file)])}}">
                             <i class="fa fa-share fa-fw text-primary"></i> {{trans('developer::migration.file.migrate')}}
                         </a>                         
                                     

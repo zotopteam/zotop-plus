@@ -165,6 +165,7 @@ class CoreServiceProvider extends ServiceProvider
             \Modules\Core\Console\MakeTraitCommand::class,
             \Modules\Core\Console\AdminControllerCommand::class,
             \Modules\Core\Console\FrontControllerCommand::class,
+            \Modules\Core\Console\ApiControllerCommand::class,
             \Modules\Core\Console\RebootCommand::class,
         ]);
     }

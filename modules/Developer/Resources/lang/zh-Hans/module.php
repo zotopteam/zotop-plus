@@ -24,10 +24,10 @@ return [
     'alias.label'       => '别名',
     
     'title.label'       => '标题',
-    'title.help'        => '默认值 :0::module.title 为使用语言翻译，也可以直接显示文字，建议使用语言翻译',
+    'title.help'        => '默认值 :0:::0.title 为使用语言翻译，也可以直接显示文字，建议使用语言翻译',
     
     'description.label' => '描述',
-    'description.help'  => '默认值 :0::module.description 为使用语言翻译，也可以直接显示文字，建议使用语言翻译',
+    'description.help'  => '默认值 :0:::0.description 为使用语言翻译，也可以直接显示文字，建议使用语言翻译',
     
     'version.label'     => '版本',
     'order.label'       => '排序',    
@@ -38,7 +38,7 @@ return [
     'providers.label'   => '服务提供者',
     'providers.help'    => '请直接修改 :0\module.json 中的 providers',
     
-    'aliases.label'     => '门面',    
+    'aliases.label'     => '别名',    
     'aliases.help'      => '请直接修改 :0\module.json 中的 aliases',
     
     'files.label'       => '全局加载文件',    

@@ -58,11 +58,10 @@ class ThemeMiddleware
      */
     protected function registerViews()
     {
-        // 主题寻址
-        $this->app['config']->set('view.paths', [$this->app['theme']->path().'/views', resource_path('views')]);
 
         // 在主题对应模块下的目录中寻址
         $this->app['view']->addLocation($this->app['theme']->path().'/views/'.strtolower($this->app['current.module']));
+
 
         // 注册当前模块的views，实现view在模块中寻址
         $this->app['view']->addLocation(Module::getModulePath($this->app['current.module']) . '/Resources/views/'.strtolower($this->app['current.type']));

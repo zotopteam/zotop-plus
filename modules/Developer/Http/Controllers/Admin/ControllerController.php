@@ -42,6 +42,15 @@ class ControllerController extends AdminController
                 ],
                 'middleware' => ''                
             ],
+            'api' => [
+                'name'    =>trans('developer::controller.api'),
+                'path'    =>'Http/Controllers/Api',
+                'artisan' =>'module:make-api-controller',
+                'styles'   => [
+                    'simple'   => trans('developer::controller.style.api'),
+                ],
+                'middleware' => ''
+            ],            
         ]);
 
         if ( empty($key) ) {
@@ -155,6 +164,13 @@ class ControllerController extends AdminController
         $this->types   = $this->types();
         $this->path    = $this->types($type,'path');
         $this->path    = $this->module->getExtraPath($this->path);
+
+        // 如果目录不存在，自动创建目录
+        if (! File::isDirectory($this->path)) {
+            File::makeDirectory($this->path, 0775, true);
+        }
+
+
         $this->files   = File::files($this->path);
         $this->artisan = $this->types($type,'artisan');
         $this->styles  = $this->types($type,'styles');

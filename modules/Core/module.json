@@ -22,7 +22,6 @@
         "JildertMiedema\\LaravelPlupload\\LaravelPluploadServiceProvider"
     ],
     "aliases": {
-        "Plupload": "JildertMiedema\\LaravelPlupload\\Facades\\Plupload",
         "Format": "Modules\\Core\\Support\\Facades\\Format",
         "Action": "Modules\\Core\\Support\\Facades\\Action",
         "Filter": "Modules\\Core\\Support\\Facades\\Filter",

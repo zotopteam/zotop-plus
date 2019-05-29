@@ -5,6 +5,7 @@ namespace Modules\Core\Console;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Module;
 
 class CreateThemeCommand extends Command
 {
@@ -13,7 +14,10 @@ class CreateThemeCommand extends Command
      *
      * @var string
      */
-    protected $name = 'theme:create';    
+    protected $signature = 'theme:create 
+                            {name : The name of theme.} 
+                            {--type=front : The style of theme, options: admin|front .} 
+                            {--force : Overwrite any existing theme.}';  
 
     /**
      * The console command description.
@@ -41,7 +45,7 @@ class CreateThemeCommand extends Command
      * 
      * @var string
      */
-    protected $themeType='front';
+    protected $themeType;
 
     /**
      * 创建laravel-module模型中缺少的文件
@@ -49,7 +53,8 @@ class CreateThemeCommand extends Command
      * @var array
      */
     protected $createFiles = [
-        'theme-json.stub'  => 'theme.json'
+        'theme-json.stub'  => 'theme.json',
+        'theme-start.stub' => 'start.php',
     ];
     
     /**
@@ -70,28 +75,28 @@ class CreateThemeCommand extends Command
     public function handle()
     {
         // 主题名称和路径
-        $this->themeName = $this->argument('name');
+        $this->themeName = strtolower($this->argument('name'));
         $this->themePath = $this->themePath($this->themeName);
 
         // 可选参数
-        $admin = $this->option('admin');
-        $force = $this->option('force');
-
-        if ( $admin ) {
-            $this->themeType = 'admin';
-        }
+        $this->themeType = $this->option('type');
 
         // 判断目录是否存在
         if ( $this->laravel['files']->isDirectory($this->themePath) ) {            
             
             //强制生成的时候删除已经存在目录
-            if ( $force ){
+            if ( $this->option('force') ){
                 $this->laravel['files']->deleteDirectory($this->themePath);
                 $this->info("Delete the theme [{$this->themeName}]");
             } else {
                 return $this->error("The theme [{$this->themeName}] already exists");
             }            
         }
+
+        // $this->laravel['files']->makeDirectory($this->themePath, 0775, true);
+
+        // 创建主题
+        $this->createTheme();
 
         // 创建默认文件
         $this->createFiles();
@@ -100,36 +105,13 @@ class CreateThemeCommand extends Command
     }
 
     /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['name', InputArgument::REQUIRED, 'The Theme name'],
-        ];
-    }
-
-    /**
-     * 可选项，强制生成和生成后台主题选项
      * 
-     * @return [type] [description]
-     */
-    protected function getOptions()
-    {
-        return [
-            array('admin', null, InputOption::VALUE_NONE, 'Generate a admin theme.'),
-            array('force', null, InputOption::VALUE_NONE, 'Force the operation to run when theme already exist.'),
-        ];
-    }   
-
-    /**
      * 获取主题和文件路径
-     * 
-     * @return [type] [description]
+     * @param  string $name name
+     * @param  string $file filename
+     * @return path
      */
-    public function themePath($name, $file='')
+    public function themePath($name, $file=null)
     {
         $path = config('stylist.themes.paths', [base_path('/themes')])[0];
 
@@ -198,13 +180,26 @@ class CreateThemeCommand extends Command
     }
 
     /**
-     * 拷贝主题基本文件到主题中
+     * 创建基本文件结构
      * 
      * @return void
      */
-    public function copyBaseTheme()
+    public function createTheme()
     {
-        //copyDirectory
+        $themePath = __DIR__.'/theme';
+
+        $this->laravel['files']->copyDirectory($themePath, $this->themePath);
+
+        // 自动拷贝前端模板
+        // if ($this->themeType == 'front') {        
+        //     foreach (Module::getOrdered() as $module) {
+        //         $name = $module->getLowerName();
+        //         $path = $module->getPath().'/Resources/views/'.$this->themeType;
+        //         if ($this->laravel['files']->isDirectory($path)) {
+        //             $this->laravel['files']->copyDirectory($path, $themePath.'/views/'.$name);
+        //         }
+        //     }
+        // }         
     }  
 
 }
