@@ -8,7 +8,7 @@
             {{$title}}
         </div>     
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.command.create',[$name])}}" data-width="800" data-height="300">
+            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.command.create',[$module, $command])}}" data-width="600" data-height="150">
                 <i class="fa fa-plus"></i> {{trans('developer::command.create')}}
             </a>
         </div>
@@ -27,7 +27,7 @@
                 
                 @foreach($files as $file)
                 <tr>
-                    <td width="1%" class="icon icon-sm pr-2"><div class="fa fa-file fa-{{$file->getExtension()}} fa-2x text-primary"></div> </td>
+                    <td width="1%" class="pr-2"><div class="fa fa-file fa-2x text-primary"></div> </td>
                     <td class="pl-2">
                         <div class="title">{{$file->getFilename()}}</div>
                         <div class="description">
@@ -46,12 +46,12 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::command.artisan')}}: php artisan module:make-command TestCommand {{$module}}
+            {{trans('developer::developer.artisan')}}: php artisan {{$artisan}}
         </div>
     </div>    
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::command.path')}}: {{realpath($path)}}
+            {{trans('developer::developer.position')}}: {{realpath($path)}}
         </div>
     </div>
 </div>

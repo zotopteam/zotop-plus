@@ -162,18 +162,11 @@ class ControllerController extends AdminController
         $this->type    = $type;
         $this->module  = module($module);
         $this->types   = $this->types();
-        $this->path    = $this->types($type,'path');
+        $this->path    = $this->types($type, 'path');
         $this->path    = $this->module->getExtraPath($this->path);
-
-        // 如果目录不存在，自动创建目录
-        if (! File::isDirectory($this->path)) {
-            File::makeDirectory($this->path, 0775, true);
-        }
-
-
-        $this->files   = File::files($this->path);
-        $this->artisan = $this->types($type,'artisan');
-        $this->styles  = $this->types($type,'styles');
+        $this->files   = File::isDirectory($this->path) ? File::files($this->path) : [];
+        $this->artisan = $this->types($type, 'artisan');
+        $this->styles  = $this->types($type, 'styles');
 
         return $this->view();
     }
@@ -199,10 +192,11 @@ class ControllerController extends AdminController
             $style = $request->input('style');
 
             // 判断是否已经存在
+            $name = $this->fullname($name);
             $path = $this->fullpath($module, $type, $name);
 
             if (File::exists($path)) {
-                return $this->error(trans('core::master.existed'));
+                return $this->error(trans('core::master.existed', [$name]));
             }
 
             $artisan = $this->types($type, 'artisan');

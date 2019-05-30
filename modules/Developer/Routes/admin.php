@@ -12,55 +12,61 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->get('index','ModuleController@index')->name('developer.module.index');
         $router->get('create','ModuleController@create')->name('developer.module.create');
         $router->post('store','ModuleController@store')->name('developer.module.store');
-        $router->get('show/{name}','ModuleController@show')->name('developer.module.show');
-        $router->post('update/{name}/{field}','ModuleController@update')->name('developer.module.update');
-    });
-
-    // module/model 开发
-    $router->group(['prefix' =>'model'], function (Router $router) {
-        $router->get('index/{module}','ModelController@index')->name('developer.model.index')->middleware('allow:developer.model.index');
-        $router->any('create/{module}','ModelController@create')->name('developer.model.create')->middleware('allow:developer.model.create');
-    });    
-
-    // module/controller 开发
-    $router->group(['prefix' =>'module/controller','middleware'=>'allow:developer.controller'], function (Router $router) {
-        $router->get('index/{name}/{type}','ControllerController@index')->name('developer.controller.index');
-        $router->any('create/{name}/{type}','ControllerController@create')->name('developer.controller.create');
-        $router->any('tempate/{name}/{type}/{controller}','ControllerController@template')->name('developer.controller.template');
-        $router->any('route/{name}/{type}/{controller}','ControllerController@route')->name('developer.controller.route');
-    });
-
-    // command group
-    $router->group(['prefix' =>'module/command','middleware'=>'allow:developer.command'], function (Router $router) {
-        $router->get('index/{module}','CommandController@index')->name('developer.command.index');
-        $router->any('create/{module}','CommandController@create')->name('developer.command.create');
+        $router->get('{module}/show','ModuleController@show')->name('developer.module.show');
+        $router->post('{module}/update/{field}','ModuleController@update')->name('developer.module.update');
     });
 
     // table group
-    $router->group(['prefix' =>'module/table','middleware'=>'allow:developer.table'], function (Router $router) {
-        $router->get('index/{module}','TableController@index')->name('developer.table.index');
-        $router->any('create/{module}','TableController@create')->name('developer.table.create');
-        $router->any('edit/{module}/{table}','TableController@edit')->name('developer.table.edit');
-        $router->delete('drop/{module}/{table}','TableController@drop')->name('developer.table.drop');        
-        $router->any('manage/{module}/{table}','TableController@manage')->name('developer.table.manage');
-        $router->any('migration/{module}/{table}/{action}','TableController@migration')->name('developer.table.migration');
-        $router->any('model/{module}/{table}/{action}','TableController@model')->name('developer.table.model');
-        $router->any('columns/{action?}','TableController@columns')->name('developer.table.columns');
-    });    
+    $router->group(['prefix' =>'module/{module}/table','middleware'=>'allow:developer.table'], function (Router $router) {
+        $router->get('index','TableController@index')->name('developer.table.index');
+        $router->any('create','TableController@create')->name('developer.table.create');
+        $router->any('edit/{table}','TableController@edit')->name('developer.table.edit');
+        $router->delete('drop/{table}','TableController@drop')->name('developer.table.drop');        
+        $router->any('manage/{table}','TableController@manage')->name('developer.table.manage');
+        $router->any('migration/{table}/{action}','TableController@migration')->name('developer.table.migration');
+        $router->any('model/{table}/{action}','TableController@model')->name('developer.table.model');
+        
+    });
+
+    // table columns
+    $router->any('module/table/columns/{action?}','TableController@columns')->name('developer.table.columns');
 
     // migration group
-    $router->group(['prefix' =>'migration','middleware'=>'allow:developer.migration'], function (Router $router) {
-        $router->get('index/{module}','MigrationController@index')->name('developer.migration.index');
-        $router->any('create/{module}','MigrationController@create')->name('developer.migration.create');
-        $router->any('execute/{module}/{action}','MigrationController@execute')->name('developer.migration.execute');
-        $router->any('migrate/{module}/file/{action}','MigrationController@migrateFile')->name('developer.migration.migrate.file');
-    });    
-    
-    // permission scan
-    $router->group(['prefix' =>'permission','middleware'=>'allow:developer.permission'], function (Router $router) {
-        $router->get('index/{module}','PermissionController@index')->name('developer.permission.index');
-        $router->any('scan/{module}','PermissionController@scan')->name('developer.permission.scan');
+    $router->group(['prefix' =>'module/{module}/migration','middleware'=>'allow:developer.migration'], function (Router $router) {
+        $router->get('index','MigrationController@index')->name('developer.migration.index');
+        $router->any('create','MigrationController@create')->name('developer.migration.create');
+        $router->any('execute/{action}','MigrationController@execute')->name('developer.migration.execute');
+        $router->any('migrate/file/{action}','MigrationController@migrateFile')->name('developer.migration.migrate.file');
     });
+
+    // module/model 开发
+    $router->group(['prefix' =>'module/{module}/model','middleware'=>'allow:developer.model'], function (Router $router) {
+        $router->get('index','ModelController@index')->name('developer.model.index');
+        $router->any('create','ModelController@create')->name('developer.model.create');
+    });    
+
+    // module/controller 开发
+    $router->group(['prefix' =>'module/{module}/controller/{type}','middleware'=>'allow:developer.controller'], function (Router $router) {
+        $router->get('index','ControllerController@index')->name('developer.controller.index');
+        $router->any('create','ControllerController@create')->name('developer.controller.create');
+        $router->any('tempate/{controller}','ControllerController@template')->name('developer.controller.template');
+        $router->any('route/{controller}','ControllerController@route')->name('developer.controller.route');
+    });
+
+    // permission scan
+    $router->group(['prefix' =>'module/{module}/permission','middleware'=>'allow:developer.permission'], function (Router $router) {
+        $router->get('index','PermissionController@index')->name('developer.permission.index');
+        $router->any('scan','PermissionController@scan')->name('developer.permission.scan');
+    });
+
+    // command group
+    $router->group(['prefix' =>'module/{module}/command/{command}','middleware'=>'allow:developer.command'], function (Router $router) {
+        $router->get('index','CommandController@index')->name('developer.command.index');
+        $router->any('create','CommandController@create')->name('developer.command.create');
+    });
+
+
+    
 
     // theme group
     $router->group(['prefix' =>'theme','middleware'=>'allow:developer.permission'], function (Router $router) {

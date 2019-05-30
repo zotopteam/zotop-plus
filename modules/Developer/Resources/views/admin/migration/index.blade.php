@@ -112,11 +112,11 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::migration.path')}}: {{realpath($path)}}
+            {{trans('developer::developer.position')}}: {{realpath($path)}}
         </div>
         <div class="footer-text">
             <a data-toggle="collapse" href="#collapse-terminal">
-                <i class="fa fa-fw fa-terminal"></i> {{trans('developer::migration.artisan')}}
+                <i class="fa fa-fw fa-terminal"></i> {{trans('developer::developer.artisan')}}
             </a>
         </div>  
     </div>

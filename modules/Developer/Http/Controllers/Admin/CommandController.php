@@ -13,20 +13,37 @@ use Filter;
 
 class CommandController extends AdminController
 {
+    private function commands($command, $key=null)
+    {
+        static $commands = [];
+
+        if (empty($commands)) {
+            $commands = Module::data('developer::module.commands');
+        }
+
+        if (isset($commands[$command])) {
+            return $key ? array_get($commands[$command], $key) : $commands[$command];
+        }
+
+        return null;
+    }
+
     /**
      * 获取命令完整名称，加上Command后缀
      * 
      * @param  string $command 命令名称
      * @return string
      */
-    private function fullname($command)
+    private function fullname($command, $name)
     {
-        // 如果不包含Command后缀
-        if (strtolower($command) == 'command' || ends_with(strtolower($command), 'command') === false) {
-            $command .= 'Command';
+        $append = $this->commands($command, 'name.append');
+
+        // 如果不包含名称后缀
+        if ($append && ends_with(strtolower($name), strtolower($append)) === false) {
+            $name .= $append;
         }
 
-        return Str::studly($command);
+        return Str::studly($name);
     }  
 
     /**
@@ -36,9 +53,11 @@ class CommandController extends AdminController
      * @param  string $command 控制名称，可以不包含Command后缀
      * @return string
      */
-    private function fullpath($module, $command)
+    private function fullpath($module, $command, $name)
     {
-        return module_path($module).'/'.$this->fullname($command).'.php';
+        $dir = $this->commands($command, 'dir');
+
+        return module_path($module).'/'.$dir.'/'.$this->fullname($command, $name).'.php';
     }
 
     /**
@@ -48,14 +67,16 @@ class CommandController extends AdminController
      * @param  string $module 模块名称
      * @return mixed
      */
-    public function index(Request $request, $module)
+    public function index(Request $request, $module, $command)
     {
-        $this->title   = trans('developer::command.title');
+        $this->title   = $this->commands($command, 'title');
+        $this->dir     = $this->commands($command, 'dir');
+        $this->artisan = $this->commands($command, 'artisan'). ' '.$this->fullname($command, 'test').' '.$module;
         
-        $this->name    = $module;
+        $this->command = $command;
         $this->module  = module($module);
-        $this->path    = $this->module->getExtraPath('Console');
-        $this->files   = File::exists($this->path) ? File::files($this->path) : [];
+        $this->path    = $this->module->getExtraPath($this->dir);
+        $this->files   = File::isDirectory($this->path) ? File::files($this->path) : [];
 
         return $this->view();
     }
@@ -67,34 +88,37 @@ class CommandController extends AdminController
      * @param  string $module 模型名称
      * @return mixed
      */
-    public function create(Request $request, $module)
+    public function create(Request $request, $module, $command)
     {
-        $this->module = $module;
-
         // 表单提交时
         if ($request->isMethod('POST')) {
             
             $name  = $request->input('name');
 
             // 判断是否已经存在
-            $path = $this->fullpath($module, $name);
-            $name = $this->fullname($name);
+            $path = $this->fullpath($module, $command, $name);
+            $name = $this->fullname($command, $name);
 
             if (File::exists($path)) {
-                return $this->error(trans('core::master.existed'));
+                return $this->error(trans('core::master.existed',[$name]));
             }
 
-            Artisan::call('module:make-command', [
+            $artisan = $this->commands($command, 'artisan');
+
+            Artisan::call($artisan, [
                 'module'  => $module,
                 'name'    => $name,
             ]);
 
-            return $this->success(trans('core::master.saved'),route('developer.command.index',[$module]));
+            return $this->success(trans('core::master.saved'), route('developer.command.index', [$module, $command]));
         }
 
 
-        $this->title      = trans('core::master.create');
-
+        $this->title   = trans('core::master.create');
+        $this->module  = $module;
+        $this->command = $command;
+        $this->label   = $this->commands($command, 'name.label');
+        $this->help    = $this->commands($command, 'name.help');
 
         return $this->view();
     }    

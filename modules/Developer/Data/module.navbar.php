@@ -1,5 +1,5 @@
 <?php
-return [
+$navbar = [
     'info' => [
         'text'  => trans('developer::module.show'),
         'href'  => route('developer.module.show',[$module->name]),
@@ -11,7 +11,13 @@ return [
         'href'  => route('developer.table.index',[$module->name]),
         'icon'  => 'fa fa-database',
         'class' => Route::active('developer.table.*'),
-    ],    
+    ],
+    'migration' => [
+        'text'  => trans('developer::migration.title'),
+        'href'  => route('developer.migration.index',[$module->name]),
+        'icon'  => 'fa fa-database',
+        'class' => Route::active('developer.migration.index'),
+    ],      
     'model' => [
         'text'  => trans('developer::model.title'),
         'href'  => route('developer.model.index',[$module->name]),
@@ -24,18 +30,12 @@ return [
         'icon'  => 'fa fa-sitemap',
         'class' => Route::active('developer.controller.index'),
     ],
-    'migration' => [
-        'text'  => trans('developer::migration.title'),
-        'href'  => route('developer.migration.index',[$module->name]),
-        'icon'  => 'fa fa-database',
-        'class' => Route::active('developer.migration.index'),
-    ],
-    'command' => [
-        'text'  => trans('developer::command.title'),
-        'href'  => route('developer.command.index',[$module->name]),
-        'icon'  => 'fa fa-terminal',
-        'class' => Route::active('developer.command.index'),
-    ],
+    // 'command' => [
+    //     'text'  => trans('developer::command.title'),
+    //     'href'  => route('developer.command.index',[$module->name]),
+    //     'icon'  => 'fa fa-terminal',
+    //     'class' => Route::active('developer.command.index'),
+    // ],
     'permission' => [
         'text'  => trans('developer::permission.title'),
         'href'  => route('developer.permission.index',[$module->name]),
@@ -43,3 +43,16 @@ return [
         'class' => Route::active('developer.permission.index'),
     ],                  
 ];
+
+$commands = \Module::data('developer::module.commands');
+
+foreach ($commands as $key=>$command) {
+    $navbar[$key] = [
+        'text'  => $command['title'],
+        'href'  => route('developer.command.index', [$module->name, $key]),
+        'icon'  => $command['icon'],
+        'class' => Route::is('developer.command.index') && Request::route('command') == $key ? 'active' : '',
+    ];
+}
+
+return $navbar;

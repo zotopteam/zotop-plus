@@ -72,7 +72,7 @@
                     <div class="mt-2 d-none" data-depend="[name=model_id]" data-when="value=admin" data-then="show">
                     <span class="form-help mb-3">{{ trans('core::administrator.model.admin.description') }}</span>
                     @if ($roles = Module::data('core::administrator.roles'))  
-                    {field type="checkboxgroup" name="roles" value="Module::data('core::administrator.roles',[$user])" options="Module::data('core::administrator.roles')" required="required" minlength="1"}
+                    {field type="checkboxgroup" name="roles" value="Module::data('core::administrator.roles',['user'=>$user])" options="Module::data('core::administrator.roles')" required="required" minlength="1"}
                     @else
                     <div class="form-control-plaintext">
                         <a href="{{route('core.role.index')}}">{{trans('core::role.required')}}</a>

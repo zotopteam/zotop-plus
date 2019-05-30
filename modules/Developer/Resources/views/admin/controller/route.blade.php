@@ -3,8 +3,8 @@
 @section('content')
 <div class="main scrollable">
 
-<pre class="p-5 m-0">
-// {{$prefix}} group example
+<pre class="p-5 m-0 text-primary">
+// {{$prefix}}
 $router->group(['prefix' =>'{{$prefix}}'], function (Router $router) {
 @foreach($router as $r)
 @if($r['middleware'])
@@ -15,7 +15,7 @@ $router->group(['prefix' =>'{{$prefix}}'], function (Router $router) {
 @endforeach
 });
 
-// {{$prefix}} example
+// {{$prefix}} 
 @foreach($router as $r)
 @if($r['middleware'])
 $router->{{$r['verb']}}('{{$prefix}}/{{$r['uri']}}','{{$r['action']}}')->name('{{$r['name']}}')->middleware('{{$r['middleware']}}');

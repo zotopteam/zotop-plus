@@ -14,8 +14,6 @@ return [
     'reset.tips'    => '回滚当前模块所有迁移，注意：操作会导致模块数据丢失',
     'refresh'       => '回滚迁移',
     'refresh.tips'  => '回滚当前模块所有迁移，并重新迁移全部，注意：操作会导致模块数据丢失',
-    'path'          => '文件位置',
-    'artisan'       => 'Artisan命令', 
     'name'          => '迁移文件名称',
     'name.help'     => '如：create_test_table，创建成功后，可以编写该迁移文件，然后执行迁移',
 

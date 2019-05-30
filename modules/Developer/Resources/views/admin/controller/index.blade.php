@@ -43,7 +43,7 @@
                             {{$file->getRealPath()}}
                         </div>
                     </td>
-                    <td class="manage manage-hover text-right">
+                    <td class="manage text-right">
                         <a class="manage-item js-open" href="{{route('developer.controller.route',[$name,$type,basename($file,'.php')])}}" data-width="80%" data-height="60%">
                             <i class="fa fa-fw fa-anchor"></i> {{trans('developer::controller.route')}}
                         </a>                        
@@ -60,12 +60,12 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::controller.artisan')}}: php artisan {{$artisan}} TestController {{$module}} --style[{{implode('|', array_keys($styles))}}] --force
+            {{trans('developer::developer.artisan')}}: php artisan {{$artisan}} TestController {{$module}} --style[{{implode('|', array_keys($styles))}}] --force
         </div>
     </div>    
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::controller.path')}}: {{realpath($path)}}
+            {{trans('developer::developer.position')}}: {{realpath($path)}}
         </div>
     </div>
 </div>

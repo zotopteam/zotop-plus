@@ -40,7 +40,9 @@ class TableController extends AdminController
                 return in_array($table, $moduleTables);
             });
             $tables = array_merge($moduleTables, $prefixTables);
-        }      
+        } else {
+            $tables = $prefixTables;
+        }
 
         $this->module = $module;
         $this->tables = $tables;
