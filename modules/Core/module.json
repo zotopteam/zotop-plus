@@ -17,9 +17,7 @@
         "Modules\\Core\\Providers\\HookServiceProvider",
         "Modules\\Core\\Providers\\ThemeServiceProvider",
         "Modules\\Core\\Providers\\ViewServiceProvider",
-        "Modules\\Core\\Providers\\FormServiceProvider",
-        "Modules\\Core\\Providers\\FormatServiceProvider",
-        "JildertMiedema\\LaravelPlupload\\LaravelPluploadServiceProvider"
+        "Modules\\Core\\Providers\\FormServiceProvider"
     ],
     "aliases": {
         "Format": "Modules\\Core\\Support\\Facades\\Format",

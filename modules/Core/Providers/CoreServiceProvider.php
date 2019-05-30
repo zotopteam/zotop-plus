@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factory;
 use Modules\Core\Traits\PublishConfig;
 use Nwidart\Modules\Module;
 use Modules\Core\Models\Config;
+use Modules\Core\Support\Format;
 use Blade;
 
 class CoreServiceProvider extends ServiceProvider
@@ -42,39 +43,9 @@ class CoreServiceProvider extends ServiceProvider
     {
         // 注册中间件
         $this->registerMiddleware();
-
-        // 注册模块文件
-        foreach ($this->app['modules']->getOrdered() as $module) {
-            $this->registerConfig($module); 
-            $this->registerLanguageNamespace($module);
-            $this->registerFactories($module);
-        }
-
-        // 定时任务
-        $this->app->booted(function () {
-
-            // 获取schedule实例
-            $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
-
-            // 非产品环境时执行定时任务测试
-            $schedule->command('schedule:test')->name('schedule_test')->everyMinute()->withoutOverlapping(1)->environments(['local','testing']);
-        });
-
-        // 事件监听，禁止禁用和卸载核心模块
-        $this->app['events']->listen('modules.*.*', function($event, $modules) {
-            if (ends_with($event, 'uninstalling') || ends_with($event, 'disabling')) {
-                foreach ($modules as $module) {
-                    if (in_array($module->getLowerName(), config('modules.cores', ['core']))) {
-                        abort(403,trans('core::module.core_operate_forbidden'));
-                    }
-                }
-            }
-        });      
-
-        // 模板中的权限指令
-        Blade::if('allow', function ($permission) {
-            return allow($permission);
-        });             
+        $this->registerModules();
+        $this->eventsListen();
+        $this->bladeExtend();         
     }
 
     /**
@@ -85,6 +56,7 @@ class CoreServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerCommands();
+        $this->registerSingleton();         
     }
 
     /**
@@ -98,6 +70,19 @@ class CoreServiceProvider extends ServiceProvider
         foreach ($this->middlewares as $name => $middleware) {
             $this->app['router']->aliasMiddleware($name, "Modules\\Core\\Http\\Middleware\\{$middleware}");
         }
+    }
+
+    /**
+     * 注册模块文件
+     * @return null
+     */
+    public function registerModules()
+    {
+        foreach ($this->app['modules']->getOrdered() as $module) {
+            $this->registerConfig($module); 
+            $this->registerLanguageNamespace($module);
+            $this->registerFactories($module);
+        }        
     }
 
     /**
@@ -151,6 +136,24 @@ class CoreServiceProvider extends ServiceProvider
     }
 
     /**
+     * 事件监听
+     * @return null
+     */
+    public function eventsListen()
+    {
+        // 禁止禁用和卸载核心模块
+        $this->app['events']->listen('modules.*.*', function($event, $modules) {
+            if (ends_with($event, 'uninstalling') || ends_with($event, 'disabling')) {
+                foreach ($modules as $module) {
+                    if (in_array($module->getLowerName(), config('modules.cores', ['core']))) {
+                        abort(403,trans('core::module.core_operate_forbidden'));
+                    }
+                }
+            }
+        });        
+    }
+
+    /**
      * 注册命令行
      * 
      * @return void
@@ -168,6 +171,30 @@ class CoreServiceProvider extends ServiceProvider
             \Modules\Core\Console\ApiControllerCommand::class,
             \Modules\Core\Console\RebootCommand::class,
         ]);
+    }
+
+    public function registerSingleton()
+    {
+        $this->app->singleton('format', function ($app) {
+            return new Format();
+        });        
+    }
+
+    // 模板扩展
+    public function bladeExtend()
+    {
+        // 模板中的权限指令
+        Blade::if('allow', function ($permission) {
+            return allow($permission);
+        });
+        
+        /**
+         * Adds a directive in Blade for actions
+         */
+        Blade::directive('size', function($expression) {
+            return "<?php echo Format::size($expression); ?>";
+        });
+
     }
 
     /**

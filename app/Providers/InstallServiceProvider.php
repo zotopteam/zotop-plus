@@ -51,7 +51,7 @@ class InstallServiceProvider extends ServiceProvider
         // 从.env.example复制并生成.env
         $dot_env = base_path('.env');
 
-        if (!$this->app['files']->isFile($dot_env)) {
+        if (! $this->app['files']->isFile($dot_env)) {
             $this->app['files']->copy(base_path('.env.example'), $dot_env);
         }
 

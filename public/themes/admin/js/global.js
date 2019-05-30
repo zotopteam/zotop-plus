@@ -341,10 +341,17 @@ $(function(){
 });
 
 $(function(){
-
+    var notification_timer;
     var notification_check = function() {
 
         var notification = $('.global-notification');
+
+        if (notification.length == 0) {
+            if (notification_timer) {
+                window.clearInterval(notification_timer);
+            }
+            return;
+        }
 
         $.getJSON(cms.notification.check, function(result) {
             if (result.count) {
@@ -359,6 +366,6 @@ $(function(){
 
     if (cms.user_id > 0) {
         notification_check();
-        window.setInterval(notification_check, cms.notification.interval*1000);
+        notification_timer = window.setInterval(notification_check, cms.notification.interval*1000);
     }
 });
