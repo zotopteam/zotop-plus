@@ -11,17 +11,26 @@
             {{$title}} {{$filename}}
         </div>
         <div class="main-action">
-             {field type="submit" form="translate-form" value="trans('core::master.save')" class="btn btn-primary"}
+            <a href="javascript:;" class="btn btn-success js-prompt" data-url="{{route('developer.translate.newkey',[$module, 'filename'=>$filename, 'maxlength'=>$maxlength])}}"  data-prompt="{{trans('developer::translate.key')}}" data-name="key">
+                <i class="fa fa-fw fa-plus"></i> {{trans('developer::translate.key.create')}}
+            </a>        
+            @if($keys->count())
+            <button class="btn btn-primary" type="submit" form="translate-form">
+                <i class="fa fa-fw fa-save"></i> {{trans('developer::translate.translate.save')}}
+            </button>
+            @endif
         </div>           
     </div>
     <div class="main-body scrollable">
-        @if($keys)
+        @if($keys->count())
         {form route="['developer.translate.save', $module, 'filename'=>$filename]" id="translate-form" method="post" autocomplete="off"}
         <input type="hidden" name="maxlength" value="{{$maxlength}}">
-        <table class="table table-hover">
+        <table class="table table-nowrap table-hover table-sortable">
             <thead>
                 <tr>
+                    <td class="drag"></td>
                     <td colspan="2">{{trans('developer::translate.key')}}</td>
+                    <td width="1%" class="manage">{{trans('core::master.delete')}}</td>
                     @foreach ($languages as $lang=>$name)
                         <td>{{$name}}</td>
                     @endforeach
@@ -31,18 +40,37 @@
                 
                 @foreach($keys as $key)
                 <tr>
+                    <td class="drag"></td>
                     <td width="1%" class="pr-2"><div class="fa fa-key text-primary"></div> </td>
-                    <td class="pl-2">
-                        {{$key}}
+                    <td width="10%" class="pl-2 key">
+                        <div class="font-weight-bold">{{$key}}</div>
+                        <div class="text-xs">
+                            {{$prefix.$key}}
+                        </div>
+                    </td>
+                    <td class="manage">
+                        <a href="javascript:;" class="manage-item js-confirm d-none" data-url="{{route('developer.translate.deletekey',[$module, 'filename'=>$filename, 'maxlength'=>$maxlength, 'key'=>$key])}}">
+                            <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                        </a>
                     </td>
                     @foreach ($languages as $lang=>$name)
-                        <td>
+                        <td class="translate-area">
                             @if ($locale == $lang)
-                                <textarea class="form-control form-locale" rows="1" name="langs[{{$lang}}][{{$key}}]">{{$langs[$lang][$key] ?? ''}}</textarea>
+                            <div class="input-group">
+                                <input class="form-control form-locale" rows="1" name="langs[{{$lang}}][{{$key}}]" value="{{$langs[$lang][$key] ?? ''}}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-light btn-zoom-in" type="button" data-lang="{{$name}}">
+                                        <i class="fa fa-search-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
                             @else
                             <div class="input-group">
-                                <textarea class="form-control" rows="1" name="langs[{{$lang}}][{{$key}}]">{{$langs[$lang][$key] ?? ''}}</textarea>
+                                <input class="form-control form-others" rows="1" name="langs[{{$lang}}][{{$key}}]" value="{{$langs[$lang][$key] ?? ''}}">
                                 <div class="input-group-append">
+                                    <button class="btn btn-light btn-zoom-in" type="button" data-lang="{{$name}}">
+                                        <i class="fa fa-search-plus"></i>
+                                    </button>
                                     <button class="btn btn-light btn-translate" type="button" data-toggle="tooltip" data-from="{{$locale}}" data-to="{{$lang}}"  title="{{$languages[$locale]}} => {{$name}}">
                                         <i class="fa fa-sync"></i>
                                     </button>
@@ -67,6 +95,11 @@
 </div>
 @endsection
 
+@push('css')
+<style type="text/css">
+.input-group{min-width:200px;}
+</style>
+@endpush
 @push('js')
 <script type="text/javascript">
     $(function(){
@@ -75,7 +108,7 @@
             var from   = self.data('from');
             var to     = self.data('to');
             var source = self.parents('tr').find('.form-locale').val();
-            var target = self.parents('.input-group').find('textarea:first');
+            var target = self.parents('.input-group').find('input:first');
             
             self.addClass('disabled').find('i.fa').addClass('fa-spin');
 
@@ -83,6 +116,18 @@
                 self.removeClass('disabled').find('i.fa').removeClass('fa-spin');
                 target.val(result);
             });
+        });
+
+        $(document).on('click', '.btn-zoom-in', function() {
+            var self   = $(this);
+            var input  = self.parents('.input-group').find('input:first');
+            var source = self.parents('tr').find('.form-locale').val();
+            var key    =  self.parents('tr').find('td.key').html();
+            var lang   = self.data('lang');
+
+            $.prompt(key+source, function(value){
+                input.val(value);
+            }, input.val(), 'textarea').width('50%').title(lang);
         });
     })
 

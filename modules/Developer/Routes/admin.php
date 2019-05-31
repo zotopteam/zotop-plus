@@ -68,8 +68,12 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
     // translate
     $router->group(['prefix' =>'module/{module}/translate','middleware'=>'allow:developer.translate'], function (Router $router) {
         $router->get('index','TranslateController@index')->name('developer.translate.index');
+        $router->post('newfile','TranslateController@newfile')->name('developer.translate.newfile');
+        $router->post('deletefile','TranslateController@deletefile')->name('developer.translate.deletefile');
         $router->get('translate','TranslateController@translate')->name('developer.translate.translate');
         $router->post('save','TranslateController@save')->name('developer.translate.save');
+        $router->post('newkey','TranslateController@newkey')->name('developer.translate.newkey');
+        $router->post('deletekey','TranslateController@deletekey')->name('developer.translate.deletekey');        
     });
 
     // theme group

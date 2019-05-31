@@ -8,6 +8,9 @@
             {{$title}}
         </div>
         <div class="main-action">
+            <a href="javascript:;" class="btn btn-primary js-prompt" data-url="{{route('developer.translate.newfile',[$module])}}"  data-prompt="{{trans('developer::file.name')}}" data-name="name">
+                <i class="fa fa-fw fa-plus"></i> {{trans('core::file.create')}}
+            </a>            
         </div>           
     </div>
     <div class="main-body scrollable">
@@ -16,6 +19,7 @@
             <thead>
                 <tr>
                     <td colspan="2">{{trans('developer::file.name')}}</td>
+                    <td>{{trans('developer::translate.itemcount')}}</td>
                     <td>{{trans('developer::file.mtime')}}</td>
                     <td>{{trans('developer::translate.translate')}}</td>
                 </tr>                
@@ -31,9 +35,16 @@
                             {{$file->getRealPath()}}
                         </div>
                     </td>
+                    <td>{{$file->itemcount}}</td>
                     <td>{{date('Y-m-d H:i:s',$file->getMTime())}}</td>
                     <td class="manage">
-                        <a href="{{route('developer.translate.translate', [$module, 'filename'=>$file->getFilename()])}}">{{trans('developer::translate.translate')}}</a>
+                        <a class="manage-item" href="{{route('developer.translate.translate', [$module, 'filename'=>$file->getFilename()])}}">
+                            {{trans('developer::translate.translate')}}
+                        </a>
+
+                        <a class="manage-item js-confirm" href="{{route('developer.translate.deletefile', [$module, 'filename'=>$file->getFilename()])}}">
+                            {{trans('core::master.delete')}}
+                        </a>                        
                     </td>
                 </tr>
                 @endforeach
