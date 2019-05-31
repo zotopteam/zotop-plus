@@ -19,9 +19,9 @@ class TranslatorController extends AdminController
         $source    = $request->input('source');
         $from      = $request->input('from');
         $to        = $request->input('to');
-        $maxlength = $request->input('maxlength');
-        $separator = $request->input('separator');
-        $format    = $request->input('format');
+        $maxlength = $request->input('maxlength', 0);
+        $separator = $request->input('separator', null);
+        $format    = $request->input('format', null);
 
         // 判断转换翻译格式
         if (in_array(strtolower($format), ['slug', 'permalink'])) {
@@ -31,7 +31,7 @@ class TranslatorController extends AdminController
             $separator = $separator ?: '_';
             $translate = translate_slug($source, $separator);
         } else {
-            $translate = translate($source, $from ?: null, $to ?: null);
+            $translate = translate($source, $from, $to);
         }
         
         // 如果有长度限制，截取指定长度

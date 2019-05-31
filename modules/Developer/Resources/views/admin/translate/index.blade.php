@@ -3,24 +3,21 @@
 @section('content')
 @include('developer::module.side')
 <div class="main">
-    <div class="main-header">
+    <div class="main-header">        
         <div class="main-title mr-auto">
             {{$title}}
-        </div>     
-        <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.command.create',[$module, $command])}}" data-width="600" data-height="150">
-                <i class="fa fa-plus"></i> {{trans('developer::command.create')}}
-            </a>
         </div>
+        <div class="main-action">
+        </div>           
     </div>
     <div class="main-body scrollable">
-        
         @if($files)
         <table class="table table-hover">
             <thead>
                 <tr>
                     <td colspan="2">{{trans('developer::file.name')}}</td>
                     <td>{{trans('developer::file.mtime')}}</td>
+                    <td>{{trans('developer::translate.translate')}}</td>
                 </tr>                
             </thead>
             <tbody>
@@ -35,6 +32,9 @@
                         </div>
                     </td>
                     <td>{{date('Y-m-d H:i:s',$file->getMTime())}}</td>
+                    <td class="manage">
+                        <a href="{{route('developer.translate.translate', [$module, 'filename'=>$file->getFilename()])}}">{{trans('developer::translate.translate')}}</a>
+                    </td>
                 </tr>
                 @endforeach
           
@@ -42,25 +42,20 @@
         </table>
         @else
             <div class="nodata">{{trans('core::master.nodata')}}</div>
-        @endif     
-    </div><!-- main-body -->
-    <div class="main-footer">
-        <div class="footer-text mr-auto">
-            <i class="fa fa-terminal fa-fw mr-2 text-primary"></i> php artisan {{$artisan}}
-        </div>
-    </div>    
+        @endif           
+    </div>
     <div class="main-footer">
         <div class="footer-text mr-auto">
             <i class="fa fa-folder fa-fw mr-2 text-warning"></i> {{Format::path($path)}}
         </div>
     </div>
-    @if ($help)
-    <div class="main-footer">
-        <div class="footer-text mr-auto">
-            <i class="fa fa-exclamation-circle fa-fw mr-2 text-danger"></i> {{$help}}
-        </div>
-    </div>
-    @endif  
 </div>
-
 @endsection
+
+@push('css')
+
+@endpush
+
+@push('js')
+
+@endpush

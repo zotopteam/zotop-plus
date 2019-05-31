@@ -163,8 +163,6 @@ class CoreServiceProvider extends ServiceProvider
         $this->commands([
             \Modules\Core\Console\CreateCommand::class,
             \Modules\Core\Console\CreateThemeCommand::class,
-            \Modules\Core\Console\MakeHelpersCommand::class,
-            \Modules\Core\Console\MakeMacrosCommand::class,
             \Modules\Core\Console\MakeTraitCommand::class,
             \Modules\Core\Console\AdminControllerCommand::class,
             \Modules\Core\Console\FrontControllerCommand::class,

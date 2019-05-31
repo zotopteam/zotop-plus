@@ -5,11 +5,22 @@ namespace $NAMESPACE$;
 trait $CLASS$
 {
     /**
-     * trait 函数示例
+     * Boot the trait.
+     *
+     * @return void
+     */
+    public static function boot$CLASS$()
+    {
+       //
+    } 
+
+    
+    /**
+     * trait function example
      *
      * @return mixed
      */
-    public function test()
+    public function example()
     {
         //
     }

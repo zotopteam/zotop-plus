@@ -65,8 +65,12 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->any('create','CommandController@create')->name('developer.command.create');
     });
 
-
-    
+    // translate
+    $router->group(['prefix' =>'module/{module}/translate','middleware'=>'allow:developer.translate'], function (Router $router) {
+        $router->get('index','TranslateController@index')->name('developer.translate.index');
+        $router->get('translate','TranslateController@translate')->name('developer.translate.translate');
+        $router->post('save','TranslateController@save')->name('developer.translate.save');
+    });
 
     // theme group
     $router->group(['prefix' =>'theme','middleware'=>'allow:developer.permission'], function (Router $router) {

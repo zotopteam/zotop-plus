@@ -5,75 +5,85 @@ namespace Modules\Core\Console;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-
-use Nwidart\Modules\Support\Stub;
-use Nwidart\Modules\Traits\ModuleCommandTrait;
-use Nwidart\Modules\Commands\GeneratorCommand;
-
 use Illuminate\Support\Str;
 
-class MakeTraitCommand extends GeneratorCommand
+class MakeTraitCommand extends Command
 {
-    use ModuleCommandTrait;
-
     /**
-     * The name of argument name.
+     * The console command signature.
      *
      * @var string
      */
-    protected $argumentName = 'name';
-
-
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'module:make-trait';
+    protected $signature = 'module:make-trait 
+                            {name : The name of trait.} 
+                            {module : The name of module will be used.} 
+                            {--force : Overwrite any existing files.}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a module traits. Use: php artisan module:make-trait CustomTrait module';
+    protected $description = 'Create a module traits';
 
     /**
-     * The laravel filesystem instance.
-     *
-     * @var Filesystem
+     * 名称
+     * @var string
      */
-    protected $filesystem;
+    protected $name;
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
+     * 模块
+     * @var Module
      */
-    public function __construct()
+    protected $module;
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
     {
-        parent::__construct();
+        $this->name   = Str::studly($this->argument('name'));
+        $this->module = $this->laravel['modules']->findOrFail($this->argument('module'));
+
+        $filepath = $this->getDestinationFilePath();
+
+        if ($this->laravel['files']->exists($filepath)) {
+            if (! $this->option('force')) {
+                $this->error('The file already exists: '.$filepath.' ');
+                return;
+            }
+        }
+
+        $this->laravel['files']->put($filepath, $this->renderStub());
+
+        $this->info('Created '.$filepath.'');
     }
 
     /**
-     * 获取stub模板
-     * 
-     * @return [type] [description]
+     * 从stub生成文件
+     *
+     * @param $stub
+     * @return string
      */
-    public function getTemplateContents()
+    private function renderStub()
     {
-        $module = $this->laravel['modules']->findOrFail($this->getModuleName());
-        $path   = $this->laravel['modules']->getModulePath($this->getModuleName());
+        $stub = $this->laravel['files']->get(__DIR__.'/stubs/trait.stub');
 
-        $stub = new Stub('/trait.stub', [
-            'NAMESPACE'    => $this->getClassNamespace($module),
-            'CLASS'        => $this->getClass(),
-        ]);
-
-        $stub->setBasePath($path.'Console/stubs');
-
-        return $stub->render();
-    }
+        return str_replace(
+            [
+                '$NAMESPACE$',
+                '$CLASS$',
+            ],
+            [
+                $this->getNamespace(),
+                $this->name,
+            ],
+            $stub
+        ); 
+    }    
 
     /**
      *  获取文件最终生成路径
@@ -82,19 +92,7 @@ class MakeTraitCommand extends GeneratorCommand
      */
     protected function getDestinationFilePath()
     {
-        $path = $this->laravel['modules']->getModulePath($this->getModuleName());
-
-        return $path . 'Traits/' . $this->getFileName() . '.php';
-    }  
-
-    /**
-     * 文件名称转为驼峰
-     * 
-     * @return string
-     */
-    private function getFileName()
-    {
-        return Str::studly($this->argument('name'));
+        return  $this->module->getExtraPath('Traits'.DIRECTORY_SEPARATOR.$this->name.'.php');
     }
 
     /**
@@ -102,21 +100,8 @@ class MakeTraitCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getDefaultNamespace() : string
+    public function getNamespace()
     {
-        return 'Traits';
-    }     
-
-    /**
-     * 获取命令行传入的trait名称和模块名称(或者别名)
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return array(
-            array('name', InputArgument::REQUIRED, 'The name of the trait.'),
-            array('module', InputArgument::OPTIONAL, 'The name of module will be used.'),
-        );
-    }    
+        return 'Modules\\'.$this->module->getStudlyName().'\\Traits';
+    } 
 }

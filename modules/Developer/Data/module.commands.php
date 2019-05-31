@@ -6,6 +6,7 @@ return [
         'artisan' => 'module:make-command',
         'name'    => ['append'=>'Command', 'label'=>trans('developer::command.console.name.label'), 'help'=>trans('developer::command.console.name.help')],
         'dir'     => 'Console',
+        'help'    => trans('developer::command.console.help'),
     ],
     'request' => [
         'title'   => trans('developer::command.request.title'),
@@ -20,6 +21,7 @@ return [
         'artisan' => 'module:make-provider',
         'name'    => ['append'=>'ServiceProvider', 'label'=>trans('developer::command.provider.name.label'), 'help'=>trans('developer::command.provider.name.help')],
         'dir'     => 'Providers',
+        'help'    => trans('developer::command.provider.help'),
     ],
     'middleware' => [
         'title'   => trans('developer::command.middleware.title'),
@@ -27,6 +29,7 @@ return [
         'artisan' => 'module:make-middleware',
         'name'    => ['append'=>'Middleware', 'label'=>trans('developer::command.middleware.name.label'), 'help'=>trans('developer::command.middleware.name.help')],
         'dir'     => 'Http/Middleware',
+        'help'    => trans('developer::command.middleware.help'),
     ],
     'event' => [
         'title'   => trans('developer::command.event.title'),
@@ -63,12 +66,40 @@ return [
         'name'    => ['append'=>'', 'label'=>trans('developer::command.rule.name.label'), 'help'=>trans('developer::command.rule.name.help')],
         'dir'     => 'Rules',
     ],
+    'notification' => [
+        'title'   => trans('developer::command.notification.title'),
+        'icon'    => 'fa fa-bell',
+        'artisan' => 'module:make-notification',
+        'name'    => ['append'=>'', 'label'=>trans('developer::command.notification.name.label'), 'help'=>trans('developer::command.notification.name.help')],
+        'dir'     => 'Notifications',
+    ],  
     'mail' => [
         'title'   => trans('developer::command.mail.title'),
         'icon'    => 'fa fa-envelope',
         'artisan' => 'module:make-mail',
         'name'    => ['append'=>'', 'label'=>trans('developer::command.mail.name.label'), 'help'=>trans('developer::command.mail.name.help')],
         'dir'     => 'Emails',
-    ],  
-                          
+    ],
+    'job' => [
+        'title'   => trans('developer::command.job.title'),
+        'icon'    => 'fa fa-tasks',
+        'artisan' => 'module:make-job',
+        'name'    => ['append'=>'', 'label'=>trans('developer::command.job.name.label'), 'help'=>trans('developer::command.job.name.help')],
+        'dir'     => 'Jobs',
+    ],
+    'policy' => [
+        'title'   => trans('developer::command.policy.title'),
+        'icon'    => 'fa fa-user-shield',
+        'artisan' => 'module:make-policy',
+        'name'    => ['append'=>'', 'label'=>trans('developer::command.policy.name.label'), 'help'=>trans('developer::command.policy.name.help')],
+        'dir'     => 'Policies',
+        'help'    => trans('developer::command.policy.help'),
+    ],    
+    'trait' => [
+        'title'   => trans('developer::command.trait.title'),
+        'icon'    => 'fa fa-code',
+        'artisan' => 'module:make-trait',
+        'name'    => ['append'=>'', 'label'=>trans('developer::command.trait.name.label'), 'help'=>trans('developer::command.trait.name.help')],
+        'dir'     => 'Traits',
+    ],                                 
 ];

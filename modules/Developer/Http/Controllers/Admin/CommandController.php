@@ -72,6 +72,7 @@ class CommandController extends AdminController
         $this->title   = $this->commands($command, 'title');
         $this->dir     = $this->commands($command, 'dir');
         $this->artisan = $this->commands($command, 'artisan'). ' '.$this->fullname($command, 'test').' '.$module;
+        $this->help    = $this->commands($command, 'help');
         
         $this->command = $command;
         $this->module  = module($module);

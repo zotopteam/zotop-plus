@@ -60,7 +60,7 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::developer.artisan')}}: php artisan {{$artisan}} TestController {{$module}} --style[{{implode('|', array_keys($styles))}}] --force
+           <i class="fa fa-terminal"></i> php artisan {{$artisan}} TestController {{$module}} --style[{{implode('|', array_keys($styles))}}] --force
         </div>
     </div>    
     <div class="main-footer">

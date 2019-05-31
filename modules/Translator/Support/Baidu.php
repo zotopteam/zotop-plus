@@ -3,6 +3,7 @@
 namespace Modules\Translator\Support;
 
 use Config;
+use Filter;
 
 class Baidu implements EngineInterface
 {
@@ -29,10 +30,14 @@ class Baidu implements EngineInterface
      */
     public function translate($text, $from, $to)
     {
+        $from = $this->language($from);
+        $to   = $this->language($to);
+
         $salt = rand(10000,99999);
         $sign = md5($this->appid . $text . $salt . $this->secretkey);
         $text = rawurlencode($text);
         $url  = "{$this->url}?q={$text}&from={$from}&to={$to}&appid={$this->appid}&salt={$salt}&sign={$sign}";
+        debug($url);
 
         // 获取翻译结果
         $translate = $this->getResult($url);
@@ -76,5 +81,15 @@ class Baidu implements EngineInterface
         } catch (\Exception $e) {
             abort(503, 'Unable to connect to translation server: '.$this->url);
         }
-    }    
+    }
+
+    private function language($lang)
+    {
+        $langs = Filter::fire('baidu.language.transform', [
+            'zh-Hans' => 'zh',
+            'zh-Hant' => 'cht',
+        ]);
+
+        return isset($langs[$lang]) ? $langs[$lang] : $lang;
+    }   
 }
