@@ -21,7 +21,7 @@
                     <td colspan="2">{{trans('developer::file.name')}}</td>
                     <td>{{trans('developer::translate.itemcount')}}</td>
                     <td>{{trans('developer::file.mtime')}}</td>
-                    <td>{{trans('developer::translate.translate')}}</td>
+                    <td></td>
                 </tr>                
             </thead>
             <tbody>
@@ -39,11 +39,11 @@
                     <td>{{date('Y-m-d H:i:s',$file->getMTime())}}</td>
                     <td class="manage">
                         <a class="manage-item" href="{{route('developer.translate.translate', [$module, 'filename'=>$file->getFilename()])}}">
-                            {{trans('developer::translate.translate')}}
+                            <i class="fa fa-language fa-fw"></i> {{trans('developer::translate.translate')}}
                         </a>
 
                         <a class="manage-item js-confirm" href="{{route('developer.translate.deletefile', [$module, 'filename'=>$file->getFilename()])}}">
-                            {{trans('core::master.delete')}}
+                            <i class="fa fa-times fa-fw"></i> {{trans('core::master.delete')}}
                         </a>                        
                     </td>
                 </tr>

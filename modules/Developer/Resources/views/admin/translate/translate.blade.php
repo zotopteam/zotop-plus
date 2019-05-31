@@ -11,7 +11,7 @@
             {{$title}} {{$filename}}
         </div>
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-success js-prompt" data-url="{{route('developer.translate.newkey',[$module, 'filename'=>$filename, 'maxlength'=>$maxlength])}}"  data-prompt="{{trans('developer::translate.key')}}" data-name="key">
+            <a href="javascript:;" class="btn btn-success js-prompt" data-url="{{route('developer.translate.newkey',[$module, 'filename'=>$filename])}}"  data-prompt="{{trans('developer::translate.key')}}" data-name="key">
                 <i class="fa fa-fw fa-plus"></i> {{trans('developer::translate.key.create')}}
             </a>        
             @if($keys->count())
@@ -24,7 +24,6 @@
     <div class="main-body scrollable">
         @if($keys->count())
         {form route="['developer.translate.save', $module, 'filename'=>$filename]" id="translate-form" method="post" autocomplete="off"}
-        <input type="hidden" name="maxlength" value="{{$maxlength}}">
         <table class="table table-nowrap table-hover table-sortable">
             <thead>
                 <tr>
@@ -49,7 +48,7 @@
                         </div>
                     </td>
                     <td class="manage">
-                        <a href="javascript:;" class="manage-item js-confirm d-none" data-url="{{route('developer.translate.deletekey',[$module, 'filename'=>$filename, 'maxlength'=>$maxlength, 'key'=>$key])}}">
+                        <a href="javascript:;" class="manage-item js-confirm" data-url="{{route('developer.translate.deletekey',[$module, 'filename'=>$filename, 'key'=>$key])}}">
                             <i class="fa fa-times"></i> {{trans('core::master.delete')}}
                         </a>
                     </td>
