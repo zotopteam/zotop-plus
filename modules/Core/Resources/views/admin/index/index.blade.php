@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="main">
-    <div class="main-header">
+    <div class="main-header d-none">
         <div class="main-title mr-auto">
             {{$title}}
         </div>

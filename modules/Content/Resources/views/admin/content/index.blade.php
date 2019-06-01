@@ -2,7 +2,6 @@
 
 @section('content')
 @include('content::content.side')
-
 <div class="main">
     <div class="main-header">
         @if($keywords = request('keywords'))
@@ -48,7 +47,7 @@
         <div class="main-action">
             {form route="content.content.index" class="form-inline form-search" method="get"}
                 <div class="input-group">
-                    <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('core::master.keywords.placeholder')}}" required="required" aria-label="Search">
+                    <input name="keywords" value="{{$keywords}}" class="form-control border-primary" type="search" placeholder="{{trans('core::master.keywords.placeholder')}}" required="required" aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
                     </div>
