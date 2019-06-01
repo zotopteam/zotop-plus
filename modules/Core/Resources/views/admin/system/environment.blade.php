@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="main scrollable">
-    
     <div class="jumbotron bg-primary text-white text-center">
         <div class="container-fluid">
             <h1>{{trans('core::system.environment.title')}}</h1>
@@ -53,4 +52,5 @@
             </div>
         </div>        
     </div>
+</div>
 @endsection

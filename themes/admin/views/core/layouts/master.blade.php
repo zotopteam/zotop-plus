@@ -19,100 +19,96 @@
     </script>   
 </head>
 <body class="{{app('current.module')}}-{{app('current.controller')}}-{{app('current.action')}}">
+    
     <header class="global-header">
-        <nav class="row" role="navigation">
-            <div class="col-sm-6 col-md-7 col-lg-8">
-                <ul class="nav global-navbar tabdropable">
-                    <li class="brand dropdown">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{config('zotop.name')}}</a>
-                        <div class="dropdown-menu dropdown-start">
-                            <div class="shortcuts scrollable">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        @foreach(Filter::fire('global.start',[]) as $s)
-                                        <div class="col-md-2 p-0">
-                                            <a href="{{$s['href']}}" class="shortcut shortcut-thumb {{$s['class'] ?? ''}}" target="{{$s['target'] ?? '_self'}}">
-                                                <div class="shortcut-icon">
-                                                    <i class="{{$s['icon']}}"></i>
-                                                    @if(isset($s['badge']))
-                                                    <b class="shortcut-badge badge badge-xs badge-danger">{{$s['badge']}}</b>
-                                                    @endif       
-                                                </div>
-                                                <div class="shortcut-text">
-                                                    <h2>{{$s['text']}}</h2>
-                                                </div>
-                                            </a>                                        
+        <ul class="nav global-navbar tabdropable">
+            <li class="brand dropdown">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{config('zotop.name')}}</a>
+                <div class="dropdown-menu dropdown-start">
+                    <div class="shortcuts scrollable">
+                        <div class="container-fluid">
+                            <div class="row">
+                                @foreach(Filter::fire('global.start',[]) as $s)
+                                <div class="col-md-2 p-0">
+                                    <a href="{{$s['href']}}" class="shortcut shortcut-thumb {{$s['class'] ?? ''}}" target="{{$s['target'] ?? '_self'}}">
+                                        <div class="shortcut-icon">
+                                            <i class="{{$s['icon']}}"></i>
+                                            @if(isset($s['badge']))
+                                            <b class="shortcut-badge badge badge-xs badge-danger">{{$s['badge']}}</b>
+                                            @endif       
                                         </div>
-                                        @endforeach
-                                    </div>
+                                        <div class="shortcut-text">
+                                            <h2>{{$s['text']}}</h2>
+                                        </div>
+                                    </a>                                        
                                 </div>
+                                @endforeach
                             </div>
                         </div>
-                    </li>
+                    </div>
+                </div>
+            </li>
 
-                    @foreach(Filter::fire('global.navbar',[]) as $navbar)                    
-                    <li class="item {{$navbar['class'] ?? ''}} {{$navbar['active'] ? 'active' : ''}}">
-                        <a href="{{$navbar['href']}}">{{$navbar['text']}}</a>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="col-sm-6 col-md-5 col-lg-4">
-                <ul class="nav global-navbar global-tools float-right">
-                    @foreach(Filter::fire('global.tools',[]) as $tools)                    
-                    <li class="global-tool">
-                        <a {!!Html::attributes(array_except($tools,['icon','text']))!!}>
-                            @if(isset($tools['badge']))
-                                <span class="global-tool-badge badge {{$tools['badgeClass'] ?? 'badge-danger'}} {{$tools['badge'] ? 'd-block' : 'd-none'}}">
-                                    {{$tools['badge']}}
-                                </span>
-                            @endif
-                            @if(isset($tools['icon']))
-                                <i class="global-tool-icon {{$tools['icon']}} fa-fw"></i>
-                            @endif
-                            @if(isset($tools['text']))
-                                <span class="global-tool-text d-none d-xl-inline-block">{{$tools['text']}}</span
-                            >@endif
-                        </a>
-                    </li>
-                    @endforeach
-                    <li class="global-tool dropdown">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <i class="global-tool fa fa-user-circle"></i> <span class="global-tool-text hidden-md-down">{{Auth::user()->username}}</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="{{route('core.mine.edit')}}">
-                                <i class="dropdown-item-icon fa fa-user fa-fw"></i>
-                                <b class="dropdown-item-text">{{trans('core::mine.edit')}}</b>
-                            </a>
-                            <a class="dropdown-item" href="{{route('core.mine.password')}}">
-                                <i class="dropdown-item-icon fa fa-key fa-fw"></i>
-                                <b class="dropdown-item-text">{{trans('core::mine.password')}}</b>
-                            </a>
-                            <a class="dropdown-item d-none" href="{{route('core.mine.permission')}}">
-                                <i class="dropdown-item-icon fa fa-sitemap fa-fw"></i>
-                                <b class="dropdown-item-text">{{trans('core::mine.permission')}}</b>
-                            </a>
-                            <a class="dropdown-item d-none" href="{{route('core.mine.log')}}">
-                                <i class="dropdown-item-icon fa fa-flag fa-fw"></i>
-                                <b class="dropdown-item-text">{{trans('core::mine.log')}}</b>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item js-confirm" href="{{route('admin.logout')}}" data-confirm="{{trans('core::auth.logout.confirm')}}">
-                                <i class="dropdown-item-icon fa fa-sign-out-alt fa-fw"></i>
-                                <b class="dropdown-item-text">{{trans('core::auth.logout')}}</b>
-                            </a>
-                        </div>
-                    </li>                       
-                </ul>                
-            </div>
-        </nav>
+            @foreach(Filter::fire('global.navbar',[]) as $navbar)                    
+            <li class="item {{$navbar['class'] ?? ''}} {{$navbar['active'] ? 'active' : ''}}">
+                <a href="{{$navbar['href']}}">{{$navbar['text']}}</a>
+            </li>
+            @endforeach
+        </ul>
+        <ul class="nav global-navbar global-tools ml-auto">
+            @foreach(Filter::fire('global.tools',[]) as $tools)                    
+            <li class="global-tool">
+                <a {!!Html::attributes(array_except($tools,['icon','text','badge','badgeClass']))!!}>
+                    @if(isset($tools['badge']))
+                        <span class="global-tool-badge badge {{$tools['badgeClass'] ?? 'badge-danger'}} {{$tools['badge'] ? 'd-block' : 'd-none'}}">
+                            {{$tools['badge']}}
+                        </span>
+                    @endif
+                    @if(isset($tools['icon']))
+                        <i class="global-tool-icon {{$tools['icon']}} fa-fw"></i>
+                    @endif
+                    @if(isset($tools['text']))
+                        <span class="global-tool-text d-none d-xl-inline-block">{{$tools['text']}}</span
+                    >@endif
+                </a>
+            </li>
+            @endforeach
+            <li class="global-tool dropdown">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="global-tool fa fa-user-circle"></i> <span class="global-tool-text hidden-md-down">{{Auth::user()->username}}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="{{route('core.mine.edit')}}">
+                        <i class="dropdown-item-icon fa fa-user fa-fw"></i>
+                        <b class="dropdown-item-text">{{trans('core::mine.edit')}}</b>
+                    </a>
+                    <a class="dropdown-item" href="{{route('core.mine.password')}}">
+                        <i class="dropdown-item-icon fa fa-key fa-fw"></i>
+                        <b class="dropdown-item-text">{{trans('core::mine.password')}}</b>
+                    </a>
+                    <a class="dropdown-item d-none" href="{{route('core.mine.permission')}}">
+                        <i class="dropdown-item-icon fa fa-sitemap fa-fw"></i>
+                        <b class="dropdown-item-text">{{trans('core::mine.permission')}}</b>
+                    </a>
+                    <a class="dropdown-item d-none" href="{{route('core.mine.log')}}">
+                        <i class="dropdown-item-icon fa fa-flag fa-fw"></i>
+                        <b class="dropdown-item-text">{{trans('core::mine.log')}}</b>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item js-confirm" href="{{route('admin.logout')}}" data-confirm="{{trans('core::auth.logout.confirm')}}">
+                        <i class="dropdown-item-icon fa fa-sign-out-alt fa-fw"></i>
+                        <b class="dropdown-item-text">{{trans('core::auth.logout')}}</b>
+                    </a>
+                </div>
+            </li>                       
+        </ul>
     </header>    
     <section class="global-body">
         @yield('content')
     </section>
-    <footer class="global-footer">        
-    </footer>
+    <div class="global-footer">
+    </div>
+    
 
     <script src="{{Theme::asset('js/jquery.min.js')}}"></script>
     <script src="{{Theme::asset('js/popper.min.js')}}"></script>    

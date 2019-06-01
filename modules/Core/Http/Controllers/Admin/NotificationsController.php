@@ -20,13 +20,15 @@ class NotificationsController extends AdminController
         $this->title = trans('core::notification.title');
 
         // 获取当前用户的全部通知
-        $this->$notifications = Auth::user()->notifications()->paginate(25);
+        $this->notifications = Auth::user()->notifications()->paginate(25);
         
         return $this->view();
     }
 
     public function check()
     {
+        \Debugbar::disable();
+        
         // 获取全部未读通知
         $notification_count = Filter::fire('notification.count', Auth::user()->unreadNotifications->count());
 

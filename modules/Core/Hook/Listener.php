@@ -162,7 +162,7 @@ class Listener
         $cms['user_id']      = intval(Auth::id());
         $cms['notification'] = [
             'check'    => route('core.notifications.check'),
-            'interval' => 10, //单位：秒
+            'interval' => 30, //单位：秒
         ]; 
         return $cms;
     }    
