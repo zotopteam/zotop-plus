@@ -47,23 +47,28 @@ return [
         'core.theme.upload' => 'core::theme.upload',
     ],
 
-    'core::file.title' => [
-        'core.file.editor' => 'core::file.editor',
-        'core.file.create' => 'core::file.create',
-        'core.file.delete' => 'core::master.delete',
-        'core.file.copy' => 'core::master.copy',
-        'core.file.rename' => 'core::master.rename',
-        'core.file.upload' => 'core::file.upload',
-    ],
+    // 从权限中屏蔽，除了super用户，其余用户全都不允许操作
+    // 'core::file.title' => [
+    //     'core.file.editor' => 'core::file.editor',
+    //     'core.file.create' => 'core::file.create',
+    //     'core.file.delete' => 'core::master.delete',
+    //     'core.file.copy' => 'core::master.copy',
+    //     'core.file.rename' => 'core::master.rename',
+    //     'core.file.upload' => 'core::file.upload',
+    // ],
 
-    'core::folder.title' => [
-        'core.folder.create' => 'core::folder.create',
-        'core.folder.delete' => 'core::master.delete',
-        'core.folder.rename' => 'core::master.rename',
-    ],
+    // 'core::folder.title' => [
+    //     'core.folder.create' => 'core::folder.create',
+    //     'core.folder.delete' => 'core::master.delete',
+    //     'core.folder.rename' => 'core::master.rename',
+    // ],
 
     'core::scheduling.title' => [
         'core.scheduling.index' => 'core::scheduling.task.list',
         'core.scheduling.run' => 'core::scheduling.task.run',
-    ],      
+    ],
+    'core::system.title' => [
+        'core.system.manage' => 'core::system.manage.title',
+        'core.system.environment' => 'core::system.environment.title',
+    ],        
 ];

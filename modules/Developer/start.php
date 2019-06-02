@@ -20,7 +20,7 @@
 \Filter::listen('global.start',function($navbar){
     
     // 无权限或者非本地模式下不显示
-    if (allow('developer.module.index') && app()->environment('local')) {
+    if (allow('developer.module') && app()->environment('local')) {
         $navbar['developer'] = [
             'text' => trans('developer::module.title'),
             'href' => route('developer.module.index'),

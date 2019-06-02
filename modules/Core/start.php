@@ -30,6 +30,7 @@
 \Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManage', 100);
 \Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManageCore', 100);
 
+
 /**
  * 扩展 Request::referer 功能
  */

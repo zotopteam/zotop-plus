@@ -58,7 +58,7 @@ class Listener
 
         // 主题管理
         if (allow('core.theme.index')) {
-            $start['themes'] = [
+            $start['core-themes'] = [
                 'text' => trans('core::theme.title'),
                 'href' => route('core.theme.index'),
                 'icon' => 'fa fa-gem bg-primary text-white', 
@@ -68,7 +68,7 @@ class Listener
           
         //模块管理
         if (allow('core.module.index')) {
-            $start['modules'] = [
+            $start['core-modules'] = [
                 'text' => trans('core::module.title'),
                 'href' => route('core.module.index'),
                 'icon' => 'fa fa-puzzle-piece bg-primary text-white', 
@@ -78,7 +78,7 @@ class Listener
 
         //计划任务
         if (allow('core.scheduling.index')) {
-            $start['scheduling'] = [
+            $start['core-scheduling'] = [
                 'text' => trans('core::scheduling.title'),
                 'href' => route('core.scheduling.index'),
                 'icon' => 'fa fa-clock bg-primary text-white', 
@@ -87,14 +87,26 @@ class Listener
         }        
 
         //environment 服务器环境
-        $start['environment'] = [
-            'text' => trans('core::system.environment.title'),
-            'href' => route('core.system.environment'),
-            'icon' => 'fa fa-server bg-primary text-white', 
-            'tips' => trans('core::system.environment.description'),
-        ];
+        if (allow('core.system.manage')) {
+            $start['core-manage'] = [
+                'text' => trans('core::system.manage.title'),
+                'href' => route('core.system.manage'),
+                'icon' => 'fa fa-server bg-primary text-white', 
+                'tips' => trans('core::system.manage.description'),
+            ];
+        }
 
-        $start['about'] = [
+        //environment 服务器环境
+        if (allow('core.system.environment')) {
+            $start['core-environment'] = [
+                'text' => trans('core::system.environment.title'),
+                'href' => route('core.system.environment'),
+                'icon' => 'fa fa-server bg-primary text-white', 
+                'tips' => trans('core::system.environment.description'),
+            ];
+        }
+
+        $start['core-about'] = [
             'text' => trans('core::system.about.title'),
             'href' => route('core.system.about'),
             'icon' => 'fa fa-info-circle bg-primary text-white', 
@@ -138,12 +150,12 @@ class Listener
         ];
 
         // 一键刷新
-        if (allow('core.system.reboot')) {
+        if (allow('core.system.manage')) {
             $tools['reboot'] = [
                 'icon'  => 'fa fa-sync', 
                 //'text'  => trans('core::system.reboot'),
-                'title' => trans('core::system.reboot.tips'),
-                'href'  => route('core.system.reboot'),
+                'title' => trans('core::system.reboot.title'),
+                'href'  => route('core.system.manage', ['artisan'=>'reboot']),
                 'class' => 'js-post',
             ];
         }

@@ -66,8 +66,8 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
 
     // 系统功能
     $router->group(['prefix' =>'system'], function (Router $router) {
-        $router->any('reboot','SystemController@reboot')->name('core.system.reboot');
-        $router->get('environment','SystemController@environment')->name('core.system.environment');
+        $router->any('manage','SystemController@manage')->name('core.system.manage')->middleware('allow:core.system.manage');
+        $router->get('environment','SystemController@environment')->name('core.system.environment')->middleware('allow:core.system.environment');
         $router->get('about','SystemController@about')->name('core.system.about');
     });
 

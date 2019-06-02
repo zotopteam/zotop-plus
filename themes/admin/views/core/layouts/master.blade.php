@@ -103,7 +103,7 @@
             </li>                       
         </ul>
     </header>    
-    <section class="global-body">
+    <section class="global-body scrollable">
         @yield('content')
     </section>
     <div class="global-footer">

@@ -1,11 +1,11 @@
 <?php
-
 return [
+    'title'                                  => '系统',
     'reboot'                                 => '重启',
-    'reboot.tips'                            => '重启系统',
+    'reboot.title'                           => '重启系统',
+    'reboot.description'                     => '重启系统将会自动清理日志、优化配置和路由缓存',
     'environment.title'                      => '系统环境',
     'environment.description'                => '服务器环境、文件和目录权限检测',
-    
     'environment.server'                     => '服务器',
     'environment.server.description'         => '当前服务器环境基本信息',
     'environment.server.php'                 => 'PHP版本',
@@ -26,15 +26,26 @@ return [
     'environment.server.agent'               => '浏览器信息',
     'environment.server.remote_addr'         => '本地IP',
     'environment.server.disk'                => '服务器剩余磁盘空间',
-    
     'environment.files'                      => '文件和目录',
-    'environment.files.description'          => '检查网站文件和目录的读写属性',    
-    
+    'environment.files.description'          => '检查网站文件和目录的读写属性',
     'about.title'                            => '关于',
-    'about.description'                      => '内容管理系统信息', 
-    
+    'about.description'                      => '内容管理系统信息',
     'about.homepage'                         => '官方网站',
     'about.developer'                        => '开发团队',
     'about.version'                          => '程序版本',
-    'about.copyright'                        => '版权所有', 
+    'about.copyright'                        => '版权所有',
+    'manage.title'                           => '系统管家',
+    'manage.description'                     => '系统重启，配置、路由缓存管理等',
+    'config.cache.title'                     => '配置缓存',
+    'config.cache.description'               => '缓存配置将加快系统运行速度，但是修改配置文件后需要重新缓存配置才能生效',
+    'route.cache.title'                      => '路由缓存',
+    'route.cache.description'                => '缓存路由将加快系统运行速度，但是修改路由文件后需要重新缓存路由才能生效',
+    'thumbnail.clear.title'                  => '清理缩略图',
+    'thumbnail.clear.description'            => '清理站点全部图片的缩略图',
+    'preview.clear.title'                    => '清理图片预览',
+    'preview.clear.description'              => '清理站点全部图片的预览图片',
+    'log.clear.title'                        => '清理日志',
+    'log.clear.description'                  => '清理系统运行日志',
+    'view.clear.title'                       => '清理视图缓存',
+    'view.clear.description'                 => '清理全部视图和模板的缓存文件',
 ];

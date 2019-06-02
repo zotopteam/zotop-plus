@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Action;
 use Artisan;
+use Module;
 
 class SystemController extends AdminController
 {
@@ -21,16 +22,27 @@ class SystemController extends AdminController
     }
 
     /**
-     * 一键重启
+     * 系统管家
      * 
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
+     * @param  Request $request [description]
+     * @return mixed
      */
-    public function reboot(Request $request)
+    public function manage(Request $request)
     {
-        // 重启系统
-        Artisan::call('reboot');
+        // 保存数据
+        if ($request->isMethod('POST')) {
 
-        return $this->success(trans('core::master.operated'), $request->referer());
+            if ( $artisan = $request->artisan ) {
+                Artisan::call($artisan);
+            }
+
+            return $this->success(trans('core::master.operated'), $request->referer());
+        }        
+
+        $this->title   = trans('core::system.manage.title');
+        $this->manages = Module::data('core::system.manage');
+
+        return $this->view();
     }
 
     /**
