@@ -207,7 +207,7 @@
             </div>
         </div>
 
-        {{ $contents->appends($_GET)->links('core::pagination.default') }}
+        {{ $contents->appends($_GET)->links() }}
     </div>
 </div>
 @endsection

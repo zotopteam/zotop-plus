@@ -83,7 +83,7 @@
             {{trans('core::administrator.description')}}
         </div>
 
-        {{ $users->links('core::pagination.default') }}
+        {{ $users->links() }}
     </div>
 </div>
 @endsection

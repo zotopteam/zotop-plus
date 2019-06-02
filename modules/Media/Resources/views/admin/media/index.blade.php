@@ -171,7 +171,7 @@
             </button>
         </div>    
 
-        {{ $media->appends($_GET)->links('core::pagination.default') }}
+        {{ $media->appends($_GET)->links() }}
     </div>
 </div>
 @endsection

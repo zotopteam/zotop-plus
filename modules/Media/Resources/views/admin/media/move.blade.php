@@ -80,7 +80,7 @@
     @if ($media->lastPage() > 1)
     <div class="main-footer">
         <div class="mx-auto">
-        {{ $media->appends($_GET)->links('core::pagination.default') }}
+        {{ $media->appends($_GET)->links() }}
         </div>
     </div>
     @endif

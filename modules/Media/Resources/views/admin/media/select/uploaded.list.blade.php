@@ -90,7 +90,7 @@
 
     </div><!-- main-body -->
     <div class="main-footer">
-        {{ $files->links('core::pagination.default') }}
+        {{ $files->links() }}
     </div>
 </div>
 @endsection

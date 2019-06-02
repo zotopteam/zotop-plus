@@ -1,4 +1,8 @@
 <?php
+if (app()->environment('production')) {
+    return;
+}
+
 use Illuminate\Routing\Router;
 
 // Developer 模块后台路由
@@ -74,6 +78,11 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->post('save','TranslateController@save')->name('developer.translate.save');
         $router->post('newkey','TranslateController@newkey')->name('developer.translate.newkey');
         $router->post('deletekey','TranslateController@deletekey')->name('developer.translate.deletekey');        
+    });
+
+    // route
+    $router->group(['prefix' =>'route','middleware'=>'allow:developer.route'], function (Router $router) {
+        $router->get('index','RouteController@index')->name('developer.route.index')->middleware('allow:developer.route.index');
     });
 
     // theme group

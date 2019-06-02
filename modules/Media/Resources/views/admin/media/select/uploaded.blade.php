@@ -78,7 +78,7 @@
     </div><!-- main-body -->
     @if ($files->lastPage() > 1)  
     <div class="main-footer text-sm p-1">
-        {{ $files->appends($params)->links('core::pagination.default') }}
+        {{ $files->appends($params)->links() }}
     </div>
     @endif
 </div>

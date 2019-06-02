@@ -3,6 +3,7 @@
 namespace Modules\Core\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 use Blade;
 
 class ThemeServiceProvider extends ServiceProvider
@@ -22,6 +23,7 @@ class ThemeServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bladeDirectiveOnce();
+        $this->paginatorDefault();
     }
 
     /**
@@ -104,6 +106,16 @@ class ThemeServiceProvider extends ServiceProvider
             return "<?php \$loadcss = {$expression}; if (! isset(\$__env->loadcss[\$loadcss])) : \$__env->loadcss[\$loadcss] = true;?>\r\n<link rel=\"stylesheet\" href=\"<?php echo \$loadcss; ?>\" rel=\"stylesheet\">\r\n<?php endif; ?>";
         });     
                     
+    }
+
+    /**
+     * 设置默认分页代码
+     * @return null
+     */
+    public function paginatorDefault()
+    {
+        Paginator::defaultView('core::pagination.default');
+        Paginator::defaultSimpleView('core::pagination.simple');     
     }
 
     /**

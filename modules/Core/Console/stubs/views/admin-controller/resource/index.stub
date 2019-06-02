@@ -52,7 +52,7 @@
             {{trans('$LOWER_NAME$::$LOWER_CONTROLLER$.description')}}
         </div>
 
-        {{ $$PLURAL_MODEL$->links('core::pagination.default') }}
+        {{ $$PLURAL_MODEL$->links() }}
     </div>
 </div>
 @endsection

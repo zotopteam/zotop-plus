@@ -115,7 +115,7 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mx-auto">
-        {{ $contents->appends($_GET)->links('core::pagination.default') }}
+        {{ $contents->appends($_GET)->links() }}
         </div>
     </div>
 </div>

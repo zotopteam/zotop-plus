@@ -65,7 +65,7 @@
         <div class="footer-text mr-auto">
         </div>
 
-        {{ $datalists->links('core::pagination.default') }}
+        {{ $datalists->links() }}
     </div>
 </div>
 @endsection

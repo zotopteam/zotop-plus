@@ -9,6 +9,6 @@
 </ul>
 
 <div class="mt-3">
-{{$list->appends($_GET)->links('vendor.pagination.bootstrap-4')}}
+{{$list->appends($_GET)->links()}}
 </div>
 

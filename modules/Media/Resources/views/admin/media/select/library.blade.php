@@ -110,7 +110,7 @@
     </div><!-- main-body -->
     @if ($media->lastPage() > 1)  
     <div class="main-footer text-sm p-1">
-        {{ $media->appends($params)->links('core::pagination.default') }}
+        {{ $media->appends($params)->links() }}
     </div>
     @endif
 </div>

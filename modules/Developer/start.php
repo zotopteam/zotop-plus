@@ -21,17 +21,26 @@
     
     // 无权限或者非本地模式下不显示
     if (allow('developer.module') && app()->environment('local')) {
-        $navbar['developer'] = [
+        $navbar['developer-module'] = [
             'text' => trans('developer::module.title'),
             'href' => route('developer.module.index'),
             'icon' => 'fa fa-puzzle-piece bg-warning text-white',
             'tips' => trans('developer::module.description'),
         ];
     }
+
+    // if (allow('developer.route') && app()->environment('local')) {
+    //     $navbar['developer-route'] = [
+    //         'text' => trans('developer::route.title'),
+    //         'href' => route('developer.route.index'),
+    //         'icon' => 'fa fa-sitemap bg-warning text-white',
+    //         'tips' => trans('developer::route.description'),
+    //     ];
+    // }    
     
     return $navbar;
 
-}, 80);
+}, 100);
 
 
 /**
