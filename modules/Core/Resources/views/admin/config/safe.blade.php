@@ -20,7 +20,7 @@
             <div class="form-group row">
                 <label for="env" class="col-2 col-form-label required">{{trans('core::config.env.label')}}</label>
                 <div class="col-8">
-                    {field type="radiogroup" name="env" options="Module::data('core::config.envs')" column="1" required="required"}
+                    {field type="radiocards" name="env" options="Module::data('core::config.envs')" column="1" required="required"}
                     
                     @if ($errors->has('env'))
                     <span class="form-help text-error">{{ $errors->first('env') }}</span>

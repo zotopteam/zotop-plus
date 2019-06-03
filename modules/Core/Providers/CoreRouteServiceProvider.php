@@ -4,6 +4,7 @@ namespace Modules\Core\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Filter;
 
 abstract class CoreRouteServiceProvider extends ServiceProvider
 {
@@ -34,12 +35,7 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
         parent::register();
 
         // 注册闭包命令行
-        $consoleRouteFile = $this->getConsoleRouteFile();
-
-        if ($this->app->runningInConsole() && $consoleRouteFile && file_exists($consoleRouteFile)) {
-            require $consoleRouteFile;
-        }
-        
+        $this->mapConsoleRoutes();       
     }    
 
     /**
@@ -108,8 +104,8 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
             $router->group([
                 'type'       => 'api',
                 'namespace'  => $this->namespace.'\Api',
-                'prefix'     => 'api',
-                'middleware' => [],
+                'prefix'     => Filter::fire('router.api.prefix', 'api'),
+                'middleware' => Filter::fire('router.api.middleware', []),
             ], function (Router $router) use ($apiRouteFile) {
                 require $apiRouteFile;
             });
@@ -131,7 +127,8 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
             $router->group([
                 'type'       => 'front',
                 'namespace'  => $this->namespace,
-                'middleware' => ['web','module','front','locale','theme'],                
+                'prefix'     => Filter::fire('router.front.prefix', ''),
+                'middleware' => Filter::fire('router.front.middleware', ['web','module','front','locale','theme']),      
             ], function (Router $router) use ($frontRouteFile) {
                 require $frontRouteFile;
             });
@@ -154,11 +151,21 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
             $router->group([
                 'type'       => 'admin',
                 'namespace'  => $this->namespace.'\Admin',
-                'prefix'     => $this->app['config']->get('app.admin_prefix','admin'),
-                'middleware' => ['web','module','admin','locale','theme'],           
+                'prefix'     => Filter::fire('router.admin.prefix', $this->app['config']->get('app.admin_prefix','admin')),
+                'middleware' => Filter::fire('router.admin.middleware', ['web','module','admin','locale','theme']),      
             ], function (Router $router) use ($adminRouteFile) {
                 require $adminRouteFile;
             });
         }
-    }    
+    }
+
+    private function mapConsoleRoutes()
+    {
+        $consoleRouteFile = $this->getConsoleRouteFile();
+
+        // 如果命令行路由文件存在则加载
+        if ($consoleRouteFile && file_exists($consoleRouteFile)) {
+            require $consoleRouteFile;
+        }
+    }   
 }

@@ -82,6 +82,17 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .bg-transparent{background-color:transparent!important;}
 .bg-image-preview{background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC');}       
 
+.border-primary{border-color:#0072c6!important;}
+.border-secondary{border-color:#6c757d!important;}
+.border-success{border-color:#00bc3e!important;}
+.border-danger{border-color:#dc3545!important;}
+.border-warning{border-color:#ffa42f!important}
+.border-info{border-color:#00bcf2!important;}
+.border-light{border-color:#f8f9fa!important;}
+.border-dark{border-color:#343a40!important;}
+.border-white{border-color:#fff!important;}
+.border-transparent{border-color:transparent!important;}
+
 .card-cell{margin-bottom:15px;}
 .card{}
 .card.disabled{background-color:#fafafa!important;cursor:not-allowed;color:#999!important;}
@@ -142,17 +153,6 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .text-sm{font-size:0.875rem!important;}
 .text-md{font-size:1rem!important;}
 .text-lg{font-size:1.25rem!important;}
-
-.border-primary{border-color:#007bff!important;}
-.border-secondary{border-color:#6c757d!important;}
-.border-success{border-color:#28a745!important;}
-.border-danger{border-color:#dc3545!important;}
-.border-warning{border-color:#ffc107!important;}
-.border-info{border-color:#17a2b8!important;}
-.border-light{border-color:#f8f9fa!important;}
-.border-dark{border-color:#343a40!important;}
-.border-white{border-color:#fff!important;}
-.border-transparent{border-color:transparent!important;}
 
 
 .image{overflow:hidden;}
@@ -319,7 +319,7 @@ textarea{resize:none;}
 .card-check .card{border-color:#fff;border-width:3px;cursor:pointer;transition:all 0.2s;overflow: hidden;}
 .card-check .card:hover,
 .card-check .card:focus{border-color:rgba(0,0,0,0.1);border-color:#66bb00;}
-.card-check .form-control-check:checked + .card{border-color:#66bb00;position:relative;}
+.card-check .form-control-check:checked + .card{border-color:#66bb00!important;position:relative;}
 .card-check .form-control-check:checked + .card:before{content:"";width:0;height:0;border-top:1.5rem solid #66bb00;border-left:1.5rem solid transparent;position:absolute;display:block;right:0;top:0;z-index:1;}
 .card-check .form-control-check:checked + .card:after{content:"\f00c";position:absolute;top:.05rem;right:.05rem;color:#fff;font:900 .75rem/1 'Font Awesome 5 Free';z-index:2;}
 .card-check .form-control-check:checked + .card-md:before{border-top-width:2rem;border-left-width:2rem;}

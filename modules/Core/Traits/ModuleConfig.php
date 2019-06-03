@@ -62,8 +62,9 @@ trait ModuleConfig
             Artisan::call('env:set', ['key' => strtoupper($key), 'value'=>$value]);   
         }
 
-        // 清理配置缓存
+        // 清理配置和路由缓存
         Artisan::call('config:clear');        
+        Artisan::call('route:clear'); 
 
         return $this;
     }

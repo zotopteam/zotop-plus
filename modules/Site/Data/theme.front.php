@@ -10,7 +10,7 @@ foreach ($themes as $theme) {
     $title       = $theme->title;
     $description = $theme->description;
 
-    $return[$value] = [$image, $title];
+    $return[$value] = ['image'=>$image, 'title'=>$title];
 
     //显示描述信息
     //$return[$value] = [$image, $title, $description];
