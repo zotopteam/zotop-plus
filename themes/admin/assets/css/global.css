@@ -388,7 +388,7 @@ textarea{resize:none;}
 .shortcut-thumb .shortcut-badge {position:absolute;right:0.75rem;top:0px;}
 .shortcut-thumb .shortcut-badge a{color:#fff;}
 
-.global-header{display:flex;background-color:#0072c6;box-shadow:0 1px rgba(255,255,255,0.1);}
+.global-header{display:flex;background-color:#0072c6;box-shadow:0 1px rgba(255,255,255,0.1);z-index: 100;}
 .global-body{display:flex;flex:1;position:relative;overflow:auto;}
 .global-footer{}
 

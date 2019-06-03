@@ -60,85 +60,93 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
 }(jQuery));
 
 /*
- * jQuery selectTable Plugin
+ * jQuery checkable plugin
  *
  * @author   zotop
- * @created  2012-11-14
- * @version  2.0
+ * @created  2019.06.03
+ * @version  3.0
  * @site     http://zotop.com
 */
 
 (function($) {
-    // default
-    $.selectTable = {options : {
-        item      : 'tbody>tr',
-        ignore    : 'tbody>tr.disabled',
-        selectall : 'input.select-all',
-        operator  : '.js-select-operate',
-        checkbox  : 'input:checkbox',
-        onCheck   : $.noop,
-        onChange  : $.noop
-    }};
+    
+    $.checkable = {};
 
-    function selectTable($table, options){
-        var self = this;
-        var $tr = $table.find(options.item).not(options.ignore);
-        var $checkboxes = $tr.find(options.checkbox);
+    // 默认值
+    $.checkable.default = {
+        item     : '.checkable-item', //子项
+        ignore   : '.checkable-ignore,.disabled', //忽略项
+        all      : '.checkable-all',    //全部选择控件
+        operator : '.checkable-operator', // 关联操作按钮
+        checkbox : '.checkable-checkbox', //选择控件
+        checked  : 'selected checked' //选中后的样式
+    };
+
+    function checkable(target, options) {
+
+        var self       = this;
+        var item       = target.find(options.item).not(options.ignore);
+        var checkboxes = item.find(options.checkbox);
 
         // API methods
         $.extend(self, {
-            //get checked length
+
+            // 获取选中节点
             checked : function(){
-                return $checkboxes.filter(':checked').length;
+                return checkboxes.filter(':checked');
             },
+            // 序列化选择中节点
             serialize : function(){
-                return $checkboxes.filter(':checked').serialize();
+                return self.checked().serialize();
             },
+            // 获取选中值
             val : function() {
                 var val = [];
-                $checkboxes.filter(':checked').each(function(){
+                self.checked().each(function(){
                     val.push($(this).val());
                 });
                 return val;
             },
-            // select special node
-            select : function(selector, state){
-                $checkboxes.filter(selector).each(function(){
-                    this.checked = state;
-                    $(this).closest(options.item).toggleClass('selected', this.checked);
+            // 选中特殊节点
+            check : function(selector, state){
+                checkboxes.filter(selector).each(function() {
+                    $(this).prop('checked', state);
+                    $(this).data('state', state);
+                    $(this).closest(options.item).toggleClass(options.checked, this.checked);
                 });
-                self.updateAll(($checkboxes.length === $checkboxes.filter(':checked').length));
-                self.onChange(); 
+                self.update();
             },
-            //select all or unselect all
-            selectAll : function(state){
-                $checkboxes.each(function(){
-                    this.checked = state;
-                    $(this).closest(options.item).toggleClass('selected', this.checked);
+            //选择全部节点
+            checkAll : function(state){
+                checkboxes.each(function(){
+                    $(this).prop('checked', state);
+                    $(this).data('state', state);
+                    $(this).closest(options.item).toggleClass(options.checked, this.checked);
                 });
-                self.updateAll(state);
-                self.onChange();
+                self.update();
             },
-            // update selectall state
-            updateAll : function(state){
-                $(options.selectall).each(function(){
-                    this.checked = state;
-                });
-            },
-            onCheck : function() {
+            // 更新状态
+            update : function() {
+                var checked = self.checked().length;
+                var state = (checkboxes.length === checked);
 
-            },
-            onChange : function() {
-                if ($checkboxes.filter(':checked').length > 0) {
+                // 更新全部选择状态
+                $(options.all).each(function(){
+                    $(this).prop('checked', state);
+                    $(this).data('state', state);
+                });
+
+                // 更新关联操作状态
+                if (checked > 0) {
                     $(options.operator).removeClass('disabled').attr('disabled', false);
                 } else {
                     $(options.operator).addClass('disabled').attr('disabled', true);
-                }
-            }            
+                }                
+            }           
         });
 
         // mouseover
-        $tr.each(function(){
+        item.each(function() {
             $(this).hover(function(){
                 $(this).addClass('mouseover');
             },function(){
@@ -146,33 +154,31 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
             });
         });
 
-        // select one
-        $checkboxes.click(function(e){
-            $(this).closest(options.item).toggleClass('selected', this.checked).toggleClass('mouseover', this.checked);
-            self.updateAll(($checkboxes.length === $checkboxes.filter(':checked').length));
-            self.onCheck();
-            self.onChange();
+        // check one
+        checkboxes.on('click', function(e){
+            $(this).closest(options.item).toggleClass(options.checked, this.checked).toggleClass('mouseover', this.checked);
+            self.update();
         });
 
         // select all
-        $table.find(options.selectall).click(function(e){
-            var state = $(e.target).is('input:checkbox') ? this.checked : $(this).attr('state');
-            self.selectAll(state);
+        target.find(options.all).on('click', function(e){
+            var state = $(e.target).is('input:checkbox') ? $(this).prop('checked') : $(this).data('state');
+            self.checkAll(state);
         });
 
-        self.onChange();
+        self.update();
     }
 
     // jQuery plugin initialization
-    $.fn.selectTable = function(options){
+    $.fn.checkable = function(options){
 
         // setup options
-        options = $.extend({}, $.selectTable.options, options);
+        options = $.extend({}, $.checkable.default, options);
 
         // install selectTable for each entry in jQuery object
         this.each(function(){
-            instance = new selectTable($(this), options);
-            $(this).removeData("selectTable").data("selectTable", instance);
+            instance = new checkable($(this), options);
+            $(this).removeData("checkable").data("checkable", instance);
         });
 
         // if options.api == true then return api,else return this
@@ -181,8 +187,8 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
 
     // default bind
     $(function(){
-        $('table.table-select').each(function(){
-            $(this).selectTable();
+        $('.checkable').each(function(){
+            $(this).checkable();
         });
     });
 })(jQuery);

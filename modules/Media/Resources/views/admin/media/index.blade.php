@@ -58,11 +58,11 @@
     @endif
     <div class="main-body scrollable" id="file-upload-dragdrop">
 
-        <table class="table table-nowrap table-hover table-select">
+        <table class="table table-nowrap table-hover checkable">
             <thead>
             <tr>
                 <th class="select">
-                    <input type="checkbox" class="select-all text-muted">
+                    <input type="checkbox" class="checkable-all text-muted">
                 </th>
                 <th colspan="3">{{trans('media::media.name')}}</th>
                 <th width="10%">{{trans('media::media.type')}}</th>
@@ -72,12 +72,12 @@
             </thead>
             <tbody>
             @foreach($media as $m)
-                <tr class="js-media-open" data-type="{{$m->type}}" data-url="{{$m->url}}" data-title="{{$m->name}}">
+                <tr class="checkable-item js-media-open" data-type="{{$m->type}}" data-url="{{$m->url}}" data-title="{{$m->name}}">
                     <td class="select">
                         @if ($m->isFolder())
-                        <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="folder" class="select text-muted">
+                        <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="folder" class="checkable-checkbox text-muted">
                         @else
-                        <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="file" class="select text-muted">
+                        <input type="checkbox" name="ids[]" value="{{$m->id}}" data-type="file" class="checkable-checkbox text-muted">
                         @endif
                     </td>                
                     <td width="1%" class="text-center pr-2">
@@ -150,23 +150,23 @@
     <div class="main-footer">
         <div class="main-action mr-auto">
             <div class="btn-group dropup">
-                <button type="button" class="btn btn-light js-select-all">
+                <button type="button" class="btn btn-light js-check-all">
                     {{trans('media::media.select.all')}}
                 </button>
                 <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-left">
-                    <a href="javascript:;" class="dropdown-item js-select-none">{{trans('media::media.select.none')}}</a>
-                    <a href="javascript:;" class="dropdown-item js-select" data-type="folder">{{trans('media::media.select.folder')}}</a>
-                    <a href="javascript:;" class="dropdown-item js-select" data-type="file">{{trans('media::media.select.file')}}</a>
+                    <a href="javascript:;" class="dropdown-item js-check-none">{{trans('media::media.select.none')}}</a>
+                    <a href="javascript:;" class="dropdown-item js-check" data-type="folder">{{trans('media::media.select.folder')}}</a>
+                    <a href="javascript:;" class="dropdown-item js-check" data-type="file">{{trans('media::media.select.file')}}</a>
                 </div>
             </div>
 
-            <button type="button" class="btn btn-success js-select-operate disabled" disabled="disabled" data-operate="move">
+            <button type="button" class="btn btn-success checkable-operator disabled" disabled="disabled" data-operate="move">
                 <i class="fa fa-arrows-alt fa-fw"></i> {{trans('core::master.move')}}
             </button>
-            <button type="button" class="btn btn-danger js-select-operate disabled" disabled="disabled" data-operate="delete">
+            <button type="button" class="btn btn-danger checkable-operator disabled" disabled="disabled" data-operate="delete">
                 <i class="fa fa-times fa-fw"></i> {{trans('core::master.delete')}}
             </button>
         </div>    
@@ -311,24 +311,25 @@
 
         // 选择
         $(function(){
-            var selectTable = $('table.table-select').data('selectTable');
+            var selectTable = $('.checkable').data('checkable');
 
-            $('.js-select-all').on('click', function() {
-                selectTable.selectAll(true);
+            $('.js-check-all').on('click', function() {
+                selectTable.checkAll(true);
             });
 
-            $('.js-select-none').on('click', function() {
-                selectTable.selectAll(false);
+            $('.js-check-none').on('click', function() {
+                selectTable.checkAll(false);
             });
 
-            $('.js-select').on('click', function() {
-                selectTable.selectAll(false);
-                selectTable.select("[data-type="+ $(this).data('type') +"]",true);
+            $('.js-check').on('click', function() {
+                selectTable.checkAll(false);
+                selectTable.check("[data-type="+ $(this).data('type') +"]", true);
             });          
 
-            $(document).on('click','.js-select-operate', function(event) {
+            $(document).on('click','.checkable-operator', function(event) {
                 event.preventDefault();
-                var ids = $('table.table-select').data('selectTable').val();
+                
+                var ids = $('.checkable').data('checkable').val();
                 var operate = $(this).data('operate');
                 
                 if (operate == 'move') {

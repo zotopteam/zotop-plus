@@ -74,12 +74,12 @@
         @if($contents->count() == 0)
             <div class="nodata">{{trans('core::master.nodata')}}</div>
         @else
-            <table class="table table-select table-nowrap table-sortable table-hover">
+            <table class="table table-nowrap table-sortable table-hover checkable">
                 <thead>
                 <tr>
                     <td class="drag"></td>
                     <td class="select">
-                        <input type="checkbox" class="select-all text-muted">
+                        <input type="checkbox" class="checkable-all text-muted">
                     </td>
                     <td colspan="3">{{trans('content::content.title.label')}}</td>
                     <td width="5%" class="text-center">{{trans('content::content.hits.label')}}</td>
@@ -91,10 +91,10 @@
                 </thead>
                 <tbody>
                 @foreach($contents as $content)
-                    <tr data-id="{{$content->id}}" data-sort="{{$content->sort}}" data-stick="{{$content->stick}}" data-title="{{$content->title}}">
+                    <tr class="checkable-item" data-id="{{$content->id}}" data-sort="{{$content->sort}}" data-stick="{{$content->stick}}" data-title="{{$content->title}}">
                         <td class="drag"></td>
                         <td class="select">
-                            <input type="checkbox" name="ids[]" value="{{$content->id}}" class="select text-muted">
+                            <input type="checkbox" name="ids[]" value="{{$content->id}}" class="checkable-checkbox text-muted">
                         </td>
                         @if ($content->image)
                         <td class="text-center px-2" width="1%">
@@ -185,22 +185,22 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="main-action mr-auto">
-            <button type="button" class="btn btn-outline-success js-select-operate disabled" disabled="disabled" data-operate="move">
+            <button type="button" class="btn btn-outline-success checkable-operator disabled" disabled="disabled" data-operate="move">
                 <i class="fa fa-arrows-alt fa-fw"></i> {{trans('core::master.move')}}
             </button>
 
             <div class="btn-group dropup">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle js-select-operate disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle checkable-operator disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-ellipsis-h fa-fw"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-primary">    
                 @foreach (\Modules\Content\Models\Content::status() as $k=>$s)
                 @continue($k == 'future')
-                <a href="javascript:;" class="dropdown-item js-select-operate disabled" disabled="disabled" data-operate="status" data-status="{{$k}}" data-url="{{route('content.content.status',[$k])}}">
+                <a href="javascript:;" class="dropdown-item checkable-operator disabled" disabled="disabled" data-operate="status" data-status="{{$k}}" data-url="{{route('content.content.status',[$k])}}">
                     <i class="{{$s.icon}} fa-fw"></i> {{$s.name}}
                 </a>
                 @endforeach
-                <a href="javascript:;" class="dropdown-item js-select-operate disabled" disabled="disabled" data-operate="delete" data-confirm="{{trans('content::content.delete.confirm')}}">
+                <a href="javascript:;" class="dropdown-item checkable-operator disabled" disabled="disabled" data-operate="delete" data-confirm="{{trans('content::content.delete.confirm')}}">
                     <i class="fa fa-times fa-fw"></i> {{trans('content::content.destroy')}}
                 </a>                
                 </div>
@@ -280,9 +280,10 @@ $(function(){
     });
 
     // 批量操作
-    $(document).on('click','.js-select-operate', function(event) {
+    $(document).on('click','.checkable-operator', function(event) {
         event.preventDefault();
-        var ids = $('table.table-select').data('selectTable').val();
+        
+        var ids     = $('.checkable').data('checkable').val();
         var operate = $(this).data('operate');
 
         // 移动
