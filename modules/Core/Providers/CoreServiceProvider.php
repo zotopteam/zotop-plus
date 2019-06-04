@@ -207,6 +207,13 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton('theme', function($app){
             return new \Modules\Core\Support\Theme($app);
         });
+
+        // 覆盖系统默认的BladeCompiler
+        $this->app->singleton('blade.compiler', function () {
+            return new \Modules\Core\Base\BladeCompiler(
+                $this->app['files'], $this->app['config']['view.compiled']
+            );
+        });        
     }
 
     /**

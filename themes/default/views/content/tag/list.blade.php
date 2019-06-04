@@ -1,6 +1,5 @@
 {{-- title:列表区块默认模板 --}}
-@php($self = \Modules\Content\Models\Content::find($attrs.id))
-
+@if($self = \Modules\Content\Models\Content::find($attrs.id))
 <div class="card">
     <div class="card-header">
         {{$self->title}}
@@ -8,7 +7,6 @@
             <i class="fa fa-ellipsis-h"></i>
         </a>
     </div>
-    
     <ul class="list-group list-group-flush">
     @foreach ($list as $item)
         <li class="list-group-item">
@@ -18,4 +16,5 @@
     @endforeach
     </ul>
 </div>
+@endif
 

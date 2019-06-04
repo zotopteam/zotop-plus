@@ -1,6 +1,5 @@
 {{-- title:导航模板 --}}
-@if ($list->count() > 0)
-@php($self = \Modules\Content\Models\Content::find($attrs.id))
+@if ($list->count() > 0 && $self = \Modules\Content\Models\Content::find($attrs.id))
 <ul class="nav nav-pills justify-content-center">
     <li class="nav-item">
         <a href="{{$self->url}}" class="nav-link {{$attrs.id == $attrs.current_id ? 'active' : ''}}">
