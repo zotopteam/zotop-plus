@@ -1,5 +1,25 @@
 <?php
 /**
+ * 设置站点主题
+ */
+\Filter::listen('current.theme', function($theme) {
+    if (app('current.type') == 'front') {
+        $theme = config('site.theme');
+    }
+    return $theme;
+});
+
+/**
+ * 设置站点语言
+ */
+\Filter::listen('current.locale', function($locale) {
+    if (app('current.type') == 'front') {
+        $locale = config('site.locale');
+    }
+    return $locale;
+});
+
+/**
  * 全局导航
  */
 \Filter::listen('global.navbar', function($navbar){
@@ -79,7 +99,6 @@
         'theme'  => config('site.theme'),
         'module' => $this->getAttribute($attrs, 'module', app('current.module')),
     ]);
-
 
     return $this->toHtmlString(
         $this->view->make('site::field.view')->with(compact('id', 'name', 'value', 'button', 'select', 'attrs'))->render()

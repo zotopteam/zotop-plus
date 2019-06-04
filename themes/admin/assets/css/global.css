@@ -15,8 +15,8 @@
 ::placeholder{color:#ccc!important;opacity:0.6;}
 
 html,body {width:100%;height:100%;overflow:hidden;padding:0;margin:0;/*font-size:14px;*/}
-body {display:flex;flex-direction:column;}
-body.dialog{padding:0;}
+body {display:flex;flex-direction:column;background:#f6fafd;}
+body.dialog{padding:0;background:transparent;}
 
 dt,dt{margin-bottom:.5rem;margin-left:0;}
 
@@ -149,7 +149,7 @@ a.disabled,a[disabled]{cursor:not-allowed;color:#999;}
 .text-truncate-4{white-space:normal;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;}
 .text-truncate-5{white-space:normal;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;}
 
-.text-xs{font-size:0.75rem!important;}
+.text-xs{font-size:0.75rem!important;font-weight:300;}
 .text-sm{font-size:0.875rem!important;}
 .text-md{font-size:1rem!important;}
 .text-lg{font-size:1.25rem!important;}
@@ -415,7 +415,7 @@ textarea{resize:none;}
 
 
 /* 侧边区域 side*/
-.side{display:flex;flex-direction:column;background:#f6fafd;color:#666;width:18%;height:100%;min-width:16rem;}
+.side{display:flex;flex-direction:column;/*background:#f6fafd;*/color:#666;width:18%;height:100%;min-width:16rem;}
 .side:after{content:'';display:block;position:absolute;top:0;bottom:0;right:0;width:3px;border-right:1px solid #efefef;box-shadow:-0.25rem 0.25rem 0.25rem -0.25rem rgba(0,0,0,0.1) inset;z-index:-1;}
 .side-header{display:flex;font-size:1.4rem;padding:0.75rem 0.75rem;position:relative;clear:both;z-index:1;border-bottom:1px solid transparent;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;box-sizing:border-box;}
 .side-action{float:right;margin:10px 1rem 0 0.25rem;line-height:20px;}
@@ -425,8 +425,8 @@ textarea{resize:none;}
 .side-divider{width:100%;height:0;margin:.5rem 0;overflow:hidden;border-top:1px solid #e9ecef;clear:both;}
 
 /* 主区域 side*/
-.main{display:flex;flex-direction:column;height:100%;flex:auto;}
-.main-header{display:flex;border-bottom:1px solid #efefef;background-color:#fff;padding:0.75rem 0.5rem;}
+.main{display:flex;flex-direction:column;height:100%;flex:auto;background:#fff;}
+.main-header{display:flex;border-bottom:1px solid #efefef;padding:0.75rem 0.5rem;}
 .main-header > div{align-self: center!important;}
 .main-header .main-back a{display:block;border-radius:50%;font-size:1.5rem;line-height:1.2;width:1.8rem;height:1.8rem;text-align:center;transition:all 0.2s;}
 .main-header .main-back a:hover{background:#efefef;}

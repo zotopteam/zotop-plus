@@ -37,16 +37,6 @@ class FrontMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // 当前主题
-        $this->app->singleton('current.theme',function() {
-            return 'default';
-        });
-
-        // 当前语言
-        $this->app->singleton('current.locale',function() {
-            return config('core.locale', $this->app->getLocale());
-        });
-
         return $next($request);
     }
 }

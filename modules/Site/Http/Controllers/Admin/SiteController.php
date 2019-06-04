@@ -21,11 +21,13 @@ class SiteController extends AdminController
      */
     public function selectView(Request $request, $theme=null)
     {
-        $views  = path_base(Theme::path('views', $theme));
+        $views  = path_base(Theme::path($theme.':views'));
         $module = strtolower($request->input('module'));
 
+        // 根目录
         $root   = $views.'/'.$module;
 
+        // 浏览文件
         $browser = app(FileBrowser::class, [
             'root'       => $root,
             'dir'        => $request->input('dir'),

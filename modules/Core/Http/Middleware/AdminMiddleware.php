@@ -36,17 +36,7 @@ class AdminMiddleware
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
-    {        
-        // 当前主题
-        $this->app->singleton('current.theme',function() {
-            return config('core.theme', 'admin');
-        });
-
-        // 当前语言
-        $this->app->singleton('current.locale',function() {
-            return config('core.locale', $this->app->getLocale());
-        });              
-
+    {
         // 管理员已经或者登录页面运行继续运行
         if ( Route::is('admin.login','admin.login.post') || (Auth::check() && Auth::user()->isModel(['super','admin'])) ) {
             return $next($request);

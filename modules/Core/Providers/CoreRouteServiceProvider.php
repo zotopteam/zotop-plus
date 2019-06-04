@@ -102,7 +102,6 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
 
         if ($apiRouteFile && file_exists($apiRouteFile)) {
             $router->group([
-                'type'       => 'api',
                 'namespace'  => $this->namespace.'\Api',
                 'prefix'     => Filter::fire('router.api.prefix', 'api'),
                 'middleware' => Filter::fire('router.api.middleware', []),
@@ -125,10 +124,9 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
         
         if ($frontRouteFile && file_exists($frontRouteFile)) {
             $router->group([
-                'type'       => 'front',
                 'namespace'  => $this->namespace,
                 'prefix'     => Filter::fire('router.front.prefix', ''),
-                'middleware' => Filter::fire('router.front.middleware', ['web','module','front','locale','theme']),      
+                'middleware' => Filter::fire('router.front.middleware', ['web','module','front']),      
             ], function (Router $router) use ($frontRouteFile) {
                 require $frontRouteFile;
             });
@@ -149,10 +147,9 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
         if ($adminRouteFile && file_exists($adminRouteFile)) {
 
             $router->group([
-                'type'       => 'admin',
                 'namespace'  => $this->namespace.'\Admin',
                 'prefix'     => Filter::fire('router.admin.prefix', $this->app['config']->get('app.admin_prefix','admin')),
-                'middleware' => Filter::fire('router.admin.middleware', ['web','module','admin','locale','theme']),      
+                'middleware' => Filter::fire('router.admin.middleware', ['web','module','admin']),      
             ], function (Router $router) use ($adminRouteFile) {
                 require $adminRouteFile;
             });

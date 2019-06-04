@@ -1,26 +1,23 @@
 @extends('core::layouts.dialog')
 
 @section('content')
-<div class="main scrollable">
-    
-        <div class="container-fluid">
-            {form model="$datalist" route="['block.datalist.update', $datalist->id]" id="datalist-form" method="put" autocomplete="off"}
+<div class="container-fluid">
+    {form model="$datalist" route="['block.datalist.update', $datalist->id]" id="datalist-form" method="put" autocomplete="off"}
 
-            {field type="hidden" name="block_id" required="required"}
+    {field type="hidden" name="block_id" required="required"}
 
-            @foreach ($fields as $field)            
-            <div class="form-group">
-                <label for="{{array_get($field, 'field.id')}}" class="form-label {{array_get($field, 'field.required')}}">
-                    {{array_get($field, 'label')}}
-                </label>
-                <div class="form-field">
-                    {{Form::field($field['field'])}}
-                </div>                      
-            </div>
-            @endforeach
+    @foreach ($fields as $field)            
+    <div class="form-group">
+        <label for="{{array_get($field, 'field.id')}}" class="form-label {{array_get($field, 'field.required')}}">
+            {{array_get($field, 'label')}}
+        </label>
+        <div class="form-field">
+            {{Form::field($field['field'])}}
+        </div>                      
+    </div>
+    @endforeach
 
-            {/form}
-        </div>
+    {/form}
 </div>
 @endsection
 

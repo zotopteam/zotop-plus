@@ -148,9 +148,13 @@ class BaseController extends Controller
      */
     public function view($view = null, $data = [], $mergeData = [])
     {
-        // 默认view为: controller/action
+        // 默认view为: module::controller/action
         if (empty($view)) {
             $view = $this->app['current.controller'].'.'.$this->app['current.action'];
+        }
+        
+        if (! strpos($view, '::')) {
+            $view = $this->app['current.module'].'::'.$view;
         }
 
         // 转换模板数据

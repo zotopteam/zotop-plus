@@ -14,8 +14,6 @@
     "providers": [
         "Modules\\Core\\Providers\\CoreServiceProvider",
         "Modules\\Core\\Providers\\RouteServiceProvider",
-        "Modules\\Core\\Providers\\HookServiceProvider",
-        "Modules\\Core\\Providers\\ThemeServiceProvider",
         "Modules\\Core\\Providers\\ViewServiceProvider",
         "Modules\\Core\\Providers\\FormServiceProvider"
     ],

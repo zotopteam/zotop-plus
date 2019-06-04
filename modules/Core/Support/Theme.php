@@ -190,4 +190,43 @@ class Theme
 
         return $this->themes[$name]->path;
     }
+
+    public function active($name=null)
+    {
+        $theme = $this->find($name);
+
+        if (! $theme) {
+            return;
+        }
+
+        //注册全局views路径，实现errors寻址
+        $this->app['config']->set('view.paths', [
+            $theme->path.'/views',
+            resource_path('views'),
+        ]);
+
+        // 注册当前模块和主题的views，实现view在主题和模块中寻址
+        foreach ($this->app['modules']->getOrdered() as $module) {
+            $this->app['view']->addNamespace($module->getLowerName(), [
+                $theme->path.'/views/'.$module->getLowerName(),
+                $module->getPath() . '/Resources/views/'.$this->app['current.type']
+            ]);      
+        }
+
+        // 注册语言
+        $this->app['translator']->addJsonPath($theme->path.'/lang');
+        $this->app['translator']->addNamespace('theme', $theme->path.'/lang');
+
+        // 注册启动文件
+        $files = isset($theme->files) && is_array($theme->files) ? $theme->files : [];
+        foreach ($files as $file) {
+            $file = $theme->path.'/'.$file;
+            if (file_exists($file)) {
+                require $file;
+            }
+        }
+
+        // Hook
+        $this->app['hook.action']->fire('theme.active', $theme);              
+    }
 }
