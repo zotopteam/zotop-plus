@@ -3,6 +3,8 @@
 namespace Modules\Core\Base;
 
 use Illuminate\View\Compilers\BladeCompiler as LaravelBladeCompiler;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * 表单创建助手
@@ -105,8 +107,18 @@ class BladeCompiler extends LaravelBladeCompiler
                 $callback = array(app('\\' . $callback[0]), $callback[1]);
             }
 
+            // 获取标签缓存属性 cache="60"
+            if ($cache = (int)Arr::get($attrs, 'cache')) {
+                $key = md5(serialize($attrs));
+                return Cache::remember($key, $cache, function() use ($callback, $attrs, $vars){
+                    return call_user_func_array($callback, [$attrs, $vars]);
+                });
+            }
+
             return call_user_func_array($callback, [$attrs, $vars]);
         }
+
+        return null;
     }
 
     /**

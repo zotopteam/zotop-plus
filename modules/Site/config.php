@@ -1,6 +1,6 @@
 <?php
 return [
-    'name'           => 'SiteName',
+    'name'           => 'Site Name',
     'theme'          => 'default',
     'locale'         => '',
     'url'            => '',

@@ -3,8 +3,9 @@
  * 设置站点主题
  */
 \Filter::listen('current.theme', function($theme) {
-    if (app('current.type') == 'front') {
-        $theme = config('site.theme');
+    //如果前台，并设置了站点主题，当前使用当前设置的主题
+    if (app('current.type') == 'front' && $siteTheme = config('site.theme')) {
+        $theme = $siteTheme;
     }
     return $theme;
 });
@@ -13,8 +14,9 @@
  * 设置站点语言
  */
 \Filter::listen('current.locale', function($locale) {
-    if (app('current.type') == 'front') {
-        $locale = config('site.locale');
+    //如果前台，并设置了站点语言，当前使用当前设置的语言
+    if (app('current.type') == 'front' && $siteLocale = config('site.locale')) {
+        $locale = siteLocale;
     }
     return $locale;
 });

@@ -232,18 +232,18 @@ class CoreServiceProvider extends ServiceProvider
             if ($begin == 'api') {
                 $type = 'api';
             }
-            return $app['hook.filter']->fire('current.type', $type);
+            return $app['hook.filter']->fire('current.type', $type, $app);
         });
 
         // 注册当前语言
         $this->app->singleton('current.locale', function($app) {
-            return $app['hook.filter']->fire('current.locale', $app->getLocale());
+            return $app['hook.filter']->fire('current.locale', $app->getLocale(), $app);
         });
 
         // 注册当前主题，默认为：core.theme.admin，core.theme.front，core.theme.api
         $this->app->singleton('current.theme', function($app) {
             $theme = $app['config']->get('core.theme.'.$app['current.type'], $app['current.type']);
-            return $app['hook.filter']->fire('current.theme', $theme);
+            return $app['hook.filter']->fire('current.theme', $theme, $app);
         });
     }
 

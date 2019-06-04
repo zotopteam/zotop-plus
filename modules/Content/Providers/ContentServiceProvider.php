@@ -86,7 +86,6 @@ class ContentServiceProvider extends ServiceProvider
             $image    = array_get($attrs, 'image', null); // 图片模式 true=有图模式 false=无图模式           
             $model    = array_get($attrs, 'model', null);  // 内容模型 article 或者 article,page，为空显示所有节点类型
             $subdir   = array_get($attrs, 'subdir', false);  // 是否显示子目录内容
-            $self     = array_get($attrs, 'self', false); // 是否显示自身
             $paginate = array_get($attrs, 'paginate', false); // 是否分页
             $size     = array_get($attrs, 'size', 10); // 显示条数
             $sort     = array_get($attrs, 'sort', null);  // 排序方式
@@ -95,13 +94,6 @@ class ContentServiceProvider extends ServiceProvider
 
             // slug 转换id
             $id = $id ? $id : Content::where('slug', $slug)->value('id');
-
-            // 是否读取自身
-            // if ($self && $id) {
-            //     $content = Content::publish()->where('id', $id)->first();
-            // } else {
-            //     $content = null;
-            // }
 
             // 查询
             $query = Content::with(str_array($with, ','))->publish()->model($model)->sort($sort);
