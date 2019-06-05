@@ -42,7 +42,34 @@ class ConfigController extends AdminController
 
         return $this->view();
     }
+    /**
+     * 基本配置
+     *
+     * @return Response
+     */
+    public function wap(Request $request)
+    {
+        // 保存数据
+        if ( $request->isMethod('POST') ) {
 
+            // 表单验证
+            $this->validate($request, [
+                'wap.url'  => 'url|nullable'
+            ],[],[
+                'url'  => trans('site::config.wap.url.label')
+            ]);           
+
+            // 写入配置组
+            $this->config('site', $request->all());
+
+            return $this->success(trans('core::master.saved'),$request->referer());
+        }
+
+        $this->title  = trans('site::config.wap');
+        $this->config = Config::get('site');
+
+        return $this->view();
+    }
     /**
      * 搜索优化
      *

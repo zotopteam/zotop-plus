@@ -191,6 +191,29 @@ class Theme
         return $this->themes[$name]->path;
     }
 
+    /**
+     * 获取主题信息
+     * 
+     * @param string $path
+     * @param string $name theme name
+     * @return string
+     */
+    public function get($key)
+    {
+        if (strpos($key, ':') == false) {
+            $name = $this->app['current.theme'];
+        } else {
+            list($name, $key) = explode(':', $key);
+        }
+
+        return data_get($this->themes[$name], $key);
+    }    
+
+    /**
+     * 启用主题
+     * @param  string $name 主题名称
+     * @return 
+     */
     public function active($name=null)
     {
         $theme = $this->find($name);

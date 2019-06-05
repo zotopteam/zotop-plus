@@ -17,7 +17,7 @@ return [
     
     'theme.label'            => '网站主题',
     
-    'theme.help'             => '选择主题后，网站将以该主题和模板显示 更多主题，请进入主题和模板管理',
+    'theme.help'             => '选择主题后，网站将以该主题和模板显示 更多主题请进入主题管理',
     
     'logo.label'             => '网站Logo',
     'logo.help'              => '网站logo图片，推荐使用PNG格式图片',  
@@ -63,4 +63,14 @@ return [
 
     'contact'                => '联系方式',
 
+    'wap'                    => '移动站点',
+    'wap.name.label'         => '移动站点名称',
+    'wap.name.help'          => '移动端显示的站点名称，未填时使用网站名称',
+    'wap.url.label'          => '移动站点网址',
+    'wap.url.help'           => '设置移动站点网址后可通过该访问移动版，如：http://m.zotop.com',
+    'wap.theme.label'        => '移动站点主题',
+    'wap.theme.help'         => '用户使用移动设备访问时，站点将以该主题和模板显示 更多主题请进入主题管理
+',
+    'wap.logo.label'         => '移动站点Logo',
+    'wap.logo.help'          => '移动端显示的站点logo，未填时使用站点logo',    
 ];

@@ -353,6 +353,10 @@ $(function(){
             return;
         }
 
+        // 请求时闪烁
+        notification.find('.global-tool-icon').addClass('animation-flicker');
+
+        // 请求接口并获取结果        
         $.getJSON(cms.notification.check, function(result) {
             if (result.count) {
                 notification.find('.global-tool-badge').removeClass('d-none').html(result.count);

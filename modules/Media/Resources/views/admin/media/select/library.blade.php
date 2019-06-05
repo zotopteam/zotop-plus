@@ -11,7 +11,7 @@
             <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
                 <i class="fa fa-fw fa-upload"></i> {{trans('core::file.upload')}}
             </a>
-            <a href="javascript:;" class="btn btn-outline-primary btn-icon-only js-prompt" data-url="{{route('media.create',[$parent_id,'folder'])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" title="{{trans('core::folder.create')}}">
+            <a href="javascript:;" class="btn btn-primary btn-icon-only js-prompt" data-url="{{route('media.create',[$parent_id,'folder'])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" title="{{trans('core::folder.create')}}">
                 <i class="fa fa-fw fa-folder-plus"></i> {{trans('core::folder.create')}}
             </a>
             <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('core::master.refresh')}}">

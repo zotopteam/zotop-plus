@@ -1,15 +1,15 @@
 @extends('core::layouts.master')
 
 @section('content')
-<div class="main scrollable">
-    <div class="jumbotron bg-primary text-white text-center">
+<div class="full-width">
+    <div class="jumbotron bg-primary text-white text-center m-0">
         <div class="container-fluid">
             <h1>{{trans('core::system.manage.title')}}</h1>
             <p>{{trans('core::system.manage.description')}}</p>
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="p-3">
         <div class="card mb-3">
             <div class="card-body p-0">
                 <table class="table table-nowarp table-hover">

@@ -1,12 +1,11 @@
 {{-- title:导航列表模板 --}}
-
-<nav>
-    <a href="{{url('/')}}" class="btn btn-outline text-white">
-        <i class="fa fa-home"></i>
-    </a>
+<ul class="navbar-nav">
+    <li class="nav-item">
+        <a class="nav-link" href="{{url('/')}}">{{__('Home')}}</a>
+    </li>
     @foreach ($navbar as $nav)
-    <a href="{{$nav->url}}" class="btn btn-outline text-white">
-        {{$nav->title}}
-    </a>
+    <li class="nav-item">
+        <a class="nav-link" href="{{$nav->url}}">{{$nav->title}}</a>
+    </li>
     @endforeach
-</nav>
+</ul>

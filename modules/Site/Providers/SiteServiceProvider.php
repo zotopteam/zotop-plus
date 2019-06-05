@@ -20,7 +20,7 @@ class SiteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        $this->app['router']->aliasMiddleware('front', "Modules\\Site\\Http\\Middleware\\FrontMiddleware");
     }    
 
     /**

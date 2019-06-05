@@ -5,22 +5,22 @@
 <div class="main">
     <div class="main-header">
         @if (empty($keywords))
-        @if ($parent_id)
-        <div class="main-back d-none">
-            <a href="javascript:history.go(-1);"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
-        </div>        
-        <div class="main-title mr-auto">{{$parent->name}}</div>
-        @else
-        <div class="main-title mr-auto">{{trans('media::media.root')}}</div>
-        @endif
-        <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
-                <i class="fa fa-fw fa-upload"></i> {{trans('core::file.upload')}}
-            </a>
-            <a href="javascript:;" class="btn btn-outline-primary js-prompt" data-url="{{route('media.create',[$parent_id,'folder'])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name">
-                <i class="fa fa-fw fa-folder-plus"></i> {{trans('core::folder.create')}}
-            </a>
-        </div>
+            @if ($parent_id)
+            <div class="main-back d-none">
+                <a href="javascript:history.go(-1);"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            </div>        
+            <div class="main-title mr-auto">{{$parent->name}}</div>
+            @else
+            <div class="main-title mr-auto">{{trans('media::media.root')}}</div>
+            @endif
+            <div class="main-action">
+                <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
+                    <i class="fa fa-fw fa-upload"></i> {{trans('core::file.upload')}}
+                </a>
+                <a href="javascript:;" class="btn btn-primary js-prompt" data-url="{{route('media.create',[$parent_id,'folder'])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name">
+                    <i class="fa fa-fw fa-folder-plus"></i> {{trans('core::folder.create')}}
+                </a>
+            </div>
         @else
         <div class="main-back">
             <a href="{{route('media.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
@@ -32,8 +32,7 @@
         <div class="main-action">
             {form route="media.index" class="form-inline form-search" method="get"}
                 <div class="input-group">
-                    {{--{field type="select" name="type" options="Module::data('media::type.options')"}--}}
-                    <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('media::media.search.placeholder')}}" required="required" aria-label="Search">
+                    <input name="keywords" value="{{$keywords}}" class="form-control border-primary bg-light" type="search" placeholder="{{trans('media::media.search.placeholder')}}" required="required" aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
                     </div>

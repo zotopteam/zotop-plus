@@ -4,8 +4,8 @@
         <section class="main d-flex scrollable">
             <div class="jumbotron bg-transparent full-width align-self-center text-center">           
                 
-                <h1>{{trans('installer.welcome',[config('zotop.name')])}}</h1>
-                <p>{{trans('installer.welcome.description',[config('zotop.name')])}}</p>
+                <h1>{{trans('installer.welcome',[config('zotop.title')])}}</h1>
+                <p>{{config('zotop.description')}}</p>
                 
                 <div class="p-3">
                     <a href="{{config('zotop.homepage')}}" class="btn btn-outline text-white" target="_blank">

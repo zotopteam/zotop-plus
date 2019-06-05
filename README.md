@@ -1,6 +1,6 @@
-## About Laravel CMS
+## About Zotop CMS
 
-基于Laravel5.8和bootstrap4，支持模块和主题，打造更简洁、更易用的内容管理系统
+基于Laravel5.8和bootstrap4，支持模块和主题，更好、更易用的内容管理系统，Better && Easier Laravel CMS
 
 ## Learning Laravel CMS
 
@@ -10,7 +10,7 @@
 
 ## License
 
-The Laravel CMS is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+The Zotop CMS is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
 
   [1]: http://doc.zotop.com

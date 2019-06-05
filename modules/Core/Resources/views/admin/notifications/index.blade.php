@@ -1,10 +1,9 @@
-@extends('core::layouts.master')
+@extends('core::layouts.dialog')
 
 @section('content')
 <div class="main">
     <div class="main-header">        
         <div class="main-title mr-auto">
-            {{$title}}
         </div>
         <div class="main-action">
             
@@ -16,8 +15,6 @@
         @else
 
         @endif
-    </div>
-    <div class="main-footer">
     </div>
 </div>
 @endsection

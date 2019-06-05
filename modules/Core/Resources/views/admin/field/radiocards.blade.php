@@ -27,7 +27,7 @@
             </div>
             @elseif ($title)
             <div class="card-body">
-                <h5 class="card-title m-0 text-truncate">{{$title}}</h5>                                
+                <h6 class="card-title m-0 text-truncate">{{$title}}</h6>                                
             </div>
             @elseif ($description)
             <div class="card-body">

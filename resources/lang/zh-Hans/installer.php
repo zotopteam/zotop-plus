@@ -24,8 +24,8 @@ return [
     'next'                           => '下一步',
     'retry'                          => '重试',
     
-    'welcome'                        => '欢迎使用 :0',
-    'welcome.description'            => '基于Laravel5和bootstrap4，模块化开发，打造更简洁、更易用的内容管理系统',
+    'welcome'                        => '欢迎使用 逐涛',
+    'welcome.description'            => '基于Laravel5.8和bootstrap4，支持模块和主题，更好、更易用的内容管理系统，Better && Easier Laravel CMS',
     
     'check.success'                  => '恭喜！检测通过',
     'check.success.description'      => '您的服务器环境满足安装要求',

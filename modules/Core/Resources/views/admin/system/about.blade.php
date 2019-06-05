@@ -4,7 +4,7 @@
 <div class="d-flex full-width full-height bg-primary justify-content-center">
     <div class="jumbotron bg-primary text-white align-self-center">
         <div class="container-fluid text-center">
-            <h1>{{config('zotop.name')}}</h1>
+            <h1>{{config('zotop.title')}}</h1>
             <p>{{config('zotop.description')}}</p>
             <div class="p-3">
                 <a href="{{config('zotop.homepage')}}" class="btn btn-outline text-white" target="_blank">

@@ -140,16 +140,19 @@ class Listener
      */
     public function tools($tools)
     {
+        // 消息通知
         $tools['notification'] = [
-            'icon'  => 'fa fa-bell', 
-            //'text'  => trans('core::notification.short'),
-            'title' => trans('core::notification.title'),
-            'href'  => route('core.notifications.index'),
-            'badge' => 0,
-            'class' => 'global-notification'
+            'icon'        => 'fa fa-bell', 
+            //'text'      => trans('core::notification.short'),
+            'title'       => trans('core::notification.title'),
+            'href'        => route('core.notifications.index'),
+            'badge'       => 0,
+            'class'       => 'global-notification js-open',
+            'data-width'  => '80%',
+            'data-height' => '70%',
         ];
 
-        // 一键刷新
+        // 重启系统
         if (allow('core.system.manage')) {
             $tools['reboot'] = [
                 'icon'  => 'fa fa-sync', 

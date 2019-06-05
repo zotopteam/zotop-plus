@@ -20,7 +20,7 @@ return [
     | This value is the version of zotop.
     */
 
-    'version' => '1.6.0523',
+    'version' => '1.6.0606',
 
 
     /*
@@ -31,7 +31,17 @@ return [
     | This value is the release of zotop. 
     */
 
-    'release' => '20190523',
+    'release' => '20190606',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Title
+    |--------------------------------------------------------------------------
+    |
+    | This value is the description of zotop.
+    */
+
+    'title' => '逐涛内容管理系统',    
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +51,7 @@ return [
     | This value is the description of zotop.
     */
 
-    'description' => '基于Laravel5.8和bootstrap4，支持模块和主题，打造更简洁、更易用的内容管理系统',         
+    'description' => '基于Laravel5.8和bootstrap4，支持模块和主题，更好、更易用的内容管理系统，Better && Easier Laravel CMS',   
 
     /*
     |--------------------------------------------------------------------------

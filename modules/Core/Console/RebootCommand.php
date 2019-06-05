@@ -38,7 +38,6 @@ class RebootCommand extends Command
 
         // 清理缓存
         $this->call('debugbar:clear');
-        $this->call('log:clear');
         $this->call('optimize:clear');
 
         // 生产环境时自动优化系统，建立配置和路由缓存
