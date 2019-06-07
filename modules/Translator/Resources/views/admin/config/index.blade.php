@@ -43,26 +43,52 @@
 
                 </div>
             </div>
+            
+            <div class="engine d-none" data-depend="[name=engine]" data-when="value=baidu" data-then="show">
+                <div class="form-title row">{{trans('translator::config.engines.baidu')}}</div>
 
-            <div class="form-title row">{{trans('translator::config.engines.baidu')}}</div>
+                <div class="alert alert-warning my-3">
+                    {!! trans('translator::config.baidu.help') !!}
+                </div>
 
-            <div class="alert alert-warning my-3">
-                {!! trans('translator::config.baidu.help') !!}
-            </div>
+                <div class="form-group row">
+                    <label for="baidu[appid]" class="col-2 col-form-label required">{{trans('translator::config.baidu.appid')}}</label>
+                    <div class="col-8">
+                        {field type="text" name="baidu[appid]"}
+                    </div>
+                </div>
 
-            <div class="form-group row">
-                <label for="baidu[appid]" class="col-2 col-form-label required">{{trans('translator::config.baidu.appid')}}</label>
-                <div class="col-8">
-                    {field type="text" name="baidu[appid]" required="required"}
+                <div class="form-group row">
+                    <label for="baidu[secretkey]" class="col-2 col-form-label required">{{trans('translator::config.baidu.secretkey')}}</label>
+                    <div class="col-8">
+                        {field type="text" name="baidu[secretkey]"}
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label for="baidu[secretkey]" class="col-2 col-form-label required">{{trans('translator::config.baidu.secretkey')}}</label>
-                <div class="col-8">
-                    {field type="text" name="baidu[secretkey]" required="required"}
+            <div class="engine d-none" class="engine" data-depend="[name=engine]" data-when="value=youdao" data-then="show">
+
+                <div class="form-title row">{{trans('translator::config.engines.youdao')}}</div>
+
+                <div class="alert alert-warning my-3">
+                    {!! trans('translator::config.youdao.help') !!}
                 </div>
-            </div> 
+
+                <div class="form-group row">
+                    <label for="youdao[appid]" class="col-2 col-form-label required">{{trans('translator::config.youdao.appid')}}</label>
+                    <div class="col-8">
+                        {field type="text" name="youdao[appid]"}
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="youdao[secretkey]" class="col-2 col-form-label required">{{trans('translator::config.youdao.secretkey')}}</label>
+                    <div class="col-8">
+                        {field type="text" name="youdao[secretkey]"}
+                    </div>
+                </div>
+            </div>
+
             {/form}
     </div>
     <div class="main-footer">

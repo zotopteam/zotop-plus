@@ -52,7 +52,7 @@ class Baidu implements EngineInterface
             }
 
             if (isset($translate['error_code']) && isset($translate['error_msg'])) {
-                abort(403, 'Unable to translate: '.$translate['error_code'].' '.$translate['error_msg']);
+                abort(403, 'Unable to translate, Baidu error code: '.$translate['error_code'].' error reason: '.$translate['error_msg']);
             }
         }
 
@@ -85,7 +85,7 @@ class Baidu implements EngineInterface
 
     private function language($lang)
     {
-        $langs = Filter::fire('baidu.language.transform', [
+        $langs = Filter::fire('translator.baidu.language.transform', [
             'zh-Hans' => 'zh',
             'zh-Hant' => 'cht',
         ]);

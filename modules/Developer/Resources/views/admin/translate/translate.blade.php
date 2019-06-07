@@ -109,11 +109,17 @@
             var source = self.parents('tr').find('.form-locale').val();
             var target = self.parents('.input-group').find('input:first');
             
+            if (self.hasClass('disabled') || target.is(':disabled')) {
+                return false;
+            }
+
             self.addClass('disabled').find('i.fa').addClass('fa-spin');
 
             $.post("{{route('translator.translate')}}", {source:source,from:from,to:to}, function(result){
                 self.removeClass('disabled').find('i.fa').removeClass('fa-spin');
                 target.val(result);
+            }).fail(function(xhr, status, error) {
+                self.removeClass('disabled').find('i.fa').removeClass('fa-spin');
             });
         });
 

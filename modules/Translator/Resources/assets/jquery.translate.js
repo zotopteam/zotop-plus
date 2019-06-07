@@ -33,7 +33,9 @@
                 $.post(options.url, {source:source.val(), format:options.format, from:options.from, to:options.to, separator:options.separator, maxlength:options.maxlength}, function(value){
                     target.val(value);
                     btn.removeClass('disabled').find('.translate-icon').removeClass('fa-spin');
-                });             
+                }).fail(function(xhr, status, error) {
+                    btn.removeClass('disabled').find('.translate-icon').removeClass('fa-spin');
+                });            
             });                    
         })
     }

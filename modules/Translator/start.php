@@ -1,4 +1,14 @@
 <?php
+/**
+ * 扩展后台全局导航
+ */
+\Filter::listen('global.start','Modules\Translator\Hook\Listener@start', 80);
+
+/**
+ * 模块管理
+ */
+\Filter::listen('module.manage','Modules\Translator\Hook\Listener@moduleManage', 80);
+
 
 if (! function_exists('translate')) {
 
@@ -39,17 +49,6 @@ if (! function_exists('translate_slug')) {
         return $alias;
     }
 }
-
-/**
- * 扩展后台全局导航
- */
-\Filter::listen('global.start','Modules\Translator\Hook\Listener@start', 80);
-
-/**
- * 模块管理
- */
-\Filter::listen('module.manage','Modules\Translator\Hook\Listener@moduleManage', 80);
-
 
 /**
  * 翻译器

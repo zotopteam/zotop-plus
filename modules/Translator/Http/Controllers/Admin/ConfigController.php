@@ -20,7 +20,28 @@ class ConfigController extends AdminController
     public function index(Request $request)
     {
         // 保存数据
-        if ( $request->isMethod('POST') ) {          
+        if ( $request->isMethod('POST') ) {
+
+            // 校验appid和secretkey
+            if ($request->engine == 'baidu') {
+                $this->validate($request, [
+                    'baidu.appid'     => 'required',
+                    'baidu.secretkey' => 'required'
+                ],[],[
+                    'baidu.appid'     => trans('translator::config.baidu.appid'),
+                    'baidu.secretkey' => trans('translator::config.baidu.secretkey')
+                ]);
+            }
+
+            if ($request->engine == 'youdao') {
+                $this->validate($request, [
+                    'youdao.appid'     => 'required',
+                    'youdao.secretkey' => 'required'
+                ],[],[
+                    'youdao.appid'     => trans('translator::config.youdao.appid'),
+                    'youdao.secretkey' => trans('translator::config.youdao.secretkey')
+                ]);
+            }              
 
             // 写入配置组
             $this->config('translator', $request->all());
