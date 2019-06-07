@@ -31,11 +31,11 @@ class FileController extends AdminController
 
             File::put($this->path, $request->input('content'));
 
-            return $this->success(trans('core::master.saved'));
+            return $this->success(trans('master.saved'));
         }        
         
 
-        $this->title   = trans('core::master.edit');        
+        $this->title   = trans('master.edit');        
         $this->content = File::get($this->path);
         $this->mode    = File::extension($this->path);
 
@@ -74,9 +74,9 @@ class FileController extends AdminController
             }
 
             if (File::put($newpath, $content)) {
-                return $this->success(trans('core::master.operated'), $request->referer());
+                return $this->success(trans('master.operated'), $request->referer());
             }
-            return $this->error(trans('core::master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));            
         }        
 
     }
@@ -112,9 +112,9 @@ class FileController extends AdminController
             }
 
             if (File::move($this->path, $newpath)) {
-                return $this->success(trans('core::master.operated'), $request->referer());
+                return $this->success(trans('master.operated'), $request->referer());
             }
-            return $this->error(trans('core::master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));            
         }
     }
 
@@ -133,9 +133,9 @@ class FileController extends AdminController
         if ($request->isMethod('DELETE')) {
 
             if (File::delete($this->path)) {
-                return $this->success(trans('core::master.deleted'), $request->referer());
+                return $this->success(trans('master.deleted'), $request->referer());
             }
-            return $this->error(trans('core::master.deleted.failed'));            
+            return $this->error(trans('master.deleted.failed'));            
         }
     }
 
@@ -156,9 +156,9 @@ class FileController extends AdminController
             $newpath = dirname($this->path).'/copy '.basename($this->path);
 
             if (File::copy($this->path, $newpath)) {
-                return $this->success(trans('core::master.operated'), $request->referer());
+                return $this->success(trans('master.operated'), $request->referer());
             }
-            return $this->error(trans('core::master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));            
         }
     }    
 

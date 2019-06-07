@@ -48,7 +48,7 @@ class Baidu implements EngineInterface
         if (is_array($translate)) {
 
             if (isset($translate['trans_result'])) {
-                return $translate['trans_result'][0]['dst'];
+                return ucfirst($translate['trans_result'][0]['dst']);
             }
 
             if (isset($translate['error_code']) && isset($translate['error_msg'])) {

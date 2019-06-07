@@ -2,7 +2,7 @@
 return [
     'title'              => 'Content',
     'description'        => 'Content with page、category、news……',
-    'root'               => 'Content management',
+    'root'               => 'Root',
     'position'           => 'Position',
     'create'             => 'Create',
     'create.model'       => 'Create :0',

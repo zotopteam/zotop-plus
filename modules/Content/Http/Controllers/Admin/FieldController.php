@@ -50,7 +50,7 @@ class FieldController extends AdminController
             Field::where('id', $id)->update(['position' => $request->position, 'sort' => $sort]);
         }
 
-        return $this->success(trans('core::master.operated'));        
+        return $this->success(trans('master.operated'));        
     }     
 
     /**
@@ -86,7 +86,7 @@ class FieldController extends AdminController
         $field->fill($request->all());
         $field->save();
 
-        return $this->success(trans('core::master.created'), route('content.field.index', $request->model_id));
+        return $this->success(trans('master.created'), route('content.field.index', $request->model_id));
     } 
 
     /**
@@ -117,7 +117,7 @@ class FieldController extends AdminController
         $field->fill($request->all());    
         $field->save();
 
-        return $this->success(trans('core::master.updated'), route('content.field.index', $field->model_id));
+        return $this->success(trans('master.updated'), route('content.field.index', $field->model_id));
     }
 
     /**
@@ -132,7 +132,7 @@ class FieldController extends AdminController
         $field->fill($request->all());      
         $field->save();
 
-        return $this->success(trans('core::master.operated'), route('content.field.index', $field->model_id));        
+        return $this->success(trans('master.operated'), route('content.field.index', $field->model_id));        
     }      
 
     /**
@@ -150,7 +150,7 @@ class FieldController extends AdminController
 
         $field->delete();
 
-        return $this->success(trans('core::master.deleted'), route('content.field.index', $model_id));        
+        return $this->success(trans('master.deleted'), route('content.field.index', $model_id));        
     }
 
     /**
@@ -165,7 +165,7 @@ class FieldController extends AdminController
         $field->disabled = $field->disabled ? 0 : 1;
         $field->save();
 
-        return $this->success(trans('core::master.operated'), route('content.field.index', $model_id));
+        return $this->success(trans('master.operated'), route('content.field.index', $model_id));
     }
 
     /**

@@ -16,6 +16,6 @@ class IndexController extends AdminController
      */
     public function index()
     {
-        return $this->view()->with('title',trans('core::master.title'));
+        return $this->view()->with('title', trans('core::core.index'));
     }
 }

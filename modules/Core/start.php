@@ -504,8 +504,8 @@
 \Form::macro('bool', function($attrs) {
     // options
     $attrs['options'] = $this->getAttribute($attrs, 'options',  [
-        1 => trans('core::master.yes'),
-        0 => trans('core::master.no')
+        1 => trans('master.yes'),
+        0 => trans('master.no')
     ]);
     return $this->macroCall('radiogroup',  [$attrs]);
 });
@@ -516,8 +516,8 @@
 \Form::macro('enable', function($attrs){
     // options
     $attrs['options'] = $this->getAttribute($attrs, 'options',  [
-        1 => trans('core::master.enable'),
-        0 => trans('core::master.disable')
+        1 => trans('master.enable'),
+        0 => trans('master.disable')
     ]);
     return $this->macroCall('radiogroup',  [$attrs]);
 });

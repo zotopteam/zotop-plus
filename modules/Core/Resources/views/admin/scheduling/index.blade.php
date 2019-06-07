@@ -12,7 +12,7 @@
     </div>
     <div class="main-body scrollable">
         @if($tasks->count() == 0)
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @else
             <table class="table table-nowrap table-hover" >
                 <thead>

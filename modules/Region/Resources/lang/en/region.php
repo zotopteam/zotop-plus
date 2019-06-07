@@ -1,6 +1,5 @@
 <?php
-
 return [
-    'title'             => 'Region',
-    'description'       => 'Region manage',
+    'title'       => 'Region',
+    'description' => 'Region manage',
 ];

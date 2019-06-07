@@ -54,7 +54,7 @@ class $CLASS$ extends AdminController
         $$LOWER_MODEL$->fill($request->all());
         $$LOWER_MODEL$->save();
 
-        return $this->success(trans('core::master.created'), route('$LOWER_NAME$.$LOWER_CONTROLLER$.index'));
+        return $this->success(trans('master.created'), route('$LOWER_NAME$.$LOWER_CONTROLLER$.index'));
     }
 
     /**
@@ -98,7 +98,7 @@ class $CLASS$ extends AdminController
         $$LOWER_MODEL$->fill($request->all());        
         $$LOWER_MODEL$->save();
 
-        return $this->success(trans('core::master.updated'), route('$LOWER_NAME$.$LOWER_CONTROLLER$.index'));
+        return $this->success(trans('master.updated'), route('$LOWER_NAME$.$LOWER_CONTROLLER$.index'));
     }
 
     /**
@@ -111,6 +111,6 @@ class $CLASS$ extends AdminController
         $$LOWER_MODEL$ = $MODEL$::findOrFail($id);
         $$LOWER_MODEL$->delete();
 
-        return $this->success(trans('core::master.deleted'), route('$LOWER_NAME$.$LOWER_CONTROLLER$.index'));        
+        return $this->success(trans('master.deleted'), route('$LOWER_NAME$.$LOWER_CONTROLLER$.index'));        
     }
 }

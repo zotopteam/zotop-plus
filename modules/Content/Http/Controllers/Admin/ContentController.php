@@ -26,7 +26,7 @@ class ContentController extends AdminController
         } else {
             $this->parent = new Content;
             $this->parent->id = 0;
-            $this->parent->title = trans('content::content.root');            
+            $this->parent->title = trans('content::content.root');
         }
 
         // 获取全部父级
@@ -38,6 +38,9 @@ class ContentController extends AdminController
         }, function($query) use($parent_id) {
             $query->where('parent_id', $parent_id);
         })->sort()->paginate(25);
+
+        // 页面标题
+        $this->title = $this->parent->title .' '. trans('content::content.title'); 
 
         return $this->view();
     }
@@ -90,10 +93,10 @@ class ContentController extends AdminController
 
         // 保存并返回
         if ($request->input('_action') == 'back') {
-            return $this->success(trans('core::master.created'), route('content.content.index', $content->parent_id));
+            return $this->success(trans('master.created'), route('content.content.index', $content->parent_id));
         }    
 
-         return $this->success(trans('core::master.created'), route('content.content.edit', $content->id));
+         return $this->success(trans('master.created'), route('content.content.edit', $content->id));
     }
 
     /**
@@ -155,10 +158,10 @@ class ContentController extends AdminController
 
         // 保存并返回
         if ($request->input('_action') == 'back') {
-            return $this->success(trans('core::master.updated'), route('content.content.index', $content->parent_id));
+            return $this->success(trans('master.updated'), route('content.content.index', $content->parent_id));
         }
 
-        return $this->success(trans('core::master.updated'));
+        return $this->success(trans('master.updated'));
     }
 
     /**
@@ -212,7 +215,7 @@ class ContentController extends AdminController
                 $item->save();
             });
     
-            return $this->success(trans('core::master.operated'), $request->referer());
+            return $this->success(trans('master.operated'), $request->referer());
         }     
     }
 
@@ -227,7 +230,7 @@ class ContentController extends AdminController
         $content->stick = $content->stick ? 0 : 1;
         $content->save();
 
-        return $this->success(trans('core::master.operated'), route('content.content.index', $content->parent_id));        
+        return $this->success(trans('master.operated'), route('content.content.index', $content->parent_id));        
     }      
 
     /**
@@ -252,7 +255,7 @@ class ContentController extends AdminController
                 'stick' => $stick,
             ]);
             
-            return $this->success(trans('core::master.sorted'), $request->referer());
+            return $this->success(trans('master.sorted'), $request->referer());
         }
 
         // 当前排序节点
@@ -297,7 +300,7 @@ class ContentController extends AdminController
                 $item->save();
             });
 
-            return $this->success(trans('core::master.moved'));
+            return $this->success(trans('master.moved'));
         }
 
         // 缓存当前选择的节点编号，下次进入时候直接展示该节点
@@ -346,6 +349,6 @@ class ContentController extends AdminController
             $item->delete();
         });        
 
-        return $this->success(trans('core::master.deleted'), $request->referer());        
+        return $this->success(trans('master.deleted'), $request->referer());        
     }
 }

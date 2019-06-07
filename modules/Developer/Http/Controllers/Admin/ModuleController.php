@@ -80,7 +80,7 @@ class ModuleController extends AdminController
             '--force' => false,
         ]);
 
-        return $this->success(trans('core::master.created'),route('developer.module.index'));
+        return $this->success(trans('master.created'),route('developer.module.index'));
     }
 
     /**
@@ -106,6 +106,6 @@ class ModuleController extends AdminController
         // Update module.json
         $module->json()->set($field, $newvalue)->save();
 
-        return $this->success(trans('core::master.saved'),route('developer.module.show',[$name]));
+        return $this->success(trans('master.saved'),route('developer.module.show',[$name]));
     }
 }

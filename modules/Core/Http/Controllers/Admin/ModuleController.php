@@ -35,7 +35,7 @@ class ModuleController extends AdminController
     {
         Module::findOrFail($module)->enable(); 
 
-        return $this->success(trans('core::master.actived'), $request->referer());
+        return $this->success(trans('master.actived'), $request->referer());
     }
 
     /**
@@ -48,7 +48,7 @@ class ModuleController extends AdminController
     {
         Module::findOrFail($module)->disable(); 
 
-        return $this->success(trans('core::master.disabled'), $request->referer());
+        return $this->success(trans('master.disabled'), $request->referer());
     }
 
     /**
@@ -95,7 +95,7 @@ class ModuleController extends AdminController
 
         $module->delete();
 
-        return $this->success(trans('core::master.deleted'), $request->referer());
+        return $this->success(trans('master.deleted'), $request->referer());
     }
 
     /**

@@ -46,7 +46,7 @@ class MineController extends AdminController
         $this->user->fill($request->all());
         $this->user->save();
 
-        return $this->success(trans('core::master.saved'));
+        return $this->success(trans('master.saved'));
     }
 
     /**
@@ -72,7 +72,7 @@ class MineController extends AdminController
         $this->user->password = \Hash::make($request->input('password_new'));
         $this->user->save();
 
-        return $this->success(trans('core::master.saved'));
+        return $this->success(trans('master.saved'));
     }     
 
 }

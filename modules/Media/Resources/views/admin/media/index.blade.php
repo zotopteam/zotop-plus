@@ -7,7 +7,7 @@
         @if (empty($keywords))
             @if ($parent_id)
             <div class="main-back d-none">
-                <a href="javascript:history.go(-1);"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+                <a href="javascript:history.go(-1);"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
             </div>        
             <div class="main-title mr-auto">{{$parent->name}}</div>
             @else
@@ -23,10 +23,10 @@
             </div>
         @else
         <div class="main-back">
-            <a href="{{route('media.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{route('media.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>        
         <div class="main-title mx-auto">
-            {{trans('core::master.searching', [$keywords])}}
+            {{trans('master.searching', [$keywords])}}
         </div>        
         @endif
         <div class="main-action">
@@ -106,25 +106,25 @@
 
                         @if ($m->isImage())
                         <a href="javascript:;" class="manage-item js-image" data-url="{{$m->url}}" data-title="{{$m->name}}">
-                            <i class="fa fa-eye fa-fw"></i> {{trans('core::master.view')}}
+                            <i class="fa fa-eye fa-fw"></i> {{trans('master.view')}}
                         </a>
                         @endif
 
                         @if ($m->isFolder())
                            <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" data-value="{{$m->name}}">
-                                <i class="fa fa-fw fa-eraser"></i> {{trans('core::master.rename')}}
+                                <i class="fa fa-fw fa-eraser"></i> {{trans('master.rename')}}
                             </a>
                         @else
                             <a class="manage-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::file.name')}}" data-name="name" data-value="{{$m->name}}">
-                                <i class="fa fa-fw fa-eraser"></i> {{trans('core::master.rename')}}
+                                <i class="fa fa-fw fa-eraser"></i> {{trans('master.rename')}}
                             </a>                        
                         @endif
 
                         <a href="javascript:;" class="manage-item js-move" data-id="{{$m->id}}" data-title="{{$m->name}}">
-                            <i class="fa fa-arrows-alt fa-fw"></i> {{trans('core::master.move')}}
+                            <i class="fa fa-arrows-alt fa-fw"></i> {{trans('master.move')}}
                         </a>                               
                         <a class="manage-item js-delete" href="javascript:;" data-url="{{route('media.destroy', $m->id)}}">
-                            <i class="fa fa-fw fa-times"></i> {{trans('core::master.delete')}}
+                            <i class="fa fa-fw fa-times"></i> {{trans('master.delete')}}
                         </a>                                            
                     </td>
                     <td>
@@ -163,10 +163,10 @@
             </div>
 
             <button type="button" class="btn btn-success checkable-operator disabled" disabled="disabled" data-operate="move">
-                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('core::master.move')}}
+                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('master.move')}}
             </button>
             <button type="button" class="btn btn-danger checkable-operator disabled" disabled="disabled" data-operate="delete">
-                <i class="fa fa-times fa-fw"></i> {{trans('core::master.delete')}}
+                <i class="fa fa-times fa-fw"></i> {{trans('master.delete')}}
             </button>
         </div>    
 
@@ -248,7 +248,7 @@
     function moveDialog(callback) {
         return $.dialog({
             id      : 'move-media',
-            title   : '{{ trans('core::master.move') }}',
+            title   : '{{ trans('master.move') }}',
             url     : '{{ route('media.move')}}',
             width   : '75%',
             height  : '75%',
@@ -342,7 +342,7 @@
 
                 // 永久删除
                 if (operate == 'delete') {
-                    $.confirm("{{ trans('core::master.delete.confirm') }}", function(){
+                    $.confirm("{{ trans('master.delete.confirm') }}", function(){
                         postData('{{route('media.destroy')}}', {id:ids});
                     })
                 }                

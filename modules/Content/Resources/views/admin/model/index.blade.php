@@ -5,7 +5,7 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{route('content.content.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{route('content.content.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>    
         <div class="main-title mr-auto">
             {{$title}}
@@ -18,7 +18,7 @@
     </div>
     <div class="main-body scrollable">
         @if($models->count() == 0 && $import->count() == 0)
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @else
             {form route="content.model.sort" method="post"}
             <table class="table table-nowrap table-sortable table-hover">
@@ -62,14 +62,14 @@
                                 </a>
                                 @if ($model->disabled)                                 
                                 <a class="manage-item js-confirm" href="{{route('content.model.status', $model->id)}}">
-                                    <i class="fa fa-check-circle"></i> {{trans('core::master.enable')}}                                    
+                                    <i class="fa fa-check-circle"></i> {{trans('master.enable')}}                                    
                                 </a>                                                                
                                 <a class="manage-item js-delete" href="javascript:;" data-url="{{route('content.model.destroy', $model->id)}}">
-                                    <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                                    <i class="fa fa-times"></i> {{trans('master.delete')}}
                                 </a>
                                 @else
                                 <a class="manage-item js-confirm" href="{{route('content.model.status', $model->id)}}">                                    
-                                    <i class="fa fa-times-circle"></i> {{trans('core::master.disable')}}
+                                    <i class="fa fa-times-circle"></i> {{trans('master.disable')}}
                                 </a>                                     
                                 @endif
                             </div>

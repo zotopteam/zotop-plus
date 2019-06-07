@@ -58,7 +58,7 @@ class Youdao implements EngineInterface
         // 结果正确
         if (is_array($translate) && isset($translate['errorCode'])) {
             if ($translate['errorCode'] == 0 && isset($translate['translation'])) {
-                return $translate['translation'][0];
+                return ucfirst($translate['translation'][0]);
             } else {
                 abort(403, 'Unable to translate, Youdao error code: '.$translate['errorCode']. ', error Reason: http://ai.youdao.com/docs/doc-trans-api.s#p08');
             }            

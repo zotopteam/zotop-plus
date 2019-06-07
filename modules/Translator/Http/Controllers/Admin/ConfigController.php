@@ -46,7 +46,7 @@ class ConfigController extends AdminController
             // 写入配置组
             $this->config('translator', $request->all());
 
-            return $this->success(trans('core::master.saved'), $request->referer());
+            return $this->success(trans('master.saved'), $request->referer());
         }
 
         $this->title  = trans('translator::config.title');

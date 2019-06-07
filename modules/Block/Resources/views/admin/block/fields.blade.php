@@ -85,8 +85,8 @@
                         <div class="input-group my-2">
                             <div class="input-group-prepend"><span class="input-group-text">{{trans('block::block.fields.watermark')}}</span></div>
                             <select name="fields[{{$k}}][watermark]" class="form-control">
-                                <option value="false">{{trans('core::master.off')}}</option>
-                                <option value="true">{{trans('core::master.on')}}</option>
+                                <option value="false">{{trans('master.off')}}</option>
+                                <option value="true">{{trans('master.on')}}</option>
                             </select>
                         </div>                                                            
                     </div>             

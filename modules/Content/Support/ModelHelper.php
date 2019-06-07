@@ -79,7 +79,7 @@ class ModelHelper
         if (Model::where('id', $data['model']['id'])->count() > 0) {
 
             if (! $override) {
-                abort(500, trans('core::master.existed', [$data['model']['id']]));
+                abort(500, trans('master.existed', [$data['model']['id']]));
             }
             
             // 删除

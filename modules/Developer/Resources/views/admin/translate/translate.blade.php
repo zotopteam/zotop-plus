@@ -5,7 +5,7 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{route('developer.translate.index',[$module])}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{route('developer.translate.index',[$module])}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>    
         <div class="main-title mr-auto">
             {{$title}} {{$filename}}
@@ -29,7 +29,7 @@
                 <tr>
                     <td class="drag"></td>
                     <td colspan="2">{{trans('developer::translate.key')}}</td>
-                    <td width="1%" class="manage">{{trans('core::master.delete')}}</td>
+                    <td width="1%" class="manage">{{trans('master.delete')}}</td>
                     @foreach ($languages as $lang=>$name)
                         <td>{{$name}}</td>
                     @endforeach
@@ -49,7 +49,7 @@
                     </td>
                     <td class="manage">
                         <a href="javascript:;" class="manage-item js-confirm" data-url="{{route('developer.translate.deletekey',[$module, 'filename'=>$filename, 'key'=>$key])}}">
-                            <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                            <i class="fa fa-times"></i> {{trans('master.delete')}}
                         </a>
                     </td>
                     @foreach ($languages as $lang=>$name)
@@ -83,7 +83,7 @@
             </tbody>
         </table>
         @else
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @endif           
     </div>
     <div class="main-footer">

@@ -55,12 +55,12 @@ class TranslateController extends AdminController
         $file   = $module->getExtraPath('Resources/lang/'.$locale.'/'.$name);
 
         if (Lang::exists($file)) {
-            return $this->error(trans('core::master.existed', [$name]));
+            return $this->error(trans('master.existed', [$name]));
         }
 
         Lang::set($file, []);
 
-        return $this->success(trans('core::master.saved'), $request->referer());
+        return $this->success(trans('master.saved'), $request->referer());
     }
 
     /**
@@ -84,7 +84,7 @@ class TranslateController extends AdminController
             Lang::delete($file);
         }
 
-        return $this->success(trans('core::master.operated'), $request->referer());
+        return $this->success(trans('master.operated'), $request->referer());
     }
 
     /**
@@ -137,7 +137,7 @@ class TranslateController extends AdminController
             Lang::set($file, $data, ($lang != $locale));
         }
 
-        return $this->success(trans('core::master.saved'), $request->referer());
+        return $this->success(trans('master.saved'), $request->referer());
     }
 
     /**
@@ -169,7 +169,7 @@ class TranslateController extends AdminController
 
         Lang::set($file, $data);
 
-        return $this->success(trans('core::master.saved'), $request->referer());
+        return $this->success(trans('master.saved'), $request->referer());
     }
 
     /**
@@ -194,6 +194,6 @@ class TranslateController extends AdminController
             Lang::forget($file, $key);
         }
 
-        return $this->success(trans('core::master.deleted'), $request->referer());
+        return $this->success(trans('master.deleted'), $request->referer());
     }       
 }

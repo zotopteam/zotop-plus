@@ -1,6 +1,5 @@
 <?php
-
 return [
-    'title'             => 'Region',
-    'description'       => '',
+    'title'       => 'Region',
+    'description' => '都市區域管理',
 ];

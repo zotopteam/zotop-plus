@@ -23,8 +23,8 @@
                 <td class="left" width="15%">{{trans('developer::module.title.label')}}</td>
                 <td class="right">
                     {{$json->title}}
-                    <a href="javascript:;" title="{{trans('core::master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'title'])}}" data-value="{{$json->title}}" data-prompt="{{trans('developer::module.title.label')}}">
-                        <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                    <a href="javascript:;" title="{{trans('master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'title'])}}" data-value="{{$json->title}}" data-prompt="{{trans('developer::module.title.label')}}">
+                        <i class="fa fa-edit"></i> {{trans('master.edit')}}
                     </a> 
 
                     <div class="text-sm text-muted pt-3">{{trans('developer::module.title.help',[strtolower($name)])}}</div>                   
@@ -34,8 +34,8 @@
                 <td class="left" width="15%">{{trans('developer::module.description.label')}}</td>
                 <td class="right">
                     {{$json->description}}
-                    <a href="javascript:;" title="{{trans('core::master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'description'])}}" data-value="{{$json->description}}" data-prompt="{{trans('developer::module.description.label')}}" data-type="textarea">
-                        <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                    <a href="javascript:;" title="{{trans('master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'description'])}}" data-value="{{$json->description}}" data-prompt="{{trans('developer::module.description.label')}}" data-type="textarea">
+                        <i class="fa fa-edit"></i> {{trans('master.edit')}}
                     </a>
 
                     <div class="text-sm text-muted pt-3">{{trans('developer::module.description.help',[strtolower($name)])}}</div>
@@ -45,8 +45,8 @@
                 <td class="left" width="15%">{{trans('developer::module.version.label')}}</td>
                 <td class="right">
                     {{$json->version}}
-                    <a href="javascript:;" title="{{trans('core::master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'version'])}}" data-value="{{$json->version}}" data-prompt="{{trans('developer::module.version.label')}}">
-                        <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                    <a href="javascript:;" title="{{trans('master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'version'])}}" data-value="{{$json->version}}" data-prompt="{{trans('developer::module.version.label')}}">
+                        <i class="fa fa-edit"></i> {{trans('master.edit')}}
                     </a>
                 </td>
             </tr>              
@@ -54,8 +54,8 @@
                 <td class="left" width="15%">{{trans('developer::module.order.label')}}</td>
                 <td class="right">
                     {{$json->order}}
-                    <a href="javascript:;" title="{{trans('core::master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'order'])}}" data-value="{{$json->order}}" data-prompt="{{trans('developer::module.order.label')}}">
-                        <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                    <a href="javascript:;" title="{{trans('master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'order'])}}" data-value="{{$json->order}}" data-prompt="{{trans('developer::module.order.label')}}">
+                        <i class="fa fa-edit"></i> {{trans('master.edit')}}
                     </a>
                 </td>
             </tr>            
@@ -63,8 +63,8 @@
                 <td class="left" width="15%">{{trans('developer::module.author.label')}}</td>
                 <td class="right">
                     {{$json->author}}
-                    <a href="javascript:;" title="{{trans('core::master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'author'])}}" data-value="{{$json->author}}" data-prompt="{{trans('developer::module.author.label')}}">
-                        <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                    <a href="javascript:;" title="{{trans('master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'author'])}}" data-value="{{$json->author}}" data-prompt="{{trans('developer::module.author.label')}}">
+                        <i class="fa fa-edit"></i> {{trans('master.edit')}}
                     </a>
                 </td>
             </tr>
@@ -72,8 +72,8 @@
                 <td class="left" width="15%">{{trans('developer::module.email.label')}}</td>
                 <td class="right">
                     {{$json->email}}
-                    <a href="javascript:;" title="{{trans('core::master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'email'])}}" data-value="{{$json->email}}" data-prompt="{{trans('developer::module.email.label')}}">
-                        <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                    <a href="javascript:;" title="{{trans('master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'email'])}}" data-value="{{$json->email}}" data-prompt="{{trans('developer::module.email.label')}}">
+                        <i class="fa fa-edit"></i> {{trans('master.edit')}}
                     </a>
                 </td>
             </tr>
@@ -81,8 +81,8 @@
                 <td class="left" width="15%">{{trans('developer::module.homepage.label')}}</td>
                 <td class="right">
                     {{$json->homepage}}
-                    <a href="javascript:;" title="{{trans('core::master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'homepage'])}}" data-value="{{$json->homepage}}" data-prompt="{{trans('developer::module.homepage.label')}}">
-                        <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                    <a href="javascript:;" title="{{trans('master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$name,'homepage'])}}" data-value="{{$json->homepage}}" data-prompt="{{trans('developer::module.homepage.label')}}">
+                        <i class="fa fa-edit"></i> {{trans('master.edit')}}
                     </a>
                 </td>
             </tr>                                                  
@@ -115,7 +115,7 @@
                         @endforeach
                     </table>
                     @else
-                    {{trans('core::master.nodata')}}
+                    {{trans('master.nodata')}}
                     @endif
 
                     <div class="text-sm text-muted pt-3">{{trans('developer::module.aliases.help',[$path])}}</div>

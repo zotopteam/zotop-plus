@@ -14,7 +14,7 @@ class ModuleRequest extends FormRequest
     {
         $validationFactory->extend('module_exists',function ($attribute, $value, $parameters) {
             return !Module::has(Str::studly($value));
-        },trans('core::master.existed'));
+        },trans('master.existed'));
     }
 
     /**

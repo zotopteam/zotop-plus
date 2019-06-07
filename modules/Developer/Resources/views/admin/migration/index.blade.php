@@ -72,22 +72,22 @@
                         </a>                         
                                     
                         <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.file.editor',['file'=>path_base($file)])}}"  data-width="80%" data-height="80%">
-                            <i class="fa fa-pen-square fa-fw text-primary"></i> {{trans('core::master.edit')}}
+                            <i class="fa fa-pen-square fa-fw text-primary"></i> {{trans('master.edit')}}
                         </a>
                         <div class="dropdown d-inline-block manage-item">
                             <a href="javascript:;" data-toggle="dropdown">
-                                {{trans('core::master.more')}}
+                                {{trans('master.more')}}
                                 <i class="fa fa-angle-down" ></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a href="javascript:;" class="dropdown-item js-post" data-url="{{route('core.file.copy',['file'=>path_base($file)])}}">
-                                    <i class="fa fa-copy fa-fw text-primary"></i> {{trans('core::master.copy')}}
+                                    <i class="fa fa-copy fa-fw text-primary"></i> {{trans('master.copy')}}
                                 </a>
                                 <a href="javascript:;" class="dropdown-item js-prompt" data-url="{{route('core.file.rename',['file'=>path_base($file)])}}" data-prompt="{{trans('core::file.name')}}" data-value="{{basename($file)}}">
-                                    <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('core::master.rename')}}
+                                    <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('master.rename')}}
                                 </a>
                                 <a href="javascript:;" class="dropdown-item js-delete" data-url="{{route('core.file.delete',['file'=>path_base($file)])}}">
-                                    <i class="fa fa-trash fa-fw text-primary"></i> {{trans('core::master.delete')}}
+                                    <i class="fa fa-trash fa-fw text-primary"></i> {{trans('master.delete')}}
                                 </a>
                             </div>                            
                         </div>
@@ -107,7 +107,7 @@
             </tbody>
         </table>
         @else
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @endif     
     </div><!-- main-body -->
     <div class="main-footer">

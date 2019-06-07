@@ -45,7 +45,7 @@ class ConfigController extends AdminController
             // 写入配置组
             $this->config('core', $config);
 
-            return $this->success(trans('core::master.saved'));
+            return $this->success(trans('master.saved'));
         }
 
         $this->title  = trans('core::config.upload');
@@ -98,7 +98,7 @@ class ConfigController extends AdminController
                 'MAIL_ENCRYPTION'   => $request->input('encryption'),
             ]);
 
-            return $this->success(trans('core::master.saved'));
+            return $this->success(trans('master.saved'));
         }
 
         $this->title = trans('core::config.mail');
@@ -129,7 +129,7 @@ class ConfigController extends AdminController
             // 发送邮件
             $this->app->make('mailer')->to($to)->send(new \Modules\Core\Emails\TestMail());
 
-            return $this->success(trans('core::master.operated'));                            
+            return $this->success(trans('master.operated'));                            
         }
 
         return new \Modules\Core\Emails\TestMail();
@@ -153,7 +153,7 @@ class ConfigController extends AdminController
                 'APP_TIME_FORMAT' => $request->input('time_format'),
             ]);
 
-            return $this->success(trans('core::master.saved'), route('core.config.locale'));
+            return $this->success(trans('master.saved'), route('core.config.locale'));
         }
 
         $this->title = trans('core::config.locale');
@@ -183,7 +183,7 @@ class ConfigController extends AdminController
             // $redirectTo = route('core.config.safe');
             $redirectTo = url($request->input('admin_prefix', 'admin').'/core/config/safe');
 
-            return $this->success(trans('core::master.saved'), $redirectTo);
+            return $this->success(trans('master.saved'), $redirectTo);
         }
 
 

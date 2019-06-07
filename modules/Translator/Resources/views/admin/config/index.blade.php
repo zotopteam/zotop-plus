@@ -93,7 +93,7 @@
     </div>
     <div class="main-footer">
         <div class="mr-auto">
-            {field type="submit" form="config" value="trans('core::master.save')" class="btn btn-primary"}
+            {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
         </div>
     </div>    
 </div>

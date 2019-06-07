@@ -34,7 +34,7 @@ class ConfigController extends AdminController
             // 写入配置组
             $this->config('site', $request->all());
 
-            return $this->success(trans('core::master.saved'),$request->referer());
+            return $this->success(trans('master.saved'),$request->referer());
         }
 
         $this->title  = trans('site::config.base');
@@ -62,7 +62,7 @@ class ConfigController extends AdminController
             // 写入配置组
             $this->config('site', $request->all());
 
-            return $this->success(trans('core::master.saved'),$request->referer());
+            return $this->success(trans('master.saved'),$request->referer());
         }
 
         $this->title  = trans('site::config.wap');
@@ -83,7 +83,7 @@ class ConfigController extends AdminController
             // 写入配置组
             $this->config('site', $request->all());
 
-            return $this->success(trans('core::master.saved'));
+            return $this->success(trans('master.saved'));
         }
 
         $this->title  = trans('site::config.seo');
@@ -108,7 +108,7 @@ class ConfigController extends AdminController
             // 写入配置组
             $this->config('site', $config);
 
-            return $this->success(trans('core::master.saved'));
+            return $this->success(trans('master.saved'));
         }
 
         $this->title  = trans('site::config.maintain');

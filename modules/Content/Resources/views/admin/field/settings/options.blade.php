@@ -19,7 +19,7 @@
                             <td></td>
                             <td colspan="3">
                                 <a href="javascript:;" class="btn btn-primary btn-sm settings-options-add">
-                                    <i class="fa fa-plus"></i> {{trans('core::master.create')}}
+                                    <i class="fa fa-plus"></i> {{trans('master.create')}}
                                 </a>
                             </td>
                         </tr>

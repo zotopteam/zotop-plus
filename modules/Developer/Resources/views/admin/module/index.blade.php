@@ -4,7 +4,7 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{route('developer.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{route('developer.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>    
         <div class="main-title mx-auto">
             {{$title}}

@@ -6,13 +6,13 @@
     <div class="main-header">
         @if($keywords = request('keywords'))
             <div class="main-back">
-                <a href="{{route('content.content.move',[$parent->id])}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+                <a href="{{route('content.content.move',[$parent->id])}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
             </div>           
             <div class="main-title mr-auto">
                 {{$parent->title}}
             </div>                          
             <div class="main-title mx-auto">
-                {{trans('core::master.searching', [$keywords])}}
+                {{trans('master.searching', [$keywords])}}
             </div>        
         @else
         <div class="main-title">
@@ -22,7 +22,7 @@
         <div class="main-action ml-auto">
             {form route="['content.content.move', $parent->id]" class="form-inline form-search" method="get"}
                 <div class="input-group">
-                    <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('core::master.keywords.placeholder')}}" required="required" aria-label="Search">
+                    <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('master.keywords.placeholder')}}" required="required" aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i></button>
                     </div>
@@ -30,7 +30,7 @@
             {/form}
         </div>
         <div class="main-action">
-            <a href="javascript:location.reload()" class="btn btn-light" title="{{trans('core::master.refresh')}}">
+            <a href="javascript:location.reload()" class="btn btn-light" title="{{trans('master.refresh')}}">
                 <span class="fa fa-sync"></span>
             </a>
         </div>             

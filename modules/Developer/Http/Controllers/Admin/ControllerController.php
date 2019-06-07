@@ -196,7 +196,7 @@ class ControllerController extends AdminController
             $path = $this->fullpath($module, $type, $name);
 
             if (File::exists($path)) {
-                return $this->error(trans('core::master.existed', [$name]));
+                return $this->error(trans('master.existed', [$name]));
             }
 
             $artisan = $this->types($type, 'artisan');
@@ -208,11 +208,11 @@ class ControllerController extends AdminController
                 '--force'    => false,
             ]);
 
-            return $this->success(trans('core::master.saved'),route('developer.controller.index',[$module,$type]));
+            return $this->success(trans('master.saved'),route('developer.controller.index',[$module,$type]));
         }
 
 
-        $this->title      = trans('core::master.create');
+        $this->title      = trans('master.create');
 
         $this->controller = [];
         $this->styles     = $this->types($type,'styles');

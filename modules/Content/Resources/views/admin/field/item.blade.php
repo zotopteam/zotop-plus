@@ -10,20 +10,20 @@
                         </div>
                         <div class="manage">
                             <a class="manage-item" href="{{route('content.field.edit', [$model->id, $field->id])}}">
-                                <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                                <i class="fa fa-edit"></i> {{trans('master.edit')}}
                             </a>
                             @if ($field->disabled)                                 
                             <a class="manage-item js-confirm" href="{{route('content.field.status', [$model->id, $field->id])}}">
-                                <i class="fa fa-check-circle"></i> {{trans('core::master.enable')}}                                    
+                                <i class="fa fa-check-circle"></i> {{trans('master.enable')}}                                    
                             </a>                                                                
                             @if(!$field->system)
                             <a class="manage-item js-delete" href="javascript:;" data-url="{{route('content.field.destroy', [$model->id, $field->id])}}">
-                                <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                                <i class="fa fa-times"></i> {{trans('master.delete')}}
                             </a>
                             @endif
                             @else
                             <a class="manage-item js-confirm" href="{{route('content.field.status', [$model->id, $field->id])}}">
-                                <i class="fa fa-times-circle"></i> {{trans('core::master.disable')}}
+                                <i class="fa fa-times-circle"></i> {{trans('master.disable')}}
                             </a>                                     
                             @endif
                         </div>                    

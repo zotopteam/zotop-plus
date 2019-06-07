@@ -4,7 +4,7 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{route('block.data',$block->id)}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{route('block.data',$block->id)}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>    
         <div class="main-title mr-auto">
             {{$block->name}} - {{$title}}
@@ -15,13 +15,13 @@
     </div>
     <div class="main-body scrollable">
         @if($datalists->count() == 0)
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @else
             <table class="table table-nowrap table-hover">
                 <thead>
                 <tr>
                     <td>{{trans('block::datalist.title')}}</td>
-                    <td width="10%">{{trans('core::master.lastmodify')}}</td>
+                    <td width="10%">{{trans('master.lastmodify')}}</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,10 +43,10 @@
                                     <i class="fas fa-undo"></i> {{trans('block::datalist.republish')}}
                                 </a>                                
                                 <a class="manage-item js-open" href="javascript:;"  data-url="{{route('block.datalist.edit', $datalist->id)}}" data-width="800" data-height="400">
-                                    <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                                    <i class="fa fa-edit"></i> {{trans('master.edit')}}
                                 </a>
                                 <a class="manage-item js-delete" href="javascript:;" data-url="{{route('block.datalist.destroy', $datalist->id)}}">
-                                    <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                                    <i class="fa fa-times"></i> {{trans('master.delete')}}
                                 </a>
                             </div>
                         </td>

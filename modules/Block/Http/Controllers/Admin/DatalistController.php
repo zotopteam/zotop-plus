@@ -62,7 +62,7 @@ class DatalistController extends AdminController
         $datalist->fill($request->all());
         $datalist->save();
 
-        return $this->success(trans('core::master.created'), route('block.datalist.index', $request->input('block_id')));
+        return $this->success(trans('master.created'), route('block.datalist.index', $request->input('block_id')));
     }   
 
     /**
@@ -97,7 +97,7 @@ class DatalistController extends AdminController
         $datalist->fill($request->all());     
         $datalist->save();
 
-        return $this->success(trans('core::master.updated'), route('block.datalist.index', $request->input('block_id')));
+        return $this->success(trans('master.updated'), route('block.datalist.index', $request->input('block_id')));
     }
 
     /**
@@ -120,7 +120,7 @@ class DatalistController extends AdminController
             return $this->success(trans('block::datalist.history.deleted'), $request->referer()); 
         }
 
-        return $this->error(trans('core::master.operate.failed'));      
+        return $this->error(trans('master.operate.failed'));      
     }
 
     /**
@@ -146,7 +146,7 @@ class DatalistController extends AdminController
         // 更新区块数据
         Datalist::updateBlockData($block_id);
 
-        return $this->success(trans('core::master.sorted'), $request->referer());
+        return $this->success(trans('master.sorted'), $request->referer());
     }
 
     /**
@@ -160,7 +160,7 @@ class DatalistController extends AdminController
             'stick' => $stick
         ]);
 
-        return $this->success(trans('core::master.operated'), $request->referer());
+        return $this->success(trans('master.operated'), $request->referer());
     }
 
     /**
@@ -179,6 +179,6 @@ class DatalistController extends AdminController
         $datalist->stick = 0;
         $datalist->save();
 
-        return $this->success(trans('core::master.operated'), route('block.data', $datalist->block_id));
+        return $this->success(trans('master.operated'), route('block.data', $datalist->block_id));
     }       
 }

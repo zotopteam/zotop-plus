@@ -61,7 +61,7 @@
             </div>
             <div class="form-group form-footer row">
                 <div class="col-4">
-                    {field type="submit" value="trans('core::master.save')" class="btn btn-primary"}
+                    {field type="submit" value="trans('master.save')" class="btn btn-primary"}
                 </div>
             </div>                                          
             {/form}           

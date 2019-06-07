@@ -5,7 +5,7 @@
     <div class="main-header">
         @if ($block->data)        
         <div class="main-back">
-            <a href="{{route('block.index',$block->category_id)}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{route('block.index',$block->category_id)}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         @endif
         <div class="main-title mr-auto">

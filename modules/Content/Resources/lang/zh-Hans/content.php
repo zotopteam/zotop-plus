@@ -1,7 +1,7 @@
 <?php
 return [
     'title'              => '内容',
-    'description'        => '内容管理',
+    'description'        => '分类、文章、页面等内容管理',
     'root'               => '内容管理',
     'position'           => '位置',
     'create'             => '新建',

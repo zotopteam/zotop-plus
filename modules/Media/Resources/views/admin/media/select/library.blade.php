@@ -14,7 +14,7 @@
             <a href="javascript:;" class="btn btn-primary btn-icon-only js-prompt" data-url="{{route('media.create',[$parent_id,'folder'])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" title="{{trans('core::folder.create')}}">
                 <i class="fa fa-fw fa-folder-plus"></i> {{trans('core::folder.create')}}
             </a>
-            <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('core::master.refresh')}}">
+            <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('master.refresh')}}">
                 <i class="fa fa-sync"></i>
             </a>        
         </div>        
@@ -78,25 +78,25 @@
                                 @if ($m->isImage())
                                 <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$m->link}}" data-title="{{$m->name}}" data-info="{{$m->size_human}} / {{$m->width}}px × {{$m->height}}px">
                                     <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
-                                    <b class="contextmenu-item-text">{{trans('core::master.view')}}</b>
+                                    <b class="contextmenu-item-text">{{trans('master.view')}}</b>
                                 </a>
                                 @endif
 
                                 @if($m->isFolder())
                                     <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" data-value="{{$m->name}}">
                                         <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                        <b class="contextmenu-item-text">{{trans('core::master.rename')}}</b>
+                                        <b class="contextmenu-item-text">{{trans('master.rename')}}</b>
                                     </a>                      
                                 @else
                                     <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$m->id])}}"  data-prompt="{{trans('core::file.name')}}" data-name="name" data-value="{{$m->name}}">
                                         <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                        <b class="contextmenu-item-text">{{trans('core::master.rename')}}</b>
+                                        <b class="contextmenu-item-text">{{trans('master.rename')}}</b>
                                     </a>                                                                  
                                 @endif
 
                                 <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.destroy', $m->id)}}">
                                     <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
-                                    <b class="contextmenu-item-text">{{trans('core::master.delete')}}</b>
+                                    <b class="contextmenu-item-text">{{trans('master.delete')}}</b>
                                 </a>                                          
                         </div>
                         <textarea name="data" class="d-none">{!! json_encode($m) !!}</textarea>
@@ -210,7 +210,7 @@
         if (selected.length) {
             this.close(selected).remove();
         } else {
-            $.error('{{ trans('core::master.select.min', [1]) }}');
+            $.error('{{ trans('master.select.min', [1]) }}');
         }
         
         return false;

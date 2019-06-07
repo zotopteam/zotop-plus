@@ -55,7 +55,7 @@ class AdministratorController extends AdminController
             $user->roles()->attach($request->input('roles'));
         }        
         
-        return $this->success(trans('core::master.created'), route('core.administrator.index'));
+        return $this->success(trans('master.created'), route('core.administrator.index'));
     }
 
     /**
@@ -104,7 +104,7 @@ class AdministratorController extends AdminController
             $user->roles()->sync($request->input('roles'));
         }
 
-        return $this->success(trans('core::master.updated'), route('core.administrator.index'));  
+        return $this->success(trans('master.updated'), route('core.administrator.index'));  
     }
 
     /**
@@ -118,21 +118,21 @@ class AdministratorController extends AdminController
 
         // 禁止禁用super
         if ( $user->isSuper() ) {
-            return $this->error(trans('core::master.forbidden'));
+            return $this->error(trans('master.forbidden'));
         }
 
         // 如果已经禁用，启用
         if ( $user->disabled ) {
             $user->disabled = 0;
             $user->save();
-            return $this->success(trans('core::master.actived'), $request->referer());         
+            return $this->success(trans('master.actived'), $request->referer());         
         }
 
         // 禁用
         $user->disabled = 1;
         $user->save();
 
-        return $this->success(trans('core::master.disabled'), $request->referer());
+        return $this->success(trans('master.disabled'), $request->referer());
     }    
 
     /**
@@ -146,12 +146,12 @@ class AdministratorController extends AdminController
 
         // 禁止操作名单 TODO  $user->id==1 不是好方法，应该判断只剩下最后一个超级管理员
         if ($user->isSuper()) {
-            return $this->error(trans('core::master.forbidden'));
+            return $this->error(trans('master.forbidden'));
         }
         // 解除权限关系
         $user->roles()->detach();
         $user->delete();
 
-        return $this->success(trans('core::master.deleted'), route('core.administrator.index'));
+        return $this->success(trans('master.deleted'), route('core.administrator.index'));
     }
 }

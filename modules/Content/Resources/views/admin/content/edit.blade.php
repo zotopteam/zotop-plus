@@ -4,7 +4,7 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         <div class="main-title">
             {{$title}}

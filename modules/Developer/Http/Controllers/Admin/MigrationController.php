@@ -77,7 +77,7 @@ class MigrationController extends AdminController
             $name = $this->fullname($name);
 
             if (File::exists($path)) {
-                return $this->error(trans('core::master.existed'));
+                return $this->error(trans('master.existed'));
             }
 
             Artisan::call('module:make-migration', [
@@ -85,7 +85,7 @@ class MigrationController extends AdminController
                 'name'    => $name,
             ]);
 
-            return $this->success(trans('core::master.saved'),route('developer.migration.index',[$module]));
+            return $this->success(trans('master.saved'),route('developer.migration.index',[$module]));
         }
 
 
@@ -119,7 +119,7 @@ class MigrationController extends AdminController
             '--force' => true
         ]);
 
-        return $this->success(trans('core::master.operated'),route('developer.migration.index',[$module]));
+        return $this->success(trans('master.operated'),route('developer.migration.index',[$module]));
     }
 
     public function migrateFile(Request $request, $module, $action)
@@ -130,6 +130,6 @@ class MigrationController extends AdminController
             '--force' => true
         ]);
 
-        return $this->success(trans('core::master.operated'),route('developer.migration.index',[$module]));
+        return $this->success(trans('master.operated'),route('developer.migration.index',[$module]));
     }     
 }

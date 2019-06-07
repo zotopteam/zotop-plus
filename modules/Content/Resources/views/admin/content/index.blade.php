@@ -6,13 +6,13 @@
     <div class="main-header">
         @if($keywords = request('keywords'))
             <div class="main-back">
-                <a href="{{route('content.content.index',$parent->id)}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+                <a href="{{route('content.content.index',$parent->id)}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
             </div>
             <div class="main-title mr-auto">
                 {{$parent->title}}
             </div>                    
             <div class="main-title mr-auto">
-                {{trans('core::master.searching', [$keywords])}}
+                {{trans('master.searching', [$keywords])}}
             </div>        
         @else
         <div class="main-title mr-auto">
@@ -47,7 +47,7 @@
         <div class="main-action">
             {form route="content.content.index" class="form-inline form-search" method="get"}
                 <div class="input-group">
-                    <input name="keywords" value="{{$keywords}}" class="form-control border-primary" type="search" placeholder="{{trans('core::master.keywords.placeholder')}}" required="required" aria-label="Search">
+                    <input name="keywords" value="{{$keywords}}" class="form-control border-primary" type="search" placeholder="{{trans('master.keywords.placeholder')}}" required="required" aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
                     </div>
@@ -72,7 +72,7 @@
     @endif    
     <div class="main-body scrollable">
         @if($contents->count() == 0)
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @else
             <table class="table table-nowrap table-sortable table-hover checkable">
                 <thead>
@@ -186,7 +186,7 @@
     <div class="main-footer">
         <div class="main-action mr-auto">
             <button type="button" class="btn btn-outline-success checkable-operator disabled" disabled="disabled" data-operate="move">
-                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('core::master.move')}}
+                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('master.move')}}
             </button>
 
             <div class="btn-group dropup">
@@ -227,7 +227,7 @@ function postData(url, data, callback) {
 function moveDialog(callback) {
     return $.dialog({
         id      : 'move-content',
-        title   : '{{ trans('core::master.move') }}',
+        title   : '{{ trans('master.move') }}',
         url     : '{{ route('content.content.move')}}',
         width   : '75%',
         height  : '75%',

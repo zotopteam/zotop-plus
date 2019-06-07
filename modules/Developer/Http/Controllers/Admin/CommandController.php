@@ -101,7 +101,7 @@ class CommandController extends AdminController
             $name = $this->fullname($command, $name);
 
             if (File::exists($path)) {
-                return $this->error(trans('core::master.existed',[$name]));
+                return $this->error(trans('master.existed',[$name]));
             }
 
             $artisan = $this->commands($command, 'artisan');
@@ -111,11 +111,11 @@ class CommandController extends AdminController
                 'name'    => $name,
             ]);
 
-            return $this->success(trans('core::master.saved'), route('developer.command.index', [$module, $command]));
+            return $this->success(trans('master.saved'), route('developer.command.index', [$module, $command]));
         }
 
 
-        $this->title   = trans('core::master.create');
+        $this->title   = trans('master.create');
         $this->module  = $module;
         $this->command = $command;
         $this->label   = $this->commands($command, 'name.label');

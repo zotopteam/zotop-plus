@@ -20,7 +20,7 @@
 
     $dialog.button([
         {           
-            value: '{{trans('core::master.save')}}',
+            value: '{{trans('master.save')}}',
             callback: function () {
                 $('form.form').submit();
                 return false;
@@ -28,7 +28,7 @@
             autofocus: true
         },
         {           
-            value: '{{trans('core::master.save.close')}}',
+            value: '{{trans('master.save.close')}}',
             callback: function () {
                 this.saveclose = true;
                 $('form.form').submit();
@@ -37,7 +37,7 @@
             class:'btn-success'
         },
         {
-            value: '{{trans('core::master.cancel')}}'
+            value: '{{trans('master.cancel')}}'
         }       
     ]);
 

@@ -77,7 +77,7 @@ class BlockController extends AdminController
         $block->fill($request->all());
         $block->save();
 
-        return $this->success(trans('core::master.created'), route('block.data',$block->id));
+        return $this->success(trans('master.created'), route('block.data',$block->id));
     }
 
     /**
@@ -109,7 +109,7 @@ class BlockController extends AdminController
         $block->fill($request->all());        
         $block->save();
 
-        return $this->success(trans('core::master.updated'), $request->referer());
+        return $this->success(trans('master.updated'), $request->referer());
     }
 
     /**
@@ -122,7 +122,7 @@ class BlockController extends AdminController
         $block = Block::findOrFail($id);
         $block->delete();
 
-        return $this->success(trans('core::master.deleted'), request()->referer());       
+        return $this->success(trans('master.deleted'), request()->referer());       
     }
 
     /**
@@ -148,10 +148,10 @@ class BlockController extends AdminController
 
             // 保存并返回
             if ($request->input('operation') == 'save-back') {
-                return $this->success(trans('core::master.saved'), route('block.index', $block->category_id)); 
+                return $this->success(trans('master.saved'), route('block.index', $block->category_id)); 
             }
 
-            return $this->success(trans('core::master.saved'));            
+            return $this->success(trans('master.saved'));            
         }
 
         $this->title    = trans('block::block.data.edit');
@@ -178,7 +178,7 @@ class BlockController extends AdminController
             Block::where('id', $id)->update(['sort' => $i]);
         }
 
-        return $this->success(trans('core::master.sorted'));
+        return $this->success(trans('master.sorted'));
     }
 
     /**

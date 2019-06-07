@@ -43,7 +43,7 @@
                         </a>
 
                         <a class="manage-item js-confirm" href="{{route('developer.translate.deletefile', [$module, 'filename'=>$file->getFilename()])}}">
-                            <i class="fa fa-times fa-fw"></i> {{trans('core::master.delete')}}
+                            <i class="fa fa-times fa-fw"></i> {{trans('master.delete')}}
                         </a>                        
                     </td>
                 </tr>
@@ -52,7 +52,7 @@
             </tbody>
         </table>
         @else
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @endif           
     </div>
     <div class="main-footer">

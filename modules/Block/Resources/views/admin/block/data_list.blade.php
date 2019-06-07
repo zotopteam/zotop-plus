@@ -5,7 +5,7 @@
     <div class="main-header">
         @if ($block->data)        
         <div class="main-back">
-            <a href="{{route('block.index',$block->category_id)}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{route('block.index',$block->category_id)}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         @endif
         <div class="main-title mr-auto">
@@ -13,7 +13,7 @@
         </div>
         <div class="main-action">
             <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('block.datalist.create', $block->id)}}" data-width="800" data-height="400">
-                <i class="fa fa-plus fa-fw"></i> {{trans('core::master.create')}}
+                <i class="fa fa-plus fa-fw"></i> {{trans('master.create')}}
             </a>
             @if ($block->data)   
             <a href="javascript:;" class="btn btn-info js-open" data-url="{{route('block.preview', $block->id)}}" data-width="80%" data-height="60%">
@@ -40,7 +40,7 @@
                 <td width="2%">{{trans('block::datalist.row')}}</td>
                 <td>{{trans('block::datalist.title')}}</td>
                 <td width="10%" class="text-center"></td>
-                <td width="10%">{{trans('core::master.lastmodify')}}</td>
+                <td width="10%">{{trans('master.lastmodify')}}</td>
             </tr>
             </thead>
             <tbody>
@@ -71,10 +71,10 @@
                             </a>
                             @endif                           
                             <a class="manage-item js-open" href="javascript:;"  data-url="{{route('block.datalist.edit', $datalist->id)}}" data-width="800" data-height="400">
-                                <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                                <i class="fa fa-edit"></i> {{trans('master.edit')}}
                             </a>
                             <a class="manage-item js-delete" href="javascript:;" data-url="{{route('block.datalist.destroy', $datalist->id)}}">
-                                <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                                <i class="fa fa-times"></i> {{trans('master.delete')}}
                             </a>
                         </div>
                     </td>
@@ -93,7 +93,7 @@
         </table>
 
         @if (! $block->data)
-        <div class="nodata">{{trans('core::master.nodata')}}</div>
+        <div class="nodata">{{trans('master.nodata')}}</div>
         @endif
 
 

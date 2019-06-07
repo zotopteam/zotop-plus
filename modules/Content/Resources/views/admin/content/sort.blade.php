@@ -7,14 +7,14 @@
         @if($keywords = request('keywords'))
             <div class="main-back">
                 <a href="{{route('content.content.sort',[$parent->id, 'id'=>$sort->id])}}">
-                    <i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b>
+                    <i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b>
                 </a>
             </div>           
             <div class="main-title mr-auto">
                 {{$parent->title}}
             </div>                          
             <div class="main-title mx-auto">
-                {{trans('core::master.searching', [$keywords])}}
+                {{trans('master.searching', [$keywords])}}
             </div>        
         @else
         <div class="main-title">
@@ -33,7 +33,7 @@
             {form route="['content.content.sort', $parent->id]" class="form-inline form-search" method="get"}
                 <input type="hidden" name="id" value="{{$sort->id}}">
                 <div class="input-group">
-                    <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('core::master.keywords.placeholder')}}" required="required" aria-label="Search">
+                    <input name="keywords" value="{{$keywords}}" class="form-control" type="search" placeholder="{{trans('master.keywords.placeholder')}}" required="required" aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i></button>
                     </div>
@@ -41,14 +41,14 @@
             {/form}
         </div>
         <div class="main-action">
-            <a href="javascript:location.reload()" class="btn btn-light" title="{{trans('core::master.refresh')}}">
+            <a href="javascript:location.reload()" class="btn btn-light" title="{{trans('master.refresh')}}">
                 <span class="fa fa-sync"></span>
             </a>
         </div>                     
     </div>
     <div class="main-body scrollable">
         @if($contents->count() == 0)
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @else
             <table class="table table-nowrap table-hover">
                 <thead>
@@ -159,7 +159,7 @@ $(function(){
 
             },'json');
         } else {
-            $.error('{{ trans('core::master.select.min', [1]) }}');
+            $.error('{{ trans('master.select.min', [1]) }}');
         }
 
         return false;

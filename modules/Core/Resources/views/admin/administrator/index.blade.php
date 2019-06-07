@@ -11,18 +11,18 @@
         </div>
         <div class="main-action">
             <a href="{{route('core.administrator.create')}}" class="btn btn-primary">
-                <i class="fa fa-plus"></i> {{trans('core::master.create')}}
+                <i class="fa fa-plus"></i> {{trans('master.create')}}
             </a>
         </div>        
     </div>
     <div class="main-body scrollable">
         @if($users->count() == 0)
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @else
             <table class="table table-nowrap table-hover" >
                 <thead>
                 <tr>
-                    <th class="text-center" width="1%">{{trans('core::master.status')}}</th>
+                    <th class="text-center" width="1%">{{trans('master.status')}}</th>
                     <th>{{trans('core::administrator.username.label')}}</th>
                     <th>{{trans('core::administrator.nickname.label')}}</th>
                     <th>{{trans('core::administrator.mobile.label')}}</th>
@@ -50,16 +50,16 @@
                             </div>
                             @endif
                             <div class="manage">
-                                <a class="manage-item" href="{{route('core.administrator.edit', $user->id)}}"><i class="fa fa-edit"></i> {{trans('core::master.edit')}}</a>
+                                <a class="manage-item" href="{{route('core.administrator.edit', $user->id)}}"><i class="fa fa-edit"></i> {{trans('master.edit')}}</a>
                                 @if (! $user->isSuper())
                                 <a class="manage-item js-confirm" href="javascript:;" data-url="{{route('core.administrator.status', $user->id)}}">
                                     @if($user->disabled)
-                                    <i class="fa fa-check-circle"></i> {{trans('core::master.active')}}
+                                    <i class="fa fa-check-circle"></i> {{trans('master.active')}}
                                     @else
-                                    <i class="fa fa-times-circle"></i> {{trans('core::master.disable')}}
+                                    <i class="fa fa-times-circle"></i> {{trans('master.disable')}}
                                     @endif                                    
                                 </a>
-                                <a class="manage-item js-delete" href="javascript:;" data-url="{{route('core.administrator.destroy', $user->id)}}"><i class="fa fa-times"></i> {{trans('core::master.delete')}}</a>
+                                <a class="manage-item js-delete" href="javascript:;" data-url="{{route('core.administrator.destroy', $user->id)}}"><i class="fa fa-times"></i> {{trans('master.delete')}}</a>
                                 @endif
                             </div>
 

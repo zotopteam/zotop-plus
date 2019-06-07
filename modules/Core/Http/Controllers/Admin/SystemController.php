@@ -36,7 +36,7 @@ class SystemController extends AdminController
                 Artisan::call($artisan);
             }
 
-            return $this->success(trans('core::master.operated'), $request->referer());
+            return $this->success(trans('master.operated'), $request->referer());
         }        
 
         $this->title   = trans('core::system.manage.title');

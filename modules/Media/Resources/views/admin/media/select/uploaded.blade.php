@@ -16,7 +16,7 @@
                 <i class="fa fa-check-square fa-fw"></i> {{trans('media::media.select.all')}}
             </a>
             @endif
-            <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('core::master.refresh')}}">
+            <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('master.refresh')}}">
                 <i class="fa fa-sync"></i>
             </a>        
         </div>        
@@ -57,16 +57,16 @@
                                 @if ($file->isImage())
                                 <a href="javascript:;" class="contextmenu-item js-image" data-url="{{$file->url}}" data-title="{{$file->name}}" data-info="{{$file->size_human}} / {{$file->width}}px × {{$file->height}}px">
                                     <i class="contextmenu-item-icon fa fa-eye fa-fw"></i>
-                                    <b class="contextmenu-item-text">{{trans('core::master.view')}}</b>
+                                    <b class="contextmenu-item-text">{{trans('master.view')}}</b>
                                 </a>
                                 @endif                 
                                 <a class="contextmenu-item js-prompt" href="javascript:;" data-url="{{route('media.rename',[$file->id])}}"  data-prompt="{{trans('core::file.name')}}" data-name="name" data-value="{{$file->name}}">
                                     <i class="contextmenu-item-icon fa fa-fw fa-eraser"></i>
-                                    <b class="contextmenu-item-text">{{trans('core::master.rename')}}</b>
+                                    <b class="contextmenu-item-text">{{trans('master.rename')}}</b>
                                 </a>                      
                                 <a class="contextmenu-item js-delete" href="javascript:;" data-url="{{route('media.destroy', $file->id)}}">
                                     <i class="contextmenu-item-icon fa fa-times fa-fw"></i>
-                                    <b class="contextmenu-item-text">{{trans('core::master.delete')}}</b>
+                                    <b class="contextmenu-item-text">{{trans('master.delete')}}</b>
                                 </a>
                         </div>
                         <textarea name="data" class="d-none">{!! json_encode($file) !!}</textarea>
@@ -178,7 +178,7 @@
         if (selected.length) {
             this.close(selected).remove(); 
         } else {
-            $.error('{{ trans('core::master.select.min', [1]) }}');
+            $.error('{{ trans('master.select.min', [1]) }}');
         }
         
         return false;

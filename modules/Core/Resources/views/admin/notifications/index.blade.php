@@ -11,7 +11,7 @@
     </div>
     <div class="main-body scrollable">
         @if($notifications->count() == 0)
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @else
 
         @endif

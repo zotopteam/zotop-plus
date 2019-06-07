@@ -32,7 +32,7 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <span class="footer-text mr-auto">
-            {{trans('core::master.thanks',[config('zotop.name')])}}
+            {{trans('master.thanks',[config('zotop.name')])}}
         </span>
 
         <span class="footer-text">

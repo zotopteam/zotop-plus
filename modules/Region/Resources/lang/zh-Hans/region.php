@@ -1,9 +1,7 @@
 <?php
-
 return [
     'title'             => '区域',
-    'description'       => '区域管理',
-
+    'description'       => '城市区域管理',
     'index'             => '区域列表',
     'root'              => '顶级',
     'child'             => '下级管理',
@@ -18,5 +16,5 @@ return [
     'destroy'           => '删除',
     'destroy.confirm'   => '您确定要删除 [ :0 ] 吗？',
     'destroy.forbidden' => '尚有下级区域，如需删除，请先删除下级区域',
-    'enable.forbidden'  => '无法启用，上级区域被禁用',    
+    'enable.forbidden'  => '无法启用，上级区域被禁用',
 ];

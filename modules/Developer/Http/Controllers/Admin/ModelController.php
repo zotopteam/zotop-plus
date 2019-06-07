@@ -76,7 +76,7 @@ class ModelController extends AdminController
             $name = $this->realname($name);
 
             if (File::exists($path)) {
-                return $this->error(trans('core::master.existed'));
+                return $this->error(trans('master.existed'));
             }
 
             Artisan::call('module:make-model', [
@@ -86,11 +86,11 @@ class ModelController extends AdminController
                 '--migration' => $request->input('migration') ? true : false
             ]);
 
-            return $this->success(trans('core::master.saved'),route('developer.model.index',[$module]));
+            return $this->success(trans('master.saved'),route('developer.model.index',[$module]));
         }
 
 
-        $this->title      = trans('core::master.create');
+        $this->title      = trans('master.create');
 
 
         return $this->view();

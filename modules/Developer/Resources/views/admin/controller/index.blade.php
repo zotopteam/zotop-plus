@@ -18,7 +18,7 @@
         </div>        
         <div class="main-action">
             <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.controller.create',[$name,$type])}}" data-width="800" data-height="300">
-                <i class="fa fa-plus"></i> {{trans('core::master.create')}}
+                <i class="fa fa-plus"></i> {{trans('master.create')}}
             </a>
         </div>
     </div>
@@ -55,7 +55,7 @@
             </tbody>
         </table>
         @else
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @endif     
     </div><!-- main-body -->
     <div class="main-footer">

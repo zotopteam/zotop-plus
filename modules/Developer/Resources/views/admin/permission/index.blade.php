@@ -94,7 +94,7 @@
             </tbody>            
         </table>
         @else
-            <div class="nodata">{{trans('core::master.nodata')}}</div>
+            <div class="nodata">{{trans('master.nodata')}}</div>
         @endif
     </div>
     <div class="main-footer">

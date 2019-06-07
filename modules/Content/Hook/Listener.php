@@ -85,21 +85,21 @@ class Listener
 
         // 修改
         $manage['edit'] = [
-            'text' => trans('core::master.edit'),
+            'text' => trans('master.edit'),
             'href' => route('content.content.edit', [$content->id]),
             'icon' => 'fas fa-edit',
         ];
 
         // 复制
         $manage['duplicate'] = [
-            'text'  => trans('core::master.duplicate'),
+            'text'  => trans('master.duplicate'),
             'href' => route('content.content.duplicate', [$content->id]),            
             'icon'  => 'fas fa-copy',
         ];        
 
         // 移动
         $manage['move'] = [
-            'text'  => trans('core::master.move'),
+            'text'  => trans('master.move'),
             'icon'  => 'fas fa-arrows-alt',
             'class' => 'js-move',
             'attrs' => ['data-id' => $content->id, 'data-parent_id' => $content->parent_id]

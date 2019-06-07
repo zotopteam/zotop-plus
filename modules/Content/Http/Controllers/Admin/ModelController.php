@@ -62,7 +62,7 @@ class ModelController extends AdminController
             ModelHelper::fieldInit($model->id);
         }
 
-        return $this->success(trans('core::master.created'), route('content.model.index'));
+        return $this->success(trans('master.created'), route('content.model.index'));
     } 
 
     /**
@@ -91,7 +91,7 @@ class ModelController extends AdminController
         $model->fill($request->all());       
         $model->save();
 
-        return $this->success(trans('core::master.updated'), route('content.model.index'));
+        return $this->success(trans('master.updated'), route('content.model.index'));
     }
 
     /**
@@ -108,7 +108,7 @@ class ModelController extends AdminController
             ]);
         }
 
-        return $this->success(trans('core::master.operated'));
+        return $this->success(trans('master.operated'));
     }  
 
     /**
@@ -123,7 +123,7 @@ class ModelController extends AdminController
         $model->disabled = $model->disabled ? 0 : 1;
         $model->save();
 
-        return $this->success(trans('core::master.operated'), route('content.model.index'));
+        return $this->success(trans('master.operated'), route('content.model.index'));
     }   
 
     /**
@@ -137,7 +137,7 @@ class ModelController extends AdminController
         $model = Model::findOrFail($id);
         $model->delete();
 
-        return $this->success(trans('core::master.deleted'), route('content.model.index'));        
+        return $this->success(trans('master.deleted'), route('content.model.index'));        
     }
 
     /**
@@ -160,6 +160,6 @@ class ModelController extends AdminController
     {
         ModelHelper::import($request->file); 
 
-        return $this->success(trans('core::master.operated'), route('content.model.index'));
+        return $this->success(trans('master.operated'), route('content.model.index'));
     }
 }

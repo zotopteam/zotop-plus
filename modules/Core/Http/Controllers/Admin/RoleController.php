@@ -57,7 +57,7 @@ class RoleController extends AdminController
         $role->fill($request->all());
         $role->save();
 
-        return $this->success(trans('core::master.created'), route('core.role.index'));
+        return $this->success(trans('master.created'), route('core.role.index'));
     }
 
     /**
@@ -107,7 +107,7 @@ class RoleController extends AdminController
         $role->fill($request->all());        
         $role->save();
 
-        return $this->success(trans('core::master.updated'), route('core.role.index'));  
+        return $this->success(trans('master.updated'), route('core.role.index'));  
     }
 
     /**
@@ -120,21 +120,21 @@ class RoleController extends AdminController
         $role = Role::findOrFail($id);
 
         if ( $role->id==1 ) {
-            return $this->error(trans('core::master.forbidden'));
+            return $this->error(trans('master.forbidden'));
         }
 
         // 如果已经禁用，启用
         if ( $role->disabled ) {
             $role->disabled = 0;
             $role->save();
-            return $this->success(trans('core::master.actived'), $request->referer());         
+            return $this->success(trans('master.actived'), $request->referer());         
         }
 
         // 禁用
         $role->disabled = 1;
         $role->save();
 
-        return $this->success(trans('core::master.disabled'), $request->referer());
+        return $this->success(trans('master.disabled'), $request->referer());
     } 
     /**
      * 删除
@@ -147,11 +147,11 @@ class RoleController extends AdminController
 
         // 禁止操作
         if ( $role->id==1 ) {
-            return $this->error(trans('core::master.forbidden'));
+            return $this->error(trans('master.forbidden'));
         }
 
         $role->delete();
 
-        return $this->success(trans('core::master.deleted'), route('core.role.index'));        //
+        return $this->success(trans('master.deleted'), route('core.role.index'));        //
     }
 }

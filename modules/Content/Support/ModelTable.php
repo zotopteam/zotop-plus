@@ -170,7 +170,7 @@ class ModelTable
         $newtable = $this->model_table_prefix.$model_id;
 
         if (Schema::hasTable($newtable)) {
-            abort(403, trans('core::master.exists', [$newtable]));
+            abort(403, trans('master.exists', [$newtable]));
         }
 
         if (Schema::hasTable($this->table)) {

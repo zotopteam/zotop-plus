@@ -98,10 +98,10 @@ class TableController extends AdminController
             $migrate->createTable(true);
 
             if (Table::find($name)->exists()) {
-                return $this->success(trans('core::master.created'), route('developer.table.manage', [$module, $name]));
+                return $this->success(trans('master.created'), route('developer.table.manage', [$module, $name]));
             }
 
-            return $this->error(trans('core::master.create.failed'));
+            return $this->error(trans('master.create.failed'));
         }
 
         $this->name   = 'test';
@@ -192,7 +192,7 @@ class TableController extends AdminController
 
             $migrate->updateTable($name);
 
-            return $this->success(trans('core::master.updated'), route('developer.table.manage', [$module, $name]));
+            return $this->success(trans('master.updated'), route('developer.table.manage', [$module, $name]));
         }
 
         $table = Table::find($table);
@@ -219,7 +219,7 @@ class TableController extends AdminController
         $migrate = Migrate::instance($module, $table);
         $migrate->dropTable(); 
 
-        return $this->success(trans('core::master.deleted'), route('developer.table.index',[$module]));        
+        return $this->success(trans('master.deleted'), route('developer.table.index',[$module]));        
     }
 
     /**
@@ -238,7 +238,7 @@ class TableController extends AdminController
            $migrate->createTable(false); 
         }     
         
-        return $this->success(trans('core::master.operated'), route('developer.table.manage',[$module, $table]));
+        return $this->success(trans('master.operated'), route('developer.table.manage',[$module, $table]));
     }
 
     /**
@@ -255,7 +255,7 @@ class TableController extends AdminController
             '--force' => $force
         ]);  
         
-        return $this->success(trans('core::master.operated'), route('developer.table.manage',[$module, $table]));
+        return $this->success(trans('master.operated'), route('developer.table.manage',[$module, $table]));
     }    
 
     /**

@@ -39,9 +39,9 @@ class FolderController extends AdminController
             }
 
             if (File::makeDirectory($newpath)) {
-                return $this->success(trans('core::master.operated'), $request->referer());
+                return $this->success(trans('master.operated'), $request->referer());
             }
-            return $this->error(trans('core::master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));            
         }        
 
     }
@@ -73,9 +73,9 @@ class FolderController extends AdminController
             }
 
             if (File::moveDirectory($this->path, $newpath)) {
-                return $this->success(trans('core::master.operated'), $request->referer());
+                return $this->success(trans('master.operated'), $request->referer());
             }
-            return $this->error(trans('core::master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));            
         }
     }
 
@@ -98,9 +98,9 @@ class FolderController extends AdminController
             }
 
             if (File::deleteDirectory($this->path)) {
-                return $this->success(trans('core::master.deleted'), $request->referer());
+                return $this->success(trans('master.deleted'), $request->referer());
             }
-            return $this->error(trans('core::master.deleted.failed'));            
+            return $this->error(trans('master.deleted.failed'));            
         }
     }
 
@@ -121,9 +121,9 @@ class FolderController extends AdminController
             $newpath = dirname($this->path).'/copy '.basename($this->path);
 
             if (File::copy($this->path, $newpath)) {
-                return $this->success(trans('core::master.operated'), $request->referer());
+                return $this->success(trans('master.operated'), $request->referer());
             }
-            return $this->error(trans('core::master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));            
         }
     }
 }

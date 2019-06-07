@@ -68,7 +68,7 @@ class RegionController extends AdminController
         $region->sort = Region::where('parent_id', $request->input('parent_id'))->max('sort') + 1;
         $region->save();
 
-        return $this->success(trans('core::master.created'), route('region.index', $request->input('parent_id')));
+        return $this->success(trans('master.created'), route('region.index', $request->input('parent_id')));
     }
 
     /**
@@ -100,7 +100,7 @@ class RegionController extends AdminController
         $region->fill($request->all());
         $region->save();
 
-        return $this->success(trans('core::master.operated'), route('region.index', $request->input('parent_id')));
+        return $this->success(trans('master.operated'), route('region.index', $request->input('parent_id')));
     }
 
     /**
@@ -117,7 +117,7 @@ class RegionController extends AdminController
         $region = Region::findOrFail($id);
         $region->delete();
 
-        return $this->success(trans('core::master.operated'), $request->referer());
+        return $this->success(trans('master.operated'), $request->referer());
     }
 
     /**
@@ -132,7 +132,7 @@ class RegionController extends AdminController
             Region::where('id', $id)->update(['sort' => $i]);
         }
 
-        return $this->success(trans('core::master.operated'));
+        return $this->success(trans('master.operated'));
     }
 
     /**
@@ -147,7 +147,7 @@ class RegionController extends AdminController
         if ($childids = Region::childIds($id, true)) {
             Region::whereIn('id', $childids)->update(['disabled' => 1]);
         }
-        return $this->success(trans('core::master.operated'), $request->referer());
+        return $this->success(trans('master.operated'), $request->referer());
     }
 
     /**
@@ -167,6 +167,6 @@ class RegionController extends AdminController
         if ($childids = Region::childIds($id, true)) {
             Region::whereIn('id', $childids)->update(['disabled' => 0]);
         }
-        return $this->success(trans('core::master.operated'), $request->referer());
+        return $this->success(trans('master.operated'), $request->referer());
     }
 }

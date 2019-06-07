@@ -125,7 +125,7 @@ class Listener
     {
         // 主页
         $navbar['core.index'] = [
-            'text'   => trans('core::master.index'),
+            'text'   => trans('core::core.index'),
             'href'   => route('admin.index'),
             'class'  => 'index', 
             'active' => Route::is('admin.index')
@@ -234,14 +234,14 @@ class Listener
             // 禁用和启用
             if($module->active) {
                 $manage['disable'] = [
-                    'text'     => trans('core::master.disable'),
+                    'text'     => trans('master.disable'),
                     'data-url' => route('core.module.disable',[$module->name]),
                     'icon'     => 'fa fa-times-circle',
                     'class'    => 'js-confirm',
                 ];              
             } else {
                 $manage['active'] = [
-                    'text'     => trans('core::master.active'),
+                    'text'     => trans('master.active'),
                     'data-url' => route('core.module.enable',[$module->name]),
                     'icon'     => 'fa fa-check-circle ',
                     'class'    => 'js-confirm',
@@ -293,7 +293,7 @@ class Listener
             // 当模块安装后，禁止和卸载按钮 禁用状态
             if ($module->installed) {
                 $manage['disable'] = [
-                    'text'  => trans('core::master.disable'),
+                    'text'  => trans('master.disable'),
                     'icon'  => 'fa fa-times-circle',
                     'class' => 'disabled',
                 ];

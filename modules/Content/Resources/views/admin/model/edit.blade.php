@@ -4,7 +4,7 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         <div class="main-title mr-auto">
             {{$title}}
@@ -93,7 +93,7 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
-            {field type="submit" form="model-form" value="trans('core::master.save')" class="btn btn-primary"}
+            {field type="submit" form="model-form" value="trans('master.save')" class="btn btn-primary"}
         </div>
     </div>
 </div>

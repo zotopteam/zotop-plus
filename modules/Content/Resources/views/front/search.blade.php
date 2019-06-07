@@ -5,12 +5,12 @@
 <div class="container">
     @if (! request('keywords'))
         <div class="py-5">
-        {{trans('core::master.search.keywords.required')}}
+        {{trans('master.search.keywords.required')}}
         </div>        
     
     @else
         @if ($list->count() > 0) 
-            <h4 class="py-5">{{trans('core::master.searching',[request('keywords')])}}</h4>
+            <h4 class="py-5">{{trans('master.searching',[request('keywords')])}}</h4>
             <ul class="list-group list-group-flush">
             @foreach ($list as $item)
                 <li class="list-group-item px-0">
@@ -25,7 +25,7 @@
             </div>
         @else
             <div class="py-5">
-            {{trans('core::master.search.results.empty')}}
+            {{trans('master.search.results.empty')}}
             </div>
         @endif
     @endif

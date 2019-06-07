@@ -50,7 +50,7 @@ class CategoryController extends AdminController
         $category->fill($request->all());
         $category->save();
 
-        return $this->success(trans('core::master.created'));
+        return $this->success(trans('master.created'));
     }
 
     /**
@@ -94,7 +94,7 @@ class CategoryController extends AdminController
         $category->fill($request->all());        
         $category->save();
 
-        return $this->success(trans('core::master.updated'), route('block.category.index'));
+        return $this->success(trans('master.updated'), route('block.category.index'));
     }
 
     /**
@@ -107,7 +107,7 @@ class CategoryController extends AdminController
         $category = Category::findOrFail($id);
         $category->delete();
 
-        return $this->success(trans('core::master.deleted'), route('block.category.index'));        
+        return $this->success(trans('master.deleted'), route('block.category.index'));        
     }
 
     /**
@@ -123,6 +123,6 @@ class CategoryController extends AdminController
             Category::where('id', $id)->update(['sort' => $i]);
         }
 
-        return $this->success(trans('core::master.sorted'), $request->referer());
+        return $this->success(trans('master.sorted'), $request->referer());
     }    
 }

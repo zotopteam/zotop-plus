@@ -4,7 +4,7 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{route('content.model.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{route('content.model.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>    
         <div class="main-title">
             {{$title}} : {{$model->name}} ({{$model->id}})</span>
@@ -14,7 +14,7 @@
         </div>        
         <div class="main-action">
             <a href="{{route('content.field.create', [$model->id])}}" class="btn btn-primary">
-                <i class="fa fa-plus"></i> {{trans('core::master.create')}}
+                <i class="fa fa-plus"></i> {{trans('master.create')}}
             </a>
         </div>        
     </div>

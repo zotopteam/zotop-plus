@@ -5,14 +5,14 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{route('block.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('core::master.back')}}</b></a>
+            <a href="{{route('block.index')}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         <div class="main-title mx-auto">
             {{$title}}
         </div>
         <div class="main-action">
             <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('block.category.create')}}" data-width="800" data-height="300">
-                <i class="fa fa-plus"></i> {{trans('core::master.create')}}
+                <i class="fa fa-plus"></i> {{trans('master.create')}}
             </a>
         </div>        
     </div>
@@ -43,10 +43,10 @@
                                     <i class="fa fa-list-alt"></i> {{trans('block::category.manage')}}
                                 </a>                            
                                 <a class="manage-item js-open" href="javascript:;"  data-url="{{route('block.category.edit', $category->id)}}" data-width="800" data-height="300">
-                                    <i class="fa fa-edit"></i> {{trans('core::master.edit')}}
+                                    <i class="fa fa-edit"></i> {{trans('master.edit')}}
                                 </a>
                                 <a class="manage-item js-delete" href="javascript:;" data-url="{{route('block.category.destroy', $category->id)}}">
-                                    <i class="fa fa-times"></i> {{trans('core::master.delete')}}
+                                    <i class="fa fa-times"></i> {{trans('master.delete')}}
                                 </a>
                             </div>
                         </td>

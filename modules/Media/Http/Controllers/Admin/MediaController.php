@@ -64,7 +64,7 @@ class MediaController extends AdminController
             $media->is_folder = 1;
             $media->save();
 
-            return $this->success(trans('core::master.created'), $request->referer());       
+            return $this->success(trans('master.created'), $request->referer());       
         }
 
     }
@@ -83,7 +83,7 @@ class MediaController extends AdminController
             $media->fill($request->all());
             $media->save();
 
-            return $this->success(trans('core::master.renamed'), $request->referer());       
+            return $this->success(trans('master.renamed'), $request->referer());       
         }
 
     }
@@ -107,7 +107,7 @@ class MediaController extends AdminController
                 $item->save();
             });
 
-            return $this->success(trans('core::master.moved'));
+            return $this->success(trans('master.moved'));
         }
 
         // 缓存当前选择的节点编号，下次进入时候直接展示该节点
@@ -148,7 +148,7 @@ class MediaController extends AdminController
             $item->delete();
         });
 
-        return $this->success(trans('core::master.deleted'), $request->referer());
+        return $this->success(trans('master.deleted'), $request->referer());
     }
 
     /**
