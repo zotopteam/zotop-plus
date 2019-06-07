@@ -340,8 +340,8 @@ textarea{resize:none;}
 .btn-outline{border-color:rgba(255,255,255,.25);}
 .btn-outline:hover,.btn-outline:focus,.btn-outline:active{background:rgba(255,255,255,.15);}
 .btn-success .badge-danger{color:#5cb85c;background-color:#fff;}
-.btn-light{border-color:rgba(0,0,0,.15);}
-.btn.disabled, .btn[disabled], fieldset[disabled] .btn{cursor: not-allowed;opacity:0.5;}
+.btn-light{border-color:rgba(0,0,0,.15)!important;}
+.btn.disabled, .btn:disabled, .btn[disabled], fieldset[disabled] .btn{cursor:not-allowed;}
 
 .btn-progress{position:relative;}
 .btn-progress .progress{position:absolute;top:0;right:0;bottom:0;left:0;border-radius:0;z-index:999;height:100%;}

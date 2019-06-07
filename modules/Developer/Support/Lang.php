@@ -121,7 +121,7 @@ class Lang
         $newline = "\r\n";
 
         $content = $langs->transform(function($value, $key) use($maxlength, $newline) {
-            return "    ".str_pad("'".$key."'", $maxlength + 2, "  ")." => '".$value."',".$newline;
+            return "    ".str_pad("'".$key."'", $maxlength + 2, "  ")." => '".addslashes($value)."',".$newline;
         })->implode('');
 
         $content = '<?php'.$newline.'return ['.$newline.$content.'];';  

@@ -104,7 +104,7 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
             $router->group([
                 'namespace'  => $this->namespace.'\Api',
                 'prefix'     => Filter::fire('router.api.prefix', 'api'),
-                'middleware' => Filter::fire('router.api.middleware', []),
+                'middleware' => Filter::fire('router.api.middleware', ['api']),
             ], function (Router $router) use ($apiRouteFile) {
                 require $apiRouteFile;
             });

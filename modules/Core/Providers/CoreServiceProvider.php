@@ -27,10 +27,11 @@ class CoreServiceProvider extends ServiceProvider
      * @var array
      */
     protected $middlewares = [
-        'module' => 'ModuleMiddleware',
-        'admin'  => 'AdminMiddleware',
-        'front'  => 'FrontMiddleware',
-        'allow'  => 'AllowMiddleware',
+        'module'      => 'ModuleMiddleware',
+        'admin'       => 'AdminMiddleware',
+        'admin.guest' => 'AdminGuestMiddleware',
+        'front'       => 'FrontMiddleware',
+        'allow'       => 'AllowMiddleware',
     ];    
 
     /**
@@ -141,12 +142,21 @@ class CoreServiceProvider extends ServiceProvider
         }
 
         // Carbon 语言转换
-        $locale = Arr::get($this->app['hook.filter']->fire('carbon.locale.transform', [
+        $carbon_locale = Arr::get($this->app['hook.filter']->fire('carbon.locale.transform', [
             'zh-Hans' => 'zh',
             'zh-Hant' => 'zh_TW'
         ]), $locale, $locale);
         
-        Carbon::setLocale($locale);
+        Carbon::setLocale($carbon_locale);
+
+        // Faker 语言转换
+        $faker_locale = Arr::get($this->app['hook.filter']->fire('faker.locale.transform', [
+            'en'      => 'en_US',
+            'zh-Hans' => 'zh_CN',
+            'zh-Hant' => 'zh_TW'
+        ]), $locale, $locale);
+
+        $this->app['config']->set('app.faker_locale', $faker_locale);
     }
 
     /**

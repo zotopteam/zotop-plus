@@ -1,3 +1,4 @@
+{{--title:页面默认模板--}}
 @extends('core::layouts.master')
 
 @section('content')

@@ -62,7 +62,7 @@ class FileBrowser
     {
         $this->root       = $root;
         $this->dir        = $dir ?: $request->input('dir');
-        $this->path       = $this->root.'/'.trim($this->dir,'/');
+        $this->path       = trim(trim($this->root,'/').'/'.trim($this->dir,'/'), '/');
         $this->realpath   = base_path($this->path);
         $this->route      = app('router')->getCurrentRoute()->getName();
         $this->parameters = app('router')->getCurrentRoute()->parameters();

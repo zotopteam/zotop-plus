@@ -1,9 +1,9 @@
 <div class="input-group" id="translate-{{$id}}">    
     {{Form::text($name,$value,$attrs)}}
     <div class="input-group-append">
-        <span class="input-group-text btn btn-translate disabled">
+        <button type="button" class="btn btn-light btn-translate disabled" tabindex="-1">
             <i class="translate-icon fas fa-sync fa-fw mr-1"></i> {{$button}}
-        </span>
+        </button>
     </div>
 </div>
 

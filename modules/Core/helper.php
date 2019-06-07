@@ -342,7 +342,8 @@ if (! function_exists('module')) {
 
 if (! function_exists('path_base')) {
     /**
-     * 将完整路径转化为base路径，base_path的反向函数
+     *
+     * 将完整路径转化为base路径，base_path的反向函数,前后均不包含斜杠
      * 
      * @param  string $path 路径
      * @return string 转换后路径
@@ -351,6 +352,7 @@ if (! function_exists('path_base')) {
     {
         $path = str_after($path, app()->basePath());
         $path = str_replace('\\', '/', $path);
+        $path = trim($path,'/');
         return $path;
     }
 }

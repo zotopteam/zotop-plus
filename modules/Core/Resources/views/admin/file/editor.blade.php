@@ -1,20 +1,18 @@
 @extends('core::layouts.dialog')
 
 @section('content')
-<div class="main">
-    <div class="main-body scrollable">
-    {form route="core.file.editor" method="post" class="code-editor full-height"}
+
+    {form route="core.file.editor" method="post" class="code-editor full-width full-height"}
         {field type="hidden" name="file" value="$file"}
         {field type="code" name="content" value="$content" width="100%" height="100%" mode="$mode"}
     {/form}
-    </div>
-</div>
+
 @endsection
 
 @push('js')
 <script type="text/javascript">
     // 对话框设置
-    $dialog.statusbar("{{trans('core::file.position',[path_base($path)])}}");
+    $dialog.statusbar("{{trans('core::file.position')}} {{path_base($path)}}");
     // $dialog.callback('ok', function(){
     //     $('form.form').submit();
     //     return false;

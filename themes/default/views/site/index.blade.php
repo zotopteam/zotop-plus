@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                {content:list slug="news-center" subdir="true" with="user" model="article" size="4" cache="60"}
+                {content:list slug="news-center" subdir="true" size="5" cache="60"}
             </div>
         </div>
     </div>

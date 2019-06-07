@@ -2,7 +2,7 @@
 
 基于Laravel5.8和bootstrap4，支持模块和主题，更好、更易用的内容管理系统，Better && Easier Laravel CMS
 
-## Learning Laravel CMS
+## Learning Zotop CMS
 
 文档地址：
 

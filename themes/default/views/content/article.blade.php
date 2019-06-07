@@ -1,3 +1,4 @@
+{{--title:文章默认模板--}}
 @extends('core::layouts.master')
 
 @section('content')
@@ -23,6 +24,3 @@
     </div>
 </div>
 @endsection
-
-@push('css')
-@endpush

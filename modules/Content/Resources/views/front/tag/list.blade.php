@@ -11,7 +11,7 @@
     @foreach ($list as $item)
         <li class="list-group-item">
             <a href="{{$item->url}}" {!! $item->title_style ? 'style="'.$item->title_style.'"': '' !!}>{{$item->title}}</a>
-            <span class="float-right">{{$item->source}} {{$item->user->username}} {{$item->created_at->format('Y-m-d')}}</span>
+            <span class="float-right">{{$item->created_at->format('Y-m-d')}}</span>
         </li>
     @endforeach
     </ul>

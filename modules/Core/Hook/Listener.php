@@ -86,12 +86,12 @@ class Listener
             ];
         }        
 
-        //environment 服务器环境
+        //系统管理
         if (allow('core.system.manage')) {
             $start['core-manage'] = [
                 'text' => trans('core::system.manage.title'),
                 'href' => route('core.system.manage'),
-                'icon' => 'fa fa-server bg-primary text-white', 
+                'icon' => 'fa fa-tachometer-alt bg-primary text-white', 
                 'tips' => trans('core::system.manage.description'),
             ];
         }
