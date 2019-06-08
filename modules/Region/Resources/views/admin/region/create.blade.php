@@ -5,7 +5,7 @@
 
     {form model="$region" route="region.store" method="post" class="m-5" autocomplete="off"}
 
-        @include('region.form')
+        @include('region::region.form')
 
     {/form}
 </div>
@@ -19,7 +19,7 @@
 <script type="text/javascript">
 
     // 对话框设置
-    $dialog.callbacks['ok'] = function(){
+    dialog.callbacks['ok'] = function(){
         $('form.form').submit();
         return false;
     };
@@ -33,7 +33,7 @@
                 $.post($(form).attr('action'), $(form).serialize(), function(msg){
 
                     // 关闭对话框
-                    msg.state && $dialog.close();                    
+                    msg.state && dialog.close();                    
                     // 弹出消息
                     $.msg(msg);
 

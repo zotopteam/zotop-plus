@@ -137,10 +137,10 @@ $(function(){
     });
 
     // statusbar
-    $dialog.statusbar('{{trans('content::content.sort.help', [str_limit($sort->title,80)])}}');
+    dialog.statusbar('{{trans('content::content.sort.help', [str_limit($sort->title,80)])}}');
 
     // 确定按钮回调
-    $dialog.callbacks['ok'] = function () {
+    dialog.callbacks['ok'] = function () {
 
         var selected = target.filter('.selected');
 
@@ -153,8 +153,8 @@ $(function(){
                 //$.msg(msg);
 
                 if (msg.state) {
-                    $dialog.opener.location.reload();
-                    $dialog.close();
+                    dialog.opener.location.reload();
+                    dialog.close();
                 }
 
             },'json');

@@ -44,7 +44,7 @@
 <script type="text/javascript">
 
     // 对话框设置
-    $dialog.callbacks['ok'] = function(){
+    dialog.callbacks['ok'] = function(){
         $('form.form').submit();
         return false;
     };
@@ -60,9 +60,9 @@
                     // 关闭对话框，刷新页面
                     if (msg.state) {
                         msg.onclose = function () {
-                            $dialog.opener.location.reload();
+                            dialog.opener.location.reload();
                         }
-                        $dialog.close();
+                        dialog.close();
                     }
                     
                     // 弹出消息

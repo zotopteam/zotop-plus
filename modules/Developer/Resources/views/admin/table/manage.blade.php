@@ -198,10 +198,10 @@
             var method  = $(this).data('method') || 'DELETE';
             var name  = $(this).data('name');
 
-            var $dialog = $.confirm(confirm,function(){
-                $dialog.loading(true);
+            var dialog = $.confirm(confirm,function(){
+                dialog.loading(true);
                 $.ajax({url:href,type:method,dataType:'json',data:{name:name},success:function(msg){
-                    $dialog.close().remove();
+                    dialog.close().remove();
                     $.msg(msg);
                 }});
                 return false;

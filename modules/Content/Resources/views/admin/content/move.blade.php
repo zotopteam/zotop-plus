@@ -92,10 +92,10 @@
 <script type="text/javascript">
 $(function(){
     // statusbar
-    $dialog.statusbar('{{trans('content::content.move.help')}}');
+    dialog.statusbar('{{trans('content::content.move.help')}}');
 
     // 设置当前所在的节点编号
-    $dialog.parent_id = {{$parent->id}};
+    dialog.parent_id = {{$parent->id}};
 })
 </script>
 @endpush

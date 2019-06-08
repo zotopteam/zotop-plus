@@ -12,13 +12,13 @@
 @push('js')
 <script type="text/javascript">
     // 对话框设置
-    $dialog.statusbar("{{trans('core::file.position')}} {{path_base($path)}}");
-    // $dialog.callback('ok', function(){
+    dialog.statusbar("{{trans('core::file.position')}} {{path_base($path)}}");
+    // dialog.callback('ok', function(){
     //     $('form.form').submit();
     //     return false;
     // });
 
-    $dialog.button([
+    dialog.button([
         {           
             value: '{{trans('master.save')}}',
             callback: function () {
@@ -57,7 +57,7 @@
                 var validator = this;
                 $.post($(form).attr('action'), $(form).serialize(), function(msg){
                     // 关闭对话框
-                     msg.state && $dialog.saveclose && $dialog.close();                    
+                     msg.state && dialog.saveclose && dialog.close();                    
                     // 弹出消息
                     $.msg(msg);
                 },'json').fail(function(jqXHR){
