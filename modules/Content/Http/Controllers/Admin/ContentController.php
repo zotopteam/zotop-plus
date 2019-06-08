@@ -86,7 +86,7 @@ class ContentController extends AdminController
      * @return Response
      */
     public function store(ContentRequest $request)
-    {
+    {        
         $content = new Content;
         $content->fill($request->all());
         $content->save();

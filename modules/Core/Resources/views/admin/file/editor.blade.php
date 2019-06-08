@@ -12,13 +12,13 @@
 @push('js')
 <script type="text/javascript">
     // 对话框设置
-    dialog.statusbar("{{trans('core::file.position')}} {{path_base($path)}}");
-    // dialog.callback('ok', function(){
+    currentDialog.statusbar("{{trans('core::file.position')}} {{path_base($path)}}");
+    // currentDialog.callback('ok', function(){
     //     $('form.form').submit();
     //     return false;
     // });
 
-    dialog.button([
+    currentDialog.button([
         {           
             value: '{{trans('master.save')}}',
             callback: function () {
@@ -52,19 +52,9 @@
 
     // 表单验证码提交
     $(function(){
-        $('form.form').validate({
-            submitHandler:function(form){                
-                var validator = this;
-                $.post($(form).attr('action'), $(form).serialize(), function(msg){
-                    // 关闭对话框
-                     msg.state && dialog.saveclose && dialog.close();                    
-                    // 弹出消息
-                    $.msg(msg);
-                },'json').fail(function(jqXHR){
-                    return validator.showErrors(jqXHR.responseJSON.errors);
-                });
-            }            
-        });        
+        $('form.form').submited(function(){
+            currentDialog.saveclose && currentDialog.close();
+        });      
     })        
 </script>
 @endpush

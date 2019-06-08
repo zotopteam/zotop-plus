@@ -9,6 +9,9 @@
         <div class="main-title mr-auto">
             {{$title}}
         </div>
+        <div class="main-action">
+            {field type="submit" form="model-form" value="trans('master.save')" class="btn btn-primary"}
+        </div>
     </div>
     
     <div class="main-body scrollable">
@@ -90,35 +93,5 @@
 
         </div>
     </div><!-- main-body -->
-    <div class="main-footer">
-        <div class="mr-auto">
-            {field type="submit" form="model-form" value="trans('master.save')" class="btn btn-primary"}
-        </div>
-    </div>
 </div>
 @endsection
-
-@push('js')
-<script type="text/javascript">
-    $(function(){
-        $('form.form').validate({
-            submitHandler:function(form){                
-                var validator = this;
-                $('.form-submit').prop('disabled',true);
-                $.post($(form).attr('action'), $(form).serialize(), function(msg){
-                    $.msg(msg);
-                    if ( msg.state && msg.url ) {
-                        location.href = msg.url;
-                        return true;
-                    }
-                    $('.form-submit').prop('disabled',false);
-                    return false;
-                },'json').fail(function(jqXHR){
-                    $('.form-submit').prop('disabled',false);
-                    return validator.showErrors(jqXHR.responseJSON.errors);
-                });
-            }            
-        });
-    })
-</script>
-@endpush

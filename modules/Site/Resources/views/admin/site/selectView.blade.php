@@ -171,11 +171,11 @@
             selected.push(data);
         });
 
-        dialog.selected = selected;   
+        currentDialog.selected = selected;   
     }
 
     // 确定按钮回调
-    dialog.callbacks['ok'] = function () {
+    currentDialog.callbacks['ok'] = function () {
         var selected  = new Array();
 
         $('[data-type="file"]').filter('.selected').each(function() {
@@ -203,7 +203,7 @@
         // 文件双击，直接返回
         $('[data-type="file"]').on('dblclick', function(){
             $(this).addClass('selected').siblings(".selected").removeClass('selected');  //单选
-            dialog.ok();
+            currentDialog.ok();
             return false;
         });
 

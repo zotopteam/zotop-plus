@@ -181,8 +181,7 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
             $(this).removeData("checkable").data("checkable", instance);
         });
 
-        // if options.api == true then return api,else return this
-        return options.api ? api: this;
+        return this;
     }
 
     // default bind
@@ -304,5 +303,111 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
     $(function(){
         $('[data-depend]').depend();
     });        
+
+})(jQuery);
+
+/*
+ * jQuery submited plugin
+ * 验证并ajax提交表单
+ *
+ * @author   zotop
+ * @created  2019.06.08
+ * @version  1.0
+ * @site     http://zotop.com
+*/
+
+(function($) {
+
+    $.submited = {};
+    $.submited.default = {
+        submits : '.form-submit', //提交按钮
+        success : function(){
+            if (typeof window.currentDialog != "undefined") {
+                window.currentDialog.close();
+            }
+        },
+        error   : $.noop
+    };
+
+    function submited(target, options) {
+        var method = target.attr('method').toLowerCase();
+        var submits = $(options.submits);
+
+        var submitHandler = function(form) {                
+                var validator = this;
+                var form      = $(form);
+                var url       = form.attr('action');
+                var data      = form.serialize();
+
+                // 禁用提交按钮
+                submits.prop('disabled', true);
+
+                // ajax提交表单
+                $.post(url, data, function(msg) {
+
+                    if (! msg.url) {
+                        submits.prop('disabled', false);
+                    }
+
+                    if (msg.state) {
+                        options.success(msg, form, submits);
+                    } else {
+                        options.error(msg, form, submits);
+                    }
+                    
+                    $.msg(msg);
+                },'json').fail(function(jqXHR){
+                    submits.prop('disabled', false);
+                    return validator.showErrors(jqXHR.responseJSON.errors);
+                });
+        }
+
+        if (validator = target.data('submited.validator')) {
+            validator.destroy();
+        }
+
+        // post 表单ajax提交，get表单只验证
+        if (method == 'post') {
+            var submited = target.validate({submitHandler:submitHandler});
+        } else {
+            var submited = target.validate();
+        }
+
+        target.data('submited.validator', submited);
+    }
+
+    // jQuery plugin initialization
+    $.fn.submited = function(success, error){
+
+        var options = {};
+
+        // 如果传入的是object，则为属性
+        if (typeof success === 'object') {
+            options = success;
+        }
+
+        if ($.isFunction(success)) {
+            options = $.extend(options, {success:success});
+        }
+
+        if ($.isFunction(error)) {
+            options = $.extend(options, {error:error});
+        }
+
+        // setup options
+        options = $.extend({}, $.submited.default, options);
+
+        // install selectTable for each entry in jQuery object
+        this.each(function(){
+            submited($(this), options);
+        });
+
+        return this;
+    }
+
+    // default bind
+    $(function(){
+        $('form.form').submited();
+    }); 
 
 })(jQuery);

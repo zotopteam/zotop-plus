@@ -34,7 +34,7 @@
     <script src="{{Theme::asset('lang/'.App::getLocale().'/jquery.validate.js')}}"></script>
     @endif
     <script type="text/javascript">
-        window.dialog = $.dialog();
+        window.currentDialog = $.dialog();
     </script>
     @stack('js') 
 </body>

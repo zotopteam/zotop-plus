@@ -9,11 +9,14 @@
         <div class="main-title mr-auto">
             {{$title}}
         </div>
+        <div class="main-action">
+            {field type="submit" form="form" value="trans('master.save')" class="btn btn-primary"}
+        </div>
     </div>
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="$user" route="core.mine.password.update" method="put" autocomplete="off"}
+            {form model="$user" route="core.mine.password.update" id="form" method="put" autocomplete="off"}
             <div class="form-group row">
                 <label for="username" class="col-2 col-form-label required">{{trans('core::mine.username.label')}}</label>
                 <div class="col-4">
@@ -58,50 +61,19 @@
                     <span class="form-help">{{trans('core::mine.password_confirm.help')}}</span>                    
                     @endif                          
                 </div>
-            </div>
-            <div class="form-group form-footer row">
-                <div class="col-4">
-                    {field type="submit" value="trans('master.save')" class="btn btn-primary"}
-                </div>
-            </div>                                          
+            </div>                                         
             {/form}           
         </div>
     </div><!-- main-body -->    
 </div>
-
-
 @endsection
 
 @push('js')
 <script type="text/javascript">
     $(function(){
-
-        $('form.form').validate({
-       
-            submitHandler:function(form){                
-                var validator = this;
-
-                $('.form-submit').prop('disabled',true);
-
-                $.post($(form).attr('action'), $(form).serialize(), function(msg){
-                    
-                    $.msg(msg);
-
-                    if ( msg.state ) {
-                        $(form).get(0).reset();
-                        return true;
-                    }
-
-                    $('.form-submit').prop('disabled',false);
-                    return false;
-
-                },'json').fail(function(jqXHR){
-                    
-                    $('.form-submit').prop('disabled',false);
-                    return validator.showErrors(jqXHR.responseJSON.errors);
-                });
-            }            
-        });
-    })
+        $('form.form').submited(function(msg, form, submits){
+            form.get(0).reset();
+        })
+    });
 </script>
 @endpush

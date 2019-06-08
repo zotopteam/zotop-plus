@@ -44,36 +44,18 @@
 <script type="text/javascript">
 
     // 对话框设置
-    dialog.callbacks['ok'] = function(){
+    currentDialog.callbacks['ok'] = function(){
         $('form.form').submit();
         return false;
     };
 
     $(function(){
-
-        $('form.form').validate({
-       
-            submitHandler:function(form){                
-                var validator = this;
-                $.post($(form).attr('action'), $(form).serialize(), function(msg){
-                    
-                    // 关闭对话框，刷新页面
-                    if (msg.state) {
-                        msg.onclose = function () {
-                            dialog.opener.location.reload();
-                        }
-                        dialog.close();
-                    }
-                    
-                    // 弹出消息
-                    $.msg(msg);
-
-                },'json').fail(function(jqXHR){
-                    return validator.showErrors(jqXHR.responseJSON.errors);
-                });
-            }            
+        $('form.form').submited(function(msg){
+            msg.onclose = function () {
+                currentDialog.opener.location.reload();
+            }
+            currentDialog.close();            
         });
-        
     })  
 </script>
 @endpush

@@ -57,7 +57,6 @@
 @push('js')
 <script type="text/javascript">
     $(function(){
-
         // 保存并继续编辑
         $('.btn-save-edit').on('click',function(){
             $('[name=operation]').val('save-edit');
@@ -68,25 +67,6 @@
          $('.btn-save-back').on('click',function(){
             $('[name=operation]').val('save-back');
             $('form.form').submit();
-        });       
-
-        $('form.form').validate({
-            submitHandler:function(form){                
-                var validator = this;
-                $('.form-submit').prop('disabled',true);
-                $.post($(form).attr('action'), $(form).serialize(), function(msg){
-                    $.msg(msg);
-                    if ( msg.state && msg.url ) {
-                        location.href = msg.url;
-                        return true;
-                    }
-                    $('.form-submit').prop('disabled',false);
-                    return false;
-                },'json').fail(function(jqXHR){
-                    $('.form-submit').prop('disabled',false);
-                    return validator.showErrors(jqXHR.responseJSON.errors);
-                });
-            }            
         });
     })
 </script>

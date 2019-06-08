@@ -164,7 +164,7 @@
 <script type="text/javascript">  
 
     // 确定按钮回调
-    dialog.callbacks['ok'] = function () {
+    currentDialog.callbacks['ok'] = function () {
         var selected  = new Array();
 
         $('[data-type="file"]').each(function() {
