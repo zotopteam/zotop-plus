@@ -199,7 +199,6 @@ class BaseController extends Controller
     public function success($content, $url='', $time=1)
     {
         return $this->message([
-            'state'   => true,
             'type'    => 'success',
             'icon'    => 'fa fa-check-circle',
             'content' => $content,
@@ -219,7 +218,6 @@ class BaseController extends Controller
     public function error($content, $time=5)
     {
         return $this->message([
-            'state'   => false,
             'type'    => 'error',
             'icon'    => 'fa fa-times-circle',
             'content' => $content,

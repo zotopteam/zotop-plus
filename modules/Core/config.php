@@ -27,7 +27,7 @@ return [
             'opacity'  => '50',
             'type'     => 'text',
             'text'     => '',
-            'font'     => ['file'=>'/resources/fonts/default.otf','size'=>36,'color'=>'#ffffff'],
+            'font'     => ['file'=>'resources/fonts/default.otf','size'=>36,'color'=>'#ffffff'],
             'image'    => '',
             'position' => 'bottom-right',
             'offset'   => ['x'=>10,'y'=>10],

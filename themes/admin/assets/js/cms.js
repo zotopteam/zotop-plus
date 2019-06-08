@@ -322,6 +322,8 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
     $.submited.default = {
         submits : '.form-submit', //提交按钮
         success : function(){
+            // 如果是在对话框中，弹出成功消息之前自动关闭对话框，这时候刷新的就是主页面
+            // 如果有其他需求，$(form).submited(success)，自定义成功success回调函数，此处代码不再生效 
             if (typeof window.currentDialog != "undefined") {
                 window.currentDialog.close();
             }
@@ -345,13 +347,18 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                 // ajax提交表单
                 $.post(url, data, function(msg) {
 
+                    // 不跳转时禁用提交按钮
                     if (! msg.url) {
                         submits.prop('disabled', false);
                     }
 
-                    if (msg.state) {
+                    // 成功回调
+                    if (msg.type == 'success') {
                         options.success(msg, form, submits);
-                    } else {
+                    } 
+
+                    // 失败回调
+                    if (msg.type == 'error') {
                         options.error(msg, form, submits);
                     }
                     
@@ -362,6 +369,7 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                 });
         }
 
+        // 如果已经绑定过submited，会自动绑定validator，重新绑定之前，需要销毁validator
         if (validator = target.data('submited.validator')) {
             validator.destroy();
         }

@@ -254,11 +254,9 @@
 			fixed   : true,
 			resize  : false,
 			onclose : function() {
-				console.log(msg.url);
 				if( msg.url ) {
 					var parentDialog = top.dialog.get(this.opener);
 					if (parentDialog && parentDialog.open) {
-						console.log('dddd');
 						this.opener.location.href = msg.url;
 					} else {
 						parent.location.href = msg.url;
