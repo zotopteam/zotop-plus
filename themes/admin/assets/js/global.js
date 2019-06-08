@@ -186,10 +186,10 @@ $(function(){
         var confirm = $(this).data('confirm') || $.trans('您确定要 [ {0} ] 嘛?', text);
         var method  = $(this).data('method') || 'POST';
 
-        var $dialog = $.confirm(confirm,function(){
-            $dialog.loading(true);
+        var dialog = $.confirm(confirm,function(){
+            dialog.loading(true);
             $.ajax({url:href,type:method,dataType:'json',success:function(msg){
-                $dialog.close().remove();
+                dialog.close().remove();
                 $.msg(msg);
             }});
             return false;
@@ -206,10 +206,10 @@ $(function(){
         var confirm = $(this).data('confirm') || $.trans('您确定要 {0} 嘛?', text);
         var method  = $(this).data('method') || 'DELETE';
 
-        var $dialog = $.confirm(confirm,function(){
-            $dialog.loading(true);
+        var dialog = $.confirm(confirm,function(){
+            dialog.loading(true);
             $.ajax({url:href,type:method,dataType:'json',success:function(msg){
-                $dialog.close().remove();
+                dialog.close().remove();
                 $.msg(msg);
             }});
             return false;
@@ -221,11 +221,11 @@ $(function(){
     $(document).on('click', 'a.js-open',function(event){
         event.preventDefault();
 
-        var url     = $(this).data('url') || $(this).attr('href');
-        var title   = $(this).attr('title') || $(this).data('original-title') || $(this).text();
-        var width   = $(this).data('width') || 'auto';
-        var height  = $(this).data('height') || 'auto';     
-        var $dialog = $.dialog({
+        var url    = $(this).data('url') || $(this).attr('href');
+        var title  = $(this).attr('title') || $(this).data('original-title') || $(this).text();
+        var width  = $(this).data('width') || '80%';
+        var height = $(this).data('height') || '70%';   
+        var dialog = $.dialog({
             title        : title,
             url          : url,
             width        : width,
@@ -235,7 +235,7 @@ $(function(){
             oniframeload : function() {
                 this.loading(false);
             }
-        },true).loading(true);
+        }, true).loading(true);
 
         event.stopPropagation();
     });
@@ -250,20 +250,20 @@ $(function(){
         var type   = $(this).data('type') || 'text';
         var title  = $(this).attr('title') || $(this).data('original-title') || $(this).text();
         var posts  = {};   
-        var $dialog = $.prompt(prompt, function(newvalue, input) {
+        var dialog = $.prompt(prompt, function(newvalue, input) {
             posts[name] = newvalue;
-            $dialog.loading(true);
+            dialog.loading(true);
             $.post(href, posts, function(msg) {
                 if( msg.state ){
-                    $dialog.close().remove();
+                    dialog.close().remove();
                 }else{
-                    $dialog.loading(false);
+                    dialog.loading(false);
                 }
                 $.msg(msg);
             },'json').fail(function(jqXHR){
                 input.select();
                 input.focus();
-                $dialog.loading(false);
+                dialog.loading(false);
                 $.error(jqXHR.responseJSON.errors[name][0]);
             });
             return false;
@@ -275,11 +275,11 @@ $(function(){
     $(document).on('click', 'a.js-image', function(event){
         event.preventDefault();
 
-        var url   = $(this).data('url');
-        var title = $(this).data('title');
-        var info  = $(this).data('info');
+        var url    = $(this).data('url');
+        var title  = $(this).data('title');
+        var info   = $(this).data('info');
 
-        var $dialog = $.image(url, title).statusbar(info);
+        $.image(url, title).statusbar(info);
 
         event.stopPropagation();
     });
