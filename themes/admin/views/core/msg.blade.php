@@ -2,21 +2,53 @@
 @extends('core::layouts.master')
 
 @section('content')
-<div class="d-flex full-width full-height">
-    <div class="container-fluid text-center align-self-center">
-        @if($msg.type == 'success')
-        <i class="{{$msg.icon}} fa-5x mb-5 text-success"></i>
-        <h1>{{$msg.content}}</h1>
-        <div class="mt-5">
-            <a href="{{$msg.url}}" class="btn btn-primary">
-                <i class="fa fa-link fa-fw"></i> OK
-            </a>
+<div class="d-flex full-width full-height bg-primary text-white">
+    <div class="container-fluid text-left align-self-center">
+        <div class="msg">
+            @if($msg.type == 'success')
+            <div class="msg-title text-uppercase"><i class="fa fa-check-circle"></i> {{$msg.type}}</div>
+            <div class="msg-content">{{$msg.content}}</div>
+            <div class="msg-buttons">
+                @if (isset($msg.url))
+                <a href="{{$msg.url}}" class="btn btn-outline text-white">
+                    <i class="fa fa-check mr-2"></i> {{trans('master.ok')}}
+                </a>
+                @endif
+            </div>
+            @elseif ($msg.type == 'error')
+            <div class="msg-title text-uppercase"><i class="fa fa-times-circle"></i> {{$msg.type}}</div>
+            <div class="msg-content">{{$msg.content}}</div>
+            <div class="msg-buttons">
+                @if (isset($msg.url))
+                <a href="{{$msg.url}}" class="btn btn-outline text-white">
+                    <i class="fa fa-check mr-2"></i> {{trans('master.ok')}}
+                </a>
+                @endif
+                <a href="{{request()->referer()}}" class="btn btn-outline text-white">
+                    <i class="fa fa-arrow-left mr-2"></i> {{trans('master.page.previous')}}
+                </a>                
+            </div>
+            @endif
         </div>
-        @elseif ($msg.type == 'error')
-        <i class="{{$msg.icon}} fa-5x mb-5 text-error"></i>
-        <h1>{{$msg.content}}</h1>
-        @endif
     </div>
 </div>
+<svg class="animation-wave" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none">
+    <defs>
+        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
+    </defs>
+    <g class="parallax">
+        <use xlink:href="#gentle-wave" x="50" y="0" fill="rgba(255,255,255,.3)"></use>
+        <use xlink:href="#gentle-wave" x="50" y="3" fill="rgba(255,255,255,.3)"></use>
+        <use xlink:href="#gentle-wave" x="50" y="6" fill="rgba(255,255,255,.3)"></use>
+    </g>
+</svg>
 @endsection
+
+@push('css')
+<style type="text/css">
+    .msg{width: 80%;padding: 0 4rem;}
+    .msg-title{font-weight: 900;font-size: 1.5rem;}
+    .msg-content{font-weight: 900;font-size: 3rem;margin:.5rem 0 1.5rem 0;}
+</style>
+@endpush
 

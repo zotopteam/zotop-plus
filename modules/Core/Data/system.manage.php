@@ -29,11 +29,21 @@ $manages['route-cache'] = [
                     ['text'=>trans('master.cache'), 'class' => 'btn btn-success js-post', 'icon'=>'fa fa-dot-circle', 'href'=>route('core.system.manage',['artisan'=>'route:cache'])]
 ];
 
+// 上传临时文件
+$manages['plupload-clear'] = [
+    'icon'        => 'fa fa-images text-warning',
+    'title'       => trans('core::system.plupload.clear.title'),
+    'description' => trans('core::system.plupload.clear.description'),
+    'directory'   => 'storage/plupload',
+    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times', 'href'=>route('core.system.manage',['artisan'=>'plupload:clear'])]
+];
+
 // 缩略图清理
 $manages['thumbnail-clear'] = [
     'icon'        => 'fa fa-images text-warning',
     'title'       => trans('core::system.thumbnail.clear.title'),
     'description' => trans('core::system.thumbnail.clear.description'),
+    'directory'   => 'public/thumbnails',
     'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times', 'href'=>route('core.system.manage',['artisan'=>'thumbnail:clear'])]
 ];
 
@@ -42,6 +52,7 @@ $manages['preview-clear'] = [
     'icon'        => 'fa fa-images text-warning',
     'title'       => trans('core::system.preview.clear.title'),
     'description' => trans('core::system.preview.clear.description'),
+    'directory'   => 'public/previews',
     'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times', 'href'=>route('core.system.manage',['artisan'=>'preview:clear'])]
 ];
 
@@ -50,6 +61,7 @@ $manages['log-clear'] = [
     'icon'        => 'fa fa-history text-info',
     'title'       => trans('core::system.log.clear.title'),
     'description' => trans('core::system.log.clear.description'),
+    'directory'   => 'storage/logs',
     'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times', 'href'=>route('core.system.manage',['artisan'=>'log:clear'])]
 ];             
 

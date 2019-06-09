@@ -20,7 +20,7 @@ return [
     | This value is the version of zotop.
     */
 
-    'version' => '1.6.0606',
+    'version' => '1.6.0609',
 
 
     /*
@@ -31,7 +31,7 @@ return [
     | This value is the release of zotop. 
     */
 
-    'release' => '20190606',
+    'release' => '20190609',
 
     /*
     |--------------------------------------------------------------------------

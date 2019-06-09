@@ -57,6 +57,7 @@ return [
     'operated'                 => '操作成功',
     'operate.failed'           => '操作失败',
     'forbidden'                => '禁止操作',
+    'ok'                       => '好的',
     'yes'                      => '是',
     'no'                       => '否',
     'on'                       => '开启',
@@ -75,4 +76,6 @@ return [
     'select'                   => '选择',
     'select.min'               => '至少选择 :0 项',
     'select.max'               => '最多选择 :0 项',
+    'page.previous'            => '上一页',
+    'page.next'                => '下一页'
 ];

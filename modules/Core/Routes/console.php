@@ -22,15 +22,6 @@ Artisan::command('zotop:version', function () {
 
 })->describe('Show the version of zotop');
 
-/**
- * 定时任务测试命令
- */
-Artisan::command('schedule:test', function () {
-    $log_filepath = storage_path('logs/schedule_test.log');
-    $log_contents = 'Schedule run: '.now()."\n";
-    $this->laravel['files']->append($log_filepath, $log_contents);
-    $this->info('ok!');
-})->describe('schedule test');
 
 /**
  * 清理日志
@@ -71,3 +62,25 @@ Artisan::command('thumbnail:clear', function () {
 
     $this->info('Image thumbnail files cleared!');
 })->describe('Clear the image thumbnail files');
+
+/**
+ * 清理上传缓存
+ */
+Artisan::command('plupload:clear {--force}', function ($force) {
+    $dir = storage_path('plupload');
+
+    if (! $this->laravel['files']->isDirectory($dir)) {
+        $this->error('Plupload temp directory does not existed!');
+        return false;
+    }
+
+    foreach ($this->laravel['files']->files($dir) as $file) {
+        //非强制模式下，只清除24小时以前的缓存
+        if (!$force && filemtime($file) > time() - 24*60*60) {
+            continue;
+        }
+        $this->laravel['files']->delete($file);
+    }
+
+    $this->info('Plupload temp files cleared!');
+})->describe('Clear the plupload temp files');

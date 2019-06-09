@@ -22,6 +22,33 @@ class SystemController extends AdminController
     }
 
     /**
+     * 统计文件夹大小
+     * 
+     * @param  Request $request
+     * @return mixed
+     */    
+    public function size(Request $request)
+    {
+        function directorySize ($dir)
+        {
+            $size = 0;
+            foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+                $size += is_file($each) ? filesize($each) : directorySize($each);
+            }
+            return $size;
+        }
+
+        if ($request->directory) {
+            $path = base_path($request->directory);
+            $size = directorySize($path);
+            $size = \Format::size($size);
+
+            return $this->success($size);
+        }
+        return $this->error('Directory required');
+    }
+
+    /**
      * 系统管家
      * 
      * @param  Request $request [description]
