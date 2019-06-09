@@ -91,7 +91,7 @@ class Listener
             $start['core-manage'] = [
                 'text' => trans('core::system.manage.title'),
                 'href' => route('core.system.manage'),
-                'icon' => 'fa fa-tachometer-alt bg-primary text-white', 
+                'icon' => 'fa fa-globe bg-primary text-white', 
                 'tips' => trans('core::system.manage.description'),
             ];
         }

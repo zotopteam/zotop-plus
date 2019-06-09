@@ -15,7 +15,7 @@ $manages['config-cache'] = [
     'title'       => trans('core::system.config.cache.title'),
     'description' => trans('core::system.config.cache.description'),
     'action'      => File::exists(app()->bootstrapPath().'/cache/config.php') ?
-                    ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times-circle', 'href'=>route('core.system.manage',['artisan'=>'config:clear'])] :
+                    ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'config:clear'])] :
                     ['text'=>trans('master.cache'), 'class' => 'btn btn-success js-post', 'icon'=>'fa fa-dot-circle', 'href'=>route('core.system.manage',['artisan'=>'config:cache'])]
 ];
 
@@ -25,18 +25,36 @@ $manages['route-cache'] = [
     'title'       => trans('core::system.route.cache.title'),
     'description' => trans('core::system.route.cache.description'),
     'action'      => File::exists(app()->bootstrapPath().'/cache/routes.php') ?
-                    ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times-circle', 'href'=>route('core.system.manage',['artisan'=>'route:clear'])] :
+                    ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'route:clear'])] :
                     ['text'=>trans('master.cache'), 'class' => 'btn btn-success js-post', 'icon'=>'fa fa-dot-circle', 'href'=>route('core.system.manage',['artisan'=>'route:cache'])]
 ];
 
 // 上传临时文件
 $manages['plupload-clear'] = [
-    'icon'        => 'fa fa-images text-warning',
+    'icon'        => 'fa fa-upload text-info',
     'title'       => trans('core::system.plupload.clear.title'),
     'description' => trans('core::system.plupload.clear.description'),
     'directory'   => 'storage/plupload',
-    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times', 'href'=>route('core.system.manage',['artisan'=>'plupload:clear'])]
+    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'plupload:clear'])]
 ];
+
+// 日志清理
+$manages['debugbar-clear'] = [
+    'icon'        => 'fa fa-bug text-info',
+    'title'       => trans('core::system.debugbar.clear.title'),
+    'description' => trans('core::system.debugbar.clear.description'),
+    'directory'   => 'storage/debugbar',
+    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'debugbar:clear'])]
+]; 
+
+// 日志清理
+$manages['log-clear'] = [
+    'icon'        => 'fa fa-history text-info',
+    'title'       => trans('core::system.log.clear.title'),
+    'description' => trans('core::system.log.clear.description'),
+    'directory'   => 'storage/logs',
+    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'log:clear'])]
+]; 
 
 // 缩略图清理
 $manages['thumbnail-clear'] = [
@@ -44,7 +62,7 @@ $manages['thumbnail-clear'] = [
     'title'       => trans('core::system.thumbnail.clear.title'),
     'description' => trans('core::system.thumbnail.clear.description'),
     'directory'   => 'public/thumbnails',
-    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times', 'href'=>route('core.system.manage',['artisan'=>'thumbnail:clear'])]
+    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'thumbnail:clear'])]
 ];
 
 // 预览图清理
@@ -53,24 +71,15 @@ $manages['preview-clear'] = [
     'title'       => trans('core::system.preview.clear.title'),
     'description' => trans('core::system.preview.clear.description'),
     'directory'   => 'public/previews',
-    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times', 'href'=>route('core.system.manage',['artisan'=>'preview:clear'])]
+    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'preview:clear'])]
 ];
-
-// 日志清理
-$manages['log-clear'] = [
-    'icon'        => 'fa fa-history text-info',
-    'title'       => trans('core::system.log.clear.title'),
-    'description' => trans('core::system.log.clear.description'),
-    'directory'   => 'storage/logs',
-    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times', 'href'=>route('core.system.manage',['artisan'=>'log:clear'])]
-];             
 
 // 视图缓存清理
 $manages['view-clear'] = [
     'icon'        => 'fa fa-eye text-info',
     'title'       => trans('core::system.view.clear.title'),
     'description' => trans('core::system.view.clear.description'),
-    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-times', 'href'=>route('core.system.manage',['artisan'=>'view:clear'])]
+    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'view:clear'])]
 ];
 
 return $manages;

@@ -36,8 +36,7 @@ class RebootCommand extends Command
         // 钩子
         Action::fire('reboot', $this);
 
-        // 清理缓存
-        $this->call('debugbar:clear');
+        // 清理路由缓存和配置缓存
         $this->call('optimize:clear');
 
         // 生产环境时自动优化系统，建立配置和路由缓存
