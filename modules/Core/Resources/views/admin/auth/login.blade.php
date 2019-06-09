@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="d-flex justify-content-center full-height">
-    {form route="admin.login.post" method="post" class="form-login align-self-center" autocomplete="off"}
+    {form route="admin.login.post" method="post" class="form-login align-self-center" autocomplete="off" nosubmited="nosubmited"}
         <div class="card card-login">    
             <div class="card-header bg-primary text-white text-center pos-r">
                 <div class="site-name text-truncate">{{config('site.name') ?: config('zotop.name') }}</div>
@@ -82,15 +82,14 @@
 
                 $.post($(form).attr('action'), $(form).serialize(), function(msg){
                     
-                    $('.form-tips').html(msg.content).addClass(msg.state ? 'text-success' : 'text-error');
-
-                    if ( msg.state ) {
+                    if (msg.type == 'success') {
+                        $('.form-tips').html(msg.content).addClass('text-success');
                         location.href = msg.url;
-                        return true;
+                        return true;                        
                     }
 
+                    $('.form-tips').html(msg.content).addClass('text-error');
                     $('.form-submit').prop('disabled',false);
-
                     return false;                
                 },'json').fail(function(jqXHR){
                     

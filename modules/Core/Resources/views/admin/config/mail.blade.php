@@ -128,7 +128,7 @@
             </div>
             {/form}
             
-            {form route="core.config.mailtest" method="post" id="mailtest" autocomplete="off"}
+            {form route="core.config.mailtest" method="post" id="mailtest" autocomplete="off" nosubmited="nosubmited"}
             <div class="form-title row">{{trans('core::config.mail.test')}}</div>
             <div class="form-group row">
                 <label for="test" class="col-2 col-form-label required">{{trans('core::config.mail.test.label')}}</label>
@@ -167,34 +167,6 @@
 
 @push('js')
 <script type="text/javascript">
-    // 表单提交
-    $(function(){
-        $('form#config').validate({       
-            submitHandler:function(form){                
-                var validator = this;
-
-                $('.form-submit').prop('disabled',true);
-
-                $.post($(form).attr('action'), $(form).serialize(), function(msg){
-                    
-                    $.msg(msg);
-
-                    if ( msg.state && msg.url ) {
-                        location.href = msg.url;
-                        return true;
-                    }
-
-                    $('.form-submit').prop('disabled',false);
-                    return false;
-
-                },'json').fail(function(jqXHR){                    
-                    $('.form-submit').prop('disabled',false);
-                    return validator.showErrors(jqXHR.responseJSON.errors);
-                });
-            }            
-        });
-    });
-
 
     $(function(){
 

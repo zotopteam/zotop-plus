@@ -311,8 +311,8 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
  * 验证并ajax提交表单
  *
  * @author   zotop
- * @created  2019.06.08
- * @version  1.0
+ * @created  2019.06.09
+ * @version  1.2
  * @site     http://zotop.com
 */
 
@@ -320,15 +320,19 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
 
     $.submited = {};
     $.submited.default = {
-        submits : '.form-submit', //提交按钮
-        success : function(){
+        validate : {}, // validate 属性
+        submits  : '.form-submit', //提交按钮
+        message  : function(msg, form, submits) {
+            $.msg(msg);
+        },
+        success  : function(msg, form, submits) {
             // 如果是在对话框中，弹出成功消息之前自动关闭对话框，这时候刷新的就是主页面
             // 如果有其他需求，$(form).submited(success)，自定义成功success回调函数，此处代码不再生效 
             if (typeof window.currentDialog != "undefined") {
                 window.currentDialog.close();
             }
         },
-        error   : $.noop
+        error   : $.noop,
     };
 
     function submited(target, options) {
@@ -362,7 +366,7 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                         options.error(msg, form, submits);
                     }
                     
-                    $.msg(msg);
+                    options.message(msg, form, submits);
                 },'json').fail(function(jqXHR){
                     submits.prop('disabled', false);
                     return validator.showErrors(jqXHR.responseJSON.errors);
@@ -374,18 +378,21 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
             validator.destroy();
         }
 
+        var submited;
+
         // post 表单ajax提交，get表单只验证
         if (method == 'post') {
-            var submited = target.validate({submitHandler:submitHandler});
+            options.validate.submitHandler = submitHandler;
+            submited = target.validate(options.validate);
         } else {
-            var submited = target.validate();
+            submited = target.validate(options.validate);
         }
 
         target.data('submited.validator', submited);
     }
 
     // jQuery plugin initialization
-    $.fn.submited = function(success, error){
+    $.fn.submited = function(success, error, message){
 
         var options = {};
 
@@ -402,6 +409,10 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
             options = $.extend(options, {error:error});
         }
 
+        if ($.isFunction(message)) {
+            options = $.extend(options, {message:message});
+        }        
+
         // setup options
         options = $.extend({}, $.submited.default, options);
 
@@ -415,7 +426,7 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
 
     // default bind
     $(function(){
-        $('form.form').submited();
+        $('form.form').not('[nosubmited]').submited();
     }); 
 
 })(jQuery);

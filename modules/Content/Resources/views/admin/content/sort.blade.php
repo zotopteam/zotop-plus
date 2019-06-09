@@ -150,9 +150,9 @@ $(function(){
             var newstick = selected.data('stick');
             
             $.post('{{route('content.content.sort', $parent->id)}}',{id:{{$sort->id}}, sort:newsort, stick:newstick}, function(msg) {
-                //$.msg(msg);
+                $.msg(msg);
 
-                if (msg.state) {
+                if (msg.type == 'success') {
                     currentDialog.opener.location.reload();
                     currentDialog.close();
                 }

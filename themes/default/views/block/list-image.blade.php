@@ -1,4 +1,4 @@
-{{-- title:列表区块默认模板 --}}
+{{-- title:图片列表区块模板 --}}
 
 <ul class="list-group">
 @foreach ($data as $v)
@@ -10,4 +10,3 @@
     </li>
 @endforeach
 </ul>
-

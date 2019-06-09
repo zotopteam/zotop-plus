@@ -171,7 +171,7 @@ $(function(){
             posts[name] = newvalue;
             dialog.loading(true);
             $.post(href, posts, function(msg) {
-                if( msg.state ){
+                if( msg.type == 'success' ){
                     dialog.close().remove();
                 }else{
                     dialog.loading(false);

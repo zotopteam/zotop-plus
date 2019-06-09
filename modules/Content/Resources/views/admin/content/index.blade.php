@@ -219,7 +219,10 @@
 function postData(url, data, callback) {
     $.post(url, data, function(msg) {
         $.msg(msg);
-        msg.state && callback(); 
+
+        if (msg.type == 'success') {
+            callback(); 
+        }
     });    
 }
 
