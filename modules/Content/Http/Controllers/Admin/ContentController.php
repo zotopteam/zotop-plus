@@ -23,19 +23,18 @@ class ContentController extends AdminController
         // 获取父节点
         if ($parent_id) {
             $this->parent = Content::findOrFail($parent_id);
-            $this->path   = Content::path($this->parent);
         } else {
             $this->parent        = new Content;
             $this->parent->id    = 0;
             $this->parent->title = trans('content::content.root');
-            $this->path          = [];
         }
 
         // 获取全部父级
+        $this->path   = Content::path($this->parent->id);
 
         // 分页获取
         $this->contents = Content::with('user','model')->when($request->keywords, function($query, $keywords) {
-            $query->where('title', 'like', '%'.$keywords.'%');
+            $query->searchIn('title,keywords,summary', $keywords);
         }, function($query) use($parent_id) {
             $query->where('parent_id', $parent_id);
         })->sort()->paginate(25);
@@ -56,13 +55,14 @@ class ContentController extends AdminController
         // 获取父节点
         if ($parent_id) {
             $this->parent = Content::findOrFail($parent_id);
-            $this->path   = Content::path($this->parent);
         } else {
             $this->parent        = new Content;
             $this->parent->id    = 0;
             $this->parent->title = trans('content::content.root');
-            $this->path          = [];            
         }
+
+        // 获取路径
+        $this->path   = Content::path($this->parent->id);
 
         $this->model  = Model::find($model_id);
         $this->form   = ModelForm::get($model_id);
@@ -121,20 +121,19 @@ class ContentController extends AdminController
      */
     public function edit($id)
     {
-        $this->id    = $id;
+        $this->id      = $id;
         $this->content = Content::findOrFail($id);
 
         // 获取父节点
         if ($this->content->parent_id) {
             $this->parent = Content::findOrFail($this->content->parent_id);
-            $this->path   = Content::path($this->parent);
         } else {
             $this->parent        = new Content;
             $this->parent->id    = 0;
             $this->parent->title = trans('content::content.root');
-            $this->path          = [];         
         }
 
+        $this->path   = Content::path($this->parent->id);
         $this->model  = Model::find($this->content->model_id);
         $this->form   = ModelForm::get($this->content->model_id);     
 
@@ -177,14 +176,13 @@ class ContentController extends AdminController
         // 获取父节点
         if ($this->content->parent_id) {
             $this->parent = Content::findOrFail($this->content->parent_id);
-            $this->path   = Content::path($this->parent);
         } else {
             $this->parent        = new Content;
             $this->parent->id    = 0;
             $this->parent->title = trans('content::content.root');
-            $this->path          = [];          
         }
 
+        $this->path   = Content::path($this->parent->id);
         $this->model  = Model::find($this->content->model_id);
         $this->form   = ModelForm::get($this->content->model_id);     
 
@@ -206,9 +204,7 @@ class ContentController extends AdminController
             $id = $id ?? $request->input('id');
 
             // 单个操作或者批量操作
-            $content = is_array($id) ? Content::whereIn('id', $id) : Content::where('id', $id);
-
-            $content->get()->each(function($item, $key) use($request, $status) {
+             Content::whereSmart('id', $id)->get()->each(function($item, $key) use($request, $status) {
                 $item->status = $status;
                 $item->save();
             });
@@ -269,12 +265,13 @@ class ContentController extends AdminController
         }
 
         // 获取路径
-        $this->path = Content::path($this->sort);        
+        $this->path = Content::path($this->parent->id); 
 
         // 获取当前节点下面的全部数据（包含搜索）
-        $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->when($request->keywords, function($query, $keywords){
-            return $query->where('title', 'like', '%'.$keywords.'%');
-        })->sort()->paginate(25);
+        $this->contents = Content::with('user','model')->where('parent_id', $parent_id)
+            ->searchIn('title,keywords,summary', $request->keywords)
+            ->sort()
+            ->paginate(25);
 
         return $this->view();        
     }
@@ -292,8 +289,8 @@ class ContentController extends AdminController
             $parent_id = $request->input('parent_id');
 
             // 获取数据并移动
-            $content = is_array($id) ? Content::whereIn('id', $id) : Content::where('id', $id);
-            $content->get()->each(function($item, $key) use($parent_id) {
+            Content::whereSmart('id', $id)->get()->each(function($item, $key) use($parent_id) {
+                // 更新当前节点
                 $item->parent_id = $parent_id;
                 $item->save();
             });
@@ -311,23 +308,19 @@ class ContentController extends AdminController
         // 当前排序的父节点
         if ($parent_id) {
             $this->parent = Content::findOrFail($parent_id);
-            $this->path   = Content::path($this->parent); 
         } else {
             $this->parent        = new Content;
             $this->parent->id    = 0;
             $this->parent->title = trans('content::content.root');
-            $this->path          = [];          
         }
 
         // 获取全部父节点
-             
+        $this->path   = Content::path($this->parent->id);      
 
         // 获取当前节点下面的全部数据（包含搜索）
         $this->contents = Content::whereHas('model', function($query) {
             $query->where('nestable', 1);
-        })->where('parent_id', $parent_id)->when($request->keywords, function($query, $keywords) {
-            return $query->where('title', 'like', '%'.$keywords.'%');
-        })->sort()->paginate(36);
+        })->where('parent_id', $parent_id)->searchIn('title,keywords,summary', $request->keywords)->sort()->paginate(36);
 
         return $this->view();
     }
@@ -343,9 +336,7 @@ class ContentController extends AdminController
         $id = $id ?? $request->input('id');
 
         // 单个操作或者批量操作
-        $content = is_array($id) ? Content::whereIn('id', $id) : Content::where('id', $id);
-
-        $content->get()->each(function($item, $key) {
+        Content::whereSmart('id', $id)->get()->each(function($item, $key) {
             $item->delete();
         });        
 

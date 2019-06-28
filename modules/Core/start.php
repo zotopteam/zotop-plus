@@ -242,6 +242,46 @@
 });
 
 /**
+ * 扩展查询器 whereSmart, 当查询条件为字符串时自动转化为数组，当数组有多个值时，使用whereIn查询，当数组只有一个值时，使用where查询
+ * whereSmart('type', 'aaa,bbb')
+ * whereSmart('type', ['aaa','bbb'])
+ */
+\Illuminate\Database\Query\Builder::macro('whereSmart', function($column, $param, $separator=',') {
+
+    return $this->when(!empty($param), function ($query) use ($column, $param, $separator) {
+
+        $param = is_array($param) ? array_values($param) : explode($separator, $param);
+
+        if (count($param) == 1) {
+            return $query->where($column, reset($param));
+        }
+
+        return $query->whereIn($column, $param);
+    });
+
+});
+
+/**
+ * 扩展查询器 searchIn, 搜索多个字段
+ * searchIn('title,summary', 'keyword')
+ * searchIn(['title','summary'], 'keyword')
+ */
+\Illuminate\Database\Query\Builder::macro('searchIn', function($column, $param, $separator=',') {
+
+    return $this->when(!empty($param), function ($query) use ($column, $param, $separator) {
+
+        $columns = is_array($column) ? array_values($column) : explode($separator, $column);
+
+        return $this->where(function ($query) use ($columns, $param) {
+            foreach ($columns as $column) {
+                $query->orWhere($column, 'LIKE', "%{$param}%");
+            }
+        });
+    });
+    
+});
+
+/**
  * 单图片上传
  *
  * 

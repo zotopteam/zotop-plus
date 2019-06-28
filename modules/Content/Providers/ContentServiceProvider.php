@@ -100,10 +100,7 @@ class ContentServiceProvider extends ServiceProvider
 
             // 查询子节点
             $query->when($subdir, function($query, $subdir) use($id) {
-                return $query->where(function($query) use($id) {
-                    $path = Content::where('id', $id)->value('path');
-                    $query->where('parent_id', $id)->orWhere('path', 'like', $path.',%');
-                });
+                return $query->whereSmart('parent_id', Content::childrenIds($id, true, 'category'));
             }, function($query) use($id) {
                 return $query->where('parent_id', $id);
             });
@@ -166,8 +163,8 @@ class ContentServiceProvider extends ServiceProvider
                 return app('view')->make($view)
                     ->with($vars)
                     ->with('attrs', $attrs)
-                    ->with('path', Content::path($id))
-                    ->render(); 
+                    ->with('path', Content::path($id, $self))
+                    ->render();
             }
 
             return null;

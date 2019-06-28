@@ -101,12 +101,8 @@ trait Modelable
                     }
                 }
             }
-
-            if (count($models) == 1) {
-                return $query->where('model_id', reset($models));
-            }
             
-            return $query->whereIn('model_id', $models);         
+            return $query->whereSmart('model_id', $models);         
         }
 
         return $query;
@@ -123,14 +119,6 @@ trait Modelable
      */
     public function fill(array $attributes)
     {
-        // 去除空值，保存为null
-        // $attributes = array_filter($attributes, function($item) {
-        //     if (is_string($item) && trim($item) === '') {
-        //         return false;
-        //     }
-        //     return true;
-        // });
-
         parent::fill($attributes);
 
         if ($extendModel = $this->getExtendModel()) {

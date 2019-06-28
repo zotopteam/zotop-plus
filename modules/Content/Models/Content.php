@@ -24,7 +24,7 @@ class Content extends Model
      *
      * @var array
      */
-    protected $fillable = ['parent_id','path','model_id','title','title_style','slug','image','keywords','summary','link','view','hits','comments','status','stick','sort','user_id','source_id','publish_at'];
+    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','link','view','hits','comments','status','stick','sort','user_id','source_id','publish_at'];
 	
 	
     /**
@@ -42,13 +42,6 @@ class Content extends Model
      */
     //protected $casts = [];
 	
-	
-    /**
-     * 执行模型是否自动维护时间戳.
-     *
-     * @var bool
-     */
-    //public $timestamps = false;
 
     /**
      * boot
@@ -90,10 +83,7 @@ class Content extends Model
 
         // 保存后处理数据
         static::saved(function($content) {
-            // 计算节点的路径
-            static::where('id', $content->id)->update([
-                'path' => implode(',', static::parentIds($content->id, true))
-            ]);
+
         });
 
         static::deleting(function($content) {
@@ -154,7 +144,7 @@ class Content extends Model
      * @param  array   $parentIds 传递自身
      * @return array
      */
-    private static function parentIds($id, $self=false, &$parentIds=[])
+    public static function parentIds($id, $self=false, &$parentIds=[])
     {
         if ($self) {
             $parentIds[] = $id;
@@ -176,45 +166,41 @@ class Content extends Model
      * @param  array   $childrenIds  传递自身
      * @return array
      */    
-    public static function childrenIds($id, $self=false, &$childrenIds=[])
+    public static function childrenIds($id, $self=false, $model_id=[], &$childrenIds=[])
     {
         if ($id && $self) {
             $childrenIds[] = $id;
         }
 
         // 递归获取子节点
-        if ($children_ids = static::where('parent_id', $id)->pluck('id')) {
-            foreach ($children_ids as $children_id) {
-                static::childrenIds($children_id, true, $childrenIds);
-            }
+        $children_ids = static::where('parent_id', $id)->whereSmart('model_id', $model_id)->pluck('id');
+
+        foreach ($children_ids as $children_id) {
+            static::childrenIds($children_id, true, $model_id, $childrenIds);
         }
 
         return $childrenIds;    
     }    
 
     /**
-     * 获取父级
+     * 获取路径
      * 
      * @param  int  $id    节点编号
      * @param  boolean $self  是否包含自身
      * @return Collection
      */
-    public static function path($id)
+    public static function path($id, $self=true, &$paths=[])
     {
-        $classname = static::class;
+        if ($id && $content = static::find($id)) {
 
-        if ($id instanceof $classname) {
-            $path = $id->path;
-        } else {
-            $path = static::where('id', $id)->value('path');
+            if ($self) {
+                $paths[] = $content;
+            }
+
+            static::path($content->parent_id, true, $paths);
         }
 
-        $path      = explode(',', $path);
-        $pathSorts = array_flip($path);
-
-        return static::whereIn('id', $path)->get()->sortBy(function($content) use($pathSorts) {
-            return $pathSorts[$content->id];
-        });
+        return array_reverse($paths);
     }
 
     /**
@@ -266,8 +252,9 @@ class Content extends Model
      */
     public function getTopIdAttribute($value)
     {
-        $path = explode(',', $this->path);
-        return reset($path);
+        $parentIds = static::parentIds($this->id, true);
+
+        return reset($parentIds);
     }
 
     /**

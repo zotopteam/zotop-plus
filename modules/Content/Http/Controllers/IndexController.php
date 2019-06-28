@@ -28,9 +28,7 @@ class IndexController extends FrontController
     public function search(Request $request)
     {
         if ($request->keywords) {
-            $this->list = Content::publish()->when($request->keywords, function($query, $keywords) {
-                $query->where('title', 'like', '%'.$keywords.'%')->orWhere('keywords->;', 'like', '%'.$keywords.'%')->orWhere('title', 'like', '%'.$keywords.'%');
-            })->sort()->paginate(20);
+            $this->list = Content::publish()->searchIn('title,keywords,summary', $request->keywords)->sort()->paginate(20);
         } else {
             $this->list = collect([]);
         }
