@@ -109,7 +109,7 @@ trait Modelable
             return $query->whereIn('model_id', $models);         
         }
 
-        return $this;
+        return $query;
     } 
     
 

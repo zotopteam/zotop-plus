@@ -65,7 +65,7 @@
         <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('content::content.up')}}</a>
         @endif
         <a class="breadcrumb-item" href="{{route('content.content.index')}}">{{trans('content::content.root')}}</a>
-        @foreach($parents as $p)
+        @foreach($path as $p)
         <a class="breadcrumb-item" href="{{route('content.content.index', $p->id)}}">{{$p->title}}</a> 
         @endforeach      
     </div>

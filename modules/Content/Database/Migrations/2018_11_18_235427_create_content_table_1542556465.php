@@ -18,7 +18,8 @@ class CreateContentTable1542556465 extends Migration
 
         	$table->increments('id')->nullable(false)->comment('编号');
 			$table->integer('parent_id')->nullable(false)->comment('父编号')->index('parent_id')->default(0)->unsigned();
-			$table->char('model_id', 64)->nullable(false)->comment('模型ID');
+			$table->string('path', 255)->nullable()->comment('节点的父编号字符串，英文逗号隔开')->index('path');
+			$table->char('model_id', 64)->nullable(false)->comment('模型ID')->index('model_id');
 			$table->string('title', 255)->nullable(false)->comment('标题');
 			$table->string('title_style', 50)->nullable()->comment('标题样式');
 			$table->string('slug', 255)->nullable()->comment('别名')->unique('slug');

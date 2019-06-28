@@ -11,7 +11,7 @@
         </div>
         <div class="main-breadcrumb breadcrumb text-xs p-1 px-2 m-0 mx-2">
             <a class="breadcrumb-item" href="{{route('content.content.index')}}">{{trans('content::content.root')}}</a>
-            @foreach($parents as $p)
+            @foreach($path as $p)
             <a class="breadcrumb-item" href="{{route('content.content.index', $p->id)}}">{{$p->title}}</a> 
             @endforeach              
         </div>        

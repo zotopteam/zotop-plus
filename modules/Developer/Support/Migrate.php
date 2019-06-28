@@ -57,12 +57,13 @@ class Migrate
 				return false;
 			}
 
-			// 允许覆盖的时候，删除全部迁移文件，包含update迁移，只保留最终生成的create迁移
+			// 允许覆盖的时候，还原全部迁移
 			Artisan::call('migrate:files', [
 				'files'  => $migrations,
 				'--mode' => 'reset'
 			]);
 
+			// 删除全部迁移文件
 			array_map([$this->filesystem, 'delete'], $migrations);
 		}
 
@@ -118,11 +119,11 @@ class Migrate
 
 		return null;
 	}
+	
 	/**
 	 * 删除全部迁移
 	 * @return bool
 	 */
-
 	public function dropTable($template=null)
 	{
 		$content = $this->getDropTableMigration($template);

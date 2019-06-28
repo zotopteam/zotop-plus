@@ -400,7 +400,7 @@
 			height     : (height || '80%'),
 			fixed      : true,
 			padding    : 0,
-			title      : title,
+			title      : (title || dialog.defaults.imageText),
 			quickClose : false,
 			content    : '<div class="image bg-image-preview"><img src="'+url+'" /></div>',
 			ok         : true
@@ -416,7 +416,8 @@
 		loadingText     : '操作正在执行，请稍候……',
 		confirmText     : '确认',
 		alertText       : '警告',
-		promptText      : '提示'
+		promptText      : '提示',
+		imageText       : '图片预览'
 	});
 
 }(jQuery));

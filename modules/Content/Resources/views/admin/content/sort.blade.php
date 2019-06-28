@@ -23,7 +23,7 @@
         @if ($parent->id)
         <div class="main-breadcrumb breadcrumb text-xs p-1 px-2 m-0 mx-2">
             <span class="breadcrumb-item">{{trans('content::content.root')}}</span>
-            @foreach($parents as $p)
+            @foreach($path as $p)
             <span class="breadcrumb-item">{{$p->title}}</span> 
             @endforeach              
         </div>
@@ -120,8 +120,7 @@
     </div>
 </div>
 @endsection
-@push('css')
-@endpush
+
 @push('js')
 <script type="text/javascript">
 $(function(){

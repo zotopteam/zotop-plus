@@ -91,8 +91,8 @@ class TableController extends AdminController
 
             // 创建迁移文件并迁移
             $migrate = Migrate::instance($module, $name, Structure::instance(
-                $request->columns,
-                $request->indexes
+                $request->input('columns'),
+                $request->input('indexes', [])
             ));
 
             $migrate->createTable(true);
@@ -104,22 +104,12 @@ class TableController extends AdminController
             return $this->error(trans('master.create.failed'));
         }
 
-        $this->name   = 'test';
-        $this->columns = [
-            ['name'=>'id', 'type'=>'int', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
-            ['name'=>'title', 'type'=>'varchar', 'length'=>'200', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'title'],
-            ['name'=>'slug', 'type'=>'char', 'length'=>'128', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'title'],
-            ['name'=>'image', 'type'=>'varchar', 'length'=>'100', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'cover image'],
-            ['name'=>'content', 'type'=>'text', 'length'=>'', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'', 'comment'=>'money'],
-            ['name'=>'money', 'type'=>'decimal', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
-            ['name'=>'sort', 'type'=>'mediumint', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
-            ['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'1', 'comment'=>'status'],            
-        ];
+        // 读取新建表的默认数据
+        $default = Module::data('developer::table.default', ['module'=>$this->module]);
 
-        $this->indexes = [
-            ['name'=>'slug','type'=>'unique','columns'=>'slug'],
-            ['name'=>'sort_status','type'=>'index','columns'=>['sort','status']]
-        ];
+        $this->name    = $default['name'];
+        $this->columns = $default['columns'];
+        $this->indexes = $default['indexes'];
 
 
         $this->title = trans('developer::table.create');

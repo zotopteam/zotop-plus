@@ -24,7 +24,7 @@ class Content extends Model
      *
      * @var array
      */
-    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','link','view','hits','comments','status','stick','sort','user_id','source_id','publish_at'];
+    protected $fillable = ['parent_id','path','model_id','title','title_style','slug','image','keywords','summary','link','view','hits','comments','status','stick','sort','user_id','source_id','publish_at'];
 	
 	
     /**
@@ -85,6 +85,15 @@ class Content extends Model
                 $content->status = 'publish';
                 $content->publish_at = now();
             }
+
+        });
+
+        // 保存后处理数据
+        static::saved(function($content) {
+            // 计算节点的路径
+            static::where('id', $content->id)->update([
+                'path' => implode(',', static::parentIds($content->id, true))
+            ]);
         });
 
         static::deleting(function($content) {
@@ -145,58 +154,17 @@ class Content extends Model
      * @param  array   $parentIds 传递自身
      * @return array
      */
-    public static function parentIds($id, $self=false, &$parentIds=[])
+    private static function parentIds($id, $self=false, &$parentIds=[])
     {
-        static $instance = null;
-
-        if (empty($instance)) {
-            $instance = new static;
-        }
-
-        if ($id && $self) {
+        if ($self) {
             $parentIds[] = $id;
         }
 
-        if ($id && $parentId = $instance->where('id', $id)->value('parent_id')) {
-            $instance->parentIds($parentId, true, $parentIds);
+        if ($parentId = static::where('id', $id)->value('parent_id')) {
+            static::parentIds($parentId, true, $parentIds);
         }
 
         return array_reverse($parentIds);                
-    }
-
-    /**
-     * 获取父级
-     * 
-     * @param  int  $id    节点编号
-     * @param  boolean $self  是否包含自身
-     * @return Collection
-     */
-    public static function parents($id, $self=false)
-    {
-        $parentIds    = static::parentIds($id, $self);
-        $parentSorts = array_flip($parentIds);
-        
-        // 获取父级并排序
-        if ($parentIds) {
-            return (new static)->whereIn('id', $parentIds)->get()->sortBy(function($content) use($parentSorts) {
-                return $parentSorts[$content->id];
-            });
-        }
-
-        return collect([]);
-    }
-
-    /**
-     * 获取节点的一级节点编号，如果本身就是一级节点，返回自身
-     * 
-     * @param  int  $id         编号
-     * @return int
-     */
-    public static function topId($id)
-    {
-        $parentIds = static::parentIds($id, true);
-
-        return reset($parentIds);
     }
 
     /**
@@ -208,34 +176,45 @@ class Content extends Model
      * @param  array   $childrenIds  传递自身
      * @return array
      */    
-    public static function childrenIds($id, $self=false, $model_id=null, &$childrenIds=[])
+    public static function childrenIds($id, $self=false, &$childrenIds=[])
     {
-        static $instance = null;
-
-        if (empty($instance)) {
-            $instance = new static;
-        }
-
         if ($id && $self) {
             $childrenIds[] = $id;
         }
 
-        // 查询下级节点
-        $children = $instance->select('id')->where('parent_id', $id)->when($model_id, function($query, $model_id){
-            $model_id = is_string($model_id) ? explode(',', $model_id) : $model_id;
-            return count($model_id) == 1 ? 
-                $query->where('model_id', reset($model_id)) : 
-                $query->whereIn('model_id', $model_id);
-        });
-
         // 递归获取子节点
-        if ($children_ids = $children->pluck('id')) {
+        if ($children_ids = static::where('parent_id', $id)->pluck('id')) {
             foreach ($children_ids as $children_id) {
-                $instance->childrenIds($children_id, true, $model_id, $childrenIds);
+                static::childrenIds($children_id, true, $childrenIds);
             }
         }
 
         return $childrenIds;    
+    }    
+
+    /**
+     * 获取父级
+     * 
+     * @param  int  $id    节点编号
+     * @param  boolean $self  是否包含自身
+     * @return Collection
+     */
+    public static function path($id)
+    {
+        $classname = static::class;
+
+        if ($id instanceof $classname) {
+            $path = $id->path;
+        } else {
+            $path = static::where('id', $id)->value('path');
+        }
+
+        $path      = explode(',', $path);
+        $pathSorts = array_flip($path);
+
+        return static::whereIn('id', $path)->get()->sortBy(function($content) use($pathSorts) {
+            return $pathSorts[$content->id];
+        });
     }
 
     /**
@@ -278,16 +257,6 @@ class Content extends Model
         return $source_id;
     }
 
-    /**
-     * 获取节点的父级节点编号
-     * 
-     * @param  int  $id 编号
-     * @return array
-     */
-    public function getParentIdsIdAttribute($value)
-    {
-        return static::parentIds($this->id, true);
-    }
 
     /**
      * 获取节点的一级节点编号，如果本身就是一级节点，返回自身
@@ -297,11 +266,8 @@ class Content extends Model
      */
     public function getTopIdAttribute($value)
     {
-        if ($this->parent_id) {
-            return static::topId($this->parent_id);
-        }
-        
-        return $this->id;
+        $path = explode(',', $this->path);
+        return reset($path);
     }
 
     /**
@@ -361,7 +327,7 @@ class Content extends Model
     public function scopePublish($query)
     {
         return $query->where('status', 'publish');
-    }       
+    }
 
     /**
      * 不更新时间戳

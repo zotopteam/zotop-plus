@@ -23,14 +23,15 @@ class ContentController extends AdminController
         // 获取父节点
         if ($parent_id) {
             $this->parent = Content::findOrFail($parent_id);
+            $this->path   = Content::path($this->parent);
         } else {
-            $this->parent = new Content;
-            $this->parent->id = 0;
+            $this->parent        = new Content;
+            $this->parent->id    = 0;
             $this->parent->title = trans('content::content.root');
+            $this->path          = [];
         }
 
         // 获取全部父级
-        $this->parents = Content::parents($parent_id, true);
 
         // 分页获取
         $this->contents = Content::with('user','model')->when($request->keywords, function($query, $keywords) {
@@ -55,14 +56,13 @@ class ContentController extends AdminController
         // 获取父节点
         if ($parent_id) {
             $this->parent = Content::findOrFail($parent_id);
+            $this->path   = Content::path($this->parent);
         } else {
-            $this->parent = new Content;
-            $this->parent->id = 0;
-            $this->parent->title = trans('content::content.root');            
+            $this->parent        = new Content;
+            $this->parent->id    = 0;
+            $this->parent->title = trans('content::content.root');
+            $this->path          = [];            
         }
-
-        // 获取全部父级
-        $this->parents = Content::parents($parent_id, true);
 
         $this->model  = Model::find($model_id);
         $this->form   = ModelForm::get($model_id);
@@ -127,14 +127,13 @@ class ContentController extends AdminController
         // 获取父节点
         if ($this->content->parent_id) {
             $this->parent = Content::findOrFail($this->content->parent_id);
+            $this->path   = Content::path($this->parent);
         } else {
-            $this->parent = new Content;
-            $this->parent->id = 0;
-            $this->parent->title = trans('content::content.root');            
+            $this->parent        = new Content;
+            $this->parent->id    = 0;
+            $this->parent->title = trans('content::content.root');
+            $this->path          = [];         
         }
-
-        // 获取全部父级
-        $this->parents = Content::parents($id, false);
 
         $this->model  = Model::find($this->content->model_id);
         $this->form   = ModelForm::get($this->content->model_id);     
@@ -178,14 +177,13 @@ class ContentController extends AdminController
         // 获取父节点
         if ($this->content->parent_id) {
             $this->parent = Content::findOrFail($this->content->parent_id);
+            $this->path   = Content::path($this->parent);
         } else {
-            $this->parent = new Content;
-            $this->parent->id = 0;
-            $this->parent->title = trans('content::content.root');            
+            $this->parent        = new Content;
+            $this->parent->id    = 0;
+            $this->parent->title = trans('content::content.root');
+            $this->path          = [];          
         }
-
-        // 获取全部父级
-        $this->parents = Content::parents($id, false);
 
         $this->model  = Model::find($this->content->model_id);
         $this->form   = ModelForm::get($this->content->model_id);     
@@ -270,8 +268,8 @@ class ContentController extends AdminController
             $this->parent->title = trans('content::content.root');            
         }
 
-        // 获取全部父节点
-        $this->parents = Content::parents($request->id, false);        
+        // 获取路径
+        $this->path = Content::path($this->sort);        
 
         // 获取当前节点下面的全部数据（包含搜索）
         $this->contents = Content::with('user','model')->where('parent_id', $parent_id)->when($request->keywords, function($query, $keywords){
@@ -313,14 +311,16 @@ class ContentController extends AdminController
         // 当前排序的父节点
         if ($parent_id) {
             $this->parent = Content::findOrFail($parent_id);
+            $this->path   = Content::path($this->parent); 
         } else {
-            $this->parent = new Content;
-            $this->parent->id = 0;
-            $this->parent->title = trans('content::content.root');            
+            $this->parent        = new Content;
+            $this->parent->id    = 0;
+            $this->parent->title = trans('content::content.root');
+            $this->path          = [];          
         }
 
         // 获取全部父节点
-        $this->parents = Content::parents($parent_id, true);      
+             
 
         // 获取当前节点下面的全部数据（包含搜索）
         $this->contents = Content::whereHas('model', function($query) {

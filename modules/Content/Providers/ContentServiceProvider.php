@@ -35,7 +35,7 @@ class ContentServiceProvider extends ServiceProvider
         // 监听安装
         $this->app['events']->listen('modules.content.installed', function($module) {
             // 导入系统自带的模型
-            foreach (['category','page','article','link'] as $model) {
+            foreach (['category','page','article','link','gallery'] as $model) {
                 ModelHelper::import($module->getPath().'/Support/models/'.$model.'.model', true);
             }
         });        
@@ -100,13 +100,12 @@ class ContentServiceProvider extends ServiceProvider
 
             // 查询子节点
             $query->when($subdir, function($query, $subdir) use($id) {
-                $childrenIds = Content::childrenIds($id, true, 'category');
-                if (count($childrenIds) == 1) {
-                    return $query->where('parent_id', reset($childrenIds));
-                }
-                return $query->whereIn('parent_id', $childrenIds);
+                return $query->where(function($query) use($id) {
+                    $path = Content::where('id', $id)->value('path');
+                    $query->where('parent_id', $id)->orWhere('path', 'like', $path.',%');
+                });
             }, function($query) use($id) {
-                $query->where('parent_id', $id);
+                return $query->where('parent_id', $id);
             });
 
             // 获取带封面图片的数据
@@ -167,7 +166,7 @@ class ContentServiceProvider extends ServiceProvider
                 return app('view')->make($view)
                     ->with($vars)
                     ->with('attrs', $attrs)
-                    ->with('path', Content::parents($id, $self))
+                    ->with('path', Content::path($id))
                     ->render(); 
             }
 

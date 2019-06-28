@@ -278,16 +278,19 @@
     $folder    = $this->getAttribute($attrs, 'folder', '');
     $source_id = $this->getAttribute($attrs, 'source_id', $this->getValueAttribute('source_id'));
 
-    debug($source_id);
+    //debug($source_id);
     
     // 界面文字和图标
-    $select   = $this->getAttribute($attrs, 'select', trans('core::field.upload.select', [$typename])); 
-    $icon     = $this->getAttribute($attrs, 'icon', 'fa-upload');
-    $button   = $this->getAttribute($attrs, 'button', trans('core::field.upload.button', [$typename]));
+    $select_text = $this->getAttribute($attrs, 'select_text', trans('core::field.upload.select', [$typename])); 
+    $button_icon = $this->getAttribute($attrs, 'button_icon', 'fa-upload');
+    $button_text = $this->getAttribute($attrs, 'button_text', trans('core::field.upload.button', [$typename]));
+
+    //选择个数
+    $select = $this->getAttribute($attrs, 'select', 1);
 
     // 附加参数
     $params = $this->getAttribute($attrs, 'params',  [
-        'select'     => 1,
+        'select'     => $select,
         'type'       => $filetype ?: '',
         'typename'   => $typename,        
         'extensions' => $allow,
@@ -309,7 +312,7 @@
         'multipart_params' => $params,
         'filters'          => [
             'max_file_size'      => $maxsize.'mb',
-            'mime_types'         => [['title'=>$select, 'extensions'=>$allow]],
+            'mime_types'         => [['title'=>$select_text, 'extensions'=>$allow]],
             'prevent_duplicates' => true,
         ] 
     ]);
@@ -317,9 +320,12 @@
     // 高级上传及工具
     $tools = $this->getAttribute($attrs, 'tools', Module::data('core::field.upload.tools', $params));
 
+    // 获取视图
+    $view = $this->getAttribute($attrs, 'view', 'core::field.upload');
+
     return $this->toHtmlString(
-        $this->view->make('core::field.upload')
-            ->with(compact('id', 'name', 'value', 'attrs', 'options', 'icon', 'button', 'select', 'tools'))
+            $this->view->make($view)
+            ->with(compact('id', 'name', 'value', 'attrs', 'options', 'button_icon', 'button_text', 'select_text', 'tools'))
             ->render()
     );
 });
@@ -368,6 +374,23 @@
     $attrs['params']  = ['resize' => $resize, 'watermark' => $watermark];
 
     return $this->macroCall('upload',  [$attrs]);
+});
+
+/**
+ * 单图片上传
+ *
+ * 
+ * {field type="gallery" value=""}
+ * {field type="gallery" value="" watermark="true" resize="['width'=>1920,height=>800,quality=>100,crop=>false]" params=>"[]"}
+ */
+\Form::macro('gallery', function($attrs) {
+    
+    $attrs['value']  = $this->getValue($attrs);
+    $attrs['value']  = is_array($attrs['value']) ? array_values($attrs['value']) : [];
+    $attrs['view']   = $attrs['view'] ?? 'core::field.gallery';
+    $attrs['select'] = $attrs['select'] ?? 0;
+
+    return $this->macroCall('upload_image',  [$attrs]);
 });
 
 /**

@@ -425,8 +425,11 @@ class Structure
 			$convert['modifiers']['default'] = [$column['default']];
 		}
 
+		//如果没有字段说明，设为字段名称
 		if ($column['comment']) {
 			$convert['modifiers']['comment'] = [$column['comment']];
+		} else {
+			$convert['modifiers']['comment'] = [ucfirst($column['name'])];
 		}
 
 		//  自增字段或者 'text','mediumText','longText' 类型字段不使用索引
