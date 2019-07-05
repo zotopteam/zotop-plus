@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class AppendDataToSheet implements ShouldQueue
 {
-    use Queueable, Dispatchable;
+    use Queueable, Dispatchable, ProxyFailures;
 
     /**
      * @var array

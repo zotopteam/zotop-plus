@@ -82,10 +82,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         '6ab8ad87a734f276a6bcd5a0fe1289be' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/divideinto.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
-        '4a1f389d6ce373bda9e57857d3b61c84' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/helpers.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         '9f394da3192a168c4633675768d80428' => __DIR__ . '/..' . '/nwidart/laravel-modules/src/helpers.php',
         '0d8253363903f0ac7b0978dcde4e28a0' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/helpers.php',
+        '4a1f389d6ce373bda9e57857d3b61c84' => __DIR__ . '/..' . '/barryvdh/laravel-debugbar/src/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -142,6 +142,7 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
+            'Prophecy\\' => 9,
             'Predis\\' => 7,
             'PhpParser\\' => 10,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
@@ -359,6 +360,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
+        'Prophecy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
+        ),
         'Predis\\' => 
         array (
             0 => __DIR__ . '/..' . '/predis/predis/src',
@@ -524,10 +529,6 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
     public static $prefixesPsr0 = array (
         'P' => 
         array (
-            'Prophecy\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
-            ),
             'PhpOption\\' => 
             array (
                 0 => __DIR__ . '/..' . '/phpoption/phpoption/src',
@@ -2806,8 +2807,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Maatwebsite\\Excel\\Jobs\\AfterImportJob' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/AfterImportJob.php',
         'Maatwebsite\\Excel\\Jobs\\AppendDataToSheet' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/AppendDataToSheet.php',
         'Maatwebsite\\Excel\\Jobs\\AppendQueryToSheet' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/AppendQueryToSheet.php',
+        'Maatwebsite\\Excel\\Jobs\\AppendViewToSheet' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/AppendViewToSheet.php',
         'Maatwebsite\\Excel\\Jobs\\CloseSheet' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/CloseSheet.php',
         'Maatwebsite\\Excel\\Jobs\\ExtendedQueueable' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/ExtendedQueueable.php',
+        'Maatwebsite\\Excel\\Jobs\\ProxyFailures' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/ProxyFailures.php',
         'Maatwebsite\\Excel\\Jobs\\QueueExport' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/QueueExport.php',
         'Maatwebsite\\Excel\\Jobs\\QueueImport' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/QueueImport.php',
         'Maatwebsite\\Excel\\Jobs\\ReadChunk' => __DIR__ . '/..' . '/maatwebsite/excel/src/Jobs/ReadChunk.php',
@@ -2944,6 +2947,7 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Modules\\Content\\Extend\\ArticleModel' => __DIR__ . '/../..' . '/modules/Content/Extend/ArticleModel.php',
         'Modules\\Content\\Extend\\CategoryModel' => __DIR__ . '/../..' . '/modules/Content/Extend/CategoryModel.php',
         'Modules\\Content\\Extend\\Extendable' => __DIR__ . '/../..' . '/modules/Content/Extend/Extendable.php',
+        'Modules\\Content\\Extend\\GalleryModel' => __DIR__ . '/../..' . '/modules/Content/Extend/GalleryModel.php',
         'Modules\\Content\\Extend\\PageModel' => __DIR__ . '/../..' . '/modules/Content/Extend/PageModel.php',
         'Modules\\Content\\Hook\\Content' => __DIR__ . '/../..' . '/modules/Content/Hook/Content.php',
         'Modules\\Content\\Hook\\Listener' => __DIR__ . '/../..' . '/modules/Content/Hook/Listener.php',
@@ -3092,13 +3096,6 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Modules\\Site\\Http\\Middleware\\FrontMiddleware' => __DIR__ . '/../..' . '/modules/Site/Http/Middleware/FrontMiddleware.php',
         'Modules\\Site\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/modules/Site/Providers/RouteServiceProvider.php',
         'Modules\\Site\\Providers\\SiteServiceProvider' => __DIR__ . '/../..' . '/modules/Site/Providers/SiteServiceProvider.php',
-        'Modules\\Test\\Database\\Seeders\\TestDatabaseSeeder' => __DIR__ . '/../..' . '/modules/Test/Database/Seeders/TestDatabaseSeeder.php',
-        'Modules\\Test\\Http\\Controllers\\Admin\\AaaaController' => __DIR__ . '/../..' . '/modules/Test/Http/Controllers/Admin/AaaaController.php',
-        'Modules\\Test\\Http\\Controllers\\Admin\\TestController' => __DIR__ . '/../..' . '/modules/Test/Http/Controllers/Admin/TestController.php',
-        'Modules\\Test\\Http\\Controllers\\Api\\IndexController' => __DIR__ . '/../..' . '/modules/Test/Http/Controllers/Api/IndexController.php',
-        'Modules\\Test\\Http\\Controllers\\IndexController' => __DIR__ . '/../..' . '/modules/Test/Http/Controllers/IndexController.php',
-        'Modules\\Test\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/modules/Test/Providers/RouteServiceProvider.php',
-        'Modules\\Test\\Providers\\TestServiceProvider' => __DIR__ . '/../..' . '/modules/Test/Providers/TestServiceProvider.php',
         'Modules\\Tinymce\\Hook\\Listener' => __DIR__ . '/../..' . '/modules/Tinymce/Hook/Listener.php',
         'Modules\\Tinymce\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/modules/Tinymce/Providers/RouteServiceProvider.php',
         'Modules\\Tinymce\\Providers\\TinymceServiceProvider' => __DIR__ . '/../..' . '/modules/Tinymce/Providers/TinymceServiceProvider.php',
@@ -3813,6 +3810,7 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'PhpOffice\\PhpSpreadsheet\\Reader\\IReadFilter' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/IReadFilter.php',
         'PhpOffice\\PhpSpreadsheet\\Reader\\IReader' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/IReader.php',
         'PhpOffice\\PhpSpreadsheet\\Reader\\Ods' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Ods.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Ods\\Properties' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Ods/Properties.php',
         'PhpOffice\\PhpSpreadsheet\\Reader\\Security\\XmlScanner' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Security/XmlScanner.php',
         'PhpOffice\\PhpSpreadsheet\\Reader\\Slk' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Slk.php',
         'PhpOffice\\PhpSpreadsheet\\Reader\\Xls' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xls.php',
@@ -3827,7 +3825,18 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'PhpOffice\\PhpSpreadsheet\\Reader\\Xls\\Style\\Border' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xls/Style/Border.php',
         'PhpOffice\\PhpSpreadsheet\\Reader\\Xls\\Style\\FillPattern' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xls/Style/FillPattern.php',
         'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\AutoFilter' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/AutoFilter.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\BaseParserClass' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/BaseParserClass.php',
         'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\Chart' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/Chart.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\ColumnAndRowAttributes' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/ColumnAndRowAttributes.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\ConditionalStyles' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/ConditionalStyles.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\DataValidations' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/DataValidations.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\Hyperlinks' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/Hyperlinks.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\PageSetup' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/PageSetup.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\Properties' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/Properties.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\SheetViewOptions' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/SheetViewOptions.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\SheetViews' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/SheetViews.php',
+        'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\Styles' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/Styles.php',
         'PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx\\Theme' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xlsx/Theme.php',
         'PhpOffice\\PhpSpreadsheet\\Reader\\Xml' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Reader/Xml.php',
         'PhpOffice\\PhpSpreadsheet\\ReferenceHelper' => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet/ReferenceHelper.php',

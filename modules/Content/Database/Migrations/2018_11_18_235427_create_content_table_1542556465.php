@@ -22,7 +22,7 @@ class CreateContentTable1542556465 extends Migration
 			$table->string('title', 255)->comment('标题');
 			$table->string('title_style', 50)->nullable()->comment('标题样式');
 			$table->string('slug', 255)->nullable()->comment('别名')->unique('slug');
-			$table->text('image')->nullable()->comment('缩略图');
+			$table->string('image', 255)->nullable()->comment('缩略图');
 			$table->string('keywords', 100)->nullable()->comment('关键词');
 			$table->string('summary', 1000)->nullable()->comment('摘要');
 			$table->string('link', 255)->nullable()->comment('链接');
