@@ -34,4 +34,8 @@ return [
             'quality'  => '90'
         ],
     ],
+    'log' => [
+        'enabled' => 1,
+        'expire'  => 30,
+    ],
 ];

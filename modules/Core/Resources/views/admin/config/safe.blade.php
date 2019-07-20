@@ -16,7 +16,7 @@
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="config('app')" route="core.config.safe" method="post" id="config" autocomplete="off"}
+            {form model="$config" route="core.config.safe" method="post" id="config" autocomplete="off"}
 
             <div class="form-title row">{{trans('core::config.safe.base')}}</div>
 
@@ -58,6 +58,30 @@
                     @else
                     <span class="form-help">{{trans('core::config.admin_prefix.help')}}</span>
                     @endif
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="debug" class="col-2 col-form-label">{{trans('core::config.log.label')}}</label>
+                <div class="col-8">
+
+                    {field type="toggle" name="log[enabled]"}
+
+                    <div class="input-group" data-depend="[name='log[enable]']" data-when="value=1" data-then="show">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                {{trans('core::config.log.expire')}}
+                            </span>
+                        </div>
+                        {field type="number" name="log[expire]" required="required" min="1"}
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                {{trans('core::config.log.unit')}}
+                            </span>
+                        </div>                        
+                    </div>
+
+                    <span class="form-help">{{trans('core::config.log.help')}}</span>
                 </div>
             </div>
 

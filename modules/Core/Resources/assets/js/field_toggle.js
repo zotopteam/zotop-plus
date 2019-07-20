@@ -16,7 +16,7 @@
                     value = checkbox.data('disable');
                 }
 
-                input.val(value);
+                input.val(value).trigger('change');
             })
         });
 

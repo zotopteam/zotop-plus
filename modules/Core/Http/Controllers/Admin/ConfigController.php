@@ -171,6 +171,14 @@ class ConfigController extends AdminController
         // 保存数据
         if ($request->isMethod('POST')) {
 
+            // 写入系统配置组
+            $this->config('core', ['log'=>$request->input('log')]);
+
+            // 开启时更改配置值，解决无法记录开启日志的问题
+            if ($request->input('log.enabled') == 1) {
+                config(['core.log.enabled'=>1]);
+            }
+
             // 写入ENV配置
             $this->env([
                 'APP_ENV'          => $request->input('env', 'production'),
@@ -179,15 +187,14 @@ class ConfigController extends AdminController
             ]);
 
             // 更改后台地址，本地或者测试环境下，route 已经加载，无法重新载入, 改用url生成
-            // $this->app['config']->set('app.admin_prefix', $request->input('admin_prefix', 'admin'));
-            // $redirectTo = route('core.config.safe');
             $redirectTo = url($request->input('admin_prefix', 'admin').'/core/config/safe');
 
             return $this->success(trans('master.saved'), $redirectTo);
         }
 
 
-        $this->title = trans('core::config.safe');
+        $this->title  = trans('core::config.safe');
+        $this->config = config('app') + config('core');
 
         return $this->view();
     }         

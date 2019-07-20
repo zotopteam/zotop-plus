@@ -60,7 +60,6 @@ class Core extends Migration
             $table->timestamps();
             $table->primary(['user_id', 'module', 'key']);
 
-            $table->engine = 'InnoDB';
             $table->comment = '用户扩展表';
         });        
 
@@ -84,7 +83,6 @@ class Core extends Migration
             $table->boolean('disabled')->default(0)->unsigned()->comment('禁用 0=否 1=禁用');
             $table->timestamps();
 
-            $table->engine = 'InnoDB';
             $table->comment = '角色';
         });
 
@@ -94,11 +92,9 @@ class Core extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
             $table->nullableTimestamps();
-
-            $table->engine = 'InnoDB';
-            $table->comment = '用户角色';
-
             $table->primary(['user_id', 'role_id']);
+
+            $table->comment = '用户角色';
         });                
     }
 

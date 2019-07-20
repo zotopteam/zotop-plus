@@ -88,4 +88,8 @@ return [
     'admin_prefix.help'           => '更改后将改变系统后台的URL地址前缀，默认为：admin',  
     
     'safe.admin'                  => '后台安全',
+    'log.label'                   => '操作日志',
+    'log.expire'                  => '有效期',
+    'log.unit'                    => '天',
+    'log.help'                    => '开启后将自动记录用户的操作，超出有效期的日志将被自动删除',
 ];
