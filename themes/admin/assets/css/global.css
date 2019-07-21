@@ -452,7 +452,7 @@ textarea{resize:none;}
 .main-footer .footer-text{white-space:nowrap;display:inline-block;font-size:0.875rem;}
 .main-footer .pagination{margin-bottom:0;}
 .main-footer .pagination>li>a, .main-footer .pagination>li>span{border:0 none;border-radius:0.25rem!important;}
-.main-footer .pagination .page-link{margin-left:1px;line-height:1.2;}
+.main-footer .pagination .page-link{margin-left:1px;padding:.375rem .7rem;line-height:1.2;border:solid 1px transparent;}
 
 .nav-side{flex-direction:column!important;}
 .nav-side .nav-item{flex:1 1 100%;position:relative;}

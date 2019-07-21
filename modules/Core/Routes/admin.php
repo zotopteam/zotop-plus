@@ -120,5 +120,10 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
     $router->group(['prefix' =>'notifications'], function (Router $router) {
         $router->get('index','NotificationsController@index')->name('core.notifications.index');
         $router->any('check','NotificationsController@check')->name('core.notifications.check');
+    });
+
+    // log
+    $router->group(['prefix' =>'log'], function (Router $router) {
+        $router->get('index','LogController@index')->name('core.log.index')->middleware('allow:core.log.index');
     });    
 });

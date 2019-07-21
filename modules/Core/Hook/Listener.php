@@ -95,6 +95,16 @@ class Listener
                 'tips' => trans('core::system.manage.description'),
             ];
         }
+        
+        //log 操作日志
+        if (allow('core.log.index')) {
+            $start['core-log'] = [
+                'text' => trans('core::log.title'),
+                'href' => route('core.log.index'),
+                'icon' => 'fa fa-clipboard-list bg-primary text-white', 
+                'tips' => trans('core::log.description'),
+            ];
+        }
 
         //environment 服务器环境
         if (allow('core.system.environment')) {
