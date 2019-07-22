@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLogTable1563467660 extends Migration
+class CreateLogsTable1563787196 extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -17,8 +17,8 @@ class CreateLogTable1563467660 extends Migration
         Schema::create('logs', function (Blueprint $table) {
 
         	$table->increments('id')->comment('Id');
-        	$table->string('type', 64)->comment('类型');
-			$table->integer('user_id')->nullable()->comment('用户编号')->default(0)->unsigned();
+			$table->string('type', 64)->comment('类型')->index('type');
+			$table->integer('user_id')->nullable()->comment('用户编号')->index('user_id')->default(0)->unsigned();
 			$table->string('user_ip', 45)->nullable()->comment('用户IP');
 			$table->string('url', 255)->comment('地址');
 			$table->string('module', 64)->comment('模块');
@@ -29,8 +29,9 @@ class CreateLogTable1563467660 extends Migration
 			$table->longText('response')->comment('响应数据');
 			$table->timestamp('created_at')->nullable()->comment('创建时间');
 			$table->timestamp('updated_at')->nullable()->comment('更新时间');
+			$table->index(['action','controller','module'], 'module_controller_action');
 
-            $table->comment = '日志';             
+            $table->comment = '';             
         });
 	}
 

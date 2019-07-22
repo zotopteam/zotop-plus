@@ -14,10 +14,12 @@ class LogController extends AdminController
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->title = trans('core::log.title');
-        $this->logs = Log::with('user')->orderBy('id','desc')->paginate(15);
+        $this->logs = Log::with('user')->when($request->keywords, function($query, $keywords) {
+            $query->searchIn('url,request', $keywords);
+        })->orderBy('id','desc')->paginate(15);
 
         return $this->view();
     }

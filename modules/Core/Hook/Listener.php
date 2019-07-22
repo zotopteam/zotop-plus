@@ -153,7 +153,6 @@ class Listener
         // 消息通知
         $tools['notification'] = [
             'icon'        => 'fa fa-bell', 
-            //'text'      => trans('core::notification.short'),
             'title'       => trans('core::notification.title'),
             'href'        => route('core.notifications.index'),
             'badge'       => 0,
@@ -166,7 +165,6 @@ class Listener
         if (allow('core.system.manage')) {
             $tools['reboot'] = [
                 'icon'  => 'fa fa-sync', 
-                //'text'  => trans('core::system.reboot'),
                 'title' => trans('core::system.reboot.title'),
                 'href'  => route('core.system.manage', ['artisan'=>'reboot']),
                 'class' => 'js-post',

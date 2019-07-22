@@ -146,7 +146,7 @@ class TableController extends AdminController
         $this->indexColumns   = $this->indexes->where('type','index')->pluck('columns')->flatten()->all();
         $this->uniqueColumns  = $this->indexes->where('type','unique')->pluck('columns')->flatten()->all();
         $this->model          = app('files')->exists($model);
-
+        debug($this->migrations);
         return $this->view();
     }
 

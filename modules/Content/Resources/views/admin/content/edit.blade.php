@@ -40,12 +40,13 @@
 
         {form model="$content" route="['content.content.update', $id]" id="content-form" method="put" autocomplete="off"}
             
+            {field type="hidden" name="_action"}
             {field type="hidden" name="parent_id" required="required"}
             {field type="hidden" name="model_id" required="required"}
             {field type="hidden" name="source_id" required="required"}
             {field type="hidden" name="status" required="required"}
             {field type="hidden" name="publish_at"}
-            {field type="hidden" name="_action"}
+            
 
             <div class="row">
                 <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}} d-flex flex-wrap p-0">

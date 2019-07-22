@@ -34,29 +34,29 @@
         <div class="container-fluid">
 
             {form model="$content" route="content.content.store" id="content-form" method="post" autocomplete="off"}
+
+                {field type="hidden" name="_action"}
+                {field type="hidden" name="parent_id" required="required"}
+                {field type="hidden" name="model_id" required="required"}
+                {field type="hidden" name="source_id" required="required"}
+                {field type="hidden" name="status" required="required"}
+                {field type="hidden" name="publish_at"}
             
-            {field type="hidden" name="parent_id" required="required"}
-            {field type="hidden" name="model_id" required="required"}
-            {field type="hidden" name="source_id" required="required"}
-            {field type="hidden" name="status" required="required"}
-            {field type="hidden" name="publish_at"}
-            {field type="hidden" name="_action"}
+                <div class="row">
+                    <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}} d-flex flex-wrap p-0">
+                        @foreach ($form->main as $item)
+                            @include('content::content.field')
+                        @endforeach                    
+                    </div>
 
-            <div class="row">
-                <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}} d-flex flex-wrap p-0">
-                    @foreach ($form->main as $item)
-                        @include('content::content.field')
-                    @endforeach                    
+                    @if ($form->side->count())
+                    <div class="col-3 col-md-3 col-sm-12 p-0">
+                        @foreach ($form->side as $item)
+                            @include('content::content.field')                       
+                        @endforeach                    
+                    </div>
+                    @endif
                 </div>
-
-                @if ($form->side->count())
-                <div class="col-3 col-md-3 col-sm-12 p-0">
-                    @foreach ($form->side as $item)
-                        @include('content::content.field')                       
-                    @endforeach                    
-                </div>
-                @endif
-            </div>
             {/form}
 
         </div>

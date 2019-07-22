@@ -11,6 +11,15 @@
     "author": "Hankx.Chen",
     "email": "",
     "homepage": "",
+    "tables": [
+        "users",
+        "users_data",
+        "password_resets",
+        "roles",
+        "role_users",
+        "config",
+        "logs"
+    ],
     "providers": [
         "Modules\\Core\\Providers\\CoreServiceProvider",
         "Modules\\Core\\Providers\\RouteServiceProvider",

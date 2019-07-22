@@ -67,7 +67,7 @@
 
                     {field type="toggle" name="log[enabled]"}
 
-                    <div class="input-group" data-depend="[name='log[enable]']" data-when="value=1" data-then="show">
+                    <div class="input-group" data-depend="[name='log[enabled]']" data-when="value=1" data-then="show">
                         <div class="input-group-prepend">
                             <span class="input-group-text">
                                 {{trans('core::config.log.expire')}}

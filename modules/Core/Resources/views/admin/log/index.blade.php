@@ -7,8 +7,18 @@
             {{$title}}
         </div>
         <div class="main-action">
-            
-        </div>           
+            {form route="core.log.index" class="form-inline form-search" method="get"}
+                <div class="input-group">
+                    <input name="keywords" value="{{request('keywords')}}" class="form-control border-primary" type="search" placeholder="{{trans('master.keywords.placeholder')}}" required="required" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
+                        @if (request('keywords'))
+                            <a href="{{route('core.log.index')}}" class="btn btn-danger"> <i class="fa fa-times"></i> </a>
+                        @endif
+                    </div>
+                </div>
+            {/form}
+        </div>          
     </div>
     <div class="main-body scrollable">
 
@@ -24,7 +34,7 @@
                         <td>{{trans('core::log.content.label')}}</td>
                         <td width="5%">{{trans('core::log.user_ip.label')}}</td>
                         <td width="5%">{{trans('core::log.created_at.label')}}</td>
-                        <td></td>
+                        <td width="5%"></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,10 +45,12 @@
                             <span data-toggle="tooltip" title="{{trans('core::log.user_id.label')}}: {{$log->user_id}}">{{$log->user->username}}</span>
                         </td>
                         <td>
-                            <div class="breadcrumb m-0 p-0 bg-transparent">
-                                <span class="breadcrumb-item" data-toggle="tooltip" title="{{trans('core::log.module.label')}}">{{$log->module}}</span>
-                                <span class="breadcrumb-item"  data-toggle="tooltip" title="{{trans('core::log.controller.label')}}">{{$log->controller}}</span>
-                                <span class="breadcrumb-item"  data-toggle="tooltip" title="{{trans('core::log.action.label')}}">{{$log->action}}</span>
+                            <div class="m-0 p-0">
+                                <span data-toggle="tooltip" title="{{trans('core::log.module.label')}}">{{$log->module}}</span>
+                                <span class="text-black-50">></span>
+                                <span data-toggle="tooltip" title="{{trans('core::log.controller.label')}}">{{$log->controller}}</span>
+                                <span class="text-black-50">></span>
+                                <span data-toggle="tooltip" title="{{trans('core::log.action.label')}}">{{$log->action}}</span>
                             </div>
                             <div class="text-wrap text-break text-xs">{{$log->url}}</div>
                         </td>

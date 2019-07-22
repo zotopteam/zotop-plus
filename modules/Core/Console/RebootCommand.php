@@ -36,6 +36,13 @@ class RebootCommand extends Command
         // 钩子
         Action::fire('reboot', $this);
 
+        // 发布模块和主题资源
+        $this->call('module:publish');
+        $this->call('theme:publish');
+
+        // 清理缓存
+        $this->call('cache:clear');
+
         // 清理路由缓存和配置缓存
         $this->call('optimize:clear');
 
@@ -43,7 +50,7 @@ class RebootCommand extends Command
         if ($this->laravel->environment('production')) {
             $this->call('optimize');
         }
-        
+
         $this->info("Rebooted!");      
     }
 

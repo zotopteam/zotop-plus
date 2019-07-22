@@ -529,30 +529,30 @@ class Migrate
 		}
 
 		return "'".$argument."'";		
-	}	
+	}
+
+	/**
+	 * 获取迁移名称
+	 * 
+	 * @param  string $type create | update | drop
+	 * @return string
+	 */
+	public function getMigrationName($type)
+	{
+		return strtolower($type.'_'.$this->table->name().'_table');
+	}
 
 	/**
 	 * 获取Migration文件名
-	 * @param  string $type create | update
+	 * @param  string $type create | update | drop
 	 * @return string
 	 */
-	public function getMigrationFileName($type = 'realname')
+	public function getMigrationFileName($type)
 	{
 		static $names = [];
 
 		if (! isset($names[$type])) {
-
-			if ($type == 'create') {
-				$name = 'create_'. $this->table->name() .'_table_'.time();
-			} else if ($type == 'update') {
-				$name = 'update_'. $this->table->name() .'_table_'.time();
-			} else if ($type == 'drop') {
-				$name = 'drop_'. $this->table->name() .'_table_'.time();				
-			} else {
-				$name = $this->table->name() .'_table';
-			}
-
-			$names[$type] = $name;
+			$names[$type] = $this->getMigrationName($type).'_'.time();
 		}
 
 		return $names[$type];		
@@ -578,11 +578,17 @@ class Migrate
 	 */
 	public function getMigrationFiles($type = null)
 	{
+		// 如果类型为空，则获取全部类型的迁移文件
+		if (empty($type)) {
+			return array_merge($this->getMigrationFiles('create'), $this->getMigrationFiles('update'), $this->getMigrationFiles('drop'));
+		}
+
 		$files = [];
 
-		// 获取全部的迁移文件
-		$name = $this->getMigrationFileName($type);
+		// 获取特定类型的迁移名称
+		$name = $this->getMigrationName($type);
 		
+		// 从文件中过滤出该类型迁移文件
 		foreach ($this->filesystem->files($this->migrations) as $file) {
             if (strpos($file, $name)) {
                 $files[] = (string)$file;

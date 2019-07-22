@@ -1,7 +1,7 @@
 <?php
 return array (
   'media.create'  => 'core::folder.create',
-  'media.rename'  => 'core::master.rename',
-  'media.move'    => 'core::master.move',
-  'media.destroy' => 'core::master.delete',
+  'media.rename'  => 'master.rename',
+  'media.move'    => 'master.move',
+  'media.destroy' => 'master.delete',
 );
