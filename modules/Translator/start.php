@@ -70,7 +70,7 @@ if (! function_exists('translate_slug')) {
     ];
 
     return $this->toHtmlString(
-        $this->view->make('translator::field.translate')->with(compact('name', 'id', 'value', 'attrs', 'source', 'button', 'options'))->render()
+        $this->view->make('translator::field.translate')->with(compact('name', 'id', 'value', 'attrs', 'button', 'options'))->render()
     );
 });
 
