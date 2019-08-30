@@ -75,11 +75,6 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
         $this->currentRequest = null;
     }
 
-    /**
-     * Gets the logs.
-     *
-     * @return array An array of logs
-     */
     public function getLogs()
     {
         return isset($this->data['logs']) ? $this->data['logs'] : [];
@@ -149,7 +144,7 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
         return $logs;
     }
 
-    private function getContainerCompilerLogs(?string $compilerLogsFilepath = null): array
+    private function getContainerCompilerLogs(string $compilerLogsFilepath = null): array
     {
         if (!file_exists($compilerLogsFilepath)) {
             return [];

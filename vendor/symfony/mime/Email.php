@@ -103,7 +103,7 @@ class Email extends Message
     }
 
     /**
-     * @param Address|NamedAddress|string $addresses
+     * @param Address|NamedAddress|string ...$addresses
      *
      * @return $this
      */
@@ -113,7 +113,7 @@ class Email extends Message
     }
 
     /**
-     * @param Address|NamedAddress|string $addresses
+     * @param Address|NamedAddress|string ...$addresses
      *
      * @return $this
      */
@@ -131,7 +131,7 @@ class Email extends Message
     }
 
     /**
-     * @param Address|string $addresses
+     * @param Address|string ...$addresses
      *
      * @return $this
      */
@@ -141,7 +141,7 @@ class Email extends Message
     }
 
     /**
-     * @param Address|string $addresses
+     * @param Address|string ...$addresses
      *
      * @return $this
      */
@@ -159,7 +159,7 @@ class Email extends Message
     }
 
     /**
-     * @param Address|NamedAddress|string $addresses
+     * @param Address|NamedAddress|string ...$addresses
      *
      * @return $this
      */
@@ -169,7 +169,7 @@ class Email extends Message
     }
 
     /**
-     * @param Address|NamedAddress|string $addresses
+     * @param Address|NamedAddress|string ...$addresses
      *
      * @return $this
      */
@@ -187,7 +187,7 @@ class Email extends Message
     }
 
     /**
-     * @param Address|NamedAddress|string $addresses
+     * @param Address|NamedAddress|string ...$addresses
      *
      * @return $this
      */
@@ -197,7 +197,7 @@ class Email extends Message
     }
 
     /**
-     * @param Address|string $addresses
+     * @param Address|string ...$addresses
      *
      * @return $this
      */
@@ -215,7 +215,7 @@ class Email extends Message
     }
 
     /**
-     * @param Address|NamedAddress|string $addresses
+     * @param Address|NamedAddress|string ...$addresses
      *
      * @return $this
      */
@@ -225,7 +225,7 @@ class Email extends Message
     }
 
     /**
-     * @param Address|string $addresses
+     * @param Address|string ...$addresses
      *
      * @return $this
      */
@@ -423,12 +423,12 @@ class Email extends Message
      */
     private function generateBody(): AbstractPart
     {
-        if (null === $this->text && null === $this->html) {
-            throw new LogicException('A message must have a text and/or an HTML part.');
+        [$htmlPart, $attachmentParts, $inlineParts] = $this->prepareParts();
+        if (null === $this->text && null === $this->html && !$attachmentParts) {
+            throw new LogicException('A message must have a text or an HTML part or attachments.');
         }
 
         $part = null === $this->text ? null : new TextPart($this->text, $this->textCharset);
-        [$htmlPart, $attachmentParts, $inlineParts] = $this->prepareParts();
         if (null !== $htmlPart) {
             if (null !== $part) {
                 $part = new AlternativePart($part, $htmlPart);
@@ -442,7 +442,11 @@ class Email extends Message
         }
 
         if ($attachmentParts) {
-            $part = new MixedPart($part, ...$attachmentParts);
+            if ($part) {
+                $part = new MixedPart($part, ...$attachmentParts);
+            } else {
+                $part = new MixedPart(...$attachmentParts);
+            }
         }
 
         return $part;
