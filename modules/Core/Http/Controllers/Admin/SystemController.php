@@ -29,6 +29,7 @@ class SystemController extends AdminController
      */    
     public function size(Request $request)
     {
+        // 递归计算文件夹大小
         function directorySize ($dir)
         {
             $size = 0;
@@ -43,8 +44,9 @@ class SystemController extends AdminController
             $size = directorySize($path);
             $size = \Format::size($size);
 
-            return $this->success($size);
+            return $size;
         }
+
         return $this->error('Directory required');
     }
 

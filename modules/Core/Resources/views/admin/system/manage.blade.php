@@ -69,12 +69,11 @@
         function directory_size(dir) {
             $.ajax({
                 url: dir.data('url'),
-                dataType : 'json',
                 success: function(msg) {
-                    dir.html('<span class="text-success">' + msg.content + '</span>');
+                    dir.html('<span class="text-success">' + msg + '</span>');
                 },
                 error: function(xhr,status,error){
-                    dir.html('<span class="text-error">' + (xhr.responseJSON.message || xhr.responseText) + '</span>');
+                    dir.html('');
                 }
             });
         }
