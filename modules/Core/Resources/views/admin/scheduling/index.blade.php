@@ -83,7 +83,7 @@
         </div>
         <div class="text-xs">
         @if (stristr(PHP_OS, 'LINUX'))
-            Linux Cron：* * * * * cd /{{base_path()}} && php artisan schedule:run >> /dev/null 2>&1
+            Linux Cron：* * * * * cd {{base_path()}} && php artisan schedule:run >> /dev/null 2>&1
         @endif
         </div>
     </div>

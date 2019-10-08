@@ -24,6 +24,36 @@ Artisan::command('zotop:version', function () {
 
 
 /**
+ * 设置.env值
+ */
+Artisan::command('env:set {key} {value}', function ($key, $value) {
+
+    // 键名大写
+    $key = strtoupper($key);
+
+    // 获取env文件数据
+    $env = app()->environmentFilePath();
+    $str = file_get_contents($env)."\n";
+    
+    // 获取原有的行
+    $start = strpos($str, "{$key}=");
+    $end   = strpos($str, "\n", $start);
+    $old   = substr($str, $start, $end - $start);
+
+    // 如果不存在则追加，存在则替换
+    if (!$start || !$end || !$old) {
+        $str .= "{$key}={$value}\n";
+    } else {
+        $str = str_replace($old, "{$key}={$value}", $str);
+    }
+
+    $str = substr($str, 0, -1);
+
+    file_put_contents($env, $str);
+
+})->describe('set .env key value');
+
+/**
  * 清理日志
  */
 Artisan::command('log:clear', function () {

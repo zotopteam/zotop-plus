@@ -204,7 +204,7 @@ class InstallController extends Controller
         Artisan::call('key:generate');
 
         // 设置当前域名
-        Artisan::call('env:set',[
+        Artisan::call('env:set', [
             'key'   => 'APP_URL',
             'value' => $request->root()
         ]);
@@ -310,7 +310,7 @@ class InstallController extends Controller
                 app('db')->reconnect()->getPdo();
 
                 foreach ($env as $key => $value) {
-                    Artisan::call('env:set',['key' => $key, 'value'=>$value]);  
+                    Artisan::call('env:set', ['key' => $key, 'value'=>$value]);  
                 }
 
                 return $this->success('success', route("install.{$this->next}"));

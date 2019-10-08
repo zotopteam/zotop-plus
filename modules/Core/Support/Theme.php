@@ -164,7 +164,11 @@ class Theme
             list($name, $url) = explode(':', $asset);            
         }
 
-        return $this->getAssetsUrl($name) . '/' . ltrim($url, '/');
+        $theme = $this->find($name);
+        $asset = $this->getAssetsUrl($name) . '/' . ltrim($url, '/');
+        $asset = $asset .'?version='.$theme->version;
+
+        return $asset;
     }
 
     /**
