@@ -48,5 +48,4 @@ class Handler extends ExceptionHandler
     {
         return parent::render($request, $exception);
     }
-    
 }
