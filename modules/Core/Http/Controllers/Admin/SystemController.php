@@ -62,7 +62,12 @@ class SystemController extends AdminController
         if ($request->isMethod('POST')) {
 
             if ( $artisan = $request->artisan ) {
+                
+                // 执行artisan命令
                 Artisan::call($artisan);
+
+                // artisan 的 config:cache 和 route:cache 会导致app('current.module')清空，暂时关闭改操作的日志
+                config(['core.log.enabled'=>false]);
             }
 
             return $this->success(trans('master.operated'), $request->referer());

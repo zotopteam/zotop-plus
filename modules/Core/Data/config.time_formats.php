@@ -2,7 +2,7 @@
 // 本地日期格式
 $locale_time_formats = [];
 if (app('translator')->hasForLocale('core::config.locale.time_formats')) {
-    $locale_time_formats = app('translator')->trans('core::config.locale.time_formats');
+    $locale_time_formats = app('translator')->get('core::config.locale.time_formats');
     $locale_time_formats = explode('||', $locale_time_formats);
     $locale_time_formats = array_flip($locale_time_formats);
     foreach ($locale_time_formats as $key=>&$value) {

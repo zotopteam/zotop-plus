@@ -1,6 +1,10 @@
 # Change Log
 
-## 1.2.4 (YYYY-MM-DD)
+## 1.2.5 (XXXX-XX-XX)
+
+## 1.2.4 (2019-09-30)
+
+* Fix a bug introduced with previous release, for empty method definition lists (#1009)
 
 ## 1.2.3 (2019-08-07)
 

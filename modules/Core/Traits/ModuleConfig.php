@@ -59,7 +59,7 @@ trait ModuleConfig
         }
 
         foreach ($envs as $key => $value) {
-            Artisan::call('env:set', ['key' => strtoupper($key), 'value'=>$value]);   
+            Artisan::call('env:set', ['key' => $key, 'value'=>$value]);   
         }
 
         // 清理配置和路由缓存
