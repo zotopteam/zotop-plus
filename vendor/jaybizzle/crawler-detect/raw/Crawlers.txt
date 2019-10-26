@@ -267,6 +267,7 @@ drupact
 Drupal \(\+http:\/\/drupal\.org\/\)
 DTS Agent
 dubaiindex
+DuplexWeb-Google
 EARTHCOM
 Easy-Thumb
 EasyDL
@@ -303,6 +304,7 @@ Extreme Picture Finder
 EyeNetIE
 ezooms
 facebookexternalhit
+facebookexternalua
 facebookplatform
 fairshare
 Faraday v
@@ -392,6 +394,7 @@ Google-Calendar-Importer
 Google-HotelAdsVerifier
 Google-HTTP-Java-Client
 Google-Publisher-Plugin
+Google-Read-Aloud
 Google-SearchByImage
 Google-Site-Verification
 Google-Structured-Data-Testing-Tool
