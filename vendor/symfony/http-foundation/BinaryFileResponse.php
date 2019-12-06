@@ -204,7 +204,7 @@ class BinaryFileResponse extends Response
 
         if (!$this->headers->has('Accept-Ranges')) {
             // Only accept ranges on safe HTTP methods
-            $this->headers->set('Accept-Ranges', $request->isMethodSafe(false) ? 'bytes' : 'none');
+            $this->headers->set('Accept-Ranges', $request->isMethodSafe() ? 'bytes' : 'none');
         }
 
         if (self::$trustXSendfileTypeHeader && $request->headers->has('X-Sendfile-Type')) {
@@ -269,7 +269,7 @@ class BinaryFileResponse extends Response
         return $this;
     }
 
-    private function hasValidIfRangeHeader($header)
+    private function hasValidIfRangeHeader(?string $header): bool
     {
         if ($this->getEtag() === $header) {
             return true;
@@ -343,7 +343,7 @@ class BinaryFileResponse extends Response
     }
 
     /**
-     * If this is set to true, the file will be unlinked after the request is send
+     * If this is set to true, the file will be unlinked after the request is sent
      * Note: If the X-Sendfile header is used, the deleteFileAfterSend setting will not be used.
      *
      * @param bool $shouldDelete

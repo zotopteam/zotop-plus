@@ -65,7 +65,7 @@ class QuestionHelper extends Helper
 
                 $default = explode(',', $default);
                 foreach ($default as $k => $v) {
-                    $v = trim($v);
+                    $v = $question->isTrimmable() ? trim($v) : $v;
                     $default[$k] = isset($choices[$v]) ? $choices[$v] : $v;
                 }
             }
@@ -122,7 +122,8 @@ class QuestionHelper extends Helper
             $ret = false;
             if ($question->isHidden()) {
                 try {
-                    $ret = trim($this->getHiddenResponse($output, $inputStream));
+                    $hiddenResponse = $this->getHiddenResponse($output, $inputStream, $question->isTrimmable());
+                    $ret = $question->isTrimmable() ? trim($hiddenResponse) : $hiddenResponse;
                 } catch (RuntimeException $e) {
                     if (!$question->isHiddenFallback()) {
                         throw $e;
@@ -135,10 +136,13 @@ class QuestionHelper extends Helper
                 if (false === $ret) {
                     throw new RuntimeException('Aborted.');
                 }
-                $ret = trim($ret);
+                if ($question->isTrimmable()) {
+                    $ret = trim($ret);
+                }
             }
         } else {
-            $ret = trim($this->autocomplete($output, $question, $inputStream, $autocomplete));
+            $autocomplete = $this->autocomplete($output, $question, $inputStream, $autocomplete);
+            $ret = $question->isTrimmable() ? trim($autocomplete) : $autocomplete;
         }
 
         if ($output instanceof ConsoleSectionOutput) {
@@ -226,7 +230,7 @@ class QuestionHelper extends Helper
             } elseif ("\177" === $c) { // Backspace Character
                 if (0 === $numMatches && 0 !== $i) {
                     --$i;
-                    $fullChoice = substr($fullChoice, 0, -1);
+                    $fullChoice = self::substr($fullChoice, 0, $i);
                     // Move cursor backwards
                     $output->write("\033[1D");
                 }
@@ -240,7 +244,7 @@ class QuestionHelper extends Helper
                 }
 
                 // Pop the last character off the end of our string
-                $ret = substr($ret, 0, $i);
+                $ret = self::substr($ret, 0, $i);
             } elseif ("\033" === $c) {
                 // Did we read an escape sequence?
                 $c .= fread($inputStream, 2);
@@ -266,7 +270,7 @@ class QuestionHelper extends Helper
                         $remainingCharacters = substr($ret, \strlen(trim($this->mostRecentlyEnteredValue($fullChoice))));
                         $output->write($remainingCharacters);
                         $fullChoice .= $remainingCharacters;
-                        $i = \strlen($fullChoice);
+                        $i = self::strlen($fullChoice);
 
                         $matches = array_filter(
                             $autocomplete($ret),
@@ -282,6 +286,8 @@ class QuestionHelper extends Helper
                         $output->write($c);
                         break;
                     }
+
+                    $numMatches = 0;
                 }
 
                 continue;
@@ -332,7 +338,7 @@ class QuestionHelper extends Helper
         return $fullChoice;
     }
 
-    private function mostRecentlyEnteredValue($entered)
+    private function mostRecentlyEnteredValue(string $entered): string
     {
         // Determine the most recent value that the user entered
         if (false === strpos($entered, ',')) {
@@ -350,12 +356,12 @@ class QuestionHelper extends Helper
     /**
      * Gets a hidden response from user.
      *
-     * @param OutputInterface $output      An Output instance
-     * @param resource        $inputStream The handler resource
+     * @param resource $inputStream The handler resource
+     * @param bool     $trimmable   Is the answer trimmable
      *
      * @throws RuntimeException In case the fallback is deactivated and the response cannot be hidden
      */
-    private function getHiddenResponse(OutputInterface $output, $inputStream): string
+    private function getHiddenResponse(OutputInterface $output, $inputStream, bool $trimmable = true): string
     {
         if ('\\' === \DIRECTORY_SEPARATOR) {
             $exe = __DIR__.'/../Resources/bin/hiddeninput.exe';
@@ -367,7 +373,8 @@ class QuestionHelper extends Helper
                 $exe = $tmpExe;
             }
 
-            $value = rtrim(shell_exec($exe));
+            $sExec = shell_exec($exe);
+            $value = $trimmable ? rtrim($sExec) : $sExec;
             $output->writeln('');
 
             if (isset($tmpExe)) {
@@ -387,8 +394,9 @@ class QuestionHelper extends Helper
             if (false === $value) {
                 throw new RuntimeException('Aborted.');
             }
-
-            $value = trim($value);
+            if ($trimmable) {
+                $value = trim($value);
+            }
             $output->writeln('');
 
             return $value;
@@ -397,7 +405,8 @@ class QuestionHelper extends Helper
         if (false !== $shell = $this->getShell()) {
             $readCmd = 'csh' === $shell ? 'set mypassword = $<' : 'read -r mypassword';
             $command = sprintf("/usr/bin/env %s -c 'stty -echo; %s; stty echo; echo \$mypassword'", $shell, $readCmd);
-            $value = rtrim(shell_exec($command));
+            $sCommand = shell_exec($command);
+            $value = $trimmable ? rtrim($sCommand) : $sCommand;
             $output->writeln('');
 
             return $value;
@@ -409,9 +418,7 @@ class QuestionHelper extends Helper
     /**
      * Validates an attempt.
      *
-     * @param callable        $interviewer A callable that will ask for a question and return the result
-     * @param OutputInterface $output      An Output instance
-     * @param Question        $question    A Question instance
+     * @param callable $interviewer A callable that will ask for a question and return the result
      *
      * @return mixed The validated response
      *

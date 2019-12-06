@@ -202,7 +202,7 @@ class Mailable implements MailableContract, Renderable
     /**
      * Render the mailable into a view.
      *
-     * @return \Illuminate\View\View
+     * @return string
      *
      * @throws \ReflectionException
      */
@@ -724,7 +724,7 @@ class Mailable implements MailableContract, Renderable
      * Set the view data for the message.
      *
      * @param  string|array  $key
-     * @param  mixed   $value
+     * @param  mixed  $value
      * @return $this
      */
     public function with($key, $value = null)
@@ -829,7 +829,7 @@ class Mailable implements MailableContract, Renderable
      * Dynamically bind parameters to the message.
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return $this
      *
      * @throws \BadMethodCallException

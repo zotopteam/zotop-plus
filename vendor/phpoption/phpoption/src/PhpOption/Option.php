@@ -31,12 +31,12 @@ abstract class Option implements IteratorAggregate
      * Creates an option given a return value.
      *
      * This is intended for consuming existing APIs and allows you to easily
-     * convert them to an option. By default, we treat ``null`` as the None case,
-     * and everything else as Some.
+     * convert them to an option. By default, we treat ``null`` as the None
+     * case, and everything else as Some.
      *
-     * @param mixed $value The actual return value.
-     * @param mixed $noneValue The value which should be considered "None"; null
-     *                         by default.
+     * @param mixed $value     The actual return value.
+     * @param mixed $noneValue The value which should be considered "None";
+     *                         null by default.
      *
      * @return Option
      */
@@ -52,19 +52,18 @@ abstract class Option implements IteratorAggregate
     /**
      * Creates an option from an array's value.
      *
-     * If the key does not exist in the array, the array is not actually an array, or the
-     * array's value at the given key is null, None is returned.
-     *
+     * If the key does not exist in the array, the array is not actually an
+     * array, or the array's value at the given key is null, None is returned.
      * Otherwise, Some is returned wrapping the value at the given key.
      *
-     * @param mixed $array a potential array value
-     * @param string $key the key to check
+     * @param mixed  $array A potential array value.
+     * @param string $key   The key to check.
      *
      * @return Option
      */
     public static function fromArraysValue($array, $key)
     {
-        if ( ! isset($array[$key])) {
+        if (!is_array($array) || !isset($array[$key])) {
             return None::create();
         }
 
@@ -78,16 +77,16 @@ abstract class Option implements IteratorAggregate
      * the return value is not yet an option. By default, we treat ``null`` as
      * None case, and everything else as Some.
      *
-     * @param callable $callback The callback to evaluate.
-     * @param array $arguments
-     * @param mixed $noneValue The value which should be considered "None"; null
-     *                         by default.
+     * @param callable $callback  The callback to evaluate.
+     * @param array    $arguments The arguments for the callback.
+     * @param mixed    $noneValue The value which should be considered "None"; null
+     *                            by default.
      *
      * @return Option
      */
-    public static function fromReturn($callback, array $arguments = array(), $noneValue = null)
+    public static function fromReturn($callback, array $arguments = [], $noneValue = null)
     {
-        return new LazyOption(function() use ($callback, $arguments, $noneValue) {
+        return new LazyOption(function () use ($callback, $arguments, $noneValue) {
             $return = call_user_func_array($callback, $arguments);
 
             if ($return === $noneValue) {
@@ -100,39 +99,77 @@ abstract class Option implements IteratorAggregate
 
     /**
      * Option factory, which creates new option based on passed value.
-     * If value is already an option, it simply returns
-     * If value is a \Closure, LazyOption with passed callback created and returned. If Option returned from callback,
-     * it returns directly (flatMap-like behaviour)
-     * On other case value passed to Option::fromValue() method
      *
-     * @param Option|\Closure|mixed $value
-     * @param null $noneValue used when $value is mixed or Closure, for None-check
+     * If value is already an option, it simply returns. If value is callable,
+     * LazyOption with passed callback created and returned. If Option
+     * returned from callback, it returns directly. On other case value passed
+     * to Option::fromValue() method.
+     *
+     * @param Option|callable|mixed $value
+     * @param mixed                 $noneValue Used when $value is mixed or
+     *                                         callable, for None-check.
      *
      * @return Option
      */
     public static function ensure($value, $noneValue = null)
     {
-        if ($value instanceof Option) {
+        if ($value instanceof self) {
             return $value;
-        } elseif ($value instanceof \Closure) {
-            return new LazyOption(function() use ($value, $noneValue) {
+        } elseif (is_callable($value)) {
+            return new LazyOption(function () use ($value, $noneValue) {
                 $return = $value();
 
-                if ($return instanceof Option) {
+                if ($return instanceof self) {
                     return $return;
                 } else {
-                    return Option::fromValue($return, $noneValue);
+                    return self::fromValue($return, $noneValue);
                 }
             });
         } else {
-            return Option::fromValue($value, $noneValue);
+            return self::fromValue($value, $noneValue);
         }
+    }
+
+    /**
+     * Lift a function so that it accepts Option as parameters.
+     *
+     * We return a new closure that wraps the original callback. If any of the
+     * parameters passed to the lifted function is empty, the function will
+     * return a value of None. Otherwise, we will pass all parameters to the
+     * original callback and return the value inside a new Option, unless an
+     * Option is returned from the function, in which case, we use that.
+     *
+     * @param callable $callback
+     * @param mixed    $noneValue
+     *
+     * @return callable
+     */
+    public static function lift($callback, $noneValue = null)
+    {
+        return function () use ($callback, $noneValue) {
+            $args = func_get_args();
+
+            // if at least one parameter is empty, return None
+            if (array_reduce($args, function ($status, self $o) {
+                return $o->isEmpty() ? true : $status;
+            }, false)) {
+                return None::create();
+            }
+
+            $args = array_map(function (self $o) {
+                // it is safe to do so because the fold above checked
+                // that all arguments are of type Some
+                return $o->get();
+            }, $args);
+
+            return self::ensure(call_user_func_array($callback, $args), $noneValue);
+        };
     }
 
     /**
      * Returns the value if available, or throws an exception otherwise.
      *
-     * @throws \RuntimeException if value is not available
+     * @throws \RuntimeException If value is not available.
      *
      * @return mixed
      */
@@ -171,14 +208,14 @@ abstract class Option implements IteratorAggregate
     /**
      * Returns true if no value is available, false otherwise.
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function isEmpty();
 
     /**
      * Returns true if a value is available, false otherwise.
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function isDefined();
 
@@ -198,7 +235,7 @@ abstract class Option implements IteratorAggregate
      *
      * @return Option
      */
-    abstract public function orElse(Option $else);
+    abstract public function orElse(self $else);
 
     /**
      * This is similar to map() below except that the return value has no meaning;
@@ -323,8 +360,8 @@ abstract class Option implements IteratorAggregate
     /**
      * Binary operator for the initial value and the option's value.
      *
-     * If empty, the initial value is returned.
-     * If non-empty, the callable receives the initial value and the option's value as arguments
+     * If empty, the initial value is returned. If non-empty, the callable
+     * receives the initial value and the option's value as arguments.
      *
      * ```php
      *
@@ -341,8 +378,8 @@ abstract class Option implements IteratorAggregate
      *     }
      * ```
      *
-     * @param mixed $initialValue
-     * @param callable $callable function(initialValue, callable): result
+     * @param mixed    $initialValue
+     * @param callable $callable     function(initialValue, callable): result
      *
      * @return mixed
      */
@@ -351,8 +388,8 @@ abstract class Option implements IteratorAggregate
     /**
      * foldLeft() but with reversed arguments for the callable.
      *
-     * @param mixed $initialValue
-     * @param callable $callable function(callable, initialValue): result
+     * @param mixed    $initialValue
+     * @param callable $callable     function(callable, initialValue): result
      *
      * @return mixed
      */

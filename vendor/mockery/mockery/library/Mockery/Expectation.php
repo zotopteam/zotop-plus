@@ -224,12 +224,14 @@ class Expectation implements ExpectationInterface
     {
         $mockClass = get_class($this->_mock);
         $container = $this->_mock->mockery_getContainer();
+        /** @var Mock[] $mocks */
         $mocks = $container->getMocks();
         foreach ($this->_setQueue as $name => &$values) {
             if (count($values) > 0) {
                 $value = array_shift($values);
+                $this->_mock->{$name} = $value;
                 foreach ($mocks as $mock) {
-                    if (is_a($mock, $mockClass)) {
+                    if (is_a($mock, $mockClass) && $mock->mockery_isInstance()) {
                         $mock->{$name} = $value;
                     }
                 }
@@ -555,6 +557,28 @@ class Expectation implements ExpectationInterface
     public function andReturnUsing(...$args)
     {
         $this->_closureQueue = $args;
+        return $this;
+    }
+
+    /**
+     * Sets up a closure to return the nth argument from the expected method call
+     *
+     * @param int $index
+     * @return self
+     */
+    public function andReturnArg($index)
+    {
+        if (!is_int($index) || $index < 0) {
+            throw new \InvalidArgumentException("Invalid argument index supplied. Index must be a positive integer.");
+        }
+        $closure = function (...$args) use ($index) {
+            if (array_key_exists($index, $args)) {
+                return $args[$index];
+            }
+            throw new \OutOfBoundsException("Cannot return an argument value. No argument exists for the index $index");
+        };
+
+        $this->_closureQueue = [$closure];
         return $this;
     }
 
@@ -886,5 +910,13 @@ class Expectation implements ExpectationInterface
     public function getExceptionMessage()
     {
         return $this->_because;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExpectedArgs()
+    {
+        return $this->_expectedArgs;
     }
 }

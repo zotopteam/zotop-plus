@@ -16,8 +16,6 @@ namespace Symfony\Component\Mime;
  * @author Xavier De Cock <xdecock@gmail.com>
  *
  * @internal
- *
- * @experimental in 4.3
  */
 final class CharacterStream
 {
@@ -116,7 +114,6 @@ final class CharacterStream
         if ($this->currentPos >= $this->charCount) {
             return null;
         }
-        $ret = null;
         $length = ($this->currentPos + $length > $this->charCount) ? $this->charCount - $this->currentPos : $length;
         if ($this->fixedWidth > 0) {
             $len = $length * $this->fixedWidth;
@@ -177,7 +174,7 @@ final class CharacterStream
         $this->dataSize = \strlen($this->data) - \strlen($ignored);
     }
 
-    private function getUtf8CharPositions(string $string, int $startOffset, &$ignoredChars): int
+    private function getUtf8CharPositions(string $string, int $startOffset, string &$ignoredChars): int
     {
         $strlen = \strlen($string);
         $charPos = \count($this->map['p']);

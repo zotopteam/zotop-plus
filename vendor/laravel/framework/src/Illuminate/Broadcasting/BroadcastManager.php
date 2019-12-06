@@ -229,7 +229,8 @@ class BroadcastManager implements FactoryContract
     protected function createRedisDriver(array $config)
     {
         return new RedisBroadcaster(
-            $this->app->make('redis'), $config['connection'] ?? null
+            $this->app->make('redis'), $config['connection'] ?? null,
+            $this->app['config']->get('database.redis.options.prefix', '')
         );
     }
 
@@ -296,7 +297,7 @@ class BroadcastManager implements FactoryContract
     /**
      * Register a custom driver creator Closure.
      *
-     * @param  string    $driver
+     * @param  string  $driver
      * @param  \Closure  $callback
      * @return $this
      */
@@ -311,7 +312,7 @@ class BroadcastManager implements FactoryContract
      * Dynamically call the default driver instance.
      *
      * @param  string  $method
-     * @param  array   $parameters
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)
