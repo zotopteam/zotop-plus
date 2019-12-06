@@ -8,7 +8,7 @@
 @endif
 
 @push('js')
-    @loadjs(Module::asset('core:laydate/laydate.js'));
+    @loadjs(Module::asset('core:laydate/laydate.js'))
     <script type="text/javascript">
         laydate.render(@json($options));
     </script>

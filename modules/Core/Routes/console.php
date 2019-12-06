@@ -33,7 +33,7 @@ Artisan::command('env:set {key} {value}', function ($key, $value) {
 
     // 获取env文件数据
     $env = app()->environmentFilePath();
-    $str = file_get_contents($env)."\n";
+    $str = "\n".file_get_contents($env)."\n";
     
     // 获取原有的行
     $start = strpos($str, "{$key}=");
@@ -47,7 +47,7 @@ Artisan::command('env:set {key} {value}', function ($key, $value) {
         $str = str_replace($old, "{$key}={$value}", $str);
     }
 
-    $str = substr($str, 0, -1);
+    $str = trim($str, "\n");
 
     file_put_contents($env, $str);
 
