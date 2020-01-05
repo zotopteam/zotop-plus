@@ -237,10 +237,10 @@ class Listener
      */
     public function moduleManage($manage, $module)
     {
-        if ($module->installed) {
+        if ($module->isInstalled()) {
 
             // 禁用和启用
-            if($module->active) {
+            if($module->isEnabled()) {
                 $manage['disable'] = [
                     'text'     => trans('master.disable'),
                     'data-url' => route('core.module.disable',[$module->name]),
@@ -260,7 +260,7 @@ class Listener
             $manage['uninstall'] = [
                 'text'         => trans('core::module.uninstall'),
                 'data-url'     => route('core.module.uninstall',[$module->name]),
-                'data-confirm' => trans('core::module.uninstall.confirm', [$module->title]),
+                'data-confirm' => trans('core::module.uninstall.confirm', [$module->getTitle()]),
                 'icon'         => 'fa fa-trash ',
                 'class'        => 'js-confirm',
             ];              
@@ -278,7 +278,7 @@ class Listener
             $manage['delete'] = [
                 'text'         => trans('core::module.delete'),
                 'data-url'     => route('core.module.delete',[$module->name]),
-                'data-confirm' => trans('core::module.delete.confirm', [$module->title]),
+                'data-confirm' => trans('core::module.delete.confirm', [$module->getTitle()]),
                 'icon'         => 'fa fa-times',
                 'class'        => 'js-confirm',
             ];                        

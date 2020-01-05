@@ -20,7 +20,7 @@ class ModuleController extends AdminController
     public function index()
     {
         $this->title   = trans('core::module.title');
-        $this->modules = module();
+        $this->modules = Module::all();
 
         return $this->view();
     }

@@ -42,6 +42,7 @@ class ModelMakeCommand extends GeneratorCommand
 
         if ($this->option('all')) {
             $this->input->setOption('factory', true);
+            $this->input->setOption('seed', true);
             $this->input->setOption('migration', true);
             $this->input->setOption('controller', true);
             $this->input->setOption('resource', true);
@@ -53,6 +54,10 @@ class ModelMakeCommand extends GeneratorCommand
 
         if ($this->option('migration')) {
             $this->createMigration();
+        }
+
+        if ($this->option('seed')) {
+            $this->createSeeder();
         }
 
         if ($this->option('controller') || $this->option('resource')) {
@@ -91,6 +96,20 @@ class ModelMakeCommand extends GeneratorCommand
         $this->call('make:migration', [
             'name' => "create_{$table}_table",
             '--create' => $table,
+        ]);
+    }
+
+    /**
+     * Create a seeder file for the model.
+     *
+     * @return void
+     */
+    protected function createSeeder()
+    {
+        $seeder = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('make:seed', [
+            'name' => "{$seeder}Seeder",
         ]);
     }
 
@@ -134,17 +153,12 @@ class ModelMakeCommand extends GeneratorCommand
     {
         return [
             ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, factory, and resource controller for the model'],
-
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model'],
-
             ['factory', 'f', InputOption::VALUE_NONE, 'Create a new factory for the model'],
-
             ['force', null, InputOption::VALUE_NONE, 'Create the class even if the model already exists'],
-
             ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the model'],
-
+            ['seed', 's', InputOption::VALUE_NONE, 'Create a new seeder file for the model'],
             ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
-
             ['resource', 'r', InputOption::VALUE_NONE, 'Indicates if the generated controller should be a resource controller'],
         ];
     }

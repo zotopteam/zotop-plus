@@ -11,6 +11,7 @@ use Modules\Core\Traits\PublishConfig;
 use Nwidart\Modules\Module;
 use Modules\Core\Models\Config;
 use Blade;
+use Filter;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -58,8 +59,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerCommands();
-        $this->registerSingleton();
+        //$this->registerCommands();
     }
 
     /**
@@ -81,32 +81,32 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function registerModules()
     {
-        foreach ($this->app['modules']->getOrdered() as $module) {
+        // foreach ($this->app['modules']->getOrdered() as $module) {
 
-            $moduleName = $module->getLowerName();
+        //     $moduleName = $module->getLowerName();
 
             // 已安装时加载自定义配置
-            if ($this->app['installed'] == true && $moduleConfig = Config::get($moduleName)) {
-               $this->app['config']->set($moduleName, $moduleConfig);
-            }
+            // if ($this->app['installed'] == true && $moduleConfig = Config::get($moduleName)) {
+            //    $this->app['config']->set($moduleName, $moduleConfig);
+            // }
 
             // 未安装的时加载模块根目录下的配置
-            if ($this->app['installed'] == false && $this->app['files']->isFile($configFile = $module->getPath().'/config.php')) {            
-                $this->mergeConfigFrom($configFile, $moduleName);
-            }
+            // if ($this->app['installed'] == false && $this->app['files']->isFile($configFile = $module->getPath().'/config.php')) {            
+            //     $this->mergeConfigFrom($configFile, $moduleName);
+            // }
 
             // 注册语言包，如果已经publish并且模块语音文件夹存在
-            if (is_dir($moduleLang = base_path("resources/lang/{$moduleName}"))) {
-                $this->loadTranslationsFrom($moduleLang, $moduleName);
-            } else {
-                $this->loadTranslationsFrom($module->getPath() . '/Resources/lang', $moduleName);
-            }
+            // if (is_dir($moduleLang = base_path("resources/lang/{$moduleName}"))) {
+            //     $this->loadTranslationsFrom($moduleLang, $moduleName);
+            // } else {
+            //     $this->loadTranslationsFrom($module->getPath() . '/Resources/lang', $moduleName);
+            // }
 
             // 非产品环境下注册Factories
-            if (! $this->app->environment('production')) {
-                $this->app->make(Factory::class)->load($module->getPath() . '/Database/Factories');
-            }
-        }        
+            // if (! $this->app->environment('production')) {
+            //     $this->app->make(Factory::class)->load($module->getPath() . '/Database/Factories');
+            // }
+        // }        
     }
 
     /**
@@ -197,36 +197,6 @@ class CoreServiceProvider extends ServiceProvider
     }
 
     /**
-     * 注册实例
-     * @return null
-     */
-    public function registerSingleton()
-    {
-        $this->app->singleton('format', function ($app) {
-            return new \Modules\Core\Support\Format($app);
-        });
-
-        $this->app->singleton('hook.action', function ($app) {
-            return new \Modules\Core\Support\Action($app);
-        });
-
-        $this->app->singleton('hook.filter', function ($app) {
-            return new \Modules\Core\Support\Filter($app);
-        });
-
-        $this->app->singleton('theme', function($app){
-            return new \Modules\Core\Support\Theme($app);
-        });
-
-        // 覆盖系统默认的BladeCompiler
-        $this->app->singleton('blade.compiler', function () {
-            return new \Modules\Core\Base\BladeCompiler(
-                $this->app['files'], $this->app['config']['view.compiled']
-            );
-        });        
-    }
-
-    /**
      * 注册当前类型[后台、前台、api]，当前语言和当前主题
      * @return null
      */
@@ -304,7 +274,7 @@ class CoreServiceProvider extends ServiceProvider
         // 只加载一次css文件 @loadcss('……')
         Blade::directive('loadcss', function ($expression) {
             return "<?php \$loadcss = {$expression}; if (! isset(\$__env->loadcss[\$loadcss])) : \$__env->loadcss[\$loadcss] = true;?>\r\n<link rel=\"stylesheet\" href=\"<?php echo \$loadcss; ?>\" rel=\"stylesheet\">\r\n<?php endif; ?>";
-        });        
+        });      
     }
 
     /**

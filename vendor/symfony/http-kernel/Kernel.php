@@ -76,11 +76,11 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
 
     private static $freshCache = [];
 
-    const VERSION = '4.4.1';
-    const VERSION_ID = 40401;
+    const VERSION = '4.4.2';
+    const VERSION_ID = 40402;
     const MAJOR_VERSION = 4;
     const MINOR_VERSION = 4;
-    const RELEASE_VERSION = 1;
+    const RELEASE_VERSION = 2;
     const EXTRA_VERSION = '';
 
     const END_OF_MAINTENANCE = '11/2022';
@@ -552,7 +552,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
                             }
 
                             if (\function_exists('opcache_invalidate') && filter_var(ini_get('opcache.enable'), FILTER_VALIDATE_BOOLEAN)) {
-                                opcache_invalidate($this->getPath(), true);
+                                @opcache_invalidate($this->getPath(), true);
                             }
                         }
 

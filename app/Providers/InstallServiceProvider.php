@@ -45,7 +45,6 @@ class InstallServiceProvider extends ServiceProvider
 
         // 进入安装页面后，加载安装程序路由
         if ($this->app['request']->is('install', 'install/*', '_debugbar/*')) {
-            // 加载安装路由
             $this->loadRoutesFrom(base_path('/routes/install.php'));
             return ;
         }

@@ -27,17 +27,17 @@
             </thead>        
             <tbody>  
             @foreach($modules as $name=>$module)
-                <tr class="item {{$module->active ? 'active' : 'disabled'}}">
+                <tr class="item {{$module->isEnabled() ? 'active' : 'disabled'}}">
                     <td class="text-center">
-                        <i class="fa fa-2x {{$module->active ? 'fa-check-circle text-success' : 'fa-times-circle'}}"></i>
+                        <i class="fa fa-2x {{$module->isEnabled() ? 'fa-check-circle text-success' : 'fa-times-circle'}}"></i>
                     </td>
                     <td width="1%" class="pr-2">
                         <div class="icon icon-md">
-                            <img src="{{preview($module->getExtraPath('/module.png'), 48, 48)}}">
+                            <img src="{{preview($module->getPath('module.png'), 48, 48)}}">
                         </div>
                     </td>
                     <td class="pl-2">
-                        <div class="title"> <b class="text-lg">{{$module->title}}</b> <span class="text-muted">{{$name}}</span></div>
+                        <div class="title"> <b class="text-lg">{{$module->getTitle()}}</b> <span class="text-muted">{{$name}}</span></div>
                         <div class="manage">
                             @foreach(Filter::fire('module.manage', [], $module) as $s)
                             <a href="{{$s['href'] ?? 'javascript:;'}}" class="manage-item {{$s['class'] ?? ''}}" {!!Html::attributes(array_except($s,['icon','text','href','class']))!!}>
@@ -48,7 +48,7 @@
                     </td>
                     <td width="10%">{{$module->version}}</td>
                     <td>
-                        <p>{{$module->description}}</p>
+                        <p>{{$module->getDescription()}}</p>
                         <div class="manage text-muted text-xs">
                             @if($module->author)
                             <span class="manage-item">{{$module->author}}</span>
