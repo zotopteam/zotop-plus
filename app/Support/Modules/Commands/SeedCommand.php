@@ -72,17 +72,17 @@ class SeedCommand extends Command
             return;
         }
 
-        foreach ($seeders as $seed) {
+        foreach ($seeders as $seeder) {
 
-            if (! class_exists($seed)) {
-                $this->error('Class does not exiests: '.$seed);
+            if (! class_exists($seeder)) {
+                $this->error('Class does not exiests: '.$seeder);
                 continue;
             }
 
-            $this->info('Seeding:'.$seed);
+            $this->info('Seeding:'.$seeder);
 
             $this->call('db:seed', [
-                '--class' => $seed,
+                '--class' => $seeder,
                 '--database' => $this->option('database'),
                 '--force'    => $this->option('force'),                
             ]);

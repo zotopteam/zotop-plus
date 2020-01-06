@@ -49,11 +49,10 @@ class PublishCommand extends Command
      */
     public function handle()
     {
-        $module = $this->argument('module');
         $action = $this->option('action');
 
         // 发布单个模块
-        if ($module) {
+        if ($module = $this->argument('module')) {
             $module = $this->laravel['modules']->findOrFail($module);
             $this->$action($module);
             return;

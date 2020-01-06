@@ -45,16 +45,14 @@ class MigrateRollbackCommand extends Command
      */
     public function handle()
     {
-        $module = $this->argument('module');
-
-        // 回滚迁移单个模块
-        if ($module) {
+        // 回滚单个模块
+        if ($module = $this->argument('module')) {
             $module = $this->laravel['modules']->findOrFail($module);
             $this->rollback($module);
             return;
         }
 
-        // 回滚迁移全部模块
+        // 回滚全部模块
         foreach ($this->laravel['modules']->installed() as $module) {
             $this->rollback($module);
         }

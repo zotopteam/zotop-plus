@@ -42,16 +42,14 @@ class MigrateStatusCommand extends Command
      */
     public function handle()
     {
-        $module = $this->argument('module');
-
-        // 迁移单个模块
-        if ($module) {
+        // 迁移状态：单个模块
+        if ($module = $this->argument('module')) {
             $module = $this->laravel['modules']->findOrFail($module);
             $this->status($module);
             return;
         }
 
-        // 迁移全部模块
+        // 迁移状态：全部模块
         foreach ($this->laravel['modules']->installed() as $module) {
             $this->status($module);
         }

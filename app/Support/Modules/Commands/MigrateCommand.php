@@ -46,10 +46,8 @@ class MigrateCommand extends Command
      */
     public function handle()
     {
-        $module = $this->argument('module');
-
         // 迁移单个模块
-        if ($module) {
+        if ($module = $this->argument('module')) {
             $module = $this->laravel['modules']->findOrFail($module);
             $this->migrate($module);
             return;

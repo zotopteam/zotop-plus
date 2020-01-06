@@ -45,10 +45,8 @@ class MigrateRefreshCommand extends Command
      */
     public function handle()
     {
-        $module = $this->argument('module');
-
         // 回滚并迁移单个模块
-        if ($module) {
+        if ($module = $this->argument('module')) {
             $module = $this->laravel['modules']->findOrFail($module);
             $this->refresh($module);
             return;

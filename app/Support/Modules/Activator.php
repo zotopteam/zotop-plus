@@ -116,7 +116,7 @@ class Activator
     }
 
     /**
-     * 安装的版本
+     * 安装的模块版本号
      * @param  Module  $module
      * @return boolean
      */
@@ -126,7 +126,7 @@ class Activator
     }
 
     /**
-     * 模块配置
+     * 获取模块配置
      * @param  Module  $module
      * @return array
      */
@@ -140,7 +140,7 @@ class Activator
     }
 
     /**
-     * 升级
+     * 设置模块配置
      * @param  Module  $module
      * @return boolean
      */
@@ -216,7 +216,7 @@ class Activator
     }
 
     /**
-     * 升级
+     * 禁用
      * @param  Module  $module
      * @return boolean
      */
