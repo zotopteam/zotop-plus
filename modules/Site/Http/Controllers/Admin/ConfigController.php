@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Base\AdminController;
 use Modules\Core\Traits\ModuleConfig;
-use Modules\Core\Models\Config;
 
 class ConfigController extends AdminController
 {
@@ -38,7 +37,7 @@ class ConfigController extends AdminController
         }
 
         $this->title  = trans('site::config.base');
-        $this->config = Config::get('site');
+        $this->config = config('site');
 
         return $this->view();
     }
@@ -66,7 +65,7 @@ class ConfigController extends AdminController
         }
 
         $this->title  = trans('site::config.wap');
-        $this->config = Config::get('site');
+        $this->config = config('site');
 
         return $this->view();
     }
@@ -87,7 +86,7 @@ class ConfigController extends AdminController
         }
 
         $this->title  = trans('site::config.seo');
-        $this->config = Config::get('site');
+        $this->config = config('site');
 
         return $this->view();
     }
@@ -112,7 +111,7 @@ class ConfigController extends AdminController
         }
 
         $this->title  = trans('site::config.maintain');
-        $this->config = Config::get('site');
+        $this->config = config('site');
 
         return $this->view();
     }     

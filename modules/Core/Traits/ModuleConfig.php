@@ -17,24 +17,14 @@ trait ModuleConfig
     /**
      * 写入config
      * 
-     * @param  [type] $namespace [description]
-     * @param  array  $config    [description]
-     * @return [type]            [description]
+     * @param  string $module 模块名称
+     * @param  array  $config 配置数组
+     * @return boolean
      */
     private function config($module, array $config)
     {
-        // 获取当前配置，过滤掉当前模块配置中不存在的项      
-        $configOriginal = [];
-
-        $configFilePath = Module::getModulePath($module).'/config.php';
-
-        if (File::exists($configFilePath)) {
-           $configOriginal = include($configFilePath); 
-        }
-
-        $config = array_only($config, array_keys($configOriginal));
-
-        Config::set($module, $config);
+        $module = Module::findOrFail($module);
+        $module->setConfig($config);
 
         return true;
     }
@@ -59,7 +49,10 @@ trait ModuleConfig
         }
 
         foreach ($envs as $key => $value) {
-            Artisan::call('env:set', ['key' => $key, 'value'=>$value]);   
+            Artisan::call('env:set', [
+                'key'   => $key,
+                'value' => $value
+            ]);   
         }
 
         // 清理配置和路由缓存

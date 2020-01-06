@@ -153,7 +153,7 @@ class Module
             return $this->version;
         }
 
-        return $this->activator->version($this);
+        return $this->activator->getVersion($this);
     }
 
     /**
@@ -179,7 +179,7 @@ class Module
             return [];
         }
 
-        return $this->activator->config($this);        
+        return $this->activator->getConfig($this);        
     }
 
     /**
@@ -188,13 +188,7 @@ class Module
      */
     public function setConfig(array $config=[])
     {
-        $original = $this->getConfig(true);
-
-        $this->activator->update($this, [
-            'config' => array_merge($original, $config),
-        ]);
-
-        return true;
+        return $this->activator->setConfig($this, $config);
     }
 
 
@@ -250,48 +244,49 @@ class Module
     }    
 
     /**
-     * 启用模块
+     * 启用
      * @return void
      */
     public function enable()
     {   
         $this->dispatch('enabling');
 
-        $this->activator->update($this, [
-            'disabled' => 0
-        ]);
+        $this->activator->enable($this);
 
         $this->dispatch('enabled');
     }
 
     /**
-     * 禁用模块
+     * 禁用
      * @return void
      */
     public function disable()
     {
         $this->dispatch('disabling');
 
-        $this->activator->update($this, [
-            'disabled' => 1
-        ]);
+        $this->activator->disable($this);
 
         $this->dispatch('disabled');
     }
 
     /**
-     * 安装模块
+     * 安装
      * @return void
      */
     public function install()
     {
         // 安装之前注册模块
-        //$this->register();
+        $this->register();
 
         $this->dispatch('installing');
 
         // 迁移数据库
-        // 迁移数据
+        Artisan::call('module:migrate', [
+            'module'  => $this->name,
+            '--force' => true,
+            '--seed'  => (boolean) $this->seed,
+        ]);
+
         // 发布资源
         Artisan::call('module:publish', [
             'module'   => $this->name,
@@ -303,7 +298,32 @@ class Module
     }
 
     /**
-     * 禁用模块
+     * 升级
+     * @return [type] [description]
+     */
+    public function upgrade()
+    {
+        $this->dispatch('upgrading');
+
+        // 迁移数据库
+        Artisan::call('module:migrate', [
+            'module'  => $this->name,
+            '--force' => true,
+            '--seed'  => (boolean) $this->seed,
+        ]);
+
+        // 发布资源
+        Artisan::call('module:publish', [
+            'module'   => $this->name,
+            '--action' => 'publish',
+        ]);
+
+        $this->activator->upgrade($this);
+        $this->dispatch('upgraded');        
+    }
+
+    /**
+     * 卸载
      * @return void
      */
     public function uninstall()
@@ -311,7 +331,10 @@ class Module
         $this->dispatch('uninstalling');
 
         // 卸载数据库
-        // 迁移数据
+        Artisan::call('module:migrate-reset', [
+            'module'  => $this->name,
+            '--force' => true,
+        ]);        
         // 删除资源
         Artisan::call('module:publish', [
             'module'   => $this->name,
@@ -323,7 +346,7 @@ class Module
     }
 
     /**
-     * 删除模块
+     * 删除
      * @return void
      */
     public function delete()

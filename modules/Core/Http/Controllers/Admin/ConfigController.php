@@ -181,7 +181,7 @@ class ConfigController extends AdminController
 
             // 写入ENV配置
             $this->env([
-                'APP_DEBUG'        => $request->input('debug', 0) ? 'true' : 'false',
+                'APP_DEBUG'        => $request->input('debug') ? 'true' : 'false',
                 'APP_ENV'          => $request->input('env', 'production'),
                 'APP_ADMIN_PREFIX' => $request->input('admin_prefix', 'admin'),
             ]);
@@ -190,8 +190,7 @@ class ConfigController extends AdminController
             $redirectTo = url($request->input('admin_prefix', 'admin').'/core/config/safe');
 
             return $this->success(trans('master.saved'), $redirectTo);
-        }
-
+        }      
 
         $this->title  = trans('core::config.safe');
         $this->config = config('app') + config('core');

@@ -72,10 +72,58 @@ class Repository
         return $modules;
     }
 
-    public function getOrdered()
+    /**
+     * 获取启用或者禁用的模块
+     * @param  boolean $enabled true=获取启用 false=获取禁用
+     * @return array
+     */
+    public function enabled($enabled=true)
     {
-        return $this->all();
+        $modules = $this->all();
+
+        foreach ($modules as $key => $module) {
+
+            if ($enabled && $module->isDisabled()) {
+                unset($modules[$key]);
+            }
+
+            if (! $enabled && $module->isEnabled()) {
+                unset($modules[$key]);
+            }            
+
+        }
+
+        return $modules;
     }
+
+    /**
+     * 获取安装或者未安装的模块
+     * @param  boolean $enabled true=获取启用 false=获取禁用
+     * @return array
+     */
+    public function installed($installed=true)
+    {
+        $modules = $this->all();
+
+        foreach ($modules as $key => $module) {
+
+            if ($installed && !$module->isInstalled()) {
+                unset($modules[$key]);
+            }
+
+            if (! $installed && $module->isInstalled()) {
+                unset($modules[$key]);
+            }            
+
+        }
+
+        return $modules;
+    }    
+
+    // public function getOrdered()
+    // {
+    //     return $this->all();
+    // }
 
     /**
      * 按照名称获取模块
@@ -138,7 +186,7 @@ class Repository
         $module = $this->findOrFail($module);
 
         if ($module) {
-            $asset = $module->asset($url);
+            return $module->asset($url);
         }
 
         return null;
@@ -150,12 +198,7 @@ class Repository
      */
     public function register()
     {
-        foreach ($this->all() as $module) {
-
-            if ($module->isDisabled()) {
-                continue;
-            }            
-
+        foreach ($this->enabled() as $module) {
             $module->register();
         }
     }
@@ -166,12 +209,7 @@ class Repository
      */
     public function boot()
     {
-        foreach ($this->all() as $module) {
-            
-            if ($module->isDisabled()) {
-                continue;
-            }
-
+        foreach ($this->enabled() as $module) {
             $module->boot();
         }        
     }

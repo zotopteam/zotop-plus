@@ -233,7 +233,7 @@ class Theme
         ]);
 
         // 注册当前模块和主题的views，实现view在主题和模块中寻址
-        foreach ($this->app['modules']->getOrdered() as $module) {
+        foreach ($this->app['modules']->enabled() as $module) {
             $this->app['view']->addNamespace($module->getLowerName(), [
                 $theme->path.'/views/'.$module->getLowerName(),
                 $module->getPath() . '/Resources/views/'.$this->app['current.type']

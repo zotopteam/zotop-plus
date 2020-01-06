@@ -13,7 +13,7 @@ class PublishCommand extends Command
      * @var string
      */
     protected $signature = 'module:publish
-                            {module? : The name of module will be used}
+                            {module? : The module to use}
                             {--action=publish : Publish or unpublish the module}';
 
     /**
