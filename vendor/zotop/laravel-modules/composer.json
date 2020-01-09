@@ -1,0 +1,35 @@
+{
+    "name": "zotop/laravel-modules",
+    "description": "laravel modules",
+    "keywords": ["modules", "laravel", "zotop"],    
+    "license": "mit",
+    "authors": [
+        {
+            "name": "Chen Lei",
+            "email": "hankx_chen@qq.com",
+            "homepage": "http://zotop.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    },
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
+        "psr-4": {
+            "Zotop\\Modules\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zotop\\Modules\\ModulesServiceProvider"
+            ],
+            "aliases": {
+                "Module": "Zotop\\Modules\\Facades\\Module"
+            }
+        }      
+    },    
+    "minimum-stability": "dev"
+}
