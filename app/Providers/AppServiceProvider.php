@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Providers\ModuleServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerModules();
+        $this->app->register(BootstrapServiceProvider::class);
+
         $this->bladeExtend();
     }
 
@@ -26,15 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerSingleton();
-    }
-
-    /**
-     * 注册模块
-     * @return void
-     */
-    protected function registerModules()
-    {
-        $this->app->register(ModuleServiceProvider::class);
     }
 
     /**

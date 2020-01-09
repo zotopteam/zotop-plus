@@ -2,6 +2,8 @@
 
 namespace Modules\Site\Providers;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 
 class SiteServiceProvider extends ServiceProvider
@@ -30,7 +32,6 @@ class SiteServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 
     /**
@@ -41,5 +42,5 @@ class SiteServiceProvider extends ServiceProvider
     public function provides()
     {
         return [];
-    }    
+    }
 }

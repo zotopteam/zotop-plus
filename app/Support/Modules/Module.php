@@ -403,6 +403,7 @@ class Module
         $this->registerAlias();
         $this->registerProviders();
         $this->registerFiles();
+        $this->registerConfig();
 
         $this->dispatch('register');
     }
@@ -428,7 +429,7 @@ class Module
         // $cachePath = Str::replaceLast('services.php', $this->getSnakeName() . '_module.php', $this->app->getCachedServicesPath());
 
         // (new ProviderRepository($this->app, new Filesystem(), $cachePath))
-        //     ->load($this->attribute('providers', []));        
+        //     ->load($this->attribute('providers', []));   
 
         foreach ($this->attribute('providers', []) as $provider) {
             $this->app->register($provider);
@@ -454,8 +455,7 @@ class Module
     {
         $this->registerTranslation();
         $this->registerFactories();
-        $this->registerConfig();
-
+        
         $this->dispatch('boot');
     }
 

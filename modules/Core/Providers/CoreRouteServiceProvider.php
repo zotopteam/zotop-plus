@@ -104,7 +104,7 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
             $router->group([
                 'namespace'  => $this->namespace.'\Api',
                 'prefix'     => Filter::fire('router.api.prefix', 'api'),
-                'middleware' => Filter::fire('router.api.middleware', ['api']),
+                'middleware' => Filter::fire('router.api.middleware', ['api','module']),
             ], function (Router $router) use ($apiRouteFile) {
                 require $apiRouteFile;
             });
@@ -121,7 +121,7 @@ abstract class CoreRouteServiceProvider extends ServiceProvider
     private function mapFrontRoutes(Router $router)
     {
         $frontRouteFile = $this->getFrontRouteFile();
-        
+
         if ($frontRouteFile && file_exists($frontRouteFile)) {
             $router->group([
                 'namespace'  => $this->namespace,

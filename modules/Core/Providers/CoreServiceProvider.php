@@ -43,9 +43,6 @@ class CoreServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerMiddleware();
-        $this->registerCurrent();
-        $this->registerModules();
-        $this->registerThemes();
         $this->setLocale();
         $this->eventsListen();
         $this->bladeExtend();
@@ -75,59 +72,7 @@ class CoreServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * 注册模块文件
-     * @return null
-     */
-    public function registerModules()
-    {
-        // foreach ($this->app['modules']->getOrdered() as $module) {
 
-        //     $moduleName = $module->getLowerName();
-
-            // 已安装时加载自定义配置
-            // if ($this->app['installed'] == true && $moduleConfig = Config::get($moduleName)) {
-            //    $this->app['config']->set($moduleName, $moduleConfig);
-            // }
-
-            // 未安装的时加载模块根目录下的配置
-            // if ($this->app['installed'] == false && $this->app['files']->isFile($configFile = $module->getPath().'/config.php')) {            
-            //     $this->mergeConfigFrom($configFile, $moduleName);
-            // }
-
-            // 注册语言包，如果已经publish并且模块语音文件夹存在
-            // if (is_dir($moduleLang = base_path("resources/lang/{$moduleName}"))) {
-            //     $this->loadTranslationsFrom($moduleLang, $moduleName);
-            // } else {
-            //     $this->loadTranslationsFrom($module->getPath() . '/Resources/lang', $moduleName);
-            // }
-
-            // 非产品环境下注册Factories
-            // if (! $this->app->environment('production')) {
-            //     $this->app->make(Factory::class)->load($module->getPath() . '/Database/Factories');
-            // }
-        // }        
-    }
-
-    /**
-     * 注册主题
-     *
-     * @return void
-     */
-    protected function registerThemes()
-    {
-        // 获取主题目录并注册全部主题        
-        $path = $this->app['config']->get('themes.paths.themes', base_path('/themes'));
-
-        $dirs = $this->app['files']->directories($path);
-
-        foreach ($dirs as $dir) {
-            $this->app['theme']->registerPath($dir);
-        }
-
-        // 启用当前主题
-        $this->app['theme']->active();
-    }
 
     /**
      * 设置当前语言
@@ -196,36 +141,6 @@ class CoreServiceProvider extends ServiceProvider
         ]);
     }
 
-    /**
-     * 注册当前类型[后台、前台、api]，当前语言和当前主题
-     * @return null
-     */
-    public function registerCurrent()
-    {
-        // 注册当前类型，根据uri的第一个段来判断是前台、后台或者api
-        $this->app->singleton('current.type', function($app) {
-            $type  = 'front';
-            $begin = strtolower($app['request']->segment(1));
-            if ($begin == strtolower($app['config']->get('app.admin_prefix', 'admin'))) {
-                $type = 'admin';
-            }
-            if ($begin == 'api') {
-                $type = 'api';
-            }
-            return $app['hook.filter']->fire('current.type', $type, $app);
-        });
-
-        // 注册当前语言
-        $this->app->singleton('current.locale', function($app) {
-            return $app['hook.filter']->fire('current.locale', $app->getLocale(), $app);
-        });
-
-        // 注册当前主题，默认为：core.theme.admin，core.theme.front，core.theme.api
-        $this->app->singleton('current.theme', function($app) {
-            $theme = $app['config']->get('core.theme.'.$app['current.type'], $app['current.type']);
-            return $app['hook.filter']->fire('current.theme', $theme, $app);
-        });
-    }
 
     // 模板扩展
     public function bladeExtend()
