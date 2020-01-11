@@ -22,7 +22,7 @@ class ThemeController extends AdminController
         $this->title       = trans('core::theme.title');
         $this->description = trans('core::theme.description');
 
-        $this->themes      = Theme::getList($type);
+        $this->themes      = Theme::all();
 
         return $this->view();
     }

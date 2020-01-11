@@ -205,7 +205,7 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
+        //App\Providers\AppServiceProvider::class,
         //App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         //App\Providers\EventServiceProvider::class,
@@ -215,7 +215,10 @@ return [
          * Custom Service Providers...
          */
         App\Providers\InstallServiceProvider::class,
-        //App\Providers\ModuleServiceProvider::class,
+        App\Modules\ModulesServiceProvider::class,
+        App\Themes\ThemesServiceProvider::class,
+        App\Hook\HookServiceProvider::class,
+
     ],
 
     /*
@@ -267,11 +270,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Module' => App\Facades\Module::class,
-        'Format' => App\Facades\Format::class,
-        'Filter' => App\Facades\Filter::class,
-        'Action' => App\Facades\Action::class,
-        'Theme' => App\Facades\Theme::class,
+        'Module' => App\Modules\Facades\Module::class,
+        'Theme' => App\Themes\Facades\Theme::class,        
+        'Filter' => App\Hook\Facades\Filter::class,
+        'Action' => App\Hook\Facades\Action::class,
     ],
 
 ];

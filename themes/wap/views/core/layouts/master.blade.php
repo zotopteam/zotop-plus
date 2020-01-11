@@ -44,7 +44,7 @@
             </div>
             <div class="powerby text-xs">
                 Power By <a href="{{config('zotop.homepage')}}" target="_blank">{{config('zotop.name')}} v{{config('zotop.version')}}</a>
-                {{app('theme')->get('title')}}
+                {{Theme::getTitle()}}
             </div>
         </div>
     </footer>

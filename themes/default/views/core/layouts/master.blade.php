@@ -73,7 +73,7 @@
                 </span>
             </div>
             <div class="theme-info text-xs">
-                <span class="badge badge-success">{{app('theme')->get('title')}}</span>
+                <span class="badge badge-success">{{Theme::getTitle()}} {{Theme::getVersion()}}</span>
             </div>
         </div>
     </footer>

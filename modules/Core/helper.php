@@ -198,7 +198,7 @@ if (! function_exists('preview')) {
     function preview($path, $width=null, $height=null, $fit=true)
     {
         if ( empty($path) || !File::exists($path) ) {
-            $path = app('theme')->path('assets/img/empty.jpg');
+            $path = app('themes')->path('assets/img/empty.jpg');
         }
 
         $temp = md5($path);
@@ -249,8 +249,8 @@ if (! function_exists('image')) {
 
         // 如果图片不存在
         if ( empty($url) || !File::exists($path) ) {
-            $url  = app('theme')->asset('img/empty.jpg');
-            $path = app('theme')->path('assets/img/empty.jpg');
+            $url  = app('themes')->asset('img/empty.jpg');
+            $path = app('themes')->path('assets/img/empty.jpg');
         }
 
         // 如果缩放图片
@@ -286,111 +286,60 @@ if (! function_exists('image')) {
     }
 }
 
-if (! function_exists('module')) {
+// if (! function_exists('module')) {
 
-    /**
-     * 获取全部module或者某个module信息
-     * 
-     * @param  string $moduleName 模块名称
-     * @return mixed 
-     */
-    function module($moduleName='')
-    {
-        static $modules = [];
+//     /**
+//      * 获取全部module或者某个module信息
+//      * 
+//      * @param  string $moduleName 模块名称
+//      * @return mixed 
+//      */
+//     function module($moduleName='')
+//     {
+//         static $modules = [];
 
-        if (empty($modules)) {
+//         if (empty($modules)) {
            
-            // 获取全部模块
-            $modules = \Module::all();
+//             // 获取全部模块
+//             $modules = \Module::all();
 
-            // 默认安装顺序排序
-            $direction = 'asc';
+//             // 默认安装顺序排序
+//             $direction = 'asc';
 
-            // 模块排序
-            uasort($modules, function($a, $b) use ($direction) {
+//             // 模块排序
+//             uasort($modules, function($a, $b) use ($direction) {
 
-                if ($a->order == $b->order) {
-                    return 0;
-                }
+//                 if ($a->order == $b->order) {
+//                     return 0;
+//                 }
 
-                if ($direction == 'desc') {
-                    return $a->order < $b->order ? 1 : -1;
-                }
+//                 if ($direction == 'desc') {
+//                     return $a->order < $b->order ? 1 : -1;
+//                 }
 
-                return $a->order > $b->order ? 1 : -1;
-            });   
+//                 return $a->order > $b->order ? 1 : -1;
+//             });   
 
 
-            foreach ($modules as $name=>$module) {
+//             foreach ($modules as $name=>$module) {
                 
-                $namespace = strtolower($name);
+//                 $namespace = strtolower($name);
 
-                // 加载未启用模块语言包
-                if ( !$module->active ) {
-                    app('translator')->addNamespace($namespace, $module->getPath() . '/Resources/lang');
-                }
+//                 // 加载未启用模块语言包
+//                 if ( !$module->active ) {
+//                     app('translator')->addNamespace($namespace, $module->getPath() . '/Resources/lang');
+//                 }
 
-                // 标题和描述语言化
-                $module->title       = trans($module->title);
-                $module->description = trans($module->description);                   
-            }
-        }
+//                 // 标题和描述语言化
+//                 $module->title       = trans($module->title);
+//                 $module->description = trans($module->description);                   
+//             }
+//         }
 
-        return $moduleName ? $modules[$moduleName] : $modules;        
-    }
-}
+//         return $moduleName ? $modules[$moduleName] : $modules;        
+//     }
+// }
 
-if (! function_exists('path_base')) {
-    /**
-     *
-     * 将完整路径转化为base路径，base_path的反向函数,前后均不包含斜杠
-     * 
-     * @param  string $path 路径
-     * @return string 转换后路径
-     */
-    function path_base($path)
-    {
-        $path = str_after($path, app()->basePath());
-        $path = str_replace('\\', '/', $path);
-        $path = trim($path,'/');
-        return $path;
-    }
-}
 
-if (! function_exists('trans_has')) {
-    /**
-     * 检查是否存在对应翻译
-     * 
-     * @param  string $path 路径
-     * @return string 转换后路径
-     */
-    function trans_has($key, $locale = null, $fallback = true)
-    {
-        return app('translator')->has($key, $locale, $fallback);
-    }
-}
 
-if (! function_exists('trans_find')) {
-    /**
-     * 翻译文件，可以从多个key中插座，没有找到翻译则结果返回空
-     *
-     * @param  string|array  $keys 如果是字符串，多个用||分割
-     * @param  array   $replace
-     * @param  string  $locale
-     * @return \Illuminate\Contracts\Translation\Translator|string|array|null
-     */
-    function trans_find($keys, $replace = [], $locale = null)
-    {
-        if (is_string($keys)) {
-            $keys = explode('||', $keys);
-        }
 
-        foreach ($keys as $key) {
-            if (trans_has($key, $locale, false)) {
-                return trans($key, $replace, $locale);
-            }
-        }
-
-        return null;
-    }
-}

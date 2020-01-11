@@ -33,12 +33,12 @@ class ContentServiceProvider extends ServiceProvider
         });
 
         // 监听安装
-        $this->app['events']->listen('modules.content.installed', function($module) {
-            // 导入系统自带的模型
-            foreach (['category','page','article','link','gallery'] as $model) {
-                ModelHelper::import($module->getPath().'/Support/models/'.$model.'.model', true);
-            }
-        });        
+        // $this->app['events']->listen('modules.content.installed', function($module) {
+        //     // 导入系统自带的模型
+        //     foreach (['category','page','article','link','gallery'] as $model) {
+        //         ModelHelper::import($module->getPath().'/Support/models/'.$model.'.model', true);
+        //     }
+        // });        
 
         // 监听卸载
         $this->app['events']->listen('modules.content.uninstalling', function($module) {

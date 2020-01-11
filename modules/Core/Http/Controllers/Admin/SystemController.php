@@ -29,20 +29,9 @@ class SystemController extends AdminController
      */    
     public function size(Request $request)
     {
-        // 递归计算文件夹大小
-        function directorySize ($dir)
-        {
-            $size = 0;
-            foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
-                $size += is_file($each) ? filesize($each) : directorySize($each);
-            }
-            return $size;
-        }
-
         if ($request->directory) {
             $path = base_path($request->directory);
-            $size = directorySize($path);
-            $size = \Format::size($size);
+            $size = dirsize($path, true);
 
             return $size;
         }

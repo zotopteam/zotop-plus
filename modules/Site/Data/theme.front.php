@@ -1,7 +1,7 @@
 <?php
 
 $return = [];
-$themes = app('theme')->getList('front');
+$themes = app('themes')->type('front');
 
 foreach ($themes as $theme) {
 

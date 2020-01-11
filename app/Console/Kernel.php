@@ -37,7 +37,8 @@ class Kernel extends ConsoleKernel
     {
         $this->load([
             realpath(__DIR__.'/Commands'), 
-            realpath(__DIR__.'/../Support/Modules/Commands')
+            realpath(__DIR__.'/../Modules/Commands'),
+            realpath(__DIR__.'/../Themes/Commands'),
         ]);
 
         require base_path('routes/console.php');

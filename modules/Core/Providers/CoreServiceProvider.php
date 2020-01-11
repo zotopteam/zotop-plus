@@ -16,13 +16,6 @@ use Filter;
 class CoreServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
      * 中间件
      *
      * @var array
@@ -56,7 +49,6 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //$this->registerCommands();
     }
 
     /**
@@ -122,25 +114,6 @@ class CoreServiceProvider extends ServiceProvider
         });        
     }
 
-    /**
-     * 注册命令行
-     * 
-     * @return void
-     */
-    public function registerCommands()
-    {
-        $this->commands([
-            \Modules\Core\Console\CreateCommand::class,
-            \Modules\Core\Console\CreateThemeCommand::class,
-            \Modules\Core\Console\MakeTraitCommand::class,
-            \Modules\Core\Console\AdminControllerCommand::class,
-            \Modules\Core\Console\FrontControllerCommand::class,
-            \Modules\Core\Console\ApiControllerCommand::class,
-            \Modules\Core\Console\RebootCommand::class,
-            \Modules\Core\Console\PublishThemeCommand::class,
-        ]);
-    }
-
 
     // 模板扩展
     public function bladeExtend()
@@ -149,47 +122,6 @@ class CoreServiceProvider extends ServiceProvider
         Blade::if('allow', function ($permission) {
             return allow($permission);
         });
-        
-        /**
-         * Adds a directive in Blade for actions
-         */
-        Blade::directive('size', function($expression) {
-            return "<?php echo Format::size($expression); ?>";
-        });
-
-        /**
-         * Adds a directive in Blade for actions
-         */
-        Blade::directive('action', function($expression) {
-            return "<?php Action::fire$expression; ?>";
-        });
-
-        /**
-         * Adds a directive in Blade for filters
-         */
-        Blade::directive('filter', function($expression) {
-            return "<?php echo Filter::fire$expression; ?>";
-        });
-
-        // 只执行一次 @once('……') @endonce
-        Blade::directive('once', function ($expression) {
-            $expression = strtoupper($expression);
-            return "<?php if (! isset(\$__env->once[{$expression}])) : \$__env->once[{$expression}] = true; ?>";
-        }); 
-
-        Blade::directive('endonce', function () {
-            return "<?php endif; ?>";
-        });
-
-        // 只加载一次js文件 @loadjs('……')
-        Blade::directive('loadjs', function ($expression) {
-            return "<?php \$loadjs = {$expression}; if (! isset(\$__env->loadjs[\$loadjs])) : \$__env->loadjs[\$loadjs] = true;?>\r\n<script src=\"<?php echo \$loadjs; ?>\"></script>\r\n<?php endif; ?>";
-        });
-
-        // 只加载一次css文件 @loadcss('……')
-        Blade::directive('loadcss', function ($expression) {
-            return "<?php \$loadcss = {$expression}; if (! isset(\$__env->loadcss[\$loadcss])) : \$__env->loadcss[\$loadcss] = true;?>\r\n<link rel=\"stylesheet\" href=\"<?php echo \$loadcss; ?>\" rel=\"stylesheet\">\r\n<?php endif; ?>";
-        });      
     }
 
     /**

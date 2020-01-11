@@ -31,10 +31,23 @@
 \Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManageCore', 100);
 
 
+
+
+/**
+ * 扩展File::mime方法, 获取文件类型audio/avi，text/xml 斜杠前面部分  
+ */
+\File::macro('mime', function($file) {
+    if ($mimeType = static::mimeType($file)) {
+        list($mime, $type) = explode('/', $mimeType);
+        return $mime;
+    }
+    return null;
+});
+
 /**
  * 扩展 Request::referer 功能
  */
-\Request::macro('referer', function() {
+\Illuminate\Http\Request::macro('referer', function() {
 
     // 如果前面有传入，比如表单传入
     if ($referer = request()->input('_referer')) {
@@ -47,20 +60,10 @@
 /**
  * 扩展 Route:active 如果是当前route，则返回 active
  */
-\Route::macro('active', function($route, $active="active", $normal='') {
+\Illuminate\Routing\Router::macro('active', function($route, $active="active", $normal='') {
     return Route::is($route) ? $active : $normal;
 });
 
-/**
- * 扩展File::mime方法, 获取文件类型audio/avi，text/xml 斜杠前面部分  
- */
-\File::macro('mime', function($file) {
-    if ($mimeType = static::mimeType($file)) {
-        list($mime, $type) = explode('/', $mimeType);
-        return $mime;
-    }
-    return null;
-});
 
 /**
  * 扩展File::humanType方法, 获取文件的类型，依据系统可上传的类型判断
