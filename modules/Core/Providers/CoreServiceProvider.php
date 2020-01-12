@@ -7,9 +7,6 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factory;
-use Modules\Core\Traits\PublishConfig;
-use Nwidart\Modules\Module;
-use Modules\Core\Models\Config;
 use Blade;
 use Filter;
 
