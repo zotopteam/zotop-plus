@@ -62,6 +62,10 @@ class ModuleMakeCommand extends Command
         $this->generateIcon();
     }
 
+    /**
+     * 生成初始化文件
+     * @return void
+     */
     public function generateFiles()
     {
         $files = $this->laravel['config']->get('modules.paths.files');
@@ -71,9 +75,13 @@ class ModuleMakeCommand extends Command
         }
     }
 
+    /**
+     * 生成图标
+     * @return void
+     */
     public function generateIcon()
     {
-        $sourcePath      = $this->getStubPath('module', 'png');
+        $sourcePath      = $this->getStubPath('module.png');
         $destinationPath = $this->getModulePath('module.png');
 
         $this->laravel['files']->copy($sourcePath, $destinationPath);

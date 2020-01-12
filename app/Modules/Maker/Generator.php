@@ -44,11 +44,21 @@ trait Generator
         return Str::snake($this->getModuleName());
     }
 
+    /**
+     * 获取模块命名空间
+     * @return string
+     */
     public function getModuleNameSpace()
     {
         return 'Modules';
     }
 
+    /**
+     * 获取模块路径
+     * @param  string  $subpath 子路径，或者子路径key
+     * @param  boolean $isPath  是否为路径
+     * @return string
+     */
     public function getModulePath($subpath=null, $isPath=true)
     {
         $path = $this->laravel['config']->get('modules.paths.modules');
@@ -65,11 +75,27 @@ trait Generator
         return $path.DIRECTORY_SEPARATOR.$this->laravel['config']->get("modules.paths.{$subpath}");
     }
 
-    public function getStubPath($stub, $extension='stub')
+    /**
+     * 获取stub路径
+     * @param  string $stub      stub name
+     * @param  string $extension extention
+     * @return string
+     */
+    public function getStubPath($stub)
     {
-        return $this->stub = __DIR__.'/../Commands/stubs/'.$stub.'.'.$extension;
+        //如果不包含扩展名，则扩展名为stub
+        if (! Str::contains($stub, '.')) {
+            $stub = $stub.'.stub';
+        }
+
+        return $this->stub = __DIR__.'/../Commands/stubs/'.$stub;
     }
 
+    /**
+     * 获取模块内容
+     * @param  string $stub stub name
+     * @return string       
+     */
     public function getStubContent($stub)
     {
         $path = $this->getStubPath($stub);
@@ -77,6 +103,13 @@ trait Generator
         return $this->laravel['files']->get($path);
     }
 
+    /**
+     * stub 替换
+     * 
+     * @param  string|array|null $key  为空时返回替换数组，其余为设置值
+     * @param  string|null $value 
+     * @return string        
+     */
     public function replace($key=null, $value=null)
     {
         if (empty($this->replaces)) {
@@ -115,6 +148,11 @@ trait Generator
         return $this;
     }
 
+    /**
+     * 渲染stub
+     * @param  string $stub 
+     * @return string       
+     */
     public function renderStub($stub)
     {
         $content  = $this->getStubContent($stub);
@@ -126,6 +164,12 @@ trait Generator
         return $content;
     }
 
+    /**
+     * 生成文件
+     * @param  string $stub 
+     * @param  string $path 
+     * @return string       
+     */
     public function generateStubFile($stub, $path)
     {
         $path = $this->getModulePath($path);
