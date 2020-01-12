@@ -1,0 +1,6 @@
+<?php
+// $STUDLY_NAME$ 配置
+
+return [
+    //'key' => 'value',
+];

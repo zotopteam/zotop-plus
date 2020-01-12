@@ -1,0 +1,19 @@
+{
+    "name": "$STUDLY_NAME$",
+    "title": "$LOWER_NAME$::$LOWER_NAME$.title",
+    "description": "$LOWER_NAME$::$LOWER_NAME$.description",
+    "keywords": [],
+    "version": "1.0.0",
+    "order": 100,
+    "author":"$AUTHOR_NAME$",
+    "email":"$AUTHOR_EMAIL$",
+    "homepage":"$AUTHOR_HOMEPAGE$",       
+    "providers": [
+        "$NAMESPACE$\$STUDLY_NAME$\$PROVIDER_NAMESPACE$\$STUDLY_NAME$ServiceProvider",
+        "$NAMESPACE$\$STUDLY_NAME$\$PROVIDER_NAMESPACE$\RouteServiceProvider"
+    ],
+    "aliases":{},
+    "files": [
+        "start.php"
+    ]
+}

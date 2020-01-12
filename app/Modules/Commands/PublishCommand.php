@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
 class PublishCommand extends Command
-{
+{    
     /**
      * The name and signature of the console command.
      *
@@ -121,7 +121,7 @@ class PublishCommand extends Command
      */
     private function getSourcePath($module)
     {
-        $path = $this->laravel['config']->get('modules.paths.generator.assets.path');
+        $path = $this->laravel['config']->get('modules.paths.dirs.assets');
 
         return $module->getPath($path);
     }

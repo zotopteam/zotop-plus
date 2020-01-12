@@ -81,7 +81,7 @@ class MigrateStatusCommand extends Command
      */
     private function getMigrationPath($module)
     {
-        $path = $this->laravel['config']->get('modules.paths.generator.migration.path');
+        $path = $this->laravel['config']->get('modules.paths.dirs.migration');
 
         return $module->getPath($path);
     }
