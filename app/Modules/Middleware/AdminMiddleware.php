@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Core\Http\Middleware;
+namespace App\Modules\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Foundation\Application;
-use Route;
 
-class FrontMiddleware
+class AdminMiddleware
 {
     /**
      * The application instance.

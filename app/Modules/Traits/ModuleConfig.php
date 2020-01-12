@@ -1,11 +1,10 @@
 <?php
 
-namespace Modules\Core\Traits;
+namespace App\Modules\Traits;
 
 use File;
 use Artisan;
 use Module;
-use Modules\Core\Models\Config;
 
 trait ModuleConfig
 {

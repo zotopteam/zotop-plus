@@ -5,8 +5,7 @@ namespace Modules\Translator\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Modules\Routing\AdminController;
-use Modules\Core\Traits\ModuleConfig;
-use Modules\Core\Models\Config;
+use App\Modules\Traits\ModuleConfig;
 
 class ConfigController extends AdminController
 {
@@ -50,7 +49,7 @@ class ConfigController extends AdminController
         }
 
         $this->title  = trans('translator::config.title');
-        $this->config = Config::get('translator');
+        $this->config = config('translator');
 
         return $this->view();
     }  

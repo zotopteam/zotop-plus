@@ -13,18 +13,24 @@ use Filter;
 class CoreServiceProvider extends ServiceProvider
 {
     /**
-     * 中间件
+     * 重载admin和allow中间件
      *
      * @var array
      */
     protected $middlewares = [
-        'module'      => 'ModuleMiddleware',
         'admin'       => 'AdminMiddleware',
-        'admin.guest' => 'AdminGuestMiddleware',
-        'front'       => 'FrontMiddleware',
         'allow'       => 'AllowMiddleware',
-    ];    
+    ];
 
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+    }
+    
     /**
      * Boot the application events.
      *
@@ -39,14 +45,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->paginatorDefault();       
     }
 
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
-    {
-    }
+
 
     /**
      * 注册中间件
@@ -60,7 +59,6 @@ class CoreServiceProvider extends ServiceProvider
             $this->app['router']->aliasMiddleware($name, "Modules\\Core\\Http\\Middleware\\{$middleware}");
         }
     }
-
 
 
     /**

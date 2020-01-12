@@ -5,7 +5,7 @@ namespace Modules\Site\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Modules\Routing\AdminController;
-use Modules\Core\Traits\ModuleConfig;
+use App\Modules\Traits\ModuleConfig;
 
 class ConfigController extends AdminController
 {
