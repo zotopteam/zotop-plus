@@ -1,7 +1,7 @@
 <?php
-namespace Modules\Core\Base;
+namespace App\Modules\Routing;
 
-use Modules\Core\Models\Log;
+// use Modules\Core\Models\Log;
 
 class AdminController extends BaseController
 {
@@ -14,12 +14,12 @@ class AdminController extends BaseController
     public function message(array $msg)
     {
         // 记录系统操作日志
-        if (config('core.log.enabled')) {
-            Log::create([
-                'type'    => array_get($msg, 'type'),
-                'content' => array_get($msg, 'content'),
-            ]);
-        }
+        // if (config('core.log.enabled')) {
+        //     Log::create([
+        //         'type'    => array_get($msg, 'type'),
+        //         'content' => array_get($msg, 'content'),
+        //     ]);
+        // }
 
         return parent::message($msg);
     }

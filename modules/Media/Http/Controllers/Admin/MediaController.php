@@ -4,7 +4,7 @@ namespace Modules\Media\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use App\Modules\Routing\AdminController;
 use Modules\Media\Models\Media;
 use Modules\Core\Support\FileBrowser;
 

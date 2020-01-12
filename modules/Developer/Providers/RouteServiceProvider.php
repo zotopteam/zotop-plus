@@ -2,9 +2,9 @@
 
 namespace Modules\Developer\Providers;
 
-use Modules\Core\Providers\CoreRouteServiceProvider;
+use App\Modules\Routing\ServiceProvider;
 
-class RouteServiceProvider extends CoreRouteServiceProvider
+class RouteServiceProvider extends ServiceProvider
 {
     /**
      * 根命名空间

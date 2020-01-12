@@ -4,7 +4,7 @@ namespace Modules\Content\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\FrontController;
+use App\Modules\Routing\FrontController;
 use Modules\Content\Models\Content;
 use Filter;
 

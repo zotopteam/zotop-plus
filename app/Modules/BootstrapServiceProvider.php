@@ -55,11 +55,6 @@ class BootstrapServiceProvider extends ServiceProvider
             return $app['hook.filter']->fire('current.locale', $app->getLocale(), $app);
         });
 
-        // 注册当前主题，默认为：theme.admin，theme.front，theme.api
-        $this->app->singleton('current.theme', function($app) {
-            $theme = $app['config']->get('theme.'.$app['current.type'], $app['current.type']);
-            return $app['hook.filter']->fire('current.theme', $theme, $app);
-        });
     }
      
 }

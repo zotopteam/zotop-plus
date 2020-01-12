@@ -4,7 +4,7 @@ namespace $CLASS_NAMESPACE$;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\FrontController;
+use App\Modules\Routing\FrontController;
 
 class $CLASS$ extends FrontController
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Modules\Core\Base;
+namespace App\Modules\Routing;
 
 class FrontController extends BaseController
 {

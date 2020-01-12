@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Base;
+namespace App\Modules\Routing;
 
 class ApiController extends BaseController
 {

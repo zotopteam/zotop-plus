@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
-use Modules\Core\Base\AdminController;
+use App\Modules\Routing\AdminController;
 use Modules\Core\Traits\ModuleConfig;
 use Modules\Core\Support\Watermark;
 use Modules\Core\Http\Requests\ConfigBaseRequest;

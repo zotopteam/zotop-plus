@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Core\Providers;
+namespace App\Modules\Routing;
 
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Routing\Router;
 use Filter;
 
-abstract class CoreRouteServiceProvider extends ServiceProvider
+abstract class ServiceProvider extends RouteServiceProvider
 {
     /**
      * 根命名空间，必须通过模块中的路由子类覆盖

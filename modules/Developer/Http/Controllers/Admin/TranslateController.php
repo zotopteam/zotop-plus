@@ -4,7 +4,7 @@ namespace Modules\Developer\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use App\Modules\Routing\AdminController;
 use Facades\Modules\Developer\Support\Lang;
 use Module;
 use File;

@@ -4,7 +4,7 @@ namespace Modules\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use App\Modules\Routing\AdminController;
 use Action;
 use Artisan;
 use Module;
@@ -96,7 +96,7 @@ class SystemController extends AdminController
             'port'                => $_SERVER['SERVER_PORT'],
             'server_addr'         => $_SERVER['SERVER_ADDR'],
             'remote_addr'         => $_SERVER['REMOTE_ADDR'],
-            'disk'                => \Format::size(disk_free_space('.')),
+            'disk'                => size_format(disk_free_space('.')),
         ];
 
         $filesystem = [];

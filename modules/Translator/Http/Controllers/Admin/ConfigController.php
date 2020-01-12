@@ -4,7 +4,7 @@ namespace Modules\Translator\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use App\Modules\Routing\AdminController;
 use Modules\Core\Traits\ModuleConfig;
 use Modules\Core\Models\Config;
 
