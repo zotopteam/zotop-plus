@@ -31,6 +31,7 @@ return [
             'seeder'           => 'Database/Seeders',
             'factory'          => 'Database/Factories',
             'model'            => 'Models',
+            'controller'       => 'Http/Controllers',
             'controller_front' => 'Http/Controllers',
             'controller_admin' => 'Http/Controllers/Admin',
             'controller_api'   => 'Http/Controllers/Api',

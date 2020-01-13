@@ -1,0 +1,7 @@
+<?php
+namespace $NAMESPACE$\$STUDLY_NAME$\$TRAITS_NAMESPACE$;
+
+trait $CLASS_NAME$
+{
+
+}

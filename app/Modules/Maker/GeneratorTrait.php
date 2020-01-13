@@ -4,9 +4,22 @@ namespace App\Modules\Maker;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 
-trait Generator
+trait GeneratorTrait
 {
     protected $replaces = [];
+
+    /**
+     * 检查模块是否存在
+     * @return boolean
+     */
+    public function hasModule()
+    {
+        if (file_exists($this->getModulePath('module.json'))) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * 获取模块名称
@@ -88,7 +101,7 @@ trait Generator
             $stub = $stub.'.stub';
         }
 
-        return $this->stub = __DIR__.'/../Commands/stubs/'.$stub;
+        return $this->stub = __DIR__.'/stubs/'.$stub;
     }
 
     /**
@@ -170,11 +183,16 @@ trait Generator
      * @param  string $path 
      * @return string       
      */
-    public function generateStubFile($stub, $path)
+    public function generateStubFile($stub, $path, $force=false)
     {
         $path = $this->getModulePath($path);
 
-        if (!$this->laravel['files']->isDirectory($dir = dirname($path))) {
+        if (! $force && $this->laravel['files']->exists($path)) {
+            $this->error('Existed: '. $path);
+            return;
+        }
+
+        if (! $this->laravel['files']->isDirectory($dir = dirname($path))) {
             $this->laravel['files']->makeDirectory($dir, 0775, true);
         }
 
@@ -186,6 +204,8 @@ trait Generator
         }
 
         $this->laravel['files']->put($path, $content);
+
+        $this->info('Created: '.$path);
     }
 
     /**

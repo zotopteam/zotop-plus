@@ -120,10 +120,15 @@ class Repository
         return $modules;
     }    
 
-    // public function getOrdered()
-    // {
-    //     return $this->all();
-    // }
+    /**
+     * 检查模块是否存在
+     * @param  string  $name 模块名称
+     * @return boolean
+     */
+    public function has(string $name)
+    {
+        return array_key_exists($name, $this->scan());
+    }
 
     /**
      * 按照名称获取模块
@@ -132,7 +137,7 @@ class Repository
      */
     public function find(string $name)
     {
-        return Arr::get($this->all(), strtolower($name));
+        return Arr::get($this->scan(), strtolower($name));
     }
 
     /**

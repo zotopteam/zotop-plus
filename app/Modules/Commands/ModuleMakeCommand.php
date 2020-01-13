@@ -6,11 +6,11 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
-use App\Modules\Maker\Generator;
+use App\Modules\Maker\GeneratorTrait;
 
 class ModuleMakeCommand extends Command
 {
-    use Generator;
+    use GeneratorTrait;
 
     /**
      * The name and signature of the console command.
@@ -46,20 +46,25 @@ class ModuleMakeCommand extends Command
     public function handle()
     {
         // 覆盖模块
-        if (is_dir($path = $this->getModulePath())) {
+        if ($this->hasModule()) {
             
             if (! $this->option('force')) {
                 $this->error('Module '.$this->getModuleStudlyName().' already exist!');
                 return;
             }
 
-            $this->laravel['files']->deleteDirectory($path);
+            $this->laravel['files']->deleteDirectory($this->getModulePath());
         }
         
-        // 创建文件夹
+        
         // 创建文件
         $this->generateFiles();
         $this->generateIcon();
+        // 创建目录
+        $this->generateDirs();
+        // 创建组件
+        
+        $this->info('Module '.$this->getModuleStudlyName().' created successfully!');
     }
 
     /**
@@ -71,7 +76,7 @@ class ModuleMakeCommand extends Command
         $files = $this->laravel['config']->get('modules.paths.files');
 
         foreach ($files as $stub => $path) {
-            $this->generateStubFile($stub, $path);
+            $this->generateStubFile($stub, $path, $this->option('force'));
         }
     }
 
@@ -85,6 +90,23 @@ class ModuleMakeCommand extends Command
         $destinationPath = $this->getModulePath('module.png');
 
         $this->laravel['files']->copy($sourcePath, $destinationPath);
+        $this->info('Created: '.$destinationPath);
     }
+    /**
+     * 生成初始化目录
+     * @return void
+     */
+    public function generateDirs()
+    {
+        $dirs = $this->laravel['config']->get('modules.paths.dirs');
 
+        foreach ($dirs as $key => $path) {
+            $path = $this->getModulePath($path);
+
+            if (! $this->laravel['files']->isDirectory($path)) {
+                $this->laravel['files']->makeDirectory($path, 0755, true);
+                $this->info('Created: '.$path);
+            }
+        }
+    }
 }

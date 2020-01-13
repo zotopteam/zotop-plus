@@ -2,11 +2,9 @@
 
 namespace Modules\Core\Providers;
 
-use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Factory;
 use Blade;
 use Filter;
 
