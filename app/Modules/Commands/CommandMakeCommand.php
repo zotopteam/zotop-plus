@@ -32,10 +32,10 @@ class CommandMakeCommand extends GeneratorCommand
     protected $appendName = 'Command';
 
     /**
-     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$pathDirKey}“)
+     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
      * @var null
      */
-    protected $pathDirKey = 'command';
+    protected $dirKey = 'command';
 
     /**
      * stub 用于从stubs中获取stub

@@ -31,10 +31,10 @@ class RouteProviderMakeCommand extends GeneratorCommand
     protected $appendName = 'ServiceProvider';
 
     /**
-     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$pathDirKey}“)
+     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
      * @var null
      */
-    protected $pathDirKey = 'provider';
+    protected $dirKey = 'provider';
 
     /**
      * stub

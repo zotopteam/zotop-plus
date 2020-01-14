@@ -23,10 +23,10 @@ abstract class GeneratorCommand extends Command
     protected $appendName = null;
 
     /**
-     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$pathDirKey}“)
+     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
      * @var null
      */
-    protected $pathDirKey = null;
+    protected $dirKey = null;
 
     /**
      * 文件扩展名
@@ -54,6 +54,12 @@ abstract class GeneratorCommand extends Command
             return;
         }
 
+        // 全局替换
+        $this->replace([
+            'class_name'      => $this->getClassName(),
+            'class_namespace' => $this->getClassNamespace(),
+        ]);
+
         if ($this->prepare()) {
             $this->generate();
         }        
@@ -65,7 +71,6 @@ abstract class GeneratorCommand extends Command
      */
     public function prepare()
     {
-        $this->replace('class_name', $this->getClassName());
         return true;     
     }
 
@@ -77,6 +82,15 @@ abstract class GeneratorCommand extends Command
     {
         $this->generateStubFile($this->stub, $this->getFilePath(), $this->option('force'));
     }
+
+    /**
+     * 获取类的命名空间
+     * @return string
+     */
+    public function getClassNamespace($dirKey=null)
+    {
+        return $this->getDirNamespace($this->dirKey);
+    }    
 
     /**
      * 获取 name
@@ -109,6 +123,15 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
+     * 获取类的全名，带命名空间
+     * @return string
+     */
+    public function getClassFullName()
+    {
+        return $this->getClassNamespace().'\\'.$this->getClassName();
+    }
+
+    /**
      * 获取文件名称，默认文件名和类名一致 如：TestCommand.php
      * @return string
      */
@@ -118,14 +141,12 @@ abstract class GeneratorCommand extends Command
     }
 
     /**
-     * 获取文件相对路径，不含模块路径，如：Http/Controllers
+     * 获取文件相对路径，不含模块路径，如：Http/Controllers/Controller.php
      * @return string
      */
     public function getFilePath()
     {
-        $path = $this->laravel['config']->get("modules.paths.dirs.{$this->pathDirKey}");
-        $path = $path.DIRECTORY_SEPARATOR.$this->getFileName();
-
-        return $path;
+        return $this->getConfigDirs($this->dirKey) . DIRECTORY_SEPARATOR . $this->getFileName();
     }
+    
 }

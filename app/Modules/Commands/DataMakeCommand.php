@@ -23,7 +23,7 @@ class DataMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a file data for the specified module.'; 
+    protected $description = 'Create a new file data for the specified module.'; 
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -32,10 +32,10 @@ class DataMakeCommand extends GeneratorCommand
     protected $appendName = '';
 
     /**
-     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$pathDirKey}“)
+     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
      * @var null
      */
-    protected $pathDirKey = 'data';
+    protected $dirKey = 'data';
 
     /**
      * stub 用于从stubs中获取stub

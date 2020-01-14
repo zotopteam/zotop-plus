@@ -1,6 +1,6 @@
 <?php
 
-namespace $NAMESPACE$\$STUDLY_NAME$\$PROVIDER_NAMESPACE$;
+namespace $CLASS_NAMESPACE$;
 
 use App\Modules\Routing\ServiceProvider;
 
@@ -12,7 +12,7 @@ class $CLASS_NAME$ extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = '$NAMESPACE$\$STUDLY_NAME$\$CONTROLLER_NAMESPACE$';
+    protected $namespace = '$MODULE_NAMESPACE$\$CONTROLLER_NAMESPACE$';
 
     /**
      * 前台路由，无前台路由返回false

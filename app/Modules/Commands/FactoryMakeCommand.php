@@ -23,7 +23,7 @@ class FactoryMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a database factory for the specified module.'; 
+    protected $description = 'Create a new database factory for the specified module.'; 
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -32,10 +32,10 @@ class FactoryMakeCommand extends GeneratorCommand
     protected $appendName = 'Factory';
 
     /**
-     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$pathDirKey}“)
+     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
      * @var null
      */
-    protected $pathDirKey = 'factory';
+    protected $dirKey = 'factory';
 
     /**
      * stub 用于从stubs中获取stub

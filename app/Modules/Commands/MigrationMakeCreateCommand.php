@@ -33,10 +33,10 @@ class MigrationMakeCreateCommand extends GeneratorCommand
     protected $appendName = '';
 
     /**
-     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$pathDirKey}“)
+     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
      * @var null
      */
-    protected $pathDirKey = 'migration';
+    protected $dirKey = 'migration';
 
     /**
      * stub 用于从stubs中获取stub
@@ -58,7 +58,7 @@ class MigrationMakeCreateCommand extends GeneratorCommand
 
     /**
      * 重载prepare
-     * @return void
+     * @return boolean
      */
     public function prepare()
     {
@@ -77,12 +77,11 @@ class MigrationMakeCreateCommand extends GeneratorCommand
                 return false;          
             }
 
-            $this->migrationClean($migrations);
+            $this->deleteFiles($migrations);
         }
 
         // 替换信息
         $this->replace([
-            'class_name' => $this->getClassName(),
             'table_name' => $this->table,
             'fields'     => $this->fields,
         ]);
@@ -114,9 +113,9 @@ class MigrationMakeCreateCommand extends GeneratorCommand
      */
     public function mgirationCreated()
     {
-        $path       = $this->laravel['config']->get("modules.paths.dirs.{$this->pathDirKey}");
+        $path       = $this->laravel['config']->get("modules.paths.dirs.{$this->dirKey}");
         $path       = $this->getModulePath($path);
-        $pattern    = $path.DIRECTORY_SEPARATOR.'*'.$this->extension;
+        $pattern    = $path.DIRECTORY_SEPARATOR.'*.'.$this->extension;
         $migrations = $this->laravel['files']->glob($pattern);
 
         $names = [
@@ -132,20 +131,5 @@ class MigrationMakeCreateCommand extends GeneratorCommand
         }
 
         return $migrations;
-    }
-
-    /**
-     * 清理迁移
-     * @param  array $migrations
-     * @return void
-     */
-    public function migrationClean($migrations)
-    {
-        // 删除全部迁移文件
-        //array_map([$this->laravel['files'], 'delete'], $migrations);
-        foreach ($migrations as $path) {
-            $this->laravel['files']->delete($path);
-            $this->warn('Deleted: '.$path);
-        }
     }
 }

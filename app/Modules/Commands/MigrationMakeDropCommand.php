@@ -33,10 +33,10 @@ class MigrationMakeDropCommand extends GeneratorCommand
     protected $appendName = '';
 
     /**
-     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$pathDirKey}“)
+     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
      * @var null
      */
-    protected $pathDirKey = 'migration';
+    protected $dirKey = 'migration';
 
     /**
      * stub 用于从stubs中获取stub
@@ -58,7 +58,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
 
     /**
      * 重载prepare
-     * @return void
+     * @return boolean
      */
     public function prepare()
     {
@@ -71,7 +71,6 @@ class MigrationMakeDropCommand extends GeneratorCommand
 
         // 替换信息
         $this->replace([
-            'class_name' => $this->getClassName(),
             'table_name' => $this->table,
             'fields'     => $this->fields,
         ]);

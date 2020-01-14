@@ -9,6 +9,65 @@ trait GeneratorTrait
     protected $replaces = [];
 
     /**
+     * 获取模块全局配置
+     * @return array
+     */
+    public function getConfig($key=null)
+    {
+        if ($key) {
+            $value = $this->laravel['config']->get("modules.{$key}");
+
+            if (empty($value)) {
+                throw new \Exception("config {$key} does not exist", 1);
+            }
+
+            return $value;
+        }
+
+        return $this->laravel['config']->get('modules');
+    }
+
+    /**
+     * 获取模块全局路径配置
+     * @param  string $key
+     * @return array
+     */
+    public function getConfigPaths($key=null)
+    {
+        return $key ? $this->getConfig("paths.{$key}") : $this->getConfig('paths');
+    }
+
+    /**
+     * 获取模块全局目录配置
+     * @param  string $key
+     * @return array
+     */
+    public function getConfigDirs($key=null)
+    {
+        return $key ? $this->getConfigPaths("dirs.{$key}") : $this->getConfigPaths('dirs');
+    }    
+
+    /**
+     * 获取模块全局目录配置
+     * @param  string $key
+     * @return array
+     */
+    public function getConfigFiles($key=null)
+    {
+        return $key ? $this->getConfigPaths("files.{$key}") : $this->getConfigPaths('files');
+    }
+
+    /**
+     * 获取模块全局的命名空间
+     * @return string
+     */
+    public function getNamespace()
+    {
+        return 'Modules';
+    }
+
+
+    /**
      * 检查模块是否存在
      * @return boolean
      */
@@ -61,9 +120,9 @@ trait GeneratorTrait
      * 获取模块命名空间
      * @return string
      */
-    public function getModuleNameSpace()
+    public function getModuleNamespace()
     {
-        return 'Modules';
+        return $this->getNamespace() .'\\'.$this->getModuleStudlyName();
     }
 
     /**
@@ -74,8 +133,7 @@ trait GeneratorTrait
      */
     public function getModulePath($subpath=null, $isPath=true)
     {
-        $path = $this->laravel['config']->get('modules.paths.modules');
-        $path = $path.DIRECTORY_SEPARATOR.$this->getModuleStudlyName();
+        $path = $this->getConfigPaths('modules').DIRECTORY_SEPARATOR.$this->getModuleStudlyName();
 
         if (empty($subpath)) {
             return $path;
@@ -85,7 +143,17 @@ trait GeneratorTrait
             return $path.DIRECTORY_SEPARATOR.$subpath;;
         }
         
-        return $path.DIRECTORY_SEPARATOR.$this->laravel['config']->get("modules.paths.{$subpath}");
+        return $path.DIRECTORY_SEPARATOR.$this->getConfigPaths($subpath);
+    }
+
+    /**
+     * 获取目录的命名空间
+     * @param  string $dirKey
+     * @return string
+     */
+    public function getDirNamespace($dirKey)
+    {
+        return $this->getModuleNamespace().'\\'.str_replace('/', '\\', $this->getConfigDirs($dirKey));
     }
 
     /**
@@ -101,7 +169,7 @@ trait GeneratorTrait
             $stub = $stub.'.stub';
         }
 
-        return $this->stub = __DIR__.'/stubs/'.$stub;
+        return __DIR__.'/stubs/'.$stub;
     }
 
     /**
@@ -129,18 +197,19 @@ trait GeneratorTrait
 
             //模块信息替换 
             $this->replaces = [
-                'studly_name'     => $this->getModuleStudlyName(),
-                'lower_name'      => $this->getModuleLowerName(),
-                'snake_name'      => $this->getModuleSnakeName(),
-                'namespace'       => $this->getModuleNameSpace(),
-                'vendor'          => $this->laravel['config']->get('modules.composer.vendor'),
-                'author_name'     => $this->laravel['config']->get('modules.composer.author.name'),
-                'author_email'    => $this->laravel['config']->get('modules.composer.author.email'),
-                'author_homepage' => $this->laravel['config']->get('modules.composer.author.homepage'),
+                'namespace'        => $this->getNamespace(),
+                'studly_name'      => $this->getModuleStudlyName(),
+                'lower_name'       => $this->getModuleLowerName(),
+                'snake_name'       => $this->getModuleSnakeName(),
+                'module_namespace' => $this->getModuleNamespace(),
+                'vendor'           => $this->getConfig('composer.vendor'),
+                'author_name'      => $this->getConfig('composer.author.name'),
+                'author_email'     => $this->getConfig('composer.author.email'),
+                'author_homepage'  => $this->getConfig('composer.author.homepage'),
             ];
 
             //命名空间替换
-            foreach ($this->laravel['config']->get('modules.paths.dirs') as $name => $path) {
+            foreach ($this->getConfigDirs() as $name => $path) {
                 $this->replaces[$name.'_namespace'] = str_replace('/', '\\', $path);
             }
 
@@ -216,5 +285,38 @@ trait GeneratorTrait
     public function generateGitKeep($path)
     {
         $this->laravel['files']->put($path . DIRECTORY_SEPARATOR .'.gitkeep', '');
-    }        
+    }
+
+    /**
+     * 创建目录
+     *
+     * @param  string  $path
+     * @return string
+     */
+    protected function makeDirectory($path)
+    {
+        if (! $this->laravel['files']->isDirectory(dirname($path))) {
+            $this->laravel['files']->makeDirectory(dirname($path), 0777, true, true);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 删除文件
+     * @param  array|string $files
+     * @return void
+     */
+    protected function deleteFiles($files)
+    {
+        $files = Arr::wrap($files);
+        
+        // 删除文件
+        //array_map([$this->laravel['files'], 'delete'], $files);
+        foreach ($files as $file) {
+            $this->laravel['files']->delete($file);
+            $this->warn('Deleted: '.$file);
+        }        
+    }          
 }

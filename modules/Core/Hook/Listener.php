@@ -128,7 +128,7 @@ class Listener
 
     /**
      * 后台快捷导航扩展
-     * @param  array $start 已有快捷导航
+     * @param  array $navabr 已有快捷导航
      * @return array
      */
     public function navbar($navbar)

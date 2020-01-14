@@ -6,14 +6,14 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
-class TraitMakeCommand extends GeneratorCommand
+class EventMakeCommand extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'module:make-trait
+    protected $signature = 'module:make-event
                 {module : The module to use}
                 {name : The name to use}
                 {--force : Force the operation to run when it already exists.}';
@@ -23,7 +23,7 @@ class TraitMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new trait for the specified module.'; 
+    protected $description = 'Create a event for the specified module.'; 
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -35,13 +35,13 @@ class TraitMakeCommand extends GeneratorCommand
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
      * @var null
      */
-    protected $dirKey = 'traits';
+    protected $dirKey = 'events';
 
     /**
      * stub 用于从stubs中获取stub
      * @var string
      */
-    protected $stub = 'trait';
+    protected $stub = 'event';
   
 
 }

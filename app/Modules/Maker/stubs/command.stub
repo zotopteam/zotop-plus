@@ -1,6 +1,6 @@
 <?php
 
-namespace $NAMESPACE$\$STUDLY_NAME$\$COMMAND_NAMESPACE$;
+namespace $CLASS_NAMESPACE$;
 
 use Illuminate\Console\Command;
 

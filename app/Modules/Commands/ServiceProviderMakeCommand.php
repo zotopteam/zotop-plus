@@ -23,7 +23,7 @@ class ServiceProviderMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create the service provider for the specified module.'; 
+    protected $description = 'Create a new service provider for the specified module.'; 
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -35,7 +35,7 @@ class ServiceProviderMakeCommand extends GeneratorCommand
      * 目标路径键名
      * @var null
      */
-    protected $pathDirKey = 'provider';
+    protected $dirKey = 'provider';
 
     /**
      * stub

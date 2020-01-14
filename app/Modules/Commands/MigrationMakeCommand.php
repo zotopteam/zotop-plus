@@ -27,16 +27,45 @@ class MigrationMakeCommand extends GeneratorCommand
 
 
     /**
-     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$pathDirKey}“)
+     * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
      * @var null
      */
-    protected $pathDirKey = 'migration';
+    protected $dirKey = 'migration';
 
     /**
      * stub 用于从stubs中获取stub
      * @var string
      */
     protected $stub = 'migration/blank';
+
+
+    /**
+     * 生成前准备
+     * @return boolean
+     */
+    public function prepare()
+    {
+        if ($migration = $this->getMigrationCreatedAsThis()) {
+            
+            if (! $this->option('force')) {
+                $this->error("A {$this->getClassName()} class already exists. file: {$migration}");
+                return false;
+            }
+
+            $this->laravel['files']->delete($migration);
+        }
+
+        return true;
+    }
+
+    /**
+     * 获取类名
+     * @return [type] [description]
+     */
+    public function getClassName()
+    {
+        return Str::studly($this->getArgumentName());
+    }
 
     /**
      * 定义迁移文件名称
@@ -47,4 +76,25 @@ class MigrationMakeCommand extends GeneratorCommand
         return date('Y_m_d_His').'_'.strtolower($this->getArgumentName()).'.'.$this->extension;
     }
 
+    /**
+     * 获取迁移目录已经存在的同名类文件
+     * @return string
+     */
+    public function getMigrationCreatedAsThis()
+    {
+        $path       = $this->laravel['config']->get("modules.paths.dirs.{$this->dirKey}");
+        $path       = $this->getModulePath($path);
+        $pattern    = $path.DIRECTORY_SEPARATOR.'*.'.$this->extension;
+        $migrations = $this->laravel['files']->glob($pattern);
+
+        foreach ($migrations as $path) {
+            require_once $path;
+
+            if (class_exists($className = $this->getClassName())) {
+                return $path;
+            }
+        }
+
+        return null;
+    }
 }
