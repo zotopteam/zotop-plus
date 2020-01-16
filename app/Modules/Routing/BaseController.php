@@ -176,7 +176,7 @@ class BaseController extends Controller
      */
     public function message(array $msg)
     {
-        // 将赋值数据填入消息中备用
+        // 将赋值数据填入消息中
         $msg['data'] = $this->data;
 
         //如果请求为ajax，则输出json数据
@@ -185,7 +185,7 @@ class BaseController extends Controller
         }
 
         // 返回view
-        return $this->with('msg', $msg)->view('core::msg');
+        return $this->with('msg', $msg)->view("message.{$msg['type']}");
     }
 
     /**

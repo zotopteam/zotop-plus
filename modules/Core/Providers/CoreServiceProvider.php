@@ -40,7 +40,6 @@ class CoreServiceProvider extends ServiceProvider
         $this->setLocale();
         $this->eventsListen();
         $this->bladeExtend();
-        $this->paginatorDefault();       
     }
 
 
@@ -116,16 +115,6 @@ class CoreServiceProvider extends ServiceProvider
             return allow($permission);
         });
     }
-
-    /**
-     * 设置默认分页代码
-     * @return null
-     */
-    public function paginatorDefault()
-    {
-        \Illuminate\Pagination\Paginator::defaultView('core::pagination.default');
-        \Illuminate\Pagination\Paginator::defaultSimpleView('core::pagination.simple');     
-    }    
 
     /**
      * Get the services provided by the provider.

@@ -1,4 +1,4 @@
-@extends('core::layouts.login')
+@extends('layouts.login')
 
 @section('content')
 <section class="d-flex justify-content-center full-height">

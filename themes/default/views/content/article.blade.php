@@ -1,5 +1,5 @@
 {{--title:文章默认模板--}}
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="container">

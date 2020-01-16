@@ -1,0 +1,116 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Modules\Routing\FrontController as Controller;
+use $INPUT_MODEL_FULLNAME$;
+
+class $CLASS_NAME$ extends Controller
+{
+    /**
+     * 首页
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $this->title = trans('$MODULE_LOWER_NAME$::$INPUT_NAME$.title');
+
+        // 全部获取
+        $this->$INPUT_MODEL_LIST$ = $INPUT_MODEL_BASENAME$::all();
+
+        // 部分获取
+        //$this->$INPUT_MODEL_LIST$ = $INPUT_MODEL_BASENAME$::with('some')->where('key','value')->orderby('id','asc')->get();        
+        // 分页获取
+        //$this->$INPUT_MODEL_LIST$ = $INPUT_MODEL_BASENAME$::with('some')->where('key','value')->orderby('id','asc')->paginate(25);
+
+        return $this->view();
+    }
+
+    /**
+     * 新建
+     * 
+     * @return Response
+     */
+    public function create()
+    {
+        $this->title = trans('$MODULE_LOWER_NAME$::$INPUT_NAME$.create');
+
+        $this->$INPUT_MODEL$ = $INPUT_MODEL_BASENAME$::findOrNew(0);
+
+        return $this->view();
+    }
+
+    /**
+     * 保存
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $$INPUT_MODEL$ = new $INPUT_MODEL_BASENAME$;
+        $$INPUT_MODEL$->fill($request->all());
+        $$INPUT_MODEL$->save();
+
+        return $this->success(trans('master.created'), route('$MODULE_LOWER_NAME$.$LOWER_CONTROLLER$.index'));
+    }
+
+    /**
+     * 显示
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $this->title = trans('$MODULE_LOWER_NAME$::$INPUT_NAME$.show');
+
+        $this->$INPUT_MODEL$ = $INPUT_MODEL_BASENAME$::findOrFail($id);
+
+        return $this->view();
+    }    
+
+    /**
+     * 编辑
+     *
+     * @return Response
+     */
+    public function edit($id)
+    {
+        $this->title = trans('$MODULE_LOWER_NAME$::$INPUT_NAME$.edit');
+        $this->$INPUT_MODEL$ = $INPUT_MODEL_BASENAME$::findOrFail($id);
+
+        return $this->view();
+    }
+
+    /**
+     * 更新
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function update(Request $request, $id)
+    {
+        $$INPUT_MODEL$ = $INPUT_MODEL_BASENAME$::findOrFail($id);
+        $$INPUT_MODEL$->fill($request->all());        
+        $$INPUT_MODEL$->save();
+
+        return $this->success(trans('master.updated'), route('$MODULE_LOWER_NAME$.$INPUT_NAME$.index'));
+    }
+
+    /**
+     * 删除
+     *
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        $$INPUT_MODEL$ = $INPUT_MODEL_BASENAME$::findOrFail($id);
+        $$INPUT_MODEL$->delete();
+
+        return $this->success(trans('master.deleted'), route('$MODULE_LOWER_NAME$.$INPUT_NAME$.index'));        
+    }
+}

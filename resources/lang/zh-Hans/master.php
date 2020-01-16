@@ -3,6 +3,7 @@ return [
     'index'                    => '首页',
     'thanks'                   => '感谢您使用 :0',
     'refresh'                  => '刷新',
+    'show'                     => '详情',
     'view'                     => '查看',
     'create'                   => '添加',
     'creating'                 => '添加中……',

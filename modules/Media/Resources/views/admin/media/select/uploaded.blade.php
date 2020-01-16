@@ -1,4 +1,4 @@
-@extends('core::layouts.dialog')
+@extends('layouts.dialog')
 
 @section('content')
 @include('media::media.select.side')

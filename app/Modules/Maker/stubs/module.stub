@@ -1,7 +1,7 @@
 {
-    "name": "$STUDLY_NAME$",
-    "title": "$LOWER_NAME$::$LOWER_NAME$.title",
-    "description": "$LOWER_NAME$::$LOWER_NAME$.description",
+    "name": "$MODULE_STUDLY_NAME$",
+    "title": "$MODULE_LOWER_NAME$::$MODULE_LOWER_NAME$.title",
+    "description": "$MODULE_LOWER_NAME$::$MODULE_LOWER_NAME$.description",
     "keywords": [],
     "version": "1.0.0",
     "order": 100,
@@ -9,8 +9,8 @@
     "email":"$AUTHOR_EMAIL$",
     "homepage":"$AUTHOR_HOMEPAGE$",       
     "providers": [
-        "$NAMESPACE$\$STUDLY_NAME$\$PROVIDER_NAMESPACE$\$STUDLY_NAME$ServiceProvider",
-        "$NAMESPACE$\$STUDLY_NAME$\$PROVIDER_NAMESPACE$\RouteServiceProvider"
+        "$NAMESPACE$\$MODULE_STUDLY_NAME$\$PROVIDER_NAMESPACE$\$MODULE_STUDLY_NAME$ServiceProvider",
+        "$NAMESPACE$\$MODULE_STUDLY_NAME$\$PROVIDER_NAMESPACE$\RouteServiceProvider"
     ],
     "aliases":{},
     "files": [

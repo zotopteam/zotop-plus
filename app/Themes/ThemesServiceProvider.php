@@ -3,6 +3,7 @@
 namespace App\Themes;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class ThemesServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,8 @@ class ThemesServiceProvider extends ServiceProvider
         $this->app->register(BootstrapServiceProvider::class);
 
         $this->bladeExtend();
+        $this->paginatorDefault();       
+
     }
 
     /**
@@ -42,5 +45,15 @@ class ThemesServiceProvider extends ServiceProvider
                 $app['files'], $app['config']['view.compiled']
             );
         });  
-    }  
+    }
+
+    /**
+     * 设置默认分页代码
+     * @return null
+     */
+    public function paginatorDefault()
+    {
+        Paginator::defaultView('pagination.default');
+        Paginator::defaultSimpleView('pagination.simple');     
+    }        
 }

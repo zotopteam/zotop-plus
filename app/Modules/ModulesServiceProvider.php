@@ -49,5 +49,7 @@ class ModulesServiceProvider extends ServiceProvider
         $this->app->singleton('modules.activator', function ($app) {
             return new Activator($app);
         });
+
+        $this->mergeConfigFrom(__DIR__.'/Config/modules.php', 'modules');        
     } 
 }

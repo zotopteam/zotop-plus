@@ -401,10 +401,10 @@ class Module
      */
     public function register()
     {
+        $this->registerConfig();
         $this->registerAlias();
         $this->registerProviders();
         $this->registerFiles();
-        $this->registerConfig();
 
         $this->dispatch('register');
     }

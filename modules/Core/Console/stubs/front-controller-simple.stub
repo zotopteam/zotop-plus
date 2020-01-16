@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Modules\Routing\FrontController;
 
-class $CLASS$ extends FrontController
+class $CLASS_NAME$ extends FrontController
 {
     /**
      * 首页

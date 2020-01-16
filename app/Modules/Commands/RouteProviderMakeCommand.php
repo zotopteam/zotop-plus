@@ -46,7 +46,7 @@ class RouteProviderMakeCommand extends GeneratorCommand
      * 路由服务容器固定名称为 RouteServiceProvider
      * @return string
      */
-    public function getArgumentName()
+    public function getNameInput()
     {
         return 'Route';
     }    

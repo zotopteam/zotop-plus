@@ -59,11 +59,15 @@ class ModuleMakeCommand extends Command
         
         // 创建文件
         $this->generateFiles();
+        //创建图标
         $this->generateIcon();
         // 创建目录
         $this->generateDirs();
         // 创建组件
-        
+        $this->generateResource();
+        // 创建语言
+        $this->generateLang();
+
         $this->info('Module '.$this->getModuleStudlyName().' created successfully!');
     }
 
@@ -92,6 +96,7 @@ class ModuleMakeCommand extends Command
         $this->laravel['files']->copy($sourcePath, $destinationPath);
         $this->info('Created: '.$destinationPath);
     }
+
     /**
      * 生成初始化目录
      * @return void
@@ -108,5 +113,36 @@ class ModuleMakeCommand extends Command
                 $this->info('Created: '.$path);
             }
         }
+    }
+
+    /**
+     * 创建资源
+     * @return [type] [description]
+     */
+    public function generateResource()
+    {
+        $this->call('module:make-provider', [
+            'module' => $this->getModuleStudlyName(),
+            'name'   => $this->getModuleLowerName(),
+        ]);
+
+        $this->call('module:make-route-provider', [
+            'module' => $this->getModuleStudlyName(),
+        ]);
+
+    }
+
+    /**
+     * 创建语言
+     * @return void
+     */
+    public function generateLang()
+    {
+        $this->generateArrayLang($this->getModuleLowerName(), [
+            'title'       => $this->getModuleStudlyName(),
+            'description' => $this->getModuleStudlyName(),
+        ]);
+
+        $this->generateJsonLang();
     }
 }

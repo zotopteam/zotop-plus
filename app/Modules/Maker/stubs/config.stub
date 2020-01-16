@@ -1,5 +1,5 @@
 <?php
-// $STUDLY_NAME$ 配置
+// $MODULE_STUDLY_NAME$ 配置
 
 return [
     //'key' => 'value',

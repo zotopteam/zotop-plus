@@ -58,6 +58,7 @@ abstract class GeneratorCommand extends Command
         $this->replace([
             'class_name'      => $this->getClassName(),
             'class_namespace' => $this->getClassNamespace(),
+            'input_name'      => $this->getNameInput(),
         ]);
 
         if ($this->prepare()) {
@@ -80,7 +81,18 @@ abstract class GeneratorCommand extends Command
      */
     public function generate()
     {
-        $this->generateStubFile($this->stub, $this->getFilePath(), $this->option('force'));
+        if ($this->generateStubFile($this->stub, $this->getFilePath(), $this->option('force'))) {
+            $this->generated();
+        }
+    }
+
+    /**
+     * 生成后扩展
+     * @return boolean
+     */
+    public function generated()
+    {
+        return true;     
     }
 
     /**
@@ -93,12 +105,12 @@ abstract class GeneratorCommand extends Command
     }    
 
     /**
-     * 获取 name
+     * 获取输入的 name
      * @return string
      */
-    public function getArgumentName()
+    public function getNameInput()
     {
-        return $this->argument('name');
+        return strtolower($this->argument('name'));
     }
 
     /**
@@ -107,7 +119,7 @@ abstract class GeneratorCommand extends Command
      */
     Public function getClassName()
     {
-        $className = Str::studly($this->getArgumentName());
+        $className = Str::studly($this->getNameInput());
 
         //前面追加的名称
         if ($this->prependName) {

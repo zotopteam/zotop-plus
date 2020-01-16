@@ -3,6 +3,7 @@ namespace App\Modules\Maker;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use App\Modules\Maker\Lang;
 
 trait GeneratorTrait
 {
@@ -56,6 +57,16 @@ trait GeneratorTrait
     {
         return $key ? $this->getConfigPaths("files.{$key}") : $this->getConfigPaths('files');
     }
+
+    /**
+     * 获取模块全局类型配置
+     * @param  string $key
+     * @return array
+     */
+    public function getConfigTypes($key=null)
+    {
+        return $key ? $this->getConfig("types.{$key}") : $this->getConfig('types');
+    }    
 
     /**
      * 获取模块全局的命名空间
@@ -197,15 +208,15 @@ trait GeneratorTrait
 
             //模块信息替换 
             $this->replaces = [
-                'namespace'        => $this->getNamespace(),
-                'studly_name'      => $this->getModuleStudlyName(),
-                'lower_name'       => $this->getModuleLowerName(),
-                'snake_name'       => $this->getModuleSnakeName(),
-                'module_namespace' => $this->getModuleNamespace(),
-                'vendor'           => $this->getConfig('composer.vendor'),
-                'author_name'      => $this->getConfig('composer.author.name'),
-                'author_email'     => $this->getConfig('composer.author.email'),
-                'author_homepage'  => $this->getConfig('composer.author.homepage'),
+                'namespace'          => $this->getNamespace(),
+                'module_studly_name' => $this->getModuleStudlyName(),
+                'module_lower_name'  => $this->getModuleLowerName(),
+                'module_snake_name'  => $this->getModuleSnakeName(),
+                'module_namespace'   => $this->getModuleNamespace(),
+                'vendor'             => $this->getConfig('composer.vendor'),
+                'author_name'        => $this->getConfig('composer.author.name'),
+                'author_email'       => $this->getConfig('composer.author.email'),
+                'author_homepage'    => $this->getConfig('composer.author.homepage'),
             ];
 
             //命名空间替换
@@ -258,7 +269,7 @@ trait GeneratorTrait
 
         if (! $force && $this->laravel['files']->exists($path)) {
             $this->error('Existed: '. $path);
-            return;
+            return false;
         }
 
         if (! $this->laravel['files']->isDirectory($dir = dirname($path))) {
@@ -275,6 +286,8 @@ trait GeneratorTrait
         $this->laravel['files']->put($path, $content);
 
         $this->info('Created: '.$path);
+
+        return true;
     }
 
     /**
@@ -286,6 +299,47 @@ trait GeneratorTrait
     {
         $this->laravel['files']->put($path . DIRECTORY_SEPARATOR .'.gitkeep', '');
     }
+
+    /**
+     * 创建短键语言文件
+     * @param  string $name 文件名称
+     * @param  array  $data 数据
+     * @param  bollean $force 是否覆盖
+     * @return void
+     */
+    public function generateArrayLang($name, $data=[], $force=false)
+    {
+        $lang = $this->laravel['config']->get('app.locale');
+        $lang = Lang::instance($this->getModuleStudlyName(), $lang);
+
+        if ($lang->name($name)->data($data)->save($force)) {
+            $this->info('Created: '.$lang->getLangPath());
+            return;
+        }
+
+        $this->warn('Existed: '.$lang->getLangPath());
+    }
+
+    /**
+     * 创建文本翻译文件
+     * @param  string $lang 语言
+     * @param  string $name 文件名称
+     * @param  array  $data 数据
+     * @param  bollean $force 是否覆盖
+     * @return void
+     */
+    public function generateJsonLang($data=[], $force=false)
+    {
+        $lang = $this->laravel['config']->get('app.locale');        
+        $lang = Lang::instance($this->getModuleStudlyName(), $lang);
+
+        if ($lang->data($data)->save($force)) {
+            $this->info('Created: '.$lang->getLangPath());
+            return;
+        }
+
+        $this->warn('Existed: '.$lang->getLangPath());
+    }    
 
     /**
      * 创建目录

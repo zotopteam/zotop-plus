@@ -1,5 +1,5 @@
 {
-    "name": "$VENDOR$/$LOWER_NAME$",
+    "name": "$VENDOR$/$MODULE_LOWER_NAME$",
     "description": "",
     "authors": [
         {
@@ -10,7 +10,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "$NAMESPACE$\$STUDLY_NAME$\$PROVIDER_NAMESPACE$\$STUDLY_NAME$ServiceProvider"
+                "$NAMESPACE$\$MODULE_STUDLY_NAME$\$PROVIDER_NAMESPACE$\$MODULE_STUDLY_NAME$ServiceProvider"
             ],
             "aliases": {
 
@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "$NAMESPACE$\$STUDLY_NAME$\": ""
+            "$NAMESPACE$\$MODULE_STUDLY_NAME$\": ""
         }
     }
 }

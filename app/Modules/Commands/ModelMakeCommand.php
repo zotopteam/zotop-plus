@@ -2,9 +2,11 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
 use App\Modules\Maker\GeneratorCommand;
+
 
 class ModelMakeCommand extends GeneratorCommand
 {
@@ -16,7 +18,7 @@ class ModelMakeCommand extends GeneratorCommand
     protected $signature = 'module:make-model
                 {module : The module to use}
                 {name : The name to use}
-                {--table : The name to use is a table name.}
+                {--table= : The table name to use.}
                 {--force : Force the operation to run when it already exists.}';
 
     /**
@@ -47,37 +49,86 @@ class ModelMakeCommand extends GeneratorCommand
     public function prepare()
     {
         $this->replace([
-            'table'    => $this->getTableName(),
-            'fillable' => $this->getFillable(),
-            'guarded'  => $this->getGuarded(),
+            'table'      => $this->getTableName(),
+            'fillable'   => $this->getFillable(),
+            'guarded'    => $this->getGuarded(),
+            'timestamps' => $this->getTimestamps(),
         ]);
 
         return true;
     }
 
+    /**
+     * 获取数据表名称
+     * @return string
+     */
     public function getTableName()
     {
-        $table = strtolower($this->getArgumentName());
+        // 如果有table，则直接使用table, 否则使用name的复数
+        if ($table = $this->option('table')) {
+            return strtolower($table);
+        }
+
+        $table = strtolower($this->getNameInput());
+        $table = Str::plural($table);
+
         return $table;
     }
 
+    /**
+     * 获取数据表全部字段
+     * @return array
+     */
+    public function getTableColums()
+    {
+        static $columns = [];
+
+        if (empty($columns)) {
+            $table = $this->getTableName();
+
+            if (Schema::hasTable($table)) {
+                $columns = Schema::getColumnListing($table);
+            }
+        }
+
+        return $columns;
+    }
+
+    /**
+     * 获取数据表可填充字段
+     * @return string
+     */
     public function getFillable()
     {
         // 从数据表中直接读取字段
-        if ($this->option('table')) {
-
+        if ( $columns = $this->getTableColums()) {
+            return "['".implode("','", $columns)."']";
         }
 
         return '[]';
     }
 
+    /**
+     * 不可批量赋值的属性，默认为全部可赋值
+     * @return string
+     */
     public function getGuarded()
-    {
-        // 从数据表中直接读取字段
-        if ($this->option('table')) {
-
-        }
-                
+    {                
         return '[]';
+    }
+
+    /**
+     * 时间戳，如果含有created_at 和 updated_at，则真，否则假
+     * @return string
+     */
+    public function getTimestamps()
+    {
+        $columns = $this->getTableColums();
+
+        if (in_array('created_at', $columns) && in_array('updated_at', $columns)) {
+            return 'true';
+        }
+
+        return 'false';
     }
 }

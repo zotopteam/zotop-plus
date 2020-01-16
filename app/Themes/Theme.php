@@ -230,8 +230,11 @@ class Theme
         //注册全局views路径，实现errors寻址
         $this->app['config']->set('view.paths', Arr::prepend(
             $this->app['config']->get('view.paths'),
-            $this->path.'/views')
-        );
+            $this->path.'/views'
+        ));
+
+        // 不带hints的直接在当前主题中直接寻找
+        $this->app['view']->addLocation($this->path.'/views');
 
         // 注册当前模块和主题的views，实现view在主题和模块中寻址
         foreach ($this->app['modules']->enabled() as $module) {

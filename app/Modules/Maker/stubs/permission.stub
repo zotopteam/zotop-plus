@@ -1,5 +1,5 @@
 <?php
-// $STUDLY_NAME$ 权限
+// $MODULE_STUDLY_NAME$ 权限
 
 return [
     //'key' => 'value',
