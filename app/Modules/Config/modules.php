@@ -76,10 +76,10 @@ return [
             'start'          => 'start.php',
             'config'         => 'config.php',
             'permission'     => 'permission.php',
-            'routes_admin'   => 'Routes/admin.php',
-            'routes_api'     => 'Routes/api.php',
-            'routes_front'   => 'Routes/front.php',
-            'routes_console' => 'Routes/console.php',                  
+            'routes/admin'   => 'Routes/admin.php',
+            'routes/api'     => 'Routes/api.php',
+            'routes/front'   => 'Routes/front.php',
+            'routes/console' => 'Routes/console.php',                  
         ]
     ],
 

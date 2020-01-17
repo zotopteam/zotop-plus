@@ -80,13 +80,27 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         // 资源控制器带语言和view生成
         if ($this->getModelInput()) {
+
             $this->generateArrayLang($this->getNameInput(), [
                 'title'  => $this->getNameInput(),
                 'create' => trans('master.create'),
                 'edit'   => trans('master.edit'),
                 'show'   => trans('master.show'),
-            ], $this->option('lang'));
+            ], $this->option('force'));
+
+            foreach (['index', 'create', 'edit', 'show'] as $action) {
+                $this->generateView($action, $this->option('force'));
+            }
+
+            return ;
         }
+
+        $this->generateArrayLang($this->getNameInput(), [
+            'title'  => $this->getNameInput(),
+        ], $this->option('force'));        
+
+        $this->generateView('index', $this->option('force'));
+        return;
     }
 
     /**
@@ -172,5 +186,20 @@ class ControllerMakeCommand extends GeneratorCommand
     public function getModelList()
     {
         return Str::plural($this->getModelInput());
+    }
+
+    /**
+     * 生成控制器对应动作的模板
+     * @param  string $action 控制器动作名称 index,create,edit,show
+     * @return void
+     */
+    public function generateView($action, $force=false)
+    {
+        $stub = $this->stub . '/' .$action;
+        $path = $this->getConfigDirs('views').DIRECTORY_SEPARATOR.$this->getNameInput();
+        $path = $path . DIRECTORY_SEPARATOR . $action . '.blade.php';
+
+        $this->generateStubFile($stub, $path, $force);
+
     }
 }

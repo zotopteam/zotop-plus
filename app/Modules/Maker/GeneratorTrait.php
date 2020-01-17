@@ -192,6 +192,11 @@ trait GeneratorTrait
     {
         $path = $this->getStubPath($stub);
 
+        if (! $this->laravel['files']->exists($path)) {
+            $this->warn('Unknown: '. $path);
+            return null;
+        }
+
         return $this->laravel['files']->get($path);
     }
 
@@ -259,8 +264,8 @@ trait GeneratorTrait
 
     /**
      * 生成文件
-     * @param  string $stub 
-     * @param  string $path 
+     * @param  string $stub 不含文件后缀则自动补充.stub
+     * @param  string $path 相对模块的路径
      * @return string       
      */
     public function generateStubFile($stub, $path, $force=false)
@@ -268,7 +273,7 @@ trait GeneratorTrait
         $path = $this->getModulePath($path);
 
         if (! $force && $this->laravel['files']->exists($path)) {
-            $this->error('Existed: '. $path);
+            $this->warn('Existed: '. $path);
             return false;
         }
 
