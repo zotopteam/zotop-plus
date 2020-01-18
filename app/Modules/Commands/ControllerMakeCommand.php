@@ -53,7 +53,6 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     public function prepare()
     {
-
         $this->stub = $this->stub . '/' . $this->getTypeInput();
 
         if ($this->getModelInput()) {

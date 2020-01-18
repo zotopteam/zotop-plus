@@ -102,9 +102,9 @@ abstract class ServiceProvider extends RouteServiceProvider
 
         if ($apiRouteFile && file_exists($apiRouteFile)) {
             $router->group([
-                'namespace'  => $this->namespace.'\Api',
-                'prefix'     => Filter::fire('router.api.prefix', 'api'),
-                'middleware' => Filter::fire('router.api.middleware', ['api','module']),
+                'namespace'  => $this->namespace.'\\'.$this->app['config']->get('modules.types.api.dirs.controller'),
+                'prefix'     => $this->app['config']->get('modules.types.api.prefix'),
+                'middleware' => $this->app['config']->get('modules.types.api.middleware'),
             ], function (Router $router) use ($apiRouteFile) {
                 require $apiRouteFile;
             });
@@ -125,8 +125,8 @@ abstract class ServiceProvider extends RouteServiceProvider
         if ($frontRouteFile && file_exists($frontRouteFile)) {
             $router->group([
                 'namespace'  => $this->namespace,
-                'prefix'     => Filter::fire('router.front.prefix', ''),
-                'middleware' => Filter::fire('router.front.middleware', ['web','module','front']),      
+                'prefix'     => $this->app['config']->get('modules.types.frontend.prefix'),
+                'middleware' => $this->app['config']->get('modules.types.frontend.middleware'),      
             ], function (Router $router) use ($frontRouteFile) {
                 require $frontRouteFile;
             });
@@ -147,9 +147,9 @@ abstract class ServiceProvider extends RouteServiceProvider
         if ($adminRouteFile && file_exists($adminRouteFile)) {
 
             $router->group([
-                'namespace'  => $this->namespace.'\Admin',
-                'prefix'     => Filter::fire('router.admin.prefix', $this->app['config']->get('app.admin_prefix','admin')),
-                'middleware' => Filter::fire('router.admin.middleware', ['web','module','admin']),      
+                'namespace'  => $this->namespace.'\\'.$this->app['config']->get('modules.types.backend.dirs.controller'),
+                'prefix'     => $this->app['config']->get('modules.types.backend.prefix'),
+                'middleware' => $this->app['config']->get('modules.types.backend.middleware'),     
             ], function (Router $router) use ($adminRouteFile) {
                 require $adminRouteFile;
             });

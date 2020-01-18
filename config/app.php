@@ -68,19 +68,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Admin Prefix
-    |--------------------------------------------------------------------------
-    |
-    | This Prefix is used by the admin url: http://localhost/[admin_prefix]
-    | The default admin prefix is "admin", and the admin url : http://localhost/admin
-    | You can change it for yours cms safer
-    |
-    */    
-
-    'admin_prefix' => env('APP_ADMIN_PREFIX', 'admin'),
-
-    /*
-    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

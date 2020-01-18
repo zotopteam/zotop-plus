@@ -30,21 +30,16 @@ class BootstrapServiceProvider extends ServiceProvider
         // 注册当前类型，根据uri的第一个段来判断是前台、后台或者api
         $this->app->singleton('current.type', function($app) {
             
-            // 类型组
-            $types = $app['hook.filter']->fire('current.types', [
-                'api'   => $app['config']->get('app.api_prefix', 'api'),
-                'admin' => $app['config']->get('app.admin_prefix', 'admin'),                
-            ], $app);
-
             // 获取url的第一个部分
-            $begin = $app['request']->segment(1);            
+            $begin = strtolower($app['request']->segment(1));
+            
+            $type  = 'frontend';
 
-            // 搜索类型
-            $type = array_search(strtolower($begin), array_map('strtolower', $types));
-
-            // 默认为前端
-            if (empty($type)) {
-                $type  = 'front';
+            foreach ($app['config']->get('modules.types') as $key => $value) {
+                if ($value['prefix'] && $value['prefix'] == $begin) {
+                    $type = $key;
+                    break;
+                }    
             }
             
             return $app['hook.filter']->fire('current.type', $type, $app);

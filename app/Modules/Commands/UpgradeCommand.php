@@ -47,7 +47,7 @@ class UpgradeCommand extends Command
         if ($module->isInstalled()) {
             $module->seed = $this->option('seed');
             $module->upgrade();
-            $this->info("Module [{$module}] install successfully.");
+            $this->info("Module [{$module}] upgrade successfully.");
             return;
         }
 

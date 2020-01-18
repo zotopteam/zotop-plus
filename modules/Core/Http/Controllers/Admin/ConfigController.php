@@ -172,7 +172,7 @@ class ConfigController extends AdminController
         if ($request->isMethod('POST')) {
 
             // 写入系统配置组
-            $this->config('core', ['log'=>$request->input('log')]);
+            $this->config('core', $request->all());
 
             // 开启时更改配置值，解决无法记录开启日志的问题
             if ($request->input('log.enabled') == 1) {
@@ -183,11 +183,10 @@ class ConfigController extends AdminController
             $this->env([
                 'APP_DEBUG'        => $request->input('debug') ? 'true' : 'false',
                 'APP_ENV'          => $request->input('env', 'production'),
-                'APP_ADMIN_PREFIX' => $request->input('admin_prefix', 'admin'),
             ]);
 
             // 更改后台地址，本地或者测试环境下，route 已经加载，无法重新载入, 改用url生成
-            $redirectTo = url($request->input('admin_prefix', 'admin').'/core/config/safe');
+            $redirectTo = url($request->input('backend.prefix', 'admin').'/core/config/safe');
 
             return $this->success(trans('master.saved'), $redirectTo);
         }      

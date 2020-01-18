@@ -27,6 +27,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->setBackend();
     }
     
     /**
@@ -42,7 +43,15 @@ class CoreServiceProvider extends ServiceProvider
         $this->bladeExtend();
     }
 
-
+    /**
+     * 设置主题和后台后缀
+     * @return void
+     */
+    public function setBackend()
+    {
+        $this->app['config']->set('modules.types.backend.prefix', $this->app['config']->get('core.backend.prefix'));
+        $this->app['config']->set('modules.types.backend.theme', $this->app['config']->get('core.backend.theme'));
+    }
 
     /**
      * 注册中间件
@@ -64,11 +73,6 @@ class CoreServiceProvider extends ServiceProvider
     public function setLocale()
     {
         $locale = $this->app['current.locale'];
-
-        // 当前语言设置
-        if ($locale != $this->app->getLocale()) {
-            $this->app->setLocale($locale);        
-        }
 
         // Carbon 语言转换
         $carbon_locale = Arr::get($this->app['hook.filter']->fire('carbon.locale.transform', [

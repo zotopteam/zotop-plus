@@ -141,32 +141,34 @@ class Activator
 
     /**
      * 设置模块配置
-     * @param  Module  $module
+     * @param Module  $module
+     * @param array $data
      * @return boolean
      */
-    public function setConfig(Module $module, array $config)
+    public function setConfig(Module $module, array $data=[])
     {
         // 本地设置
-        $original = $module->getConfig(true);
-        //当前设置
+        $config = $module->getConfig(true);
+
+        //合并当前设置
         $current  = $module->getConfig();
 
-        // 只允许更新本地设置中有的信息
-        if ($config = Arr::only($config, array_keys($original))) {
-
-            // 深层次合并数组
-            $config = Arr::dot($config);
-
-            foreach ($config as $key => $value) {
-                Arr::set($current, $key, $value);
+        foreach (Arr::dot($current) as $key => $value) {
+            if (Arr::has($config, $key)) {
+                Arr::set($config, $key, $value);
             }
-            
-            return $this->update($module, [
-                'config'     => json_encode($current),          
-            ]);            
         }
 
-        return;
+        // 合并更新设置
+        foreach (Arr::dot($data) as $key => $value) {
+            if (Arr::has($config, $key)) {
+                Arr::set($config, $key, $value);
+            }
+        }
+
+       return $this->update($module, [
+            'config'     => json_encode($config),          
+        ]);   
     }    
 
     /**
@@ -235,9 +237,12 @@ class Activator
      */
     public function upgrade(Module $module)
     {
+        // 更新配置
+        $this->setConfig($module);
+
+        // 更新版本信息
         return $this->update($module, [
-            'version'    => $module->getVersion(true),
-            'config'     => json_encode($module->getConfig(true)),            
+            'version'    => $module->getVersion(true)           
         ]);
     }
 

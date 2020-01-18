@@ -1,7 +1,9 @@
 <?php
 return [
-    'theme'  => 'admin',
-    'skin'   => 'default',
+    'backend' => [
+        'theme'  => 'admin',
+        'prefix' => 'admin',
+    ],
     'upload' => [
         'types' => [
             'image'    => ['enabled'=>1,'maxsize'=>20,'extensions'=>'jpg,jpeg,png,gif'],

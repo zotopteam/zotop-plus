@@ -466,7 +466,7 @@ class Module
      */
     protected function registerTranslation()
     {
-        if (is_dir($path = $this->path . '/Resources/lang')) {
+        if (is_dir($path = $this->path . DIRECTORY_SEPARATOR . $this->app['config']->get('modules.paths.dirs.lang'))) {
             $this->app['translator']->addJsonPath($path);
             $this->app['translator']->addNamespace($this->getLowerName(), $path);
         }
@@ -490,7 +490,7 @@ class Module
     {
         // 非产品环境下注册Factories
         if (! $this->app->environment('production')) {
-            $this->app->make(Factory::class)->load($this->path . '/Database/Factories');
+            $this->app->make(Factory::class)->load($this->path . DIRECTORY_SEPARATOR . $this->app['config']->get('modules.paths.dirs.factory'));
         }        
     }    
 

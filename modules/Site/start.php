@@ -1,41 +1,4 @@
 <?php
-/**
- * 设置站点主题
- */
-\Filter::listen('current.theme', function($theme) {
-
-    //如果前台，并设置了站点或者移动端主题，当前使用当前设置的主题
-    if (app('current.type') == 'front') {
-    
-        // 站点主题
-        if ($siteTheme = config('site.theme')) {
-            $theme = $siteTheme;
-        }
-        
-        // 移动端主题
-        if ($wapTheme = config('site.wap.theme')) {
-            //移动端网址或者设置匹配
-            $wapUrl = config('site.wap.url');
-
-            if (\Str::startsWith(\Request::url(), $wapUrl) || \Agent::isMobile()) {
-                $theme = $wapTheme;
-            }
-        }
-    }
-
-    return $theme;
-});
-
-/**
- * 设置站点语言
- */
-\Filter::listen('current.locale', function($locale) {
-    //如果前台，并设置了站点语言，当前使用当前设置的语言
-    if (app('current.type') == 'front' && $siteLocale = config('site.locale')) {
-        $locale = siteLocale;
-    }
-    return $locale;
-});
 
 /**
  * 全局导航

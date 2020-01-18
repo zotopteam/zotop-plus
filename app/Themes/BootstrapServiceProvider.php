@@ -14,9 +14,9 @@ class BootstrapServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // 注册当前主题，默认为：theme.admin，theme.front，theme.api
+        // 注册当前主题
         $this->app->singleton('current.theme', function($app) {
-            $theme = $app['config']->get('theme.'.$app['current.type'], $app['current.type']);
+            $theme = $app['config']->get('modules.types.'.$app['current.type'].'.theme');
             return $app['hook.filter']->fire('current.theme', $theme, $app);
         });
     }
