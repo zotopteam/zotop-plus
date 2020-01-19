@@ -8,26 +8,26 @@
             {{$title}}
         </div>     
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.migration.create',[$name])}}" data-width="800" data-height="300">
+            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.migration.create',[$module])}}" data-width="800" data-height="300">
                 <i class="fa fa-plus fa-fw"></i> {{trans('developer::migration.create')}}
             </a>
             <div class="btn-group">
-                <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$name,'migrate'])}}" data-confirm="{{trans('developer::migration.migrate.tips')}}">
+                <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$module,'migrate'])}}" data-confirm="{{trans('developer::migration.migrate.tips')}}">
                     <i class="fa fa-share fa-fw"></i> {{trans('developer::migration.migrate')}}
                 </a>
                 <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a href="javascript:;" class="dropdown-item js-confirm" data-url="{{route('developer.migration.execute',[$name,'rollback'])}}" data-confirm="{{trans('developer::migration.rollback.tips')}}">
+                    <a href="javascript:;" class="dropdown-item js-confirm" data-url="{{route('developer.migration.execute',[$module,'rollback'])}}" data-confirm="{{trans('developer::migration.rollback.tips')}}">
                         <i class="dropdown-item-icon fa fa-reply fa-fw"></i>
                         <b class="dropdown-item-text">{{trans('developer::migration.rollback')}}</b>
                     </a>
-                    <a href="javascript:;" class="dropdown-item js-confirm" data-url="{{route('developer.migration.execute',[$name,'reset'])}}" data-confirm="{{trans('developer::migration.reset.tips')}}">
+                    <a href="javascript:;" class="dropdown-item js-confirm" data-url="{{route('developer.migration.execute',[$module,'reset'])}}" data-confirm="{{trans('developer::migration.reset.tips')}}">
                         <i class="dropdown-item-icon fa fa-reply-all fa-fw"></i>
                         <b class="dropdown-item-text">{{trans('developer::migration.reset')}}</b>
                     </a>
-                    <a href="javascript:;" class="dropdown-item js-confirm" data-url="{{route('developer.migration.execute',[$name,'refresh'])}}" data-confirm="{{trans('developer::migration.refresh.tips')}}">
+                    <a href="javascript:;" class="dropdown-item js-confirm" data-url="{{route('developer.migration.execute',[$module,'refresh'])}}" data-confirm="{{trans('developer::migration.refresh.tips')}}">
                         <i class="dropdown-item-icon fa fa-sync fa-fw"></i>
                         <b class="dropdown-item-text">{{trans('developer::migration.refresh')}}</b>
                     </a>                                       
@@ -58,40 +58,16 @@
                         </div>
                     </td>
 
-                    <td class="manage manage-hover text-right">
-                        @if(in_array(File::name($file), $migrations))
-                        <a href="javascript:;" class="manage-item js-confirm d-none" data-url="{{route('developer.migration.migrate.file',[$name,'refresh','file'=>path_base($file)])}}">
-                            <i class="fa fa-sync fa-fw text-primary"></i> {{trans('developer::migration.file.refresh')}}
-                        </a>
-                        <a href="javascript:;" class="manage-item js-confirm d-none" data-url="{{route('developer.migration.migrate.file',[$name,'reset','file'=>path_base($file)])}}">
-                            <i class="fa fa-reply fa-fw text-primary"></i> {{trans('developer::migration.file.reset')}}
-                        </a>
-                        @else
-                        <a href="javascript:;" class="manage-item js-confirm d-none" data-url="{{route('developer.migration.migrate.file',[$name,'migrate','file'=>path_base($file)])}}">
-                            <i class="fa fa-share fa-fw text-primary"></i> {{trans('developer::migration.file.migrate')}}
-                        </a>                         
-                                    
+                    <td class="manage manage-hover text-right">                     
+                        @if(! in_array(File::name($file), $migrations))            
                         <a href="javascript:;" class="manage-item js-open" data-url="{{route('core.file.editor',['file'=>path_base($file)])}}"  data-width="80%" data-height="80%">
                             <i class="fa fa-pen-square fa-fw text-primary"></i> {{trans('master.edit')}}
                         </a>
-                        <div class="dropdown d-inline-block manage-item">
-                            <a href="javascript:;" data-toggle="dropdown">
-                                {{trans('master.more')}}
-                                <i class="fa fa-angle-down" ></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a href="javascript:;" class="dropdown-item js-post" data-url="{{route('core.file.copy',['file'=>path_base($file)])}}">
-                                    <i class="fa fa-copy fa-fw text-primary"></i> {{trans('master.copy')}}
-                                </a>
-                                <a href="javascript:;" class="dropdown-item js-prompt" data-url="{{route('core.file.rename',['file'=>path_base($file)])}}" data-prompt="{{trans('core::file.name')}}" data-value="{{basename($file)}}">
-                                    <i class="fa fa-eraser fa-fw text-primary"></i> {{trans('master.rename')}}
-                                </a>
-                                <a href="javascript:;" class="dropdown-item js-delete" data-url="{{route('core.file.delete',['file'=>path_base($file)])}}">
-                                    <i class="fa fa-trash fa-fw text-primary"></i> {{trans('master.delete')}}
-                                </a>
-                            </div>                            
-                        </div>
-                        @endif                               
+
+                        <a href="javascript:;" class="manage-item js-delete" data-url="{{route('core.file.delete',['file'=>path_base($file)])}}">
+                            <i class="fa fa-trash fa-fw text-primary"></i> {{trans('master.delete')}}
+                        </a>
+                        @endif                        
                     </td>
                     <td>{{date('Y-m-d H:i:s',$file->getMTime())}}</td>
                     <td>
@@ -112,7 +88,7 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            {{trans('developer::developer.position')}}: {{realpath($path)}}
+            {{trans('developer::developer.position')}}: {{$path}}
         </div>
         <div class="footer-text">
             <a data-toggle="collapse" href="#collapse-terminal">
@@ -125,7 +101,7 @@
             <div class="footer-text mr-auto">
                 {{trans('developer::migration.create')}}: php artisan module:make-migration test {{$module}}
             </div>
-            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.migration.create',[$name])}}" data-width="800" data-height="300">
+            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.migration.create',[$module])}}" data-width="800" data-height="300">
                 <i class="fa fa-plus fa-fw"></i> {{trans('developer::migration.create')}}
             </a>        
         </div>
@@ -133,7 +109,7 @@
             <div class="footer-text mr-auto">
                 {{trans('developer::migration.migrate')}}: php artisan module:migrate {{$module}}
             </div>
-            <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$name,'migrate'])}}" data-confirm="{{trans('developer::migration.migrate.tips')}}">
+            <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$module,'migrate'])}}" data-confirm="{{trans('developer::migration.migrate.tips')}}">
                 <i class="fa fa-share fa-fw"></i> {{trans('developer::migration.migrate')}}
             </a>
         </div>
@@ -141,7 +117,7 @@
             <div class="footer-text mr-auto">
                 {{trans('developer::migration.rollback')}}: php artisan module:migrate-rollback {{$module}}
             </div>
-            <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$name,'rollback'])}}" data-confirm="{{trans('developer::migration.rollback.tips')}}">
+            <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$module,'rollback'])}}" data-confirm="{{trans('developer::migration.rollback.tips')}}">
                 <i class="fa fa-reply fa-fw"></i> {{trans('developer::migration.rollback')}}
             </a>
         </div>
@@ -149,7 +125,7 @@
             <div class="footer-text mr-auto">
                 {{trans('developer::migration.reset')}}: php artisan module:migrate-reset {{$module}}
             </div>
-            <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$name,'reset'])}}" data-confirm="{{trans('developer::migration.reset.tips')}}">
+            <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$module,'reset'])}}" data-confirm="{{trans('developer::migration.reset.tips')}}">
                 <i class="fa fa-reply-all fa-fw"></i> {{trans('developer::migration.reset')}}
             </a>
         </div>    
@@ -157,7 +133,7 @@
             <div class="footer-text mr-auto">
                 {{trans('developer::migration.refresh')}}: php artisan module:migrate-refresh {{$module}}
             </div>
-            <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$name,'refresh'])}}" data-confirm="{{trans('developer::migration.refresh.tips')}}">
+            <a href="javascript:;" class="btn btn-danger js-confirm" data-url="{{route('developer.migration.execute',[$module,'refresh'])}}" data-confirm="{{trans('developer::migration.refresh.tips')}}">
                 <i class="fa fa-sync fa-fw"></i> {{trans('developer::migration.refresh')}}
             </a>
         </div>

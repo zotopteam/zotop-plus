@@ -89,16 +89,6 @@
     </div>
 </div>
 @endsection
-@push('css')
-   <style type="text/css">
-   .ui-cmd .ui-dialog-content{background: #000000;padding:20px;overflow:auto;}
-   .ui-cmd .cmd-output{
-        white-space: pre-wrap;
-        color: #00fa4a;
-        border-radius: 0;
-    }
-   </style>
-@endpush
 
 @push('js')
 <script type="text/javascript">

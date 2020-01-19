@@ -15,7 +15,7 @@ class MigrationMakeCreateCommand extends GeneratorCommand
      */
     protected $signature = 'module:make-migration-create
                 {module : The module to use}
-                {table : The table name to migrate}
+                {name : The table name to migrate}
                 {fields? : The fields to up}
                 {--force : Force the operation to run when it already exists.}';
 
@@ -57,14 +57,23 @@ class MigrationMakeCreateCommand extends GeneratorCommand
     protected $table;
 
     /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->table  = strtolower($this->argument('name'));
+        $this->fields = $this->argument('fields');
+
+        parent::handle();        
+    }    
+    /**
      * 重载prepare
      * @return boolean
      */
     public function prepare()
     {
-        $this->table  = strtolower($this->argument('table'));
-        $this->fields = $this->argument('fields');
-
         if (! empty($this->fields)) {
             $this->stub = 'migration/create_fields';
         }

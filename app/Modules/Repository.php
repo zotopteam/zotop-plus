@@ -182,16 +182,17 @@ class Repository
     /**
      * 获取资源url
      * @param  string $asset 模块名称:文件相对路径，例如：core:css/global.css
+     * @param boolean $version 是否附带版本号
      * @return string
      */
-    public function asset($asset)
-    {
+    public function asset($asset, $version=true)
+    {debug($asset, $version);
         list($module, $url) = explode(':', $asset);
 
         $module = $this->findOrFail($module);
 
         if ($module) {
-            return $module->asset($url);
+            return $module->asset($url, $version);
         }
 
         return null;

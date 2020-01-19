@@ -62,7 +62,7 @@ class ModuleMakeCommand extends Command
         //创建图标
         $this->generateIcon();
         // 创建目录
-        $this->generateDirs();
+        //$this->generateDirs();
         // 创建组件
         $this->generateResource();
         // 创建语言
@@ -133,16 +133,16 @@ class ModuleMakeCommand extends Command
     }
 
     /**
-     * 创建语言
+     * 创建语言，默认创建可翻译语言包
      * @return void
      */
     public function generateLang()
     {
-        $this->generateArrayLang($this->getModuleLowerName(), [
-            'title'       => $this->getModuleStudlyName(),
-            'description' => $this->getModuleStudlyName(),
-        ]);
+        $name = $this->getModuleStudlyName();
 
-        $this->generateJsonLang();
+        $this->generateJsonLang([
+            "{$name} title"       => "{$name} title",
+            "{$name} description" => "{$name} description",
+        ]);
     }
 }

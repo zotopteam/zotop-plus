@@ -4,7 +4,6 @@ namespace App\Modules\Routing;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Routing\Router;
-use Filter;
 
 abstract class ServiceProvider extends RouteServiceProvider
 {

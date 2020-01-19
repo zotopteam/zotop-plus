@@ -4,12 +4,11 @@ namespace Modules\Developer\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Modules\Facades\Module;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
 use App\Modules\Routing\AdminController;
 use Modules\Developer\Http\Requests\ModuleRequest;
-use Module;
-use Artisan;
-use File;
-use Filter;
 
 class ModuleController extends AdminController
 {  
@@ -22,7 +21,7 @@ class ModuleController extends AdminController
     public function index()
     {
         $this->title   = trans('developer::module.title');
-        $this->modules = module();
+        $this->modules = Module::all();
 
         return $this->view();
     }
@@ -32,13 +31,9 @@ class ModuleController extends AdminController
      * 
      * @return Response
      */
-    public function show(Request $request, $name)
+    public function show(Request $request, $module)
     {
-        $this->name   = $name;
-        $this->module = module($name);
-        $this->json   = $this->module->json();
-        $this->path   = $this->module->getPath();
-                
+        $this->module = Module::findOrFail($module);                
         $this->title  = trans('developer::module.show');
 
         return $this->view();        
@@ -74,9 +69,8 @@ class ModuleController extends AdminController
         $name  = $request->input('name');
         $plain = $request->input('plain');
 
-        Artisan::call("module:create", [
-            'name'    => $name,
-            '--plain' => $plain ? true : false,
+        Artisan::call("module:make", [
+            'module'  => $name,
             '--force' => false,
         ]);
 
@@ -88,24 +82,28 @@ class ModuleController extends AdminController
      *
      * @return Response
      */
-    public function update(Request $request, $name, $field)
+    public function update(Request $request, $module, $field)
     {
-        $newvalue = $request->input('newvalue');
+        $rule = 'required';
 
-        if ( $field == 'order' ) {
-            $this->validate($request, ['newvalue' => 'required|numeric|min:1'],[],['newvalue'=>'']);
-        } elseif ($field == 'version') {
-            $this->validate($request, ['newvalue' => ['required','regex:/^[0-9]+.[0-9]+.[0-9]+$/']],[],['newvalue'=>'']);
-        } else {
-            $this->validate($request, ['newvalue' => 'required'],[],['newvalue'=>'']);
+        if ($field == 'order') {
+            $rule = 'required|numeric|min:1';
         }
 
-        // Find Module
-        $module = Module::find($name);
+        if ($field == 'version') {
+            $rule = ['required','regex:/^[0-9]+.[0-9]+.[0-9]+$/'];
+        }
 
-        // Update module.json
-        $module->json()->set($field, $newvalue)->save();
+        $this->validate($request, ['newvalue'=>$rule], [], ['newvalue'=>'']);
 
-        return $this->success(trans('master.saved'),route('developer.module.show',[$name]));
+
+        $path    = Module::findorFail($module)->getPath('module.json');
+        $content = array_merge(json_decode(File::get($path), true), [
+            $field => $request->input('newvalue')
+        ]);
+
+        File::put($path, json_encode($content, JSON_PRETTY_PRINT));
+
+        return $this->success(trans('master.saved'),route('developer.module.show',[$module]));
     }
 }

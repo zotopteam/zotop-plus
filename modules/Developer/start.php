@@ -28,15 +28,6 @@
             'tips' => trans('developer::module.description'),
         ];
     }
-
-    // if (allow('developer.route') && app()->environment('local')) {
-    //     $navbar['developer-route'] = [
-    //         'text' => trans('developer::route.title'),
-    //         'href' => route('developer.route.index'),
-    //         'icon' => 'fa fa-sitemap bg-warning text-white',
-    //         'tips' => trans('developer::route.description'),
-    //     ];
-    // }    
     
     return $navbar;
 

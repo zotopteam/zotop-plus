@@ -185,7 +185,8 @@ class Module
 
     /**
      * 设置配置
-     * @param array $config [description]
+     * @param array $config 配置数组
+     * @return void
      */
     public function setConfig(array $config=[])
     {
@@ -198,10 +199,13 @@ class Module
      *
      * @return string
      */
-    public function getPath($file=null)
+    public function getPath($subpath=null, $isDirKey=false)
     {
-        if ($file) {
-            return $this->path.DIRECTORY_SEPARATOR.ltrim($file, DIRECTORY_SEPARATOR);
+        if ($subpath) {
+            if ($isDirKey) {
+                $subpath = $this->app['config']->get("modules.paths.dirs.{$subpath}");
+            }
+            return $this->path.DIRECTORY_SEPARATOR.ltrim($subpath, DIRECTORY_SEPARATOR);
         }
 
         return $this->path;
@@ -381,10 +385,11 @@ class Module
 
     /**
      * 获取资源url
-     * @param  string $asset 资源路径
+     * @param string $asset 资源路径
+     * @param boolean $version 是否附带版本号
      * @return string
      */
-    public function asset($asset)
+    public function asset($asset, $version=true)
     {
         $path = $this->app['config']->get('modules.paths.assets');
         $base = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $path);
@@ -392,7 +397,11 @@ class Module
         $url = $this->app['url']->asset($base.'/'.$this->getLowerName().'/'. $asset);
         $url = str_replace(['http://', 'https://'], '//', $url);
 
-        return $url.'?version='.$this->getVersion();
+        if ($version) {
+            return $url.'?version='.$this->getVersion();
+        }
+
+        return $url;
     }
 
     /**
@@ -427,11 +436,6 @@ class Module
      */
     public function registerProviders()
     {
-        // $cachePath = Str::replaceLast('services.php', $this->getSnakeName() . '_module.php', $this->app->getCachedServicesPath());
-
-        // (new ProviderRepository($this->app, new Filesystem(), $cachePath))
-        //     ->load($this->attribute('providers', []));   
-
         foreach ($this->attribute('providers', []) as $provider) {
             $this->app->register($provider);
         }        

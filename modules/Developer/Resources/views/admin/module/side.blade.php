@@ -1,7 +1,7 @@
 <div class="side">
     <div class="side-header">
         <a href="{{route('developer.module.index')}}" title="{{trans('master.back')}}" data-placement="right" class="mr-3"><i class="fa fa-angle-left"></i></a>
-        {{$module->title}}   
+        {{$module->getTitle()}}   
     </div>
     <div class="side-body scrollable">
         <ul class="nav nav-pills nav-side">

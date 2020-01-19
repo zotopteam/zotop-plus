@@ -15,7 +15,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
      */
     protected $signature = 'module:make-migration-update
                 {module : The module to use}
-                {table : The table name to migrate}
+                {name : The table name to migrate}
                 {fields_up? : The fields to up}
                 {fields_down? : The fields to down}
                 {--force : Force the operation to run when it already exists.}';
@@ -58,14 +58,24 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
     protected $random;
 
     /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->table  = strtolower($this->argument('name'));
+        $this->random = date('YmdHis');
+
+        parent::handle();        
+    }
+
+    /**
      * 重载prepare
      * @return boolean
      */
     public function prepare()
     {
-        $this->table  = strtolower($this->argument('table'));
-        $this->random = date('YmdHis');
-
         // 替换信息
         $this->replace([
             'table_name'  => $this->table,

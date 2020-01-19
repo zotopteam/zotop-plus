@@ -41,7 +41,7 @@ class Activator
     }
 
     /**
-     * 获取模块信息
+     * 从缓存中获取全部模块或者模块信息
      * @param  [type] $key [description]
      * @return [type]      [description]
      */
@@ -64,7 +64,7 @@ class Activator
     }
 
     /**
-     * 获取模块
+     * 获取原始的模块数据
      * @return array
      */
     private function getModules()

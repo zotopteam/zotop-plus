@@ -506,7 +506,7 @@
         'codeFold'      => $this->getAttribute($attrs, 'codeFold', true),
         'searchReplace' => $this->getAttribute($attrs, 'searchReplace', true),
         'theme'         => $this->getAttribute($attrs, 'theme','default'),
-        'path'          => \Module::asset('core:editormd/lib').'/',
+        'path'          => \Module::asset('core:editormd/lib', false).'/',
     ]);
 
     if ($options['height'] == 'auto') {
@@ -534,7 +534,7 @@
         'saveHTMLToTextarea' => $this->getAttribute($attrs, 'saveHTMLToTextarea', true),
         'htmlDecode'         => $this->getAttribute($attrs, 'htmlDecode', 'style,script,iframe|on*'),
         'theme'              => $this->getAttribute($attrs, 'theme','default'),
-        'path'               => \Module::asset('core:editormd/lib').'/',
+        'path'               => \Module::asset('core:editormd/lib', false).'/',
     ]);
 
     if ($options['height'] == 'auto') {

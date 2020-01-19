@@ -172,15 +172,7 @@ class Lang
      */
     protected function convertToJsonString()
     {
-        $data = collect($this->data);
-
-        $newline = "\r\n";
-
-        $content = $data->transform(function($value, $key) use($newline) {
-            return "    '".addslashes($key)."' : '".addslashes($value)."',".$newline;
-        })->implode('');
-        
-        return '{'.$newline.trim($content, ',').'}';
+        return json_encode($this->data, JSON_PRETTY_PRINT);
     }    
 
     /**

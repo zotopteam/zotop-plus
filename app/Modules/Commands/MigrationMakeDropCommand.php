@@ -15,7 +15,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
      */
     protected $signature = 'module:make-migration-drop
                 {module : The module to use}
-                {table : The table name to migrate}
+                {name : The table name to migrate}
                 {fields? : The fields to down}
                 {--force : Force the operation to run when it already exists.}';
 
@@ -57,14 +57,24 @@ class MigrationMakeDropCommand extends GeneratorCommand
     protected $fields;
 
     /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->table  = strtolower($this->argument('name'));
+        $this->fields = $this->argument('fields');
+
+        parent::handle();        
+    }   
+
+    /**
      * 重载prepare
      * @return boolean
      */
     public function prepare()
     {
-        $this->table  = strtolower($this->argument('table'));
-        $this->fields = $this->argument('fields');
-
         if (! empty($this->fields)) {
             $this->stub = 'migration/drop_fields';
         }

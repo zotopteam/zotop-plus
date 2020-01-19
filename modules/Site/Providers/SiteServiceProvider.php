@@ -3,10 +3,10 @@
 namespace Modules\Site\Providers;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Facades\Agent;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\ServiceProvider;
 
 class SiteServiceProvider extends ServiceProvider
 {
