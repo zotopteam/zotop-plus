@@ -174,6 +174,10 @@ Are you interested in sponsoring development of this project? [Make a pledge](ht
 
 This project is primarily maintained by [Colin O'Dell][@colinodell].  Members of the [PHP League] Leadership Team may occasionally assist with some of these duties.
 
+## 🗺️  Who Uses It?
+
+This project is used by [Laravel Framework](https://laravel.com/), [Cachet](https://cachethq.io/), [Firefly III](https://firefly-iii.org/), [Neos](https://www.neos.io/), [Daux.io](https://daux.io/), and [more](https://packagist.org/packages/league/commonmark/dependents)!
+
 ---
 
 <div align="center">
