@@ -14,7 +14,9 @@ class $CLASS_NAME$ extends Migration
     public function up()
     {
         Schema::table('$TABLE_NAME$', function (Blueprint $table) {
-$FIELDS_UP$
+
+            $FIELDS_UP$
+
         });
     }
 
@@ -26,7 +28,9 @@ $FIELDS_UP$
     public function down()
     {
         Schema::table('$TABLE_NAME$', function (Blueprint $table) {
-$FIELDS_DOWN$
+
+            $FIELDS_DOWN$
+
         });
     }
 }

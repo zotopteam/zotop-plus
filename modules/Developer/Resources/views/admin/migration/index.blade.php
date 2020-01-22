@@ -8,7 +8,7 @@
             {{$title}}
         </div>     
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.migration.create',[$module])}}" data-width="800" data-height="300">
+            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.migration.create',[$module])}}" data-width="800" data-height="360">
                 <i class="fa fa-plus fa-fw"></i> {{trans('developer::migration.create')}}
             </a>
             <div class="btn-group">

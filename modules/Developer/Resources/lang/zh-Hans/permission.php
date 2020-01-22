@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title'        => '权限助手',
+    'title'        => 'Permission 权限助手',
     'description'  => '协助创建和校验模块权限配置文件',      
     'key'          => '节点键名',
     'val'          => '节点名称',

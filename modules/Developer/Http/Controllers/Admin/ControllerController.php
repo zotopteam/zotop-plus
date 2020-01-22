@@ -2,14 +2,16 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use App\Hook\Facades\Filter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Str;
+use App\Modules\Facades\Module;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
 use App\Modules\Routing\AdminController;
-use Module;
-use Artisan;
-use File;
-use Filter;
+use App\Modules\Exceptions\FileExistedException;
 
 class ControllerController extends AdminController
 {
@@ -19,39 +21,26 @@ class ControllerController extends AdminController
      * @param  string $type [admin，front]
      * @return mixed
      */
-    private function types($type='', $key='')
+    private function types($type=null, $key=null)
     {
-        $types = Filter::fire('developer.controller.types',[
-            'admin' => [
-                'name'    =>trans('developer::controller.admin'),
-                'path'    =>'Http/Controllers/Admin',
-                'artisan' =>'module:make-admin-controller',
-                'styles'   => [
-                    'resource' => trans('developer::controller.style.resource'),
-                    'simple'   => trans('developer::controller.style.simple'),
-                ],
-                'middleware' => 'allow:{allow}'
-            ],
-            'front' => [
-                'name'    => trans('developer::controller.front'),
-                'path'    => 'Http/Controllers',
-                'artisan' => 'module:make-front-controller',
-                'styles'   => [
-                    'simple'   => trans('developer::controller.style.simple'),
-                    'resource' => trans('developer::controller.style.resource'),
-                ],
-                'middleware' => ''                
-            ],
-            'api' => [
-                'name'    =>trans('developer::controller.api'),
-                'path'    =>'Http/Controllers/Api',
-                'artisan' =>'module:make-api-controller',
-                'styles'   => [
-                    'simple'   => trans('developer::controller.style.api'),
-                ],
-                'middleware' => ''
-            ],            
-        ]);
+        $types = [];
+
+        foreach (config('modules.types') as $k => $v) {
+            $types[$k]['title'] = trans("developer::controller.{$k}");
+
+            if ($dir = Arr::get($v, 'dirs.controller')) {
+                $types[$k]['path'] = config('modules.paths.dirs.controller').'/'.$dir;
+            } else {
+                $types[$k]['path'] = config('modules.paths.dirs.controller');
+            }
+
+            $types[$k]['middleware'] = null;
+
+            if ($k == 'backend') {
+                $types[$k]['middleware'] = 'allow:{allow}';
+            } 
+
+        }
 
         if ( empty($key) ) {
             return $type ? $types[$type] : $types;
@@ -82,51 +71,8 @@ class ControllerController extends AdminController
 
         return isset($verbs[$action]) ? $verbs[$action] : 'any';
     }
+  
 
-    /**
-     * 获取控制器完整名称，加上Controller后缀
-     * 
-     * @param  string $controller 控制器名称
-     * @return string
-     */
-    private function fullname($controller)
-    {
-        // 如果不包含Controller后缀
-        if (strtolower($controller) == 'controller' || ends_with(strtolower($controller), 'controller') === false) {
-            $controller .= 'Controller';
-        }
-
-        return Str::studly($controller);
-    }
-
-    /**
-     * 获取控制器真实名称，去掉Controller后缀
-     * 
-     * @param  string $controller 控制器名称
-     * @return string
-     */
-    private function realname($controller)
-    {
-        // 如果包含Controller后缀
-        if (strlen($controller) > 10 && ends_with(strtolower($controller), 'controller') == true) {
-            $controller = substr($controller, 0, -10);
-        }
-
-        return strtolower($controller);
-    }    
-
-    /**
-     * 根据 模块、控制器类型和控制器名称获取控制器的文件路径
-     * 
-     * @param  string $module     模块名称
-     * @param  string $type       控制器类型
-     * @param  string $controller 控制名称，可以不包含Controller后缀
-     * @return string
-     */
-    private function fullpath($module, $type, $controller)
-    {
-        return module_path($module).'/'.$this->types($type,'path').'/'.$this->fullname($controller).'.php';
-    }
 
     /**
      * 根据 模块、控制器类型和控制器名称获取控制器的完整类名（含命名空间）
@@ -136,14 +82,34 @@ class ControllerController extends AdminController
      * @param  string $controller 控制名称，可以不包含Controller后缀
      * @return string
      */    
-    private function fullclass($module, $type, $controller)
+    private function getFullName($module, $type, $controller)
     {
-        $module     = Str::studly($module);       
-        $controller = $this->fullname($controller);        
-        $path       = $this->types($type,'path');
-        $path       = str_replace('/', '\\', $path);
+        $namespace  = config('modules.namespace');
+        $module     = Module::findOrFail($module)->getStudlyName();      
+        $controller = Str::finish($controller, 'Controller');        
+        $path       = str_replace('/', '\\', $this->types($type, 'path'));
 
-        return "Modules\\{$module}\\{$path}\\{$controller}";
+        return "{$namespace}\\{$module}\\{$path}\\{$controller}";
+    }
+
+    /**
+     * 获取控制器的真实类名称
+     * @param  string $controller
+     * @return string
+     */
+    private function getRealName($controller)
+    {
+        return Str::finish($controller, 'Controller');
+    }
+
+    /**
+     * 获取控制器的真实类名称
+     * @param  string $controller
+     * @return string
+     */
+    private function getBaseName($controller)
+    {
+        return strtolower(Str::before($controller, 'Controller'));
     }
 
     /**
@@ -158,15 +124,12 @@ class ControllerController extends AdminController
     {
         $this->title   = trans('developer::controller.title');
         
-        $this->name    = $module;
         $this->type    = $type;
-        $this->module  = module($module);
+        $this->module  = Module::findOrFail($module);
         $this->types   = $this->types();
-        $this->path    = $this->types($type, 'path');
-        $this->path    = $this->module->getExtraPath($this->path);
+        $this->path    = $this->module->getPath($this->types($type, 'path'));
         $this->files   = File::isDirectory($this->path) ? File::files($this->path) : [];
-        $this->artisan = $this->types($type, 'artisan');
-        $this->styles  = $this->types($type, 'styles');
+
 
         return $this->view();
     }
@@ -177,45 +140,34 @@ class ControllerController extends AdminController
      * 
      * @param  Request $request
      * @param  string $module 模型名称
-     * @param  string $module 模型名称
+     * @param  string $type 控制器类型
      * @return mixed
      */
     public function create(Request $request, $module, $type)
     {
-        $this->module = $module;
-        $this->type   = $type;
-
         // 表单提交时
         if ($request->isMethod('POST')) {
             
             $name  = $request->input('name');
-            $style = $request->input('style');
+            $model = $request->input('model');
 
-            // 判断是否已经存在
-            $name = $this->fullname($name);
-            $path = $this->fullpath($module, $type, $name);
-
-            if (File::exists($path)) {
+            try {
+                Artisan::call('module:make-controller', [
+                    'module'  => $module,
+                    'name'    => $name,
+                    '--type'  => $type,
+                    '--model' => $model,
+                ]);
+                return $this->success(trans('master.saved'),route('developer.controller.index',[$module, $type]));
+            } catch (FileExistedException $e) {
                 return $this->error(trans('master.existed', [$name]));
             }
-
-            $artisan = $this->types($type, 'artisan');
-
-            Artisan::call($artisan, [
-                'module'     => $module,
-                'controller' => $name,
-                '--style'    => $style,
-                '--force'    => false,
-            ]);
-
-            return $this->success(trans('master.saved'),route('developer.controller.index',[$module,$type]));
         }
 
 
-        $this->title      = trans('master.create');
-
-        $this->controller = [];
-        $this->styles     = $this->types($type,'styles');
+        $this->title  = trans('master.create');
+        $this->module = Module::findOrFail($module);
+        $this->type   = $type;
 
         return $this->view();
     }
@@ -231,7 +183,7 @@ class ControllerController extends AdminController
     public function route($module, $type, $controller)
     {
 
-        $class = $this->fullclass($module, $type, $controller);
+        $class = $this->getFullName($module, $type, $controller);
 
         $router   = [];
         
@@ -271,14 +223,14 @@ class ControllerController extends AdminController
             }
 
             $router[$m->name]['uri']        = implode('/', $uri);
-            $router[$m->name]['action']     = $this->fullname($controller).'@'.$m->name;
-            $router[$m->name]['name']       = strtolower($module).'.'.$this->realname($controller).'.'.$m->name;
+            $router[$m->name]['action']     = $this->getRealName($controller).'@'.$m->name;
+            $router[$m->name]['name']       = strtolower($module).'.'.$this->getBaseName($controller).'.'.$m->name;
             $router[$m->name]['verb']       = $this->verbs($m->name);
-            $router[$m->name]['middleware'] = str_replace('{allow}',$router[$m->name]['name'],$this->types($type,'middleware'));            
+            $router[$m->name]['middleware'] = str_replace('{allow}', $router[$m->name]['name'], $this->types($type,'middleware'));            
          }
 
         $this->type   = $type;
-        $this->prefix = $this->realname($controller);
+        $this->prefix = $this->getBaseName($controller);
         $this->router = $router;
 
         return $this->view();

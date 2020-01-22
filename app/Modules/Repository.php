@@ -5,6 +5,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use App\Modules\Exceptions\ModuleNotFoundException;
 
 class Repository
 {
@@ -154,7 +155,7 @@ class Repository
         if ($module !== null) {
             return $module;
         }
-        throw new \App\Modules\NotFoundException("Module [{$name}] does not exist!");
+        throw new ModuleNotFoundException("Module [{$name}] does not exist!");
     }
 
     /**
@@ -186,7 +187,7 @@ class Repository
      * @return string
      */
     public function asset($asset, $version=true)
-    {debug($asset, $version);
+    {
         list($module, $url) = explode(':', $asset);
 
         $module = $this->findOrFail($module);

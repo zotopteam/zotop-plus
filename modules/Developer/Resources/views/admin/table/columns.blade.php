@@ -24,10 +24,10 @@
                     <tr>
                         <td class="drag"></td>
                         <td class="text-center">
-                            @if ($increments && $increments == $v['name'])
+                            @if (($increments && $increments == $v['name']) || in_array($v['type'], ['text','mediumtext','longtext']))
                                 <input type="checkbox" disabled>
                             @else
-                                <input type="checkbox" name="columns[{{$k}}][select]" value="select">
+                                <input type="checkbox" name="columns[{{$k}}][select]" value="1">
                             @endif
                         </td>
                         <td>
@@ -37,7 +37,7 @@
                             {field type="select" name="columns['.$k.'][type]" options="Module::data('developer::table.column.types')" value="$v['type']" class="column-check"}
                         </td>
                         <td>
-                            @if (in_array($v['type'], ['char', 'varchar', 'float', 'double','decimal','enum']))
+                            @if (in_array($v['type'], ['char', 'string', 'float', 'double','decimal','enum']))
                             <input type="text" name="columns[{{$k}}][length]" class="form-control" value="{{$v['length'] ?? ''}}" class="column-check">
                             @else
                             <input type="text" name="columns[{{$k}}][length]" class="form-control" readonly="readonly">
@@ -45,21 +45,21 @@
                         </td>
                         <td class="text-center">
                             @if (! $v['increments'])
-                            <input type="checkbox" name="columns[{{$k}}][nullable]" value="nullable" @if($v['nullable'])checked="checked"@endif class="column-check">
+                            <input type="checkbox" name="columns[{{$k}}][nullable]" value="1" @if($v['nullable'])checked="checked"@endif class="column-check">
                             @else
                             <input type="checkbox" disabled>
                             @endif         
                         </td>
                         <td class="text-center">
-                            @if (ends_with($v['type'], 'int'))
-                            <input type="checkbox" name="columns[{{$k}}][unsigned]" value="unsigned" @if($v['unsigned'])checked="checked"@endif>
+                            @if (in_array($v['type'], ['integer','tinyint','smallint','mediumint','bigint']))
+                            <input type="checkbox" name="columns[{{$k}}][unsigned]" value="1" @if($v['unsigned'])checked="checked"@endif>
                             @else
                             <input type="checkbox" disabled>                    
                             @endif
                         </td>
                         <td class="text-center">
-                            @if (ends_with($v['type'], 'int') && !$v['nullable'] && (empty($increments) || $increments == $v['name']))
-                            <input type="checkbox" name="columns[{{$k}}][increments]" value="increments" @if($v['increments'])checked="checked"@endif class="column-check">
+                            @if (in_array($v['type'], ['integer','tinyint','smallint','mediumint','bigint']) && (empty($increments) || $v['name'] == $increments))
+                            <input type="checkbox" name="columns[{{$k}}][increments]" value="1" @if($v['increments'])checked="checked"@endif class="column-check">
                             @else
                             <input type="checkbox" disabled>                    
                             @endif
@@ -98,7 +98,7 @@
                             <a class="btn btn-primary btn-sm column-action"  href="javascript:;" data-url="{{route('developer.table.columns','addSoftdeletes')}}">
                                 <i class="fa fa-plus fa-fw"></i> {{trans('developer::table.column.add_softdeletes')}} 
                             </a>
-                            @if (! $increments && ! $primary)
+                            @if (! $primary)
                             <a class="btn btn-primary btn-sm column-action"  href="javascript:;" data-url="{{route('developer.table.columns','primary')}}">
                                 <i class="fa fa-key fa-fw"></i> {{trans('developer::table.index.primary')}} 
                             </a>

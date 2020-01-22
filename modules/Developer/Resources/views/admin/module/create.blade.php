@@ -3,7 +3,7 @@
 @section('content')
 <div class="main scrollable">
 
-    {form model="$module" route="developer.module.store" method="post" class="m-4" autocomplete="off"}
+    {form route="developer.module.store" method="post" class="m-4" autocomplete="off"}
 
         <div class="container-fluid">
 
@@ -21,14 +21,14 @@
             </div>
 
             <div class="form-group">
-                <label for="plain" class="form-label required">{{trans('developer::module.plain.label')}}</label>
+                <label for="plain" class="form-label required">{{trans('developer::module.style.label')}}</label>
                 <div class="form-field">
-                    {field type="radiogroup" name="plain" options="$plains" required="required" column="1"}
+                    {field type="radiogroup" name="style" options="Module::data('developer::module.styles')" required="required" column="1"}
 
-                    @if ($errors->has('plain'))
-                    <span class="form-help text-error">{{ $errors->first('plain') }}</span>
+                    @if ($errors->has('style'))
+                    <span class="form-help text-error">{{ $errors->first('style') }}</span>
                     @else
-                    <span class="form-help">{{trans('developer::module.plain.help')}}</span>                     
+                    <span class="form-help">{{trans('developer::module.style.help')}}</span>                     
                     @endif
                 </div>                     
             </div>                                             

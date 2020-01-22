@@ -65,6 +65,19 @@ class ModuleController extends AdminController
     }
 
     /**
+     * 安装模块
+     * 
+     * @param  string $name 模块名称
+     * @return json
+     */
+    public function upgrade(Request $request, $module)
+    {        
+        Module::findOrFail($module)->upgrade(); 
+
+        return $this->success(trans('core::module.upgraded'), $request->referer());
+    }
+
+    /**
      * 卸载模块
      * 
      * @param  string $name 模块名称

@@ -72,6 +72,7 @@ class MigrateRefreshCommand extends Command
             '--database' => $this->option('database'),
             '--force'    => $this->option('force'),
         ]);
+        
         $this->call('module:migrate', [
             'module'     => $module->getName(),
             '--database' => $this->option('database'),

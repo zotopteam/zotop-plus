@@ -1,6 +1,6 @@
 <?php
 return [
-	'title'          => '语言包',
+	'title'          => 'Lang 语言包',
 	'translate'      => '翻译',
 	'translate.save' => '保存翻译',
 	'itemcount'      => '条目数量',

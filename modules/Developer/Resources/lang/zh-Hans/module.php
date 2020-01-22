@@ -1,5 +1,5 @@
-    <?php
-    return [
+<?php
+return [
     'title'             => '模块开发',
     'description'       => '简化模块开发，快速创建模块和相应文件',
     'index'             => '模块列表',
@@ -11,10 +11,10 @@
     'path'              => '模块路径',
     'name.label'        => '名称',
     'name.help'         => '模块的唯一标示符，建立后不允许修改，只允许英文',
-    'plain.label'       => '类型',
-    'plain.help'        => '',
-    'plain.true'        => '简单模块，不创建控制器和视图等文件',
-    'plain.false'       => '完整模块，包含控制器和视图等文件',
+    'style.label'       => '类型',
+    'style.help'        => '',
+    'style.simple'      => '简单模块，不创建控制器和视图等文件',
+    'style.full'        => '完整模块，包含控制器和视图等文件',
     'title.label'       => '标题',
     'title.help'        => '模块显示标题，建议使用语言翻译',
     'description.label' => '描述',
@@ -33,4 +33,4 @@
     'aliases.help'      => '请直接修改 :0 中的 aliases',
     'files.label'       => '全局加载文件',
     'files.help'        => '请直接修改 :0 中的 files',
-    ];
+];

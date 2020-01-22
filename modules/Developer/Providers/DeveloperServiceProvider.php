@@ -7,11 +7,14 @@ use Illuminate\Support\ServiceProvider;
 class DeveloperServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
+     * Register the service provider.
      *
-     * @var bool
+     * @return void
      */
-    protected $defer = false;
+    public function register()
+    {
+        //
+    }
 
     /**
      * Boot the application events.
@@ -24,16 +27,6 @@ class DeveloperServiceProvider extends ServiceProvider
     }    
 
     /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->registerCommands();
-    }
-
-    /**
      * Get the services provided by the provider.
      *
      * @return array
@@ -42,17 +35,5 @@ class DeveloperServiceProvider extends ServiceProvider
     {
         return [];
     }
-
-    /**
-     * 注册命令行
-     * 
-     * @return void
-     */
-    public function registerCommands()
-    {
-        $this->commands([
-            \Modules\Developer\Console\MigrateFilesCommand::class,
-            \Modules\Developer\Console\MakeTableModelCommand::class,
-        ]);
-    }    
+    
 }

@@ -16,8 +16,9 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
     protected $signature = 'module:make-migration-update
                 {module : The module to use}
                 {name : The table name to migrate}
-                {fields_up? : The fields to up}
-                {fields_down? : The fields to down}
+                {--fields_up= : The fields to up}
+                {--fields_down= : The fields to down}
+                {--migrate : Migrate the created file.}                
                 {--force : Force the operation to run when it already exists.}';
 
     /**
@@ -52,10 +53,16 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
     protected $table;
 
     /**
-     * 更新表可以存在多个，增加一个随机字符串
-     * @var [type]
+     * 迁移名称前缀
+     * @var string
      */
-    protected $random;
+    protected $prefix;
+
+    /**
+     * 迁移名称后缀，更新表可以存在多个，增加一个随机字符串
+     * @var string
+     */
+    protected $append;
 
     /**
      * Execute the console command.
@@ -64,8 +71,9 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
      */
     public function handle()
     {
-        $this->table  = strtolower($this->argument('name'));
-        $this->random = date('YmdHis');
+        $this->table  = $this->getTableName();
+        $this->prefix = date('Y_m_d_His');
+        $this->append = date('YmdHis');
 
         parent::handle();        
     }
@@ -79,12 +87,56 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
         // 替换信息
         $this->replace([
             'table_name'  => $this->table,
-            'fields_up'   => $this->argument('fields_up'),
-            'fields_down' => $this->argument('fields_down'),
+            'fields_up'   => $this->getFieldsUp(),
+            'fields_down' => $this->getFieldsDown(),
         ]);
 
         return true;
     }
+
+    /**
+     * 迁移后执行
+     * @return void
+     */
+    public function generated()
+    {
+        if ($this->option('migrate')) {
+
+            $path = $this->getFilePath();
+
+            $this->call('migrate:files', [
+                'files'   => $this->getModulePath($path),
+                '--force' => true,
+            ]);
+        }
+    }
+
+    /**
+     * 获取表名称
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->getNameInput();
+    }
+
+    /**
+     * 获取迁移的字段
+     * @return string
+     */
+    public function getFieldsUp()
+    {
+        return $this->option('fields_up');
+    }    
+
+    /**
+     * 获取回滚的字段
+     * @return string
+     */
+    public function getFieldsDown()
+    {
+        return $this->option('fields_down');
+    }  
 
     /**
      * 存在多个update, 类名随机
@@ -92,7 +144,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
      */
     public function getClassName()
     {
-        return Str::studly("update_{$this->table}_table_{$this->random}");
+        return Str::studly("update_{$this->table}_table_{$this->append}");
     }
     
     /**
@@ -101,6 +153,6 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
      */
     public function getFileName()
     {
-        return date('Y_m_d_His')."_update_{$this->table}_table_{$this->random}.{$this->extension}";
+        return "{$this->prefix}_update_{$this->table}_table_{$this->append}.{$this->extension}";
     }
 }

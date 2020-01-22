@@ -79,7 +79,9 @@ return [
             'routes/admin'   => 'Routes/admin.php',
             'routes/api'     => 'Routes/api.php',
             'routes/front'   => 'Routes/front.php',
-            'routes/console' => 'Routes/console.php',                  
+            'routes/console' => 'Routes/console.php',
+            'gitkeep/asset'  => 'Resources/assets/.gitkeep',
+            'gitkeep/view'   => 'Resources/views/.gitkeep',               
         ]
     ],
 
@@ -116,16 +118,6 @@ return [
                 'view'       => 'api',
             ]
         ],        
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | 生成器定义
-    |--------------------------------------------------------------------------
-    */
-    'generator' => [
-        'default' => [],
-        'plugin'  => [],
     ],
 
     /*

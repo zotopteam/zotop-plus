@@ -4,12 +4,13 @@ namespace Modules\Developer\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Module;
 
 class TableName implements Rule
 {
     /**
-     * 模块名称
+     * 模块
      * @var string
      */
     protected $module;
@@ -21,7 +22,7 @@ class TableName implements Rule
      *
      * @return void
      */
-    public function __construct($module=null)
+    public function __construct($module)
     {
         $this->module = $module;        
     }
@@ -36,12 +37,11 @@ class TableName implements Rule
     public function passes($attribute, $value)
     {
         // 表名必须等于模块名称或者已经模块名称加下划线开头
-        if ($this->module && $module = Module::find($this->module) ) {
-            $moduleName = $module->getLowerName();
-            if (!($value == $moduleName || starts_with($value, $moduleName.'_')) || ends_with($value, '_')) {
-                $this->message = trans('developer::table.name.error', [$moduleName]);
-                return false;                
-            }
+        $moduleName = $this->module->getLowerName();
+        
+        if (!($value == $moduleName || Str::startsWith($value, $moduleName.'_')) || Str::endsWith($value, '_')) {
+            $this->message = trans('developer::table.name.error', [$moduleName]);
+            return false;                
         }
 
         // 检查数据表是否存在

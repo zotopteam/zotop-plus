@@ -19,7 +19,6 @@ class ControllerMakeCommand extends GeneratorCommand
                 {name : The name to use}
                 {--type=frontend : The type of controller,[backend|frontend|api].}
                 {--model= : Create a resource controller from model.}
-                {--lang : Create a lang file for controller.}
                 {--force : Force the operation to run when it already exists.}';
 
     /**
@@ -195,8 +194,8 @@ class ControllerMakeCommand extends GeneratorCommand
     public function generateView($action, $force=false)
     {
         $stub = $this->stub . '/' .$action;
-        $path = $this->getConfigDirs('views').DIRECTORY_SEPARATOR.$this->getNameInput();
-        $path = $path . DIRECTORY_SEPARATOR . $action . '.blade.php';
+        $path = $this->getConfigDirs('views').DIRECTORY_SEPARATOR. $this->getTypeInput("dirs.view");
+        $path = $path . DIRECTORY_SEPARATOR.$this->getNameInput() . DIRECTORY_SEPARATOR . $action . '.blade.php';
 
         $this->generateStubFile($stub, $path, $force);
 

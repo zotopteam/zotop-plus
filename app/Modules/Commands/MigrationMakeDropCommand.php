@@ -2,9 +2,10 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
+use App\Modules\Maker\Table;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class MigrationMakeDropCommand extends GeneratorCommand
 {
@@ -16,7 +17,8 @@ class MigrationMakeDropCommand extends GeneratorCommand
     protected $signature = 'module:make-migration-drop
                 {module : The module to use}
                 {name : The table name to migrate}
-                {fields? : The fields to down}
+                {--fields= : The fields to down}
+                {--migrate : Migrate the created file.}                
                 {--force : Force the operation to run when it already exists.}';
 
     /**
@@ -57,14 +59,21 @@ class MigrationMakeDropCommand extends GeneratorCommand
     protected $fields;
 
     /**
+     * 迁移名称前缀
+     * @var string
+     */
+    protected $prefix;
+
+    /**
      * Execute the console command.
      *
      * @return mixed
      */
     public function handle()
     {
-        $this->table  = strtolower($this->argument('name'));
-        $this->fields = $this->argument('fields');
+        $this->table  = $this->getTableName();
+        $this->fields = $this->getFields();
+        $this->prefix = date('Y_m_d_His');
 
         parent::handle();        
     }   
@@ -89,6 +98,50 @@ class MigrationMakeDropCommand extends GeneratorCommand
     }
 
     /**
+     * 迁移后执行
+     * @return void
+     */
+    public function generated()
+    {
+        if ($this->option('migrate')) {
+
+            $path = $this->getFilePath();
+
+            $this->call('migrate:files', [
+                'files'   => $this->getModulePath($path),
+                '--force' => true,
+            ]);
+        }
+    }
+
+    /**
+     * 获取表名称
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->getNameInput();
+    }
+
+    /**
+     * 获取输入的字段
+     * @return string
+     */
+    public function getFields()
+    {
+        $fields = $this->option('fields');
+
+        if (empty($fields) ) {
+            $table = Table::find($this->getTableName());
+            if ($table->exists()) {
+                $fields = $table->getBlueprints();
+            }
+        }
+
+        return $fields;
+    }
+    
+    /**
      * 存在多个update, 类名随机
      * @return string
      */
@@ -103,6 +156,6 @@ class MigrationMakeDropCommand extends GeneratorCommand
      */
     public function getFileName()
     {
-        return date('Y_m_d_His')."_drop_{$this->table}_table.{$this->extension}";
+        return "{$this->prefix}_drop_{$this->table}_table.{$this->extension}";
     }
 }

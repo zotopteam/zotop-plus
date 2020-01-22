@@ -13,6 +13,8 @@ class $CLASS_NAME$ extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('$TABLE_NAME$');
+        
         Schema::create('$TABLE_NAME$', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();

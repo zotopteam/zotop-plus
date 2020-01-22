@@ -2,9 +2,10 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use App\Modules\Maker\GeneratorCommand;
+use App\Modules\Exceptions\ClassExistedException;
 
 class MigrationMakeCommand extends GeneratorCommand
 {
@@ -48,8 +49,13 @@ class MigrationMakeCommand extends GeneratorCommand
         if ($migration = $this->getMigrationCreatedAsThis()) {
             
             if (! $this->option('force')) {
-                $this->error("A {$this->getClassName()} class already exists. file: {$migration}");
-                return false;
+
+                if ($this->laravel->runningInConsole()) {
+                    $this->error("A {$this->getClassName()} class already exists. file: {$migration}");
+                    return false;                    
+                }
+
+                throw new ClassExistedException("A {$this->getClassName()} class already exists. file: {$migration}");
             }
 
             $this->laravel['files']->delete($migration);

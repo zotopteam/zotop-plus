@@ -29,17 +29,7 @@ class ModuleRequest extends FormRequest
 
             return [
                 'name'  => 'required|alpha|module_exists',
-                'plain' => 'required|integer'
-            ];
-        }
-
-        // 修改时
-        if ( $request->isMethod('PUT')  || $request->isMethod('PATCH') )  {
-            
-            $name = $this->route('name');
-
-            return [
-
+                'style' => 'required'
             ];
         }
 
@@ -64,8 +54,8 @@ class ModuleRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'         => trans('developer::module.name.label'),
-            'type'         => trans('developer::module.type.label'),
+            'name'  => trans('developer::module.name.label'),
+            'style' => trans('developer::module.style.label'),
         ];
     }      
 }

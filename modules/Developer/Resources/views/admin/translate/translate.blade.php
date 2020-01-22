@@ -14,7 +14,7 @@
             <a href="javascript:;" class="btn btn-success js-prompt" data-url="{{route('developer.translate.newkey',[$module, 'filename'=>$filename])}}"  data-prompt="{{trans('developer::translate.key')}}" data-name="key">
                 <i class="fa fa-fw fa-plus"></i> {{trans('developer::translate.key.create')}}
             </a>        
-            @if($keys->count())
+            @if(count($keys))
             <button class="btn btn-primary" type="submit" form="translate-form">
                 <i class="fa fa-fw fa-save"></i> {{trans('developer::translate.translate.save')}}
             </button>
@@ -22,7 +22,7 @@
         </div>           
     </div>
     <div class="main-body scrollable">
-        @if($keys->count())
+        @if(count($keys))
         {form route="['developer.translate.save', $module, 'filename'=>$filename]" id="translate-form" method="post" autocomplete="off"}
         <table class="table table-nowrap table-hover table-sortable">
             <thead>
@@ -44,7 +44,7 @@
                     <td width="10%" class="pl-2 key">
                         <div class="font-weight-bold">{{$key}}</div>
                         <div class="text-xs">
-                            {{$prefix.$key}}
+                            {{$prefix.'.'.$key}}
                         </div>
                     </td>
                     <td class="manage">
@@ -88,7 +88,7 @@
     </div>
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            <i class="fa fa-folder fa-fw mr-2 text-warning"></i> {{Format::path($filepath)}}
+            <i class="fa fa-folder fa-fw mr-2 text-warning"></i> {{$filepath}}
         </div>
     </div>
 </div>

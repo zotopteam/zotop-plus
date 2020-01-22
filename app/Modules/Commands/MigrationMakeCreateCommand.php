@@ -2,9 +2,11 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use App\Modules\Maker\GeneratorCommand;
+use App\Modules\Exceptions\ClassExistedException;
+use Facades\App\Modules\Maker\Table;
 
 class MigrationMakeCreateCommand extends GeneratorCommand
 {
@@ -16,7 +18,8 @@ class MigrationMakeCreateCommand extends GeneratorCommand
     protected $signature = 'module:make-migration-create
                 {module : The module to use}
                 {name : The table name to migrate}
-                {fields? : The fields to up}
+                {--fields= : The fields to up}
+                {--migrate : Migrate the created file.}
                 {--force : Force the operation to run when it already exists.}';
 
     /**
@@ -57,16 +60,23 @@ class MigrationMakeCreateCommand extends GeneratorCommand
     protected $table;
 
     /**
+     * 迁移名称前缀
+     * @var string
+     */
+    protected $prefix;    
+
+    /**
      * Execute the console command.
      *
      * @return mixed
      */
     public function handle()
     {
-        $this->table  = strtolower($this->argument('name'));
-        $this->fields = $this->argument('fields');
+        $this->table  = $this->getTableName();
+        $this->fields = $this->getFields();
+        $this->prefix = date('Y_m_d_His');
 
-        parent::handle();        
+        parent::handle();
     }    
     /**
      * 重载prepare
@@ -82,8 +92,14 @@ class MigrationMakeCreateCommand extends GeneratorCommand
         if ($migrations = $this->mgirationCreated()) {
 
             if (! $this->option('force')) {
-                $this->error('Table\'s migration already exist');
-                return false;          
+
+                if ($this->laravel->runningInConsole()) {
+                    $this->error('Table\'s migration already exist');
+                    return false;
+                }
+
+                throw new ClassExistedException("Table\'s migration already exist");
+         
             }
 
             $this->deleteFiles($migrations);
@@ -96,6 +112,53 @@ class MigrationMakeCreateCommand extends GeneratorCommand
         ]);
 
         return true;
+    }
+
+    /**
+     * 迁移后执行
+     * @return void
+     */
+    public function generated()
+    {
+        if ($this->option('migrate')) {
+
+            $path = $this->getFilePath();
+
+            $this->call('migrate:files', [
+                'files'   => $this->getModulePath($path),
+                '--force' => true,
+            ]);
+        }
+    }
+
+    /**
+     * 获取表名称
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->getNameInput();
+    }
+
+    /**
+     * 获取输入的字段
+     * @return string
+     */
+    public function getFields()
+    {
+        $fields = $this->option('fields');
+
+        // 如果未设置字段，则尝试获取表的字段
+        if (empty($fields) ) {
+            $table = Table::find($this->getTableName());
+            if ($table->exists()) {
+                $fields = $table->getBlueprints();
+                //由于表已经存在，生成迁移后，需要直接迁移生成文件
+                //$this->input->setOption('migrate', true);
+            }
+        }
+
+        return $fields;
     }
 
     /**
@@ -113,7 +176,7 @@ class MigrationMakeCreateCommand extends GeneratorCommand
      */
     public function getFileName()
     {
-        return date('Y_m_d_His')."_create_{$this->table}_table.{$this->extension}";
+        return "{$this->prefix}_create_{$this->table}_table.{$this->extension}";
     }
 
     /**
@@ -127,18 +190,20 @@ class MigrationMakeCreateCommand extends GeneratorCommand
         $pattern    = $path.DIRECTORY_SEPARATOR.'*.'.$this->extension;
         $migrations = $this->laravel['files']->glob($pattern);
 
-        $names = [
-            "create_{$this->table}_table",
-            "update_{$this->table}_table",
-            "drop_{$this->table}_table"
-        ];
-
-        foreach ($migrations as $key => $value) {
-            if (! Str::contains($value, $names)) {
+        foreach ($migrations as $key => $file) {
+            // 获取迁移文件内容
+            $content = $this->laravel['files']->get($file);
+            // 检查迁移文件中是否有 Schema::XXX(’tablename‘ 内容，有则是该表的相关迁移文件
+            if (! preg_match('/Schema::(\w+)\(\''.$this->table.'\'/i', $content, $matches) ) {
                 unset($migrations[$key]);
-            }            
+            }         
         }
 
         return $migrations;
+    }
+
+    protected function getFieldsFromTable(Table $table)
+    {
+
     }
 }

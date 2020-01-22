@@ -40,9 +40,6 @@ class RebootCommand extends Command
         $this->call('module:publish');
         $this->call('theme:publish');
 
-        // 清理缓存
-        $this->call('cache:clear');
-
         // 清理路由缓存和配置缓存
         $this->call('optimize:clear');
 

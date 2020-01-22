@@ -2,11 +2,12 @@
 
 namespace App\Modules\Commands;
 
+use App\Modules\Exceptions\ModuleExistedException;
+use App\Modules\Maker\GeneratorTrait;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
-use App\Modules\Maker\GeneratorTrait;
+use Illuminate\Support\Str;
 
 class ModuleMakeCommand extends Command
 {
@@ -49,8 +50,14 @@ class ModuleMakeCommand extends Command
         if ($this->hasModule()) {
             
             if (! $this->option('force')) {
-                $this->error('Module '.$this->getModuleStudlyName().' already exist!');
-                return;
+
+                if ($this->laravel->runningInConsole()) {
+                    $this->error('Module '.$this->getModuleStudlyName().' already exist!');
+                    return;                    
+                }
+
+                throw new ModuleExistedException('Module '.$this->getModuleStudlyName().' already exist!', 1);
+                
             }
 
             $this->laravel['files']->deleteDirectory($this->getModulePath());

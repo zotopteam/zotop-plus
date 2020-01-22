@@ -7,6 +7,21 @@
         <div class="main-title mr-auto">
             {{$title}}
         </div>
+        <div class="main-action">
+            @if ($module->isInstalled())
+                @if ($module->isEnabled())
+                <a href="javascript:;" data-url="{{route('core.module.disable', [$module])}}" class="btn btn-warning js-post"> <i class="fa fa-times-circle"></i> {{trans('master.disable')}}</a>
+                @else
+                <a href="javascript:;" data-url="{{route('core.module.enable', [$module])}}" class="btn btn-success js-post"> <i class="fa fa-check-circle"></i> {{trans('master.enable')}}</a>            
+                @endif
+                @if ($module->getVersion() < $module->getVersion(true))
+                <a href="javascript:;" data-url="{{route('core.module.upgrade', [$module])}}" class="btn btn-primary js-post"> <i class="fa fa-arrow-up"></i> {{trans('core::module.upgrade')}}</a>                
+                @endif
+                <a href="javascript:;" data-url="{{route('core.module.uninstall', [$module])}}" class="btn btn-danger js-post"> <i class="fa fa-trash"></i> {{trans('core::module.uninstall')}}</a>
+            @else
+                <a href="javascript:;" data-url="{{route('core.module.install', [$module])}}" class="btn btn-success js-post"> <i class="fa fa-wrench"></i> {{trans('core::module.install')}}</a>            
+            @endif
+        </div>           
     </div>
     <div class="main-body scrollable">
 

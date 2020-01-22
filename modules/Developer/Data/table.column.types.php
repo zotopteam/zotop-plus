@@ -6,7 +6,7 @@ $numbers = [
     'smallint',
     'mediumint',
     'bigint',
-    'int',
+    'integer',
 
     'decimal',
     'float',
@@ -19,7 +19,7 @@ $numbers = [
 
 $strings = [
     'char',
-    'varchar',
+    'string',
 
     //'tinytext',
     'text',

@@ -75,12 +75,13 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
     // 模块管理
     $router->group(['prefix' =>'module'], function (Router $router) {
         $router->get('index','ModuleController@index')->name('core.module.index')->middleware('allow:core.module.index');
-        $router->post('enable/{name}','ModuleController@enable')->name('core.module.enable')->middleware('allow:core.module.status');
-        $router->post('disable/{name}','ModuleController@disable')->name('core.module.disable')->middleware('allow:core.module.status');
-        $router->post('install/{name}','ModuleController@install')->name('core.module.install')->middleware('allow:core.module.install');
-        $router->post('uninstall/{name}','ModuleController@uninstall')->name('core.module.uninstall')->middleware('allow:core.module.uninstall');
-        $router->post('delete/{name}','ModuleController@delete')->name('core.module.delete')->middleware('allow:core.module.delete');
-        $router->any('publish/{name?}','ModuleController@publish')->name('core.module.publish')->middleware('allow:core.module.publish');
+        $router->post('enable/{module}','ModuleController@enable')->name('core.module.enable')->middleware('allow:core.module.status');
+        $router->post('disable/{module}','ModuleController@disable')->name('core.module.disable')->middleware('allow:core.module.status');
+        $router->post('install/{module}','ModuleController@install')->name('core.module.install')->middleware('allow:core.module.install');
+        $router->post('upgrade/{module}','ModuleController@upgrade')->name('core.module.upgrade')->middleware('allow:core.module.upgrade');
+        $router->post('uninstall/{module}','ModuleController@uninstall')->name('core.module.uninstall')->middleware('allow:core.module.uninstall');
+        $router->post('delete/{module}','ModuleController@delete')->name('core.module.delete')->middleware('allow:core.module.delete');
+        $router->any('publish/{module?}','ModuleController@publish')->name('core.module.publish')->middleware('allow:core.module.publish');
         $router->any('upload','ModuleController@upload')->name('core.module.upload')->middleware('allow:core.module.upload');      
     });
 

@@ -3,14 +3,14 @@
 @section('content')
 <div class="main scrollable">
 
-    {form route="['developer.command.create', $module, $command]" method="post" class="p-3" autocomplete="off"}
+    {form route="['developer.command.create', $module, $key]" method="post" class="p-3" autocomplete="off"}
 
         <div class="container-fluid">
 
             <div class="form-group">
                 <label for="name" class="form-label required">{{$label}}</label>
                 <div class="form-field">
-                    {field type="text" name="name" pattern="^[a-zA-z]+$" required="required"}
+                    {field type="text" name="name" pattern="^[a-z][a-z0-9]+$" required="required"}
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>

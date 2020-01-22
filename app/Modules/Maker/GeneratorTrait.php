@@ -1,9 +1,10 @@
 <?php
 namespace App\Modules\Maker;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\Lang;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use App\Modules\Exceptions\FileExistedException;
 
 trait GeneratorTrait
 {
@@ -97,7 +98,6 @@ trait GeneratorTrait
      */
     public function getModuleName()
     {
-        return 'test';
         return $this->argument('module');
     }
 
@@ -180,7 +180,7 @@ trait GeneratorTrait
             $stub = $stub.'.stub';
         }
 
-        return __DIR__.'/stubs/'.$stub;
+        return __DIR__.'/Stubs/'.$stub;
     }
 
     /**
@@ -273,8 +273,13 @@ trait GeneratorTrait
         $path = $this->getModulePath($path);
 
         if (! $force && $this->laravel['files']->exists($path)) {
-            $this->warn('Existed: '. $path);
-            return false;
+
+            if ($this->laravel->runningInConsole()) {
+                $this->warn('Existed: '. $path);
+                return false;
+            }
+
+            throw new FileExistedException('Existed: '. $path, 1);
         }
 
         if (! $this->laravel['files']->isDirectory($dir = dirname($path))) {
@@ -318,11 +323,11 @@ trait GeneratorTrait
         $lang = Lang::instance($this->getModuleStudlyName(), $lang);
 
         if ($lang->name($name)->data($data)->save($force)) {
-            $this->info('Created: '.$lang->getLangPath());
+            $this->info('Created: '.$lang->getPath());
             return;
         }
 
-        $this->warn('Existed: '.$lang->getLangPath());
+        $this->warn('Existed: '.$lang->getPath());
     }
 
     /**
@@ -339,11 +344,11 @@ trait GeneratorTrait
         $lang = Lang::instance($this->getModuleStudlyName(), $lang);
 
         if ($lang->data($data)->save($force)) {
-            $this->info('Created: '.$lang->getLangPath());
+            $this->info('Created: '.$lang->getPath());
             return;
         }
 
-        $this->warn('Existed: '.$lang->getLangPath());
+        $this->warn('Existed: '.$lang->getPath());
     }    
 
     /**

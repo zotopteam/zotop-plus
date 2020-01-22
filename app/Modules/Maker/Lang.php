@@ -2,8 +2,8 @@
 
 namespace App\Modules\Maker;
 
-use App\Modules\NotFoundException;
 use Illuminate\Support\Str;
+use App\Modules\Exceptions\ModuleNotFoundException;
 
 
 class Lang
@@ -57,7 +57,7 @@ class Lang
         $this->lang       = $lang;
 
         if (! $this->filesystem->exists($this->getModulePath('module.json'))) {
-            throw new NotFoundException("Module {$this->module} does not exist！");
+            throw new ModuleNotFoundException("Module {$this->module} does not exist！");
         }
     }
 
@@ -79,7 +79,7 @@ class Lang
      */
     public function name($name)
     {
-        $this->name = strtolower($name);
+        $this->name = strtolower($this->filesystem->name($name));
         return $this;
     }  
 
@@ -95,7 +95,7 @@ class Lang
             $this->data = array_merge($this->data, $key);
         }
 
-        if(is_string($key) && !empty($key)) {
+        if(is_string($key)) {
             $this->data = array_merge($this->data, [$key=>$value]);
         }
 
@@ -118,7 +118,7 @@ class Lang
      * 获取语言文件地址
      * @return string
      */
-    public function getLangPath()
+    public function getPath()
     {
         $path = $this->getModulePath($this->config->get('modules.paths.dirs.lang'));
 
@@ -135,7 +135,7 @@ class Lang
      * 获取语言文件内容
      * @return string
      */
-    protected function getLangContent()
+    protected function convert()
     {
         if ($this->name) {
             return $this->convertToArrayString();
@@ -173,7 +173,95 @@ class Lang
     protected function convertToJsonString()
     {
         return json_encode($this->data, JSON_PRETTY_PRINT);
-    }    
+    }
+
+    /**
+     * 检查语言文件是否已经存在
+     * @return bool
+     */
+    public function exists()
+    {
+        $path = $this->getPath();
+        return $this->filesystem->isFile($path);
+    }
+
+    /**
+     * 获取翻译数据
+     * @param  string $key     键名
+     * @param  string $default 默认值
+     * @return mixed
+     */
+    public function get($key=null, $default=null)
+    {
+        $path = $this->getPath();
+
+        if(! $this->filesystem->isFile($path)) {
+            return [];
+        }
+
+        if ($this->filesystem->extension($path) == 'php') {
+            $lang = $this->filesystem->getRequire($path);
+        }
+
+        if ($this->filesystem->extension($path) == 'json') {
+            $lang = json_decode($this->filesystem->get($path), true);
+        }
+
+        $lang = is_array($lang) ? $lang : []; 
+
+        if ($key) {
+            return isset($lang[$key]) ? $lang[$key] : $default;
+        }
+
+        return $lang;
+    }
+
+    /**
+     * 检查是否拥有键名
+     * @param  string  $key 键名
+     * @return boolean
+     */
+    public function has($key)
+    {
+        return collect($this->get())->has($key);
+    }
+
+    /**
+     * 添加项
+     * @param  mixed  $key 键名或者添加的数组
+     * @param  mixed  $value 键值 
+     * @return boolean
+     */
+    public function set($key, $value='')
+    {
+        $this->data = $this->get();
+
+        if (is_string($key)) {
+            $this->data = array_merge($this->data, [$key=>$value]);
+        }
+
+        if (is_array($key)) {
+            $this->data = array_merge($this->data, $key);
+        }
+
+        return $this->save(true);
+    }
+
+    /**
+     * 添加项
+     * @param  mixed  $key 键名或者添加的数组
+     * @return boolean
+     */
+    public function forget($key)
+    {
+        $this->data = $this->get();
+
+        if (isset($this->data[$key])) {
+            unset($this->data[$key]);
+        }
+        
+        return $this->save(true);
+    }
 
     /**
      * 保存
@@ -182,7 +270,7 @@ class Lang
      */
     public function save($force=false)
     {
-        $path = $this->getLangPath();
+        $path = $this->getPath();
 
         if (!$force && $this->filesystem->exists($path)) {
             return false;
@@ -192,8 +280,17 @@ class Lang
             $this->filesystem->makeDirectory($dir, 0775, true);
         }
 
-        $this->filesystem->put($path, $this->getLangContent());
+        $this->filesystem->put($path, $this->convert());
         return true;
+    }
+
+    /**
+     * 删除语言文件
+     * @return boolean
+     */
+    public function delete()
+    {
+        return $this->filesystem->delete($this->getPath());
     }
 
 }

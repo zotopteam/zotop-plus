@@ -2,12 +2,13 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
+use App\Hook\Facades\Action;
+use App\Modules\Facades\Module;
+use App\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Facades\Module;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
-use App\Modules\Routing\AdminController;
+use Illuminate\Support\Facades\File;
 use Modules\Developer\Http\Requests\ModuleRequest;
 
 class ModuleController extends AdminController
@@ -46,15 +47,6 @@ class ModuleController extends AdminController
      */
     public function create()
     {
-        $this->plains = [
-            false => trans('developer::module.plain.false'),
-            true  => trans('developer::module.plain.true'),
-        ];
-
-        $this->module = [
-            'plain' => false
-        ];
-
         return $this->view();
     }
 
@@ -67,12 +59,14 @@ class ModuleController extends AdminController
     public function store(ModuleRequest $request)
     {
         $name  = $request->input('name');
-        $plain = $request->input('plain');
+        $style = $request->input('style');
 
         Artisan::call("module:make", [
             'module'  => $name,
             '--force' => false,
         ]);
+
+        Action::fire("module.make.{$style}", $name);
 
         return $this->success(trans('master.created'),route('developer.module.index'));
     }

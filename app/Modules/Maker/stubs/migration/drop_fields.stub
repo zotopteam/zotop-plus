@@ -24,7 +24,9 @@ class $CLASS_NAME$ extends Migration
     public function down()
     {
         Schema::create('$TABLE_NAME$', function (Blueprint $table) {
-$FIELDS$
+
+            $FIELDS$
+            
         });        
     }
 }
