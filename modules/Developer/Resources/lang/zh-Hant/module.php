@@ -25,9 +25,9 @@ return [
     'email.label'       => '電子郵件',
     'homepage.label'    => '主頁',
     'providers.label'   => '服務提供者',
-    'providers.help'    => '請直接修改 :0\module.json中的providers',
+    'providers.help'    => '請直接修改 :0\\module.json中的providers',
     'aliases.label'     => '別名',
-    'aliases.help'      => '請直接修改 :0\module.json中的aliases',
+    'aliases.help'      => '請直接修改 :0\\module.json中的aliases',
     'files.label'       => '全域加載檔案',
-    'files.help'        => '請直接修改 :0\module.json中的files',
+    'files.help'        => '請直接修改 :0\\module.json中的files',
 ];
