@@ -50,6 +50,7 @@ class CreateContentTable1542556465 extends Migration
 	 */
 	public function down()
 	{
+		Schema::disableForeignKeyConstraints();
 		Schema::drop('content');
 	}
 

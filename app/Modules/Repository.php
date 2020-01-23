@@ -19,7 +19,7 @@ class Repository
     protected $app;
 
     /**
-     * __construct
+     * 初始化
      * @param Application $app
      */
     public function __construct(Application $app)
@@ -31,27 +31,33 @@ class Repository
      * 扫描模块
      * @return array
      */
-    public function scan()
+    protected function scan()
     {
         static $modules = [];
 
         if (empty($modules)) {
 
-            $path = $this->app['config']->get('modules.paths.modules');
-            $path = Str::endsWith($path, '/*') ? $path : Str::finish($path, '/*');
-
-            $manifests = $this->app['files']->glob("{$path}/module.json");
+            // 获取全部模块
+            $path      = $this->app['config']->get('modules.paths.modules');
+            $manifests = $this->app['files']->glob("{$path}/*/module.json");
 
             foreach ($manifests as $manifest) {
-                $module = new Module($this->app, $manifest);
-                if ($key = $module->getLowerName()) {
-                    $modules[$key] = $module;
+                if ($attributes = json_decode($this->app['files']->get($manifest), true)){
+                    $modules[$manifest] = $attributes;
                 }
             }
 
-        }
+            // 按照json中的 order 值 asc 排序
+            uasort($modules, function ($a, $b) {
+                if ($a['order'] == $b['order']) {
+                    return 0;
+                }
+                return $a['order'] > $b['order'] ? 1 : -1;
+            });
 
-        return $modules;
+        }       
+
+        return $modules;        
     }
 
     /**
@@ -60,15 +66,14 @@ class Repository
      */
     public function all()
     {
-        $modules = $this->scan();
+        $modules = [];
 
-        // 按照json中的 order 值 asc 排序
-        uasort($modules, function ($a, $b) {
-            if ($a->order == $b->order) {
-                return 0;
+        foreach ($this->scan() as $manifest => $attributes) {
+            $module = new Module($this->app, dirname($manifest), $attributes);
+            if ($key = $module->getLowerName()) {
+                $modules[$key] = $module;
             }
-            return $a->order > $b->order ? 1 : -1;
-        });
+        }
 
         return $modules;
     }
@@ -128,7 +133,7 @@ class Repository
      */
     public function has(string $name)
     {
-        return array_key_exists($name, $this->scan());
+        return array_key_exists($name, $this->all());
     }
 
     /**
@@ -138,7 +143,7 @@ class Repository
      */
     public function find(string $name)
     {
-        return Arr::get($this->scan(), strtolower($name));
+        return Arr::get($this->all(), strtolower($name));
     }
 
     /**

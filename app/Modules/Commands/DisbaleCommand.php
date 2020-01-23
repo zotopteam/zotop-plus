@@ -51,6 +51,8 @@ class DisbaleCommand extends Command
             }
 
             $module->disable();
+            
+            $this->call('route:clear');
             $this->info("Module [{$module}] disable successfully.");
             return;
         }

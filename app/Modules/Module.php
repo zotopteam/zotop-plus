@@ -24,12 +24,6 @@ class Module
     protected $app;
 
     /**
-     * The module manifest
-     * @var string
-     */
-    public $manifest;
-
-    /**
      * The module path
      * @var string
      */
@@ -51,17 +45,22 @@ class Module
      * __construct
      * @param Application $app [description]
      */
-    public function __construct(Application $app, $manifest)
+    /**
+     * 初始化
+     * @param Application $app
+     * @param string      $path       模块路径
+     * @param array       $attributes 模块属性
+     */
+    public function __construct(Application $app, $path, $attributes)
     {
         $this->app        = $app;
         $this->activator  = $app['modules.activator'];
-        $this->manifest   = $manifest;
-        $this->path       = dirname($manifest);        
-        $this->attributes = json_decode($app['files']->get($manifest), true);
+        $this->path       = $path;        
+        $this->attributes = $attributes;
     }
 
     /**
-     * 获取module.json数据
+     * 获取模块属性
      * @param  string $key     键名
      * @param  mixed $default 默认值
      * @return mixed
@@ -72,7 +71,7 @@ class Module
     }
 
     /**
-     * Get name in lower case.
+     * 获取模块小写名称
      *
      * @return string
      */
@@ -81,7 +80,7 @@ class Module
         return strtolower($this->name);
     }
     /**
-     * Get name in studly case.
+     * 获取模块驼峰名称
      *
      * @return string
      */
@@ -90,7 +89,7 @@ class Module
         return Str::studly($this->name);
     }
     /**
-     * Get name in snake case.
+     * 获取模块蛇式名称
      *
      * @return string
      */
@@ -110,7 +109,7 @@ class Module
 
         if ($translate) {
 
-            // 禁用的模块不会自动加载翻译文件，此次加载
+            // 禁用的模块不会自动加载翻译文件，此次加载，TODO：加载json翻译有问题，无法临时加载
             if ($this->isDisabled()) {
                 $this->registerTranslation();
             }
@@ -158,8 +157,8 @@ class Module
     }
 
     /**
-     * 获取版本
-     * @param  boolean $original true=原始的版本号 false=安装的版本号
+     * 获取模块设置
+     * @param  boolean $original true=原始设置 false=当前设置
      * @return array
      */
     public function getConfig($original=false)
@@ -193,11 +192,11 @@ class Module
         return $this->activator->setConfig($this, $config);
     }
 
-
     /**
-     * 获取路径
-     *
-     * @return string
+     * 获取模块路径
+     * @param  string  $subpath  子路径或者路径键名
+     * @param  boolean $isDirKey 是否为子路径键名
+     * @return sting
      */
     public function getPath($subpath=null, $isDirKey=false)
     {
@@ -245,7 +244,7 @@ class Module
      */
     protected function dispatch($event)
     {
-        $this->app['events']->dispatch(sprintf('modules.%s.' . $event, $this->getLowerName()), [$this]);
+        $this->app['events']->dispatch(sprintf('modules.%s.' . $event, $this->getLowerName()), [$this]);     
     }    
 
     /**
@@ -255,9 +254,7 @@ class Module
     public function enable()
     {   
         $this->dispatch('enabling');
-
         $this->activator->enable($this);
-
         $this->dispatch('enabled');
     }
 
@@ -268,9 +265,7 @@ class Module
     public function disable()
     {
         $this->dispatch('disabling');
-
         $this->activator->disable($this);
-
         $this->dispatch('disabled');
     }
 
@@ -299,6 +294,7 @@ class Module
         ]);
 
         $this->activator->install($this);
+
         $this->dispatch('installed');
     }
 
@@ -448,7 +444,7 @@ class Module
     public function registerFiles()
     {
         foreach ($this->attribute('files', []) as $file) {
-            include $this->path . '/' . $file;
+            include $this->getPath($file);
         }              
     }
 
@@ -470,7 +466,7 @@ class Module
      */
     protected function registerTranslation()
     {
-        if (is_dir($path = $this->path . DIRECTORY_SEPARATOR . $this->app['config']->get('modules.paths.dirs.lang'))) {
+        if (is_dir($path = $this->getPath('lang', true))) {
             $this->app['translator']->addJsonPath($path);
             $this->app['translator']->addNamespace($this->getLowerName(), $path);
         }

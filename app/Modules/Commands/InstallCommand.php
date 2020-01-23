@@ -45,8 +45,11 @@ class InstallCommand extends Command
         $module = $this->laravel['modules']->findOrFail($this->argument('module'));
 
         if (! $module->isInstalled()) {
+            
             $module->seed = $this->option('seed');
             $module->install();
+            
+            $this->call('route:clear');            
             $this->info("Module [{$module}] install successfully.");
             return;
         }

@@ -44,7 +44,10 @@ class UninstallCommand extends Command
         $module = $this->laravel['modules']->findOrFail($this->argument('module'));
 
         if ($module->isInstalled()) {
+            
             $module->uninstall();
+            
+            $this->call('route:clear');            
             $this->info("Module [{$module}] uninstall successfully.");
             return;
         }
