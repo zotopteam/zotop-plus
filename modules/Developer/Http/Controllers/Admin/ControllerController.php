@@ -86,9 +86,8 @@ class ControllerController extends AdminController
     {
         $namespace  = config('modules.namespace');
         $module     = Module::findOrFail($module)->getStudlyName();      
-        $controller = Str::finish($controller, 'Controller');        
+        //$controller = Str::finish($controller, 'Controller');        
         $path       = str_replace('/', '\\', $this->types($type, 'path'));
-
         return "{$namespace}\\{$module}\\{$path}\\{$controller}";
     }
 
@@ -99,7 +98,7 @@ class ControllerController extends AdminController
      */
     private function getRealName($controller)
     {
-        return Str::finish($controller, 'Controller');
+        return $controller;
     }
 
     /**
@@ -109,7 +108,7 @@ class ControllerController extends AdminController
      */
     private function getBaseName($controller)
     {
-        return strtolower(Str::before($controller, 'Controller'));
+        return strtolower(Str::replaceLast('Controller', '', $controller));
     }
 
     /**
@@ -182,7 +181,6 @@ class ControllerController extends AdminController
      */
     public function route($module, $type, $controller)
     {
-
         $class = $this->getFullName($module, $type, $controller);
 
         $router   = [];

@@ -61,11 +61,13 @@ class ModuleController extends AdminController
         $name  = $request->input('name');
         $style = $request->input('style');
 
+        // 生成模块
         Artisan::call("module:make", [
             'module'  => $name,
             '--force' => false,
         ]);
 
+        // 生成钩子
         Action::fire("module.make.{$style}", $name);
 
         return $this->success(trans('master.created'),route('developer.module.index'));

@@ -286,60 +286,6 @@ if (! function_exists('image')) {
     }
 }
 
-// if (! function_exists('module')) {
-
-//     /**
-//      * 获取全部module或者某个module信息
-//      * 
-//      * @param  string $moduleName 模块名称
-//      * @return mixed 
-//      */
-//     function module($moduleName='')
-//     {
-//         static $modules = [];
-
-//         if (empty($modules)) {
-           
-//             // 获取全部模块
-//             $modules = \Module::all();
-
-//             // 默认安装顺序排序
-//             $direction = 'asc';
-
-//             // 模块排序
-//             uasort($modules, function($a, $b) use ($direction) {
-
-//                 if ($a->order == $b->order) {
-//                     return 0;
-//                 }
-
-//                 if ($direction == 'desc') {
-//                     return $a->order < $b->order ? 1 : -1;
-//                 }
-
-//                 return $a->order > $b->order ? 1 : -1;
-//             });   
-
-
-//             foreach ($modules as $name=>$module) {
-                
-//                 $namespace = strtolower($name);
-
-//                 // 加载未启用模块语言包
-//                 if ( !$module->active ) {
-//                     app('translator')->addNamespace($namespace, $module->getPath() . '/Resources/lang');
-//                 }
-
-//                 // 标题和描述语言化
-//                 $module->title       = trans($module->title);
-//                 $module->description = trans($module->description);                   
-//             }
-//         }
-
-//         return $moduleName ? $modules[$moduleName] : $modules;        
-//     }
-// }
-
 
 
 

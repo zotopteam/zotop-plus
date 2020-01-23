@@ -5,5 +5,5 @@ use Illuminate\Routing\Router;
 $router->group(['prefix' =>'translator','module'=>'translator'], function (Router $router) {
     
     // 首页
-    $router->get('/', 'IndexController@index')->name('translator.index');
+    //$router->get('/', 'IndexController@index')->name('translator.index');
 });

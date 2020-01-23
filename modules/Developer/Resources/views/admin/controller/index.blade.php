@@ -44,7 +44,7 @@
                         </div>
                     </td>
                     <td class="manage text-right">
-                        <a class="manage-item js-open" href="{{route('developer.controller.route',[$module, $type, basename($file,'.php')])}}" data-width="80%" data-height="60%">
+                        <a class="manage-item js-open" href="{{route('developer.controller.route',[$module, $type, File::name($file)])}}" data-width="80%" data-height="60%">
                             <i class="fa fa-fw fa-anchor"></i> {{trans('developer::controller.route')}}
                         </a>                        
                     </td>
