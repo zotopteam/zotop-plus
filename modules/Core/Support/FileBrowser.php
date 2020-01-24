@@ -148,7 +148,7 @@ class FileBrowser
         $files = [];
         foreach (File::files($this->realpath) as $realpath) {
             $name   = $realpath->getFileName();
-            $size   = Format::size($realpath->getSize());
+            $size   = size_format($realpath->getSize());
             $time   = Carbon::parse($realpath->getMTime());
             $path   = path_base($realpath);
             $mime   = File::mime($realpath);
@@ -169,7 +169,6 @@ class FileBrowser
             $url = '';
             if (starts_with($realpath, public_path())) {
                 $url = str_after($realpath, public_path());
-                $url = Format::url($url);
             }
 
             // 获取类型名称

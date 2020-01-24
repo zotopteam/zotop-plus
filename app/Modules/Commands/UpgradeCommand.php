@@ -48,6 +48,7 @@ class UpgradeCommand extends Command
             $module->seed = $this->option('seed');
             $module->upgrade();
             $this->info("Module [{$module}] upgrade successfully.");
+            $this->call('route:clear');  
             return;
         }
 

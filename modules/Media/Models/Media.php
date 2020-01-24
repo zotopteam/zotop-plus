@@ -181,7 +181,7 @@ class Media extends Model
      */
     public function getSizeHumanAttribute()
     {
-        return $this->size ? Format::size($this->size) : null;
+        return $this->size ? size_format($this->size) : null;
     }
 
     /**

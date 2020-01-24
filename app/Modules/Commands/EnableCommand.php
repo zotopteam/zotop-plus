@@ -52,8 +52,8 @@ class EnableCommand extends Command
 
             $module->enable();
             
-            $this->call('route:clear');            
             $this->info("Module [{$module}] enable successfully.");
+            $this->call('route:clear');  
             return;
         }
 

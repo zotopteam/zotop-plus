@@ -47,8 +47,8 @@ class UninstallCommand extends Command
             
             $module->uninstall();
             
-            $this->call('route:clear');            
             $this->info("Module [{$module}] uninstall successfully.");
+            $this->call('route:clear');  
             return;
         }
 

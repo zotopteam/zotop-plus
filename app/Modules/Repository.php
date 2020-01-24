@@ -19,6 +19,12 @@ class Repository
     protected $app;
 
     /**
+     * 实例化的模块数组
+     * @var array
+     */
+    protected $modules = [];
+
+    /**
      * 初始化
      * @param Application $app
      */
@@ -28,7 +34,7 @@ class Repository
     }
 
     /**
-     * 扫描模块
+     * 扫描模块，获取模块原始数据
      * @return array
      */
     protected function scan()
@@ -37,13 +43,19 @@ class Repository
 
         if (empty($modules)) {
 
-            // 获取全部模块
+            // 扫描模块目录，获取全部模块数据
             $path      = $this->app['config']->get('modules.paths.modules');
             $manifests = $this->app['files']->glob("{$path}/*/module.json");
 
             foreach ($manifests as $manifest) {
-                if ($attributes = json_decode($this->app['files']->get($manifest), true)){
-                    $modules[$manifest] = $attributes;
+                if ($attributes = json_decode($this->app['files']->get($manifest), true)) {
+                    $name  = strtolower($attributes['name']);
+                    $order = floatval($attributes['order']);
+                    $modules[$name] = [
+                        'path'       => dirname($manifest),
+                        'order'      => $order,
+                        'attributes' => $attributes,
+                    ];
                 }
             }
 
@@ -61,21 +73,19 @@ class Repository
     }
 
     /**
-     * 获取排序后的全部模块
+     * 获取实例化的全部模块
      * @return array
      */
     public function all()
     {
-        $modules = [];
-
-        foreach ($this->scan() as $manifest => $attributes) {
-            $module = new Module($this->app, dirname($manifest), $attributes);
-            if ($key = $module->getLowerName()) {
-                $modules[$key] = $module;
+        // 第一次获取全部模块时，填充全局数组
+        if (empty($this->modules)) {
+            foreach ($this->scan() as $name => $module) {
+                $this->modules[$name] = new Module($this->app, $module['path'], $module['attributes']);
             }
         }
 
-        return $modules;
+        return $this->modules;
     }
 
     /**
@@ -133,7 +143,7 @@ class Repository
      */
     public function has(string $name)
     {
-        return array_key_exists($name, $this->all());
+        return array_key_exists(strtolower($name), $this->all());
     }
 
     /**
@@ -155,11 +165,10 @@ class Repository
      */
     public function findOrFail($name)
     {
-        $module = $this->find($name);
-
-        if ($module !== null) {
+        if ($module = $this->find($name)) {
             return $module;
         }
+
         throw new ModuleNotFoundException("Module [{$name}] does not exist!");
     }
 
@@ -176,9 +185,7 @@ class Repository
 
         list($module, $file) = explode('::', $name);
 
-        $module = $this->findOrFail($module);
-
-        if ($module) {
+        if ($module = $this->findOrFail($module)) {
             $data = $module->data($file, $args, $default);
         }
 
@@ -195,9 +202,7 @@ class Repository
     {
         list($module, $url) = explode(':', $asset);
 
-        $module = $this->findOrFail($module);
-
-        if ($module) {
+        if ($module = $this->findOrFail($module)) {
             return $module->asset($url, $version);
         }
 
