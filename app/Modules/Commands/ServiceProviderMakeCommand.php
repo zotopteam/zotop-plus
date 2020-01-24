@@ -15,7 +15,8 @@ class ServiceProviderMakeCommand extends GeneratorCommand
      */
     protected $signature = 'module:make-provider
                 {module : The module to use}
-                {name : The name to use}
+                {name? : The name to use}
+                {--type=plain : The type of provider,allow: plain, event, route}
                 {--force : Force the operation to run when it already exists.}';
 
     /**
@@ -42,6 +43,52 @@ class ServiceProviderMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $stub = 'provider';
-  
+ 
+    /**
+     * 生成前准备
+     * @return boolean
+     */  
+    public function prepare()
+    {
+        $this->stub = 'provider/'.$this->getTypeInput();
 
+        return true;
+    }
+
+    /**
+     * 路由服务容器固定名称为 RouteServiceProvider
+     * @return string
+     */
+    public function getNameInput()
+    {
+        $name = $this->argument('name');
+
+        if (empty($name)) {
+
+            // 如果是事件和路由服务，默认名称为类型名称，否则为模块名称
+            if (in_array($this->getTypeInput(), ['event', 'route'])) {
+                $name = $this->getTypeInput();
+            } else {
+                $name = $this->getModuleName();
+            }
+
+        }
+
+        return strtolower($name);
+    }   
+
+    /**
+     * 获取输入的类型，支持,常规=plain, 事件=event, 路由=route
+     * @return string
+     */
+    public function getTypeInput()
+    {
+        $type = strtolower($this->option('type'));
+
+        if (! in_array($type, ['event', 'route'])) {
+            return 'plain';
+        }
+
+        return $type;
+    }
 }

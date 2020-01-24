@@ -130,11 +130,11 @@ class ModuleMakeCommand extends Command
     {
         $this->call('module:make-provider', [
             'module' => $this->getModuleStudlyName(),
-            'name'   => $this->getModuleLowerName(),
         ]);
 
-        $this->call('module:make-route-provider', [
+        $this->call('module:make-provider', [
             'module' => $this->getModuleStudlyName(),
+            '--type' => 'route',
         ]);
 
     }

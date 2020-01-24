@@ -41,13 +41,15 @@ class SeederMakeCommand extends GeneratorCommand
 
 
     /**
-     * 生成前准备
-     * @return boolean
+     * Execute the console command.
+     *
+     * @return mixed
      */
-    public function prepare()
+    public function handle()
     {
         $this->appendName = $this->option('master') ? 'DatabaseSeeder' : 'TableSeeder';
 
-        return true;
-    }
+        parent::handle();
+    }    
+
 }

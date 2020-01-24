@@ -10,7 +10,7 @@
             <div class="form-group">
                 <label for="name" class="form-label required">{{$label}}</label>
                 <div class="form-field">
-                    {field type="text" name="name" pattern="^[a-z][a-z0-9]+$" required="required"}
+                    {field type="text" name="name" pattern="^[a-zA-Z][a-zA-Z0-9]+$" required="required"}
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -18,7 +18,11 @@
                     <span class="form-help">{{$help}}</span>                     
                     @endif
                 </div>                      
-            </div>                                            
+            </div>
+
+            @foreach ($options as $option)
+                @include($option)
+            @endforeach                                          
                        
         </div>
 
@@ -36,6 +40,11 @@
         $('form.form').submit();
         return false;
     };
+
+    // 对话框高度
+    @if ($count = count($options))
+        currentDialog.height(350);
+    @endif
 
 </script>
 @endpush

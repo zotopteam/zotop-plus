@@ -282,22 +282,25 @@ trait GeneratorTrait
             throw new FileExistedException('Existed: '. $path, 1);
         }
 
-        if (! $this->laravel['files']->isDirectory($dir = dirname($path))) {
-            $this->laravel['files']->makeDirectory($dir, 0775, true);
+        if ($content = $this->renderStub($stub)) {
+
+            // 自动创建不存在的目录
+            if (! $this->laravel['files']->isDirectory($dir = dirname($path))) {
+                $this->laravel['files']->makeDirectory($dir, 0775, true);
+            }
+
+            // 替换json文件中的斜线为双斜线
+            if (Str::endsWith($path, '.json')) {
+                $content = str_replace('\\', '\\\\', $content);
+            }
+
+            $this->laravel['files']->put($path, $content);
+
+            $this->info('Created: '.$path);
+            return true;
         }
 
-        $content = $this->renderStub($stub);
-
-        // 替换json文件中的斜线为双斜线
-        if (Str::endsWith($path, '.json')) {
-            $content = str_replace('\\', '\\\\', $content);
-        }
-
-        $this->laravel['files']->put($path, $content);
-
-        $this->info('Created: '.$path);
-
-        return true;
+        return false;
     }
 
     /**

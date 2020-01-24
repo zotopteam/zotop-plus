@@ -21,7 +21,7 @@ class CommandController extends AdminController
      * @param  string $key
      * @return mixed
      */
-    private function commands($key, $subkey=null)
+    private function commands($key, $subkey=null, $default=null)
     {
         static $commands = [];
 
@@ -31,7 +31,7 @@ class CommandController extends AdminController
 
         $key = $subkey ? $key.'.'.$subkey : $key;
 
-        return Arr::get($commands, $key);
+        return Arr::get($commands, $key, $default);
     }
 
 
@@ -48,7 +48,7 @@ class CommandController extends AdminController
         $this->dir     = $this->commands($key, 'dir');
         $this->command = $this->commands($key, 'command');
         $this->help    = $this->commands($key, 'help');
-        
+
         $this->key     = $key;
         $this->module  = Module::findOrFail($module);
         $this->path    = $this->module->getPath($this->dir);
@@ -69,15 +69,19 @@ class CommandController extends AdminController
         // 表单提交时
         if ($request->isMethod('POST')) {
             
-            $name  = $request->input('name');
+            $command    = $this->commands($key, 'command');
 
-            $command = $this->commands($key, 'command');
+            $parameters = [
+                'module'  => $module,
+                'name'    => $request->input('name'),             
+            ];
+
+            foreach ($this->commands($key, 'options', []) as $option => $view) {
+                $parameters[$option] = $request->input($option);   
+            }
 
             try {
-                Artisan::call($command, [
-                    'module'  => $module,
-                    'name'    => $name,
-                ]);
+                Artisan::call($command, $parameters);
                 return $this->success(trans('master.saved'), route('developer.command.index', [$module, $key]));
             } catch (FileExistedException $e) {
                 return $this->error(trans('master.existed', [$name]));
@@ -86,11 +90,13 @@ class CommandController extends AdminController
         }
 
 
-        $this->title  = trans('master.create');
-        $this->module = Module::findOrFail($module);
-        $this->key    = $key;
-        $this->label  = $this->commands($key, 'name.label');
-        $this->help   = $this->commands($key, 'name.help');
+        $this->title   = trans('master.create');
+        $this->module  = Module::findOrFail($module);
+        $this->key     = $key;
+        $this->options = $this->commands($key, 'options', []);
+        $this->label   = $this->commands($key, 'name.label');
+        $this->help    = $this->commands($key, 'name.help');
+
 
         return $this->view();
     }    

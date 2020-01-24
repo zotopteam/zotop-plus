@@ -6,6 +6,7 @@ return [
         'command' => 'module:make-model',
         'name'    => ['label'=>trans('developer::command.model.name.label'), 'help'=>trans('developer::command.model.name.help')],
         'dir'     => config('modules.paths.dirs.model'),
+        'options' => ['--table'=>'developer::command.options.model_table'],
         'help'    => trans('developer::command.model.help'),
     ],    
     'console' => [
@@ -31,11 +32,13 @@ return [
         'dir'     => config('modules.paths.dirs.middleware'),
         'help'    => trans('developer::command.middleware.help'),
     ],
+    // -type
     'provider' => [
         'title'   => trans('developer::command.provider.title'),
         'icon'    => 'fa fa-user-secret',
         'command' => 'module:make-provider',
         'name'    => ['label'=>trans('developer::command.provider.name.label'), 'help'=>trans('developer::command.provider.name.help')],
+        'options' => ['--type'=>'developer::command.options.provider_type'],
         'dir'     => config('modules.paths.dirs.provider'),
         'help'    => trans('developer::command.provider.help'),
     ],    
@@ -52,6 +55,7 @@ return [
         'icon'    => 'fa fa-headphones',
         'command' => 'module:make-listener',
         'name'    => ['label'=>trans('developer::command.listener.name.label'), 'help'=>trans('developer::command.listener.name.help')],
+        'options' => ['--event'=>'developer::command.options.listener_event','--queued'=>'developer::command.options.listener_queued'],
         'dir'     => config('modules.paths.dirs.listener'),
     ],
     // --sync 属性
@@ -60,6 +64,7 @@ return [
         'icon'    => 'fa fa-tasks',
         'command' => 'module:make-job',
         'name'    => ['label'=>trans('developer::command.job.name.label'), 'help'=>trans('developer::command.job.name.help')],
+        'options' => ['--sync'=>'developer::command.options.job_sync'],
         'dir'     => config('modules.paths.dirs.jobs'),
     ],       
     'factory' => [
@@ -75,6 +80,7 @@ return [
         'icon'    => 'fa fa-seedling',
         'command' => 'module:make-seeder',
         'name'    => ['label'=>trans('developer::command.seeder.name.label'), 'help'=>trans('developer::command.seeder.name.help')],
+        'options' => ['--master'=>'developer::command.options.seeder_master'],
         'dir'     => config('modules.paths.dirs.seeder'),
     ],    
     'rule' => [
