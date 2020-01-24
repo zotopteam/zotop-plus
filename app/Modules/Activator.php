@@ -35,15 +35,15 @@ class Activator
 
     public function __construct(Application $app)
     {
-        $this->app = $app;
+        $this->app      = $app;
         $this->cacheKey = $this->app['config']->get('modules.cache.key').'-activator';
-        $this->modules = $this->modules();
+        $this->modules  = $this->modules();
     }
 
     /**
      * 从缓存中获取全部模块或者模块信息
-     * @param  [type] $key [description]
-     * @return [type]      [description]
+     * @param  string $key 键名
+     * @return mixed
      */
     public function modules($key=null)
     {
@@ -73,7 +73,7 @@ class Activator
 
         if (Schema::hasTable('modules')) {
             $modules = DB::table('modules')->get()->keyBy('module')->transform(function($item){
-                $item->config = json_decode($item->config, true);
+                $item->config   = json_decode($item->config, true);
                 $item->disabled = (bool) $item->disabled;
                 return (array) $item;
             })->toArray();
@@ -148,7 +148,7 @@ class Activator
     public function setConfig(Module $module, array $data=[])
     {
         // 本地设置
-        $config = $module->getConfig(true);
+        $config = $module->getOriginalConfig();
 
         //合并当前设置
         $current  = $module->getConfig();
@@ -180,8 +180,8 @@ class Activator
     {
         DB::table('modules')->insert([
             'module'     => $module->getLowerName(),
-            'version'    => $module->getVersion(true),
-            'config'     => json_encode($module->getConfig(true)),
+            'version'    => $module->getOriginalVersion(),
+            'config'     => json_encode($module->getOriginalConfig()),
             'created_at' => now()->format('Y-m-d H:i:s'),
             'updated_at' => now()->format('Y-m-d H:i:s'),
         ]);
@@ -242,7 +242,7 @@ class Activator
 
         // 更新版本信息
         return $this->update($module, [
-            'version'    => $module->getVersion(true)           
+            'version' => $module->getOriginalVersion()          
         ]);
     }
 

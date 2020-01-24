@@ -14,7 +14,7 @@
                 @else
                 <a href="javascript:;" data-url="{{route('core.module.enable', [$module])}}" class="btn btn-success js-post"> <i class="fa fa-check-circle"></i> {{trans('master.enable')}}</a>            
                 @endif
-                @if ($module->getVersion() < $module->getVersion(true))
+                @if ($module->getVersion() < $module->getOriginalVersion())
                 <a href="javascript:;" data-url="{{route('core.module.upgrade', [$module])}}" class="btn btn-primary js-post"> <i class="fa fa-arrow-up"></i> {{trans('core::module.upgrade')}}</a>                
                 @endif
                 <a href="javascript:;" data-url="{{route('core.module.uninstall', [$module])}}" class="btn btn-danger js-post"> <i class="fa fa-trash"></i> {{trans('core::module.uninstall')}}</a>
@@ -55,7 +55,7 @@
             <tr>
                 <td class="left" width="15%">{{trans('developer::module.version.label')}}</td>
                 <td class="right">
-                    {{$module->getVersion(true)}}
+                    {{$module->getOriginalVersion()}}
                     <a href="javascript:;" title="{{trans('master.edit')}}" class="btn btn-sm js-prompt" data-url="{{route('developer.module.update',[$module,'version'])}}" data-value="{{$module->version}}" data-prompt="{{trans('developer::module.version.label')}}">
                         <i class="fa fa-edit"></i> {{trans('master.edit')}}
                     </a>
@@ -101,8 +101,8 @@
             <tr>
                 <td class="left" width="15%">{{trans('developer::module.seeders.label')}}</td>
                 <td class="right">
-                    @if ($module->getSeeders())
-                        @foreach($module->getSeeders() as $k=>$v)
+                    @if ($seeders = $module->getSeeders())
+                        @foreach($seeders as $k=>$v)
                         <div class="py-1">{{$v}}</div>
                         @endforeach
                     @else
@@ -115,8 +115,8 @@
             <tr>
                 <td class="left" width="15%">{{trans('developer::module.providers.label')}}</td>
                 <td class="right">
-                    @if ($module->getProviders())
-                        @foreach($module->getProviders() as $k=>$v)
+                    @if ($providers = $module->getProviders())
+                        @foreach($providers as $k=>$v)
                         <div class="py-1">{{$v}}</div>
                         @endforeach
                     @else
@@ -129,9 +129,9 @@
             <tr>
                 <td class="left" width="15%">{{trans('developer::module.aliases.label')}}</td>
                 <td class="right">
-                    @if ($module->getAliases())
+                    @if ($aliases = $module->getAliases())
                     <table class="table table-sm table-inside bg-transparent">
-                        @foreach($module->getAliases() as $k=>$v)
+                        @foreach($aliases as $k=>$v)
                         <tr>
                             <td class="px-0 border-0">{{$k}}</td>
                             <td class="border-0">{{$v}}</td>
@@ -148,9 +148,9 @@
             <tr>
                 <td class="left" width="15%">{{trans('developer::module.files.label')}}</td>
                 <td class="right">
-                    @if ($module->files)
+                    @if ($files = $module->getFiles())
                     <table class="table table-sm table-inside bg-transparent">
-                        @foreach($module->files as $k=>$v)
+                        @foreach($files as $k=>$v)
                         <tr>
                             <td class="px-0 border-0">{{$v}}</td>
                         </tr>

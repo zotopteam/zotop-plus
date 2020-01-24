@@ -39,35 +39,31 @@ class Repository
      */
     protected function scan()
     {
-        static $modules = [];
+        $modules = [];
 
-        if (empty($modules)) {
+        // 扫描模块目录，获取全部模块数据
+        $path      = $this->app['config']->get('modules.paths.modules');
+        $manifests = $this->app['files']->glob("{$path}/*/module.json");
 
-            // 扫描模块目录，获取全部模块数据
-            $path      = $this->app['config']->get('modules.paths.modules');
-            $manifests = $this->app['files']->glob("{$path}/*/module.json");
-
-            foreach ($manifests as $manifest) {
-                if ($attributes = json_decode($this->app['files']->get($manifest), true)) {
-                    $name  = strtolower($attributes['name']);
-                    $order = floatval($attributes['order']);
-                    $modules[$name] = [
-                        'path'       => dirname($manifest),
-                        'order'      => $order,
-                        'attributes' => $attributes,
-                    ];
-                }
+        foreach ($manifests as $manifest) {
+            if ($attributes = json_decode($this->app['files']->get($manifest), true)) {
+                $name  = strtolower($attributes['name']);
+                $order = floatval($attributes['order']);
+                $modules[$name] = [
+                    'path'       => dirname($manifest),
+                    'order'      => $order,
+                    'attributes' => $attributes,
+                ];
             }
+        }
 
-            // 按照json中的 order 值 asc 排序
-            uasort($modules, function ($a, $b) {
-                if ($a['order'] == $b['order']) {
-                    return 0;
-                }
-                return $a['order'] > $b['order'] ? 1 : -1;
-            });
-
-        }       
+        // 按照json中的 order 值 asc 排序
+        uasort($modules, function ($a, $b) {
+            if ($a['order'] == $b['order']) {
+                return 0;
+            }
+            return $a['order'] > $b['order'] ? 1 : -1;
+        });
 
         return $modules;        
     }
@@ -189,7 +185,8 @@ class Repository
             $data = $module->data($file, $args, $default);
         }
 
-        return $data;
+        // 以name为钩子扩展$data
+        return $this->app['hook.filter']->fire($name, $data, $args, $default);
     }
 
     /**

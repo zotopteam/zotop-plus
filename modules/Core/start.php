@@ -30,9 +30,6 @@
 \Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManage', 100);
 \Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManageCore', 100);
 
-
-
-
 /**
  * 扩展File::mime方法, 获取文件类型audio/avi，text/xml 斜杠前面部分  
  */

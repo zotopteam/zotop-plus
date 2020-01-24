@@ -100,24 +100,16 @@ class Module
 
     /**
      * 获取翻译过的标题
-     * @param  string $translate   是否翻译
      * @return string
      */
-    public function getTitle($translate=true)
+    public function getTitle()
     {
-        $title = $this->title;
+        // 禁用的模块不会自动加载翻译文件，此次加载，TODO：加载json翻译有问题，无法临时加载
+        if ($this->isDisabled()) {
+            $this->registerTranslation();
+        }        
 
-        if ($translate) {
-
-            // 禁用的模块不会自动加载翻译文件，此次加载，TODO：加载json翻译有问题，无法临时加载
-            if ($this->isDisabled()) {
-                $this->registerTranslation();
-            }
-
-            $title = trans($title);
-        }
-
-        return $title;
+        return trans($this->title);
     }
 
     /**
@@ -127,58 +119,58 @@ class Module
      */
     public function getDescription($translate=true)
     {
-        $description = $this->description;
-
-        if ($translate) {
-
-            // 禁用的模块不会自动加载翻译文件，此次加载
-            if ($this->isDisabled()) {
-                $this->registerTranslation();
-            }
-
-            $description = trans($description);
+        // 禁用的模块不会自动加载翻译文件，此次加载，TODO：加载json翻译有问题，无法临时加载
+        if ($this->isDisabled()) {
+            $this->registerTranslation();
         }
 
-        return $description;
+        return trans($this->description);
     }
 
     /**
-     * 获取版本
-     * @param  boolean $original true=原始的版本号 false=安装的版本号
+     * 获取module.json中的原始版本号
      * @return string
      */
-    public function getVersion($original=false)
+    public function getOriginalVersion()
     {
-        if ($original) {
-            return $this->version;
-        }
+        return $this->version;
+    }
 
+    /**
+     * 获取安装的版本
+     * @return string
+     */
+    public function getVersion()
+    {
         return $this->activator->getVersion($this);
     }
 
     /**
-     * 获取模块设置
-     * @param  boolean $original true=原始设置 false=当前设置
+     * 获取模块目录下的config.php值
      * @return array
      */
-    public function getConfig($original=false)
+    public function getOriginalConfig()
     {
-        if ($original) {
+        $path = $this->getPath('config.php');
 
-            $path = $this->getPath('config.php');
+        if ($this->app['files']->exists($path)) {
 
-            if ($this->app['files']->exists($path)) {
+            $config = require $path;
 
-                $config = require $path;
-
-                if (is_array($config)) {
-                    return $config;
-                }
+            if (is_array($config)) {
+                return $config;
             }
-
-            return [];
         }
 
+        return [];
+    }
+
+    /**
+     * 获取模块设置
+     * @return array
+     */
+    public function getConfig()
+    {
         return $this->activator->getConfig($this);        
     }
 
