@@ -5,22 +5,11 @@
 <div class="d-flex full-width full-height bg-primary text-white">
     <div class="container-fluid text-left align-self-center">
         <div class="msg">
-            @if($msg.type == 'success')
-            <div class="msg-title text-uppercase"><i class="fa fa-check-circle"></i> {{$msg.type}}</div>
-            <div class="msg-content">{{$msg.content}}</div>
+            <div class="msg-title text-uppercase"><i class="fa fa-times-circle"></i> {{$type}}</div>
+            <div class="msg-content">{{$content}}</div>
             <div class="msg-buttons">
-                @if (isset($msg.url))
-                <a href="{{$msg.url}}" class="btn btn-outline text-white">
-                    <i class="fa fa-check mr-2"></i> {{trans('master.ok')}}
-                </a>
-                @endif
-            </div>
-            @elseif ($msg.type == 'error')
-            <div class="msg-title text-uppercase"><i class="fa fa-times-circle"></i> {{$msg.type}}</div>
-            <div class="msg-content">{{$msg.content}}</div>
-            <div class="msg-buttons">
-                @if (isset($msg.url))
-                <a href="{{$msg.url}}" class="btn btn-outline text-white">
+                @if (isset($url))
+                <a href="{{$url}}" class="btn btn-outline text-white">
                     <i class="fa fa-check mr-2"></i> {{trans('master.ok')}}
                 </a>
                 @endif
@@ -28,7 +17,6 @@
                     <i class="fa fa-arrow-left mr-2"></i> {{trans('master.page.previous')}}
                 </a>                
             </div>
-            @endif
         </div>
     </div>
 </div>
@@ -46,7 +34,7 @@
 
 @push('css')
 <style type="text/css">
-    .msg{width: 80%;padding: 0 4rem;}
+    .msg{width: 80%;padding: 0 8rem;}
     .msg-title{font-weight: 900;font-size: 1.5rem;}
     .msg-content{font-weight: 900;font-size: 3rem;margin:.5rem 0 1.5rem 0;}
 </style>

@@ -2,11 +2,11 @@
 
 namespace Modules\Content\Http\Controllers;
 
+use App\Hook\Facades\Filter;
+use App\Modules\Routing\FrontController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\FrontController;
 use Modules\Content\Models\Content;
-use Filter;
 
 class IndexController extends FrontController
 {
@@ -21,7 +21,7 @@ class IndexController extends FrontController
     }
 
     /**
-     * 首页
+     * 搜索
      *
      * @return Response
      */
@@ -33,7 +33,7 @@ class IndexController extends FrontController
             $this->list = collect([]);
         }
 
-        return $this->view('search');
+        return $this->view('content::search');
     }
 
 

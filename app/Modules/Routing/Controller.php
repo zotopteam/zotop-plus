@@ -41,17 +41,15 @@ class Controller extends BaseController
      */
     public function __construct()
     {
-        // app实例
         $this->app = app();
 
         if ($this->app->runningInConsole() === true) {
             return;
         }
 
-        // view实例
         $this->view   = $this->app['view'];
 
-        static::boot();    
+        static::boot();
     }
 
     /**
@@ -147,15 +145,13 @@ class Controller extends BaseController
     {
         // 默认view为: module::controller/action
         if (empty($view)) {
-            $view = $this->app['current.controller'].'.'.$this->app['current.action'];
-        }
-        
-        if (! strpos($view, '::')) {
-            $view = $this->app['current.module'].'::'.$view;
+            $view = $this->app['current.module'].'::'.$this->app['current.controller'].'.'.$this->app['current.action'];
         }
 
         // 转换模板数据
-        $data = ($data instanceof Arrayable) ? $data->toArray() : $data;
+        if ($data instanceof Arrayable) {
+            $data = $data->toArray();
+        }
 
         // 合并模板数据
         $data = array_merge($this->data, $data);
@@ -182,7 +178,7 @@ class Controller extends BaseController
         }
 
         // 返回view
-        return $this->with('msg', $msg)->view("message.{$msg['type']}");
+        return $this->view->make("message.{$msg['type']}", $msg);
     }
 
     /**

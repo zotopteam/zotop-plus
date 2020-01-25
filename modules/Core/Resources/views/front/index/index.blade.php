@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="_token" content="{{ csrf_token() }}"/>
     <title>{{$title ?? ''}} @yield('title')</title>
-    <link rel="stylesheet" href="{{Theme::asset('admin:css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('admin:css/font-awesome.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('admin:css/global.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{Theme::asset('css/font-awesome.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     <style type="text/css">
     html,body{width:100%;height:100%;padding:0;margin:0;}
     </style>    
 </head>
-<body>
+<body class="bg-primary">
     <div class="d-flex full-height">        
                 
-        <div class="jumbotron bg-primary text-white full-width align-self-center text-center pos-r">           
+        <div class="jumbotron bg-primary text-white full-width align-self-center text-center">           
             <h1>{{config('zotop.name')}}</h1>
             <p>{{config('zotop.description')}}</p>
             <div class="p-3">

@@ -19,7 +19,7 @@ class AuthController extends AdminController
      */
     public function showLoginForm()
     {
-        return $this->view('auth.login')->with('title',trans('core::auth.login'));
+        return $this->view('core::auth.login')->with('title',trans('core::auth.login'));
     }
 
 
