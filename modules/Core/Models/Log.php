@@ -2,8 +2,9 @@
 namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\Core\Traits\UserRelation;
+use Illuminate\Support\Facades\Request;
 use Modules\Core\Traits\UserIp;
+use Modules\Core\Traits\UserRelation;
 
 class Log extends Model
 {
@@ -22,7 +23,7 @@ class Log extends Model
      *
      * @var array
      */
-    protected $fillable = ['type','user_id','user_ip','url','module','controller','action','content','request','response'];
+    //protected $fillable = ['type','user_id','user_ip','url','module','controller','action','content','request'];
 	
 	
     /**
@@ -40,9 +41,9 @@ class Log extends Model
      */
     protected $casts = [
         'request'  => 'json',
-        'response' => 'json',
     ];
-	
+
+
     /**
      * boot
      */
@@ -50,18 +51,9 @@ class Log extends Model
     {
         parent::boot();
 
-        static::saving(function($log) {
-            
-            // 删除超出有效期的日志
+        // 删除超出有效期的日志
+        static::saved(function($log) {
             static::where('created_at', '<', now()->modify('-'.config('core.log.expire', 30).' days'))->delete();
-
-            $log->type       = $log->type ?? 'unknown';
-            $log->module     = app('current.module');
-            $log->controller = app('current.controller');
-            $log->action     = app('current.action');
-            $log->url        = \Request::fullUrl();
-            $log->request    = \Request::except(['_token']);
-            $log->response   = $log->response ?? [];
         });
     }
 }

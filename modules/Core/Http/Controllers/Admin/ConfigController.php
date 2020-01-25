@@ -174,11 +174,6 @@ class ConfigController extends AdminController
             // 写入系统配置组
             $this->config('core', $request->all());
 
-            // 开启时更改配置值，解决无法记录开启日志的问题
-            if ($request->input('log.enabled') == 1) {
-                config(['core.log.enabled'=>1]);
-            }
-
             // 写入ENV配置
             $this->env([
                 'APP_DEBUG'        => $request->input('debug') ? 'true' : 'false',

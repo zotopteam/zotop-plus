@@ -56,7 +56,7 @@ class ServiceProviderMakeCommand extends GeneratorCommand
     }
 
     /**
-     * 路由服务容器固定名称为 RouteServiceProvider
+     * 获取输入的名称
      * @return string
      */
     public function getNameInput()
@@ -65,7 +65,7 @@ class ServiceProviderMakeCommand extends GeneratorCommand
 
         if (empty($name)) {
 
-            // 如果是事件和路由服务，默认名称为类型名称，否则为模块名称
+            // 如果未输入名称，事件和路由服务默认名称为类型名称，常规为模块名称
             if (in_array($this->getTypeInput(), ['event', 'route'])) {
                 $name = $this->getTypeInput();
             } else {
@@ -78,7 +78,7 @@ class ServiceProviderMakeCommand extends GeneratorCommand
     }   
 
     /**
-     * 获取输入的类型，支持,常规=plain, 事件=event, 路由=route
+     * 获取输入的类型，支持：常规=plain, 事件=event, 路由=route
      * @return string
      */
     public function getTypeInput()

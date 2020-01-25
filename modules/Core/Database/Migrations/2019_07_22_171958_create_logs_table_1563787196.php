@@ -26,7 +26,6 @@ class CreateLogsTable1563787196 extends Migration
 			$table->string('action', 64)->comment('动作');
 			$table->text('content')->comment('日志内容');
 			$table->longText('request')->comment('请求数据');
-			$table->longText('response')->comment('响应数据');
 			$table->timestamp('created_at')->nullable()->comment('创建时间');
 			$table->timestamp('updated_at')->nullable()->comment('更新时间');
 			$table->index(['action','controller','module'], 'module_controller_action');
