@@ -2,7 +2,7 @@
 
 namespace App\Modules\Routing;
 
-class ApiController extends BaseController
+class ApiController extends Controller
 {
     /**
      * 消息提示
@@ -15,7 +15,7 @@ class ApiController extends BaseController
         // 将赋值数据填入消息中
         $msg['data'] = $this->data;
 
-        return response()->json($msg);
+        return new JsonMessageResponse($msg);
     }
 
     /**
@@ -44,7 +44,7 @@ class ApiController extends BaseController
      * @param  integer $time 跳转或者消息提示时间
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function error($content, $code=1, $time=5)
+    public function error($content, $code=10000, $time=5)
     {
         return $this->message([
             'type'    => 'error',

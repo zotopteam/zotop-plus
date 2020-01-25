@@ -2,17 +2,14 @@
 
 namespace App\Modules\Routing;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Module;
-use Theme;
-use Filter;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Request;
+use App\Modules\Routing\JsonMessageResponse;
 
-class BaseController extends Controller
+class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
@@ -180,8 +177,8 @@ class BaseController extends Controller
         $msg['data'] = $this->data;
 
         //如果请求为ajax，则输出json数据
-        if (\Request::expectsJson()) {
-            return response()->json($msg);
+        if (Request::expectsJson()) {
+            return new JsonMessageResponse($msg);
         }
 
         // 返回view
@@ -200,7 +197,6 @@ class BaseController extends Controller
     {
         return $this->message([
             'type'    => 'success',
-            'icon'    => 'fa fa-check-circle',
             'content' => $content,
             'url'     => $url,
             'time'    => $time
@@ -219,7 +215,6 @@ class BaseController extends Controller
     {
         return $this->message([
             'type'    => 'error',
-            'icon'    => 'fa fa-times-circle',
             'content' => $content,
             'time'    => $time
         ]);

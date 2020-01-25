@@ -226,7 +226,6 @@
 	 * @param   {Bool}     (可选) 缓存内容
 	 */
 	$.msg = function(msg) {
-		//console.log(msg);	
 			
 		if ($.dialog('message')) {
 			$.dialog('message').close().remove();
@@ -237,16 +236,16 @@
 		}
 
 		if (msg.type) {
-			msg.skin = msg.skin + ' ui-message-'+ msg.type;
+			msg.skin = 'ui-message-'+ msg.type;
+		} else {
+			msg.skin = '';
 		}
-
-		msg.icon = msg.icon || 'fa fa-info-circle';
 
 		var options = {
 			id      : 'message',
 			skin    : 'ui-message ' + msg.skin,
 			title   : false,
-			content : '	<b class="msg-icon"><i class="'+ msg.icon +'"></i></b>' +
+			content : '<div class="msg-icon"></div>' +
 						'<div class="msg-content">'+ msg.content +'</div>'+
 						'<a href="javascript:;" class="close" i="close">&#215;</a>'+
 						'',
@@ -282,7 +281,7 @@
 	 *
 	 */
 	$.loading = function(content){
-		return $.msg({type: 'loading', icon:'fa fa-spinner fa-spin', time: 100000, content: content || dialog.defaults.loadingText});
+		return $.msg({type: 'loading', time: 100000, content: content || dialog.defaults.loadingText});
 	}
 
 	/**
@@ -290,7 +289,7 @@
 	 *
 	 */
 	$.success = function(content, onclose, time){
-		return $.msg({type: 'success', icon:'fa fa-check-circle', time: time||2, content: content, onclose: onclose});
+		return $.msg({type: 'success', time: time||2, content: content, onclose: onclose});
 	}
 
 	/**
@@ -298,7 +297,7 @@
 	 *
 	 */
 	$.error = function(content, onclose, time){
-		return $.msg({type: 'error', icon:'fa fa-times-circle', time: time||3, content: content, onclose: onclose});
+		return $.msg({type: 'error', time: time||3, content: content, onclose: onclose});
 	}
 
 	/**
