@@ -101,7 +101,7 @@ class ModuleMakeCommand extends Command
         $destinationPath = $this->getModulePath('module.png');
 
         $this->laravel['files']->copy($sourcePath, $destinationPath);
-        $this->info('Created: '.$destinationPath);
+        $this->info('Copied: '.$destinationPath);
     }
 
     /**

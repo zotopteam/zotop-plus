@@ -65,7 +65,7 @@
     <footer class="global-footer">
         <div class="container text-xs d-flex">
             <div class="copyright">
-                {{config('site.copyright') ?: 'Copyright © 2018-2019 All Rights Reserved'}}
+                {{config('site.copyright') ?: 'Copyright © 2018-2020 All Rights Reserved'}}
             </div>
             <div class="powerby ml-auto mr-1">
                 <span class="badge badge-primary">

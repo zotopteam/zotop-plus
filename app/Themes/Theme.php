@@ -48,7 +48,7 @@ class Theme
     {
         $this->app        = $app;
         $this->manifest   = $manifest;
-        $this->path       = dirname($manifest);        
+        $this->path       = dirname($manifest);     
         $this->attributes = json_decode($app['files']->get($manifest), true);
     }
 
@@ -93,34 +93,29 @@ class Theme
 
     /**
      * 获取翻译过的标题
-     * @param  string $translate   是否翻译
      * @return string
      */
-    public function getTitle($translate=true)
+    public function getTitle()
     {
-        $title = $this->title;
-
-        if ($translate) {
-            $title = trans($title);
-        }
-
-        return $title;
+        return trans($this->title);
     }
 
     /**
      * 获取描述
-     * @param  string $translate  是否翻译
      * @return string
      */
     public function getDescription($translate=true)
     {
-        $description = $this->description;
+        return trans($this->description);
+    }
 
-        if ($translate) {
-            $description = trans($description);
-        }
-
-        return $description;
+    /**
+     * 获取当前类型
+     * @return [type] [description]
+     */
+    public function getType()
+    {
+        return strtolower($this->type);
     }
 
     /**
@@ -128,10 +123,15 @@ class Theme
      *
      * @return string
      */
-    public function getPath($file=null)
+    public function getPath($subpath=null, $isDirKey=false)
     {
-        if ($file) {
-            return $this->path.DIRECTORY_SEPARATOR.ltrim($file, DIRECTORY_SEPARATOR);
+        if ($subpath) {
+
+            if ($isDirKey) {
+                $subpath = $this->app['config']->get("themes.paths.dirs.{$subpath}");
+            }
+
+            return $this->path.DIRECTORY_SEPARATOR.ltrim($subpath, DIRECTORY_SEPARATOR);
         }
 
         return $this->path;
@@ -205,6 +205,8 @@ class Theme
         return $url.'?version='.$this->getVersion();
     }
 
+
+
     /**
      * 注册
      * @return void
@@ -213,11 +215,23 @@ class Theme
     {
         $this->dispatch('activing');
 
+        $this->registerProviders();
+        $this->registerFiles();        
         $this->registerTranslation();
         $this->registerViews();
-        $this->registerFiles();
 
         $this->dispatch('actived');
+    }
+
+    /**
+     * 注册服务提供者
+     * @return void
+     */
+    public function registerProviders()
+    {
+        foreach ($this->attribute('providers', []) as $provider) {
+            $this->app->register($provider);
+        }        
     }
 
     /**
@@ -227,21 +241,29 @@ class Theme
      */
     public function registerViews()
     {
+        // 主题views路径
+        $themeViewPath = $this->getPath('views', true);
+
         //注册全局views路径，实现errors寻址
         $this->app['config']->set('view.paths', Arr::prepend(
             $this->app['config']->get('view.paths'),
-            $this->path.'/views'
+            $themeViewPath
         ));
 
-        // 不带hints的直接在当前主题中直接寻找
-        $this->app['view']->addLocation($this->path.'/views');
+        // 不带namesoace时直接在当前主题中直接寻找
+        $this->app['view']->addLocation($themeViewPath);
 
         // 注册当前模块和主题的views，实现view在主题和模块中寻址
+        // 例如主题：default，主题类型：fontend，视图：core::mine.edit
+        // 首先寻找主题中的视图： themes/Default/views/core/mine/edit.blade.php
+        // 找不到后寻找模块视图： modules/Core/Resources/views/front/mine/edit.blade.php
         foreach ($this->app['modules']->enabled() as $module) {
+            $moduleViewPath = $module->getPath('views', true);
+            $moduleTypePath = $this->app['config']->get('modules.types.'.$this->getType().'.dirs.view');
             $this->app['view']->addNamespace($module->getLowerName(), [
-                $this->path.'/views/'.$module->getLowerName(),
-                $module->getPath() . '/Resources/views/'.$this->type
-            ]);      
+                $themeViewPath . DIRECTORY_SEPARATOR . $module->getLowerName(),
+                $moduleViewPath . DIRECTORY_SEPARATOR .$moduleTypePath
+            ]);
         }        
     }
 

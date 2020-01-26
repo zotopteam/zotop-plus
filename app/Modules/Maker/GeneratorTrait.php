@@ -118,6 +118,7 @@ trait GeneratorTrait
     {
         return Str::studly($this->getModuleName());
     }
+
     /**
      * 获取模块蛇式名称  FooBar => foo_bar
      * @return string
@@ -170,17 +171,23 @@ trait GeneratorTrait
     /**
      * 获取stub路径
      * @param  string $stub      stub name
-     * @param  string $extension extention
      * @return string
      */
-    public function getStubPath($stub)
+    public function getStubPath($stub=null)
     {
-        //如果不包含扩展名，则扩展名为stub
-        if (! Str::contains($stub, '.')) {
-            $stub = $stub.'.stub';
+        $path = __DIR__ . DIRECTORY_SEPARATOR .'Stubs';
+
+        if ($stub) {
+
+            //如果不包含扩展名，则扩展名为stub
+            if (! Str::contains($stub, '.')) {
+                $stub = $stub.'.stub';
+            }
+
+            return $path . DIRECTORY_SEPARATOR .$stub;
         }
 
-        return __DIR__.'/Stubs/'.$stub;
+        return $path;
     }
 
     /**
@@ -310,7 +317,7 @@ trait GeneratorTrait
      */
     public function generateGitKeep($path)
     {
-        $this->laravel['files']->put($path . DIRECTORY_SEPARATOR .'.gitkeep', '');
+        $this->laravel['files']->put($path . DIRECTORY_SEPARATOR .'.gitkeep', 'git keep');
     }
 
     /**

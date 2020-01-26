@@ -17,6 +17,8 @@ class ThemesServiceProvider extends ServiceProvider
         $this->app->singleton('themes', function($app){
             return new Repository($app);
         });
+
+        $this->mergeConfigFrom(__DIR__.'/Config/themes.php', 'themes');        
     }
 
     /**

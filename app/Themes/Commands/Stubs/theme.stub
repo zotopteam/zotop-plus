@@ -1,0 +1,14 @@
+{
+    "name"        : "$THEME_LOWER_NAME$",
+    "title"       : "$THEME_STUDLY_NAME$ title",
+    "description" : "$THEME_STUDLY_NAME$ description",
+    "version"     : "1.0.0",
+    "type"        : "$THEME_TYPE$",
+    "author"      : "",
+    "email"       : "",
+    "homepage"    : "",
+    "providers"   : [],
+    "files"       : [
+        "start.php"
+    ]
+}

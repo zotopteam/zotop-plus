@@ -3,9 +3,9 @@
     "title"       : "Admin默认主题",
     "description" : "采用Bootstrap v4 开发的响应式主题，兼容IE9+、Chrome、Firefox等主流浏览器",
     "version"     : "1.2.2",
-    "type"        : "admin",
+    "type"        : "backend",
     "author"      : "zotop",
     "email"       : "it@zotop.com",
-    "homepage"    : "http://www.zotop.com",    
+    "homepage"    : "http://www.zotop.com",  
     "files"       : ["start.php"]
 }

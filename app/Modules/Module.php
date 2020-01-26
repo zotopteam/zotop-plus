@@ -114,10 +114,9 @@ class Module
 
     /**
      * 获取描述
-     * @param  string $translate  是否翻译
      * @return string
      */
-    public function getDescription($translate=true)
+    public function getDescription()
     {
         // 禁用的模块不会自动加载翻译文件，此次加载，TODO：加载json翻译有问题，无法临时加载
         if ($this->isDisabled()) {
