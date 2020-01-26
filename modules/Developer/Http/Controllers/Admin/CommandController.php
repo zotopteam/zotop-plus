@@ -52,7 +52,7 @@ class CommandController extends AdminController
         $this->key     = $key;
         $this->module  = Module::findOrFail($module);
         $this->path    = $this->module->getPath($this->dir);
-        $this->files   = File::isDirectory($this->path) ? File::files($this->path) : [];
+        $this->files   = File::isDirectory($this->path) ? File::allFiles($this->path) : [];
 
         return $this->view();
     }
@@ -69,11 +69,12 @@ class CommandController extends AdminController
         // 表单提交时
         if ($request->isMethod('POST')) {
             
-            $command    = $this->commands($key, 'command');
+            $name    = $request->input('name');
+            $command = $this->commands($key, 'command');
 
             $parameters = [
                 'module'  => $module,
-                'name'    => $request->input('name'),             
+                'name'    => $name,             
             ];
 
             foreach ($this->commands($key, 'options', []) as $option => $view) {

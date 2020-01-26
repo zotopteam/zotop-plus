@@ -127,7 +127,7 @@ class ControllerController extends AdminController
         $this->module  = Module::findOrFail($module);
         $this->types   = $this->types();
         $this->path    = $this->module->getPath($this->types($type, 'path'));
-        $this->files   = File::isDirectory($this->path) ? File::files($this->path) : [];
+        $this->files   = File::isDirectory($this->path) ? File::allFiles($this->path) : [];
 
 
         return $this->view();

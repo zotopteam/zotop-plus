@@ -133,5 +133,14 @@ return [
         'command' => 'module:make-trait',
         'name'    => ['label'=>trans('developer::command.trait.name.label'), 'help'=>trans('developer::command.trait.name.help')],
         'dir'     => config('modules.paths.dirs.traits'),
-    ],                                 
+    ],
+    // --unit
+    'test' => [
+        'title'   => trans('developer::command.test.title'),
+        'icon'    => 'fa fa-vial',
+        'command' => 'module:make-test',
+        'name'    => ['label'=>trans('developer::command.test.name.label'), 'help'=>trans('developer::command.test.name.help')],
+        'options' => ['--type'=>'developer::command.options.test_types'],
+        'dir'     => config('modules.paths.dirs.test'),
+    ],                                       
 ];

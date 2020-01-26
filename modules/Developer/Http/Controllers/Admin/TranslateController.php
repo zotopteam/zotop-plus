@@ -28,7 +28,7 @@ class TranslateController extends Controller
 
         // 读取系统设置的主语言，翻译道其他语言
         $this->path      = $this->module->getPath('lang', true) . DIRECTORY_SEPARATOR . $this->locale;
-        $this->files     = File::isDirectory($this->path) ? File::files($this->path) : [];
+        $this->files     = File::isDirectory($this->path) ? File::allFiles($this->path) : [];
         $this->files     = collect($this->files)->transform(function($file) {
             $file->itemcount = count(include($file));
             return $file;

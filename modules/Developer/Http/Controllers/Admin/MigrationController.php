@@ -26,7 +26,7 @@ class MigrationController extends AdminController
         $this->title      = trans('developer::migration.title');
         $this->module     = Module::findorFail($module);
         $this->path       = $this->module->getPath('migration', true);
-        $this->files      = File::isDirectory($this->path) ? File::files($this->path) : [];
+        $this->files      = File::isDirectory($this->path) ? File::allFiles($this->path) : [];
         $this->migrations = \DB::table('migrations')->get()->pluck('migration')->toArray();
 
         return $this->view();
