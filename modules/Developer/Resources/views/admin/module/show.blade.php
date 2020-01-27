@@ -9,6 +9,7 @@
         </div>
         <div class="main-action">
             @if ($module->isInstalled())
+                <a href="{{route('core.module.publish', [$module])}}" class="btn btn-success js-post" title="{{trans('core::module.publish.tooltip')}}"><i class="fa fa-sync fa-fw"></i> {{trans('core::module.publish')}}</a>                 
                 @if ($module->isEnabled())
                 <a href="javascript:;" data-url="{{route('core.module.disable', [$module])}}" class="btn btn-warning js-post"> <i class="fa fa-times-circle"></i> {{trans('master.disable')}}</a>
                 @else
@@ -16,10 +17,11 @@
                 @endif
                 @if ($module->getVersion() < $module->getOriginalVersion())
                 <a href="javascript:;" data-url="{{route('core.module.upgrade', [$module])}}" class="btn btn-primary js-post"> <i class="fa fa-arrow-up"></i> {{trans('core::module.upgrade')}}</a>                
-                @endif
+                @endif           
                 <a href="javascript:;" data-url="{{route('core.module.uninstall', [$module])}}" class="btn btn-danger js-post"> <i class="fa fa-trash"></i> {{trans('core::module.uninstall')}}</a>
             @else
                 <a href="javascript:;" data-url="{{route('core.module.install', [$module])}}" class="btn btn-success js-post"> <i class="fa fa-wrench"></i> {{trans('core::module.install')}}</a>            
+                <a href="javascript:;" data-url="{{route('core.module.delete', [$module])}}" class="btn btn-danger js-post"> <i class="fa fa-times"></i> {{trans('core::module.delete')}}</a>            
             @endif
         </div>           
     </div>

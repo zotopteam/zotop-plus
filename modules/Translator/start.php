@@ -1,13 +1,16 @@
 <?php
+
+use App\Hook\Facades\Filter;
+
 /**
  * 扩展后台全局导航
  */
-\Filter::listen('global.start','Modules\Translator\Hook\Listener@start', 80);
+Filter::listen('global.start','Modules\Translator\Hooks\Listener@start');
 
 /**
  * 模块管理
  */
-\Filter::listen('module.manage','Modules\Translator\Hook\Listener@moduleManage', 80);
+Filter::listen('module.manage','Modules\Translator\Hooks\Listener@moduleManage');
 
 
 if (! function_exists('translate')) {

@@ -99,16 +99,20 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function eventsListen()
     {
-        // 禁止禁用和卸载核心模块
-        $this->app['events']->listen('modules.*.*', function($event, $modules) {
-            if (ends_with($event, 'uninstalling') || ends_with($event, 'disabling')) {
-                foreach ($modules as $module) {
-                    if (in_array($module->getLowerName(), config('modules.cores', ['core']))) {
-                        abort(403,trans('core::module.core_operate_forbidden'));
-                    }
-                }
-            }
-        });        
+        // 禁止禁用
+        $this->app['events']->listen('modules.core.disabling', function($module) {
+            abort(403, trans('core::module.disable.forbidden', [$module->getTitle()]));
+        });
+
+        // 禁止卸载
+        $this->app['events']->listen('modules.core.uninstalling', function($module) {
+            abort(403, trans('core::module.uninstall.forbidden', [$module->getTitle()]));
+        });
+
+        // 禁止删除
+        $this->app['events']->listen('modules.core.deleting', function($module) {
+            abort(403, trans('core::module.delete.forbidden', [$module->getTitle()]));
+        });                    
     }
 
 

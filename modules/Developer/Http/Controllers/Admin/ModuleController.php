@@ -34,7 +34,11 @@ class ModuleController extends AdminController
      */
     public function show(Request $request, $module)
     {
-        $this->module = Module::findOrFail($module);                
+        if (! Module::has($module)) {
+            return redirect(route('developer.module.index'));
+        }
+
+        $this->module = Module::find($module);                
         $this->title  = trans('developer::module.show');
 
         return $this->view();        

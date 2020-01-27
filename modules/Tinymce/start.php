@@ -2,8 +2,8 @@
 /*
  * 编辑器模式
  */
-\Filter::listen('tinymce.editor.options', 'Modules\Tinymce\Hook\Listener@options');
-\Filter::listen('tinymce.editor.options', 'Modules\Tinymce\Hook\Listener@tools');
+\Filter::listen('tinymce.editor.options', 'Modules\Tinymce\Hooks\Listener@options');
+\Filter::listen('tinymce.editor.options', 'Modules\Tinymce\Hooks\Listener@tools');
 /**
  * 编辑器
  */

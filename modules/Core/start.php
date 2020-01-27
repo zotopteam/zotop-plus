@@ -1,34 +1,36 @@
 <?php
+
+use App\Hook\FacadesFilter;
 /**
  * 开始菜单
  */
-\Filter::listen('global.start', 'Modules\Core\Hook\Listener@start', 99999);
+Filter::listen('global.start', 'Modules\Core\Hooks\Hook@start', 99999);
 
 /**
  * 快捷导航
  */
-\Filter::listen('global.navbar', 'Modules\Core\Hook\Listener@navbar', 1);
+Filter::listen('global.navbar', 'Modules\Core\Hooks\Hook@navbar', 1);
 
 /**
  * 快捷工具
  */
-\Filter::listen('global.tools', 'Modules\Core\Hook\Listener@tools');
+Filter::listen('global.tools', 'Modules\Core\Hooks\Hook@tools');
 
 /**
  * 全局js变量
  */
-\Filter::listen('window.cms', 'Modules\Core\Hook\Listener@windowCms');
+Filter::listen('window.cms', 'Modules\Core\Hooks\Hook@windowCms');
 
 /**
  * 文件上传
  */
-\Filter::listen('core.file.upload', 'Modules\Core\Hook\Listener@upload');
+Filter::listen('core.file.upload', 'Modules\Core\Hooks\Hook@upload');
 
 /**
  * 模块管理
  */
-\Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManage', 100);
-\Filter::listen('module.manage', 'Modules\Core\Hook\Listener@moduleManageCore', 100);
+Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManage');
+Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 
 /**
  * 扩展File::mime方法, 获取文件类型audio/avi，text/xml 斜杠前面部分  

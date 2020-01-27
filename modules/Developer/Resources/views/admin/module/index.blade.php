@@ -11,16 +11,19 @@
         </div>
         <div class="main-action">
             <a href="javascript:;" data-url="{{route('developer.module.create')}}" data-width="800" data-height="300" class="btn btn-primary js-open"> <i class="fa fa-plus"></i> {{trans('developer::module.create')}}</a>
-        </div>        
+        </div>
+        <a href="{{route('core.module.publish')}}" class="btn btn-success js-post" title="{{trans('core::module.publish.tooltip')}}">
+            <i class="fa fa-sync fa-fw"></i> {{trans('core::module.publish')}}
+        </a>               
     </div>
     <div class="main-body scrollable">
         
         <div class="card-grid">
             @foreach ($modules as $module)
                 <div class="card-grid-item text-center">
-                    <a class="d-inline-block cur-p" href="{{route('developer.module.show',$module->name)}}">
+                    <a class="shortcut cur-p" href="{{route('developer.module.show',$module->name)}}">
                         <img src="{{preview($module->getPath('module.png'), 128, 128)}}">
-                        <div class="py-2">
+                        <div class="mt-1">
                             {{$module->getTitle()}}
                         </div>
                     </a>
@@ -40,7 +43,7 @@
 <style type="text/css">
     .card-grid{
         display: grid;
-        grid-template-columns: repeat(auto-fill,minmax(10rem,1fr));
+        grid-template-columns: repeat(auto-fill,minmax(9rem,1fr));
         grid-row-gap: 1.5rem;
         grid-column-gap: 1.5rem;
         padding: 1.5rem;

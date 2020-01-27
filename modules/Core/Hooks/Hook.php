@@ -1,13 +1,14 @@
 <?php
-namespace Modules\Core\Hook;
+namespace Modules\Core\Hooks;
 
-use App;
-use Route;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Modules\Core\Support\Resize;
 use Modules\Core\Support\Watermark;
-use Auth;
 
-class Listener
+class Hook
 {
     /**
      * 后台开始菜单扩展
@@ -182,7 +183,7 @@ class Listener
     public function windowCms($cms)
     {
         $cms['environment']  = App::environment();
-        $cms['user_id']      = intval(Auth::id());
+        $cms['user_id']      = Auth::id() ?? 0;
         $cms['notification'] = [
             'check'    => route('core.notifications.check'),
             'interval' => 30, //单位：秒
@@ -296,22 +297,15 @@ class Listener
      */
     public function moduleManageCore($manage, $module)
     {
-        if (in_array(strtolower($module), config('modules.cores', ['core']))) {
-
-            // 当模块安装后，禁止和卸载按钮 禁用状态
-            if ($module->installed) {
-                $manage['disable'] = [
-                    'text'  => trans('master.disable'),
-                    'icon'  => 'fa fa-times-circle',
-                    'class' => 'disabled',
-                ];
-                $manage['uninstall'] = [
-                    'text'  => trans('core::module.uninstall'),
-                    'icon'  => 'fa fa-trash ',
-                    'class' => 'disabled',
-                ];
-            }
-
+        // 核心模块禁止卸载和禁用
+        if ($module->is('core') && $module->isInstalled()) {
+            Arr::forget($manage, ['disable','uninstall']);
+            $manage = Arr::prepend($manage, [
+                'text'  => trans('core::config.title'),
+                'href'  => route('core.config.index'),
+                'icon'  => 'fa fa-cog',
+                'class' => '',
+            ], 'core_config');
         }
 
         return $manage;

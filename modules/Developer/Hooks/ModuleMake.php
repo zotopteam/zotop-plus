@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 
 class ModuleMake
 {
-
     /**
      * 模块风格
      * @param  array $start

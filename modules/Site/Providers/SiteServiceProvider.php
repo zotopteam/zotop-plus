@@ -25,6 +25,21 @@ class SiteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app['router']->aliasMiddleware('front', "Modules\\Site\\Http\\Middleware\\FrontMiddleware");
+
+        // 禁止禁用
+        $this->app['events']->listen('modules.site.disabling', function($module) {
+            abort(403, trans('core::module.disable.forbidden', [$module->getTitle()]));
+        });
+
+        // 禁止卸载
+        $this->app['events']->listen('modules.site.uninstalling', function($module) {
+            abort(403, trans('core::module.uninstall.forbidden', [$module->getTitle()]));
+        });
+
+        // 禁止删除
+        $this->app['events']->listen('modules.site.deleting', function($module) {
+            abort(403, trans('core::module.delete.forbidden', [$module->getTitle()]));
+        });                         
     }    
 
     /**

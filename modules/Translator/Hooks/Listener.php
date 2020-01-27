@@ -1,8 +1,7 @@
 <?php
-namespace Modules\Translator\Hook;
+namespace Modules\Translator\Hooks;
 
-use Route;
-use Auth;
+use Illuminate\Support\Arr;
 
 
 class Listener
@@ -27,13 +26,13 @@ class Listener
 
     public function moduleManage($manage, $module)
     {
-        if (strtolower($module->name) == 'translator') {
-            $manage['translator_config'] = [
+        if ($module->is('translator')) {
+
+            $manage = Arr::prepend($manage, [
                 'text'  => trans('translator::config.title'),
                 'href'  => route('translator.config.index'),
                 'icon'  => 'fa fa-cog',
-                'class' => '',
-            ];
+            ], 'translator_config');
         }
         
         return $manage;        

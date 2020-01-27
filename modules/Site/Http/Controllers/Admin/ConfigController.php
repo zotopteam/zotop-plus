@@ -2,10 +2,11 @@
 
 namespace Modules\Site\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Modules\Routing\AdminController;
 use App\Modules\Traits\ModuleConfig;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
 
 class ConfigController extends AdminController
 {
@@ -33,7 +34,12 @@ class ConfigController extends AdminController
             // 写入配置组
             $this->config('site', $request->all());
 
-            return $this->success(trans('master.saved'),$request->referer());
+            // 发布保存的主题资源
+            Artisan::call('theme:publish', [
+                'theme' => $request->input('theme')
+            ]);
+
+            return $this->success(trans('master.saved'), $request->referer());
         }
 
         $this->title  = trans('site::config.base');
@@ -61,7 +67,12 @@ class ConfigController extends AdminController
             // 写入配置组
             $this->config('site', $request->all());
 
-            return $this->success(trans('master.saved'),$request->referer());
+            // 发布保存的主题资源
+            Artisan::call('theme:publish', [
+                'theme' => $request->input('wap.theme')
+            ]);
+
+            return $this->success(trans('master.saved'), $request->referer());
         }
 
         $this->title  = trans('site::config.wap');

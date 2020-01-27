@@ -202,6 +202,16 @@ class Module
     }
 
     /**
+     * 判断模块是否为某个模块
+     * @param  mixed $module
+     * @return boolean
+     */
+    public function is($module)
+    {
+        return $this->getLowerName() == strtolower($module);
+    }
+
+    /**
      * 模块是否安装
      * @return boolean
      */
@@ -243,7 +253,12 @@ class Module
      * @return void
      */
     public function enable()
-    {   
+    {
+        // 启用之前注册模块
+        $this->register();
+        // 启用之前启用模块
+        $this->boot();
+
         $this->dispatch('enabling');
         $this->activator->enable($this);
         $this->dispatch('enabled');
@@ -268,6 +283,8 @@ class Module
     {
         // 安装之前注册模块
         $this->register();
+        // 安装之前启用模块
+        $this->boot();
 
         $this->dispatch('installing');
 
@@ -343,6 +360,11 @@ class Module
      */
     public function delete()
     {
+        // 删除之前注册模块
+        $this->register();
+        // 删除之前启用模块
+        $this->boot();
+
         $this->dispatch('deleting');
         $this->app['files']->deleteDirectory($this->getPath());    
         $this->dispatch('deleted');

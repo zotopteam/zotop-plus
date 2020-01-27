@@ -371,10 +371,10 @@ textarea{resize:none;}
 .icon-lg {width:4rem;height:4rem;}
 
 /*shortcut*/
-.shortcut{border:1px solid transparent;color:#666;background:transparent;margin:0;padding:0.5rem;display:block;overflow:hidden;zoom:1;border-radius:0.25rem;position:relative;text-align:left;}
+.shortcut{border:1px solid transparent;color:#666;background:transparent;margin:0;padding:0.5rem;display:block;overflow:hidden;zoom:1;border-radius:0.25rem;position:relative;text-align:center;}
 .shortcut:hover{border:1px solid #70c0e7;background:#e5f3fb;text-decoration:none;}
 
-.shortcut-media {margin-top:1.25rem;display:flex;}
+.shortcut-media {margin-top:1.25rem;display:flex;text-align:left;}
 .shortcut-media .shortcut-icon{align-self: center!important;}
 .shortcut-media .shortcut-icon i{width:3.25rem;height:3.25rem;text-align:center;padding:0.6rem 0;font-size:2rem;border-radius:.25rem;}
 .shortcut-media .shortcut-text {margin-left:.75rem;flex:1;overflow:hidden;}

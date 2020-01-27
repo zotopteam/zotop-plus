@@ -1,5 +1,5 @@
 <?php
-namespace Modules\Tinymce\Hook;
+namespace Modules\Tinymce\Hooks;
 
 use Module;
 use Filter;

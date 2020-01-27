@@ -1,72 +1,29 @@
 <?php
 
+use App\Hook\Facades\Filter;
+
+
 /**
  * 全局导航
  */
-\Filter::listen('global.navbar', function($navbar){
-    
-    // 站点名称
-    $navbar['core.sitename'] = [
-        'text'   => config('site.name'),
-        'href'   => route('site.config.base'),
-        'class'  => 'sitename',
-        'active' => Route::is('site.*')
-    ];
-
-    return $navbar;
-}, 0);
+Filter::listen('global.navbar', 'Modules\Site\Hooks\Hook@navbar');
 
 /**
  * 快捷方式
  */
-\Filter::listen('global.start', function($navbar) {
-  
-    //站点设置
-    $navbar['config-site'] = [
-        'text' => trans('site::config.title'),
-        'href' => route('site.config.base'),
-        'icon' => 'fa fa-cog bg-success text-white',
-        'tips' => trans('site::config.description'),
-    ];
+Filter::listen('global.start', 'Modules\Site\Hooks\Hook@start');
 
-    return $navbar;
-
-}, 99);
 
 /**
  * 全局工具
  */
-\Filter::listen('global.tools', function($tools) {
-        
-    // 网站首页
-    $tools['viewsite'] = [
-        'icon'   => 'fa fa-home',
-        //'text'   => trans('site::site.view'),
-        'title'  => trans('site::site.view.tips', [config('site.name')]),
-        'href'   => config('site.url') ?: route('index'),
-        'target' => '_blank',
-    ];
-
-    return $tools;
-}, 1);
+Filter::listen('global.tools', 'Modules\Site\Hooks\Hook@tools', 1);
 
 /**
- * 全局工具
+ * 模块管理
  */
-\Filter::listen('module.manage', function($manage, $module) {
-    
-    if (strtolower($module->name) == 'site') {
-        $manage['site_config'] = [
-            'text'  => trans('site::config.title'),
-            'href'  => route('site.config.base'),
-            'icon'  => 'fa fa-cog',
-            'class' => '',
-        ];
-    }
-    
-    return $manage;         
+Filter::listen('module.manage', 'Modules\Site\Hooks\Hook@moduleManageSite');
 
-}, 1);
 
 /**
  * 模板选择器
