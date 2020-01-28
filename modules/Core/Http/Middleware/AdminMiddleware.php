@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Http\Middleware;
 
-use App\Modules\Routing\MessageResponse;
+use App\Modules\Routing\JsonMessageResponse;
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
