@@ -3,7 +3,7 @@
 @section('content')
 <div class="main scrollable">
 
-    {form model="$region" route="region.store" method="post" class="m-5" autocomplete="off"}
+    {form bind="$region" route="region.store" method="post" class="m-5" autocomplete="off"}
 
         @include('region::region.form')
 

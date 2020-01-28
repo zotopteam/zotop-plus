@@ -1,15 +1,18 @@
 <?php
 namespace App\Modules;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Traits\Macroable;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Exceptions\ModuleNotFoundException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Traits\Macroable;
 
 class Repository
 {
-    use Macroable;
+    use Macroable, ForwardsCalls {
+        Macroable::__call as macroCall;
+    }
 
     /**
      * The application instance.

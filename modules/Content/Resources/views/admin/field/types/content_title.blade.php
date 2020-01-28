@@ -1,6 +1,6 @@
 <div class="input-group input-title-style" id="content-title-{{$id}}">    
-    {{Form::text($name, $value, $attrs)}}
-    {{Form::hidden($name.'_style')}}
+    {{Form::text($attrs)}}
+    {{Form::hidden(['name'=>"{$name}_style"])}}
     <div class="input-group-append">
         <button type="button" class="btn btn-light btn-bold" tabindex="-1"><i class="fa fa-bold fa-fw"></i></button>
         <button type="button" class="btn btn-light btn-color" tabindex="-1"><i class="fa fa-palette fa-fw"></i></button>

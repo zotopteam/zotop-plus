@@ -14,8 +14,10 @@ use Illuminate\Support\Facades\Artisan;
 
 class Module
 {
-    use Macroable;
-
+    use Macroable, ForwardsCalls {
+        Macroable::__call as macroCall;
+    }
+    
     /**
      * The application instance.
      *
@@ -538,6 +540,10 @@ class Module
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         // getName, getTitle……
         if (Str::start(strtolower($method), 'get')) {
             return $this->attribute(Str::after($method, 'get'));

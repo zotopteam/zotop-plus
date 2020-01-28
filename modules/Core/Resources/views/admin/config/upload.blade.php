@@ -16,7 +16,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$config" route="core.config.upload" method="post" id="config" autocomplete="off"}
+            {form bind="$config" route="core.config.upload" method="post" id="config" autocomplete="off"}
             <div class="form-title row">{{trans('core::config.upload.base')}}</div>
 
             <div class="form-group row">

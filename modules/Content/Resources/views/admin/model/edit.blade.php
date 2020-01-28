@@ -17,7 +17,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$model" route="['content.model.update', $id]" id="model-form" method="put" autocomplete="off"}
+            {form bind="$model" route="['content.model.update', $id]" id="model-form" method="put" autocomplete="off"}
 
             <div class="form-group row">
                 <label for="name" class="col-2 col-form-label required">{{trans('content::model.name.label')}}</label>

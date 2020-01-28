@@ -2,8 +2,9 @@
 
 namespace App\Themes;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
 
 class ThemesServiceProvider extends ServiceProvider
 {
@@ -14,9 +15,18 @@ class ThemesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('themes', function($app){
+        $this->app->singleton('themes', function($app) {
             return new Repository($app);
         });
+
+        $this->app->singleton('html', function($app) {
+            return new Html($app);
+        });
+
+        $this->app->singleton('form', function($app) {
+            return new Form($app);
+        });
+
 
         $this->mergeConfigFrom(__DIR__.'/Config/themes.php', 'themes');        
     }
@@ -46,7 +56,36 @@ class ThemesServiceProvider extends ServiceProvider
             return new \App\Themes\BladeCompiler(
                 $app['files'], $app['config']['view.compiled']
             );
-        });  
+        });
+
+        // 解析{form ……}
+        Blade::extend(function ($value) {
+            $pattern = sprintf('/(@)?%sform(\s+[^}]+?)\s*%s/s', '{', '}');
+
+            return preg_replace_callback($pattern, function($matches){
+                $attrs = Blade::convertAttrs($matches[2]);
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::open(".$attrs."); ?>";
+            }, $value);
+        });
+
+        // 解析{/form}
+        Blade::extend(function ($value) {
+            $pattern = sprintf('/(@)?%s(\/form)%s/s', '{', '}');
+
+            return preg_replace_callback($pattern, function ($matches)  {
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::close(); ?>";
+            }, $value);
+        });        
+
+        // 解析{field ……}
+        Blade::extend(function ($value) {
+            $pattern = sprintf('/(@)?%sfield(\s+[^}]+?)\s*%s/s', '{', '}');
+
+            return preg_replace_callback($pattern, function ($matches)  {
+                $attrs = Blade::convertAttrs($matches[2]);
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::field(".$attrs."); ?>";
+            }, $value);
+        });          
     }
 
     /**

@@ -1,5 +1,5 @@
 <div class="input-group upload-field" id="upload-field-{{$id}}">
-    {{Form::text($name,$value,$attrs)}}
+    {{Form::text($attrs)}}
     <span class="input-group-append">
         <button type="button" tabindex="-1" class="btn btn-light btn-icon-text btn-upload btn-progress">
             <i class="btn-icon fa fa-fw {{$button_icon ?? 'fa-upload'}}"></i>

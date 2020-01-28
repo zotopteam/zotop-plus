@@ -16,7 +16,7 @@
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="$config" route="core.config.safe" method="post" id="config" autocomplete="off"}
+            {form bind="$config" route="core.config.safe" method="post" id="config" autocomplete="off"}
 
             <div class="form-title row">{{trans('core::config.safe.base')}}</div>
 

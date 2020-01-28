@@ -16,7 +16,7 @@
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="$config" route="site.config.wap" method="post" id="config" autocomplete="off"}
+            {form bind="$config" route="site.config.wap" method="post" id="config" autocomplete="off"}
 
             <div class="form-group row">
                 <label for="wap-name" class="col-2 col-form-label">{{trans('site::config.wap.name.label')}}</label>

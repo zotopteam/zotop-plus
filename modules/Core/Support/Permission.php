@@ -24,7 +24,7 @@ class Permission
     {
         $permissions = [];
 
-        foreach ($this->module->getOrdered() as $module) {
+        foreach ($this->module->enabled() as $module) {
             $name     = $module->getLowerName();
             $permission = $module->getFileData('permission.php');
 

@@ -59,7 +59,7 @@ if (! function_exists('translate_slug')) {
 \Form::macro('translate', function($attrs) {
     $value  = $this->getValue($attrs);
     $id     = $this->getId($attrs);
-    $name   = $this->getAttribute($attrs, 'name');
+    $name   = $this->getName($attrs);
     $button = $this->getAttribute($attrs, 'button', trans('translator::translator.button'));
     
     $options = [

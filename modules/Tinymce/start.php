@@ -19,7 +19,7 @@
     }
 
     // 设置数据编号
-    $attrs['source_id'] = $this->getAttribute($attrs, 'source_id', $this->getValueAttribute('source_id'));
+    $attrs['source_id'] = $this->getAttribute($attrs, 'source_id', $this->getValue($attrs));
 
     debug($attrs['source_id']);
 

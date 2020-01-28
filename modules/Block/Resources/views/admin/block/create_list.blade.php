@@ -17,7 +17,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$block" route="block.store" id="block-form" method="post" autocomplete="off"}
+            {form bind="$block" route="block.store" id="block-form" method="post" autocomplete="off"}
             {field type="hidden" name="type" required="required"}
 
             <div class="form-group row">

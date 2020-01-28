@@ -78,7 +78,7 @@
                 var validator = this;
 
                 $('.form-tips').html('{{trans('core::auth.logining')}}');
-                $('.form-submit').prop('disabled',true);
+                $('[type=submit]').prop('disabled',true);
 
                 $.post($(form).attr('action'), $(form).serialize(), function(msg){
                     
@@ -89,11 +89,11 @@
                     }
 
                     $('.form-tips').html(msg.content).addClass('text-error');
-                    $('.form-submit').prop('disabled',false);
+                    $('[type=submit]').prop('disabled',false);
                     return false;                
                 },'json').fail(function(jqXHR){
                     
-                    $('.form-submit').prop('disabled',false);
+                    $('[type=submit]').prop('disabled',false);
 
                     return validator.showErrors(jqXHR.responseJSON);
                 });

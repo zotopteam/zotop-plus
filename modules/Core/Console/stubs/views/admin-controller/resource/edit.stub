@@ -17,7 +17,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$$LOWER_MODEL$" route="['$LOWER_NAME$.$LOWER_CONTROLLER$.update', $id]" id="$LOWER_MODEL$-form" method="put" autocomplete="off"}
+            {form bind="$$LOWER_MODEL$" route="['$LOWER_NAME$.$LOWER_CONTROLLER$.update', $id]" id="$LOWER_MODEL$-form" method="put" autocomplete="off"}
 
             <div class="form-title row">{{trans('$LOWER_NAME$::$LOWER_CONTROLLER$.form.base')}}</div>
 

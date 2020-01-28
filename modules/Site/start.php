@@ -30,8 +30,8 @@ Filter::listen('module.manage', 'Modules\Site\Hooks\Hook@moduleManageSite');
  */
 \Form::macro('view', function($attrs) {
     $value  = $this->getValue($attrs);
-    $name   = $this->getAttribute($attrs, 'name');
-    $id     = $this->getIdAttribute($name, $attrs);
+    $name   = $this->getName($attrs);
+    $id     = $this->getId($attrs);
     $button = $this->getAttribute($attrs, 'button', trans('site::field.view.select'));
     $select = route('site.view.select', [
         'theme'  => config('site.theme'),

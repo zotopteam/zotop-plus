@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid">
-    {form model="$datalist" route="['block.datalist.update', $datalist->id]" id="datalist-form" method="put" autocomplete="off"}
+    {form bind="$datalist" route="['block.datalist.update', $datalist->id]" id="datalist-form" method="put" autocomplete="off"}
 
     {field type="hidden" name="block_id" required="required"}
 

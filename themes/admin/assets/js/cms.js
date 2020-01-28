@@ -321,7 +321,7 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
     $.submited = {};
     $.submited.default = {
         validate : {}, // validate 属性
-        submits  : '.form-submit', //提交按钮
+        submits  : '[type=submit]', //提交按钮
         message  : function(msg, form, submits) {
             $.msg(msg);
         },

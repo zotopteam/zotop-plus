@@ -13,7 +13,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="config('module.core')" route="core.config.index" method="post" id="config" autocomplete="off"}
+            {form bind="config('module.core')" route="core.config.index" method="post" id="config" autocomplete="off"}
                     
             {/form}
         </div>

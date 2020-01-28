@@ -2,13 +2,16 @@
 namespace App\Themes;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Traits\Macroable;
-use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Traits\Macroable;
 
 class Repository
 {
-    use Macroable;
+    use Macroable, ForwardsCalls {
+        Macroable::__call as macroCall;
+    }
 
     /**
      * The application instance.
@@ -123,6 +126,10 @@ class Repository
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+                
         // 调用theme方法，asset,getName,getTitle……
         return call_user_func_array([$this->theme, $method], $parameters);
     }    

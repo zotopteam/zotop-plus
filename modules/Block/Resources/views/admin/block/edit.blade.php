@@ -17,7 +17,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$block" route="['block.update', $block->id]" id="block-form" method="put" autocomplete="off" referer="true"}
+            {form bind="$block" route="['block.update', $block->id]" id="block-form" method="put" autocomplete="off" referer="true"}
             
             {field type="hidden" name="type" required="required"}
 

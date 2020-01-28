@@ -163,16 +163,6 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
     
 });
 
-/**
- * 单图片上传
- *
- * 
- * {field type="static" value=""}
- */
-\Form::macro('static', function($attrs){
-    $value = $this->getValue($attrs);
-    return '<p class="form-control-plaintext">'.$value.'</p>';
-});
 
 /**
  * 文件上传
@@ -186,9 +176,10 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
     $types = collect(config('core.upload.types'));
 
     // 标签参数分解
+    $id       = $this->getId($attrs);
     $value    = $this->getValue($attrs);
-    $name     = $this->getAttribute($attrs, 'name');
-    $id       = $this->getIdAttribute($name, $attrs);
+    $name     = $this->getName($attrs);
+    
 
     // 上传和选择参数
     $filetype  = $this->getAttribute($attrs, 'filetype');
@@ -198,9 +189,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
     $maxsize   = $this->getAttribute($attrs, 'maxsize', 1024);
     $typename  = $this->getAttribute($attrs, 'typename', trans('core::file.type.files'));
     $folder    = $this->getAttribute($attrs, 'folder', '');
-    $source_id = $this->getAttribute($attrs, 'source_id', $this->getValueAttribute('source_id'));
-
-    //debug($source_id);
+    $source_id = $this->getAttribute($attrs, 'source_id', $this->getValue($attrs));
     
     // 界面文字和图标
     $select_text = $this->getAttribute($attrs, 'select_text', trans('core::field.upload.select', [$typename])); 
@@ -264,11 +253,11 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
     // 标签预处理
     $attrs = Filter::fire('core.field.upload_image.attrs', $attrs);
     $attrs = $attrs + [
-        'filetype' => 'image',
-        'typename' => trans('core::file.type.image'),
-        'icon'     => 'fa-image',
-        'allow'    => $this->getAttribute($attrs, 'allow', config('core.upload.types.image.extensions')),
-        'preview'  => $this->getAttribute($attrs, 'preview', 'image')
+        'filetype'    => 'image',
+        'typename'    => trans('core::file.type.image'),
+        'button_icon' => 'fa-image',
+        'allow'       => $this->getAttribute($attrs, 'allow', config('core.upload.types.image.extensions')),
+        'preview'     => $this->getAttribute($attrs, 'preview', 'image')
     ];
 
     // 获取系统设置的默认压缩设置
@@ -322,7 +311,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 
     $value = $this->getValue($attrs);
     $id    = $this->getId($attrs);
-    $name  = $this->getAttribute($attrs, 'name');
+    $name  = $this->getName($attrs);
     $icon  = $this->getAttribute($attrs, 'icon', false);
 
     $options = $this->getAttribute($attrs, 'options',  [
@@ -385,7 +374,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
  */
 \Form::macro('radiogroup', function($attrs) {
     $value   = $this->getValue($attrs);
-    $name    = $this->getAttribute($attrs, 'name');    
+    $name    = $this->getName($attrs);    
     $options = $this->getAttribute($attrs, 'options',  []);
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'radiogroup-default');
@@ -407,7 +396,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
  */
 \Form::macro('radiocards', function($attrs) {
     $value   = $this->getValue($attrs);
-    $name    = $this->getAttribute($attrs, 'name');    
+    $name    = $this->getName($attrs);    
     $options = $this->getAttribute($attrs, 'options',  []);
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'radiocards-default');
@@ -429,7 +418,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 \Form::macro('toggle', function($attrs) {
     $value   = $this->getValue($attrs);
     $id      = $this->getId($attrs);
-    $name    = $this->getAttribute($attrs, 'name');
+    $name    = $this->getName($attrs);
 
     $enable  = $this->getAttribute($attrs, 'enable', 1);
     $disable = $this->getAttribute($attrs, 'disable', 0);
@@ -473,7 +462,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 \Form::macro('checkboxgroup', function($attrs){
     $value   = $this->getValue($attrs);
     $value   = is_array($value) ? $value : [];
-    $name    = $this->getAttribute($attrs, 'name');    
+    $name    = $this->getName($attrs);    
     $options = $this->getAttribute($attrs, 'options', []);
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'checkboxgroup-default');
@@ -488,7 +477,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
  */
 \Form::macro('code', function($attrs) {
     $value   = $this->getValue($attrs);
-    $name    = $this->getAttribute($attrs, 'name');
+    $name    = $this->getName($attrs);
 
     // 支持rows高度模式
     if ($rows  = $this->getAttribute($attrs, 'rows', 0)) {
@@ -522,7 +511,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
  */
 \Form::macro('markdown', function($attrs) {
     $value   = $this->getValue($attrs);
-    $name    = $this->getAttribute($attrs, 'name');
+    $name    = $this->getName($attrs);
 
     $options = $this->getAttribute($attrs, 'options',  [
         'width'              => $this->getAttribute($attrs, 'width', '100%'),
@@ -564,7 +553,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 
     $value = $this->getValue($attrs);
     $id    = $this->getId($attrs);
-    $name  = $this->getAttribute($attrs, 'name');
+    $name  = $this->getName($attrs);
 
     $options = $this->getAttribute($attrs, 'options',  [
         'icon'            => $value,

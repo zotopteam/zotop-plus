@@ -17,7 +17,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$field" route="['content.field.update', $id]" id="field-form" method="put" autocomplete="off"}
+            {form bind="$field" route="['content.field.update', $id]" id="field-form" method="put" autocomplete="off"}
             
              {field type="hidden" name="model_id" required="required"}
 

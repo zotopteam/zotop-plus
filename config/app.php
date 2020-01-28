@@ -258,7 +258,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Module' => App\Modules\Facades\Module::class,
-        'Theme' => App\Themes\Facades\Theme::class,        
+        'Theme' => App\Themes\Facades\Theme::class,
+        'Form' => App\Themes\Facades\Form::class,        
+        'Html' => App\Themes\Facades\Html::class,                        
         'Filter' => App\Hook\Facades\Filter::class,
         'Action' => App\Hook\Facades\Action::class,
     ],

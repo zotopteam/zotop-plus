@@ -33,7 +33,7 @@
     <div class="main-body bg-light scrollable">
         <div class="container-fluid">
 
-            {form model="$content" route="content.content.store" id="content-form" method="post" autocomplete="off"}
+            {form bind="$content" route="content.content.store" id="content-form" method="post" autocomplete="off"}
 
                 {field type="hidden" name="_action"}
                 {field type="hidden" name="parent_id" required="required"}
@@ -83,7 +83,7 @@
                   });            
             });
 
-            $('.form-submit').on('click', function(event) {
+            $('[type=submit]').on('click', function(event) {
                 event.preventDefault();
                 var status = $(this).data('status');
                 var action = $(this).data('action');

@@ -17,7 +17,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$user" route="core.administrator.store" method="post" id="administrator" autocomplete="off"}
+            {form bind="$user" route="core.administrator.store" method="post" id="administrator" autocomplete="off"}
 
             <div class="form-title row">{{trans('core::administrator.form.base')}}</div>
 

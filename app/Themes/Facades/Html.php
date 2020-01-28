@@ -1,15 +1,10 @@
 <?php
-
-namespace Collective\Html;
+namespace App\Themes\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-/**
- * @see \Collective\Html\FormBuilder
- */
-class FormFacade extends Facade
+class Html extends Facade
 {
-
     /**
      * Get the registered name of the component.
      *
@@ -17,6 +12,6 @@ class FormFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'form';
+        return 'html';
     }
 }

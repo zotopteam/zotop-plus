@@ -17,7 +17,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$role" route="core.role.store" method="post" id="role" autocomplete="off"}
+            {form bind="$role" route="core.role.store" method="post" id="role" autocomplete="off"}
 
             <div class="form-title row">{{trans('core::role.form.base')}}</div>
 
