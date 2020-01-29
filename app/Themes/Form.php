@@ -166,9 +166,19 @@ class Form
         $keys = ['url', 'route', 'action'];
 
         if ($attributes = Arr::only($options, $keys)) {
+            
+            // 从属性中删除'url', 'route', 'action'
             Arr::forget($options, $keys);
-            foreach ($attributes as $method => $parameters) {
-                return call_user_func_array($method, Arr::wrap($parameters));
+            
+            foreach ($attributes as $method => $parameter) {
+                // ['route.name', 'parameter1', 'parameter2'……]
+                if (is_array($parameter)) {
+                    return call_user_func_array($method, [$parameter[0], array_slice($parameter, 1)]);
+                }
+                // ‘route.name’
+                if (is_string($parameter)) {
+                    return call_user_func_array($method, [$parameter]);
+                }
             }
         }
 
@@ -395,7 +405,37 @@ class Form
         ];
 
         return $this->toHtmlString('<option ' . $this->attributes($attributes) . '>' . e($display, false) . '</option>');
-    } 
+    }
+
+    /**
+     * checkbox 类型，<input type="checkbox">
+     * @param  array  $attributes 属性
+     * @return string
+     */
+    public function checkbox(array $attributes)
+    {
+        $type  = 'checkbox';
+
+        // 取出传入的value
+        $value = Arr::pull($attributes, 'value');
+
+        // 传入的checked
+        if (Arr::has($attributes, 'checked')) {
+            $checked = $this->getAttribute($attributes, 'checked', false);
+        } else {
+            $values  = Arr::wrap($this->getValue($attributes));
+            $checked = in_array($value, $values) ? true : false;
+        }
+
+        // 传入label
+        if ($label = Arr::pull($attributes, 'label')) {
+            $label = '<label for="' . $this->getName() . '">' . $label . '</label>';
+        }
+        
+        $attributes = array_merge($attributes, compact('type', 'value', 'checked'));
+
+        return $this->input($attributes).$label;
+    }
 
     /**
      * 添加class

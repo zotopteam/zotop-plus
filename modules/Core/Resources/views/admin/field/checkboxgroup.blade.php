@@ -14,12 +14,3 @@
         @endforeach
     </div>
 </div>
-
-@push('js')
-<script type="text/javascript">
-// $.validator.addClassRules("roles-valid", {
-//   required: true,
-//   minlength: 2
-// });    
-</script>
-@endpush

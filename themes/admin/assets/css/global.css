@@ -272,7 +272,7 @@ label.form-label {cursor:pointer;font-weight:bold;}
 
 div.form-control{padding:.35rem;height:auto;overflow:hidden;}
 
-label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 2px);padding-bottom:calc(.5rem - 2px);padding-right:1rem;}
+label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 2px);padding-bottom:calc(.5rem - 2px);padding-right:1rem;margin:0;}
 
 /*checkbox radio*/
 [type=checkbox],[type=radio] {display:inline-block;text-align:center;font-family:'Font Awesome 5 Free';font-weight:400;font-size:1.2rem;color:#666;background-color:transparent;width:auto;height: auto;min-width:1.2rem;clear:none;cursor:pointer;vertical-align:middle;outline:0;border:0 none;appearance:none;-webkit-appearance:none;-moz-appearance:none;transition:all 0.5s}

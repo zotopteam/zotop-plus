@@ -48,20 +48,19 @@
             </div>
 
             <div class="form-title row">
-
                 <div class="col-2 p-0">{{trans('core::role.form.permission')}}</div>
-                <div class="col-8 p-1">
-                    <a href="javascript:;" class="text-sm mr-3 select-all" data-select="select-all">{{trans('core::role.select.all')}}</a>
-                    <a href="javascript:;" class="text-sm mr-3 select-none" data-select="select-none">{{trans('core::role.select.none')}}</a>
+                <div class="col-8 p-0">
+                    <a href="javascript:;" class="btn btn-success btn-sm mr-3 select-all" data-select="select-all">{{trans('core::role.select.all')}}</a>
+                    <a href="javascript:;" class="btn btn-warning btn-sm  mr-3 select-none" data-select="select-none">{{trans('core::role.select.none')}}</a>
                 </div>
             </div>            
             
             @foreach ($permissions as $m=>$module)    
-            <div class="form-group row">
+            <div class="form-group row text-sm">
                 <label class="col-2 col-form-label" data-type="module" data-module="{{$m}}">
                     <div >{{$module['title']}}</div>                
                 </label>
-                <div class="col-10">
+                <div class="col-10 ">
                     <div class="row">
                         @foreach ($module['permissions'] as $key=>$val)
                         @if (is_array($val))

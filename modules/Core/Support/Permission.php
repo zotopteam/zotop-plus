@@ -1,43 +1,53 @@
 <?php
 namespace Modules\Core\Support;
 
+use Illuminate\Contracts\Foundation\Application;
+
 class Permission
 {
     /**
-     * @var Module
+     * @var App
      */    
-    protected $module;
+    protected $app;
 
     /**
      * init
      */
-    public function __construct()
+    public function __construct(Application $app)
     {
-        $this->module  = app('modules');
+        $this->app  = $app;
     }
 
     /**
-     * Get the permissions from modules
+     * Get all permissions from modules
+     * 
      * @return array
      */
     public function all()
     {
         $permissions = [];
 
-        foreach ($this->module->enabled() as $module) {
-            $name     = $module->getLowerName();
-            $permission = $module->getFileData('permission.php');
+        // 获取所有启用的模块权限
+        foreach ($this->app['modules']->enabled() as $module) {
+            
+            $permission = [];
 
-            // 模块未开启权限不显示
-            if (empty($permission)) {
-                continue;
+            // 从权限文件获取权限设置数据
+            $path = $module->getPath('permission.php');
+
+            if ($this->app['files']->exists($path)) {
+                $permission = require $path;
             }
 
-            $permissions[$name] = [
-                'title'       => trans($module->title),
-                'description' => trans($module->description),
-                'permissions' => $permission
-            ];       
+            // 无权限则不显示
+            if ($permission && is_array($permission)) {
+                $name = $module->getLowerName();
+                $permissions[$name] = [
+                    'title'       => $module->getTitle(),
+                    'description' => $module->getDescription(),
+                    'permissions' => $permission
+                ];
+            }     
         }
 
         return $permissions;
