@@ -5,7 +5,7 @@ namespace $CLASS_NAMESPACE$;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Modules\Routing\ApiController as Controller;
-use $INPUT_MODEL_FULLNAME$;
+use $MODEL_FULLNAME$;
 
 class $CLASS_NAME$ extends Controller
 {
@@ -16,15 +16,15 @@ class $CLASS_NAME$ extends Controller
      */
     public function index()
     {
-        $this->title = trans('$MODULE_LOWER_NAME$::$INPUT_NAME$.title');
+        $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.title');
 
         // 全部获取
-        $this->$INPUT_MODEL_LIST$ = $INPUT_MODEL_BASENAME$::all();
+        $this->$MODEL_LIST$ = $MODEL_BASENAME$::all();
 
         // 部分获取
-        //$this->$INPUT_MODEL_LIST$ = $INPUT_MODEL_BASENAME$::with('some')->where('key','value')->orderby('id','asc')->get();        
+        //$this->$MODEL_LIST$ = $MODEL_BASENAME$::with('some')->where('key','value')->orderby('id','asc')->get();        
         // 分页获取
-        //$this->$INPUT_MODEL_LIST$ = $INPUT_MODEL_BASENAME$::with('some')->where('key','value')->orderby('id','asc')->paginate(25);
+        //$this->$MODEL_LIST$ = $MODEL_BASENAME$::with('some')->where('key','value')->orderby('id','asc')->paginate(25);
 
         return $this->success(null);
     }
@@ -36,9 +36,9 @@ class $CLASS_NAME$ extends Controller
      */
     public function create()
     {
-        $this->title = trans('$MODULE_LOWER_NAME$::$INPUT_NAME$.create');
+        $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.create');
 
-        $this->$INPUT_MODEL$ = $INPUT_MODEL_BASENAME$::findOrNew(0);
+        $this->$MODEL_VAR$ = $MODEL_BASENAME$::findOrNew(0);
 
         return $this->success(null);
     }
@@ -51,9 +51,9 @@ class $CLASS_NAME$ extends Controller
      */
     public function store(Request $request)
     {
-        $$INPUT_MODEL$ = new $INPUT_MODEL_BASENAME$;
-        $$INPUT_MODEL$->fill($request->all());
-        $$INPUT_MODEL$->save();
+        $$MODEL_VAR$ = new $MODEL_BASENAME$;
+        $$MODEL_VAR$->fill($request->all());
+        $$MODEL_VAR$->save();
 
         return $this->success(trans('master.created'));
     }
@@ -66,9 +66,9 @@ class $CLASS_NAME$ extends Controller
      */
     public function show($id)
     {
-        $this->title = trans('$MODULE_LOWER_NAME$::$INPUT_NAME$.show');
+        $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.show');
 
-        $this->$INPUT_MODEL$ = $INPUT_MODEL_BASENAME$::findOrFail($id);
+        $this->$MODEL_VAR$ = $MODEL_BASENAME$::findOrFail($id);
 
         return $this->success(null);
     }    
@@ -80,8 +80,8 @@ class $CLASS_NAME$ extends Controller
      */
     public function edit($id)
     {
-        $this->title = trans('$MODULE_LOWER_NAME$::$INPUT_NAME$.edit');
-        $this->$INPUT_MODEL$ = $INPUT_MODEL_BASENAME$::findOrFail($id);
+        $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.edit');
+        $this->$MODEL_VAR$ = $MODEL_BASENAME$::findOrFail($id);
 
         return $this->success(null);
     }
@@ -94,9 +94,9 @@ class $CLASS_NAME$ extends Controller
      */
     public function update(Request $request, $id)
     {
-        $$INPUT_MODEL$ = $INPUT_MODEL_BASENAME$::findOrFail($id);
-        $$INPUT_MODEL$->fill($request->all());        
-        $$INPUT_MODEL$->save();
+        $$MODEL_VAR$ = $MODEL_BASENAME$::findOrFail($id);
+        $$MODEL_VAR$->fill($request->all());        
+        $$MODEL_VAR$->save();
 
         return $this->success(trans('master.updated'));
     }
@@ -108,8 +108,8 @@ class $CLASS_NAME$ extends Controller
      */
     public function destroy($id)
     {
-        $$INPUT_MODEL$ = $INPUT_MODEL_BASENAME$::findOrFail($id);
-        $$INPUT_MODEL$->delete();
+        $$MODEL_VAR$ = $MODEL_BASENAME$::findOrFail($id);
+        $$MODEL_VAR$->delete();
 
         return $this->success(trans('master.deleted'));        
     }

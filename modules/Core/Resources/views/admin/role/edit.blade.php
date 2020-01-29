@@ -70,19 +70,17 @@
                             </label>
                             <div class="role-group-body">
                             @foreach ($val as $k=>$v)
-                               <label class="checkbox" @if($tips = trans_find($v.'.tips')) data-toggle="tooltip" title="{{$tips}}" @endif>
-                                    {field type="checkbox" name="permissions[]" value="$k" data-module="$m"}
-                                    <span>{{trans($v)}}</span>
-                                </label>
+                                <div class="d-inline-block">
+                                {field type="checkbox" name="permissions[]" value="$k" data-module="$m" label="trans($v)"}
+                                </div>
                             @endforeach
                             </div>
                         </div>
                         @else
                         <div class="col-auto">
-                            <label class="checkbox" @if($tips = trans_find($val.'.tips')) data-toggle="tooltip" title="{{$tips}}" @endif>
-                                {field type="checkbox" name="permissions[]" value="$key" data-module="$m"}
-                                <span>{{trans($val)}}</span>
-                            </label>
+                            <div class="d-inline-block">
+                            {field type="checkbox" name="permissions[]" id="$k" value="$key" data-module="$m" label="trans($v)"}
+                            </div>
                         </div>
                         @endif
                         @endforeach

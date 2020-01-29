@@ -10,7 +10,7 @@
             <a href="#" class="btn btn-primary d-none"> <i class="fa fa-plus"></i> Button </a>
         </div>           
     </div>
-    <div class="main-body scrollable">
+    <div class="main-body scrollabel">
         @if($tasks->count() == 0)
             <div class="nodata">{{trans('master.nodata')}}</div>
         @else
@@ -37,20 +37,20 @@
                             {{$task->index + 1}}
                         </td>
                         <td class="text-center">
-                            <lable class="badge badge-primary">{{$task->type}}</lable>
+                            <label class="badge badge-primary">{{$task->type}}</label>
                         </td>
                         <td>
                             {{$task->cmd}}
                         </td>
                         <td>
-                            <lable class="badge badge-success">{{$task->expression}}</lable>
+                            <label class="badge badge-success">{{$task->expression}}</label>
                         </td>
                         <td>{{$task->nextRunDate()->format('Y-m-d H:i:s')}}</td>
                         <td>{{$task->timezone}}</td>
                         <td>
                             @if ($task->environments)                   
                                 @foreach ($task->environments as $env)
-                                    <lable class="badge badge-info">{{$env}}</lable>
+                                    <label class="badge badge-info">{{$env}}</label>
                                 @endforeach
                             @else
                                 --

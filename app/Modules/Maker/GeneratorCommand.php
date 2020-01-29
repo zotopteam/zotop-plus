@@ -11,12 +11,6 @@ abstract class GeneratorCommand extends Command
     use GeneratorTrait;
 
     /**
-     * 前面追加的名称
-     * 
-     */
-    protected $prependName = null;
-
-    /**
      * 后面追加的名称，比如名称后面追加 Request,ServiceProvider
      * 
      */
@@ -58,7 +52,6 @@ abstract class GeneratorCommand extends Command
         $this->replace([
             'class_name'      => $this->getClassName(),
             'class_namespace' => $this->getClassNamespace(),
-            'input_name'      => $this->getNameInput(),
         ]);
 
         if ($this->prepare()) {
@@ -120,11 +113,6 @@ abstract class GeneratorCommand extends Command
     Public function getClassName()
     {
         $className = Str::studly($this->getNameInput());
-
-        //前面追加的名称
-        if ($this->prependName) {
-            $className = Str::start($className, $this->prependName);            
-        }
 
         // 部分类以特殊标识结尾，补充结尾标识，如：CoreServiceProvider, AdminRequest
         if ($this->appendName) {

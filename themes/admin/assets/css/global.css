@@ -272,8 +272,8 @@ label.form-label {cursor:pointer;font-weight:bold;}
 
 div.form-control{padding:.35rem;height:auto;overflow:hidden;}
 
-label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 2px);padding-bottom:calc(.5rem - 2px);padding-right:1rem;margin:0;}
-
+/*label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 2px);padding-bottom:calc(.5rem - 2px);padding-right:1rem;margin:0;}
+*/
 /*checkbox radio*/
 [type=checkbox],[type=radio] {display:inline-block;text-align:center;font-family:'Font Awesome 5 Free';font-weight:400;font-size:1.2rem;color:#666;background-color:transparent;width:auto;height: auto;min-width:1.2rem;clear:none;cursor:pointer;vertical-align:middle;outline:0;border:0 none;appearance:none;-webkit-appearance:none;-moz-appearance:none;transition:all 0.5s}
 [type=checkbox]:focus,[type=radio]:focus{background-color:transparent;outline:0 none!important;box-shadow:none!important;}
@@ -285,9 +285,8 @@ label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 2px);padding-
 [type=checkbox]:checked:before{content:'\f14a';color:#0072c6;} 
 [type=checkbox]:disabled,[type=radio]:disabled{color:#ccc;}
 [type=checkbox]:disabled:checked:before,[type=radio]:disabled:checked:before{color:#ccc;}
-[type=checkbox]+span,[type=radio]+span{vertical-align:text-top;margin-left:.25rem;}
-[type=checkbox]:checked+span,[type=radio]:checked+span{color:#0072c6;}
-
+[type=checkbox]+label, [type=radio]+label{vertical-align:text-top;margin-left:.25rem;margin-right:.5rem;cursor:pointer;}
+[type=checkbox]:checked+label, [type=radio]:checked+label{color:#0072c6;}
 
 .toggle[type=checkbox]{font-size:1.8rem;font-weight:900;}
 .toggle[type=checkbox]:before{content:'\f204';}

@@ -3,7 +3,7 @@
 @section('content')
 <div class="main scrollable">
 
-    {form route="developer.module.store" method="post" class="m-4" autocomplete="off"}
+    {form route="developer.module.store" method="post" class="form m-4" autocomplete="off"}
 
         <div class="container-fluid">
 

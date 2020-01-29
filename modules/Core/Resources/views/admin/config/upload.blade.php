@@ -226,10 +226,7 @@
                                 <tr>
                                 @foreach (Module::data('core::watermark.position') as $value=>$postion)
                                     <td class="text-center">
-                                        <label class="radio m-0">
-                                        {field type="radio" name="image[watermark][position]" value="$value"}
-                                        {{$postion}}
-                                        </label>
+                                        {field type="radio" name="image[watermark][position]" id="$value" value="$value" label="$postion"}
                                     </td>
                                     @if($loop->iteration%3==0 && $loop->iteration < $loop->count)
                                     </tr>

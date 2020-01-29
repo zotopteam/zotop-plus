@@ -102,13 +102,13 @@ class ControllerController extends AdminController
     }
 
     /**
-     * 获取控制器的真实类名称
+     * 获取控制器的基本名称
      * @param  string $controller
      * @return string
      */
     private function getBaseName($controller)
     {
-        return strtolower(Str::replaceLast('Controller', '', $controller));
+        return Str::replaceLast('controller', '', strtolower($controller));
     }
 
     /**

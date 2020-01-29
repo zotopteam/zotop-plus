@@ -3,7 +3,7 @@
 @section('content')
 <div class="main scrollable">
 
-    {form route="['developer.migration.create', $module]" method="post" class="p-3" autocomplete="off"}
+    {form route="['developer.migration.create', $module]" method="post" class="form p-3" autocomplete="off"}
 
         <div class="container-fluid">
             <div class="form-group">

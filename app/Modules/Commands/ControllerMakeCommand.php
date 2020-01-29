@@ -58,10 +58,11 @@ class ControllerMakeCommand extends GeneratorCommand
             $this->stub = $this->stub . '/model';
 
             $this->replace([
-                'input_model_basename' => $this->getModelBaseName(),
-                'input_model_fullname' => $this->getModelFullName(),
-                'input_model_list'     => $this->getModelList(),
-                'input_model'          => $this->getModelInput(),
+                'model_basename'        => $this->getModelBaseName(),
+                'model_fullname'        => $this->getModelFullName(),
+                'model_list'            => $this->getModelList(),
+                'model_var'             => $this->getModelInput(),
+                'controller_lower_name' => $this->getControllerLowerName(),
             ]);            
         } else {
             $this->stub = $this->stub . '/plain';
@@ -76,29 +77,34 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     public function generated()
     {
-        // 资源控制器带语言和view生成
+        $name = Str::studly($this->getNameInput());
+
+        // 资源view生成
         if ($this->getModelInput()) {
 
             $this->generateArrayLang($this->getNameInput(), [
-                'title'  => $this->getNameInput(),
-                'create' => trans('master.create'),
-                'edit'   => trans('master.edit'),
-                'show'   => trans('master.show'),
+                'title'       => "[{$name} title]",
+                'description' => "[{$name} description]",
+                'create'      => "[Create {$name}]",
+                'edit'        => "[Edit {$name}]",
+                'show'        => "[Show {$name}]",
+                'title.label' => "[Title label]",
+                'title.help'  => "[Title help]",
             ], $this->option('force'));
 
             foreach (['index', 'create', 'edit', 'show'] as $action) {
                 $this->generateView($action, $this->option('force'));
             }
 
-            return ;
+            return;
         }
 
         $this->generateArrayLang($this->getNameInput(), [
-            'title'  => $this->getNameInput(),
-        ], $this->option('force'));        
+            'title'       => "[{$name} title]",
+            'description' => "[{$name} description]",
+        ], $this->option('force'));
 
         $this->generateView('index', $this->option('force'));
-        return;
     }
 
     /**
@@ -184,6 +190,15 @@ class ControllerMakeCommand extends GeneratorCommand
     public function getModelList()
     {
         return Str::plural($this->getModelInput());
+    }
+
+    /**
+     * 获取控制器名称小写格式，不含Controller
+     * @return string
+     */
+    public function getControllerLowerName()
+    {
+        return Str::replaceLast(strtolower($this->appendName), '', strtolower($this->getClassName()));
     }
 
     /**

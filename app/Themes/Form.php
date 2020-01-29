@@ -75,6 +75,16 @@ class Form
     ];    
 
     /**
+     * 按钮字段
+     * @var string
+     */
+    protected $fieldButtonIcon = [
+        'submit' => 'fa fa-save',
+        'button' => 'fa fa-check-circle',
+        'reset'  => 'fa fa-undo',
+    ];  
+
+    /**
      * 创建一个表单实例
      *
      * @param  app
@@ -307,8 +317,14 @@ class Form
         $type       = Arr::pull($attributes, 'type', 'button');
         $class      = Arr::pull($attributes, 'class', $this->fieldButtonClass[$type]);        
         $attributes = array_merge($attributes, compact('type', 'class'));
+        
+        // 显示内容
+        $value = Arr::pull($attributes, 'value', trans(Str::studly($type)));
 
-        $value      = Arr::pull($attributes, 'value', trans(Str::studly($type)));
+        // 增加图标
+        if ($icon = Arr::pull($attributes, 'icon', $this->fieldButtonIcon[$type])) {
+            $value = '<i class="' . $icon . ' fa-fw"></i> '.$value;
+        }
 
         return $this->toHtmlString('<button ' . $this->attributes($attributes) . '>' . $value . '</button>');
     }
@@ -414,28 +430,58 @@ class Form
      */
     public function checkbox(array $attributes)
     {
-        $type  = 'checkbox';
+        $attributes['type'] = 'checkbox';
+        return $this->checkable($attributes);
+    }
 
+    /**
+     * radio 类型，<input type="radio">
+     * @param  array  $attributes 属性
+     * @return string
+     */
+    public function radio(array $attributes)
+    {
+        $attributes['type'] = 'radio';
+        return $this->checkable($attributes);
+    }
+
+    /**
+     * checkbox 和 radio
+     * @param  array  $attributes [description]
+     * @return [type]             [description]
+     */
+    protected function checkable(array $attributes)
+    {
         // 取出传入的value
         $value = Arr::pull($attributes, 'value');
 
         // 传入的checked
         if (Arr::has($attributes, 'checked')) {
             $checked = $this->getAttribute($attributes, 'checked', false);
+        } else if ($attributes['type'] == 'checkbox') {
+            $checked = in_array($value, Arr::wrap($this->getValue($attributes))) ? true : false;
         } else {
-            $values  = Arr::wrap($this->getValue($attributes));
-            $checked = in_array($value, $values) ? true : false;
+            $checked = ($this->getValue($attributes) == $value) ? true : false;
         }
+
+        // id
+        $id = Arr::pull($attributes, 'id');
+
+        if (empty($id)) {
+            $id = $this->getName($attributes) .'-'.$value;
+        }
+
+        // 重新拼装
+        $attributes = array_merge($attributes, compact('value', 'checked', 'id'));
 
         // 传入label
         if ($label = Arr::pull($attributes, 'label')) {
-            $label = '<label for="' . $this->getName() . '">' . $label . '</label>';
+            $label = '<label for="' . $this->getId($attributes) . '">' . $label . '</label>';
         }
-        
-        $attributes = array_merge($attributes, compact('type', 'value', 'checked'));
 
-        return $this->input($attributes).$label;
+        return $this->input($attributes).$label;        
     }
+  
 
     /**
      * 添加class
@@ -485,8 +531,15 @@ class Form
         // key可以是多个
         $keys = Arr::wrap($key);
 
-        // 取出所有可能的key
-        $attrs = Arr::only($attributes, $keys);
+        // 取出第一个存在的标签值
+        $value = null;
+
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $attributes)) {
+                $value = $attributes[$key];
+                break;
+            }
+        }
 
         // 从原数组中删除
         if ($pull) {
@@ -494,10 +547,7 @@ class Form
         }
 
         // 属性存在，
-        if (! empty($attrs)) {
-
-            // 则取出第一个值
-            $value = head($attrs);
+        if (! is_null($value)) {
 
             // 默认值如果为数组，则value也必须是数组，深度合并默认值默认值和value
             if (is_array($default)) {

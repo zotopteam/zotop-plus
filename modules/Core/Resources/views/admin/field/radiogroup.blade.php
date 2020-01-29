@@ -1,12 +1,10 @@
 <div class="radiogroup {{$class}} {{$column ? "radiogroup-column-{$column}" : ''}}">
     <div class="radiogroup-row">
         @foreach((array)$options as $k=>$v)
-        <label class="radiogroup-item radio">
-            <input type="radio" id="{{$name}}-{{$k}}" class="form-control" name="{{$name}}" value="{{$k}}" {{($k==$value)?'checked':''}}/>
-            <span class="radio-text">
-                {{$v}}
-            </span>
-        </label>
+            <div class="radiogroup-item d-inline-block">
+                <input type="radio" id="{{$name}}-{{$k}}" class="form-control" name="{{$name}}" value="{{$k}}" {{($k==$value)?'checked':''}}/>
+                <label for="{{$name}}-{{$k}}">{{$v}}</label>
+            </div>
         @if($column && $loop->iteration%$column==0 && $loop->iteration < $loop->count)
         </div>
         <div class="radiogroup-row">

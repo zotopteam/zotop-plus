@@ -3,7 +3,7 @@
 @section('content')
 <div class="main scrollable">
 
-    {form bind="$category" route="['block.category.update', $category->id]" method="put" id="category-form" class="p-3" autocomplete="off"}
+    {form bind="$category" route="['block.category.update', $category->id]" method="put" id="category-form" class="form p-3" autocomplete="off"}
 
         <div class="container-fluid">
 

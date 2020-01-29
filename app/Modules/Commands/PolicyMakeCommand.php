@@ -54,9 +54,9 @@ class PolicyMakeCommand extends GeneratorCommand
             $this->stub = 'policy_model';
 
             $this->replace([
-                'input_model_fullname' => $this->getInputModelFullName(),
-                'input_model_basename' => $this->getInputModelBaseName(),
-                'input_model'          => strtolower($this->getInputModelBaseName()),
+                'model_fullname' => $this->getInputModelFullName(),
+                'model_basename' => $this->getInputModelBaseName(),
+                'model_var'      => strtolower($this->getInputModelBaseName()),
             ]);
         }
 
