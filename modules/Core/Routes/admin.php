@@ -88,9 +88,9 @@ $router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) 
     // 主题管理
     $router->group(['prefix' =>'theme'], function (Router $router) {
         $router->get('index/{type?}','ThemeController@index')->name('core.theme.index')->middleware('allow:core.theme.index');
-        $router->get('files/{theme?}','ThemeController@files')->name('core.theme.files')->middleware('allow:core.theme.files');
         $router->any('publish/{theme?}','ThemeController@publish')->name('core.theme.publish')->middleware('allow:core.theme.publish');
         $router->any('upload','ThemeController@upload')->name('core.theme.upload')->middleware('allow:core.theme.upload');
+        $router->any('delete/{theme}','ThemeController@delete')->name('core.theme.delete')->middleware('allow:core.theme.delete');
     });
 
     // 文件管理

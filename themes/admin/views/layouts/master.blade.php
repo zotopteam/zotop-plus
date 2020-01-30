@@ -25,26 +25,20 @@
             <li class="brand dropdown">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{config('zotop.name')}}</a>
                 <div class="dropdown-menu dropdown-start">
-                    <div class="shortcuts scrollable">
-                        <div class="container-fluid">
-                            <div class="row">
-                                @foreach(Filter::fire('global.start',[]) as $s)
-                                <div class="col-md-2 p-0">
-                                    <a href="{{$s['href']}}" class="shortcut shortcut-thumb {{$s['class'] ?? ''}}" target="{{$s['target'] ?? '_self'}}">
-                                        <div class="shortcut-icon">
-                                            <i class="{{$s['icon']}}"></i>
-                                            @if(isset($s['badge']))
-                                            <b class="shortcut-badge badge badge-xs badge-danger">{{$s['badge']}}</b>
-                                            @endif       
-                                        </div>
-                                        <div class="shortcut-text">
-                                            <h2>{{$s['text']}}</h2>
-                                        </div>
-                                    </a>                                        
-                                </div>
-                                @endforeach
+                    <div class="grid grid-xs grid-gap-none">
+                        @foreach(Filter::fire('global.start',[]) as $s)
+                        <a href="{{$s['href']}}" class="shortcut shortcut-thumb {{$s['class'] ?? ''}}" target="{{$s['target'] ?? '_self'}}">
+                            <div class="shortcut-icon">
+                                <i class="{{$s['icon']}}"></i>
+                                @if(isset($s['badge']))
+                                <b class="shortcut-badge badge badge-xs badge-danger">{{$s['badge']}}</b>
+                                @endif       
                             </div>
-                        </div>
+                            <div class="shortcut-text">
+                                <h2>{{$s['text']}}</h2>
+                            </div>
+                        </a>                                        
+                        @endforeach
                     </div>
                 </div>
             </li>

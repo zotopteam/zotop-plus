@@ -76,11 +76,14 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
 
     // route
     $router->group(['prefix' =>'route','middleware'=>'allow:developer.route'], function (Router $router) {
-        $router->get('index','RouteController@index')->name('developer.route.index')->middleware('allow:developer.route.index');
+        $router->get('index','RouteController@index')->name('developer.route.index');
     });
 
     // theme group
     $router->group(['prefix' =>'theme','middleware'=>'allow:developer.permission'], function (Router $router) {
         $router->get('index','ThemeController@index')->name('developer.theme.index');
+        $router->get('files/{theme?}','ThemeController@files')->name('developer.theme.files');
+        $router->get('create','ThemeController@create')->name('developer.theme.create');
+        $router->post('store','ThemeController@store')->name('developer.theme.store');        
     });    
 });

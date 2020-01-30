@@ -1,10 +1,11 @@
 <?php
 
-namespace $CLASS_NAMESPACE$;
+namespace Modules\Developer\Rules;
 
+use App\Themes\Facades\Theme;
 use Illuminate\Contracts\Validation\Rule;
 
-class $CLASS_NAME$ implements Rule
+class ThemeName implements Rule
 {
     /**
      * 错误提示
@@ -32,8 +33,8 @@ class $CLASS_NAME$ implements Rule
     public function passes($attribute, $value)
     {
         // 验证失败
-        if (is_null($value)) {
-            $this->message = 'The validation error message';
+        if (Theme::find($value)) {
+            $this->message = trans('master.existed', [$value]);
             return false;
         }
 

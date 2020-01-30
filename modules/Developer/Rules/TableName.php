@@ -15,6 +15,10 @@ class TableName implements Rule
      */
     protected $module;
 
+    /**
+     * 错误提示
+     * @var string
+     */
     protected $message;
 
     /**

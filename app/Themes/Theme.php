@@ -156,6 +156,9 @@ class Theme
      */
     public function delete()
     {
+        // 删除之前需要启动主题，才能实现该主题事件监听
+        $this->active();
+
         $this->dispatch('deleting');
 
         // 撤销主题发布文件

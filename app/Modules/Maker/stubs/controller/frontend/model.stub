@@ -55,7 +55,7 @@ class $CLASS_NAME$ extends Controller
         $$MODEL_VAR$->fill($request->all());
         $$MODEL_VAR$->save();
 
-        return $this->success(trans('master.created'), route('$MODULE_LOWER_NAME$.$LOWER_CONTROLLER$.index'));
+        return $this->success(trans('master.created'), route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.index'));
     }
 
     /**

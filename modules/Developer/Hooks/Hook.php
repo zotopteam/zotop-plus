@@ -23,6 +23,18 @@ class Hook
                 'icon' => 'fa fa-puzzle-piece bg-warning text-white',
                 'tips' => trans('developer::module.description'),
             ];
+            $start['developer-theme'] = [
+                'text' => trans('developer::theme.title'),
+                'href' => route('developer.theme.index'),
+                'icon' => 'fa fa-gem bg-warning text-white',
+                'tips' => trans('developer::theme.description'),
+            ];
+            $start['developer-route'] = [
+                'text' => trans('developer::route.title'),
+                'href' => route('developer.route.index'),
+                'icon' => 'fa fa-link bg-warning text-white',
+                'tips' => trans('developer::route.description'),
+            ];                        
         }
 
         return $start;
@@ -46,4 +58,24 @@ class Hook
                
         return $navbar;
     }
+
+    /**
+     * Hook the tools
+     * @param  array $navbar
+     * @return array
+     */
+    public function tools($tools)
+    {
+        // 只在本地模式下不显示
+        if (allow('developer.index') && app()->environment('local')) {
+            $tools['developer'] = [
+                'title'   => trans('developer::developer.title'),
+                'href'   => route('developer.index'),
+                'icon'   => 'fa fa-tools',
+                'class' => 'text-warning',
+            ];
+        }
+               
+        return $tools;
+    }    
 }
