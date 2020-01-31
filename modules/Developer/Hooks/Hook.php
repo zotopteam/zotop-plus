@@ -26,7 +26,7 @@ class Hook
             $start['developer-theme'] = [
                 'text' => trans('developer::theme.title'),
                 'href' => route('developer.theme.index'),
-                'icon' => 'fa fa-gem bg-warning text-white',
+                'icon' => 'fa fa-tshirt bg-warning text-white',
                 'tips' => trans('developer::theme.description'),
             ];
             $start['developer-route'] = [

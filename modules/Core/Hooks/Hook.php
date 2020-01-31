@@ -62,7 +62,7 @@ class Hook
             $start['core-themes'] = [
                 'text' => trans('core::theme.title'),
                 'href' => route('core.theme.index'),
-                'icon' => 'fa fa-gem bg-primary text-white', 
+                'icon' => 'fa fa-tshirt bg-primary text-white', 
                 'tips' => trans('core::theme.description'),
             ];
         }

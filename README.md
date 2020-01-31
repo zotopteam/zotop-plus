@@ -13,4 +13,4 @@
 The Zotop CMS is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
 
 
-  [1]: http://doc.zotop.com
+[1]: http://doc.zotop.com

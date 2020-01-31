@@ -2,15 +2,13 @@
 
 namespace Modules\Site\Http\Controllers\Admin;
 
+use App\Modules\Routing\AdminController as Controller;
+use App\Themes\Facades\Theme;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
 use Modules\Core\Support\FileBrowser;
-use Theme;
-use Artisan;
-use File;
 
-class SiteController extends AdminController
+class SiteController extends Controller
 {
     /**
      * 视图选择
@@ -21,7 +19,7 @@ class SiteController extends AdminController
      */
     public function selectView(Request $request, $theme=null)
     {
-        $views  = path_base(Theme::path($theme.':views'));
+        $views  = path_base(Theme::findOrFail($theme)->getPath('views', true));
         $module = strtolower($request->input('module'));
 
         // 根目录

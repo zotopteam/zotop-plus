@@ -9,7 +9,7 @@
         
         </div>
 
-        <form class="form form-config form-sm" action="{{route('install.config')}}">
+        <form class="form form-config form-md" action="{{route('install.config')}}">
             
             <div class="form-title">{{trans("installer.config.site")}}</div>
             <div class="form-group">

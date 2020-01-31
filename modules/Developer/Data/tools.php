@@ -10,7 +10,7 @@ return [
     'theme' => [
         'text'  => trans('developer::theme.title'),
         'href'  => route('developer.theme.index'),
-        'icon'  => 'fa fa-gem',
+        'icon'  => 'fa fa-tshirt',
         'class' => 'bg-success text-white',
     ],
     'route' => [

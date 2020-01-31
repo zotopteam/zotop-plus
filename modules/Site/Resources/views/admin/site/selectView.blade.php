@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="main">
-    <div class="main-header">       
+    <div class="main-header">
         <div class="main-action mr-auto">
             <div class="breadcrumb px-0">
                 @if($upfolder)
@@ -85,7 +85,7 @@
                     <td>{{$folder->time}}</td>                    
                 </tr>
                 @endforeach            
-                @foreach($files as $path=>$file)
+                @foreach($files as $file)
                 <tr data-type="file">
                     <td class="text-center">
                         <i class="select-icon fa fa-check-square fa-2x"></i>
@@ -191,7 +191,9 @@
         }
         
         return false;
-    }    
+    }
+
+    currentDialog.statusbar('{{ trans('core::file.position') }} : {{$path}}');
 
     $(function(){
         // 文件夹双击

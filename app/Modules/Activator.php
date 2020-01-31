@@ -1,13 +1,14 @@
 <?php
 namespace App\Modules;
 
+use App\Modules\Module;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Traits\Macroable;
-use Illuminate\Support\Str;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use App\Modules\Module;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 
 class Activator
 {
@@ -28,6 +29,7 @@ class Activator
     protected $modules = [];
 
     /**
+     * 缓存键名
      * @var string
      */
     private $cacheKey;
@@ -37,7 +39,7 @@ class Activator
     {
         $this->app      = $app;
         $this->cacheKey = $this->app['config']->get('modules.cache.key').'-activator';
-        $this->modules  = $this->modules();
+        $this->modules  = $this->getModules();
     }
 
     /**
@@ -47,20 +49,11 @@ class Activator
      */
     public function modules($key=null)
     {
-        static $modules = [];
-
-        if (empty($modules)) {
-
-            $modules = $this->app['cache']->rememberForever($this->cacheKey, function() {
-                return $this->getModules();
-            });
-        }
-
         if ($key) {
-            return Arr::get($modules, $key);
+            return Arr::get($this->modules, $key);
         }
 
-        return $modules;
+        return $this->modules;
     }
 
     /**
@@ -69,17 +62,17 @@ class Activator
      */
     private function getModules()
     {
-        $modules = [];
-
-        if (Schema::hasTable('modules')) {
-            $modules = DB::table('modules')->get()->keyBy('module')->transform(function($item){
-                $item->config   = json_decode($item->config, true);
-                $item->disabled = (bool) $item->disabled;
-                return (array) $item;
-            })->toArray();
+        try {
+            return $this->app['cache']->rememberForever($this->cacheKey, function() {
+                return DB::table('modules')->get()->keyBy('module')->transform(function($item){
+                    $item->config   = json_decode($item->config, true);
+                    $item->disabled = (bool) $item->disabled;
+                    return (array) $item;
+                })->toArray();
+            });          
+        } catch (QueryException $e) {
+            return [];
         }
-
-        return $modules;
     }
 
 
