@@ -3,7 +3,7 @@
 use Illuminate\Routing\Router;
 
 // $MODULE_STUDLY_NAME$ admin路由
-$router->group(['prefix'=>'$MODULE_LOWER_NAME$', 'module'=>'$MODULE_LOWER_NAME$'], function (Router $router) {
+$router->group(['prefix'=>'$MODULE_LOWER_NAME$'], function (Router $router) {
     
     // 单个路由示例
     //$router->get('/', 'IndexController@index')->name('$MODULE_LOWER_NAME$.index')->middleware('allow:$MODULE_LOWER_NAME$.index');

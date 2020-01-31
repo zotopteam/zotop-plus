@@ -8,11 +8,18 @@ use Illuminate\Routing\Router;
 abstract class ServiceProvider extends RouteServiceProvider
 {
     /**
-     * 根命名空间，必须通过模块中的路由子类覆盖
+     * 控制器根命名空间
      *
      * @var string
      */
     protected $namespace = '';
+
+    /**
+     * 模块名称
+     *
+     * @var string
+     */
+    protected $module = '';    
 
     /**
      * 定义路由绑定
@@ -91,16 +98,13 @@ abstract class ServiceProvider extends RouteServiceProvider
     /**
      * 定义api路由
      *
-     * These routes are typically stateless.
-     *
      * @return void
      */
     private function mapApiRoutes(Router $router)
     {
-        $apiRouteFile = $this->getApiRouteFile();
-
-        if ($apiRouteFile && file_exists($apiRouteFile)) {
+        if ($apiRouteFile = $this->getApiRouteFile()) {
             $router->group([
+                'module'     => $this->module,
                 'namespace'  => $this->namespace.'\\'.$this->app['config']->get('modules.types.api.dirs.controller'),
                 'prefix'     => $this->app['config']->get('modules.types.api.prefix'),
                 'middleware' => $this->app['config']->get('modules.types.api.middleware'),
@@ -113,16 +117,13 @@ abstract class ServiceProvider extends RouteServiceProvider
     /**
      * 定义前端路由
      *
-     * These routes are typically stateless.
-     *
      * @return void
      */
     private function mapFrontRoutes(Router $router)
     {
-        $frontRouteFile = $this->getFrontRouteFile();
-
-        if ($frontRouteFile && file_exists($frontRouteFile)) {
+        if ($frontRouteFile  = $this->getFrontRouteFile()) {
             $router->group([
+                'module'     => $this->module,
                 'namespace'  => $this->namespace,
                 'prefix'     => $this->app['config']->get('modules.types.frontend.prefix'),
                 'middleware' => $this->app['config']->get('modules.types.frontend.middleware'),      
@@ -135,17 +136,13 @@ abstract class ServiceProvider extends RouteServiceProvider
     /**
      * 定义后端路由
      *
-     * These routes are typically stateless.
-     *
      * @return void
      */
     private function mapAdminRoutes(Router $router)
     {
-        $adminRouteFile = $this->getAdminRouteFile();
-
-        if ($adminRouteFile && file_exists($adminRouteFile)) {
-
+        if ($adminRouteFile = $this->getAdminRouteFile()) {
             $router->group([
+                'module'     => $this->module,
                 'namespace'  => $this->namespace.'\\'.$this->app['config']->get('modules.types.backend.dirs.controller'),
                 'prefix'     => $this->app['config']->get('modules.types.backend.prefix'),
                 'middleware' => $this->app['config']->get('modules.types.backend.middleware'),     
@@ -155,12 +152,14 @@ abstract class ServiceProvider extends RouteServiceProvider
         }
     }
 
+    /**
+     * 加载命令行
+     *
+     * @return void
+     */
     private function mapConsoleRoutes()
     {
-        $consoleRouteFile = $this->getConsoleRouteFile();
-
-        // 如果命令行路由文件存在则加载
-        if ($consoleRouteFile && file_exists($consoleRouteFile)) {
+        if ($consoleRouteFile  = $this->getConsoleRouteFile()) {
             require $consoleRouteFile;
         }
     }   

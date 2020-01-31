@@ -7,11 +7,18 @@ use App\Modules\Routing\ServiceProvider;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * 根命名空间
+     * 控制器命名空间
      *
      * @var string
      */
     protected $namespace = 'Modules\Content\Http\Controllers';
+
+    /**
+     * 模块名称
+     *
+     * @var string
+     */
+    protected $module = 'content';   
 
     /**
      * 前台路由，无前台路由返回false

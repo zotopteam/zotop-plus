@@ -2,10 +2,10 @@
 use Illuminate\Routing\Router;
 
 // Core 模块后台路由
-$router->group(['prefix' =>'/', 'module'=>'core'], function (Router $router) {
+$router->group(['prefix' =>'/'], function (Router $router) {
 
     // 首页
-    $router->get('/','IndexController@index')->name('admin.index');
+    $router->get('/', 'IndexController@index')->name('admin.index');
 
     // 登录
     $router->get('login', 'AuthController@showLoginForm')->name('admin.login')->middleware('admin.guest');
@@ -19,7 +19,7 @@ $router->group(['prefix' =>'/', 'module'=>'core'], function (Router $router) {
 });
 
 // Core 模块后台路由
-$router->group(['prefix' =>'core', 'module'=>'core'], function (Router $router) {
+$router->group(['prefix' =>'core'], function (Router $router) {
 
     // 个人管理
     $router->group(['prefix' =>'mine'], function (Router $router) {

@@ -6,7 +6,7 @@ if (app()->environment('production')) {
 use Illuminate\Routing\Router;
 
 // Developer 模块后台路由
-$router->group(['prefix' =>'developer','module'=>'developer'], function (Router $router) {
+$router->group(['prefix' =>'developer'], function (Router $router) {
     
     // 首页
     $router->get('index', 'IndexController@index')->name('developer.index');

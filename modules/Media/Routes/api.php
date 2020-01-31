@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Routing\Router;
 
-$router->group(['prefix' =>'media','module'=>'media'], function (Router $router) {
+$router->group(['prefix' =>'media'], function (Router $router) {
     // append
 });
