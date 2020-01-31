@@ -336,7 +336,7 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
     };
 
     function submited(target, options) {
-        var method = target.attr('method').toLowerCase();
+        var method  = target.attr('method').toLowerCase();
         var submits = $(options.submits);
 
         var submitHandler = function(form) {                
@@ -345,11 +345,21 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                 var url       = form.attr('action');
                 var data      = form.serialize();
 
+                // 点击的按钮增加loading
+                if ( $(document.activeElement, submits).find('.fa').length > 0 ){
+                    $(document.activeElement, submits).find('.fa').addClass('fa-loading');
+                }
+
                 // 禁用提交按钮
                 submits.prop('disabled', true);
 
                 // ajax提交表单
                 $.post(url, data, function(msg) {
+
+                    // 取消loading
+                    if ( submits.find('.fa').length > 0 ){
+                        submits.find('.fa').removeClass('fa-loading');
+                    }
 
                     // 不跳转时禁用提交按钮
                     if (! msg.url) {
@@ -367,8 +377,17 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                     }
                     
                     options.message(msg, form, submits);
+                    
                 },'json').fail(function(jqXHR){
+                    
+                    // 恢复按钮
                     submits.prop('disabled', false);
+
+                    // 取消loading
+                    if ( submits.find('.fa').length > 0 ){
+                        submits.find('.fa').removeClass('fa-loading');
+                    }
+
                     return validator.showErrors(jqXHR.responseJSON.errors);
                 });
         }
