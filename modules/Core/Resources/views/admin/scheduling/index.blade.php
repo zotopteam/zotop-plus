@@ -5,12 +5,9 @@
     <div class="main-header">        
         <div class="main-title mr-auto">
             {{$title}}
-        </div>
-        <div class="main-action">
-            <a href="#" class="btn btn-primary d-none"> <i class="fa fa-plus"></i> Button </a>
-        </div>           
+        </div>        
     </div>
-    <div class="main-body scrollabel">
+    <div class="main-body scrollable">
         @if($tasks->count() == 0)
             <div class="nodata">{{trans('master.nodata')}}</div>
         @else

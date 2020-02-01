@@ -34,7 +34,7 @@ return [
     'index_keywords.help'    => '网站首页使用的关键词',
     'index_meta.label'       => '首页Meta',
     'index_meta.help'        => '首页<head>中的额外的<meta>标签',
-    'index_meta.placeholder' => '<meta name=\\\\\\\"test\\\\\\\" content=\\\\\\\"test\\\\\\\">',
+    'index_meta.placeholder' => '<meta name="test" content="test">',
     'maintain'               => '维护模式',
     'maintain.tips'          => '',
     'maintained.label'       => '开启维护模式',

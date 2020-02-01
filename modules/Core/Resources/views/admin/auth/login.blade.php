@@ -54,7 +54,7 @@
 
                 </div>
                 <div class="form-group">
-                        {field type="submit" value="trans('core::auth.submit')" class="btn btn-primary btn-block"}
+                        {field type="submit" value="trans('core::auth.submit')" icon="" class="btn btn-primary btn-block"}
                 </div>
             </div>
         </div>

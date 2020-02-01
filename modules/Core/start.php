@@ -1,6 +1,13 @@
 <?php
 
-use App\Hook\FacadesFilter;
+use App\Hook\Facades\Filter;
+use App\Themes\Facades\Form;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\File;
+
 /**
  * 开始菜单
  */
@@ -33,20 +40,9 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManage');
 Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 
 /**
- * 扩展File::mime方法, 获取文件类型audio/avi，text/xml 斜杠前面部分  
- */
-\File::macro('mime', function($file) {
-    if ($mimeType = static::mimeType($file)) {
-        list($mime, $type) = explode('/', $mimeType);
-        return $mime;
-    }
-    return null;
-});
-
-/**
  * 扩展 Request::referer 功能
  */
-\Illuminate\Http\Request::macro('referer', function() {
+Request::macro('referer', function() {
 
     // 如果前面有传入，比如表单传入
     if ($referer = request()->input('_referer')) {
@@ -59,15 +55,25 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 扩展 Route:active 如果是当前route，则返回 active
  */
-\Illuminate\Routing\Router::macro('active', function($route, $active="active", $normal='') {
+Router::macro('active', function($route, $active="active", $normal='') {
     return Route::is($route) ? $active : $normal;
 });
 
+/**
+ * 扩展File::mime方法, 获取文件类型audio/avi，text/xml 斜杠前面部分  
+ */
+File::macro('mime', function($file) {
+    if ($mimeType = static::mimeType($file)) {
+        list($mime, $type) = explode('/', $mimeType);
+        return $mime;
+    }
+    return null;
+});
 
 /**
  * 扩展File::humanType方法, 获取文件的类型，依据系统可上传的类型判断
  */
-\File::macro('humanType', function($file) {
+File::macro('humanType', function($file) {
     $extension  = strpos($file, '.') ? static::extension($file) : trim($file, '.');
     $humanTypes = config('core.upload.types');
     foreach ($humanTypes as $type => $info) {
@@ -82,7 +88,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 扩展File::icon方法, 获取文件图标  
  */
-\File::macro('icon', function(...$file) {
+File::macro('icon', function(...$file) {
     $icon = \Module::data('core::file.icon');
     foreach(func_get_args() as $file) {
         $extension = strpos($file, '.') ? static::extension($file) : trim($file, '.');
@@ -96,7 +102,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 扩展File::meta, 从文件头部的注释中获取文件文本文件的meta说明信息
  */
-\File::macro('meta', function($file, array $headers=[]) {
+File::macro('meta', function($file, array $headers=[]) {
     
     // 获取的header
     $headers = $headers ? $headers : ['title', 'description', 'author', 'url'];
@@ -118,9 +124,9 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 扩展上传的获取文件类型，依据系统可上传的类型判断
  */
-\Illuminate\Http\UploadedFile::macro('getHumanType',function() {
+UploadedFile::macro('getHumanType',function() {
     $extension = $this->getClientOriginalExtension();
-    return \File::humanType($extension);
+    return File::humanType($extension);
 });
 
 /**
@@ -128,7 +134,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
  * whereSmart('type', 'aaa,bbb')
  * whereSmart('type', ['aaa','bbb'])
  */
-\Illuminate\Database\Query\Builder::macro('whereSmart', function($column, $param, $separator=',') {
+Builder::macro('whereSmart', function($column, $param, $separator=',') {
 
     return $this->when(!empty($param), function ($query) use ($column, $param, $separator) {
 
@@ -148,7 +154,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
  * searchIn('title,summary', 'keyword')
  * searchIn(['title','summary'], 'keyword')
  */
-\Illuminate\Database\Query\Builder::macro('searchIn', function($column, $param, $separator=',') {
+Builder::macro('searchIn', function($column, $param, $separator=',') {
 
     return $this->when(!empty($param), function ($query) use ($column, $param, $separator) {
 
@@ -167,7 +173,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 文件上传
  */
-\Form::macro('upload', function($attrs) {
+Form::macro('upload', function($attrs) {
     
     // 标签预处理
     $attrs = Filter::fire('core.field.upload.attrs', $attrs);
@@ -248,7 +254,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
  * {field type="upload_image" value=""}
  * {field type="upload_image" value="" button="Upload" resize="['width'=>1920,height=>800,quality=>100,crop=>false]" params=>"[]"}
  */
-\Form::macro('upload_image', function($attrs) {
+Form::macro('upload_image', function($attrs) {
     
     // 标签预处理
     $attrs = Filter::fire('core.field.upload_image.attrs', $attrs);
@@ -294,7 +300,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
  * {field type="gallery" value=""}
  * {field type="gallery" value="" watermark="true" resize="['width'=>1920,height=>800,quality=>100,crop=>false]" params=>"[]"}
  */
-\Form::macro('gallery', function($attrs) {
+Form::macro('gallery', function($attrs) {
     
     $attrs['value']  = $this->getValue($attrs);
     $attrs['value']  = is_array($attrs['value']) ? array_values($attrs['value']) : [];
@@ -307,7 +313,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 日期选择器
  */
-\Form::macro('date', function($attrs) {
+Form::macro('date', function($attrs) {
 
     $value = $this->getValue($attrs);
     $id    = $this->getId($attrs);
@@ -339,7 +345,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 日期时间选择器
  */
-\Form::macro('year', function($attrs) {
+Form::macro('year', function($attrs) {
     $attrs['type']   = 'year';
     return $this->macroCall('date',  [$attrs]);
 });
@@ -347,7 +353,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 日期时间选择器
  */
-\Form::macro('month', function($attrs) {
+Form::macro('month', function($attrs) {
     $attrs['type']   = 'month';
     return $this->macroCall('date',  [$attrs]);
 });
@@ -355,7 +361,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 日期时间选择器
  */
-\Form::macro('datetime', function($attrs) {
+Form::macro('datetime', function($attrs) {
     $attrs['type']   = 'datetime';
     return $this->macroCall('date',  [$attrs]);
 });
@@ -363,7 +369,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 时间选择器
  */
-\Form::macro('time', function($attrs) {
+Form::macro('time', function($attrs) {
     $attrs['type']   = 'time';
     return $this->macroCall('date',  [$attrs]);
 });
@@ -372,7 +378,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 单选组
  */
-\Form::macro('radiogroup', function($attrs) {
+Form::macro('radiogroup', function($attrs) {
     $value   = $this->getValue($attrs);
     $name    = $this->getName($attrs);    
     $options = $this->getAttribute($attrs, 'options',  []);
@@ -394,7 +400,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
  * 图片卡片 options = ['value'=>['img url']]
  * 图文卡片 options = ['value'=>['img url','show text']]
  */
-\Form::macro('radiocards', function($attrs) {
+Form::macro('radiocards', function($attrs) {
     $value   = $this->getValue($attrs);
     $name    = $this->getName($attrs);    
     $options = $this->getAttribute($attrs, 'options',  []);
@@ -415,7 +421,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 是/否 开关
  */
-\Form::macro('toggle', function($attrs) {
+Form::macro('toggle', function($attrs) {
     $value   = $this->getValue($attrs);
     $id      = $this->getId($attrs);
     $name    = $this->getName($attrs);
@@ -435,7 +441,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 是/否
  */
-\Form::macro('bool', function($attrs) {
+Form::macro('bool', function($attrs) {
     // options
     $attrs['options'] = $this->getAttribute($attrs, 'options',  [
         1 => trans('master.yes'),
@@ -447,7 +453,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 启用/禁用
  */
-\Form::macro('enable', function($attrs){
+Form::macro('enable', function($attrs){
     // options
     $attrs['options'] = $this->getAttribute($attrs, 'options',  [
         1 => trans('master.enable'),
@@ -459,7 +465,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 多选组
  */
-\Form::macro('checkboxgroup', function($attrs){
+Form::macro('checkboxgroup', function($attrs){
     $value   = $this->getValue($attrs);
     $value   = is_array($value) ? $value : [];
     $name    = $this->getName($attrs);    
@@ -475,7 +481,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 代码编辑器
  */
-\Form::macro('code', function($attrs) {
+Form::macro('code', function($attrs) {
     $value   = $this->getValue($attrs);
     $name    = $this->getName($attrs);
 
@@ -509,7 +515,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * markdown编辑器
  */
-\Form::macro('markdown', function($attrs) {
+Form::macro('markdown', function($attrs) {
     $value   = $this->getValue($attrs);
     $name    = $this->getName($attrs);
 
@@ -537,7 +543,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 编辑器
  */
-\Form::macro('editor', function($attrs) {
+Form::macro('editor', function($attrs) {
 
     $attrs['type'] = 'textarea';
     $attrs['rows'] = 18;
@@ -549,7 +555,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * icon 选择器
  */
-\Form::macro('icon', function($attrs) {
+Form::macro('icon', function($attrs) {
 
     $value = $this->getValue($attrs);
     $id    = $this->getId($attrs);
