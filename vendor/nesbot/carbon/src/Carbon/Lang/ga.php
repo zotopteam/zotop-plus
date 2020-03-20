@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Thanks to André Silva : https://github.com/askpt
  */
 
@@ -39,6 +39,7 @@ return [
     'from_now' => 'i :time',
     'after' => ':time tar éis',
     'before' => ':time roimh',
+    'diff_now' => 'anois',
     'diff_yesterday' => 'inné',
     'diff_tomorrow' => 'amárach',
     'formats' => [

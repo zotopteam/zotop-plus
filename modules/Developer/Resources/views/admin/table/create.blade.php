@@ -1,10 +1,10 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
+            <a href="{{Request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         <div class="main-title mr-auto">
             {{$title}}
@@ -48,8 +48,8 @@
     // 加载字段
     $(function(){
         $('.columns').load('{{route('developer.table.columns')}}', {
-            'columns': {!! json_encode($columns) !!},
-            'indexes': {!! json_encode($indexes) !!}
+            'columns': @json($columns),
+            'indexes': @json($indexes)
         }, function(){
             $(window).trigger('resize');
         });

@@ -2,16 +2,23 @@
 
 namespace Modules\Site\Providers;
 
-use Modules\Core\Providers\CoreRouteServiceProvider;
+use App\Modules\Routing\ServiceProvider;
 
-class RouteServiceProvider extends CoreRouteServiceProvider
+class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * 根命名空间
+     * 控制器命名空间
      *
      * @var string
      */
     protected $namespace = 'Modules\Site\Http\Controllers';
+
+    /**
+     * 模块名称
+     *
+     * @var string
+     */
+    protected $module = 'site';   
 
     /**
      * 前台路由，无前台路由返回false

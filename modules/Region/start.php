@@ -1,4 +1,5 @@
 <?php
+
 \Filter::listen('global.start',function($navbar){
     
     //区域管理

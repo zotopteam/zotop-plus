@@ -1,0 +1,20 @@
+{
+    "name": "$MODULE_STUDLY_NAME$",
+    "title": "$MODULE_STUDLY_NAME$ title",
+    "description": "$MODULE_STUDLY_NAME$ description",
+    "keywords": [],
+    "version": "1.0.0",
+    "order": 100,
+    "author":"$AUTHOR_NAME$",
+    "email":"$AUTHOR_EMAIL$",
+    "homepage":"$AUTHOR_HOMEPAGE$",
+    "seeders": [],      
+    "providers": [
+        "$NAMESPACE$\$MODULE_STUDLY_NAME$\$PROVIDER_NAMESPACE$\$MODULE_STUDLY_NAME$ServiceProvider",
+        "$NAMESPACE$\$MODULE_STUDLY_NAME$\$PROVIDER_NAMESPACE$\RouteServiceProvider"
+    ],
+    "aliases":{},
+    "files": [
+        "start.php"
+    ]
+}

@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="main">
@@ -27,14 +27,14 @@
     
     <div class="main-body scrollable">
 
-            {form model="$block" route="['block.data', $id]" id="block-form" method="post" autocomplete="off" class="m-2"}
+            {form bind="$block" route="['block.data', $id]" id="block-form" method="post" autocomplete="off" class="form m-2"}
             
             @if ($block->type == 'code')
                 {field type="code" name="data" height="400" required="required" placeholder="trans('block::block.data.placeholder.code')"}
             @elseif ($block->type == 'html')
                 {field type="editor" name="data" height="400" required="required" placeholder="trans('block::block.data.placeholder.html')" source_id="$block->source_id" options="full"}
             @elseif ($block->type == 'text')
-                {field type="textarea" name="data" rows="18" class="rounded-0" required="required" placeholder="trans('block::block.data.placeholder.text')"}                
+                {field type="textarea" name="data" rows="18" required="required" placeholder="trans('block::block.data.placeholder.text')"}                
             @endif
             
 

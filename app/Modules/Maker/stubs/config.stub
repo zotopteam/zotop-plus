@@ -1,0 +1,6 @@
+<?php
+// $MODULE_STUDLY_NAME$ 配置
+
+return [
+    //'key' => 'value',
+];

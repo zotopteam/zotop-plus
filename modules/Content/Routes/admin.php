@@ -2,7 +2,7 @@
 use Illuminate\Routing\Router;
 
 // Content 模块后台路由
-$router->group(['prefix'=>'content', 'module'=>'content'], function (Router $router) {
+$router->group(['prefix'=>'content'], function (Router $router) {
 
     $router->get('index/{parent_id?}','ContentController@index')->name('content.content.index')->middleware('allow:content.content.index');
     $router->get('create/{parent_id}/{model_id}','ContentController@create')->name('content.content.create')->middleware('allow:content.content.create');

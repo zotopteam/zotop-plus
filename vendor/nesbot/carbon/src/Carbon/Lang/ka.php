@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Tornike Razmadze
  * - François B
@@ -133,6 +133,7 @@ return [
 
         return "$time უკან";
     },
+    'diff_now' => 'ახლა',
     'diff_yesterday' => 'გუშინ',
     'diff_tomorrow' => 'ხვალ',
     'formats' => [

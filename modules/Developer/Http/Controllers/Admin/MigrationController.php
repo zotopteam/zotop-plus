@@ -2,40 +2,18 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Str;
-use Modules\Core\Base\AdminController;
-use Module;
-use Artisan;
-use File;
-use Filter;
+use App\Modules\Facades\Module;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
+use App\Modules\Routing\AdminController;
+use App\Modules\Exceptions\ClassExistedException;
+
 
 class MigrationController extends AdminController
 {
-    /**
-     * 获取命令完整名称，加上Command后缀
-     * 
-     * @param  string $migration 命令名称
-     * @return string
-     */
-    private function fullname($migration)
-    {
-        return Str::snake($migration);
-    }  
-
-    /**
-     * 根据 模块、和命令名称获取命令的文件路径
-     * 
-     * @param  string $module  模块名称
-     * @param  string $migration 控制名称，可以不包含Command后缀
-     * @return string
-     */
-    private function fullpath($module, $migration)
-    {
-        return module_path($module).'/'.$this->fullname($migration).'.php';
-    }
-
     /**
      * 命令列表
      * 
@@ -45,12 +23,10 @@ class MigrationController extends AdminController
      */
     public function index(Request $request, $module)
     {
-        $this->title   = trans('developer::migration.title');
-        
-        $this->name    = $module;
-        $this->module  = module($module);
-        $this->path    = $this->module->getExtraPath('Database/Migrations');
-        $this->files   = File::files($this->path);
+        $this->title      = trans('developer::migration.title');
+        $this->module     = Module::findorFail($module);
+        $this->path       = $this->module->getPath('migration', true);
+        $this->files      = File::isDirectory($this->path) ? File::allFiles($this->path) : [];
         $this->migrations = \DB::table('migrations')->get()->pluck('migration')->toArray();
 
         return $this->view();
@@ -65,32 +41,27 @@ class MigrationController extends AdminController
      */
     public function create(Request $request, $module)
     {
-        $this->module = $module;
-
         // 表单提交时
         if ($request->isMethod('POST')) {
             
-            $name  = $request->input('name');
+            $name    = $request->input('name');
+            $command = $request->input('command');
 
-            // 判断是否已经存在
-            $path = $this->fullpath($module, $name);
-            $name = $this->fullname($name);
+            try {
+                
+                Artisan::call($command, [
+                    'module'  => $module,
+                    'name'    => $name,
+                ]);
 
-            if (File::exists($path)) {
-                return $this->error(trans('master.existed'));
+                return $this->success(trans('master.created'), route('developer.migration.index',[$module]));            
+            } catch (ClassExistedException $e) {
+                return $this->error(trans('master.existed', [$name]));
             }
-
-            Artisan::call('module:make-migration', [
-                'module'  => $module,
-                'name'    => $name,
-            ]);
-
-            return $this->success(trans('master.saved'),route('developer.migration.index',[$module]));
         }
 
-
-        $this->title      = trans('developer::migration.create');
-
+        $this->module = Module::findorFail($module);
+        $this->title = trans('developer::migration.create');
 
         return $this->view();
     }

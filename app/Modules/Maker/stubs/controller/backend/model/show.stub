@@ -1,0 +1,45 @@
+@extends('layouts.master')
+
+@section('content')
+<div class="main">
+    <div class="main-header">
+        <div class="main-back">
+            <a href="{{Request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
+        </div>
+        <div class="main-title mr-auto">
+            {{$title}}
+        </div>
+        <div class="main-action">
+            <a class="btn btn-success" href="{{route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.edit', $$MODEL_VAR$->id)}}">
+                <i class="fa fa-edit"></i> {{trans('master.edit')}}
+            </a>
+            <a class="btn btn-warning js-delete" href="javascript:;" data-url="{{route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.destroy', $$MODEL_VAR$->id)}}">
+                <i class="fa fa-times"></i> {{trans('master.delete')}}
+            </a>            
+        </div>
+    </div>
+    
+    <div class="main-body scrollable">
+
+        <table class="table table-hover">
+            <tr>
+                <td width="15%">
+                    {{trans('master.id')}}
+                </td>
+                <td>
+                    {{$$MODEL_VAR$->id ?? '[ID]'}}
+                </td>                
+            </tr>
+            <tr>
+                <td width="15%">
+                    {{trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.title.label')}}
+                </td>
+                <td>
+                    {{$$MODEL_VAR$->title ?? '[Title]'}}
+                </td>                
+            </tr>
+        </table>
+
+    </div><!-- main-body -->
+</div>
+@endsection

@@ -4,7 +4,7 @@ namespace Modules\Block\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use App\Modules\Routing\AdminController;
 use Modules\Block\Models\Block;
 use Modules\Block\Models\Category;
 use Modules\Block\Http\Requests\BlockRequest;

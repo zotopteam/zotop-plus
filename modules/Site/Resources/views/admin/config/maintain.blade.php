@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 
@@ -16,7 +16,7 @@
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="$config" route="site.config.maintain" method="post" id="config" autocomplete="off"}
+            {form bind="$config" route="site.config.maintain" method="post" id="config" autocomplete="off"}
             
             <div class="form-group row">
                 <label for="maintained" class="col-2 col-form-label">{{trans('site::config.maintained.label')}}</label>

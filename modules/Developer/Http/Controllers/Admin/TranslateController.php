@@ -4,12 +4,13 @@ namespace Modules\Developer\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
-use Facades\Modules\Developer\Support\Lang;
-use Module;
-use File;
+use Illuminate\Support\Facades\File;
+use App\Modules\Maker\Lang;
+use App\Modules\Facades\Module;
+use App\Modules\Routing\AdminController as Controller;
 
-class TranslateController extends AdminController
+
+class TranslateController extends Controller
 {
     /**
      * 首页
@@ -21,15 +22,15 @@ class TranslateController extends AdminController
     public function index(Request $request, $module)
     {
         $this->title     = trans('developer::translate.title');
-        $this->module    = module($module);
-        $this->locale    = config('app.locale');
+        $this->locale    = config('app.locale');        
+        $this->module    = Module::findOrFail($module);
         $this->languages = Module::data('core::config.languages');
 
         // 读取系统设置的主语言，翻译道其他语言
-        $this->path      = $this->module->getExtraPath('Resources/lang/'.$this->locale);
-        $this->files     = File::isDirectory($this->path) ? File::files($this->path) : [];
+        $this->path      = $this->module->getPath('lang', true) . DIRECTORY_SEPARATOR . $this->locale;
+        $this->files     = File::isDirectory($this->path) ? File::allFiles($this->path) : [];
         $this->files     = collect($this->files)->transform(function($file) {
-            $file->itemcount = Lang::get($file)->count();
+            $file->itemcount = count(include($file));
             return $file;
         });
 
@@ -44,21 +45,15 @@ class TranslateController extends AdminController
      */
     public function newfile(Request $request, $module)
     {
-        $name = Lang::fileName($request->input('name'));
-
-        if (empty($name)) {
-            return $this->error(trans('developer::translate.filename.error'));
-        }
-
-        $module = module($module);
+        $name   = $request->input('name');
         $locale = config('app.locale');
-        $file   = $module->getExtraPath('Resources/lang/'.$locale.'/'.$name);
+        $lang   = Lang::instance($module, $locale)->name($name);
 
-        if (Lang::exists($file)) {
+        if ($lang->exists()) {
             return $this->error(trans('master.existed', [$name]));
         }
 
-        Lang::set($file, []);
+        $lang->data([])->save();
 
         return $this->success(trans('master.saved'), $request->referer());
     }
@@ -74,14 +69,11 @@ class TranslateController extends AdminController
     {
         $filename  = $request->input('filename');
 
-        $module    = module($module);
-
         // 删除时，删除全部语言下的该文件
         $languages = Module::data('core::config.languages');
 
         foreach ($languages as $lang => $name) {
-            $file  = $module->getExtraPath('Resources/lang/'.$lang.'/'.$filename);
-            Lang::delete($file);
+            Lang::instance($module, $lang)->name($filename)->delete();
         }
 
         return $this->success(trans('master.operated'), $request->referer());
@@ -97,23 +89,22 @@ class TranslateController extends AdminController
     {
 
         $this->title     = trans('developer::translate.translate');
-        $this->module    = module($module);
         $this->locale    = config('app.locale');
+        $this->module    = Module::findOrFail($module);
         $this->languages = Module::data('core::config.languages');
 
         $this->filename  = $request->input('filename');
-        $this->filepath  = $this->module->getExtraPath('Resources/lang/'.$this->locale.'/'.$this->filename);
-        $this->prefix    = $this->module->getLowerName().'::'.File::name($this->filename).'.';
+        $this->filepath  = Lang::instance($module, $this->locale)->name($this->filename)->getPath();
+        $this->prefix    = $this->module->getLowerName().'::'.File::name($this->filename);
 
+        // 获取全部语言的翻译
         $langs = [];
-
         foreach ($this->languages as $lang => $title) {
-            $file = $this->module->getExtraPath('Resources/lang/'.$lang.'/'.$this->filename);
-            $langs[$lang] = Lang::get($file);
+            $langs[$lang] = Lang::instance($module, $lang)->name($this->filename)->get();
         }
 
         $this->langs = $langs;
-        $this->keys  = $langs[$this->locale]->keys();
+        $this->keys  = array_keys($langs[$this->locale]);
 
         return $this->view();
     }
@@ -128,13 +119,10 @@ class TranslateController extends AdminController
     {
         $langs     = $request->input('langs', []);
         $filename  = $request->input('filename');
-        $locale    = config('app.locale');
-        $module    = module($module);
 
         // 保存每种语言，如果不是locale，过滤空值
         foreach ($langs as $lang => $data) {
-            $file  = $module->getExtraPath('Resources/lang/'.$lang.'/'.$filename);
-            Lang::set($file, $data, ($lang != $locale));
+            Lang::instance($module, $lang)->name($filename)->data($data)->save(true);
         }
 
         return $this->success(trans('master.saved'), $request->referer());
@@ -148,26 +136,16 @@ class TranslateController extends AdminController
      */
     public function newkey(Request $request, $module)
     {
-        $key = Lang::keyName($request->input('key'));
-
-        if (empty($key)) {
-            return $this->error(trans('developer::translate.key.error'));
-        }
-
+        $key      = $request->input('key');
         $filename = $request->input('filename');
-        $module   = module($module);
         $locale   = config('app.locale');
-        $file     = $module->getExtraPath('Resources/lang/'.$locale.'/'.$filename);
+        $lang     = Lang::instance($module, $locale)->name($filename);
 
-        $langs = Lang::get($file);
-
-        if ($langs->has($key)) {
+        if ($lang->has($key)) {
             return $this->error(trans('developer::translate.key.existed'));
         }
 
-        $data = $langs->merge([$key=>''])->toArray();
-
-        Lang::set($file, $data);
+        $lang->set($key, '');
 
         return $this->success(trans('master.saved'), $request->referer());
     }
@@ -183,15 +161,11 @@ class TranslateController extends AdminController
         $filename = $request->input('filename');
         $key      = $request->input('key');
 
-        // 获取module
-        $module   = module($module);
-
         // 删除时，删除全部语言下的该项
         $languages = Module::data('core::config.languages');
 
         foreach ($languages as $lang => $name) {
-            $file  = $module->getExtraPath('Resources/lang/'.$lang.'/'.$filename);
-            Lang::forget($file, $key);
+            Lang::instance($module, $lang)->name($filename)->forget($key);
         }
 
         return $this->success(trans('master.deleted'), $request->referer());

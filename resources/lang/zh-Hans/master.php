@@ -3,6 +3,7 @@ return [
     'index'                    => '首页',
     'thanks'                   => '感谢您使用 :0',
     'refresh'                  => '刷新',
+    'show'                     => '详情',
     'view'                     => '查看',
     'create'                   => '添加',
     'creating'                 => '添加中……',
@@ -77,5 +78,9 @@ return [
     'select.min'               => '至少选择 :0 项',
     'select.max'               => '最多选择 :0 项',
     'page.previous'            => '上一页',
-    'page.next'                => '下一页'
+    'page.next'                => '下一页',
+    'id'                       => '编号',
+    'title'                    => '标题',
+    'name'                     => '名称',
+    
 ];

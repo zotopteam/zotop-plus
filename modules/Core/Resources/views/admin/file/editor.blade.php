@@ -1,8 +1,8 @@
-@extends('core::layouts.dialog')
+@extends('layouts.dialog')
 
 @section('content')
 
-    {form route="core.file.editor" method="post" class="code-editor full-width full-height"}
+    {form route="core.file.editor" method="post" class="form code-editor full-width full-height"}
         {field type="hidden" name="file" value="$file"}
         {field type="code" name="content" value="$content" width="100%" height="100%" mode="$mode"}
     {/form}

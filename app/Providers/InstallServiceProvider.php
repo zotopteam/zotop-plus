@@ -7,16 +7,6 @@ use Illuminate\Support\ServiceProvider;
 class InstallServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
- 
-    }
-
-    /**
      * Register the application services.
      *
      * @return void
@@ -26,9 +16,17 @@ class InstallServiceProvider extends ServiceProvider
         $this->app->singleton('installed', function() {
             return true === $this->app['config']->get('app.installed', false);
         });
-
+    }
+        
+    /**
+     * Bootstrap the application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
         // 检查是否已经安装
-        $this->checkInstalled();      
+        $this->checkInstalled();    
     }
 
     /**
@@ -45,7 +43,6 @@ class InstallServiceProvider extends ServiceProvider
 
         // 进入安装页面后，加载安装程序路由
         if ($this->app['request']->is('install', 'install/*', '_debugbar/*')) {
-            // 加载安装路由
             $this->loadRoutesFrom(base_path('/routes/install.php'));
             return ;
         }

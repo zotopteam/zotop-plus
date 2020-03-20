@@ -4,8 +4,7 @@ namespace Modules\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
-use Modules\Core\Base\FrontController;
+use App\Modules\Routing\FrontController;
 
 class IndexController extends FrontController
 {

@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Routing\Router;
 
-$router->group(['prefix' =>'translator','module'=>'translator'], function (Router $router) {
+$router->group(['prefix' =>'translator'], function (Router $router) {
     // append
 });

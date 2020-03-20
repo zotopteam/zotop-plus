@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="full-width">

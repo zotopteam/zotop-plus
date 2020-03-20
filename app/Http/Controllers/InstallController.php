@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Modules\Facades\Module;
+use Exception;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Database\Connectors\ConnectionFactory;
 use Illuminate\Database\DatabaseManager;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Modules\Core\Models\User;
-use Modules\Core\Models\Config;
-use Route;
-use Cache;
-use Artisan;
-use Module;
-use Exception;
 use PDOException;
 
 class InstallController extends Controller
@@ -44,7 +42,7 @@ class InstallController extends Controller
      * 
      * @var array
      */
-    protected $viewData = [];
+    protected $data = [];
 
     /**
      * __construct
@@ -71,25 +69,6 @@ class InstallController extends Controller
 
         // 获取当前动作
         $this->current = $this->wizard[$this->current];
-
-    }
-
-    /**
-     * 传入参数, 支持链式
-     * 
-     * @param  string|array $key 参数名
-     * @param  mixed $value 参数值
-     * @return $this
-     */
-    public function with($key, $value = null)
-    {
-        if (is_array($key)) {
-            $this->viewData = array_merge($this->viewData, $key);
-        } else {
-            $this->viewData[$key] = $value;
-        }
-
-        return $this;
     }
 
     /**
@@ -101,7 +80,7 @@ class InstallController extends Controller
      */
     public function __set($key, $value)
     {
-        $this->viewData[$key] = $value;
+        $this->data[$key] = $value;
     }
 
     /**
@@ -113,30 +92,16 @@ class InstallController extends Controller
      */
     public function __get($key)
     {
-        return $this->viewData[$key];
+        return $this->data[$key];
     }    
 
     /**
      * 显示View
-     *
-     * @param  string  $view
-     * @param  array   $data
-     * @param  array   $mergeData
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function view($view = null, $data = [], $mergeData = [])
+    public function view()
     {
-        // 默认模板
-        $view = empty($view) ? "install.{$this->current}" : $view;
-
-        // 转换模板数据
-        $data = ($data instanceof Arrayable) ? $data->toArray() : $data;
-
-        // 合并模板数据
-        $data = array_merge($this->viewData, $data);
-
-        // 生成 view
-        return $this->view->make($view, $data, $mergeData);
+        return $this->view->make("install.{$this->current}", $this->data);
     }
 
     /**
@@ -200,6 +165,9 @@ class InstallController extends Controller
      */
     public function welcome(Request $request)
     {
+        // 清理缓存
+        Artisan::call('optimize:clear');
+
         // 重新生成 generate
         Artisan::call('key:generate');
 
@@ -208,11 +176,6 @@ class InstallController extends Controller
             'key'   => 'APP_URL',
             'value' => $request->root()
         ]);
-
-        // 清理缓存
-        Artisan::call('preview:clear');
-        Artisan::call('thumbnail:clear');
-        Artisan::call('reboot');
 
         return $this->view();
     }
@@ -228,9 +191,9 @@ class InstallController extends Controller
         $error = [];
 
         // php version must > 7.0.0
-        if (version_compare(PHP_VERSION, config('install.php_version','7.0.0'), '<')) {
+        if (version_compare(PHP_VERSION, config('install.php_version', '7.2.0'), '<')) {
             $check = false;
-            $error['php_version'] = [config('install.php_version','7.0.0'), PHP_VERSION];
+            $error['php_version'] = [config('install.php_version', '7.2.0'), PHP_VERSION];
         }
 
         // php extensions
@@ -359,10 +322,8 @@ class InstallController extends Controller
 
         // 判断是否已经安装，如果已经安装，进入提示覆盖页面
         if (Schema::hasTable('migrations') || Schema::hasTable('users')) {
-            $this->installed = true; 
+            $this->installed = true;
         }
-
-        // 是否安装测试数据
 
         return $this->view();
     }    
@@ -377,12 +338,12 @@ class InstallController extends Controller
         if ($request->isMethod('POST')) {
             // 安装模块
             if ($name  = $request->input('name')) {
-                Module::findOrFail($name)->install(true);
+                Module::findOrFail($name)->install();
                 return $this->success($name.' install success');
             }
         }
 
-        $this->modules = module();
+        $this->modules = Module::all();
 
         return $this->view();
     }
@@ -413,16 +374,13 @@ class InstallController extends Controller
             ]);
 
             // 插入站点设置
-            Config::set('site', $this->site);
+            Module::findOrFail('site')->setConfig($this->site);
 
             // 设置为已安装
             Artisan::call('env:set', ['key'=>'APP_INSTALLED', 'value'=>'true']);
 
-            //发布主题
-            Artisan::call('theme:publish');
-
             // 重启系统
-            Artisan::call('reboot');     
+            Artisan::call('reboot');
         }
 
         return $this->view();

@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 
@@ -16,11 +16,11 @@
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="$user" route="core.mine.password.update" id="form" method="put" autocomplete="off"}
+            {form bind="$user" route="core.mine.password.update" id="form" method="put" autocomplete="off"}
             <div class="form-group row">
                 <label for="username" class="col-2 col-form-label required">{{trans('core::mine.username.label')}}</label>
                 <div class="col-4">
-                    {field type="static" name="username"}
+                    {field type="text" readonly="readonly" name="username" class="form-control-plaintext text-primary"}
                 </div>
             </div>
 

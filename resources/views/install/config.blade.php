@@ -9,7 +9,7 @@
         
         </div>
 
-        <form class="form form-config form-sm" action="{{route('install.config')}}">
+        <form class="form form-config form-md" action="{{route('install.config')}}">
             
             <div class="form-title">{{trans("installer.config.site")}}</div>
             <div class="form-group">
@@ -80,7 +80,7 @@
                 <i class="fa fa-angle-left fa-fw"></i> {{trans('installer.prev')}}
             </a>
             
-            <button class="btn btn-lg btn-success form-submit d-inline-block">
+            <button class="btn btn-lg btn-success d-inline-block" type="submit">
                 {{trans('installer.next')}} <i class="fa fa-angle-right fa-fw"></i> 
             </button>
                                  
@@ -93,7 +93,7 @@
 
     $(function(){
 
-        $('.form-submit').on('click',function(){
+        $('[type=submit]').on('click',function(){
             $('.form-config').submit();
         });
 
@@ -102,8 +102,8 @@
             submitHandler:function(form){                
                 var validator = this;
 
-                $('.form-submit').find('.fa').addClass('fa-spin fa-spinner');
-                $('.form-submit').prop('disabled',true);
+                $('[type=submit]').find('.fa').addClass('fa-spin fa-spinner');
+                $('[type=submit]').prop('disabled',true);
 
                 $.post($(form).attr('action'), $(form).serialize(), function(msg){
                     
@@ -114,14 +114,14 @@
                         $.alert(msg.content);
                     }
 
-                    $('.form-submit').find('.fa').removeClass('fa-spin fa-spinner');
-                    $('.form-submit').prop('disabled',false);
+                    $('[type=submit]').find('.fa').removeClass('fa-spin fa-spinner');
+                    $('[type=submit]').prop('disabled',false);
 
                     return false;                
                 },'json').fail(function(jqXHR){
                     
-                    $('.form-submit').find('.fa').removeClass('fa-spin fa-spinner');                    
-                    $('.form-submit').prop('disabled',false);
+                    $('[type=submit]').find('.fa').removeClass('fa-spin fa-spinner');                    
+                    $('[type=submit]').prop('disabled',false);
 
                     return validator.showErrors(jqXHR.responseJSON);
                 });

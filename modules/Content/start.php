@@ -31,7 +31,7 @@
 
     $value = $this->getValue($attrs);
     $id    = $this->getId($attrs);
-    $name  = $this->getAttribute($attrs, 'name');
+    $name  = $this->getName($attrs);
 
     // 选项
     $options = $this->getAttribute($attrs, 'options',  []);
@@ -81,7 +81,7 @@
 
     $value = $this->getValue($attrs);
     $id    = $this->getId($attrs);
-    $name  = $this->getAttribute($attrs, 'name');
+    $name  = $this->getName($attrs);
 
     $models = \Modules\Content\Models\Model::where('disabled', '0')->orderBy('sort', 'asc')->get();
 

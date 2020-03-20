@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 
@@ -9,25 +9,21 @@
         </div>
     </div>
     <div class="main-body scrollable">
-        <div class="container-fluid">
-            <div class="row">
+        <div class="grid grid-lg p-3">
                 @foreach(filter::fire('global.start',[]) as $s)
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <a href="{{$s['href']}}" class="shortcut shortcut-media {{$s['class'] ?? ''}}" target="{{$s['target'] ?? '_self'}}">
-                        <div class="shortcut-icon">
-                            <i class="{{$s['icon']}}"></i>
-                            @if(isset($s['badge']))
-                            <b class="shortcut-badge badge badge-xs badge-danger">{{$s['badge']}}</b>
-                            @endif       
-                        </div>
-                        <div class="shortcut-text">
-                            <h2>{{$s['text']}}</h2>
-                            <p>{{$s['tips']}}</p>      
-                        </div>
-                    </a>    
-                </div>
+                <a href="{{$s['href']}}" class="shortcut shortcut-media {{$s['class'] ?? ''}}" target="{{$s['target'] ?? '_self'}}">
+                    <div class="shortcut-icon">
+                        <i class="{{$s['icon']}}"></i>
+                        @if(isset($s['badge']))
+                        <b class="shortcut-badge badge badge-xs badge-danger">{{$s['badge']}}</b>
+                        @endif       
+                    </div>
+                    <div class="shortcut-text">
+                        <h2>{{$s['text']}}</h2>
+                        <p>{{$s['tips']}}</p>      
+                    </div>
+                </a>    
                 @endforeach
-            </div>
         </div>
     </div><!-- main-body -->
     <div class="main-footer">

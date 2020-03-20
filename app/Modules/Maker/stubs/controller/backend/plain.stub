@@ -1,0 +1,20 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Modules\Routing\AdminController as Controller;
+
+class $CLASS_NAME$ extends Controller
+{
+    /**
+     * 首页
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        return $this->view();
+    }
+}

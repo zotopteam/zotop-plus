@@ -2,7 +2,7 @@
 use Illuminate\Routing\Router;
 
 // Site 模块后台路由
-$router->group(['prefix' =>'site','module'=>'site'], function (Router $router) {
+$router->group(['prefix' =>'site'], function (Router $router) {
     
     // 模板选择
     $router->get('select/view/{theme?}','SiteController@selectView')->name('site.view.select');

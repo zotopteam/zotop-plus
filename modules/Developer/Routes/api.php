@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Routing\Router;
 
-$router->group(['prefix' =>'/developer','module'=>'developer'], function (Router $router) {
+$router->group(['prefix' =>'/developer'], function (Router $router) {
     // append
 });

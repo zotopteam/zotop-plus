@@ -13,6 +13,7 @@ use Egulias\EmailValidator\Validation\NoRFCWarningsValidation;
 use Egulias\EmailValidator\Validation\RFCValidation;
 use Egulias\EmailValidator\Validation\SpoofCheckValidation;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
@@ -815,7 +816,17 @@ trait ValidatesAttributes
      */
     public function parseTable($table)
     {
-        return Str::contains($table, '.') ? explode('.', $table, 2) : [null, $table];
+        [$connection, $table] = Str::contains($table, '.') ? explode('.', $table, 2) : [null, $table];
+
+        if (Str::contains($table, '\\') && class_exists($table) && is_a($table, Model::class, true)) {
+            $model = new $table;
+
+            $table = $model->getTable();
+
+            $connection = $connection ?? $model->getConnectionName();
+        }
+
+        return [$connection, $table];
     }
 
     /**
@@ -1385,6 +1396,57 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(2, $parameters, 'required_if');
 
+        [$values, $other] = $this->prepareValuesAndOther($parameters);
+
+        if (in_array($other, $values)) {
+            return $this->validateRequired($attribute, $value);
+        }
+
+        return true;
+    }
+
+    /**
+     * Indicate that an attribute should be excluded when another attribute has a given value.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateExcludeIf($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(2, $parameters, 'exclude_if');
+
+        [$values, $other] = $this->prepareValuesAndOther($parameters);
+
+        return ! in_array($other, $values);
+    }
+
+    /**
+     * Indicate that an attribute should be excluded when another attribute does not have a given value.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  mixed  $parameters
+     * @return bool
+     */
+    public function validateExcludeUnless($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(2, $parameters, 'exclude_unless');
+
+        [$values, $other] = $this->prepareValuesAndOther($parameters);
+
+        return in_array($other, $values);
+    }
+
+    /**
+     * Prepare the values and the other value for validation.
+     *
+     * @param  array  $parameters
+     * @return array
+     */
+    protected function prepareValuesAndOther($parameters)
+    {
         $other = Arr::get($this->data, $parameters[0]);
 
         $values = array_slice($parameters, 1);
@@ -1393,11 +1455,7 @@ trait ValidatesAttributes
             $values = $this->convertValuesToBoolean($values);
         }
 
-        if (in_array($other, $values)) {
-            return $this->validateRequired($attribute, $value);
-        }
-
-        return true;
+        return [$values, $other];
     }
 
     /**
@@ -1692,11 +1750,7 @@ trait ValidatesAttributes
      */
     public function validateUuid($attribute, $value)
     {
-        if (! is_string($value)) {
-            return false;
-        }
-
-        return preg_match('/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/iD', $value) > 0;
+        return Str::isUuid($value);
     }
 
     /**

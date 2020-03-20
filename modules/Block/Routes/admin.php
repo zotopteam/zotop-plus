@@ -2,7 +2,7 @@
 use Illuminate\Routing\Router;
 
 // Block 模块后台路由
-$router->group(['prefix'=>'block', 'module'=>'block'], function (Router $router) {
+$router->group(['prefix'=>'block'], function (Router $router) {
     
     $router->get('index/{category_id?}','BlockController@index')->name('block.index')->middleware('allow:block.index');
     $router->get('create/{category_id}/{type}','BlockController@create')->name('block.create')->middleware('allow:block.create');

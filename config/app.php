@@ -54,6 +54,35 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | 调试页面隐藏变量
+    |--------------------------------------------------------------------------
+    |
+    */
+    
+    'debug_blacklist' => [
+        '_ENV' => [
+            'APP_KEY',
+            'DB_PASSWORD',
+            'REDIS_PASSWORD',
+            'MAIL_PASSWORD',
+            'PUSHER_APP_KEY',
+            'PUSHER_APP_SECRET',
+        ],
+        '_SERVER' => [
+            'APP_KEY',
+            'DB_PASSWORD',
+            'REDIS_PASSWORD',
+            'MAIL_PASSWORD',
+            'PUSHER_APP_KEY',
+            'PUSHER_APP_SECRET',
+        ],
+        '_POST' => [
+            'password',
+        ],
+    ], 
+
+    /*
+    |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
     |
@@ -65,19 +94,6 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Admin Prefix
-    |--------------------------------------------------------------------------
-    |
-    | This Prefix is used by the admin url: http://localhost/[admin_prefix]
-    | The default admin prefix is "admin", and the admin url : http://localhost/admin
-    | You can change it for yours cms safer
-    |
-    */    
-
-    'admin_prefix' => env('APP_ADMIN_PREFIX', 'admin'),
 
     /*
     |--------------------------------------------------------------------------
@@ -215,6 +231,10 @@ return [
          * Custom Service Providers...
          */
         App\Providers\InstallServiceProvider::class,
+        App\Modules\ModulesServiceProvider::class,
+        App\Themes\ThemesServiceProvider::class,
+        App\Hook\HookServiceProvider::class,
+
     ],
 
     /*
@@ -265,6 +285,13 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        'Module' => App\Modules\Facades\Module::class,
+        'Theme' => App\Themes\Facades\Theme::class,
+        'Form' => App\Themes\Facades\Form::class,        
+        'Html' => App\Themes\Facades\Html::class,                        
+        'Filter' => App\Hook\Facades\Filter::class,
+        'Action' => App\Hook\Facades\Action::class,
     ],
 
 ];

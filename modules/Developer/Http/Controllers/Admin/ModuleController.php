@@ -2,14 +2,14 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
+use App\Hook\Facades\Action;
+use App\Modules\Facades\Module;
+use App\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Modules\Developer\Http\Requests\ModuleRequest;
-use Module;
-use Artisan;
-use File;
-use Filter;
 
 class ModuleController extends AdminController
 {  
@@ -22,7 +22,7 @@ class ModuleController extends AdminController
     public function index()
     {
         $this->title   = trans('developer::module.title');
-        $this->modules = module();
+        $this->modules = Module::all();
 
         return $this->view();
     }
@@ -32,13 +32,13 @@ class ModuleController extends AdminController
      * 
      * @return Response
      */
-    public function show(Request $request, $name)
+    public function show(Request $request, $module)
     {
-        $this->name   = $name;
-        $this->module = module($name);
-        $this->json   = $this->module->json();
-        $this->path   = $this->module->getPath();
-                
+        if (! Module::has($module)) {
+            return redirect(route('developer.module.index'));
+        }
+
+        $this->module = Module::find($module);                
         $this->title  = trans('developer::module.show');
 
         return $this->view();        
@@ -51,15 +51,6 @@ class ModuleController extends AdminController
      */
     public function create()
     {
-        $this->plains = [
-            false => trans('developer::module.plain.false'),
-            true  => trans('developer::module.plain.true'),
-        ];
-
-        $this->module = [
-            'plain' => false
-        ];
-
         return $this->view();
     }
 
@@ -72,13 +63,16 @@ class ModuleController extends AdminController
     public function store(ModuleRequest $request)
     {
         $name  = $request->input('name');
-        $plain = $request->input('plain');
+        $style = $request->input('style');
 
-        Artisan::call("module:create", [
-            'name'    => $name,
-            '--plain' => $plain ? true : false,
+        // 生成模块
+        Artisan::call("module:make", [
+            'module'  => $name,
             '--force' => false,
         ]);
+
+        // 生成钩子
+        Action::fire("module.make.{$style}", $name);
 
         return $this->success(trans('master.created'),route('developer.module.index'));
     }
@@ -88,24 +82,28 @@ class ModuleController extends AdminController
      *
      * @return Response
      */
-    public function update(Request $request, $name, $field)
+    public function update(Request $request, $module, $field)
     {
-        $newvalue = $request->input('newvalue');
+        $rule = 'required';
 
-        if ( $field == 'order' ) {
-            $this->validate($request, ['newvalue' => 'required|numeric|min:1'],[],['newvalue'=>'']);
-        } elseif ($field == 'version') {
-            $this->validate($request, ['newvalue' => ['required','regex:/^[0-9]+.[0-9]+.[0-9]+$/']],[],['newvalue'=>'']);
-        } else {
-            $this->validate($request, ['newvalue' => 'required'],[],['newvalue'=>'']);
+        if ($field == 'order') {
+            $rule = 'required|numeric|min:1';
         }
 
-        // Find Module
-        $module = Module::find($name);
+        if ($field == 'version') {
+            $rule = ['required','regex:/^[0-9]+.[0-9]+.[0-9]+$/'];
+        }
 
-        // Update module.json
-        $module->json()->set($field, $newvalue)->save();
+        $this->validate($request, ['newvalue'=>$rule], [], ['newvalue'=>'']);
 
-        return $this->success(trans('master.saved'),route('developer.module.show',[$name]));
+
+        $path    = Module::findorFail($module)->getPath('module.json');
+        $content = array_merge(json_decode(File::get($path), true), [
+            $field => $request->input('newvalue')
+        ]);
+
+        File::put($path, json_encode($content, JSON_PRETTY_PRINT));
+
+        return $this->success(trans('master.saved'),route('developer.module.show',[$module]));
     }
 }

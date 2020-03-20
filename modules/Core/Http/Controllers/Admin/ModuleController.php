@@ -2,13 +2,11 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
+use App\Modules\Facades\Module;
+use App\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
-use Module;
-use Artisan;
-use Filter;
-use Action;
+use Illuminate\Support\Facades\Artisan;
 
 class ModuleController extends AdminController
 {
@@ -20,7 +18,7 @@ class ModuleController extends AdminController
     public function index()
     {
         $this->title   = trans('core::module.title');
-        $this->modules = module();
+        $this->modules = Module::all();
 
         return $this->view();
     }
@@ -33,7 +31,9 @@ class ModuleController extends AdminController
      */
     public function enable(Request $request, $module)
     {
-        Module::findOrFail($module)->enable(); 
+        Artisan::call('module:enable', [
+            'module' => $module,
+        ]);
 
         return $this->success(trans('master.actived'), $request->referer());
     }
@@ -46,7 +46,9 @@ class ModuleController extends AdminController
      */
     public function disable(Request $request, $module)
     {
-        Module::findOrFail($module)->disable(); 
+        Artisan::call('module:disable', [
+            'module' => $module,
+        ]);
 
         return $this->success(trans('master.disabled'), $request->referer());
     }
@@ -59,9 +61,26 @@ class ModuleController extends AdminController
      */
     public function install(Request $request, $module)
     {        
-        Module::findOrFail($module)->install(); 
+        Artisan::call('module:install', [
+            'module' => $module,
+        ]);
 
         return $this->success(trans('core::module.installed'), $request->referer());
+    }
+
+    /**
+     * 安装模块
+     * 
+     * @param  string $name 模块名称
+     * @return json
+     */
+    public function upgrade(Request $request, $module)
+    {        
+        Artisan::call('module:upgrade', [
+            'module' => $module,
+        ]);
+
+        return $this->success(trans('core::module.upgraded'), $request->referer());
     }
 
     /**
@@ -72,8 +91,10 @@ class ModuleController extends AdminController
      */
     public function uninstall(Request $request, $module)
     {       
-        Module::findOrFail($module)->uninstall(); 
-        
+        Artisan::call('module:uninstall', [
+            'module' => $module,
+        ]);
+
         return $this->success(trans('core::module.uninstalled'), $request->referer());
     }
 
@@ -85,15 +106,9 @@ class ModuleController extends AdminController
      */
     public function delete(Request $request, $module)
     {
-        // Find Module
-        $module = Module::findOrFail($module);
-
-        // 已安装模块禁止删除
-        if ($module->active || $module->installed) {
-            return $this->error('Enabled or installed module are forbidden to delete!');
-        }
-
-        $module->delete();
+        Artisan::call('module:delete', [
+            'module' => $module,
+        ]);
 
         return $this->success(trans('master.deleted'), $request->referer());
     }
@@ -103,7 +118,7 @@ class ModuleController extends AdminController
      *
      * @return Response
      */
-    public function publish($module='')
+    public function publish($module=null)
     {
         if ($module) {
             Artisan::call("module:publish", [
@@ -123,6 +138,6 @@ class ModuleController extends AdminController
      */
     public function upload()
     {
-  
+        //
     }             
 }

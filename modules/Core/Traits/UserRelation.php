@@ -1,8 +1,9 @@
 <?php
 namespace Modules\Core\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 trait UserRelation
 {
@@ -14,11 +15,11 @@ trait UserRelation
     public static function bootUserRelation()
     {
         static::updating(function ($model) {
-            $model->user_id = \Auth::User()->id ?? 0;
+            $model->user_id = Auth::User()->id ?? 0;
         });
 
         static::creating(function ($model) {
-            $model->user_id = \Auth::User()->id ?? 0;
+            $model->user_id = Auth::User()->id ?? 0;
         });
 
         // static::addGlobalScope('user', function (Builder $builder) {

@@ -2,7 +2,7 @@
 use Illuminate\Routing\Router;
 
 // Region 模块后台路由
-$router->group(['prefix' =>'/region', 'module'=>'region'], function (Router $router) {
+$router->group(['prefix' =>'region'], function (Router $router) {
     $router->get('/{parent_id?}', 'RegionController@index')->name('region.index')->middleware('allow:region.index');
     $router->get('/create/{parent_id?}', 'RegionController@create')->name('region.create')->middleware('allow:region.create');
     $router->post('/store', 'RegionController@store')->name('region.store')->middleware('allow:region.store');

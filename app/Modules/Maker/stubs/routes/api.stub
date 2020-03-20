@@ -1,0 +1,21 @@
+<?php
+
+use Illuminate\Routing\Router;
+
+// $MODULE_STUDLY_NAME$ api路由
+$router->group(['prefix' =>'$MODULE_LOWER_NAME$'], function (Router $router) {
+    
+    // 单个路由示例
+    //$router->get('/', 'IndexController@index')->name('$MODULE_LOWER_NAME$.index');
+
+    // 群组路由示例
+    // $router->group(['prefix' =>'example'], function (Router $router) {
+    //    $router->get('index','ExampleController@index')->name('$MODULE_LOWER_NAME$.example.index');
+    //    $router->get('create','ExampleController@create')->name('$MODULE_LOWER_NAME$.example.create');
+    //    $router->post('store','ExampleController@store')->name('$MODULE_LOWER_NAME$.example.store');    
+    //    $router->get('edit/{id}','AdministratorController@edit')->name('$MODULE_LOWER_NAME$.example.edit');
+    //    $router->put('update/{id}','AdministratorController@update')->name('$MODULE_LOWER_NAME$.example.update');
+    //    $router->delete('destroy/{id}','AdministratorController@destroy')->name('$MODULE_LOWER_NAME$.example.destroy');                 
+    // }); 
+       
+});

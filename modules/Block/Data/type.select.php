@@ -1,6 +1,6 @@
 <?php
 $return = [];
-$types = \Nwidart\Modules\Facades\Module::data('block::types');
+$types = \Module::data('block::types');
 
 foreach ($types as $value=>$type) {
     

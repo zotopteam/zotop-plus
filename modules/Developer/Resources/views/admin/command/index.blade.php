@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 @include('developer::module.side')
@@ -8,7 +8,7 @@
             {{$title}}
         </div>     
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.command.create',[$module, $command])}}" data-width="600" data-height="150">
+            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('developer.command.create',[$module, $key])}}" data-width="600" data-height="150">
                 <i class="fa fa-plus"></i> {{trans('developer::command.create')}}
             </a>
         </div>
@@ -46,12 +46,12 @@
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            <i class="fa fa-terminal fa-fw mr-2 text-primary"></i> php artisan {{$artisan}}
+            <i class="fa fa-terminal fa-fw mr-2 text-primary"></i> php artisan {{$command}} {{$module}} test
         </div>
     </div>    
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            <i class="fa fa-folder fa-fw mr-2 text-warning"></i> {{Format::path($path)}}
+            <i class="fa fa-folder fa-fw mr-2 text-warning"></i> {{$path}}
         </div>
     </div>
     @if ($help)

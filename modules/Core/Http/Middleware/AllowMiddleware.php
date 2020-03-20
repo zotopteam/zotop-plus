@@ -6,11 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * Class Authorization
- * Inspired by : https://github.com/spatie/laravel-authorize
- * @package Modules\Core\Http\Middleware
- */
 class AllowMiddleware
 {
     /**

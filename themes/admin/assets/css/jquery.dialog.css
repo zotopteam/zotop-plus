@@ -18,9 +18,9 @@ body.blur > *:not(.ui-popup):not(.ui-popup-backdrop){filter: blur(1.5px);overflo
 .ui-dialog-body,
 .ui-dialog-footer{padding:0;border:0 none;text-align:left;background-color:#f7f7f7;background-color:rgba(255,255,255,.9);}
 .ui-dialog-header{white-space:nowrap;}
-.ui-dialog-close{position:relative;float:right;top:0.75rem;right:0.75rem;padding:0 0.25rem;font-size:1.5rem;line-height:1;color:#000;text-shadow:0 1px 0 #FFF;opacity:.2;filter:alpha(opacity=20);cursor:pointer;background:transparent;border:0;-webkit-appearance:none;}
+.ui-dialog-close{position:relative;float:right;top:0.75rem;right:0.75rem;padding:0 0.25rem;font-size:1.5rem;line-height:1;color:inherit;cursor:pointer;background:transparent;border:0;-webkit-appearance:none;}
 .ui-dialog-close:hover,
-.ui-dialog-close:focus{color:#000000;text-decoration:none;cursor:pointer;outline:0;opacity:0.5;filter:alpha(opacity=50);}
+.ui-dialog-close:focus{opacity:0.8;}
 .ui-dialog-title{margin:0;line-height:1.5;min-height:1rem;padding:0.75rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:1rem;cursor:default;}
 .ui-dialog-body{padding:1.25rem;text-align:center;/*background-color:#fff;*/}
 .ui-dialog-content{display:inline-block;position:relative;vertical-align:middle;*zoom:1;*display:inline;text-align:left;width:100%;height:100%;}
@@ -121,13 +121,21 @@ body.blur > *:not(.ui-popup):not(.ui-popup-backdrop){filter: blur(1.5px);overflo
 /*ui-message*/
 .ui-message{border:solid 3px #0072C6;color:#0072C6;}
 .ui-message .ui-dialog-content{padding:.75rem 1rem;display:block;display:flex;align-items:center;}
-.ui-message .ui-dialog-content .msg-icon{font-size:2rem;line-height:1;}
-.ui-message .ui-dialog-content .msg-content{font-size:1.25rem;font-weight:bold;line-height:1;padding:0 1rem;max-width:800px;max-height:400px;word-wrap:break-word;}
-.ui-message .ui-dialog-content .msg-content b{color:red;}
-.ui-message .ui-dialog-content .msg-content ul{padding:0 .5rem;margin:0;list-style:none;line-height:1.5;font-size:1rem;}
-.ui-message .ui-dialog-content .close{color:#666;font-size:1.25rem;}
+.ui-message .msg-icon{font-size:2rem;line-height:1;font-family: "Font Awesome 5 Free";font-weight:900;}
+.ui-message .msg-icon:before{content: "\f05a";}
+.ui-message .msg-content{font-size:1.25rem;font-weight:bold;line-height:1;padding:0 1rem;max-width:800px;max-height:400px;word-wrap:break-word;}
+.ui-message .msg-content b{color:red;}
+.ui-message .msg-content ul{padding:0 .5rem;margin:0;list-style:none;line-height:1.5;font-size:1rem;}
+.ui-message .close{color:#666;font-size:1.25rem;}
+
 .ui-message-success{color:#66bb00;border-color:#66bb00;}
+.ui-message-success .msg-icon:before{content: "\f058";}
+
 .ui-message-error{color:#ff0000;border-color:#ff0000;}
+.ui-message-error .msg-icon:before{content: "\f057";}
+
+.ui-message-loading .msg-icon{animation: fa-spin 2s infinite linear;}
+.ui-message-loading .msg-icon:before{content: "\f110";}
 
 .ui-image .image{width:100%;height:100%;display:flex;text-align:center;padding:1.5rem;}
 .ui-image .image img{width:auto;height:auto;max-width:100%;max-height:100%;align-self:center;margin:0 auto;}
@@ -137,6 +145,11 @@ body.blur > *:not(.ui-popup):not(.ui-popup-backdrop){filter: blur(1.5px);overflo
 .ui-progress .progress-icon{font-size:10rem;margin:5rem;color:rgba(255,255,255,.8);animation:fadeOutRightBig 2s infinite ease both;margin-left:-20rem;}
 .ui-progress .progress{margin:0;width:60%}
 .ui-progress .progress .close{position:absolute;top:0px;right:0.5rem;}
+
+.ui-cmd .ui-dialog-header,
+.ui-cmd .ui-dialog-body,
+.ui-cmd .ui-dialog-footer{color:#fff;color:rgba(255,255,255,.8);background-color:#000;background-color:rgba(0,0,0,.9);}
+.ui-cmd .ui-dialog-content{padding:20px;overflow:auto;white-space:pre-wrap;color:#00fa4a;background-color:#000;background-color:rgba(0,0,0,.5);border-radius: 0;}
 
 @keyframes fadeOutRightBig {
   from {opacity: 1;}

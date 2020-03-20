@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 
@@ -16,7 +16,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$config" route="core.config.upload" method="post" id="config" autocomplete="off"}
+            {form bind="$config" route="core.config.upload" method="post" id="config" autocomplete="off"}
             <div class="form-title row">{{trans('core::config.upload.base')}}</div>
 
             <div class="form-group row">
@@ -226,10 +226,7 @@
                                 <tr>
                                 @foreach (Module::data('core::watermark.position') as $value=>$postion)
                                     <td class="text-center">
-                                        <label class="radio m-0">
-                                        {field type="radio" name="image[watermark][position]" value="$value"}
-                                        {{$postion}}
-                                        </label>
+                                        {field type="radio" name="image[watermark][position]" id="$value" value="$value" label="$postion"}
                                     </td>
                                     @if($loop->iteration%3==0 && $loop->iteration < $loop->count)
                                     </tr>

@@ -1,14 +1,11 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="main">
     <div class="main-header">        
         <div class="main-title mr-auto">
             {{$title}}
-        </div>
-        <div class="main-action">
-            <a href="#" class="btn btn-primary d-none"> <i class="fa fa-plus"></i> Button </a>
-        </div>           
+        </div>        
     </div>
     <div class="main-body scrollable">
         @if($tasks->count() == 0)
@@ -37,20 +34,20 @@
                             {{$task->index + 1}}
                         </td>
                         <td class="text-center">
-                            <lable class="badge badge-primary">{{$task->type}}</lable>
+                            <label class="badge badge-primary">{{$task->type}}</label>
                         </td>
                         <td>
                             {{$task->cmd}}
                         </td>
                         <td>
-                            <lable class="badge badge-success">{{$task->expression}}</lable>
+                            <label class="badge badge-success">{{$task->expression}}</label>
                         </td>
                         <td>{{$task->nextRunDate()->format('Y-m-d H:i:s')}}</td>
                         <td>{{$task->timezone}}</td>
                         <td>
                             @if ($task->environments)                   
                                 @foreach ($task->environments as $env)
-                                    <lable class="badge badge-info">{{$env}}</lable>
+                                    <label class="badge badge-info">{{$env}}</label>
                                 @endforeach
                             @else
                                 --
@@ -89,16 +86,6 @@
     </div>
 </div>
 @endsection
-@push('css')
-   <style type="text/css">
-   .ui-cmd .ui-dialog-content{background: #000000;padding:20px;overflow:auto;}
-   .ui-cmd .cmd-output{
-        white-space: pre-wrap;
-        color: #00fa4a;
-        border-radius: 0;
-    }
-   </style>
-@endpush
 
 @push('js')
 <script type="text/javascript">

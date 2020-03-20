@@ -4,7 +4,7 @@ namespace Modules\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use App\Modules\Routing\AdminController;
 use Action;
 use Artisan;
 use Module;
@@ -29,20 +29,9 @@ class SystemController extends AdminController
      */    
     public function size(Request $request)
     {
-        // 递归计算文件夹大小
-        function directorySize ($dir)
-        {
-            $size = 0;
-            foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
-                $size += is_file($each) ? filesize($each) : directorySize($each);
-            }
-            return $size;
-        }
-
         if ($request->directory) {
             $path = base_path($request->directory);
-            $size = directorySize($path);
-            $size = \Format::size($size);
+            $size = dirsize($path, true);
 
             return $size;
         }
@@ -65,9 +54,7 @@ class SystemController extends AdminController
                 
                 // 执行artisan命令
                 Artisan::call($artisan);
-
-                // artisan 的 config:cache 和 route:cache 会导致app('current.module')清空，暂时关闭改操作的日志
-                config(['core.log.enabled'=>false]);
+                
             }
 
             return $this->success(trans('master.operated'), $request->referer());
@@ -107,7 +94,7 @@ class SystemController extends AdminController
             'port'                => $_SERVER['SERVER_PORT'],
             'server_addr'         => $_SERVER['SERVER_ADDR'],
             'remote_addr'         => $_SERVER['REMOTE_ADDR'],
-            'disk'                => \Format::size(disk_free_space('.')),
+            'disk'                => size_format(disk_free_space('.')),
         ];
 
         $filesystem = [];

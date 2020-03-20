@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 @include('developer::module.side')
@@ -57,7 +57,7 @@
     </div>
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            <i class="fa fa-folder fa-fw mr-2 text-warning"></i> {{Format::path($path)}}
+            <i class="fa fa-folder fa-fw mr-2 text-warning"></i> {{$path}}
         </div>
     </div>
 </div>

@@ -1,16 +1,16 @@
-@extends('core::layouts.dialog')
+@extends('layouts.dialog')
 
 @section('content')
 <div class="main scrollable">
 
-    {form model="$controller" route="['developer.controller.create', $module, $type]" method="post" class="p-3" autocomplete="off"}
+    {form route="['developer.controller.create', $module, $type]" method="post" class="form p-3" autocomplete="off"}
 
         <div class="container-fluid">
 
             <div class="form-group">
                 <label for="name" class="form-label required">{{trans('developer::controller.name')}}</label>
                 <div class="form-field">
-                    {field type="text" name="name" pattern="^[a-zA-z]+$" required="required"}
+                    {field type="text" name="name" pattern="^[a-zA-z][a-zA-z0-9]+$" required="required"}
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -21,14 +21,14 @@
             </div>
 
             <div class="form-group">
-                <label for="style" class="form-label required">{{trans('developer::controller.style')}}</label>
+                <label for="model" class="form-label">{{trans('developer::controller.model')}}</label>
                 <div class="form-field">
-                    {field type="radiogroup" name="style" options="$styles" column="1" required="required"}
+                    {field type="text" name="model"}
 
-                    @if ($errors->has('style'))
-                    <span class="form-help text-error">{{ $errors->first('style') }}</span>
+                    @if ($errors->has('model'))
+                    <span class="form-help text-error">{{ $errors->first('model') }}</span>
                     @else
-                    <span class="form-help">{{trans('developer::controller.style.help')}}</span>                     
+                    <span class="form-help">{{trans('developer::controller.model.help')}}</span>                     
                     @endif
                 </div>                     
             </div>                                             

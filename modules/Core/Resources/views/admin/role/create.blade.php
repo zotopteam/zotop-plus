@@ -1,10 +1,10 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
+            <a href="{{Request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         <div class="main-title mr-auto">
             {{$title}}
@@ -17,7 +17,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$role" route="core.role.store" method="post" id="role" autocomplete="off"}
+            {form bind="$role" route="core.role.store" method="post" id="role" autocomplete="off"}
 
             <div class="form-title row">{{trans('core::role.form.base')}}</div>
 
@@ -48,16 +48,15 @@
             </div>
 
             <div class="form-title row">
-
                 <div class="col-2 p-0">{{trans('core::role.form.permission')}}</div>
-                <div class="col-8 p-1">
-                    <a href="javascript:;" class="text-sm mr-3 select-all" data-select="select-all">{{trans('core::role.select.all')}}</a>
-                    <a href="javascript:;" class="text-sm mr-3 select-none" data-select="select-none">{{trans('core::role.select.none')}}</a>
+                <div class="col-8 p-0">
+                    <a href="javascript:;" class="btn btn-success btn-sm mr-3 select-all" data-select="select-all">{{trans('core::role.select.all')}}</a>
+                    <a href="javascript:;" class="btn btn-warning btn-sm  mr-3 select-none" data-select="select-none">{{trans('core::role.select.none')}}</a>
                 </div>
-            </div>            
+            </div>         
             
             @foreach ($permissions as $m=>$module)    
-            <div class="form-group row">
+            <div class="form-group row text-sm">
                 <label class="col-2 col-form-label" data-type="module" data-module="{{$m}}">
                     <div >{{$module['title']}}</div>                
                 </label>
@@ -71,19 +70,17 @@
                             </label>
                             <div class="role-group-body">
                             @foreach ($val as $k=>$v)
-                               <label class="checkbox" @if($tips = trans_find($v.'.tips')) data-toggle="tooltip" title="{{$tips}}" @endif>
-                                    {field type="checkbox" name="permissions[]" value="$k" data-module="$m"}
-                                    <span>{{trans($v)}}</span>
-                                </label>
+                                <div class="d-inline-block">
+                                {field type="checkbox" name="permissions[]" id="$k" value="$k" data-module="$m" label="trans($v)"}
+                                </div>
                             @endforeach
                             </div>
                         </div>
                         @else
                         <div class="col-auto">
-                            <label class="checkbox" @if($tips = trans_find($val.'.tips')) data-toggle="tooltip" title="{{$tips}}" @endif>
-                                {field type="checkbox" name="permissions[]" value="$key" data-module="$m"}
-                                <span>{{trans($val)}}</span>
-                            </label>
+                            <div class="d-inline-block">
+                            {field type="checkbox" name="permissions[]" id="$k" value="$key" data-module="$m" label="trans($v)"}
+                            </div>
                         </div>
                         @endif
                         @endforeach

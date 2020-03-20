@@ -6,7 +6,7 @@ if (app()->environment('production')) {
 use Illuminate\Routing\Router;
 
 // Developer 模块后台路由
-$router->group(['prefix' =>'developer','module'=>'developer'], function (Router $router) {
+$router->group(['prefix' =>'developer'], function (Router $router) {
     
     // 首页
     $router->get('index', 'IndexController@index')->name('developer.index');
@@ -27,8 +27,8 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->any('edit/{table}','TableController@edit')->name('developer.table.edit');
         $router->delete('drop/{table}','TableController@drop')->name('developer.table.drop');        
         $router->any('manage/{table}','TableController@manage')->name('developer.table.manage');
-        $router->any('migration/{table}/{action}','TableController@migration')->name('developer.table.migration');
-        $router->any('model/{table}/{action}','TableController@model')->name('developer.table.model');
+        $router->any('migration/{table}/{action?}','TableController@migration')->name('developer.table.migration');
+        $router->any('model/{table}/{force?}','TableController@model')->name('developer.table.model');
         
     });
 
@@ -42,12 +42,6 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
         $router->any('execute/{action}','MigrationController@execute')->name('developer.migration.execute');
         $router->any('migrate/file/{action}','MigrationController@migrateFile')->name('developer.migration.migrate.file');
     });
-
-    // module/model 开发
-    $router->group(['prefix' =>'module/{module}/model','middleware'=>'allow:developer.model'], function (Router $router) {
-        $router->get('index','ModelController@index')->name('developer.model.index');
-        $router->any('create','ModelController@create')->name('developer.model.create');
-    });    
 
     // module/controller 开发
     $router->group(['prefix' =>'module/{module}/controller/{type}','middleware'=>'allow:developer.controller'], function (Router $router) {
@@ -64,7 +58,7 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
     });
 
     // command group
-    $router->group(['prefix' =>'module/{module}/command/{command}','middleware'=>'allow:developer.command'], function (Router $router) {
+    $router->group(['prefix' =>'module/{module}/key/{key}','middleware'=>'allow:developer.command'], function (Router $router) {
         $router->get('index','CommandController@index')->name('developer.command.index');
         $router->any('create','CommandController@create')->name('developer.command.create');
     });
@@ -82,11 +76,14 @@ $router->group(['prefix' =>'developer','module'=>'developer'], function (Router 
 
     // route
     $router->group(['prefix' =>'route','middleware'=>'allow:developer.route'], function (Router $router) {
-        $router->get('index','RouteController@index')->name('developer.route.index')->middleware('allow:developer.route.index');
+        $router->get('index','RouteController@index')->name('developer.route.index');
     });
 
     // theme group
     $router->group(['prefix' =>'theme','middleware'=>'allow:developer.permission'], function (Router $router) {
         $router->get('index','ThemeController@index')->name('developer.theme.index');
+        $router->get('files/{theme?}','ThemeController@files')->name('developer.theme.files');
+        $router->get('create','ThemeController@create')->name('developer.theme.create');
+        $router->post('store','ThemeController@store')->name('developer.theme.store');        
     });    
 });

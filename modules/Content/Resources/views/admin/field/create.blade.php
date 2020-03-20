@@ -1,10 +1,10 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
+            <a href="{{Request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         <div class="main-title mr-auto">
             {{$title}} : {{$model->name}} ({{$model->id}})
@@ -17,7 +17,7 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form model="$field" route="content.field.store" id="field-form" method="post" autocomplete="off"}
+            {form bind="$field" route="content.field.store" id="field-form" method="post" autocomplete="off"}
 
             {field type="hidden" name="model_id" required="required"}
             {field type="hidden" name="system" required="required"}

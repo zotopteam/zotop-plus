@@ -35,12 +35,20 @@ final class NewlineParser implements InlineParserInterface
      */
     public function parse(InlineParserContext $inlineContext): bool
     {
+<<<<<<< HEAD
         $inlineContext->getCursor()->advance();
+=======
+        $inlineContext->getCursor()->advanceBy(1);
+>>>>>>> feature/v2
 
         // Check previous inline for trailing spaces
         $spaces = 0;
         $lastInline = $inlineContext->getContainer()->lastChild();
+<<<<<<< HEAD
         if ($lastInline && $lastInline instanceof Text) {
+=======
+        if ($lastInline instanceof Text) {
+>>>>>>> feature/v2
             $trimmed = \rtrim($lastInline->getContent(), ' ');
             $spaces = \strlen($lastInline->getContent()) - \strlen($trimmed);
             if ($spaces) {

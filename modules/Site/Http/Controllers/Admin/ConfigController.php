@@ -2,11 +2,11 @@
 
 namespace Modules\Site\Http\Controllers\Admin;
 
+use App\Modules\Routing\AdminController;
+use App\Modules\Traits\ModuleConfig;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
-use Modules\Core\Traits\ModuleConfig;
-use Modules\Core\Models\Config;
+use Illuminate\Support\Facades\Artisan;
 
 class ConfigController extends AdminController
 {
@@ -34,11 +34,16 @@ class ConfigController extends AdminController
             // 写入配置组
             $this->config('site', $request->all());
 
-            return $this->success(trans('master.saved'),$request->referer());
+            // 发布保存的主题资源
+            Artisan::call('theme:publish', [
+                'theme' => $request->input('theme')
+            ]);
+
+            return $this->success(trans('master.saved'), $request->referer());
         }
 
         $this->title  = trans('site::config.base');
-        $this->config = Config::get('site');
+        $this->config = config('site');
 
         return $this->view();
     }
@@ -62,11 +67,16 @@ class ConfigController extends AdminController
             // 写入配置组
             $this->config('site', $request->all());
 
-            return $this->success(trans('master.saved'),$request->referer());
+            // 发布保存的主题资源
+            Artisan::call('theme:publish', [
+                'theme' => $request->input('wap.theme')
+            ]);
+
+            return $this->success(trans('master.saved'), $request->referer());
         }
 
         $this->title  = trans('site::config.wap');
-        $this->config = Config::get('site');
+        $this->config = config('site');
 
         return $this->view();
     }
@@ -87,7 +97,7 @@ class ConfigController extends AdminController
         }
 
         $this->title  = trans('site::config.seo');
-        $this->config = Config::get('site');
+        $this->config = config('site');
 
         return $this->view();
     }
@@ -112,7 +122,7 @@ class ConfigController extends AdminController
         }
 
         $this->title  = trans('site::config.maintain');
-        $this->config = Config::get('site');
+        $this->config = config('site');
 
         return $this->view();
     }     

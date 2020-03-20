@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 
@@ -16,7 +16,8 @@
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="config('app')" route="core.config.locale" method="post" id="config" autocomplete="off"}
+
+            {form bind="config('app')" route="core.config.locale" method="post" id="config" autocomplete="off"}
 
             <div class="form-title row">{{trans('core::config.locale.timezone')}}</div>
 

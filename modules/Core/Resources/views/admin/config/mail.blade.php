@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 
@@ -13,7 +13,7 @@
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="config('mail')" route="core.config.mail" method="post" id="config" autocomplete="off"}
+            {form bind="config('mail')" route="core.config.mail" method="post" id="config" autocomplete="off"}
 
             <div class="form-title row">{{trans('core::config.mail.base')}}</div>
             <div class="form-group row">
@@ -139,7 +139,7 @@
                         </div>
                         {field type="email" name="mailtest_sendto" required="required"}
                         <div class="input-group-append">
-                            <button class="btn btn-primary form-submit" type="submit" id="mailtest">
+                            <button class="btn btn-primary" type="submit" id="mailtest">
                                 <i class="fa fa-paper-plane fa-fw text-center"></i>
                                 {{trans('core::config.mail.test.send')}}
                             </button>
@@ -191,14 +191,14 @@
                 var validator = this;
                 var data = $('form#config').serialize() +'&'+ $(form).serialize();
 
-                $('.form-submit').prop('disabled',true);
+                $('[type=submit]').prop('disabled',true);
                 $.loading();
                 $.post($(form).attr('action'), data, function(msg){                    
                     $.msg(msg);
-                    $('.form-submit').prop('disabled',false);
+                    $('[type=submit]').prop('disabled',false);
                     return false;
                 },'json').fail(function(jqXHR){                    
-                    $('.form-submit').prop('disabled',false);
+                    $('[type=submit]').prop('disabled',false);
                     return validator.showErrors(jqXHR.responseJSON.errors);
                 });
             }            

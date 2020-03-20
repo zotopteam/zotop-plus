@@ -11,7 +11,7 @@ $info = [
     'filespace' => [
         'icon'  => 'fas fa-trash text-primary',
         'title' => trans('core::file.space'),
-        'badge' => Format::size(Media::whereNotIn('type', ['folder'])->sum('size')),
+        'badge' => size_format(Media::whereNotIn('type', ['folder'])->sum('size')),
     ]
 ];
 

@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 
@@ -10,17 +10,17 @@
             {{$title}}
         </div>
         <div class="main-action">
-            {field type="submit" form="form" value="trans('master.save')" class="btn btn-primary"}
+            {field type="submit" form="form" value="trans('master.save')"}
         </div>
     </div>
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="$user" route="core.mine.update" method="put" id="form" autocomplete="off"}
+            {form bind="$user" route="core.mine.update" method="put" id="form" autocomplete="off"}
                 <div class="form-group row">
                     <label for="username" class="col-2 col-form-label required">{{trans('core::mine.username.label')}}</label>
                     <div class="col-4 col-md-6">
-                        {field type="static" name="username"}
+                        {field type="text" readonly="true" name="username" class="form-control-plaintext text-primary"}
                     </div>
                 </div>
 
@@ -71,35 +71,35 @@
                 <div class="form-group row">
                     <label for="login_times" class="col-2 col-form-label">{{trans('core::mine.login_times.label')}}</label>
                     <div class="col-4 col-md-6">
-                        {field type="static" name="login_times"}
+                        {field type="text" readonly="true" name="login_times" class="form-control-plaintext"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="login_ip" class="col-2 col-form-label">{{trans('core::mine.login_ip.label')}}</label>
                     <div class="col-4 col-md-6">
-                        {field type="static" name="login_ip"}
+                        {field type="text" readonly="true" name="login_ip" class="form-control-plaintext"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="login_at" class="col-2 col-form-label">{{trans('core::mine.login_at.label')}}</label>
                     <div class="col-4 col-md-6">
-                        {field type="static" name="login_at"}
+                        {field type="text" readonly="true" name="login_at" class="form-control-plaintext"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="created_at" class="col-2 col-form-label">{{trans('core::mine.created_at.label')}}</label>
                     <div class="col-4 col-md-6">
-                        {field type="static" name="created_at"}
+                        {field type="text" readonly="true" name="created_at" class="form-control-plaintext"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="updated_at" class="col-2 col-form-label">{{trans('core::mine.updated_at.label')}}</label>
                     <div class="col-4 col-md-6">
-                        {field type="static" name="updated_at"}
+                        {field type="text" readonly="true" name="updated_at" class="form-control-plaintext"}
                     </div>
                 </div>                                                  
             {/form}           

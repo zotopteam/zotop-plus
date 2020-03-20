@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="main">
@@ -7,34 +7,25 @@
             {{$title}}
         </div>     
     </div>
-    <div class="main-body scrollable d-flex justify-content-center align-items-center">
-    
-                
-                <div class="card text-center m-5">                    
-                    <div class="card-icon bg-primary text-white d-flex justify-content-center align-items-center">
-                        <i class="fa fa-puzzle-piece"></i>
-                    </div>
-                    <div class="card-body">
-                        <a href="{{route('developer.module.index')}}"> {{trans('developer::module.title')}}</a>
-                    </div>
-                </div>
-
-                <div class="card text-center m-5">                    
-                    <div class="card-icon bg-success text-white d-flex justify-content-center align-items-center">
-                        <i class="fa fa-gem"></i>
-                    </div>
-                    <div class="card-body">
-                        <a href="{{route('developer.theme.index')}}"> {{trans('developer::theme.title')}}</a>
-                    </div>                    
-                </div>             
-
-
-
+    <div class="main-body scrollable">
+            
+            <div class="grid grid-md p-4">
+                @foreach (Module::data('developer::tools') as $tool)
+                    <a href="{{$tool.href ?? 'javascript:;'}}" class="card text-center text-decoration-none {{$tool.class ?? 'bg-light'}}">                    
+                        <div class="card-icon d-flex justify-content-center p-4">
+                            <i class="{{$tool.icon ?? 'fa fa-hamburger'}} fa-6x align-self-center"></i>
+                        </div>
+                        <div class="card-body p-3 text-truncate">
+                            {{$tool.text ?? ''}}
+                        </div>
+                    </a>
+                @endforeach
+          </div>
 
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
-            <i class="fa fa-circle-o fa-fw text-primary"></i> {{trans('developer::module.description')}}
+            <i class="fa fa-circle-o fa-fw text-primary"></i> {{trans('developer::developer.description')}}
         </div>
     </div>
 </div>
@@ -42,6 +33,6 @@
 
 @push('css')
 <style type="text/css">
-.card-icon{width:18rem;height:12rem;font-size:4rem;}
+   .card-icon{border-bottom:solid 1px rgba(0,0,0,0.05);}
 </style>
 @endpush

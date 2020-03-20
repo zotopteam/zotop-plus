@@ -29,8 +29,8 @@ $options = [
 // 加载主题的内容样式
 $theme = config('site.theme', 'default');
 
-if (app('files')->exists(app('theme')->path($theme.':assets/css/content.css'))) {
-    $options['content_css'][] = app('theme')->asset($theme.':css/content.css');
+if (app('files')->exists(app('themes')->path($theme.':assets/css/content.css'))) {
+    $options['content_css'][] = app('themes')->asset($theme.':css/content.css');
 }
 
 return $options;

@@ -4,7 +4,7 @@ namespace Modules\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use App\Modules\Routing\AdminController;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 
@@ -19,7 +19,7 @@ class AuthController extends AdminController
      */
     public function showLoginForm()
     {
-        return $this->view('auth.login')->with('title',trans('core::auth.login'));
+        return $this->view('core::auth.login')->with('title',trans('core::auth.login'));
     }
 
 

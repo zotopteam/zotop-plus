@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="main">
@@ -10,32 +10,31 @@
             {{$title}} : {{$table}}
         </div>
         <div class="main-action">
-            @if ($model)
-            <a class="btn btn-danger js-confirm" href="{{route('developer.table.model', [$module, $table, 'override'])}}">
+            @if ($isModelFile)
+            <a class="btn btn-danger js-confirm" href="{{route('developer.table.model', [$module, $table, 'force'])}}">
                 <i class="fa fa-cube"></i> {{trans('developer::table.model.override')}}
             </a>
             @else
-            <a class="btn btn-success js-confirm" href="{{route('developer.table.model', [$module, $table, 'create'])}}">
+            <a class="btn btn-success js-confirm" href="{{route('developer.table.model', [$module, $table])}}">
                 <i class="fa fa-cube"></i> {{trans('developer::table.model.create')}}
             </a>            
             @endif
 
             @if ($migrations)
-            <a class="btn btn-danger js-confirm" href="{{route('developer.table.migration', [$module, $table, 'override'])}}">
+            <a class="btn btn-danger js-migration" data-confirm="{{trans('developer::table.migration.override.confirm')}}" href="{{route('developer.table.migration', [$module, $table, 'create'])}}">
                 <i class="fa fa-database"></i> {{trans('developer::table.migration.override')}}
             </a>
-            <a class="btn btn-primary" href="{{route('developer.table.edit', [$module, $table])}}">
-                <i class="fa fa-fw fa-pen-square"></i> {{trans('developer::table.edit')}}
-            </a>            
+            <a class="btn btn-primary js-migration" data-confirm="{{trans('developer::table.migration.update.confirm')}}" href="{{route('developer.table.migration', [$module, $table, 'update'])}}">
+                <i class="fa fa-database"></i> {{trans('developer::table.migration.update')}}
+            </a>
+            <a class="btn btn-warning js-migration" data-confirm="{{trans('developer::table.migration.drop.confirm')}}"  href="{{route('developer.table.migration', [$module, $table, 'drop'])}}">
+                <i class="fa fa-database"></i> {{trans('developer::table.migration.drop')}}
+            </a>                               
             @else
-            <a class="btn btn-success js-confirm" href="{{route('developer.table.migration', [$module, $table, 'create'])}}">
+            <a class="btn btn-success js-migration" data-confirm="{{trans('developer::table.migration.create.confirm')}}" href="{{route('developer.table.migration', [$module, $table, 'create'])}}">
                 <i class="fa fa-database"></i> {{trans('developer::table.migration.create')}}
             </a>            
-            @endif
-                    
-            <a class="btn btn-primary js-delete" href="javascript:;" data-url="{{route('developer.table.drop', [$module, $table])}}">
-                <i class="fa fa-times"></i> {{trans('developer::table.drop')}}
-            </a>                           
+            @endif                   
         </div>            
     </div>
     
@@ -210,5 +209,30 @@
             event.stopPropagation();
         });
     });
+
+    $(function(){
+
+        $(document).on('click', 'a.js-migration', function(event){
+            event.preventDefault();
+
+            var href    = $(this).attr('href');
+            var text    = $(this).text();
+            var confirm = $(this).data('confirm');
+
+            var dialog = $.confirm(confirm, function(){
+                dialog.loading(true);
+                $.post(href, function(msg) {
+                    dialog.close().remove();
+                    $.dialog({skin:'ui-cmd',width:'80%',height:'40%',title:text,content:msg.content,ok:function(){
+                        location.href = msg.url;
+                    }}, true);
+                }, 'json');
+                return false;
+            }).title(text);
+
+            event.stopPropagation();
+        });      
+    });
+
 </script>
 @endpush

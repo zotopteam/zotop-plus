@@ -1,13 +1,16 @@
 <?php
+
+use App\Hook\Facades\Filter;
+
 /**
  * 扩展后台全局导航
  */
-\Filter::listen('global.start','Modules\Translator\Hook\Listener@start', 80);
+Filter::listen('global.start','Modules\Translator\Hooks\Listener@start');
 
 /**
  * 模块管理
  */
-\Filter::listen('module.manage','Modules\Translator\Hook\Listener@moduleManage', 80);
+Filter::listen('module.manage','Modules\Translator\Hooks\Listener@moduleManage');
 
 
 if (! function_exists('translate')) {
@@ -56,7 +59,7 @@ if (! function_exists('translate_slug')) {
 \Form::macro('translate', function($attrs) {
     $value  = $this->getValue($attrs);
     $id     = $this->getId($attrs);
-    $name   = $this->getAttribute($attrs, 'name');
+    $name   = $this->getName($attrs);
     $button = $this->getAttribute($attrs, 'button', trans('translator::translator.button'));
     
     $options = [

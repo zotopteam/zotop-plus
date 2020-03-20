@@ -1,10 +1,10 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
+            <a href="{{Request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         <div class="main-title">
             {{$title}}
@@ -38,7 +38,7 @@
     <div class="main-body bg-light scrollable">
         <div class="container-fluid">
 
-        {form model="$content" route="['content.content.update', $id]" id="content-form" method="put" autocomplete="off"}
+        {form bind="$content" route="['content.content.update', $id]" id="content-form" method="put" autocomplete="off"}
             
             {field type="hidden" name="_action"}
             {field type="hidden" name="parent_id" required="required"}
@@ -90,7 +90,7 @@
             });
 
             // 表单提交
-            $('.form-submit').on('click', function(event) {
+            $('[type=submit]').on('click', function(event) {
                 event.preventDefault();
                 var status = $(this).data('status');
                 var action = $(this).data('action');

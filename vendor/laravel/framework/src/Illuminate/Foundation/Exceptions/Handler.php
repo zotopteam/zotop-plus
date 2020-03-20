@@ -93,7 +93,7 @@ class Handler implements ExceptionHandlerContract
      * Report or log an exception.
      *
      * @param  \Exception  $e
-     * @return mixed
+     * @return void
      *
      * @throws \Exception
      */
@@ -115,8 +115,12 @@ class Handler implements ExceptionHandlerContract
 
         $logger->error(
             $e->getMessage(),
-            array_merge($this->context(), ['exception' => $e]
-        ));
+            array_merge(
+                $this->exceptionContext($e),
+                $this->context(),
+                ['exception' => $e]
+            )
+        );
     }
 
     /**
@@ -146,6 +150,17 @@ class Handler implements ExceptionHandlerContract
     }
 
     /**
+     * Get the default exception context variables for logging.
+     *
+     * @param  \Exception  $e
+     * @return array
+     */
+    protected function exceptionContext(Exception $e)
+    {
+        return [];
+    }
+
+    /**
      * Get the default context variables for logging.
      *
      * @return array
@@ -163,11 +178,13 @@ class Handler implements ExceptionHandlerContract
     }
 
     /**
-     * Render an exception into a response.
+     * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $e
-     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
      */
     public function render($request, Exception $e)
     {

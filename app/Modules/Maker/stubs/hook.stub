@@ -1,0 +1,29 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
+
+class $CLASS_NAME$
+{
+    /**
+     * Hook the start
+     * @param  array $start
+     * @return array
+     */
+    public function start($start)
+    {
+        return $start;
+    }
+
+    /**
+     * Hook the navbar
+     * @param  array $navbar
+     * @return array
+     */
+    public function navbar($navbar)
+    {
+        return $navbar;
+    }
+}

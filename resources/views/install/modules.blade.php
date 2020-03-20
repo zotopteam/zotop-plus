@@ -14,10 +14,7 @@
     <section class="d-none"> 
         <div class="modules">
             @foreach($modules as $name=>$module)                
-                <div class="module text-center" data-name="{{$name}}" data-title="{{$module->title}}">
-                    <div class="module-icon">
-                        <img src="{{preview($module->getExtraPath('/module.png'), 48, 48)}}">
-                    </div>
+                <div class="module text-center" data-name="{{$name}}" data-title="{{$module->getTitle()}}">
                     <div class="module-title">{{$module->title}}</div>
                 </div>
             @endforeach

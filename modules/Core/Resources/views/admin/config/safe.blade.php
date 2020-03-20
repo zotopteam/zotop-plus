@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 
@@ -16,7 +16,7 @@
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form model="$config" route="core.config.safe" method="post" id="config" autocomplete="off"}
+            {form bind="$config" route="core.config.safe" method="post" id="config" autocomplete="off"}
 
             <div class="form-title row">{{trans('core::config.safe.base')}}</div>
 
@@ -51,7 +51,7 @@
             <div class="form-group row">
                 <label for="admin_prefix" class="col-2 col-form-label required">{{trans('core::config.admin_prefix.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="admin_prefix" required="required"}
+                    {field type="text" name="backend[prefix]" required="required"}
                     
                     @if ($errors->has('admin_prefix'))
                     <span class="form-help text-error">{{ $errors->first('admin_prefix') }}</span>

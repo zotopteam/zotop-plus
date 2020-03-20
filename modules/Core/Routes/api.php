@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Routing\Router;
 
-$router->group(['prefix' =>'/core', 'module'=>'core'], function (Router $router) {
+$router->group(['prefix' =>'/core'], function (Router $router) {
     // append
 });

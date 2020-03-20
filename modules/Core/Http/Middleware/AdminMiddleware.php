@@ -2,11 +2,13 @@
 
 namespace Modules\Core\Http\Middleware;
 
+use App\Modules\Routing\JsonMessageResponse;
 use Closure;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Contracts\Foundation\Application;
+use Modules\Core\Models\Log;
 
 class AdminMiddleware
 {
@@ -50,4 +52,30 @@ class AdminMiddleware
         // 转向登录页面
         return redirect()->guest(route('admin.login'));
     }
+
+    /**
+     * 在响应之后记录操作日志
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Response  $response
+     * @return void
+     */
+    public function terminate($request, $response)
+    {
+        if ($this->app['config']->get('core.log.enabled') && ($response instanceof JsonMessageResponse)) {
+            
+            $data = $response->getData();
+
+            Log::create([
+                'type'       => $data->type,
+                'content'    => $data->content,
+                'module'     => $this->app['current.module'],
+                'controller' => $this->app['current.controller'],
+                'action'     => $this->app['current.action'],
+                'url'        => $this->app['request']->fullUrl(),
+                'request'    => $this->app['request']->except(['_token']),
+            ]);
+
+        }
+
+    }    
 }

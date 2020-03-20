@@ -2,8 +2,8 @@
 /*
  * 编辑器模式
  */
-\Filter::listen('tinymce.editor.options', 'Modules\Tinymce\Hook\Listener@options');
-\Filter::listen('tinymce.editor.options', 'Modules\Tinymce\Hook\Listener@tools');
+\Filter::listen('tinymce.editor.options', 'Modules\Tinymce\Hooks\Listener@options');
+\Filter::listen('tinymce.editor.options', 'Modules\Tinymce\Hooks\Listener@tools');
 /**
  * 编辑器
  */
@@ -19,7 +19,7 @@
     }
 
     // 设置数据编号
-    $attrs['source_id'] = $this->getAttribute($attrs, 'source_id', $this->getValueAttribute('source_id'));
+    $attrs['source_id'] = $this->getAttribute($attrs, 'source_id', $this->getValue($attrs));
 
     debug($attrs['source_id']);
 

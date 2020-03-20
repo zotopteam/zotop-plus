@@ -2,18 +2,20 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
+
+use App\Modules\Facades\Module;
+use App\Modules\Maker\Structure;
+use App\Modules\Maker\Table;
+use App\Modules\Routing\AdminController;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
-use Modules\Developer\Support\Table;
-use Modules\Developer\Support\Migrate;
-use Modules\Developer\Support\Structure;
-use Modules\Developer\Rules\TableName;
-use Module;
-use Artisan;
-
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Str;
+use Modules\Developer\Rules\TableName;
+
 
 class TableController extends AdminController
 {
@@ -21,48 +23,16 @@ class TableController extends AdminController
      * 首页
      *
      * @return Response
-     */
+     */  
     public function index($module)
     {
-        $module  = module($module);
-
-        $tables = Table::all();
-
-        $moduleName = $module->getLowerName();
-        $prefixTables = array_filter($tables, function($table) use($moduleName) {
-            return $table == $moduleName || starts_with($table, $moduleName.'_');
-        });
-
-        // 如果module.json  中包含 tables，合并进模块表中
-        if (is_array($module->tables)) {
-            $moduleTables = $module->tables;
-            $moduleTables = array_filter($tables, function($table) use($moduleTables) {
-                return in_array($table, $moduleTables);
-            });
-            $tables = array_merge($moduleTables, $prefixTables);
-        } else {
-            $tables = $prefixTables;
-        }
-
-        $this->module = $module;
-        $this->tables = $tables;
+        $this->module = Module::findOrFail($module);
+        $this->tables = Table::all();
         $this->title = trans('developer::table.title');
 
-        // 测试表创建
-        // $table = Table::find('test');
-        // $table->drop();
-        // $table->create([
-        //     ['name'=>'id', 'type'=>'bigint', 'length'=>'', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'increments', 'index'=>'', 'default'=>'', 'comment'=>''],
-        //     ['name'=>'title', 'type'=>'varchar', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'unique', 'default'=>'', 'comment'=>'标题'],
-        //     ['name'=>'image', 'type'=>'char', 'length'=>'10', 'nullable'=>'nullable', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'ttttt'],
-        //     ['name'=>'content', 'type'=>'text', 'length'=>'100', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'index', 'default'=>'', 'comment'=>'money'],
-        //     ['name'=>'money', 'type'=>'float', 'length'=>'', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'0.0', 'comment'=>'money'],
-        //     ['name'=>'sort', 'type'=>'mediumInteger', 'length'=>'10', 'nullable'=>'', 'unsigned'=>'unsigned', 'increments'=>'', 'index'=>'', 'default'=>'0', 'comment'=>'sort'],
-        //     ['name'=>'status', 'type'=>'boolean', 'length'=>'1', 'nullable'=>'', 'unsigned'=>'', 'increments'=>'', 'index'=>'', 'default'=>'3', 'comment'=>'status'],
-        // ],[
-        //     ['type'=>'index', 'columns'=>['money']],
-        //     ['type'=>'index','columns'=>['sort','status']]
-        // ]);       
+        $this->tables = array_filter($this->tables, function($table) {
+            return $table == $this->module->getLowerName() || Str::startsWith($table, $this->module->getLowerName().'_');
+        });
 
         return $this->view();
     }
@@ -74,7 +44,7 @@ class TableController extends AdminController
      */
     public function create(Request $request, $module)
     {        
-        $this->module  = module($module);
+        $module  = Module::findOrFail($module);
 
         // 保存数据
         if ($request->isMethod('POST')) {
@@ -88,14 +58,18 @@ class TableController extends AdminController
             ]);
 
             $name    = $request->input('name');
+            $columns = $request->input('columns');
+            $indexes = $request->input('indexes', []);
 
-            // 创建迁移文件并迁移
-            $migrate = Migrate::instance($module, $name, Structure::instance(
-                $request->input('columns'),
-                $request->input('indexes', [])
-            ));
+            $fields = Structure::instance($columns, $indexes)->getBluepoints();
 
-            $migrate->createTable(true);
+            Artisan::call('module:make-migration-create', [
+                'module'    => $module->getLowerName(),
+                'name'      => $name,
+                '--fields'  => $fields,
+                '--migrate' => true,
+                '--force'   => false
+            ]);    
 
             if (Table::find($name)->exists()) {
                 return $this->success(trans('master.created'), route('developer.table.manage', [$module, $name]));
@@ -105,12 +79,12 @@ class TableController extends AdminController
         }
 
         // 读取新建表的默认数据
-        $default = Module::data('developer::table.default', ['module'=>$this->module]);
+        $default = Module::data('developer::table.default', ['module'=>$module]);
 
+        $this->module  = $module;
         $this->name    = $default['name'];
         $this->columns = $default['columns'];
         $this->indexes = $default['indexes'];
-
 
         $this->title = trans('developer::table.create');
 
@@ -127,65 +101,49 @@ class TableController extends AdminController
      */
     public function manage(Request $request, $module, $table)
     {
-        // 获取数据表字段、索引和主键
-        $table   = Table::find($table);
-        // 获取迁移文件
-        $migrate = Migrate::instance($module, $table);
-
-        $module = Module::find($module);
-
-        $model = $module->getExtraPath('Models').'/'.studly_case(str_after($table->name(), $module->getLowerName().'_')).'.php';
-
         $this->title          = trans('developer::table.manage');
-        $this->table          = $table;
-        $this->module         = $module;
-        $this->migrations     = $migrate->getMigrationFiles();
-        $this->columns        = $table->columns(true);
-        $this->indexes        = $table->indexes(true);
+        $this->table          = Table::findOrFail($table);
+        $this->module         = Module::findOrFail($module);
+        $this->migrations     = [];
+        $this->columns        = $this->table->columns();
+        $this->indexes        = $this->table->indexes();
         $this->primaryColumns = $this->indexes->where('type','primary')->first()['columns'];
         $this->indexColumns   = $this->indexes->where('type','index')->pluck('columns')->flatten()->all();
         $this->uniqueColumns  = $this->indexes->where('type','unique')->pluck('columns')->flatten()->all();
-        $this->model          = app('files')->exists($model);
-        debug($this->migrations);
+        $this->isModelFile    = $this->isModelFile($this->module, $this->table);
+        $this->migrations     = $this->getMigrations($this->module, $this->table);
+
         return $this->view();
     }
 
 
    /**
-     * 编辑
-     *
+     * 编辑，TODO:未完成
+     * 
      * @return Response
      */
     public function edit(Request $request, $module, $table)
     {
+        $module = Module::findOrFail($module);
+
         // 保存数据
         if ($request->isMethod('POST')) {
 
-            $name    = $request->input('name');
+            $name    = strtolower($request->input('name'));
 
             // 如果重命名，则验证新名称
-            if ($name != $table) {
-                $request->validate([
-                    'name'    => ['required', 'string', new TableName($module)],
-                    'columns' => ['required', 'array'],
-                ],[],[
-                    'name'    => trans('developer::table.name'),
-                    'columns' => trans('developer::table.columns'),
-                ]);                
-            }
-
-            // 创建更新并迁移
-            $migrate = Migrate::instance($module, $table, Structure::instance(
-                $request->input('columns', []),
-                $request->input('indexes', [])
-            ));
-
-            $migrate->updateTable($name);
+            $request->validate([
+                'name'    => ($name==$table) ? ['required', 'string'] : ['required', 'string', new TableName($module)],
+                'columns' => ['required', 'array'],
+            ],[],[
+                'name'    => trans('developer::table.name'),
+                'columns' => trans('developer::table.columns'),
+            ]);
 
             return $this->success(trans('master.updated'), route('developer.table.manage', [$module, $name]));
         }
 
-        $table = Table::find($table);
+        $table = Table::findOrFail($table);
 
         $this->title   = trans('developer::table.edit');
         $this->module  = $module;
@@ -203,11 +161,15 @@ class TableController extends AdminController
      */
     public function drop(Request $request, $module, $table)
     {
-        // $table = Table::find($table);
-        // $table->drop();
+        $module = Module::findOrFail($module);
+        $table  = Table::findOrFail($table);
 
-        $migrate = Migrate::instance($module, $table);
-        $migrate->dropTable(); 
+        Artisan::call('module:make-migration-drop', [
+            'module'    => $module->getLowerName(),
+            'name'      => $table->name(),
+            '--migrate' => true,
+            '--force'   => true,
+        ]);
 
         return $this->success(trans('master.deleted'), route('developer.table.index',[$module]));        
     }
@@ -216,33 +178,38 @@ class TableController extends AdminController
      * 从已有表生成为migration迁移文件
      * @return Response
      */
-    public function migration($module, $table, $action)
+    public function migration($module, $table, $action='create')
     {
-        $migrate = new Migrate($module, $table);
-
-        if ($action == 'override') {
-            $migrate->createTable(true);
-        }
-
-        if ($action == 'create') {
-           $migrate->createTable(false); 
-        }     
+        $module = Module::findOrFail($module);
+        $table  = Table::findOrFail($table);
         
-        return $this->success(trans('master.operated'), route('developer.table.manage',[$module, $table]));
+        Artisan::call("module:make-migration-{$action}", [
+            'module'    => $module->getLowerName(),
+            'name'      => $table->name(),
+            '--migrate' => false,
+            '--force'   => true,
+        ]);          
+        
+        return $this->success(
+            trans('developer::table.migration.created')."\r\n".Artisan::output(),
+            route('developer.migration.index',[$module])
+        );
     }
 
     /**
      * 从已有表生成为model文件
      * @return Response
      */
-    public function model($module, $table, $action)
+    public function model($module, $table, $force=null)
     {
-        $force = ($action == 'override') ? true : false;
+        $module = Module::findOrFail($module);
+        $table  = Table::findOrFail($table);
         
-        Artisan::call('module:make-table-model', [
-            'module'  => $module,
-            'table'   => $table,
-            '--force' => $force
+        Artisan::call('module:make-model', [
+            'module'  => $module->getLowerName(),
+            'name'    => $this->getModelName($table),
+            '--table' => $table->name(),
+            '--force' => (boolean) $force
         ]);  
         
         return $this->success(trans('master.operated'), route('developer.table.manage',[$module, $table]));
@@ -257,31 +224,92 @@ class TableController extends AdminController
      */
     public function columns(Request $request, $action='')
     {
-        $structure = new Structure(
+        $structure = Structure::instance(
             $request->input('columns', []),
             $request->input('indexes', [])
         );
 
-        if (in_array($action,['addBlank','addTimestamps','addSoftdeletes'])) {
-            $structure->$action();
+        // 添加空白行
+        if ($action == 'addBlank') {
+            $structure->addColumn([]);
+        }
+
+        // 添加时间戳
+        if ($action == 'addTimestamps') {
+            if (! $structure->getColumn('created_at')) {
+                $structure->addColumn(['name'=>'created_at','type'=>'timestamp','nullable'=>1]);
+            }
+            if (! $structure->getColumn('updated_at')) {
+                $structure->addColumn(['name'=>'updated_at','type'=>'timestamp','nullable'=>1]);
+            }
+        }
+
+        // 添加软删除
+        if ($action == 'addSoftdeletes' && !$structure->getColumn('deleted_at')) {
+            $structure->addColumn(['name'=>'deleted_at','type'=>'timestamp','nullable'=>1]);
         }
 
         // 添加索引
         if (in_array($action, ['primary','index','unique'])) {
-            if ($columns = $structure->columns()->where('select', 'select')->pluck('name')->all()) {
-                $structure->addIndex(['type'=>$action,'columns'=>$columns]);
-            } else {
-                abort(403, trans('developer::table.index.unselect'));
+            $columns = $structure->columns()->where('select', 1)->pluck('name')->all();
+            if (empty($columns)) {
+                 abort(422, trans('developer::table.index.unselect'));
             }
-        }    
+            $structure->addIndex(['type'=>$action,'columns'=>$columns]);
+        }           
 
         $this->columns    = $structure->columns();
         $this->indexes    = $structure->indexes();
         $this->increments = $structure->increments();
-        $this->primary    = collect($this->indexes)->where('type','primary')->first();
-
-        //debug($this->columns);
+        $this->primary    = $structure->primary();
 
         return $this->view();
+    }
+
+    /**
+     * 获取表的模型名称，如果表名称中不含下划线，模型名称等于表名称，否则取最后一个下划线后面部分
+     * @param  Table $table
+     * @return string
+     */
+    private function getModelName($table)
+    {
+        $segments = explode('_', $table->name());
+
+        return Str::studly(last($segments));
+    }
+
+    /**
+     * 检查表当前模块下对应的模型是否存在
+     * @param  Module  $module
+     * @param  Table  $table
+     * @return boolean
+     */
+    private function isModelFile($module, $table)
+    {
+        $path = $module->getPath('model', true).DIRECTORY_SEPARATOR.$this->getModelName($table).'.php';
+
+        return File::isFile($path);
+    }
+
+    /**
+     * 获取当前模块下和表相关的迁移文件
+     * @param  Module  $module
+     * @param  Table  $table
+     * @return boolean
+     */
+    private function getMigrations($module, $table)
+    {
+        $migrations = File::glob($module->getPath('migration', true).'/*.php');
+
+        foreach ($migrations as $key => $file) {
+            // 获取迁移文件内容
+            $content = File::get($file);
+            // 检查迁移文件中是否有 Schema::XXX(’tablename‘ 内容，有则是该表的相关迁移文件
+            if (! preg_match('/Schema::(\w+)\(\''.$table.'\'/i', $content, $matches) ) {
+                unset($migrations[$key]);
+            }
+        }
+
+        return $migrations;
     }
 }

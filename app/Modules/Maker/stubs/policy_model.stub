@@ -1,0 +1,94 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Illuminate\Auth\Access\HandlesAuthorization;
+use $MODEL_FULLNAME$;
+use $USER_MODEL_FULLNAME$;
+
+class $CLASS_NAME$
+{
+    use HandlesAuthorization;
+
+    /**
+     * Determine whether the user can view any DocDummyPluralModel.
+     *
+     * @param  \$USER_MODEL_FULLNAME$  $user
+     * @return mixed
+     */
+    public function viewAny($USER_MODEL_BASENAME$ $user)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can view the DocDummyModel.
+     *
+     * @param  \$USER_MODEL_FULLNAME$  $user
+     * @param  \$MODEL_FULLNAME$  $$MODEL_VAR$
+     * @return mixed
+     */
+    public function view($USER_MODEL_BASENAME$ $user, $MODEL_BASENAME$ $$MODEL_VAR$)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can create DocDummyPluralModel.
+     *
+     * @param  \$USER_MODEL_FULLNAME$  $user
+     * @return mixed
+     */
+    public function create($USER_MODEL_BASENAME$ $user)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can update the DocDummyModel.
+     *
+     * @param  \$USER_MODEL_FULLNAME$  $user
+     * @param  \$MODEL_FULLNAME$  $$MODEL_VAR$
+     * @return mixed
+     */
+    public function update($USER_MODEL_BASENAME$ $user, $MODEL_BASENAME$ $$MODEL_VAR$)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can delete the DocDummyModel.
+     *
+     * @param  \$USER_MODEL_FULLNAME$  $user
+     * @param  \$MODEL_FULLNAME$  $$MODEL_VAR$
+     * @return mixed
+     */
+    public function delete($USER_MODEL_BASENAME$ $user, $MODEL_BASENAME$ $$MODEL_VAR$)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can restore the DocDummyModel.
+     *
+     * @param  \$USER_MODEL_FULLNAME$  $user
+     * @param  \$MODEL_FULLNAME$  $$MODEL_VAR$
+     * @return mixed
+     */
+    public function restore($USER_MODEL_BASENAME$ $user, $MODEL_BASENAME$ $$MODEL_VAR$)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can permanently delete the DocDummyModel.
+     *
+     * @param  \$USER_MODEL_FULLNAME$  $user
+     * @param  \$MODEL_FULLNAME$  $$MODEL_VAR$
+     * @return mixed
+     */
+    public function forceDelete($USER_MODEL_BASENAME$ $user, $MODEL_BASENAME$ $$MODEL_VAR$)
+    {
+        //
+    }
+}

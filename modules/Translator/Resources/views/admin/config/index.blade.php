@@ -1,4 +1,4 @@
-@extends('core::layouts.master')
+@extends('layouts.master')
 
 @section('content')
 <div class="main scrollable">
@@ -11,7 +11,7 @@
     </div>
 
     <div class="container-fluid">
-            {form model="$config" route="translator.config.index" method="post" id="config" autocomplete="off"}
+            {form bind="$config" route="translator.config.index" method="post" id="config" autocomplete="off"}
             
             <div class="form-title row">{{trans('translator::config.base')}}</div>
 

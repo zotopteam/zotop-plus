@@ -1,8 +1,8 @@
-@extends('core::layouts.dialog')
+@extends('layouts.dialog')
 
 @section('content')
     <div class="container-fluid">
-        {form model="$datalist" route="block.datalist.store" id="datalist-form" method="post" autocomplete="off"}
+        {form bind="$datalist" route="block.datalist.store" id="datalist-form" method="post" autocomplete="off"}
         {field type="hidden" name="block_id" required="required"}
         {field type="hidden" name="source_id" required="required"}
         {field type="hidden" name="module" required="required"}

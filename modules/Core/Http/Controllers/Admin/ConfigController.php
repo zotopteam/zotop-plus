@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
-use Modules\Core\Base\AdminController;
-use Modules\Core\Traits\ModuleConfig;
+use App\Modules\Routing\AdminController;
+use App\Modules\Traits\ModuleConfig;
 use Modules\Core\Support\Watermark;
 use Modules\Core\Http\Requests\ConfigBaseRequest;
 use Filter;
@@ -172,26 +172,19 @@ class ConfigController extends AdminController
         if ($request->isMethod('POST')) {
 
             // 写入系统配置组
-            $this->config('core', ['log'=>$request->input('log')]);
-
-            // 开启时更改配置值，解决无法记录开启日志的问题
-            if ($request->input('log.enabled') == 1) {
-                config(['core.log.enabled'=>1]);
-            }
+            $this->config('core', $request->all());
 
             // 写入ENV配置
             $this->env([
-                'APP_DEBUG'        => $request->input('debug', 0) ? 'true' : 'false',
+                'APP_DEBUG'        => $request->input('debug') ? 'true' : 'false',
                 'APP_ENV'          => $request->input('env', 'production'),
-                'APP_ADMIN_PREFIX' => $request->input('admin_prefix', 'admin'),
             ]);
 
             // 更改后台地址，本地或者测试环境下，route 已经加载，无法重新载入, 改用url生成
-            $redirectTo = url($request->input('admin_prefix', 'admin').'/core/config/safe');
+            $redirectTo = url($request->input('backend.prefix', 'admin').'/core/config/safe');
 
             return $this->success(trans('master.saved'), $redirectTo);
-        }
-
+        }      
 
         $this->title  = trans('core::config.safe');
         $this->config = config('app') + config('core');

@@ -4,7 +4,7 @@ namespace Modules\Content\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use App\Modules\Routing\AdminController;
 use Modules\Content\Models\Model;
 use Modules\Content\Models\Field;
 use Modules\Content\Support\ModelHelper;

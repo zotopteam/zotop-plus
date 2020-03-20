@@ -4,7 +4,7 @@ namespace Modules\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Core\Base\AdminController;
+use App\Modules\Routing\AdminController;
 use Modules\Core\Models\Log;
 
 class LogController extends AdminController
@@ -22,5 +22,17 @@ class LogController extends AdminController
         })->orderBy('id','desc')->paginate(15);
 
         return $this->view();
+    }
+
+    /**
+     * 清理日志
+     * @param  Request $request
+     * @return Response
+     */
+    public function clean(Request $request)
+    {
+        // 删除超出有效期的日志
+        Log::where('created_at', '<', now()->modify('-'.config('core.log.expire', 30).' days'))->delete();
+        return $this->success('master.operated', $request->referer());
     }
 }
