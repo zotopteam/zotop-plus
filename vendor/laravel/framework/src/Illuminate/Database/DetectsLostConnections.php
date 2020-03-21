@@ -40,6 +40,9 @@ trait DetectsLostConnections
             'Communication link failure',
             'connection is no longer usable',
             'Login timeout expired',
+            'Connection refused',
+            'running with the --read-only option so it cannot execute this statement',
+            'The connection is broken and recovery is not possible. The connection is marked by the client driver as unrecoverable. No attempt was made to restore the connection.',
         ]);
     }
 }

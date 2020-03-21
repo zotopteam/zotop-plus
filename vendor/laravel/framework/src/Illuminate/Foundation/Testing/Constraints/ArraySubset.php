@@ -143,11 +143,7 @@ if (class_exists(Version::class) && (int) Version::series()[0] >= 9) {
             return (array) $other;
         }
     }
-<<<<<<< HEAD
-} else {
-=======
 } elseif (class_exists(Version::class) && (int) Version::series()[0] >= 8) {
->>>>>>> feature/v2
     /**
      * @internal This class is not meant to be used or overwritten outside the framework itself.
      */

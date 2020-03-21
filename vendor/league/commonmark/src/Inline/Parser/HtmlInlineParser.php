@@ -35,15 +35,7 @@ final class HtmlInlineParser implements InlineParserInterface
      */
     public function parse(InlineParserContext $inlineContext): bool
     {
-        $cursor = $inlineContext->getCursor();
-<<<<<<< HEAD
-=======
-        if ($cursor->getCharacter() !== '<') {
-            return false;
-        }
-
->>>>>>> feature/v2
-        if ($m = $cursor->match('/^' . RegexHelper::PARTIAL_HTMLTAG . '/i')) {
+        if ($m = $inlineContext->getCursor()->match('/^' . RegexHelper::PARTIAL_HTMLTAG . '/i')) {
             $inlineContext->getContainer()->appendChild(new HtmlInline($m));
 
             return true;

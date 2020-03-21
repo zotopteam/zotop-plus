@@ -37,17 +37,7 @@ final class BacktickParser implements InlineParserInterface
     {
         $cursor = $inlineContext->getCursor();
 
-<<<<<<< HEAD
-=======
-        if ($cursor->getCharacter() !== '`') {
-            return false;
-        }
-
->>>>>>> feature/v2
         $ticks = $cursor->match('/^`+/');
-        if ($ticks === '') {
-            return false;
-        }
 
         $currentPosition = $cursor->getPosition();
         $previousState = $cursor->saveState();
@@ -60,11 +50,7 @@ final class BacktickParser implements InlineParserInterface
 
                 if (
                     !empty($c) &&
-<<<<<<< HEAD
-                    \substr($c, 0, 1) === ' ' &&
-=======
                     $c[0] === ' ' &&
->>>>>>> feature/v2
                     \substr($c, -1, 1) === ' ' &&
                     \preg_match('/[^ ]/', $c)
                 ) {

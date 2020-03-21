@@ -61,14 +61,6 @@ class Cursor
     private $partiallyConsumedTab = false;
 
     /**
-<<<<<<< HEAD
-     * @var string
-     */
-    private $encoding;
-
-    /**
-=======
->>>>>>> feature/v2
      * @var bool
      */
     private $lineContainsTabs;
@@ -91,10 +83,6 @@ class Cursor
         $this->line = $line;
         $this->length = \mb_strlen($line, 'UTF-8') ?: 0;
         $this->isMultibyte = $this->length !== \strlen($line);
-<<<<<<< HEAD
-        $this->encoding = $this->isMultibyte ? 'UTF-8' : 'ASCII';
-=======
->>>>>>> feature/v2
         $this->lineContainsTabs = false !== \strpos($line, "\t");
     }
 
@@ -175,23 +163,11 @@ class Cursor
             $index = $this->currentPosition;
         }
 
-<<<<<<< HEAD
-        if (isset($this->charCache[$index])) {
-            return $this->charCache[$index];
-        }
-
-=======
->>>>>>> feature/v2
         // Index out-of-bounds, or we're at the end
         if ($index < 0 || $index >= $this->length) {
             return null;
         }
 
-<<<<<<< HEAD
-        return $this->charCache[$index] = $this->isMultibyte ?
-            \mb_substr($this->line, $index, 1, $this->encoding) :
-            \substr($this->line, $index, 1);
-=======
         if ($this->isMultibyte) {
             if (isset($this->charCache[$index])) {
                 return $this->charCache[$index];
@@ -201,7 +177,6 @@ class Cursor
         }
 
         return $this->line[$index];
->>>>>>> feature/v2
     }
 
     /**
@@ -254,11 +229,7 @@ class Cursor
         // Optimization to avoid tab handling logic if we have no tabs
         if (!$this->lineContainsTabs || false === \strpos(
             $nextFewChars = $this->isMultibyte ?
-<<<<<<< HEAD
-                \mb_substr($this->line, $this->currentPosition, $characters, $this->encoding) :
-=======
                 \mb_substr($this->line, $this->currentPosition, $characters, 'UTF-8') :
->>>>>>> feature/v2
                 \substr($this->line, $this->currentPosition, $characters),
             "\t")) {
             $length = \min($characters, $this->length - $this->currentPosition);
@@ -347,10 +318,6 @@ class Cursor
      */
     public function advanceToNextNonSpaceOrNewline(): int
     {
-<<<<<<< HEAD
-        $matches = [];
-        \preg_match('/^ *(?:\n *)?/', $this->getRemainder(), $matches, \PREG_OFFSET_CAPTURE);
-=======
         $remainder = $this->getRemainder();
 
         // Optimization: Avoid the regex if we know there are no spaces or newlines
@@ -362,19 +329,11 @@ class Cursor
 
         $matches = [];
         \preg_match('/^ *(?:\n *)?/', $remainder, $matches, \PREG_OFFSET_CAPTURE);
->>>>>>> feature/v2
 
         // [0][0] contains the matched text
         // [0][1] contains the index of that match
         $increment = $matches[0][1] + \strlen($matches[0][0]);
 
-<<<<<<< HEAD
-        if ($increment === 0) {
-            return 0;
-        }
-
-=======
->>>>>>> feature/v2
         $this->advanceBy($increment);
 
         return $this->currentPosition - $this->previousPosition;
@@ -413,11 +372,7 @@ class Cursor
         }
 
         $subString = $this->isMultibyte ?
-<<<<<<< HEAD
-            \mb_substr($this->line, $position, null, $this->encoding) :
-=======
             \mb_substr($this->line, $position, null, 'UTF-8') :
->>>>>>> feature/v2
             \substr($this->line, $position);
 
         return $prefix . $subString;
@@ -461,13 +416,8 @@ class Cursor
 
         if ($this->isMultibyte) {
             // PREG_OFFSET_CAPTURE always returns the byte offset, not the char offset, which is annoying
-<<<<<<< HEAD
-            $offset = \mb_strlen(\mb_strcut($subject, 0, $matches[0][1], $this->encoding), $this->encoding);
-            $matchLength = \mb_strlen($matches[0][0], $this->encoding);
-=======
-            $offset = \mb_strlen(\mb_strcut($subject, 0, $matches[0][1], 'UTF-8'), 'UTF-8');
+            $offset = \mb_strlen(\substr($subject, 0, $matches[0][1]), 'UTF-8');
             $matchLength = \mb_strlen($matches[0][0], 'UTF-8');
->>>>>>> feature/v2
         } else {
             $offset = $matches[0][1];
             $matchLength = \strlen($matches[0][0]);
@@ -533,11 +483,7 @@ class Cursor
      */
     public function getPreviousText(): string
     {
-<<<<<<< HEAD
-        return \mb_substr($this->line, $this->previousPosition, $this->currentPosition - $this->previousPosition, $this->encoding);
-=======
         return \mb_substr($this->line, $this->previousPosition, $this->currentPosition - $this->previousPosition, 'UTF-8');
->>>>>>> feature/v2
     }
 
     /**
@@ -549,11 +495,7 @@ class Cursor
     public function getSubstring(int $start, ?int $length = null): string
     {
         if ($this->isMultibyte) {
-<<<<<<< HEAD
-            return \mb_substr($this->line, $start, $length, $this->encoding);
-=======
             return \mb_substr($this->line, $start, $length, 'UTF-8');
->>>>>>> feature/v2
         } elseif ($length !== null) {
             return \substr($this->line, $start, $length);
         }

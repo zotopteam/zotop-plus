@@ -47,11 +47,7 @@ class BlockQuote extends AbstractBlock
     {
         if (!$cursor->isIndented() && $cursor->getNextNonSpaceCharacter() === '>') {
             $cursor->advanceToNextNonSpaceOrTab();
-<<<<<<< HEAD
-            $cursor->advance();
-=======
             $cursor->advanceBy(1);
->>>>>>> feature/v2
             $cursor->advanceBySpaceOrTab();
 
             return true;

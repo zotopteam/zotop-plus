@@ -21,13 +21,14 @@ use League\CommonMark\Delimiter\Processor\DelimiterProcessorInterface;
 use League\CommonMark\Event\AbstractEvent;
 use League\CommonMark\Extension\CommonMarkCoreExtension;
 use League\CommonMark\Extension\ExtensionInterface;
+use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\Inline\Parser\InlineParserInterface;
 use League\CommonMark\Inline\Renderer\InlineRendererInterface;
 use League\CommonMark\Util\Configuration;
 use League\CommonMark\Util\ConfigurationAwareInterface;
 use League\CommonMark\Util\PrioritizedList;
 
-final class Environment implements EnvironmentInterface, ConfigurableEnvironmentInterface
+final class Environment implements ConfigurableEnvironmentInterface
 {
     /**
      * @var ExtensionInterface[]
@@ -211,7 +212,9 @@ final class Environment implements EnvironmentInterface, ConfigurableEnvironment
      */
     public function getBlockParsers(): iterable
     {
-        $this->initializeExtensions();
+        if (!$this->extensionsInitialized) {
+            $this->initializeExtensions();
+        }
 
         return $this->blockParsers->getIterator();
     }
@@ -221,7 +224,9 @@ final class Environment implements EnvironmentInterface, ConfigurableEnvironment
      */
     public function getInlineParsersForCharacter(string $character): iterable
     {
-        $this->initializeExtensions();
+        if (!$this->extensionsInitialized) {
+            $this->initializeExtensions();
+        }
 
         if (!isset($this->inlineParsersByCharacter[$character])) {
             return [];
@@ -235,7 +240,9 @@ final class Environment implements EnvironmentInterface, ConfigurableEnvironment
      */
     public function getDelimiterProcessors(): DelimiterProcessorCollection
     {
-        $this->initializeExtensions();
+        if (!$this->extensionsInitialized) {
+            $this->initializeExtensions();
+        }
 
         return $this->delimiterProcessors;
     }
@@ -245,7 +252,9 @@ final class Environment implements EnvironmentInterface, ConfigurableEnvironment
      */
     public function getBlockRenderersForClass(string $blockClass): iterable
     {
-        $this->initializeExtensions();
+        if (!$this->extensionsInitialized) {
+            $this->initializeExtensions();
+        }
 
         if (!isset($this->blockRenderersByClass[$blockClass])) {
             return [];
@@ -259,7 +268,9 @@ final class Environment implements EnvironmentInterface, ConfigurableEnvironment
      */
     public function getInlineRenderersForClass(string $inlineClass): iterable
     {
-        $this->initializeExtensions();
+        if (!$this->extensionsInitialized) {
+            $this->initializeExtensions();
+        }
 
         if (!isset($this->inlineRenderersByClass[$inlineClass])) {
             return [];
@@ -297,11 +308,6 @@ final class Environment implements EnvironmentInterface, ConfigurableEnvironment
 
     private function initializeExtensions()
     {
-        // Only initialize them once
-        if ($this->extensionsInitialized) {
-            return;
-        }
-
         // Ask all extensions to register their components
         while (!empty($this->uninitializedExtensions)) {
             foreach ($this->uninitializedExtensions as $i => $extension) {
@@ -328,10 +334,7 @@ final class Environment implements EnvironmentInterface, ConfigurableEnvironment
         }
     }
 
-    /**
-     * @return Environment
-     */
-    public static function createCommonMarkEnvironment(): Environment
+    public static function createCommonMarkEnvironment(): ConfigurableEnvironmentInterface
     {
         $environment = new static();
         $environment->addExtension(new CommonMarkCoreExtension());
@@ -345,6 +348,14 @@ final class Environment implements EnvironmentInterface, ConfigurableEnvironment
             'allow_unsafe_links' => true,
             'max_nesting_level'  => \INF,
         ]);
+
+        return $environment;
+    }
+
+    public static function createGFMEnvironment(): ConfigurableEnvironmentInterface
+    {
+        $environment = self::createCommonMarkEnvironment();
+        $environment->addExtension(new GithubFlavoredMarkdownExtension());
 
         return $environment;
     }
@@ -378,7 +389,9 @@ final class Environment implements EnvironmentInterface, ConfigurableEnvironment
      */
     public function dispatch(AbstractEvent $event): void
     {
-        $this->initializeExtensions();
+        if (!$this->extensionsInitialized) {
+            $this->initializeExtensions();
+        }
 
         $type = \get_class($event);
 
