@@ -2,7 +2,7 @@
 
 Better && Easier Laravel CMS
 
-基于 Laravel 6 和bootstrap 4，支持模块和主题，更好、更易用的内容管理系统
+基于 Laravel 7 和bootstrap 4，支持模块和主题，更好、更易用的内容管理系统
 
 ## Learning Zotop CMS
 

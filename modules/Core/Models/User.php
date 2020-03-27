@@ -15,7 +15,7 @@ class User extends Authenticatable
      * 
      * @var array
      */
-    //protected $fillable   = ['username','password','email','mobile','model_id','nickname','gender','avatar','sign','login_times','login_at','login_ip','disabled','token','remember_token','created_at','updated_at'];
+    protected $fillable   = ['username','password','email','mobile','model_id','nickname','gender','avatar','sign','login_times','login_at','login_ip','disabled','token','remember_token','created_at','updated_at'];
     
     /**
      * 禁止写入的字段

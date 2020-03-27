@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2018 Justin Hileman
+ * (c) 2012-2020 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -126,7 +126,7 @@ class SignatureFormatter implements Formatter
         if (!empty($interfaces)) {
             \sort($interfaces);
 
-            $chunks[] = 'implements';
+            $chunks[] = $reflector->isInterface() ? 'extends' : 'implements';
             $chunks[] = \implode(', ', \array_map(function ($name) {
                 return \sprintf('<class>%s</class>', $name);
             }, $interfaces));
@@ -287,7 +287,7 @@ class SignatureFormatter implements Formatter
                 } else {
                     $value     = $param->getDefaultValue();
                     $typeStyle = self::getTypeStyle($value);
-                    $value     = \is_array($value) ? 'array()' : \is_null($value) ? 'null' : \var_export($value, true);
+                    $value     = \is_array($value) ? '[]' : (\is_null($value) ? 'null' : \var_export($value, true));
                 }
                 $default = \sprintf(' = <%s>%s</%s>', $typeStyle, OutputFormatter::escape($value), $typeStyle);
             } else {

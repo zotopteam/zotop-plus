@@ -11,12 +11,14 @@
 
 namespace NunoMaduro\Collision\Adapters\Laravel;
 
-use NunoMaduro\Collision\Provider;
-use Illuminate\Support\ServiceProvider;
-use NunoMaduro\Collision\Adapters\Phpunit\Listener;
-use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
-use NunoMaduro\Collision\Contracts\Adapters\Phpunit\Listener as ListenerContract;
+use Illuminate\Support\ServiceProvider;
+use NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand;
+use NunoMaduro\Collision\Contracts\Provider as ProviderContract;
+use NunoMaduro\Collision\Handler;
+use NunoMaduro\Collision\Provider;
+use NunoMaduro\Collision\SolutionsRepositories\NullSolutionsRepository;
+use NunoMaduro\Collision\Writer;
 
 /**
  * This is an Collision Laravel Adapter Service Provider implementation.
@@ -29,8 +31,22 @@ class CollisionServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritdoc}
+     *
+     * @var bool
      */
     protected $defer = true;
+
+    /**
+     * Boots application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->commands([
+            TestCommand::class,
+        ]);
+    }
 
     /**
      * {@inheritdoc}
@@ -38,8 +54,20 @@ class CollisionServiceProvider extends ServiceProvider
     public function register()
     {
         if ($this->app->runningInConsole() && ! $this->app->runningUnitTests()) {
-            $this->app->singleton(ListenerContract::class, Listener::class);
-            $this->app->bind(ProviderContract::class, Provider::class);
+            $this->app->bind(ProviderContract::class, function () {
+                if ($this->app->has(\Facade\IgnitionContracts\SolutionProviderRepository::class)) {
+                    $solutionsRepository = new IgnitionSolutionsRepository(
+                        $this->app->get(\Facade\IgnitionContracts\SolutionProviderRepository::class)
+                    );
+                } else {
+                    $solutionsRepository = new NullSolutionsRepository();
+                }
+
+                $writer = new Writer($solutionsRepository);
+                $handler = new Handler($writer);
+
+                return new Provider(null, $handler);
+            });
 
             $appExceptionHandler = $this->app->make(ExceptionHandlerContract::class);
 

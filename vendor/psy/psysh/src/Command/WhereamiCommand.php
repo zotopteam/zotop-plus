@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2018 Justin Hileman
+ * (c) 2012-2020 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,7 +27,7 @@ class WhereamiCommand extends Command
     private $backtrace;
 
     /**
-     * @param null|string $colorMode (default: null)
+     * @param string|null $colorMode (default: null)
      */
     public function __construct($colorMode = null)
     {
@@ -118,12 +118,18 @@ HELP
         $highlighter = new Highlighter($colors);
         $contents    = \file_get_contents($info['file']);
 
-        $output->startPaging();
+        if ($output instanceof ShellOutput) {
+            $output->startPaging();
+        }
+
         $output->writeln('');
         $output->writeln(\sprintf('From <info>%s:%s</info>:', $this->replaceCwd($info['file']), $info['line']));
         $output->writeln('');
         $output->write($highlighter->getCodeSnippet($contents, $info['line'], $num, $num), false, OutputInterface::OUTPUT_RAW);
-        $output->stopPaging();
+
+        if ($output instanceof ShellOutput) {
+            $output->stopPaging();
+        }
 
         return 0;
     }

@@ -11,8 +11,8 @@
 
 namespace NunoMaduro\Collision\Contracts;
 
-use Whoops\Exception\Inspector;
 use Symfony\Component\Console\Output\OutputInterface;
+use Whoops\Exception\Inspector;
 
 /**
  * This is the Collision Writer contract.
@@ -39,6 +39,15 @@ interface Writer
      * @return \NunoMaduro\Collision\Contracts\Writer
      */
     public function showTrace(bool $show): Writer;
+
+    /**
+     * Declares whether or not the Writer should show the title.
+     *
+     * @param  bool $show
+     *
+     * @return \NunoMaduro\Collision\Contracts\Writer
+     */
+    public function showTitle(bool $show): Writer;
 
     /**
      * Declares whether or not the Writer should show the editor.

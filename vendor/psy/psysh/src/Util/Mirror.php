@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2018 Justin Hileman
+ * (c) 2012-2020 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -65,11 +65,7 @@ class Mirror
         } elseif ($filter & self::STATIC_PROPERTY && $class->hasProperty($member) && $class->getProperty($member)->isStatic()) {
             return $class->getProperty($member);
         } else {
-            throw new RuntimeException(\sprintf(
-                'Unknown member %s on class %s',
-                $member,
-                \is_object($value) ? \get_class($value) : $value
-            ));
+            throw new RuntimeException(\sprintf('Unknown member %s on class %s', $member, \is_object($value) ? \get_class($value) : $value));
         }
     }
 

@@ -2,126 +2,104 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
+use App\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends AdminController
 {
-    use AuthenticatesUsers;
-
     /**
-     * 登录
+     * Get the guard to be used during authentication.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
-    public function showLoginForm()
+    protected function guard()
     {
-        return $this->view('core::auth.login')->with('title',trans('core::auth.login'));
-    }
-
-
-    /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
-    public function username()
-    {
-        return 'username';
+        return Auth::guard();
     }
 
     /**
-     * Get the needed authorization credentials from the request.
+     * 表单验证
+     * @param  Request $request
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
-    // protected function credentials(Request $request)
-    // {
-    //     $credentials = $request->only($this->username(), 'password');
-    //     $credentials = array_merge($credentials, [
-    //         'model_id'  => ['super','admin'],
-    //         'disabled' => 0
-    //     ]);
-
-    //     return $credentials;
-    // }
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
 
     /**
-     * Attempt to log the user into the application.
-     *
+     * 尝试类型用户登录
      * @param  \Illuminate\Http\Request  $request
-     * @return bool
+     * @param  string $model_id 用户类型
+     * @return boolean
      */
-    protected function attemptLogin(Request $request)
+    protected function attemptLogin(Request $request, $model_id)
     {
-         $credentials = $request->only($this->username(), 'password');
-         $credentials = $credentials + ['disabled'=>0];
-
-        return $this->guard()->attempt(
-            $credentials + ['model_id'=>'super'], $request->filled('remember')
-        ) || $this->guard()->attempt(
-            $credentials + ['model_id'=>'admin'], $request->filled('remember')
-        );
+        return $this->guard()->attempt([
+            'username' => $request->username,
+            'password' => $request->password,
+            'model_id' => $model_id,
+            'disabled' => 0,
+        ], $request->filled('remember'));
     }
 
     /**
      * 登陆成功
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
      * @return mixed
      */
-    protected function authenticated(Request $request, $user)
+    protected function afterLogin(Request $request)
     {
+        // 重新生成session
+        $request->session()->regenerate();
+
+        // 记录用户信息
+        $user = $this->guard()->user();
+
         $user->increment('login_times');
         $user->update([
             'login_at' => \Carbon\Carbon::now(),
             'login_ip' => $request->ip()
         ]);
-
-        if ($request->expectsJson()) {
-            return $this->success(trans('core::auth.success'), $this->redirectPath());
-        }
-
-         return redirect()->intended($this->redirectPath()); 
     }
 
 
     /**
-     * Get the post register / login redirect path.
-     *
-     * @return string
-     */
-    protected function redirectPath()
-    {
-        return route('admin.index');
-    }     
-
-    /**
-     * Get the failed login response instance.
-     *
+     * 登录
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
-    protected function sendFailedLoginResponse(Request $request)
+    public function login(Request $request)
     {
-        $errors = [$this->username() => trans('core::auth.failed')];
+        if ($request->isMethod('POST')) {
 
-        if ($request->expectsJson()) {
-            return response()->json($errors, 422);
+            // 表单验证
+            $this->validateLogin($request);
+
+            // 尝试super类型用户或者admin类型用户登录
+            if ($this->attemptLogin($request, 'super') || $this->attemptLogin($request, 'admin')) {
+                $this->afterLogin($request);
+                return $this->success(trans('core::auth.success'), route('admin.index'));
+            }
+
+            return $this->error(trans('core::auth.failed'));
         }
 
-        return redirect()->back()
-            ->withInput($request->only($this->username(), 'remember'))
-            ->withErrors($errors);
-    }    
+        return $this->view('core::auth.login')->with('title', trans('core::auth.login'));
+    }
 
     /**
-     * Log the user out of the application.
+     * 登出
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

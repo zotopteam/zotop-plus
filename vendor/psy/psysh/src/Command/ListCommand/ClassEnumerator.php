@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2018 Justin Hileman
+ * (c) 2012-2020 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -30,9 +30,8 @@ class ClassEnumerator extends Enumerator
         //     ls --classes Foo
         //
         // ... for listing classes in the Foo namespace
-
         if ($reflector !== null || $target !== null) {
-            return;
+            return [];
         }
 
         $user     = $input->getOption('user');

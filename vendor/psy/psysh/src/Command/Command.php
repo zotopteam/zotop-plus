@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2018 Justin Hileman
+ * (c) 2012-2020 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -232,7 +232,7 @@ abstract class Command extends BaseCommand
     private function formatDefaultValue($default)
     {
         if (\is_array($default) && $default === \array_values($default)) {
-            return \sprintf("array('%s')", \implode("', '", $default));
+            return \sprintf("['%s']", \implode("', '", $default));
         }
 
         return \str_replace("\n", '', \var_export($default, true));
@@ -252,10 +252,17 @@ abstract class Command extends BaseCommand
         }
 
         $style = new TableStyle();
-        $style
-            ->setVerticalBorderChar(' ')
-            ->setHorizontalBorderChar('')
-            ->setCrossingChar('');
+
+        // Symfony 4.1 deprecated single-argument style setters.
+        if (\method_exists($style, 'setVerticalBorderChars')) {
+            $style->setVerticalBorderChars(' ');
+            $style->setHorizontalBorderChars('');
+            $style->setCrossingChars('', '', '', '', '', '', '', '', '');
+        } else {
+            $style->setVerticalBorderChar(' ');
+            $style->setHorizontalBorderChar('');
+            $style->setCrossingChar('');
+        }
 
         $table = new Table($output);
 

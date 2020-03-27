@@ -2,11 +2,12 @@
 
 namespace Laravel\Tinker\Console;
 
-use Psy\Shell;
-use Psy\Configuration;
 use Illuminate\Console\Command;
 use Laravel\Tinker\ClassAliasAutoloader;
+use Psy\Configuration;
+use Psy\Shell;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class TinkerCommand extends Command
 {
@@ -36,7 +37,7 @@ class TinkerCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
     public function handle()
     {
@@ -62,13 +63,27 @@ class TinkerCommand extends Command
 
         $path .= '/composer/autoload_classmap.php';
 
-        $loader = ClassAliasAutoloader::register($shell, $path);
+        $config = $this->getLaravel()->make('config');
+
+        $loader = ClassAliasAutoloader::register(
+            $shell, $path, $config->get('tinker.alias', []), $config->get('tinker.dont_alias', [])
+        );
+
+        if ($code = $this->option('execute')) {
+            $shell->execute($code);
+
+            $loader->unregister();
+
+            return 0;
+        }
 
         try {
             $shell->run();
         } finally {
             $loader->unregister();
         }
+
+        return 0;
     }
 
     /**
@@ -86,7 +101,9 @@ class TinkerCommand extends Command
             }
         }
 
-        foreach (config('tinker.commands', []) as $command) {
+        $config = $this->getLaravel()->make('config');
+
+        foreach ($config->get('tinker.commands', []) as $command) {
             $commands[] = $this->getApplication()->resolve($command);
         }
 
@@ -102,6 +119,7 @@ class TinkerCommand extends Command
     {
         $casters = [
             'Illuminate\Support\Collection' => 'Laravel\Tinker\TinkerCaster::castCollection',
+            'Illuminate\Support\HtmlString' => 'Laravel\Tinker\TinkerCaster::castHtmlString',
         ];
 
         if (class_exists('Illuminate\Database\Eloquent\Model')) {
@@ -124,6 +142,18 @@ class TinkerCommand extends Command
     {
         return [
             ['include', InputArgument::IS_ARRAY, 'Include file(s) before starting tinker'],
+        ];
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['execute', null, InputOption::VALUE_OPTIONAL, 'Execute the given code using Tinker'],
         ];
     }
 }

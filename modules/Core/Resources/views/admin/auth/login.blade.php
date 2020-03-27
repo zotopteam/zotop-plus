@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="d-flex justify-content-center full-height">
-    {form route="admin.login.post" method="post" class="form-login align-self-center" autocomplete="off" nosubmited="nosubmited"}
+    {form route="admin.login" method="post" class="form-login align-self-center" autocomplete="off" nosubmited="nosubmited"}
         <div class="card card-login">    
             <div class="card-header bg-primary text-white text-center pos-r">
                 <div class="site-name text-truncate">{{config('site.name') ?: config('zotop.name') }}</div>
@@ -72,18 +72,18 @@
     $(function(){
         $('.form-login').validate({
             showErrors:function(errorMap,errorList){
-                if (errorList[0]) $('.form-tips').html('<span class="text-error">'+ errorList[0].message +'</span>');
+                if (errorList[0]) $('.form-tips').html(errorList[0].message).addClass('text-error');
             },            
             submitHandler:function(form){                
                 var validator = this;
 
-                $('.form-tips').html('{{trans('core::auth.logining')}}');
+                $('.form-tips').html('{{trans('core::auth.logining')}}').removeClass('text-error').addClass('text-primary');
                 $('[type=submit]').prop('disabled',true);
 
                 $.post($(form).attr('action'), $(form).serialize(), function(msg){
                     
                     if (msg.type == 'success') {
-                        $('.form-tips').html(msg.content).addClass('text-success');
+                        $('.form-tips').html(msg.content).removeClass('text-error').addClass('text-success');
                         location.href = msg.url;
                         return true;                        
                     }
