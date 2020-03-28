@@ -86,7 +86,7 @@ class Plupload
      * 分片上传
      * 
      * @param  string  $name    文件地址
-     * @param  Closure $handler [description]
+     * @param  Closure $handler 闭包
      * @return mixed
      */
     public function receiveChunks($name, Closure $handler)
@@ -98,14 +98,14 @@ class Plupload
             $chunk    = (int) $this->request->get('chunk', false);
             $chunks   = (int) $this->request->get('chunks', false);
             $fileName = $this->request->get('name');
-            $filePath = $this->getFilePath($fileName.'.part');
+            $filePath = $this->getFilePath($fileName . '.part');
 
             $this->removeOldData($filePath);
             $this->appendData($filePath, $file);
 
             // 全部分片上传完成
             if ($chunk == $chunks - 1) {
-                $file = new UploadedFile($filePath, $fileName, 'blob', filesize($filePath), UPLOAD_ERR_OK, true);
+                $file = new UploadedFile($filePath, $fileName, 'blob', UPLOAD_ERR_OK, true);
                 $result = $handler($file);
                 @unlink($filePath);
             }
