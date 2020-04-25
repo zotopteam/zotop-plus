@@ -55,9 +55,9 @@ class CodeCleaner
     /**
      * CodeCleaner constructor.
      *
-     * @param Parser        $parser    A PhpParser Parser instance. One will be created if not explicitly supplied
-     * @param Printer       $printer   A PhpParser Printer instance. One will be created if not explicitly supplied
-     * @param NodeTraverser $traverser A PhpParser NodeTraverser instance. One will be created if not explicitly supplied
+     * @param Parser|null        $parser    A PhpParser Parser instance. One will be created if not explicitly supplied
+     * @param Printer|null       $printer   A PhpParser Printer instance. One will be created if not explicitly supplied
+     * @param NodeTraverser|null $traverser A PhpParser NodeTraverser instance. One will be created if not explicitly supplied
      */
     public function __construct(Parser $parser = null, Printer $printer = null, NodeTraverser $traverser = null)
     {
@@ -200,8 +200,8 @@ class CodeCleaner
         $class    = isset($stackFrame['class']) ? $stackFrame['class'] : null;
         $function = isset($stackFrame['function']) ? $stackFrame['function'] : null;
 
-        return ($class === null && $function === 'Psy\debug') ||
-            ($class === 'Psy\Shell' && $function === 'debug');
+        return ($class === null && $function === 'Psy\\debug') ||
+            ($class === Shell::class && $function === 'debug');
     }
 
     /**

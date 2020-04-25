@@ -19,7 +19,6 @@ use PhpParser\Node\Name\FullyQualified as FullyQualifiedName;
 use PhpParser\Node\Scalar\LNumber;
 use Psy\Exception\ErrorException;
 use Psy\Exception\FatalErrorException;
-use Psy\Shell;
 
 /**
  * Add runtime validation for `require` and `require_once` calls.
@@ -49,7 +48,7 @@ class RequirePass extends CodeCleanerPass
          *   $foo = require \Psy\CodeCleaner\RequirePass::resolve($bar)
          */
         $node->expr = new StaticCall(
-            new FullyQualifiedName('Psy\CodeCleaner\RequirePass'),
+            new FullyQualifiedName(self::class),
             'resolve',
             [new Arg($origNode->expr), new Arg(new LNumber($origNode->getLine()))],
             $origNode->getAttributes()

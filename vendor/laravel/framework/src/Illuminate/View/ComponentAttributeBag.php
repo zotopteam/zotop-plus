@@ -90,7 +90,9 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
     {
         $props = [];
 
-        foreach ($keys as $key) {
+        foreach ($keys as $key => $defaultValue) {
+            $key = is_numeric($key) ? $defaultValue : $key;
+
             $props[] = $key;
             $props[] = Str::kebab($key);
         }
@@ -109,6 +111,10 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
         $attributes = [];
 
         $attributeDefaults = array_map(function ($value) {
+            if (is_null($value) || is_bool($value)) {
+                return $value;
+            }
+
             return e($value);
         }, $attributeDefaults);
 

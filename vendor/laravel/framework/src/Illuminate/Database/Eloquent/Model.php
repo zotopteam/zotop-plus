@@ -10,6 +10,7 @@ use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
+use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection as BaseCollection;
@@ -1179,7 +1180,8 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
         );
 
         $this->load(collect($this->relations)->reject(function ($relation) {
-            return $relation instanceof Pivot;
+            return $relation instanceof Pivot
+                || (is_object($relation) && in_array(AsPivot::class, class_uses_recursive($relation), true));
         })->keys()->all());
 
         $this->syncOriginal();
@@ -1520,7 +1522,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
      */
     public function resolveChildRouteBinding($childType, $value, $field)
     {
-        return $this->{Str::plural($childType)}()->where($field, $value)->first();
+        return $this->{Str::plural(Str::camel($childType))}()->where($field, $value)->first();
     }
 
     /**
@@ -1663,7 +1665,7 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     }
 
     /**
-     * Handle dynamic static method calls into the method.
+     * Handle dynamic static method calls into the model.
      *
      * @param  string  $method
      * @param  array  $parameters

@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use XdgBaseDir\Xdg;
 
-if (!\function_exists('Psy\sh')) {
+if (!\function_exists('Psy\\sh')) {
     /**
      * Command to return the eval-able code to startup PsySH.
      *
@@ -33,7 +33,7 @@ if (!\function_exists('Psy\sh')) {
     }
 }
 
-if (!\function_exists('Psy\debug')) {
+if (!\function_exists('Psy\\debug')) {
     /**
      * Invoke a Psy Shell from the current context.
      *
@@ -102,7 +102,7 @@ if (!\function_exists('Psy\debug')) {
     }
 }
 
-if (!\function_exists('Psy\info')) {
+if (!\function_exists('Psy\\info')) {
     /**
      * Get a bunch of debugging info about the current PsySH environment and
      * configuration.
@@ -171,6 +171,11 @@ if (!\function_exists('Psy\info')) {
             'update cache file'      => $prettyPath($config->getUpdateCheckCacheFile()),
         ];
 
+        $input = [
+            'interactive mode'  => $config->interactiveMode(),
+            'input interactive' => $config->getInputInteractive(),
+        ];
+
         if ($config->hasReadline()) {
             $info = \readline_info();
 
@@ -192,6 +197,12 @@ if (!\function_exists('Psy\info')) {
                 'readline available' => false,
             ];
         }
+
+        $output = [
+            'color mode'       => $config->colorMode(),
+            'output decorated' => $config->getOutputDecorated(),
+            'output verbosity' => $config->verbosity(),
+        ];
 
         $pcntl = [
             'pcntl available' => ProcessForker::isPcntlSupported(),
@@ -249,7 +260,6 @@ if (!\function_exists('Psy\info')) {
 
         $autocomplete = [
             'tab completion enabled' => $config->useTabCompletion(),
-            'custom matchers'        => \array_map('get_class', $config->getTabCompletionMatchers()),
             'bracketed paste'        => $config->useBracketedPaste(),
         ];
 
@@ -263,11 +273,11 @@ if (!\function_exists('Psy\info')) {
 
         // @todo Show Presenter / custom casters.
 
-        return \array_merge($core, \compact('updates', 'pcntl', 'readline', 'history', 'docs', 'autocomplete'));
+        return \array_merge($core, \compact('updates', 'pcntl', 'input', 'readline', 'output', 'history', 'docs', 'autocomplete'));
     }
 }
 
-if (!\function_exists('Psy\bin')) {
+if (!\function_exists('Psy\\bin')) {
     /**
      * `psysh` command line executable.
      *
@@ -312,47 +322,24 @@ if (!\function_exists('Psy\bin')) {
 
             $input = new ArgvInput();
             try {
-                $input->bind(new InputDefinition([
-                    new InputOption('help',     'h',  InputOption::VALUE_NONE),
-                    new InputOption('config',   'c',  InputOption::VALUE_REQUIRED),
-                    new InputOption('version',  'V',  InputOption::VALUE_NONE),
-                    new InputOption('cwd',      null, InputOption::VALUE_REQUIRED),
-                    new InputOption('color',    null, InputOption::VALUE_NONE),
-                    new InputOption('no-color', null, InputOption::VALUE_NONE),
-
-                    new InputOption('quiet',          'q',        InputOption::VALUE_NONE),
-                    new InputOption('verbose',        'v|vv|vvv', InputOption::VALUE_NONE),
-                    new InputOption('no-interaction', 'n',        InputOption::VALUE_NONE),
-                    new InputOption('raw-output',     'r',        InputOption::VALUE_NONE),
+                $input->bind(new InputDefinition(\array_merge(Configuration::getInputOptions(), [
+                    new InputOption('help',    'h', InputOption::VALUE_NONE),
+                    new InputOption('version', 'V', InputOption::VALUE_NONE),
 
                     new InputArgument('include', InputArgument::IS_ARRAY),
-                ]));
+                ])));
             } catch (\RuntimeException $e) {
                 $usageException = $e;
             }
 
-            $config = [];
-
-            // Handle --config
-            if ($configFile = $input->getOption('config')) {
-                $config['configFile'] = $configFile;
+            try {
+                $config = Configuration::fromInput($input);
+            } catch (\InvalidArgumentException $e) {
+                $config = new Configuration();
+                $usageException = $e;
             }
 
-            // Handle --color and --no-color
-            if ($input->getOption('color') && $input->getOption('no-color')) {
-                $usageException = new \RuntimeException('Using both "--color" and "--no-color" options is invalid');
-            } elseif ($input->getOption('color')) {
-                $config['colorMode'] = Configuration::COLOR_MODE_FORCED;
-            } elseif ($input->getOption('no-color')) {
-                $config['colorMode'] = Configuration::COLOR_MODE_DISABLED;
-            }
-
-            // Handle --raw-output
-            if ($input->getOption('raw-output')) {
-                $config['rawOutput'] = true;
-            }
-
-            $shell = new Shell(new Configuration($config));
+            $shell = new Shell($config);
 
             // Handle --help
             if ($usageException !== null || $input->getOption('help')) {
@@ -369,12 +356,17 @@ Usage:
   $name [--version] [--help] [files...]
 
 Options:
-  --help     -h Display this help message.
-  --config   -c Use an alternate PsySH config file location.
-  --cwd         Use an alternate working directory.
-  --version  -V Display the PsySH version.
-  --color       Force colors in output.
-  --no-color    Disable colors in output.
+  -h, --help            Display this help message.
+  -c, --config FILE     Use an alternate PsySH config file location.
+      --cwd PATH        Use an alternate working directory.
+  -V, --version         Display the PsySH version.
+      --color           Force colors in output.
+      --no-color        Disable colors in output.
+  -i, --interactive     Force PsySH to run in interactive mode.
+  -n, --no-interactive  Run PsySH without interactive input. Requires input from stdin.
+  -r, --raw-output      Print var_export-style return values (for non-interactive input)
+  -q, --quiet           Shhhhhh.
+  -v|vv|vvv, --verbose  Increase the verbosity of messages.
 
 EOL;
                 exit($usageException === null ? 0 : 1);

@@ -70,7 +70,7 @@ class ParseCommand extends Command implements ContextAware, PresenterAware
     {
         $this->presenter = clone $presenter;
         $this->presenter->addCasters([
-            'PhpParser\Node' => function (Node $node, array $a) {
+            Node::class => function (Node $node, array $a) {
                 $a = [
                     Caster::PREFIX_VIRTUAL . 'type'       => $node->getType(),
                     Caster::PREFIX_VIRTUAL . 'attributes' => $node->getAttributes(),
@@ -128,7 +128,7 @@ HELP
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $code = $input->getArgument('code');
-        if (\strpos('<?', $code) === false) {
+        if (\strpos($code, '<?') === false) {
             $code = '<?php ' . $code;
         }
 
