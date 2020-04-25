@@ -79,7 +79,7 @@
                         @else
                         <div class="col-auto">
                             <div class="d-inline-block">
-                            {field type="checkbox" name="permissions[]" id="$k" value="$key" data-module="$m" label="trans($v)"}
+                            {field type="checkbox" name="permissions[]" id="$key" value="$key" data-module="$m" label="trans($val)"}
                             </div>
                         </div>
                         @endif

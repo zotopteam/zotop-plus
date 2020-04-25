@@ -70,9 +70,11 @@
                                     <button class="btn btn-light btn-zoom-in" type="button" data-lang="{{$name}}">
                                         <i class="fa fa-search-plus"></i>
                                     </button>
+                                    @if ($translator)
                                     <button class="btn btn-light btn-translate" type="button" data-toggle="tooltip" data-from="{{$locale}}" data-to="{{$lang}}"  title="{{$languages[$locale]}} => {{$name}}">
                                         <i class="fa fa-sync"></i>
                                     </button>
+                                    @endif
                                 </div>
                             </div>                                
                             @endif
@@ -102,6 +104,9 @@
 @push('js')
 <script type="text/javascript">
     $(function(){
+
+        @if ($translator)
+        // 翻译按钮动作
         $(document).on('click', '.btn-translate', function() {
             var self   = $(this);
             var from   = self.data('from');
@@ -122,6 +127,7 @@
                 self.removeClass('disabled').find('i.fa').removeClass('fa-spin');
             });
         });
+        @endif
 
         $(document).on('click', '.btn-zoom-in', function() {
             var self   = $(this);

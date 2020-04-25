@@ -2,6 +2,7 @@
 
 namespace $CLASS_NAMESPACE$;
 
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class $CLASS_NAME$ extends FormRequest
@@ -21,7 +22,7 @@ class $CLASS_NAME$ extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         $rules = [
             //'title' => 'required|max:255',

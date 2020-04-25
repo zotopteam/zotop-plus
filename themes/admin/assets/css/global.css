@@ -453,8 +453,9 @@ textarea{resize:none;}
 .main-header .main-action{padding:0 0.5rem;}
 .main-header .main-action .breadcrumb{background:transparent;padding:0.25rem 1rem;margin-bottom:0;margin-top:0.1875rem;}
 .main-header .main-action .breadcrumb-item+.breadcrumb-item::before{color:#ccc;}
-.main-header .main-action .btn{line-height:1.2;}
-.main-header .main-action .form-control{line-height:1.2;height: calc(1.5em + .5rem + 1.2px);}
+.main-header .main-action .btn{line-height:1.2;font-size:0.875rem;}
+.main-header .main-action .form-control{line-height:1.2;height: calc(1.5em + .5rem + 1.2px);font-size:0.875rem;}
+.main-header .main-action .input-group-text{line-height:1.2;font-size:0.875rem;}
 .main-header .main-action select.form-control:not([size]):not([multiple]){height:calc(2.00rem + 2.5px);}
 
 .main-body.scrollable,.main-body.nice-scrollable{flex:1;}

@@ -28,9 +28,9 @@
                 @foreach ($permissions as $key=>$val)
                 {{-- 分组模式，key 为分组标题 --}}
                 @if (is_array($val))
-                <tr>
+                <tr class="bg-light">
                     <td>
-                        <i class="fa fa-fw fa-folder text-warning"></i>
+                        <i class="fa fa-fw fa-folder text-warning mr-2"></i>
                         {{trans($key)}}
                     </td>
                     <td>{{$key}}</td>
@@ -39,8 +39,7 @@
                 @foreach ($val as $k=>$v)
                 <tr>
                     <td>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <i class="fa fa-fw fa-key text-warning"></i>
+                        <i class="fa fa-fw fa-key text-warning ml-4 mr-2"></i>
                         {{$k}} 
                         
                         @if (! in_array($k, array_keys($allows)))
@@ -57,7 +56,7 @@
                 @else
                 <tr>
                     <td>
-                        <i class="fa fa-fw fa-key text-warning"></i>
+                        <i class="fa fa-fw fa-key text-warning mr-2"></i>
                         {{$key}}
                         @if (! in_array($key, array_keys($allows)))
                            <i class="fa fa-fw fa-question-circle text-danger cur-p" data-toggle="tooltip" title="{{trans('developer::permission.question')}}"></i>
@@ -72,9 +71,8 @@
                 @endforeach
                 
                 @if($allows)
-                <tr>
+                <tr class="bg-light">
                     <td>
-                        <i class="fa fa-fw fa-folder text-danger"></i>
                         {{trans('developer::permission.missing')}}
                     </td>
                     <td></td>
@@ -83,7 +81,7 @@
                 @foreach ($allows as $key=>$val)
                 <tr>
                     <td>
-                        <i class="fa fa-fw fa-key text-danger"></i>
+                        <i class="fa fa-fw fa-key text-danger mr-2"></i>
                         {{$key}}
                     </td>
                     <td>{{$val}}</td>

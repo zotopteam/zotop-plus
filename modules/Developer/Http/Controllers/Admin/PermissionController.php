@@ -2,13 +2,13 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
+use App\Modules\Facades\Module;
+use App\Modules\Routing\AdminController;
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
-use File;
-use Module;
-use Route;
-use Closure;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 
 class PermissionController extends AdminController
 {
@@ -24,9 +24,9 @@ class PermissionController extends AdminController
         $this->title       = trans('developer::command.title');
         
         $this->name        = $module;
-        $this->module      = module($module);
-        $this->path        = $this->module->getExtraPath('permission.php');
-        $this->permissions = $this->module->getFileData('permission.php');
+        $this->module      = Module::findOrFail($module);
+        $this->path        = $this->module->getPath('permission.php');
+        $this->permissions = File::exists($this->path) ? include($this->path) : [];
         
         // 从全局路由中获取模块所有的allows中的节点，用于和当前权限比对
         $this->allows      = $this->getRoutesPermissions($module);
@@ -42,18 +42,22 @@ class PermissionController extends AdminController
      */
     public function scan(Request $request, $module)
     {        
-        $this->module      = module($module);
-        $this->path        = $this->module->getExtraPath('permission.php');
+        $this->module      = Module::findOrFail($module);
+
+        if ($this->module->isDisabled()) {
+            return $this->error(trans('developer::permission.scan.disabled', [$this->module->getLowerName()]));
+        }
+
+        $this->path        = $this->module->getPath('permission.php');
 
         // 如果permission文件存在，写入备份
         if (File::exists($this->path)) {
-            $bak = $this->module->getExtraPath('permission_'.now()->format('YmdHis').'.php');
+            $bak = $this->module->getPath('permission_'.now()->format('YmdHis').'.php');
             File::move($this->path, $bak);
         } 
 
-        $permissions = $this->getRoutesPermissions($module);
-
-        if ($permissions) {
+        // 从路由中获取模块的全部权限设定
+        if ($permissions = $this->getRoutesPermissions($module)) {
             File::put($this->path, "<?php\nreturn ".var_export($permissions,true).";\n");
             return $this->success(trans('developer::permission.scan.success'), $request->referer());
         }

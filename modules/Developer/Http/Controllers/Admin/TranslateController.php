@@ -2,12 +2,13 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
+use App\Modules\Facades\Module;
+use App\Modules\Maker\Lang;
+use App\Modules\Routing\AdminController as Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
-use App\Modules\Maker\Lang;
-use App\Modules\Facades\Module;
-use App\Modules\Routing\AdminController as Controller;
+use Illuminate\Support\Facades\Route;
 
 
 class TranslateController extends Controller
@@ -105,6 +106,13 @@ class TranslateController extends Controller
 
         $this->langs = $langs;
         $this->keys  = array_keys($langs[$this->locale]);
+
+        // 是否开启翻译
+        if (Route::has('translator.translate')) {
+            $this->translator = true;
+        } else {
+            $this->translator = false;
+        }
 
         return $this->view();
     }

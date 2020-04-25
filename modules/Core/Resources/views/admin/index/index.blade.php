@@ -10,7 +10,7 @@
     </div>
     <div class="main-body scrollable">
         <div class="grid grid-lg p-3">
-                @foreach(filter::fire('global.start',[]) as $s)
+                @foreach(Filter::fire('global.start',[]) as $s)
                 <a href="{{$s['href']}}" class="shortcut shortcut-media {{$s['class'] ?? ''}}" target="{{$s['target'] ?? '_self'}}">
                     <div class="shortcut-icon">
                         <i class="{{$s['icon']}}"></i>
