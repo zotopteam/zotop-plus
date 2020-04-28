@@ -4,13 +4,11 @@
     "title": "Developer title",
     "description": "Developer description",
     "keywords": [],
-    "version": "1.2.0",
-    "active": 1,
-    "installed": 1,
+    "version": "1.2.1",
     "order": 10,
     "author": "Hankx.Chen",
-    "email": "hankx_chen@qq.com",
-    "homepage": "http:\/\/www.zotop.com",
+    "email": "",
+    "homepage": "",
     "providers": [
         "Modules\\Developer\\Providers\\DeveloperServiceProvider",
         "Modules\\Developer\\Providers\\RouteServiceProvider"
