@@ -5,5 +5,5 @@ use Illuminate\Routing\Router;
 $router->group(['prefix' =>'developer'], function (Router $router) {
     
     // 首页
-    $router->get('/', 'IndexController@index')->name('developer.index');
+    $router->get('/', 'IndexController@index');
 });

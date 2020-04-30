@@ -5,5 +5,5 @@ use Illuminate\Routing\Router;
 $router->group(['prefix' =>'media'], function (Router $router) {
     
     // 首页
-    $router->get('/', 'IndexController@index')->name('media.index');
+    $router->get('/', 'IndexController@index');
 });

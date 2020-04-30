@@ -14,7 +14,7 @@ $manages['config-cache'] = [
     'icon'        => 'fa fa-cogs text-primary',
     'title'       => trans('core::system.config.cache.title'),
     'description' => trans('core::system.config.cache.description'),
-    'action'      => File::exists(app()->bootstrapPath().'/cache/config.php') ?
+    'action'      => app()->configurationIsCached() ?
                     ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'config:clear'])] :
                     ['text'=>trans('master.cache'), 'class' => 'btn btn-success js-post', 'icon'=>'fa fa-dot-circle', 'href'=>route('core.system.manage',['artisan'=>'config:cache'])]
 ];
@@ -24,7 +24,7 @@ $manages['route-cache'] = [
     'icon'        => 'fa fa-sitemap text-primary',
     'title'       => trans('core::system.route.cache.title'),
     'description' => trans('core::system.route.cache.description'),
-    'action'      => File::exists(app()->bootstrapPath().'/cache/routes.php') ?
+    'action'      => app()->routesAreCached() ?
                     ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'route:clear'])] :
                     ['text'=>trans('master.cache'), 'class' => 'btn btn-success js-post', 'icon'=>'fa fa-dot-circle', 'href'=>route('core.system.manage',['artisan'=>'route:cache'])]
 ];
