@@ -25,6 +25,10 @@ class NotificationsController extends AdminController
         return $this->view();
     }
 
+    /**
+     * 消息通知检查
+     * @return json
+     */
     public function check()
     {
         \Debugbar::disable();
@@ -32,6 +36,8 @@ class NotificationsController extends AdminController
         // 获取全部未读通知
         $notification_count = Filter::fire('notification.count', Auth::user()->unreadNotifications->count());
 
-        return ['count'=>$notification_count];
+        return [
+            'count' => $notification_count
+        ];
     }
 }

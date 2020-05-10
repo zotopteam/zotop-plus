@@ -38,6 +38,12 @@ return [
     ],
     'log' => [
         'enabled' => 1,
-        'expire'  => 30,
+        'expire'  => 30, // 有效期，单位：天
+    ],
+    'notification' => [
+        'check' => [
+            'enabled' => 1,
+            'interval' => 60, // 检查间隔时间，单位：秒
+        ],
     ],
 ];

@@ -184,10 +184,16 @@ class Hook
     {
         $cms['environment']  = App::environment();
         $cms['user_id']      = Auth::id() ?? 0;
-        $cms['notification'] = [
-            'check'    => route('core.notifications.check'),
-            'interval' => 30, //单位：秒
-        ]; 
+        $cms['notification'] = [];
+
+        // 自动检查通知信息
+        if (config('core.notification.check.enabled', 1)) {
+            $cms['notification']['check'] = [
+                'url'      => route('core.notifications.check'),
+                'interval' => config('core.notification.check.interval', 60), //单位：秒
+            ];
+        }
+
         return $cms;
     }    
 

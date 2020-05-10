@@ -26,7 +26,6 @@
     <script src="{{Theme::asset('js/popper.min.js')}}"></script>    
     <script src="{{Theme::asset('js/bootstrap.min.js')}}"></script>
     <script src="{{Theme::asset('js/jquery.validate.min.js')}}"></script>
-    <script src="{{Theme::asset('js/jquery.nicescroll.min.js')}}"></script> 
     <script src="{{Theme::asset('js/jquery.dialog.js')}}"></script>
     <script src="{{Theme::asset('js/cms.js')}}"></script>
     <script src="{{Theme::asset('js/global.js')}}"></script>

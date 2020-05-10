@@ -33,13 +33,6 @@ class ControllerController extends AdminController
             } else {
                 $types[$k]['path'] = config('modules.paths.dirs.controller');
             }
-
-            $types[$k]['middleware'] = null;
-
-            if ($k == 'backend') {
-                $types[$k]['middleware'] = 'allow:{allow}';
-            } 
-
         }
 
         if ( empty($key) ) {
@@ -127,7 +120,7 @@ class ControllerController extends AdminController
         $this->module  = Module::findOrFail($module);
         $this->types   = $this->types();
         $this->path    = $this->module->getPath($this->types($type, 'path'));
-        $this->files   = File::isDirectory($this->path) ? File::allFiles($this->path) : [];
+        $this->files   = File::isDirectory($this->path) ? File::files($this->path) : [];
 
 
         return $this->view();
@@ -220,11 +213,13 @@ class ControllerController extends AdminController
                 }                
             }
 
+            $router[$m->name]['module']     = strtolower($module);
+            $router[$m->name]['controller'] = $this->getBaseName($controller);
+            $router[$m->name]['method']     = $m->name;
             $router[$m->name]['uri']        = implode('/', $uri);
             $router[$m->name]['action']     = $this->getRealName($controller).'@'.$m->name;
-            $router[$m->name]['name']       = strtolower($module).'.'.$this->getBaseName($controller).'.'.$m->name;
+            $router[$m->name]['name']       = $router[$m->name]['module'].'.'.$router[$m->name]['controller'].'.'.$m->name;
             $router[$m->name]['verb']       = $this->verbs($m->name);
-            $router[$m->name]['middleware'] = str_replace('{allow}', $router[$m->name]['name'], $this->types($type,'middleware'));            
          }
 
         $this->type   = $type;

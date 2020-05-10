@@ -41,15 +41,7 @@ $(function(){
     // tooltip
     $(document).tooltip({placement:function(tip, element){
         return $(element).data('placement') ? $(element).data('placement') : 'bottom';
-    },selector:'[data-toggle="tooltip"],a[title]',html:true,trigger:'hover'});   
- 
-    // niceScroll
-    $('.nice-scrollable').niceScroll();
-    // 窗口改变大小时，重置滚动条，如果页面内元素高度发生改变，使用触发 $(window).trigger('resize')
-    $(window).resize(function(){
-        $(".nice-scrollable").getNiceScroll().resize();
-        $('.tooltip').remove();
-    });
+    },selector:'[data-toggle="tooltip"],a[title]',html:true,trigger:'hover'});
 
     // maxlength
     $('input[maxlength],textarea[maxlength]').maxlength({alwaysShow:true,appendToParent:true,threshold:10,separator:'/',placement:'bottom-right-inside'});  
@@ -258,15 +250,11 @@ $(function(){
 });
 
 $(function(){
-    var notification_timer;
     var notification_check = function() {
 
         var notification = $('.global-notification');
 
         if (notification.length == 0) {
-            if (notification_timer) {
-                window.clearInterval(notification_timer);
-            }
             return;
         }
 
@@ -274,7 +262,7 @@ $(function(){
         notification.find('.global-tool-icon').addClass('animation-flicker');
 
         // 请求接口并获取结果        
-        $.getJSON(cms.notification.check, function(result) {
+        $.getJSON(cms.notification.check.url, function(result) {
             if (result.count) {
                 notification.find('.global-tool-badge').removeClass('d-none').html(result.count);
                 notification.find('.global-tool-icon').addClass('animation-flicker');
@@ -285,8 +273,7 @@ $(function(){
         });        
     }
 
-    if (cms.user_id > 0) {
-        notification_check();
-        notification_timer = window.setInterval(notification_check, cms.notification.interval*1000);
+    if (cms.user_id > 0 && cms.notification.check != undefined) {
+        window.setInterval(notification_check, cms.notification.check.interval * 1000);
     }
 });

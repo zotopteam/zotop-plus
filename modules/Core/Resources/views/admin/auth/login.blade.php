@@ -64,6 +64,12 @@
 
 @push('js')
 <script type="text/javascript">
+    // 页面停留时间过长会再登录时产生 CSFR Token 过期，因此每五分钟自动刷新一次
+    setInterval(function(){
+        location.reload();
+    }, 5 * 60 * 1000);
+</script>
+<script type="text/javascript">
 
     $(function(){
         $('.form-login').draggable({containment:"html"});
