@@ -24,10 +24,10 @@
     </span>
 </div>
 @push('js')
-    @loadjs(Module::asset('core:plupload/plupload.full.min.js'))
-    @loadjs(Module::asset('core:plupload/i18n/'.App::getLocale().'.js'))
-    @loadjs(Module::asset('core:plupload/jquery.plupload.js'))
-    @loadjs(Module::asset('core:plupload/jquery.upload_image.js'))    
+    {!! Module::load('core:plupload/plupload.full.min.js') !!}
+    {!! Module::load('core:plupload/i18n/'.App::getLocale().'.js') !!}
+    {!! Module::load('core:plupload/jquery.plupload.js') !!}
+    {!! Module::load('core:plupload/jquery.upload_image.js') !!}
 
     <script type="text/javascript">
     $(function(){

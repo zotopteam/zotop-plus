@@ -4,5 +4,5 @@
 </div>
 
 @push('js')
-    @loadjs(Module::asset('core:js/field_toggle.js'))
+    {!! Module::load('core:js/field_toggle.js') !!}
 @endpush

@@ -402,10 +402,15 @@ class Module
      */
     public function asset($asset, $version=true)
     {
-        $path = $this->app['config']->get('modules.paths.assets');
-        $base = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $path);
+        $path = $this->app['config']->get('modules.paths.assets') . DIRECTORY_SEPARATOR . $this->getLowerName() . DIRECTORY_SEPARATOR . $asset;
 
-        $url = $this->app['url']->asset($base.'/'.$this->getLowerName().'/'. $asset);
+        if (! file_exists($path)) {
+            return null;
+        }
+
+        $path = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $path);
+
+        $url = $this->app['url']->asset($path);
         $url = str_replace(['http://', 'https://'], '//', $url);
 
         if ($version) {

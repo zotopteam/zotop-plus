@@ -8,10 +8,10 @@
     <meta name="csrf_token" content="{{ csrf_token() }}"/>
     <title>{{$title ?? ''}} @yield('title')</title>
     <link href="{{Theme::asset('favicon.ico')}}" rel="shortcut icon" type="image/x-icon">
-    <link rel="stylesheet" href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('css/login.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/login.css')}}" rel="stylesheet">
     @stack('css')
 
     <script>

@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="_token" content="{{ csrf_token() }}"/>
     <title>{{$title ?? ''}} @yield('title')</title>
-    <link rel="stylesheet" href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('css/font-awesome.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     <style type="text/css">
         html,body{width:100%;height:100%;overflow:auto;}
     </style>

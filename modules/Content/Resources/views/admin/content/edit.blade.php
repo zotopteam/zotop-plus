@@ -71,7 +71,7 @@
 @endsection
 
 @push('js')
-    @loadjs(Module::asset('core:laydate/laydate.js'))
+    {!! Module::load('core:laydate/laydate.js') !!}
     <script type="text/javascript">
         $(function(){
 

@@ -34,13 +34,13 @@
 
 
 @push('css')
-    @loadcss(Module::asset('core:css/field_gallery.css'))
+    {!! Module::load('core:css/field_gallery.css') !!}
 @endpush
 @push('js')
-    @loadjs(Module::asset('core:plupload/plupload.full.min.js'))
-    @loadjs(Module::asset('core:plupload/i18n/'.App::getLocale().'.js'))
-    @loadjs(Module::asset('core:plupload/jquery.plupload.js'))
-    @loadjs(Module::asset('core:js/field_gallery.js'))
+    {!! Module::load('core:plupload/plupload.full.min.js') !!}
+    {!! Module::load('core:plupload/i18n/'.App::getLocale().'.js') !!}
+    {!! Module::load('core:plupload/jquery.plupload.js') !!}
+    {!! Module::load('core:js/field_gallery.js') !!}
 
     @once('field_gallery')
     <script type="text/javascript">

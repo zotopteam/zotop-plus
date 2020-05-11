@@ -8,10 +8,10 @@
     <meta name="csrf_token" content="{{ csrf_token() }}"/>
     <title>{{$title ?? ''}} {{config('site.name')}} {{config('zotop.name')}} </title>
     <link href="{{Theme::asset('favicon.ico')}}" rel="shortcut icon" type="image/x-icon">
-    <link rel="stylesheet" href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('css/jquery.dialog.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/jquery.dialog.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     @stack('css')
 
     <script>
@@ -114,6 +114,6 @@
     @if(!App::isLocale('en'))
     <script src="{{Theme::asset('lang/'.App::getLocale().'/jquery.validate.js')}}"></script>
     @endif
-    @stack('js')   
+@stack('js')   
 </body>
 </html>

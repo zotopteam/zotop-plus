@@ -8,8 +8,7 @@
     </span>
 </div>
 @push('js')
-    @loadjs(Module::asset('site:js/jquery.view.js'))
-
+    {!! Module::load('site:js/jquery.view.js') !!}
     <script type="text/javascript">
     $(function(){
         $("#view-field-{{$id}}").view();

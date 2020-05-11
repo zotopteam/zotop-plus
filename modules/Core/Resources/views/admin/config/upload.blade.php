@@ -302,13 +302,13 @@
 @endsection
 
 @push('css')
-    @loadcss(Module::asset('core:spectrum/spectrum.css'))
-    @loadcss(Module::asset('core:spectrum/spectrum.zotop.css'))
+    {!! Module::load('core:spectrum/spectrum.css') !!}
+    {!! Module::load('core:spectrum/spectrum.zotop.css') !!}     
 @endpush
 
 @push('js')
-    @loadjs(Module::asset('core:spectrum/spectrum.js'))
-    @loadjs(Module::asset('core:spectrum/field_color.js'))
+    {!! Module::load('core:spectrum/spectrum.js') !!}
+    {!! Module::load('core:spectrum/field_color.js') !!}
     <script type="text/javascript">
 
         $(function(){

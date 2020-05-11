@@ -8,7 +8,7 @@
 </div>
 
 @push('js')
-    @loadjs(Module::asset('translator:jquery.translate.js'))
+    {!! Module::load('translator:jquery.translate.js') !!}
     <script type="text/javascript">
     $(function(){
         $("#translate-{{$id}}").translate(@json($options));  

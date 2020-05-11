@@ -3,9 +3,8 @@
 </div>
 
 @push('js')
-    @loadjs(Module::asset('tinymce:tinymce/tinymce.min.js'))
-    @loadjs(Module::asset('tinymce:tinymce/jquery.tinymce.min.js'))
-
+    {!! Module::load('tinymce:tinymce/tinymce.min.js') !!}
+    {!! Module::load('tinymce:tinymce/jquery.tinymce.min.js') !!}
     <script type="text/javascript">
     $(function(){
         $('#{{$id}}').tinymce(@json($options));

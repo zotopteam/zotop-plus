@@ -7,9 +7,9 @@
     <meta name="_token" content="{{ csrf_token() }}"/>
     <title>{{$title ?? ''}} @yield('title') {{config('site.name')}}</title>
     <link href="{{config('site.favicon') ?: Theme::asset('favicon.ico')}}" rel="shortcut icon" type="image/x-icon">
-    <link rel="stylesheet" href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
+    <link href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     @stack('css')
 </head>
 <body>

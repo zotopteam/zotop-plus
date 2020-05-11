@@ -28,6 +28,12 @@ class Repository
     protected $modules = [];
 
     /**
+     * 加载的资源完整url列表
+     * @var array
+     */
+    protected $loads = [];
+
+    /**
      * 初始化
      * @param Application $app
      */
@@ -207,6 +213,41 @@ class Repository
         }
 
         return null;
+    }
+
+    /**
+     * 加载资源文件
+     * @param  mixed $asset 资源路径 core:aaa/bbb.js || core:bbb/aaa.css
+     * @param  string $type  类型，js || css，不指定类型时，根据资源的后缀自动判断
+     * @return string
+     */
+    public function load($asset, $type=null)
+    {
+        $load = [];
+
+        foreach (Arr::wrap($asset) as $asset) {
+
+            // 确定文件类型
+            $type = $type ? strtolower($type) : strtolower(Str::afterLast($asset, '.'));
+            
+            // 获取资源的完整url
+            $url  = $this->asset($asset, true);
+
+            // 如果已经加载，不再次加载和输出
+            if ($url && !isset($this->loads[$url])) {
+                $this->loads[$url] = true;
+
+                if ($type == 'js') {
+                    $load[] = '<script src="'.$url.'"></script>';
+                }
+
+                if ($type == 'css') {
+                    $load[] = '<link href="'.$url.'" rel="stylesheet">';
+                }            
+            }
+        }
+
+        return implode($load, "\r\n");
     }
 
     /**

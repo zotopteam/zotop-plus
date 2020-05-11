@@ -2,11 +2,11 @@
 <input type="hidden" name="{{$name}}" value="{{$value}}" id="{{$id}}">
 
 @push('css')
-    @loadcss(Module::asset('core:iconpicker/bootstrap-iconpicker.min.css'))
+    {!! Module::load('core:iconpicker/bootstrap-iconpicker.min.css') !!}
 @endpush
 
 @push('js')
-    @loadjs(Module::asset('core:iconpicker/bootstrap-iconpicker.bundle.min.js'))
+    {!! Module::load('core:iconpicker/bootstrap-iconpicker.bundle.min.js') !!}
     <script type="text/javascript">
     $(function(){
         $("#{{$id}}-iconpicker").iconpicker({!!json_encode($options)!!}).on('change', function(e) {
