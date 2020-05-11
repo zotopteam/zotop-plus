@@ -86,6 +86,21 @@ class Html
     }
 
     /**
+     * 文本转html，一般用于格式化textarea的显示值
+     * @param string $string
+     * @return string
+     */
+    public function text($string)
+    {
+        $string = trim(str_replace(array('<p>', '</p>', '<br>', '<br/>','<br />'), '', $string));
+        $string = '<p>'.preg_replace("/([\n]{1,})/i", "</p>\n<p>", $string).'</p>';
+        $string = str_replace(array('<p><br/></p>','<p></p>'), '', $string);
+        $string = str_replace(' ', '&nbsp;', htmlspecialchars($string));
+
+        return $string;
+    }    
+
+    /**
      * Dynamically handle calls to the class.
      *
      * @param  string $method

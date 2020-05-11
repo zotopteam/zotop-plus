@@ -3,7 +3,7 @@
 namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Module;
+use Modules\Core\Models\User;
 
 class Role extends Model
 {
@@ -17,4 +17,12 @@ class Role extends Model
     protected $casts = [
         'permissions' => 'array',
     ];
+
+    /**
+     * 拥有此角色的用户
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'role_users', 'role_id', 'user_id');
+    }
 }

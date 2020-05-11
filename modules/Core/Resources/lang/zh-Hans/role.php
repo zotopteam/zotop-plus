@@ -10,22 +10,23 @@ return [
     'edit'              => '编辑角色',
     'status'            => '启用/禁用',
     'destroy'           => '删除角色',
-
+    'destroy.forbidden' => '删除失败，该角色已经关联用户无法删除',
+    
     'form.base'         => '基本信息',
     'form.permission'   => '权限设置',
-
+    
     'status.label'      => '状态',
     'status.help'       => '',
-
+    
     'name.label'        => '名称',
     'name.help'         => '此角色的名称。如“管理员”、“编辑”、“开发人员”等',
-
+    
     'code.label'        => '唯一编码',
     'code.help'         => ' 一个唯一的机器可读名字。仅能包含小写字母、数字和下划线',    
     
     'description.label' => '描述',
     'description.help'  => '',
-
+    
     'select.all'        => '全部允许',
     'select.none'       => '全部拒绝',   
 ];
