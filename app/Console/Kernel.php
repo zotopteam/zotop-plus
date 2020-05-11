@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('debugbar:clear')->cron(config('debugbar.storage.clear', '0 3 * * *'));
     }
 
     /**

@@ -36,7 +36,8 @@ return [
         'driver'     => 'file', // redis, file, pdo, custom
         'path'       => storage_path('debugbar'), // For file driver
         'connection' => null,   // Leave null for default connection (Redis/PDO)
-        'provider'   => '' // Instance of StorageInterface for custom driver
+        'provider'   => '', // Instance of StorageInterface for custom driver
+        'clear'      => '0 3 * * *', //auto debugbar:clear cron by hankx_chen@zotop.com
     ],
 
     /*
@@ -63,6 +64,7 @@ return [
      | The Debugbar can capture Ajax requests and display them. If you don't want this (ie. because of errors),
      | you can use this option to disable sending the data through the headers.
      |
+     | Optionally, you can also send ServerTiming headers on ajax requests for the Chrome DevTools.
      */
 
     'capture_ajax' => true,
@@ -121,6 +123,7 @@ return [
         'files'           => false, // Show the included files
         'config'          => true, // Display config settings
         'cache'           => true, // Display cache events
+        'models'          => true,  // Display models
     ],
 
     /*
@@ -158,6 +161,9 @@ return [
         'logs' => [
             'file' => null
         ],
+        'cache' => [
+            'values' => true // collect cache values
+        ],        
     ],
 
     /*
@@ -185,4 +191,13 @@ return [
      */
     'route_prefix' => '_debugbar',
 
+    /*
+     |--------------------------------------------------------------------------
+     | DebugBar route domain
+     |--------------------------------------------------------------------------
+     |
+     | By default DebugBar route served from the same domain that request served.
+     | To override default domain, specify it as a non-empty value.
+     */
+    'route_domain' => null,
 ];
