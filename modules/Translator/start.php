@@ -1,6 +1,7 @@
 <?php
 
-use App\Hook\Facades\Filter;
+use App\Support\Facades\Filter;
+use App\Support\Facades\Form;
 
 /**
  * 扩展后台全局导航
@@ -56,7 +57,7 @@ if (! function_exists('translate_slug')) {
 /**
  * 翻译器
  */
-\Form::macro('translate', function($attrs) {
+Form::macro('translate', function($attrs) {
     $value  = $this->getValue($attrs);
     $id     = $this->getId($attrs);
     $name   = $this->getName($attrs);

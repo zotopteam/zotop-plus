@@ -1,7 +1,7 @@
 <?php
 
-use App\Hook\Facades\Filter;
-use App\Themes\Facades\Form;
+use App\Support\Facades\Filter;
+use App\Support\Facades\Form;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;

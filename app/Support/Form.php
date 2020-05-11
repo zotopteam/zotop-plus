@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Themes;
+namespace App\Support;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;

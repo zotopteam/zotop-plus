@@ -2,7 +2,7 @@
 
 namespace Modules\Content\Http\Controllers;
 
-use App\Hook\Facades\Filter;
+use App\Support\Facades\Filter;
 use App\Modules\Routing\FrontController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Hook;
+namespace App\Support;
 
-use App\Hook\Base;
+use App\Support\Hook;
 
-class Action extends Base
+class Action extends Hook
 {
 
 	/**

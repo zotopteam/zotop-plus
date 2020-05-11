@@ -402,17 +402,19 @@ class Module
      */
     public function asset($asset, $version=true)
     {
+        // 获取资源的完整路径 (publish之后在public目录下的路径)
         $path = $this->app['config']->get('modules.paths.assets') . DIRECTORY_SEPARATOR . $this->getLowerName() . DIRECTORY_SEPARATOR . $asset;
 
+        // 如果文件不存在，则直接返回null
         if (! file_exists($path)) {
             return null;
         }
 
-        $path = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $path);
+        // 取出基本路径并转换为url
+        $uri = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $path);
+        $url = str_replace(['http://', 'https://'], '//', $this->app['url']->asset($uri));
 
-        $url = $this->app['url']->asset($path);
-        $url = str_replace(['http://', 'https://'], '//', $url);
-
+        // 为防止缓存，追加版本号
         if ($version) {
             return $url.'?version='.$this->getVersion();
         }

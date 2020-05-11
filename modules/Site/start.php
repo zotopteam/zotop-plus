@@ -1,6 +1,7 @@
 <?php
 
-use App\Hook\Facades\Filter;
+use App\Support\Facades\Filter;
+use App\Support\Facades\Form;
 
 
 /**
@@ -28,7 +29,7 @@ Filter::listen('module.manage', 'Modules\Site\Hooks\Hook@moduleManageSite');
 /**
  * 模板选择器
  */
-\Form::macro('view', function($attrs) {
+Form::macro('view', function($attrs) {
     $value  = $this->getValue($attrs);
     $name   = $this->getName($attrs);
     $id     = $this->getId($attrs);

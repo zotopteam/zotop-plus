@@ -1,5 +1,5 @@
 <?php
-namespace App\Extend;
+namespace App\Support;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Traits\Macroable;

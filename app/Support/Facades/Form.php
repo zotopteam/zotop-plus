@@ -1,9 +1,9 @@
 <?php
-namespace App\Themes\Facades;
+namespace App\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Html extends Facade
+class Form extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -12,6 +12,6 @@ class Html extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'html';
+        return 'form';
     }
 }

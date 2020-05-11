@@ -233,8 +233,7 @@ return [
         App\Providers\InstallServiceProvider::class,
         App\Modules\ModulesServiceProvider::class,
         App\Themes\ThemesServiceProvider::class,
-        App\Hook\HookServiceProvider::class,
-
+        App\Support\SupportServiceProvider::class,
     ],
 
     /*
@@ -288,10 +287,10 @@ return [
 
         'Module' => App\Modules\Facades\Module::class,
         'Theme' => App\Themes\Facades\Theme::class,
-        'Form' => App\Themes\Facades\Form::class,        
-        'Html' => App\Themes\Facades\Html::class,                        
-        'Filter' => App\Hook\Facades\Filter::class,
-        'Action' => App\Hook\Facades\Action::class,
+        'Form' => App\Support\Facades\Form::class,        
+        'Html' => App\Support\Facades\Html::class,                        
+        'Filter' => App\Support\Facades\Filter::class,
+        'Action' => App\Support\Facades\Action::class,
     ],
 
 ];

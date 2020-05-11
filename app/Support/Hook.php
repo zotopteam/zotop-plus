@@ -1,9 +1,9 @@
 <?php
-namespace App\Hook;
+namespace App\Support;
 
 use Illuminate\Support\Traits\Macroable;
 
-abstract class Base
+abstract class Hook
 {
     use Macroable;
     

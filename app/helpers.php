@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 if (! function_exists('dirsize')) {
 
     /**
@@ -52,7 +54,7 @@ if (! function_exists('path_base')) {
      */
     function path_base($path)
     {
-        $path = str_after($path, base_path());
+        $path = Str::replaceFirst(base_path(), '', $path);
         $path = str_replace('\\', '/', $path);
         $path = trim($path,'/');
         return $path;

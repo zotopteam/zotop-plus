@@ -4,7 +4,7 @@ namespace Modules\Developer\Http\Controllers\Admin;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use App\Hook\Facades\Filter;
+use App\Support\Facades\Filter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Modules\Facades\Module;

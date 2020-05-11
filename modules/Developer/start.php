@@ -1,6 +1,6 @@
 <?php
-use App\Hook\Facades\Action;
-use App\Hook\Facades\Filter;
+use App\Support\Facades\Action;
+use App\Support\Facades\Filter;
 
 /**
  * 扩展后台全局导航

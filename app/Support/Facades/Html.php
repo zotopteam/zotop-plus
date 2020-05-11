@@ -1,10 +1,9 @@
 <?php
-
-namespace App\Hook\Facades;
+namespace App\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Filter extends Facade
+class Html extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -13,6 +12,6 @@ class Filter extends Facade
      */
     protected static function getFacadeAccessor()
     {
-    	return 'hook.filter';
+        return 'html';
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use App\Hook\Facades\Action;
+use App\Support\Facades\Action;
 use App\Modules\Facades\Module;
 use App\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
