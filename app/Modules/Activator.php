@@ -143,18 +143,12 @@ class Activator
         // 本地设置
         $config = $module->getOriginalConfig();
 
-        //合并当前设置
+        // 当前设置
         $current  = $module->getConfig();
 
-        foreach (Arr::dot($current) as $key => $value) {
-            if (Arr::has($config, $key)) {
-                Arr::set($config, $key, $value);
-            }
-        }
-
-        // 合并更新设置
-        foreach (Arr::dot($data) as $key => $value) {
-            if (Arr::has($config, $key)) {
+        // 深度合并 config, current 和 data
+        foreach ([$current, $data] as $merge) {
+            foreach (Arr::dot($merge) as $key => $value) {
                 Arr::set($config, $key, $value);
             }
         }

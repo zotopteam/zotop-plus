@@ -1,16 +1,18 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="main scrollable">
+
+
+<div class="main">
     
-    <div class="jumbotron bg-primary text-white text-center m-0">
+    <div class="jumbotron bg-primary text-white text-center m-0 p-5">
         <div class="container-fluid">
             <h1>{{trans('translator::translator.title')}}</h1>
             <p>{{trans('translator::translator.description')}}</p>
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid scrollable">
             {form bind="$config" route="translator.config.index" method="post" id="config" autocomplete="off"}
             
             <div class="form-title row">{{trans('translator::config.base')}}</div>
@@ -54,14 +56,14 @@
                 <div class="form-group row">
                     <label for="baidu[appid]" class="col-2 col-form-label required">{{trans('translator::config.baidu.appid')}}</label>
                     <div class="col-8">
-                        {field type="text" name="baidu[appid]"}
+                        {field type="text" name="baidu[appid]" required="required"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="baidu[secretkey]" class="col-2 col-form-label required">{{trans('translator::config.baidu.secretkey')}}</label>
                     <div class="col-8">
-                        {field type="text" name="baidu[secretkey]"}
+                        {field type="text" name="baidu[secretkey]" required="required"}
                     </div>
                 </div>
             </div>
@@ -77,14 +79,14 @@
                 <div class="form-group row">
                     <label for="youdao[appid]" class="col-2 col-form-label required">{{trans('translator::config.youdao.appid')}}</label>
                     <div class="col-8">
-                        {field type="text" name="youdao[appid]"}
+                        {field type="text" name="youdao[appid]" required="required"}
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="youdao[secretkey]" class="col-2 col-form-label required">{{trans('translator::config.youdao.secretkey')}}</label>
                     <div class="col-8">
-                        {field type="text" name="youdao[secretkey]"}
+                        {field type="text" name="youdao[secretkey]" required="required"}
                     </div>
                 </div>
             </div>
@@ -92,7 +94,7 @@
             {/form}
     </div>
     <div class="main-footer">
-        <div class="mr-auto">
+        <div class="ml-auto">
             {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
         </div>
     </div>    

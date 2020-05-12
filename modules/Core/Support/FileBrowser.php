@@ -4,7 +4,6 @@ namespace Modules\Core\Support;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Traits\Macroable;
-use Modules\Core\Support\Facades\Format;
 use Filter;
 use File;
 

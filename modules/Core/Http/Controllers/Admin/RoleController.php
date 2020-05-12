@@ -166,7 +166,8 @@ class RoleController extends AdminController
         $role->save();
 
         return $this->success(trans('master.disabled'), $request->referer());
-    } 
+    }
+    
     /**
      * 删除
      *
