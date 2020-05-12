@@ -13,7 +13,7 @@
     <link href="{{Theme::asset('css/jquery.dialog.css')}}" rel="stylesheet">
     <link href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     @stack('css')
-
+    @action('admin.master.css')
     <script>
         window.cms = @json(Filter::fire('window.cms', []));
     </script>   
@@ -103,7 +103,6 @@
     <div class="global-footer">
     </div>
     
-
     <script src="{{Theme::asset('js/jquery.min.js')}}"></script>
     <script src="{{Theme::asset('js/popper.min.js')}}"></script>    
     <script src="{{Theme::asset('js/bootstrap.min.js')}}"></script>
@@ -114,6 +113,7 @@
     @if(!App::isLocale('en'))
     <script src="{{Theme::asset('lang/'.App::getLocale().'/jquery.validate.js')}}"></script>
     @endif
-@stack('js')   
+@stack('js')
+@action('admin.master.js')
 </body>
 </html>

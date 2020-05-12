@@ -13,7 +13,7 @@
     <link href="{{Theme::asset('css/jquery.dialog.css')}}" rel="stylesheet">
     <link href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     @stack('css')
-
+    @action('admin.dialog.css')
     <script>
         window.cms = @json(Filter::fire('window.cms', []));
     </script>       
@@ -35,6 +35,7 @@
     <script type="text/javascript">
         window.currentDialog = $.dialog();
     </script>
-    @stack('js') 
+    @stack('js')
+    @action('admin.dialog.js')
 </body>
 </html>

@@ -13,13 +13,15 @@
     <link href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     <link href="{{Theme::asset('css/login.css')}}" rel="stylesheet">
     @stack('css')
-
+    @action('admin.login.css')
     <script>
         window.cms = @json(Filter::fire('window.cms', []));
     </script>    
 </head>
 <body class="{{app('current.module')}}-{{app('current.controller')}}-{{app('current.action')}}">
+    
     @yield('content')
+    
     <script src="{{Theme::asset('js/jquery.min.js')}}"></script>
     <script src="{{Theme::asset('js/popper.min.js')}}"></script>    
     <script src="{{Theme::asset('js/bootstrap.min.js')}}"></script>
@@ -35,5 +37,6 @@
     }        
     </script>
     @stack('js')
+    @action('admin.login.js')
 </body>
 </html>

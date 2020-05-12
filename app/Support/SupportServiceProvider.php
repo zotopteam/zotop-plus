@@ -46,14 +46,43 @@ class SupportServiceProvider extends ServiceProvider
          * Adds a directive in Blade for actions
          */
         Blade::directive('action', function($expression) {
-            return "<?php Action::fire$expression; ?>";
+            return "<?php Action::fire($expression); ?>";
         });
 
         /**
          * Adds a directive in Blade for filters
          */
         Blade::directive('filter', function($expression) {
-            return "<?php echo Filter::fire$expression; ?>";
+            return "<?php echo Filter::fire($expression); ?>";
         });
+
+        // 解析{form ……}
+        Blade::extend(function ($value) {
+            $pattern = sprintf('/(@)?%sform(\s+[^}]+?)\s*%s/s', '{', '}');
+
+            return preg_replace_callback($pattern, function($matches){
+                $attrs = Blade::convertAttrs($matches[2]);
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::open(".$attrs."); ?>";
+            }, $value);
+        });
+
+        // 解析{/form}
+        Blade::extend(function ($value) {
+            $pattern = sprintf('/(@)?%s(\/form)%s/s', '{', '}');
+
+            return preg_replace_callback($pattern, function ($matches)  {
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::close(); ?>";
+            }, $value);
+        });        
+
+        // 解析{field ……}
+        Blade::extend(function ($value) {
+            $pattern = sprintf('/(@)?%sfield(\s+[^}]+?)\s*%s/s', '{', '}');
+
+            return preg_replace_callback($pattern, function ($matches)  {
+                $attrs = Blade::convertAttrs($matches[2]);
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::field(".$attrs."); ?>";
+            }, $value);
+        });        
     }
 }
