@@ -38,6 +38,7 @@ class Listener
      */
     public function tools($options, $attrs)
     {
+        return $options;
         $tools = isset($attrs['tools']) ? $attrs['tools'] : $options['tools'];
 
         $options['tools'] = [];

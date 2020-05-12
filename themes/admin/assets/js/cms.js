@@ -346,25 +346,25 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                 var data      = form.serialize();
 
                 // 点击的按钮增加loading
-                if ( $(document.activeElement, submits).find('.fa').length > 0 ){
-                    $(document.activeElement, submits).find('.fa').addClass('fa-loading');
-                }
+                $(document.activeElement, submits).find('.fa').addClass('fa-loading');
 
                 // 禁用提交按钮
-                submits.prop('disabled', true);
+                submits.each(function(){
+                    $(this).prop('disabled', true);
+                });
 
                 // ajax提交表单
                 $.post(url, data, function(msg) {
 
                     // 取消loading
-                    if ( submits.find('.fa').length > 0 ){
-                        submits.find('.fa').removeClass('fa-loading');
-                    }
-
-                    // 不跳转时禁用提交按钮
-                    if (! msg.url) {
-                        submits.prop('disabled', false);
-                    }
+                    submits.each(function() {
+                        // 取消loading
+                        $(this).find('.fa').removeClass('fa-loading');
+                        // 不跳转时禁用提交按钮
+                        if (! msg.url) {
+                            $(this).prop('disabled', false);
+                        }                        
+                    });
 
                     // 成功回调
                     if (msg.type == 'success') {
@@ -380,13 +380,13 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                     
                 },'json').fail(function(jqXHR){
                     
-                    // 恢复按钮
-                    submits.prop('disabled', false);
+                    submits.each(function() {
+                        // 恢复按钮
+                        $(this).prop('disabled', false);
+                        // 取消loading
+                        $(this).find('.fa').removeClass('fa-loading');                        
+                    });
 
-                    // 取消loading
-                    if ( submits.find('.fa').length > 0 ){
-                        submits.find('.fa').removeClass('fa-loading');
-                    }
 
                     return validator.showErrors(jqXHR.responseJSON.errors);
                 });
