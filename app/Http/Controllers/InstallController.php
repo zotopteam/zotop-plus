@@ -171,6 +171,9 @@ class InstallController extends Controller
         // 重新生成 generate
         Artisan::call('key:generate');
 
+        // 创建磁盘连接
+        Artisan::call('storage:link');
+
         // 设置当前域名
         Artisan::call('env:set', [
             'key'   => 'APP_URL',

@@ -201,11 +201,17 @@ class Theme
      */
     public function asset($asset)
     {
-        $path = $this->app['config']->get('themes.paths.assets');
-        $base = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $path);
+        // 获取资源的完整路径 (publish之后在public目录下的路径)
+        $path = $this->app['config']->get('themes.paths.assets') . DIRECTORY_SEPARATOR . $this->getLowerName() . DIRECTORY_SEPARATOR . $asset;
 
-        $url = $this->app['url']->asset($base.'/'.$this->getLowerName().'/'. $asset);
-        $url = str_replace(['http://', 'https://'], '//', $url);
+        // 如果文件不存在，则直接返回null
+        if (! file_exists($path)) {
+            return null;
+        }
+
+        // 取出基本路径并转换为url
+        $uri = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $path);
+        $url = str_replace(['http://', 'https://'], '//', $this->app['url']->asset($uri));
 
         return $url.'?version='.$this->getVersion();
     }

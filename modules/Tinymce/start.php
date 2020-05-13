@@ -21,8 +21,6 @@
     // 设置数据编号
     $attrs['source_id'] = $this->getAttribute($attrs, 'source_id', $this->getValue($attrs));
 
-    debug($attrs['source_id']);
-
     // 编辑器属性，可以为字符串和数组，默认为full模式
     $options = $this->getAttribute($attrs, 'options', 'full', false);
     $options = \Filter::fire('tinymce.editor.options', $options, $attrs);
