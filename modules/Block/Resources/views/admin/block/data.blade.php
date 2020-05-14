@@ -30,9 +30,9 @@
             {form bind="$block" route="['block.data', $id]" id="block-form" method="post" autocomplete="off" class="form m-2"}
             
             @if ($block->type == 'code')
-                {field type="code" name="data" height="400" required="required" placeholder="trans('block::block.data.placeholder.code')"}
+                {field type="code" name="data" height="500" required="required" placeholder="trans('block::block.data.placeholder.code')"}
             @elseif ($block->type == 'html')
-                {field type="editor" name="data" required="required" placeholder="trans('block::block.data.placeholder.html')" source_id="$block->source_id" options="full"}
+                {field type="editor" name="data" height="500" required="required" placeholder="trans('block::block.data.placeholder.html')" source_id="$block->source_id" options="full"}
             @elseif ($block->type == 'text')
                 {field type="textarea" name="data" rows="18" required="required" placeholder="trans('block::block.data.placeholder.text')"}                
             @endif
@@ -48,9 +48,6 @@
             {/form}
 
     </div><!-- main-body -->
-    <div class="main-footer">
-
-    </div>
 </div>
 @endsection
 

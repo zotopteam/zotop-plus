@@ -1,6 +1,11 @@
 <?php
+
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\File;
+
+$tools = [];
+
 // 上传工具
-$upload_tools = [];
 $upload_types = config('core.upload.types');
 
 foreach($upload_types as $type=>$config) {
@@ -22,21 +27,21 @@ foreach($upload_types as $type=>$config) {
         'module'     => app('current.module'),
         'controller' => app('current.controller'),
         'action'     => app('current.action'),
-        'field'      => array_get($args, 'name'),
-        'folder'     => array_get($args, 'folder'),
-        'source_id'  => array_get($args, 'source_id'),
+        'field'      => Arr::get($args, 'name'),
+        'folder'     => Arr::get($args, 'folder'),
+        'source_id'  => Arr::get($args, 'source_id'),
         'user_id'    => Auth::user()->id,
         'token'      => Auth::user()->token
     ];
 
-    $upload_tools[$type] = [
-        'text'  => $typename,
-        'icon' => \File::icon($type),
-        'href' => route('media.select.uploaded', $params),
+    $tools[$type] = [
+        'text'    => trans('tinymce::tinymce.insert.type', [$typename]),
+        'icon'    => $type,
+        'type'    => $type,
+        'title'   => trans('tinymce::tinymce.insert.type', [$typename]),
+        'href'    => route('media.select.uploaded', $params),
+        'tooltip' => trans('tinymce::tinymce.insert.type', [$typename]),
     ];
 }
 
-// 其它工具
-$other_tools = [];
-
-return array_merge($upload_tools, $other_tools);
+return $tools;
