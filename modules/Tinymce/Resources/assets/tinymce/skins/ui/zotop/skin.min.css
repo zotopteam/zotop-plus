@@ -22,9 +22,3 @@
 .tox .tox-dialog__footer{padding:6px 12px;}
 .tox .tox-button{font-size:14px;padding:3px 16px;}
 .tox .tox-statusbar a, .tox .tox-statusbar__path-item, .tox .tox-statusbar__wordcount{font-size:12px;}
-.tox .fa, .tox .far, .tox .fas {
-    font-family: "Font Awesome 5 Free";
-    font-size: 22px;
-    vertical-align: top;
-    margin-right: 5px;  
-}

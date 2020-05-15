@@ -97,6 +97,7 @@ $router->group(['prefix' =>'core'], function (Router $router) {
         $router->any('delete','FileController@delete')->name('core.file.delete')->middleware('allow:core.file.delete');
         $router->any('copy','FileController@copy')->name('core.file.copy')->middleware('allow:core.file.copy');
         $router->any('rename','FileController@rename')->name('core.file.rename')->middleware('allow:core.file.rename');
+        $router->any('upload_chunk','FileController@uploadChunk')->name('core.file.upload_chunk')->middleware('allow:core.file.upload');
         $router->any('upload','FileController@upload')->name('core.file.upload')->middleware('allow:core.file.upload');
         $router->any('select','FileController@select')->name('core.file.select')->middleware('allow:core.file.select');
     });

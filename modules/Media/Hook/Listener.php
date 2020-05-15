@@ -38,20 +38,22 @@ class Listener
 
     /**
      * 监听上传
-     * @param  array $return  返回给前端的文件信息
-     * @param  object $splFile 文件
-     * @param  array $params  参数
+     * @param  array $data  返回给前端的文件信息
+     * @param  object $upload 上传对象
      * @return array
      */
-    public function upload($return, $splFile, $params)
+    public function upload($data, $upload)
     {
-        if ($return['state']) {       
+        if ($data['state']) {    
             
             // 合并信息
-            $fileinfo = array_merge($params, $return, [
-                'parent_id' => $params['parent_id'] ?? $params['folder_id'] ?? 0,
-                'user_id'   => Auth::user()->id,
-                'token'     => Auth::user()->token
+            $fileinfo = array_merge($data, [
+                'parent_id' => $upload->request->input('folder_id', 0),
+                'module' => $upload->request->input('module', null),
+                'controller' => $upload->request->input('controller', null),
+                'action' => $upload->request->input('action', null),
+                'field' => $upload->request->input('field', null),
+                'source_id' => $upload->request->input('source_id', null),
             ]);
 
             // 保存文件信息
@@ -59,10 +61,10 @@ class Listener
             $media->fill($fileinfo);
             $media->save();
 
-            return $return + ['id'=>$media->id];
+            $data['media_id'] = $media->id;
         }
         
-        return $result;
+        return $data;
     }
 
     /**

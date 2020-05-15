@@ -33,7 +33,8 @@ return [
     
     'type.other'             => '其它',
 
-    'upload.success'         => ':0 上传成功',
-    'upload.error.type'      => '系统上传设置不支持上传 :0 类型文件',
-    'upload.error.extension' => '系统上传设置中不允许 :0 扩展名文件',
+    'upload.success'         => ':name 上传成功',
+    'upload.error.type'      => '系统上传设置不支持上传 :type 类型文件',
+    'upload.error.enabled'   => '系统上传设置不支持上传 :type 类型文件',
+    'upload.error.extension' => '系统上传设置中不允许 :extension 扩展名文件',
 ];

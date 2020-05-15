@@ -161,9 +161,15 @@ jquery upload api
             autostart : true,
 			maxcount : 100,
 			headers: {
-				//'X-Requested-With' : 'XMLHttpRequest'
 		        'X-CSRF-TOKEN'     : $('meta[name="csrf_token"]').attr('content')
-		    },			
+		    },
+            filters: {
+                //max_file_size:'20mb',
+                mime_types : [
+                    { title : "select files", extensions : "*"},
+                ],
+                prevent_duplicates:false //阻止多次上传同一个文件
+            },		    		
 			error : function(error, detail){
 				alert(error +' '+ detail);
 			}
@@ -272,7 +278,6 @@ jquery upload api
 			}
 
 			uploader.init();
-
 
 			// 添加事件
 			uploader.bind('FilesAdded', function(up, files) {

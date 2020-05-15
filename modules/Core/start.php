@@ -30,11 +30,6 @@ Filter::listen('global.tools', 'Modules\Core\Hooks\Hook@tools');
 Filter::listen('window.cms', 'Modules\Core\Hooks\Hook@windowCms');
 
 /**
- * 文件上传
- */
-Filter::listen('core.file.upload', 'Modules\Core\Hooks\Hook@upload');
-
-/**
  * 模块管理
  */
 Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManage');
@@ -191,12 +186,12 @@ Form::macro('upload', function($attrs) {
     // 上传和选择参数
     $filetype  = $this->getAttribute($attrs, 'filetype');
 
-    $url       = $this->getAttribute($attrs, 'url', route('core.file.upload'));
+    $url       = $this->getAttribute($attrs, 'url', route('core.file.upload_chunk'));
     $allow     = $this->getAttribute($attrs, 'allow', $types->implode('extensions',','));
     $maxsize   = $this->getAttribute($attrs, 'maxsize', 1024);
     $typename  = $this->getAttribute($attrs, 'typename', trans('core::file.type.files'));
     $folder    = $this->getAttribute($attrs, 'folder', '');
-    $source_id = $this->getAttribute($attrs, 'source_id', $this->getValue($attrs));
+    $source_id = $this->getAttribute($attrs, 'source_id', '');
     
     // 界面文字和图标
     $select_text = $this->getAttribute($attrs, 'select_text', trans('core::field.upload.select', [$typename])); 

@@ -2,15 +2,16 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Modules\Routing\AdminController;
-use Modules\Core\Support\Facades\Format;
-use Modules\Core\Support\FileBrowser;
-use Facades\Modules\Core\Support\Plupload;
 use Artisan;
+use Facades\Modules\Core\Support\Plupload;
 use File;
 use Filter;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Modules\Core\Support\Facades\Format;
+use Modules\Core\Support\FileBrowser;
+use Modules\Core\Support\Upload;
 
 class FileController extends AdminController
 {
@@ -160,64 +161,33 @@ class FileController extends AdminController
             }
             return $this->error(trans('master.operate.failed'));            
         }
-    }    
+    } 
+
+    /**
+     * 大文件上传，当前采用plupload，支持大文件分片上传
+     * @param  Request $request
+     * @return array
+     */
+    public function uploadChunk(Request $request)
+    {
+        return Plupload::receive('file', function ($file) {
+            return Upload::file($file)->save();
+        });
+
+    }
 
     /**
      * 文件上传
      * @param  Request $request
-     * @param  string  $type  类型
      * @return array
      */
     public function upload(Request $request)
     {
-        // 获得multipart_params传过来的数据
-        $params = $request->all();
+        \Debugbar::disable();
+        
+        $file = $request->file('file');
 
-        // 获取上传配置
-        $types  = collect(config('core.upload.types'));
-
-        return Plupload::receive('file', function ($tempFile) use($params,$types) {
-
-            // 检查文件扩展名是否被允许
-            // 开启了plupload.unique_names，防止中文文件名导致的乱码
-            // 此处无法得到真实文件名，真实文件名通过 $params['filename']传递
-            $type      = $tempFile->getHumanType() ?: ($params['type'] ?: 'other');
-            $extension = $tempFile->getClientOriginalExtension(); 
-            $allow     = $params['extensions'] ?? $types->implode('extensions',',');
-
-            if (! in_array($extension, explode(',', $allow))) {
-                return ['state'=>false, 'content'=>trans('core::file.upload.error.extension', [$params['filename']])];
-            }
-
-            // 文件上传信息
-            $basepath  = '/uploads/'.$type.'/'.date(config('core.upload.dir', 'Y/m/d'), time()).'/';    
-            $savepath  = public_path($basepath);
-            $filename  = date('YmdHisu', time()).rand(1000,9999).'.'.$extension;
-
-            // 如果目录不存在，尝试创建目录
-            if (! File::exists($savepath)) {
-                File::makeDirectory($savepath, 0775, true);
-            }
-
-            // 移动文件
-            $splFile = $tempFile->move($savepath, $filename);
-
-            $return = [
-                'state'     => true,
-                'content'   => trans('core::file.upload.success', [$params['filename']]),
-                'name'      => $params['filename'],
-                'type'      => $type,
-                'hash'      => md5_file($splFile->getRealPath()),
-                'mimetype'  => $splFile->getMimeType(),
-                'extension' => $splFile->getExtension(),
-                'size'      => $splFile->getSize(),
-                'path'      => $basepath.$filename,
-                'url'       => $basepath.$filename,
-            ];
-
-            // 返回处理结果
-            return Filter::fire('core.file.upload', $return, $splFile, $params);
-        });
+        return Upload::file($file)->save();
     }
 
     /**

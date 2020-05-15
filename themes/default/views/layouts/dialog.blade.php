@@ -10,7 +10,7 @@
     <link href="{{Theme::asset('css/fontawesome.min.css')}}" rel="stylesheet">
     <link href="{{Theme::asset('css/global.css')}}" rel="stylesheet">
     <style type="text/css">
-        html,body{width:100%;height:100%;overflow:auto;}
+        html,body{padding:0;margin:0;}
     </style>
     @stack('css')
 </head>

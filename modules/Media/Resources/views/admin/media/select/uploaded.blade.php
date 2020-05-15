@@ -8,7 +8,7 @@
             {{$title}}
         </div>        
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
+            <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload_chunk')}}">
                 <i class="fa fa-fw fa-upload"></i> {{trans('core::file.upload')}}
             </a>        
             @if (request()->input('select', 0) != 1)

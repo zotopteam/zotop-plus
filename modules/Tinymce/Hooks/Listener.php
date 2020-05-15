@@ -55,19 +55,16 @@ class Listener
 
         // 设置编辑器参数
         if ($tools) {
-
             // 加载tools，如果单个模块或者部分功能只允许加载部分tool，则通过hook实现
             $options['tools'] = $tools;
-
             // 加载tools插件
             $options['plugins'] = $options['plugins'].' tools';
-
-            // 加载tools按钮
-            // foreach (array_keys($options['tools']) as $button) {
-            //     if (stripos(' '.$options['toolbar'].' ', ' '.$button.' ') === false) {
-            //         $options['toolbar'] = $options['toolbar'].' '.$button;
-            //     }
-            // }
+            // 追加tools按钮
+            if (stripos(' '.$options['toolbar'].' ', ' tools ') === false) {
+                $options['toolbar'] = $options['toolbar'].' tools';
+            }
+        } else {
+            $options['toolbar'] = str_replace(' tools ', '', ' '.$options['toolbar'].' ');
         }
 
         return $options;

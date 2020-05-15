@@ -224,27 +224,6 @@ class Content extends Model
     }
 
     /**
-     * 获取内容数据源编号
-     * @param  mixed $value
-     * @return string
-     */
-    public function getSourceIdAttribute($value)
-    {
-        if ($value) {
-            return $value;
-        }
-
-        static $source_id = null;
-
-        if (empty($source_id)) {
-            $source_id = md5(microtime(true));
-        }
-        
-        return $source_id;
-    }
-
-
-    /**
      * 获取节点的一级节点编号，如果本身就是一级节点，返回自身
      * 
      * @param  int  $id 编号

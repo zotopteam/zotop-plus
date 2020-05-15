@@ -195,44 +195,6 @@ class Hook
         }
 
         return $cms;
-    }    
-
-    /**
-     * 监听上传
-     * @param  array $return  返回给前端的文件信息
-     * @param  object $splFile 文件
-     * @param  array $params  参数
-     * @return array
-     */
-    public function upload($return, $splFile, $params)
-    {
-        // 处理图片 TODO：使用队列处理
-        if ($return['type']=='image') {
-            
-            // 图片路径
-            $path = $splFile->getRealPath();
-
-            try {
-
-                // 图片缩放
-                app(Resize::class)->with($params['resize'] ?? [])->apply($path);
-
-                // 图片水印
-                app(Watermark::class)->with($params['watermark'] ?? [])->apply($path);
-
-                // 获取宽高和大小
-                $image = app('image')->make($path);
-
-                $return['size']   = $image->filesize();
-                $return['width']  = $image->width();
-                $return['height'] = $image->height();               
-
-            } catch (Exception $e) {
-                return ['state'=>false, 'content'=>$e->getMessage()];
-            }       
-        }
-
-        return $return;
     }
 
     /**

@@ -14,7 +14,7 @@
             <div class="main-title mr-auto">{{trans('media::media.root')}}</div>
             @endif
             <div class="main-action">
-                <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
+                <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload_chunk')}}">
                     <i class="fa fa-fw fa-upload"></i> {{trans('core::file.upload')}}
                 </a>
                 <a href="javascript:;" class="btn btn-primary js-prompt" data-url="{{route('media.create',[$parent_id,'folder'])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name">
@@ -196,13 +196,6 @@
                     'action'     : '{{app('current.action')}}',
                     'user_id'    : '{{Auth::user()->id}}',
                     'token'      : '{{Auth::user()->token}}'
-                },
-                filters: {
-                    //max_file_size:'20mb',
-                    mime_types : [
-                        { title : "select files", extensions : "*"},
-                    ],
-                    prevent_duplicates:false //阻止多次上传同一个文件
                 },
                 started : function(up){
                     self.data('progress', $.progress());

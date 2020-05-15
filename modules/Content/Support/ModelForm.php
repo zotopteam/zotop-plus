@@ -41,26 +41,29 @@ class ModelForm
     /**
      * 获取表单
      * 
-     * @param  [type] $model_id [description]
-     * @return [type]           [description]
+     * @param  string $model_id 模型编号
+     * @return ModelForm
      */
-    public static function get($model_id)
+    public static function get($model_id, $source_id)
     {
         $instance  = new static;
         $instance->fields = Field::where('model_id', $model_id)->orderby('sort','asc')->get();
 
+        // 获取主区域字段
         $instance->main = $instance->fields->filter(function($item) {
             return $item['position'] == 'main';
-        })->values()->transform(function($item) {
-            return static::convert($item);
+        })->values()->transform(function($item) use($source_id) {
+            return static::convert($item, $source_id);
         });
 
+        // 获取侧边区域字段
         $instance->side = $instance->fields->filter(function($item) {
             return  $item['position'] == 'side';
-        })->values()->transform(function($item) {
-            return static::convert($item);
+        })->values()->transform(function($item) use($source_id)  {
+            return static::convert($item, $source_id);
         });
 
+        // 获取全部字段的默认值
         $instance->default = $instance->fields->filter(function($item) {
             return trim($item['default']) != '';
         })->pluck('default', 'name')->toArray();                
@@ -70,23 +73,23 @@ class ModelForm
 
     /**
      * 合并默认值到对象
-     * @param  object $object 对象
+     * @param  Model $content 内容实例
      * @return object
      */
-    public function default($object)
+    public function default($content)
     {
         foreach ($this->default as $key => $value) {
-            $object->$key = $value;
+            $content->$key = $value;
         }
 
-        return $object;
+        return $content;
     }
 
     /**
      * 转换字段格式
      * @return array
      */
-    public static function convert($item)
+    public static function convert($item, $source_id)
     {
         $convert = [];
 
@@ -103,6 +106,7 @@ class ModelForm
             'content_'.$item->type,
             $item->type
         );
+        $convert['field']['source_id']  = $source_id;
 
         foreach($item->settings as $key=>$val) {
 

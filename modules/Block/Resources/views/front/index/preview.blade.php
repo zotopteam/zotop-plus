@@ -8,6 +8,6 @@
 
 @push('css')
 <style type="text/css">
-    .block-preview{margin:5rem;}
+    .block-preview{margin:2rem;}
 </style>
 @endpush

@@ -22,7 +22,7 @@ Form::macro('editor', function($attrs) {
     }
 
     // 设置数据编号
-    $attrs['source_id'] = $this->getAttribute($attrs, 'source_id', $this->getValue($attrs));
+    //$attrs['source_id'] = $this->getAttribute($attrs, 'source_id', $this->getValue($attrs));
 
     // 编辑器属性，可以为字符串和数组，默认为full模式
     $options = $this->getAttribute($attrs, 'options', 'full', false);

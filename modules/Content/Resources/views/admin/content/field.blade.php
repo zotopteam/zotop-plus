@@ -2,7 +2,7 @@
     <label for="{{$item.for}}" class="form-label {{$item.required ? 'required' : ''}}">
         {{$item.label}}
     </label>
-    
+
     {{form::field($item.field)}}
 
     @if($item.help) 

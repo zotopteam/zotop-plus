@@ -8,7 +8,7 @@
             {{$title}}
         </div>
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload')}}">
+            <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload" data-url="{{route('core.file.upload_chunk')}}">
                 <i class="fa fa-fw fa-upload"></i> {{trans('core::file.upload')}}
             </a>
             <a href="javascript:;" class="btn btn-primary btn-icon-only js-prompt" data-url="{{route('media.create',[$parent_id,'folder'])}}"  data-prompt="{{trans('core::folder.name')}}" data-name="name" title="{{trans('core::folder.create')}}">

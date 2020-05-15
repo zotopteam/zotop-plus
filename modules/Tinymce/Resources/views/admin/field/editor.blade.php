@@ -5,9 +5,10 @@
 @push('js')
     {!! Module::load('tinymce:tinymce/tinymce.min.js') !!}
     {!! Module::load('tinymce:tinymce/jquery.tinymce.min.js') !!}
+    {!! Module::load('tinymce:field_editor.js') !!}
     <script type="text/javascript">
-    $(function(){
-        $('#{{$id}}').tinymce(@json($options));
-    });        
+        $(function(){
+            field_editor('#{{$id}}', @json($options)); 
+        });
     </script>
 @endpush

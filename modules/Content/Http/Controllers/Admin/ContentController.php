@@ -64,14 +64,16 @@ class ContentController extends AdminController
         // 获取路径
         $this->path   = Content::path($this->parent->id);
 
-        $this->model  = Model::find($model_id);
-        $this->form   = ModelForm::get($model_id);
-
         $this->content = Content::findOrNew(0);
         $this->content->parent_id = $parent_id;
         $this->content->model_id  = $model_id;
+        $this->content->source_id = md5(microtime(true));
         $this->content->status    = 'draft';
 
+        $this->model  = Model::find($model_id);
+        $this->form   = ModelForm::get($model_id, $this->content->source_id);
+
+        // 设置内容的默认值
         $this->content = $this->form->default($this->content);
 
         $this->title   = trans('content::content.create.model', [$this->model->name]);
@@ -135,7 +137,7 @@ class ContentController extends AdminController
 
         $this->path   = Content::path($this->parent->id);
         $this->model  = Model::find($this->content->model_id);
-        $this->form   = ModelForm::get($this->content->model_id);     
+        $this->form   = ModelForm::get($this->content->model_id, $this->content->source_id);     
 
         $this->title   = trans('content::content.edit.model', [$this->model->name]);   
 
@@ -172,6 +174,7 @@ class ContentController extends AdminController
     {
         $this->id    = $id;
         $this->content = Content::findOrFail($id);
+        $this->content->source_id = md5(microtime(true));
 
         // 获取父节点
         if ($this->content->parent_id) {
@@ -184,7 +187,7 @@ class ContentController extends AdminController
 
         $this->path   = Content::path($this->parent->id);
         $this->model  = Model::find($this->content->model_id);
-        $this->form   = ModelForm::get($this->content->model_id);     
+        $this->form   = ModelForm::get($this->content->model_id, $this->content->source_id);   
 
         $this->title   = trans('content::content.duplicate.model', [$this->model->name]);   
         
