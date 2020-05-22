@@ -90,6 +90,17 @@ $router->group(['prefix' =>'core'], function (Router $router) {
         $router->any('delete/{theme}','ThemeController@delete')->name('core.theme.delete')->middleware('allow:core.theme.delete');
     });
 
+    // storage 存储管理
+    $router->group(['prefix' =>'storage/{disk}'], function (Router $router) {
+        $router->get('index','StorageController@index')->name('core.storage.index')->middleware('allow:core.storage.index');
+        $router->post('folder/create','StorageController@folderCreate')->name('core.storage.folder.create')->middleware('allow:core.storage.folder.create');
+        $router->post('folder/rename','StorageController@folderRename')->name('core.storage.folder.rename')->middleware('allow:core.storage.folder.rename');
+        $router->delete('folder/delete','StorageController@folderDelete')->name('core.storage.folder.delete')->middleware('allow:core.storage.folder.delete');
+        $router->post('file/rename','StorageController@fileRename')->name('core.storage.file.rename')->middleware('allow:core.storage.file.rename');
+        $router->delete('file/delete','StorageController@fileDelete')->name('core.storage.file.delete')->middleware('allow:core.storage.file.delete');
+        $router->get('file/download','StorageController@fileDownload')->name('core.storage.file.download')->middleware('allow:core.storage.file.download');    
+    });
+
     // 文件管理
     $router->group(['prefix' =>'file'], function (Router $router) {
         $router->any('editor','FileController@editor')->name('core.file.editor')->middleware('allow:core.file.editor');

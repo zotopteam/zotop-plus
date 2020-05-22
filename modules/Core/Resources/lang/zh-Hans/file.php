@@ -6,15 +6,15 @@ return [
     'space'                  => '占用空间',
     'count'                  => '文件个数',
     'position'               => '位置',
-
+    
     'create'                 => '新建文件',
     'existed'                => '文件 :0 已经存在',
     'name.required'          => '文件名称不能为空',
     'extension.required'     => '文件扩展名不能为空',
-
+    
     'editor'                 => '编辑器',
     'upload'                 => '上传',
-
+    
     'name'                   => '文件名称',
     'path'                   => '文件路径',
     'type'                   => '文件类型',
@@ -32,9 +32,10 @@ return [
     'type.archive'           => '压缩包',
     
     'type.other'             => '其它',
-
+    
     'upload.success'         => ':name 上传成功',
-    'upload.error.type'      => '系统上传设置不支持上传 :type 类型文件',
-    'upload.error.enabled'   => '系统上传设置不支持上传 :type 类型文件',
+    'upload.error.type'      => '系统上传设置不支持上传该类型文件',
+    'upload.error.enabled'   => '系统上传设置未开启该类型文件上传',
     'upload.error.extension' => '系统上传设置中不允许 :extension 扩展名文件',
+    'upload.error.maxsize'   => '文件大小超出了系统设置值',
 ];

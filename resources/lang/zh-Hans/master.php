@@ -41,6 +41,7 @@ return [
     'moved'                    => '移动成功！',
     'rename'                   => '重命名',
     'renamed'                  => '重命名成功！',
+    'download'                 => '下载',
     'clear'                    => '清理',
     'cleared'                  => '清理成功',
     'cache'                    => '缓存',

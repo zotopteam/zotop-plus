@@ -143,9 +143,9 @@ class Upload
         $file = $this->file->store($this->directory(), $this->disk());
 
         // 获取文件信息
+        $this->path     = $file;
         $this->realpath = Storage::disk($this->disk)->path($file);
-        $this->path = path_base($this->realpath);
-        $this->url = Storage::disk($this->disk)->url($file);
+        $this->url      = Storage::disk($this->disk)->url($file);
 
         // 后置处理
         $this->process();
@@ -217,8 +217,8 @@ class Upload
             // 获取宽高和大小
             $image = app('image')->make($this->realpath);
 
-            $this->size = $image->filesize();
-            $this->width = $image->width();
+            $this->size   = $image->filesize();
+            $this->width  = $image->width();
             $this->height = $image->height();            
         }
     }
@@ -269,10 +269,10 @@ class Upload
         return [
             'state' => false,
             'content' => trans("core::file.upload.error.{$error}", [
-                'type' => $this->type,
-                'name' => $this->name,
+                'type'      => $this->type,
+                'name'      => $this->name,
                 'extension' => $this->extension,
-                'size' => $this->size,
+                'size'      => size_format($this->size),
             ]),
         ];
     }
@@ -287,10 +287,10 @@ class Upload
         $data = array_merge([
             'state' => true,
             'content' => trans('core::file.upload.success',[
-                'type' => $this->type,
-                'name' => $this->name,
+                'type'      => $this->type,
+                'name'      => $this->name,
                 'extension' => $this->extension,
-                'size' => $this->size,
+                'size'      => size_format($this->size),
             ]),
         ], $data);
 

@@ -103,7 +103,7 @@ class FileBrowser
         if (count($segments) > 1) {
             array_pop($segments);
             $dir  = implode('/', $segments);
-            $name = array_last($segments);
+            $name = end($segments);
             $href = route($this->route, $this->parameters + ['dir'=>$dir] + $this->params);
             $upfolder = (object) compact('name','href');
             return $upfolder;

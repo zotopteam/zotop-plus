@@ -1,10 +1,11 @@
 <?php
 namespace Modules\Media\Models;
 
+use Format;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Modules\Core\Traits\UserRelation;
-use Format;
 
 
 class Media extends Model
@@ -24,7 +25,7 @@ class Media extends Model
      *
      * @var array
      */
-    protected $fillable = ['parent_id','is_folder','type','name','path','hash','url','extension','mimetype','width','height','size','module','controller','action','field','source_id','user_id','sort'];
+    protected $fillable = ['parent_id','is_folder','disk','type','name','path','hash','url','extension','mimetype','width','height','size','module','controller','action','field','source_id','user_id','sort'];
 	
 	
     /**
@@ -64,18 +65,12 @@ class Media extends Model
         // 删除文件和文件的缩略图、预览图
         static::deleted(function($file) {
 
-            //文件真实路径
-            if ($file->path) {
-                
+            // 删除记录的同时删除本地文件
+            if ($file->disk && $file->path) {
                 // 获取文件的真实路径 TODO:暂时放publick中，后续增加多位置存储
-                $path = public_path($file->path);
-                    
-                // 预览图和缩略图位置
-                $temp = md5($path);
-                $temp = substr($temp, 0, 2).'/'.substr($temp, 2, 2).'/'.$temp;
-
-                app('files')->deleteDirectory(public_path('previews/'.$temp));
-                app('files')->delete($path);
+                Storage::disk($file->disk)->delete($file->path);
+                // 删除预览图和缩略图位置
+                // todo……
             }
         });        
     }    

@@ -1,5 +1,19 @@
 @extends('layouts.master')
 
 @section('content')
+<div class="main">
+    <div class="main-header">
+        <div class="main-title mr-auto">
+            {{$title ?? '[title]'}}
+        </div>
+        <div class="main-action">
 
+        </div>        
+    </div>
+    <div class="main-body scrollable">
+                 
+    </div> <!-- main-body -->
+    <div class="main-footer">
+    </div>
+</div>
 @endsection

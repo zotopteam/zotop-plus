@@ -39,12 +39,10 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
  * 扩展 Request::referer 功能
  */
 Request::macro('referer', function() {
-
     // 如果前面有传入，比如表单传入
-    if ($referer = request()->input('_referer')) {
+    if ($referer = request()->input('referer')) {
         return $referer;
     }
-    
     return \URL::previous();
 });
 
@@ -182,10 +180,8 @@ Form::macro('upload', function($attrs) {
     $value    = $this->getValue($attrs);
     $name     = $this->getName($attrs);
     
-
     // 上传和选择参数
     $filetype  = $this->getAttribute($attrs, 'filetype');
-
     $url       = $this->getAttribute($attrs, 'url', route('core.file.upload_chunk'));
     $allow     = $this->getAttribute($attrs, 'allow', $types->implode('extensions',','));
     $maxsize   = $this->getAttribute($attrs, 'maxsize', 1024);
@@ -205,9 +201,6 @@ Form::macro('upload', function($attrs) {
     $params = $this->getAttribute($attrs, 'params',  [
         'select'     => $select,
         'type'       => $filetype ?: '',
-        'typename'   => $typename,        
-        'extensions' => $allow,
-        'maxsize'    => $maxsize,
         'module'     => app('current.module'),
         'controller' => app('current.controller'),
         'action'     => app('current.action'),
@@ -225,7 +218,10 @@ Form::macro('upload', function($attrs) {
         'multipart_params' => $params,
         'filters'          => [
             'max_file_size'      => $maxsize.'mb',
-            'mime_types'         => [['title'=>$select_text, 'extensions'=>$allow]],
+            'mime_types'         => [[
+                'title'      => $select_text,
+                'extensions' => $allow
+            ]],
             'prevent_duplicates' => true,
         ] 
     ]);

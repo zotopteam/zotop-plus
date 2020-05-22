@@ -76,7 +76,7 @@ class Listener
      */
     public function select($tools, $params)
     {
-        $typename = $params['typename'];
+        $typename = trans('core::file.type.'.$params['type']);
 
         // 删除core模块的目录选择
         unset($tools['dir']);
@@ -94,12 +94,18 @@ class Listener
                 'href'   => route('media.select.library', [0] + $params),
                 'active' => Route::active('media.select.library'),
             ],
+            'disk' => [
+                'text'   => trans('media::media.insert.from.disk',[$typename]),
+                'icon'   => 'fa fa-server',
+                'href'   => route('media.select.disk', $params),
+                'active' => Route::active('media.select.disk'),
+            ],
             'dir' => [
                 'text'   => trans('media::media.insert.from.dir',[$typename]),
                 'icon'   => 'fa fa-folder',
                 'href'   => route('media.select.dir', $params),
                 'active' => Route::active('media.select.dir'),
-            ]            
+            ],                      
         ];
 
         return array_merge($tools, $select);

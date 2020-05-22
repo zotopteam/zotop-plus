@@ -24,5 +24,6 @@ return [
 
     'insert.from.uploaded' => '已上传',
     'insert.from.library'  => '媒体库',
-    'insert.from.dir'      => '上传目录',    
+    'insert.from.dir'      => '目录',
+    'insert.from.disk'     => '存储磁盘',    
 ];

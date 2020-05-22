@@ -2,11 +2,13 @@
 
 namespace Modules\Media\Http\Controllers\Admin;
 
+use App\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
-use Modules\Media\Models\Media;
+use Illuminate\Support\Facades\Storage;
 use Modules\Core\Support\FileBrowser;
+use Modules\Core\Support\StorageBrowser;
+use Modules\Media\Models\Media;
 
 class MediaController extends AdminController
 {
@@ -243,11 +245,41 @@ class MediaController extends AdminController
     }
 
     /**
+     * 从磁盘中选择文件
+     * @param  Request $request [description]
+     * @param  string  $disk    [description]
+     * @return [type]           [description]
+     */
+    public function selectFromDisk(Request $request, $disk='public')
+    {
+        $this->title = trans('media::media.insert.from.library',[$request->typename]);
+
+        $browser = app(StorageBrowser::class, [
+            'root' => '',
+            'dir'  => $request->input('dir', 'uploads/image/2020/05')
+        ]);
+
+        $this->params   = $browser->params;
+        $this->path     = $browser->path;
+        $this->upfolder = $browser->upfolder();
+        $this->position = $browser->position();
+        $this->folders  = $browser->folders();
+        $this->files    = $browser->files()->filter(function($item) use($request) {
+            return $item->type == $request->type;
+        });
+
+        // 选择文件个数，默认不限制
+        $this->select = $request->input('select', 0);        
+
+        return $this->view('media::media.select.disk');
+    }
+
+    /**
      * 从目录中选择文件
      *
      * @return Response
      */
-    public function selectFromDir(Request $request, $root='public/uploads')
+    public function selectFromDir(Request $request, $root='public')
     {
         $browser = app(FileBrowser::class, [
             'root' => $root,

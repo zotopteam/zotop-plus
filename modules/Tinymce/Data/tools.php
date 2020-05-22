@@ -15,15 +15,9 @@ foreach($upload_types as $type=>$config) {
         continue;
     }
 
-    // 类型名称
-    $typename = trans('core::file.type.'.$type);
-
     // 上传参数
     $params = [
         'type'       => $type,
-        'typename'   => $typename,
-        'extensions' => $config['extensions'],
-        'maxsize'    => $config['maxsize'],
         'module'     => app('current.module'),
         'controller' => app('current.controller'),
         'action'     => app('current.action'),
@@ -34,6 +28,10 @@ foreach($upload_types as $type=>$config) {
         'token'      => Auth::user()->token
     ];
 
+    // 类型名称
+    $typename = trans('core::file.type.'.$type);
+
+    // 工具数组
     $tools[$type] = [
         'text'    => trans('tinymce::tinymce.insert.type', [$typename]),
         'icon'    => $type,

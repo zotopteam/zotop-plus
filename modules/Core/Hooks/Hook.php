@@ -57,6 +57,16 @@ class Hook
             ];
         }
 
+        // 存储
+        if (allow('core.storage.index')) {
+            $start['core-storage'] = [
+                'text' => trans('core::storage.title'),
+                'href' => route('core.storage.index', 'public'),
+                'icon' => 'fa fa-server bg-primary text-white', 
+                'tips' => trans('core::storage.description'),
+            ];
+        }
+
         // 主题管理
         if (allow('core.theme.index')) {
             $start['core-themes'] = [
@@ -66,6 +76,8 @@ class Hook
                 'tips' => trans('core::theme.description'),
             ];
         }
+
+
           
         //模块管理
         if (allow('core.module.index')) {
