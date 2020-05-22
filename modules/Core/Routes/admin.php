@@ -8,7 +8,7 @@ $router->group(['prefix' =>'/'], function (Router $router) {
     $router->get('/', 'IndexController@index')->name('admin.index');
 
     // 登录
-    $router->any('login', 'AuthController@login')->name('admin.login')->middleware('admin.guest');
+    $router->any('login', 'AuthController@login')->name('admin.login')->withoutMiddleware('admin');
 
     // 登出
     $router->any('logout', 'AuthController@logout')->name('admin.logout');

@@ -39,8 +39,8 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // 管理员已经登录或者设置了admin.guest中间件继续运行
-        if ( in_array('admin.guest', Route::getCurrentRoute()->gatherMiddleware()) || (Auth::check() && Auth::user()->isModel(['super','admin'])) ) {
+        // 检查是否为管理员登录
+        if (Auth::check() && Auth::user()->isModel(['super','admin'])) {
             return $next($request);
         }
 

@@ -14,7 +14,6 @@ class ModulesServiceProvider extends ServiceProvider
     protected $middlewares = [
         'module'      => 'ModuleMiddleware',
         'admin'       => 'AdminMiddleware',
-        'admin.guest' => 'AdminGuestMiddleware',
         'front'       => 'FrontMiddleware',
         'allow'       => 'AllowMiddleware',
     ];
