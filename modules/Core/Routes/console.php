@@ -11,32 +11,6 @@
 */
 
 /**
- * 清理图片预览
- */
-Artisan::command('preview:clear', function () {
-    $dir = public_path('previews');
-
-    foreach ($this->laravel['files']->directories($dir) as $subdir) {
-        $this->laravel['files']->deleteDirectory($subdir);
-    }
-
-    $this->info('Image preview files cleared!');
-})->describe('Clear the image preview files');
-
-/**
- * 清理图片缩略图
- */
-Artisan::command('thumbnail:clear', function () {
-    $dir = public_path('thumbnails');
-
-    foreach ($this->laravel['files']->directories($dir) as $subdir) {
-        $this->laravel['files']->deleteDirectory($subdir);
-    }
-
-    $this->info('Image thumbnail files cleared!');
-})->describe('Clear the image thumbnail files');
-
-/**
  * 清理上传缓存
  */
 Artisan::command('plupload:clear {--force}', function ($force) {

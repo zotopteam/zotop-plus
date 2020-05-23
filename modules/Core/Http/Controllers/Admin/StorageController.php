@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use Modules\Core\Support\StorageBrowser;
 
 class StorageController extends Controller
@@ -214,5 +215,6 @@ class StorageController extends Controller
         // }
 
         return Storage::disk($disk)->download($path, $name);
-    }                    
+    }
+
 }

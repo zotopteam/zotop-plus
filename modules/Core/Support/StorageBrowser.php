@@ -217,20 +217,9 @@ class StorageBrowser
             $file->icon      = File::icon($path);
             $file->url       = $this->storage->url($path);
             $file->typename  = trans('core::file.type.'.$file->type);
-
-            // ignore dot file
-            if ($file->name[0] == '.') {
-                continue;
-            }
-
-            // 如果是图片，获取图片宽高
-            $file->width   = 0;
-            $file->height  = 0;
-            if ($file->type == 'image' && $imagesize = @getimagesize($file->realpath)) {
-                list($file->width, $file->height) = $imagesize;
-            }
-
-            $file->action   = [
+            $file->width     = 0;
+            $file->height    = 0;
+            $file->action    = [
                 'download' => [
                     'text' => trans('master.download'),
                     'icon' => 'fa fa-download',
@@ -253,6 +242,16 @@ class StorageBrowser
                     'class' => 'js-delete',
                 ],
             ];
+
+            // 获取图片宽高
+            if ($file->type == 'image' && $imagesize = @getimagesize($file->realpath)) {
+                [$file->width, $file->height] = $imagesize;
+            }
+
+            // 忽略点开头的文件
+            if ($file->name[0] == '.') {
+                continue;
+            }
 
             $files[] = Filter::fire('core.storagebrower.file', $file, $this);
         }

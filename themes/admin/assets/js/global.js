@@ -63,7 +63,7 @@ $(function(){
 $(function(){
     
     // ajax post 点击链接使用post链接，并返回提示信息
-    $(document).on('click', 'a.js-post',function(event){
+    $(document).on('click', '.js-post',function(event){
         event.preventDefault();
 
         var icon = $(this).find('.fa');
@@ -87,7 +87,7 @@ $(function(){
         event.stopPropagation();
     });
 
-    $(document).on('click', 'a.js-confirm', function(event){
+    $(document).on('click', '.js-confirm', function(event){
         event.preventDefault();
 
         var href    = $(this).data('url') || $(this).attr('href');
@@ -107,7 +107,7 @@ $(function(){
         event.stopPropagation();
     });    
 
-    $(document).on('click', 'a.js-delete', function(event){
+    $(document).on('click', '.js-delete', function(event){
         event.preventDefault();
 
         var href    = $(this).data('url') || $(this).attr('href');
@@ -127,7 +127,7 @@ $(function(){
         event.stopPropagation();
     });
 
-    $(document).on('click', 'a.js-open',function(event){
+    $(document).on('click', '.js-open',function(event){
         event.preventDefault();
 
         var url    = $(this).data('url') || $(this).attr('href');
@@ -149,7 +149,7 @@ $(function(){
         event.stopPropagation();
     });
 
-    $(document).on('click', 'a.js-prompt', function(event){
+    $(document).on('click', '.js-prompt', function(event){
         event.preventDefault();
 
         var href   = $(this).data('url') || $(this).attr('href');
@@ -181,12 +181,12 @@ $(function(){
         event.stopPropagation();
     });
 
-    $(document).on('click', 'a.js-image', function(event){
+    $(document).on('click', '.js-image', function(event){
         event.preventDefault();
 
-        var url    = $(this).data('url');
-        var title  = $(this).data('title');
-        var info   = $(this).data('info');
+        var url    = $(this).data('url') || $(this).attr('src');
+        var title  = $(this).data('title') || $(this).attr('alt') || '';
+        var info   = $(this).data('info') || '';
 
         $.image(url, title).statusbar(info);
 

@@ -113,8 +113,9 @@ class Repository
      */
     public function active($theme)
     {
-        $this->theme = $this->findOrFail($theme);
-        $this->theme->active();
+        if ($this->theme = $this->find($theme)) {
+            $this->theme->active();
+        }
     }
 
     /**

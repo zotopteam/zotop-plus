@@ -56,24 +56,6 @@ $manages['log-clear'] = [
     'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'log:clear'])]
 ]; 
 
-// 缩略图清理
-$manages['thumbnail-clear'] = [
-    'icon'        => 'fa fa-images text-warning',
-    'title'       => trans('core::system.thumbnail.clear.title'),
-    'description' => trans('core::system.thumbnail.clear.description'),
-    'directory'   => 'public/thumbnails',
-    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'thumbnail:clear'])]
-];
-
-// 预览图清理
-$manages['preview-clear'] = [
-    'icon'        => 'fa fa-images text-warning',
-    'title'       => trans('core::system.preview.clear.title'),
-    'description' => trans('core::system.preview.clear.description'),
-    'directory'   => 'public/previews',
-    'action'      => ['text'=>trans('master.clear'), 'class' => 'btn btn-danger js-post', 'icon'=>'fa fa-recycle', 'href'=>route('core.system.manage',['artisan'=>'preview:clear'])]
-];
-
 // 视图缓存清理
 $manages['view-clear'] = [
     'icon'        => 'fa fa-eye text-info',

@@ -98,7 +98,7 @@ $router->group(['prefix' =>'core'], function (Router $router) {
         $router->delete('folder/delete','StorageController@folderDelete')->name('core.storage.folder.delete')->middleware('allow:core.storage.folder.delete');
         $router->post('file/rename','StorageController@fileRename')->name('core.storage.file.rename')->middleware('allow:core.storage.file.rename');
         $router->delete('file/delete','StorageController@fileDelete')->name('core.storage.file.delete')->middleware('allow:core.storage.file.delete');
-        $router->get('file/download','StorageController@fileDownload')->name('core.storage.file.download')->middleware('allow:core.storage.file.download');    
+        $router->get('file/download','StorageController@fileDownload')->name('core.storage.file.download')->middleware('allow:core.storage.file.download');
     });
 
     // 文件管理

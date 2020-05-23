@@ -15,9 +15,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
-        '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
+        'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
@@ -119,8 +120,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         ),
         'S' => 
         array (
+            'Symfony\\Polyfill\\Util\\' => 22,
             'Symfony\\Polyfill\\Php73\\' => 23,
             'Symfony\\Polyfill\\Php72\\' => 23,
+            'Symfony\\Polyfill\\Php56\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
             'Symfony\\Polyfill\\Iconv\\' => 23,
@@ -141,6 +144,7 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
+            'SuperClosure\\' => 13,
         ),
         'R' => 
         array (
@@ -282,6 +286,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         array (
             0 => __DIR__ . '/../..' . '/tests',
         ),
+        'Symfony\\Polyfill\\Util\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-util',
+        ),
         'Symfony\\Polyfill\\Php73\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php73',
@@ -289,6 +297,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Symfony\\Polyfill\\Php72\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php72',
+        ),
+        'Symfony\\Polyfill\\Php56\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php56',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
@@ -369,6 +381,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'SuperClosure\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jeremeamia/superclosure/src',
         ),
         'Ramsey\\Uuid\\' => 
         array (
@@ -469,6 +485,7 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Intervention\\Image\\' => 
         array (
             0 => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image',
+            1 => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image',
         ),
         'Illuminate\\' => 
         array (
@@ -624,13 +641,6 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'App\\Console\\Commands\\ZotopVersionCommand' => __DIR__ . '/../..' . '/app/Console/Commands/ZotopVersionCommand.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
-        'App\\Extend\\Format' => __DIR__ . '/../..' . '/app/Extend/Format.php',
-        'App\\Hook\\Action' => __DIR__ . '/../..' . '/app/Hook/Action.php',
-        'App\\Hook\\Base' => __DIR__ . '/../..' . '/app/Hook/Base.php',
-        'App\\Hook\\Facades\\Action' => __DIR__ . '/../..' . '/app/Hook/Facades/Action.php',
-        'App\\Hook\\Facades\\Filter' => __DIR__ . '/../..' . '/app/Hook/Facades/Filter.php',
-        'App\\Hook\\Filter' => __DIR__ . '/../..' . '/app/Hook/Filter.php',
-        'App\\Hook\\HookServiceProvider' => __DIR__ . '/../..' . '/app/Hook/HookServiceProvider.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\InstallController' => __DIR__ . '/../..' . '/app/Http/Controllers/InstallController.php',
@@ -701,7 +711,6 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'App\\Modules\\Maker\\Types\\TinyintType' => __DIR__ . '/../..' . '/app/Modules/Maker/Types/TinyintType.php',
         'App\\Modules\\Maker\\Types\\TinytextType' => __DIR__ . '/../..' . '/app/Modules/Maker/Types/TinytextType.php',
         'App\\Modules\\Maker\\Types\\YearType' => __DIR__ . '/../..' . '/app/Modules/Maker/Types/YearType.php',
-        'App\\Modules\\Middleware\\AdminGuestMiddleware' => __DIR__ . '/../..' . '/app/Modules/Middleware/AdminGuestMiddleware.php',
         'App\\Modules\\Middleware\\AdminMiddleware' => __DIR__ . '/../..' . '/app/Modules/Middleware/AdminMiddleware.php',
         'App\\Modules\\Middleware\\AllowMiddleware' => __DIR__ . '/../..' . '/app/Modules/Middleware/AllowMiddleware.php',
         'App\\Modules\\Middleware\\FrontMiddleware' => __DIR__ . '/../..' . '/app/Modules/Middleware/FrontMiddleware.php',
@@ -722,17 +731,24 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\InstallServiceProvider' => __DIR__ . '/../..' . '/app/Providers/InstallServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Support\\Action' => __DIR__ . '/../..' . '/app/Support/Action.php',
+        'App\\Support\\Facades\\Action' => __DIR__ . '/../..' . '/app/Support/Facades/Action.php',
+        'App\\Support\\Facades\\Filter' => __DIR__ . '/../..' . '/app/Support/Facades/Filter.php',
+        'App\\Support\\Facades\\Form' => __DIR__ . '/../..' . '/app/Support/Facades/Form.php',
+        'App\\Support\\Facades\\Html' => __DIR__ . '/../..' . '/app/Support/Facades/Html.php',
+        'App\\Support\\Filter' => __DIR__ . '/../..' . '/app/Support/Filter.php',
+        'App\\Support\\Form' => __DIR__ . '/../..' . '/app/Support/Form.php',
+        'App\\Support\\Format' => __DIR__ . '/../..' . '/app/Support/Format.php',
+        'App\\Support\\Hook' => __DIR__ . '/../..' . '/app/Support/Hook.php',
+        'App\\Support\\Html' => __DIR__ . '/../..' . '/app/Support/Html.php',
+        'App\\Support\\SupportServiceProvider' => __DIR__ . '/../..' . '/app/Support/SupportServiceProvider.php',
         'App\\Themes\\BladeCompiler' => __DIR__ . '/../..' . '/app/Themes/BladeCompiler.php',
         'App\\Themes\\BootstrapServiceProvider' => __DIR__ . '/../..' . '/app/Themes/BootstrapServiceProvider.php',
         'App\\Themes\\Commands\\MakeCommand' => __DIR__ . '/../..' . '/app/Themes/Commands/MakeCommand.php',
         'App\\Themes\\Commands\\PublishCommand' => __DIR__ . '/../..' . '/app/Themes/Commands/PublishCommand.php',
         'App\\Themes\\Exceptions\\FileExistedException' => __DIR__ . '/../..' . '/app/Themes/Exceptions/FileExistedException.php',
         'App\\Themes\\Exceptions\\ThemeExistedException' => __DIR__ . '/../..' . '/app/Themes/Exceptions/ThemeExistedException.php',
-        'App\\Themes\\Facades\\Form' => __DIR__ . '/../..' . '/app/Themes/Facades/Form.php',
-        'App\\Themes\\Facades\\Html' => __DIR__ . '/../..' . '/app/Themes/Facades/Html.php',
         'App\\Themes\\Facades\\Theme' => __DIR__ . '/../..' . '/app/Themes/Facades/Theme.php',
-        'App\\Themes\\Form' => __DIR__ . '/../..' . '/app/Themes/Form.php',
-        'App\\Themes\\Html' => __DIR__ . '/../..' . '/app/Themes/Html.php',
         'App\\Themes\\NotFoundException' => __DIR__ . '/../..' . '/app/Themes/NotFoundException.php',
         'App\\Themes\\Repository' => __DIR__ . '/../..' . '/app/Themes/Repository.php',
         'App\\Themes\\Theme' => __DIR__ . '/../..' . '/app/Themes/Theme.php',
@@ -2952,6 +2968,7 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Intervention\\Image\\AbstractEncoder' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/AbstractEncoder.php',
         'Intervention\\Image\\AbstractFont' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/AbstractFont.php',
         'Intervention\\Image\\AbstractShape' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/AbstractShape.php',
+        'Intervention\\Image\\CachedImage' => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image/CachedImage.php',
         'Intervention\\Image\\Commands\\AbstractCommand' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/Commands/AbstractCommand.php',
         'Intervention\\Image\\Commands\\Argument' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/Commands/Argument.php',
         'Intervention\\Image\\Commands\\ChecksumCommand' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/Commands/ChecksumCommand.php',
@@ -3021,6 +3038,8 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Intervention\\Image\\Gd\\Shapes\\PolygonShape' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/Gd/Shapes/PolygonShape.php',
         'Intervention\\Image\\Gd\\Shapes\\RectangleShape' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/Gd/Shapes/RectangleShape.php',
         'Intervention\\Image\\Image' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/Image.php',
+        'Intervention\\Image\\ImageCache' => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image/ImageCache.php',
+        'Intervention\\Image\\ImageCacheController' => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image/ImageCacheController.php',
         'Intervention\\Image\\ImageManager' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/ImageManager.php',
         'Intervention\\Image\\ImageManagerStatic' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/ImageManagerStatic.php',
         'Intervention\\Image\\ImageServiceProvider' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/ImageServiceProvider.php',
@@ -3072,6 +3091,9 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Intervention\\Image\\Point' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/Point.php',
         'Intervention\\Image\\Response' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/Response.php',
         'Intervention\\Image\\Size' => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image/Size.php',
+        'Intervention\\Image\\Templates\\Large' => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image/Templates/Large.php',
+        'Intervention\\Image\\Templates\\Medium' => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image/Templates/Medium.php',
+        'Intervention\\Image\\Templates\\Small' => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image/Templates/Small.php',
         'Jaybizzle\\CrawlerDetect\\CrawlerDetect' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/CrawlerDetect.php',
         'Jaybizzle\\CrawlerDetect\\Fixtures\\AbstractProvider' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/AbstractProvider.php',
         'Jaybizzle\\CrawlerDetect\\Fixtures\\Crawlers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Crawlers.php',
@@ -3581,6 +3603,7 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Modules\\Core\\Http\\Controllers\\Admin\\NotificationsController' => __DIR__ . '/../..' . '/modules/Core/Http/Controllers/Admin/NotificationsController.php',
         'Modules\\Core\\Http\\Controllers\\Admin\\RoleController' => __DIR__ . '/../..' . '/modules/Core/Http/Controllers/Admin/RoleController.php',
         'Modules\\Core\\Http\\Controllers\\Admin\\SchedulingController' => __DIR__ . '/../..' . '/modules/Core/Http/Controllers/Admin/SchedulingController.php',
+        'Modules\\Core\\Http\\Controllers\\Admin\\StorageController' => __DIR__ . '/../..' . '/modules/Core/Http/Controllers/Admin/StorageController.php',
         'Modules\\Core\\Http\\Controllers\\Admin\\SystemController' => __DIR__ . '/../..' . '/modules/Core/Http/Controllers/Admin/SystemController.php',
         'Modules\\Core\\Http\\Controllers\\Admin\\ThemeController' => __DIR__ . '/../..' . '/modules/Core/Http/Controllers/Admin/ThemeController.php',
         'Modules\\Core\\Http\\Controllers\\IndexController' => __DIR__ . '/../..' . '/modules/Core/Http/Controllers/IndexController.php',
@@ -3596,9 +3619,10 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Modules\\Core\\Providers\\CoreServiceProvider' => __DIR__ . '/../..' . '/modules/Core/Providers/CoreServiceProvider.php',
         'Modules\\Core\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/modules/Core/Providers/RouteServiceProvider.php',
         'Modules\\Core\\Support\\FileBrowser' => __DIR__ . '/../..' . '/modules/Core/Support/FileBrowser.php',
-        'Modules\\Core\\Support\\Permission' => __DIR__ . '/../..' . '/modules/Core/Support/Permission.php',
         'Modules\\Core\\Support\\Plupload' => __DIR__ . '/../..' . '/modules/Core/Support/Plupload.php',
         'Modules\\Core\\Support\\Resize' => __DIR__ . '/../..' . '/modules/Core/Support/Resize.php',
+        'Modules\\Core\\Support\\StorageBrowser' => __DIR__ . '/../..' . '/modules/Core/Support/StorageBrowser.php',
+        'Modules\\Core\\Support\\Upload' => __DIR__ . '/../..' . '/modules/Core/Support/Upload.php',
         'Modules\\Core\\Support\\Watermark' => __DIR__ . '/../..' . '/modules/Core/Support/Watermark.php',
         'Modules\\Core\\Traits\\Nestable' => __DIR__ . '/../..' . '/modules/Core/Traits/Nestable.php',
         'Modules\\Core\\Traits\\NestableScope' => __DIR__ . '/../..' . '/modules/Core/Traits/NestableScope.php',
@@ -5481,6 +5505,20 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'SebastianBergmann\\Type\\UnknownType' => __DIR__ . '/..' . '/sebastian/type/src/UnknownType.php',
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
+        'SuperClosure\\Analyzer\\AstAnalyzer' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Analyzer/AstAnalyzer.php',
+        'SuperClosure\\Analyzer\\ClosureAnalyzer' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Analyzer/ClosureAnalyzer.php',
+        'SuperClosure\\Analyzer\\Token' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Analyzer/Token.php',
+        'SuperClosure\\Analyzer\\TokenAnalyzer' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Analyzer/TokenAnalyzer.php',
+        'SuperClosure\\Analyzer\\Visitor\\ClosureLocatorVisitor' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Analyzer/Visitor/ClosureLocatorVisitor.php',
+        'SuperClosure\\Analyzer\\Visitor\\MagicConstantVisitor' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Analyzer/Visitor/MagicConstantVisitor.php',
+        'SuperClosure\\Analyzer\\Visitor\\ThisDetectorVisitor' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Analyzer/Visitor/ThisDetectorVisitor.php',
+        'SuperClosure\\Exception\\ClosureAnalysisException' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Exception/ClosureAnalysisException.php',
+        'SuperClosure\\Exception\\ClosureSerializationException' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Exception/ClosureSerializationException.php',
+        'SuperClosure\\Exception\\ClosureUnserializationException' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Exception/ClosureUnserializationException.php',
+        'SuperClosure\\Exception\\SuperClosureException' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Exception/SuperClosureException.php',
+        'SuperClosure\\SerializableClosure' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/SerializableClosure.php',
+        'SuperClosure\\Serializer' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/Serializer.php',
+        'SuperClosure\\SerializerInterface' => __DIR__ . '/..' . '/jeremeamia/superclosure/src/SerializerInterface.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
         'Symfony\\Component\\Console\\CommandLoader\\CommandLoaderInterface' => __DIR__ . '/..' . '/symfony/console/CommandLoader/CommandLoaderInterface.php',
         'Symfony\\Component\\Console\\CommandLoader\\ContainerCommandLoader' => __DIR__ . '/..' . '/symfony/console/CommandLoader/ContainerCommandLoader.php',
@@ -6171,8 +6209,17 @@ class ComposerStaticInitba8ed4648c2e13caab77ed52b3cba655
         'Symfony\\Polyfill\\Iconv\\Iconv' => __DIR__ . '/..' . '/symfony/polyfill-iconv/Iconv.php',
         'Symfony\\Polyfill\\Intl\\Idn\\Idn' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/Idn.php',
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
+        'Symfony\\Polyfill\\Php56\\Php56' => __DIR__ . '/..' . '/symfony/polyfill-php56/Php56.php',
         'Symfony\\Polyfill\\Php72\\Php72' => __DIR__ . '/..' . '/symfony/polyfill-php72/Php72.php',
         'Symfony\\Polyfill\\Php73\\Php73' => __DIR__ . '/..' . '/symfony/polyfill-php73/Php73.php',
+        'Symfony\\Polyfill\\Util\\Binary' => __DIR__ . '/..' . '/symfony/polyfill-util/Binary.php',
+        'Symfony\\Polyfill\\Util\\BinaryNoFuncOverload' => __DIR__ . '/..' . '/symfony/polyfill-util/BinaryNoFuncOverload.php',
+        'Symfony\\Polyfill\\Util\\BinaryOnFuncOverload' => __DIR__ . '/..' . '/symfony/polyfill-util/BinaryOnFuncOverload.php',
+        'Symfony\\Polyfill\\Util\\TestListener' => __DIR__ . '/..' . '/symfony/polyfill-util/TestListener.php',
+        'Symfony\\Polyfill\\Util\\TestListenerForV5' => __DIR__ . '/..' . '/symfony/polyfill-util/TestListenerForV5.php',
+        'Symfony\\Polyfill\\Util\\TestListenerForV6' => __DIR__ . '/..' . '/symfony/polyfill-util/TestListenerForV6.php',
+        'Symfony\\Polyfill\\Util\\TestListenerForV7' => __DIR__ . '/..' . '/symfony/polyfill-util/TestListenerForV7.php',
+        'Symfony\\Polyfill\\Util\\TestListenerTrait' => __DIR__ . '/..' . '/symfony/polyfill-util/TestListenerTrait.php',
         'Tests\\CreatesApplication' => __DIR__ . '/../..' . '/tests/CreatesApplication.php',
         'Tests\\Feature\\ExampleTest' => __DIR__ . '/../..' . '/tests/Feature/ExampleTest.php',
         'Tests\\TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',

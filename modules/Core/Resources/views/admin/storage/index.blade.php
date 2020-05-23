@@ -41,11 +41,11 @@
 
     </div>
     <div class="main-body scrollable">
-        <div class="grid p-3">
+        <div class="grid grid-storage p-3">
             @foreach ($browser->folders() as $folder)
                <div class="grid-item grid-item-folder cur-p" data-url="{{$folder->href}}">
                     <div class="grid-item-icon d-flex justify-content-center">
-                        <i class="fa fa-folder text-warning align-self-center"></i></a>
+                        <i class="fa fa-folder text-warning align-self-center"></i>
                     </div>
                     <div class="grid-item-text d-flex flex-row">
                         <div class="grid-item-name mr-auto">
@@ -69,13 +69,21 @@
             @endforeach
             @foreach ($browser->files() as $file)
                <div class="grid-item grid-item-file">
-                    <div class="grid-item-icon d-flex justify-content-center">
-                        @if ($file->type == 'image')
-                            <img src="{{$file->url}}" class="img-fluid align-self-center">
-                        @else
-                            <i class="{{$file->icon}} text-info align-self-center"></i></a>
-                        @endif
+                    
+                    @if ($file->type == 'image')
+                    <div class="grid-item-icon d-flex justify-content-center js-image cur-p"
+                        data-url="{{preview($disk.':'.$file->path)}}"
+                        data-title="{{$file->name}}"
+                        data-info="{{$file->size}} / {{$file->width}}px × {{$file->height}}px"
+                    >
+                        <img src="{{preview($disk.':'.$file->path, 300)}}" class="img-fluid align-self-center">
                     </div>
+                    @else
+                    <div class="grid-item-icon d-flex justify-content-center">
+                        <i class="{{$file->icon}} text-info align-self-center"></i>
+                    </div>
+                    @endif
+                    
                     <div class="grid-item-text d-flex flex-row justify-content-between">
                         <div class="grid-item-name mr-auto">
                             {{$file->name}}
@@ -103,16 +111,16 @@
 
 @push('css')
 <style type="text/css">
-    .grid{
+    .grid-storage {
         display: grid;
         grid-template-columns: repeat(auto-fill,minmax(10rem,1fr));
         grid-row-gap: 1rem;
         grid-column-gap: 1rem;
         padding: 0rem;        
     }
-    .grid-item .grid-item-icon{width:100%;height:8rem;font-size:6rem;background:#f7f7f7;border-radius:3px;overflow:hidden;}
-    .grid-item .grid-item-text{padding:.5rem 0;}
-    .grid-item .grid-item-name{font-size: 0.875rem;word-break: break-all;text-align:left;}
+    .grid-storage .grid-item .grid-item-icon{width:100%;height:8rem;font-size:6rem;background:#f7f7f7;border-radius:3px;overflow:hidden;}
+    .grid-storage .grid-item .grid-item-text{padding:.5rem 0;}
+    .grid-storage .grid-item .grid-item-name{font-size: 0.875rem;word-break: break-all;text-align:left;}
 </style>
 @endpush
 @push('js')

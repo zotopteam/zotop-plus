@@ -190,46 +190,25 @@ if (! function_exists('preview')) {
     /**
      * 根据图片路径，预览站点内任意位置的图片
      * 
-     * @param  string $path 图片路径
+     * @param  string $path 图片路径 支持绝对路径，存储盘路径，public:uploads/abc.png
      * @param  int $width 图片宽度
      * @param  int $height 图片高度
-     * @return string 临时图片URL
+     * @param  boolean $fit 适应
+     * @return string 预览地址
      */
-    function preview($path, $width=null, $height=null, $fit=true)
+    function preview($path, $width=null, $height=null, $fit=false)
     {
-        if ( empty($path) || !File::exists($path) ) {
-            $path = app('themes')->path('assets/img/empty.jpg');
+        $size = null;
+
+        if ($width = intval($width)) {
+            $height = intval($height) ? $height : $width;
+            $size   = $fit ? "fit:{$width}:{$height}" : "resize:{$width}:{$height}";
         }
 
-        $temp = md5($path);
-        $temp = 'previews/'.substr($temp, 0, 2).'/'.substr($temp, 2, 2).'/'.$temp.'-'.intval($width).'-'.intval($height).'-'.intval($fit).'.'.File::extension($path);
-        $file = public_path($temp);
-
-        // 预览图片不存在，或者原图片被修改
-        if ( !File::exists($file) || File::lastModified($file) < File::lastModified($path) ) {           
-            
-            // 如果目录不存在，尝试创建
-            if (!File::isDirectory($dir = dirname($file))) {
-                File::makeDirectory($dir, 0775, true);
-            }
-            
-            // 拷贝图片到临时目录
-            File::copy($path, $file);
-            
-            // 图片缩放
-            if ($width || $height) {
-                if ($width && $height && $fit) {
-                    app('image')->make($file)->fit($width, $height)->save();
-                } else {
-                    app('image')->make($file)->resize($width, $height, function($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })->save();
-                }               
-            }          
-        }
-
-        return url($temp);
+        return route('image.preview', [
+            'path' => $path,
+            'size' => $size,
+        ]);
     }
 }
 

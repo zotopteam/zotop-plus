@@ -395,7 +395,7 @@
 		return $.dialog({
 			id         : 'image',
 			skin       : 'ui-image',
-			width      : (width || '80%'),
+			width      : (width || '90%'),
 			height     : (height || '80%'),
 			fixed      : true,
 			padding    : 0,
