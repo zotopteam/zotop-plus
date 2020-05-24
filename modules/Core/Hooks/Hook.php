@@ -62,7 +62,7 @@ class Hook
             $start['core-storage'] = [
                 'text' => trans('core::storage.title'),
                 'href' => route('core.storage.index', 'public'),
-                'icon' => 'fa fa-server bg-primary text-white', 
+                'icon' => 'fa fa-hdd bg-primary text-white', 
                 'tips' => trans('core::storage.description'),
             ];
         }
@@ -77,8 +77,6 @@ class Hook
             ];
         }
 
-
-          
         //模块管理
         if (allow('core.module.index')) {
             $start['core-modules'] = [

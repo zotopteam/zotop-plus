@@ -371,7 +371,7 @@ textarea{resize:none;}
 .grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(12rem,1fr));grid-gap:1rem;}
 .grid-inline{display:inline-grid!important;}
 .grid-xs {grid-template-columns:repeat(auto-fill,minmax(6rem,1fr));}
-.grid-sm {grid-template-columns:repeat(auto-fill,minmax(9rem,1fr));}
+.grid-sm {grid-template-columns:repeat(auto-fill,minmax(10rem,1fr));}
 .grid-md {grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));}
 .grid-lg {grid-template-columns:repeat(auto-fill,minmax(20rem,1fr));}
 .grid-xl {grid-template-columns:repeat(auto-fill,minmax(25rem,1fr));}

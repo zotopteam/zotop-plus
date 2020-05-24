@@ -19,11 +19,11 @@
         <div class="grid grid-xl p-3">
             @foreach($themes as $theme)
             <div class="card card-theme">
-                <div class="image bg-image-preview pos-r">
+                <div class="image pos-r">
                     <label class="badge badge-warning pos-a pos-r-0 m-2">
                         {{trans("core::theme.type.{$theme->type}")}}
                     </label>
-                    <img class="card-img-top img-fluid" src="{{preview($theme->path.'/theme.jpg',600,400)}}">
+                    <img class="card-img-top img-fluid" src="{{preview($theme->path.'/theme.jpg',600,400, true)}}" width="600px" height="400px">
                 </div>
                 <div class="card-body">
                     <div class="card-title d-flex flex-row">

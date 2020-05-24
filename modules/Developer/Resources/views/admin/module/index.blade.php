@@ -24,7 +24,7 @@
             @foreach ($modules as $module)
                 <div class="text-center">
                     <a class="shortcut cur-p" href="{{route('developer.module.show',$module->name)}}">
-                        <img src="{{preview($module->getPath('module.png'), 128, 128)}}">
+                        <img class="img-fluid" src="{{preview($module->getPath('module.png'), 128, 128)}}" width="128px" height="128px">
                         <div class="mt-1">
                             {{$module->getTitle()}}
                         </div>

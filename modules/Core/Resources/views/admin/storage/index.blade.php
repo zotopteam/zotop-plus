@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
+@include('core::storage.side')
 <div class="main">
     <div class="main-header">
         <div class="main-title mr-auto">
@@ -41,7 +42,7 @@
 
     </div>
     <div class="main-body scrollable">
-        <div class="grid grid-storage p-3">
+        <div class="grid grid-sm p-3">
             @foreach ($browser->folders() as $folder)
                <div class="grid-item grid-item-folder cur-p" data-url="{{$folder->href}}">
                     <div class="grid-item-icon d-flex justify-content-center">
@@ -118,9 +119,9 @@
         grid-column-gap: 1rem;
         padding: 0rem;        
     }
-    .grid-storage .grid-item .grid-item-icon{width:100%;height:8rem;font-size:6rem;background:#f7f7f7;border-radius:3px;overflow:hidden;}
-    .grid-storage .grid-item .grid-item-text{padding:.5rem 0;}
-    .grid-storage .grid-item .grid-item-name{font-size: 0.875rem;word-break: break-all;text-align:left;}
+    .grid-item .grid-item-icon{width:100%;height:8rem;font-size:6rem;background:#f7f7f7;border-radius:3px;overflow:hidden;}
+    .grid-item .grid-item-text{padding:.5rem 0;}
+    .grid-item .grid-item-name{font-size: 0.875rem;word-break: break-all;text-align:left;}
 </style>
 @endpush
 @push('js')

@@ -2,9 +2,11 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
+use App\Modules\Facades\Module;
 use App\Modules\Routing\AdminController as Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -22,9 +24,9 @@ class StorageController extends Controller
      */
     public function index(Request $request, $disk)
     {
-        $this->title = $disk;
-        $this->disk  = $disk;
-
+        $this->disk    = $disk;
+        $this->disks   = Module::data('core::storage.disks');
+        $this->title   = Arr::get($this->disks, "{$disk}.title");
         $this->browser = app(StorageBrowser::class, [
             'disk' => $disk,
             'root' => '',
