@@ -11,7 +11,7 @@ class $CLASS_NAME$ extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = '$COMMAND_SIGNATURE$';
 
     /**
      * The console command description.

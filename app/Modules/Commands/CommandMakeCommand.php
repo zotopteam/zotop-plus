@@ -43,5 +43,26 @@ class CommandMakeCommand extends GeneratorCommand
      */
     protected $stub = 'command';
   
+    /**
+     * 重载prepare
+     * @return boolean
+     */
+    public function prepare()
+    {
+        // 替换
+        $this->replace([
+            'command_signature'     => $this->getSignature(),
+        ]);
 
+        return true;
+    }
+
+    /**
+     * 获取 signature
+     * @return string
+     */
+    private function getSignature()
+    {
+        return $this->getModuleLowerName() . ':' . str_replace('_', '-', $this->getLowerNameInput());
+    }  
 }

@@ -79,7 +79,7 @@ return [
     'test.type.help'          => '',
     'test.type.unit'          => '单元测试，对代码中少且相对独立的一部分代码来进行',
     'test.type.feature'       => '功能测试，对大面积代码进行的测试',
-    'component.title'         => 'Component 模板组件',
+    'component.title'         => 'Component 视图组件',
     'component.help'          => '需要在当前模块的ServiceProvider的boot方法中注册组件后才能使用',
     'component.name.label'    => '名称',
     'component.name.help'     => '输入名称会自动转换为变种驼峰命名，如：test=>Test，test_abc=>TestAbc',
