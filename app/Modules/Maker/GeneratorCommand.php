@@ -52,6 +52,8 @@ abstract class GeneratorCommand extends Command
         $this->replace([
             'class_name'      => $this->getClassName(),
             'class_namespace' => $this->getClassNamespace(),
+            'lower_name'      => $this->getLowerNameInput(),
+            'studly_name'     => $this->getStudlyNameInput(),
         ]);
 
         if ($this->prepare()) {
@@ -103,7 +105,25 @@ abstract class GeneratorCommand extends Command
      */
     public function getNameInput()
     {
-        return strtolower($this->argument('name'));
+        return $this->argument('name');
+    }
+
+    /**
+     * 获取输入的 name 的小写格式
+     * @return string
+     */
+    public function getLowerNameInput()
+    {
+        return strtolower($this->getNameInput());
+    }
+
+    /**
+     * 获取输入的 name 的变种驼峰命名 foo_bar => FooBar
+     * @return string
+     */
+    public function getStudlyNameInput()
+    {
+        return Str::studly($this->getNameInput());
     }
 
     /**
@@ -112,7 +132,7 @@ abstract class GeneratorCommand extends Command
      */
     Public function getClassName()
     {
-        $className = Str::studly($this->getNameInput());
+        $className = $this->getStudlyNameInput();
 
         // 部分类以特殊标识结尾，补充结尾标识，如：CoreServiceProvider, AdminRequest
         if ($this->appendName) {

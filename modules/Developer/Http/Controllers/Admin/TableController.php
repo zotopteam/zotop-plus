@@ -207,7 +207,7 @@ class TableController extends AdminController
         
         Artisan::call('module:make-model', [
             'module'  => $module->getLowerName(),
-            'name'    => $this->getModelName($table),
+            'name'    => $this->getModelName($module, $table),
             '--table' => $table->name(),
             '--force' => (boolean) $force
         ]);  
@@ -267,15 +267,15 @@ class TableController extends AdminController
     }
 
     /**
-     * 获取表的模型名称，如果表名称中不含下划线，模型名称等于表名称，否则取最后一个下划线后面部分
+     * 获取表的模型名称，去掉表名称开始的模块名称+下划线，转换为变种驼峰
      * @param  Table $table
      * @return string
      */
-    private function getModelName($table)
+    private function getModelName($module, $table)
     {
-        $segments = explode('_', $table->name());
+        $name = Str::after($table->name(), $module->getLowerName().'_');
 
-        return Str::studly(last($segments));
+        return Str::studly($name);
     }
 
     /**
@@ -286,7 +286,7 @@ class TableController extends AdminController
      */
     private function isModelFile($module, $table)
     {
-        $path = $module->getPath('model', true).DIRECTORY_SEPARATOR.$this->getModelName($table).'.php';
+        $path = $module->getPath('model', true).DIRECTORY_SEPARATOR.$this->getModelName($module, $table).'.php';
 
         return File::isFile($path);
     }

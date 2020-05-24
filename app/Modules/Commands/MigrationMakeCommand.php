@@ -70,7 +70,7 @@ class MigrationMakeCommand extends GeneratorCommand
      */
     public function getClassName()
     {
-        return Str::studly($this->getNameInput());
+        return $this->getStudlyNameInput();
     }
 
     /**
@@ -79,7 +79,7 @@ class MigrationMakeCommand extends GeneratorCommand
      */
     public function getFileName()
     {
-        return date('Y_m_d_His').'_'.strtolower($this->getNameInput()).'.'.$this->extension;
+        return date('Y_m_d_His').'_'.$this->getLowerNameInput().'.'.$this->extension;
     }
 
     /**

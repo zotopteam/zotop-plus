@@ -69,7 +69,7 @@ class ModelMakeCommand extends GeneratorCommand
             return strtolower($table);
         }
 
-        $table = strtolower($this->getNameInput());
+        $table = $this->getLowerNameInput();
         $table = Str::plural($table);
 
         return $table;

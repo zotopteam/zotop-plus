@@ -17,7 +17,7 @@ class $CLASS_NAME$ extends Model
      * 可以被批量赋值的属性。
      * @var array
      */
-    //protected $fillable = $FILLABLE$;
+    protected $fillable = $FILLABLE$;
     
     /**
      * 不可被批量赋值的属性。

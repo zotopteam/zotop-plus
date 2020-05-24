@@ -24,6 +24,16 @@ return [
         'name'    => ['label'=>trans('developer::command.request.name.label'), 'help'=>trans('developer::command.request.name.help')],
         'dir'     => config('modules.paths.dirs.request'),
     ],
+    // --view
+    'component' => [
+        'title'   => trans('developer::command.component.title'),
+        'icon'    => 'fa fa-check-square',
+        'command' => 'module:make-component',
+        'name'    => ['label'=>trans('developer::command.component.name.label'), 'help'=>trans('developer::command.component.name.help')],
+        'options' => ['--view'=>'developer::command.options.component_view'],
+        'dir'     => config('modules.paths.dirs.components'),
+        'help'    => trans('developer::command.component.help'),
+    ],    
     'middleware' => [
         'title'   => trans('developer::command.middleware.title'),
         'icon'    => 'fa fa-align-center',

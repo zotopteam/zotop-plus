@@ -50,7 +50,7 @@ class RequestMakeCommand extends GeneratorCommand
     public function prepare()
     {
         $this->replace([
-            'lang_name'      => strtolower($this->getNameInput()),
+            'lang_name'      => $this->getLowerNameInput(),
         ]);
 
         return true;

@@ -120,7 +120,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
      */
     public function getTableName()
     {
-        return $this->getNameInput();
+        return $this->getLowerNameInput();
     }
 
     /**

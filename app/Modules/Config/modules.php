@@ -62,6 +62,7 @@ return [
             'mails'            => 'Mails',
             'notifications'    => 'Notifications',
             'traits'           => 'Traits',
+            'components'       => 'View/Components',
         ],
 
         /*

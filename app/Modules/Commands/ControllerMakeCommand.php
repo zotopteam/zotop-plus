@@ -77,12 +77,12 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     public function generated()
     {
-        $name = Str::studly($this->getNameInput());
+        $name = $this->getStudlyNameInput();
 
         // 资源view生成
         if ($this->getModelInput()) {
 
-            $this->generateArrayLang($this->getNameInput(), [
+            $this->generateArrayLang($this->getLowerNameInput(), [
                 'title'       => "[{$name} title]",
                 'description' => "[{$name} description]",
                 'create'      => "[Create {$name}]",
@@ -99,7 +99,7 @@ class ControllerMakeCommand extends GeneratorCommand
             return;
         }
 
-        $this->generateArrayLang($this->getNameInput(), [
+        $this->generateArrayLang($this->getLowerNameInput(), [
             'title'       => "[{$name} title]",
             'description' => "[{$name} description]",
         ], $this->option('force'));
@@ -210,9 +210,8 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         $stub = $this->stub . '/' .$action;
         $path = $this->getConfigDirs('views').DIRECTORY_SEPARATOR. $this->getTypeInput("dirs.view");
-        $path = $path . DIRECTORY_SEPARATOR.$this->getNameInput() . DIRECTORY_SEPARATOR . $action . '.blade.php';
+        $path = $path . DIRECTORY_SEPARATOR.$this->getLowerNameInput() . DIRECTORY_SEPARATOR . $action . '.blade.php';
 
         $this->generateStubFile($stub, $path, $force);
-
     }
 }

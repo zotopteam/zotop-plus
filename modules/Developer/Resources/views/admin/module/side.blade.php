@@ -1,4 +1,4 @@
-<div class="side">
+<div class="side w-auto">
     <div class="side-header">
         <a href="{{route('developer.module.index')}}" title="{{trans('master.back')}}" data-placement="right" class="mr-3"><i class="fa fa-angle-left"></i></a>
         {{$module->getTitle()}}   

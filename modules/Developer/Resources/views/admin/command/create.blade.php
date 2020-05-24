@@ -8,14 +8,14 @@
         <div class="container-fluid">
 
             <div class="form-group">
-                <label for="name" class="form-label required">{{$label}}</label>
+                <label for="name" class="form-label required">{{$name_label}}</label>
                 <div class="form-field">
-                    {field type="text" name="name" pattern="^[a-zA-Z][a-zA-Z0-9]+$" required="required"}
+                    {field type="text" name="name" pattern="$name_pattern" required="required"}
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
                     @else
-                    <span class="form-help">{{$help}}</span>                     
+                    <span class="form-help">{{$name_help}}</span>                     
                     @endif
                 </div>                      
             </div>

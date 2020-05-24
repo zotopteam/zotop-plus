@@ -91,12 +91,13 @@ class CommandController extends AdminController
         }
 
 
-        $this->title   = trans('master.create');
-        $this->module  = Module::findOrFail($module);
-        $this->key     = $key;
-        $this->options = $this->commands($key, 'options', []);
-        $this->label   = $this->commands($key, 'name.label');
-        $this->help    = $this->commands($key, 'name.help');
+        $this->title        = trans('master.create');
+        $this->module       = Module::findOrFail($module);
+        $this->key          = $key;
+        $this->options      = $this->commands($key, 'options', []);
+        $this->name_label   = $this->commands($key, 'name.label');
+        $this->name_pattern = $this->commands($key, 'name.pattern', '^[a-zA-Z][a-zA-Z0-9_]+[a-zA-Z0-9]$');
+        $this->name_help    = $this->commands($key, 'name.help');
 
 
         return $this->view();
