@@ -6,6 +6,7 @@ use App\Support\Action;
 use App\Support\Filter;
 use App\Support\Form;
 use App\Support\Html;
+use App\Support\ImageFilter;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -83,6 +84,10 @@ class SupportServiceProvider extends ServiceProvider
                 $attrs = Blade::convertAttrs($matches[2]);
                 return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::field(".$attrs."); ?>";
             }, $value);
-        });        
+        });
+
+        // 定义滤器
+        ImageFilter::set('fit', \App\Support\ImageFilters\Fit::class);
+        ImageFilter::set('resize', \App\Support\ImageFilters\Resize::class);     
     }
 }

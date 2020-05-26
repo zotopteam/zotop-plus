@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class Upload
 {
@@ -20,13 +21,13 @@ class Upload
     /**
      * 上传默认目录
      */
-    protected $directory = 'uploads';
+    protected $directory;
 
     /**
      * 默认上传磁盘为public
      * @var string
      */
-    protected $disk = 'public';
+    protected $disk;
 
     /**
      * 全部上传类型
@@ -105,17 +106,19 @@ class Upload
      */
     public function __construct(UploadedFile $file)
     {
-        $this->request = app('request');
-        $this->types = config('core.upload.types');
-        $this->file = $file;
-
-        $this->realpath = $this->file->getRealPath();
-        $this->type = $this->file->getHumanType();
+        $this->file      = $file;
+        $this->request   = app('request');
+        $this->disk      = $this->disk();
+        $this->directory = $this->directory();
+        $this->types     = config('core.upload.types');
+        
+        $this->realpath  = $this->file->getRealPath();
+        $this->type      = $this->file->getHumanType();
         $this->extension = $this->file->getClientOriginalExtension();
-        $this->size = $this->file->getSize();
-        $this->mimetype = $this->file->getMimeType();
-        $this->hash = md5_file($this->realpath);
-        $this->name = $this->request->input('filename', $this->file->getClientOriginalName());
+        $this->size      = $this->file->getSize();
+        $this->mimetype  = $this->file->getMimeType();
+        $this->hash      = $this->file->getHash();
+        $this->name      = $this->request->input('filename', $this->file->getClientOriginalName());
     }
 
     /**
@@ -140,15 +143,21 @@ class Upload
         }
 
         // 存储文件
-        $file = $this->file->store($this->directory(), $this->disk());
+        $file = Storage::disk($this->disk)->putFileAs($this->directory, $this->file, $this->hash.'.'.$this->extension);
 
         // 获取文件信息
         $this->path     = $file;
-        $this->realpath = Storage::disk($this->disk)->path($file);
         $this->url      = Storage::disk($this->disk)->url($file);
 
-        // 后置处理
-        $this->process();
+        // 获取图片信息
+        if ($this->type == 'image') {
+            // 获取宽高和大小
+            $image = Storage::disk($this->disk)->get($this->path);
+            $image = Image::make($image);
+            // $this->size   = $image->filesize();
+            $this->width  = $image->width();
+            $this->height = $image->height();            
+        }        
 
         // 过滤并返回数据
         $data = [
@@ -161,7 +170,6 @@ class Upload
             'size'      => $this->size,
             'width'     => $this->width,
             'height'    => $this->height,
-            'realpath'  => $this->realpath,
             'path'      => $this->path,
             'url'       => $this->url,        
         ];
@@ -181,7 +189,7 @@ class Upload
             return $this;
         }
 
-        return $this->disk;
+        return $this->request->input('disk', 'public');
     }
 
     /**
@@ -196,8 +204,10 @@ class Upload
             return $this;
         }
 
-        $this->directory = $this->directory . '/' . $this->type . '/' . date(config('core.upload.dir', 'Y/m/d'), time());
-        return $this->directory; 
+        // 默认存储路径
+        $directory = 'uploads' . $this->type . '/' . date(config('core.upload.dir', 'Y/m/d'), time());
+
+        return $this->request->input('dir', $directory);
     }
 
     /**
@@ -208,14 +218,17 @@ class Upload
     {
         if ($this->type == 'image') {
             
-            // 图片缩放
-            app(Resize::class)->with($this->request->input('resize', []))->apply($this->realpath);
-
-            // 图片水印
-            app(Watermark::class)->with($this->request->input('watermark', []))->apply($this->realpath);
-
+            try {
+                // 图片缩放
+                //app(Resize::class)->with($this->request->input('resize', []))->apply($this->realpath);
+                // 图片水印
+                //app(Watermark::class)->with($this->request->input('watermark', []))->apply($this->realpath);
+            } catch (\Exception $e) {
+            }
+            
             // 获取宽高和大小
-            $image = app('image')->make($this->realpath);
+            $image = Storage::disk($this->disk)->get($this->path);
+            $image = app('image')->make($image);
 
             $this->size   = $image->filesize();
             $this->width  = $image->width();
@@ -264,7 +277,7 @@ class Upload
     public function error($error)
     {
         // 上传失败直接删除文件
-        File::delete($this->realpath);
+        Storage::disk($this->disk)->delete($this->path);
 
         return [
             'state' => false,

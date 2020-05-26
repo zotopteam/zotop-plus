@@ -3,6 +3,7 @@
 namespace Modules\Core\Http\Controllers\Api;
 
 use App\Modules\Routing\ApiController;
+use App\Support\ImageFilter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
@@ -16,35 +17,42 @@ class ImageController extends ApiController
      * 
      * @return Response
      */
-    public function preview(Request $request)
+    public function preview(Request $request, $filter, $disk, $path)
     {
-        $path = $request->path;
-        $size = $request->size;
 
         // 预览存储系统文件 public:uploads/aaa.png
-        if (strpos($path, ':')) {
-            [$disk, $path] = explode(':', $path);
+        if ($disk != 'root') {
             $data = Storage::disk($disk)->get($path);
         } else {
-            $data = File::get($path);
+            $data = base_path($path);
         }
 
         // 缓存并处理图片预览
-        $preview = Image::cache(function($image) use ($data, $size) {
+        $preview = Image::cache(function($image) use ($data, $filter) {
+
+            // 生成图片实例
             $image = $image->make($data);
-            // 尺寸 resize:300:300:resize,fit:300:200
-            if ($size) {
-                [$size, $width, $height] = explode(':', $size);
-                if ($size == 'fit') {
-                    $image->fit($width, $height);
-                } else {
-                    $image->resize($width, $height, function($constraint){
-                        $constraint->aspectRatio();
-                        $constraint->upsize();       
-                    });
-                }
+
+            // 尺寸 resize:300-300 fit:300-200
+            if ($filter = ImageFilter::get($filter)) {
+                $image->filter($filter);
             }
+
+            // 尺寸 resize-300-300 fit-300-200
+            // if ($size && $size != 'original') {
+            //     [$size, $width, $height] = explode('-', $size);
+            //     if ($size == 'fit') {
+            //         $image->fit($width, $height);
+            //     } else {
+            //         $image->resize($width, $height, function($constraint){
+            //             $constraint->aspectRatio();
+            //             $constraint->upsize();       
+            //         });
+            //     }
+            // }
+
             return $image;
+
         }, 10, true);
 
         return $preview->response();

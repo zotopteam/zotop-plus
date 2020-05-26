@@ -198,16 +198,24 @@ if (! function_exists('preview')) {
      */
     function preview($path, $width=null, $height=null, $fit=false)
     {
-        $size = null;
-
+        $filter = 'original';
+        
         if ($width = intval($width)) {
             $height = intval($height) ? $height : $width;
-            $size   = $fit ? "fit:{$width}:{$height}" : "resize:{$width}:{$height}";
+            $filter = $fit ? "fit:{$width}-{$height}" : "resize:{$width}-{$height}";
+        }
+
+        if (strpos($path, ':')) {
+            [$disk, $path] = explode(':', $path);
+        } else {
+            $disk = 'root';
+            $path = path_base($path);
         }
 
         return route('image.preview', [
-            'path' => $path,
-            'size' => $size,
+            'disk'   => $disk,
+            'path'   => $path,
+            'filter' => $filter,
         ]);
     }
 }

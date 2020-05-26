@@ -1,8 +1,8 @@
 <?php
 use Illuminate\Routing\Router;
 
-$router->group(['prefix' =>'/core'], function (Router $router) {
+$router->group(['prefix' =>'core'], function (Router $router) {
     // append
 });
 
-$router->get('image/preview','ImageController@preview')->name('image.preview');          
+$router->get('image/preview/{filter}/{disk}/{path}','ImageController@preview')->name('image.preview')->where('path', '.*');          

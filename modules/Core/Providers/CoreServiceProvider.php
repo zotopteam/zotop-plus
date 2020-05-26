@@ -2,12 +2,14 @@
 
 namespace Modules\Core\Providers;
 
+use App\Support\ImageFilter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\View\Components\UploadChunk;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -42,6 +44,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->setLocale();
         $this->eventsListen();
         $this->bladeExtend();
+        $this->imageFilter();
     }
 
     /**
@@ -123,8 +126,15 @@ class CoreServiceProvider extends ServiceProvider
         Blade::if('allow', function ($permission) {
             return allow($permission);
         });
+
+        Blade::component(UploadChunk::class, 'upload-chunk');
     }
 
+    // 图片滤器
+    public function imageFilter()
+    {
+        ImageFilter::set('core-resize', \Modules\Core\Support\ImageFilters\Resize::class);     
+    }
 
     /**
      * Get the services provided by the provider.

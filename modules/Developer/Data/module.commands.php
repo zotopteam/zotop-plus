@@ -27,7 +27,7 @@ return [
     // --view
     'component' => [
         'title'   => trans('developer::command.component.title'),
-        'icon'    => 'fa fa-check-square',
+        'icon'    => 'fa fa-cube',
         'command' => 'module:make-component',
         'name'    => ['label'=>trans('developer::command.component.name.label'), 'help'=>trans('developer::command.component.name.help')],
         'options' => ['--view'=>'developer::command.options.component_view'],

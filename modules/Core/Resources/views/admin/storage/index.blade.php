@@ -8,6 +8,9 @@
             {{$title}}
         </div>
         <div class="main-action">
+
+            <x-upload-chunk/>
+
             @if ($create = $browser->createFolder())
             <a href="javascript:;" class="btn btn-primary {{$create->class}}"
                 data-url="{{$create->url}}"

@@ -124,6 +124,14 @@ UploadedFile::macro('getHumanType',function() {
 });
 
 /**
+ * 扩展上传的获取文件的hash（md5)值
+ */
+UploadedFile::macro('getHash',function() {
+    $realpath = $this->getRealPath();
+    return md5_file($realpath);
+});
+
+/**
  * 扩展查询器 whereSmart, 当查询条件为字符串时自动转化为数组，当数组有多个值时，使用whereIn查询，当数组只有一个值时，使用where查询
  * whereSmart('type', 'aaa,bbb')
  * whereSmart('type', ['aaa','bbb'])
