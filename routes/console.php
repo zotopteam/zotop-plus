@@ -16,3 +16,18 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+/**
+ * 清理预览文件
+ */
+Artisan::command('preview:clear', function () {
+    $dir = public_path('previews');
+
+    // 删除预览文件夹下面的全部目录
+    foreach ($this->laravel['files']->directories($dir) as $subdir) {
+        $this->laravel['files']->deleteDirectory($subdir);
+    }
+
+    $this->info('Preview files cleared!');
+})->describe('Clear the preview files');
+

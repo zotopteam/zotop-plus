@@ -56,7 +56,7 @@ if (! function_exists('path_base')) {
     {
         $path = Str::replaceFirst(base_path(), '', $path);
         $path = str_replace('\\', '/', $path);
-        $path = trim($path,'/');
+        $path = trim($path, '/');
         return $path;
     }
 }
@@ -115,6 +115,30 @@ if (! function_exists('module')) {
         }
 
         return app('modules')->findOrFail($name);
+    }
+}
+
+if (! function_exists('preview')) {
+
+    /**
+     * 根据图片路径，预览站点内任意位置的图片
+     * 
+     * @param  string $path 图片路径 支持绝对路径和存储盘路径，public:uploads/abc.png
+     * @param  int $width 图片宽度
+     * @param  int $height 图片高度
+     * @param  string $filter fit=适应 resize=缩放
+     * @return string 预览地址
+     */
+    function preview($path, $width=null, $height=null, $filter='resize')
+    {
+        $preview = \App\Support\ImagePreview::file($path);
+
+        // 如果是预览原图，因为原图一般都比较大，所以直接生成动态访问地址
+        if (empty($width)) {
+            return $preview->dynamic_url();
+        }
+
+        return $preview->width($width)->height($height)->filter($filter)->url();
     }
 }
 

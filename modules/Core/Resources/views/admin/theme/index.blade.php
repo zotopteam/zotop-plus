@@ -23,7 +23,7 @@
                     <label class="badge badge-warning pos-a pos-r-0 m-2">
                         {{trans("core::theme.type.{$theme->type}")}}
                     </label>
-                    <img class="card-img-top img-fluid" src="{{preview($theme->path.'/theme.jpg',600,400, true)}}" width="600px" height="400px">
+                    <img class="card-img-top img-fluid" src="{{preview($theme->path.'/theme.jpg',600,400,'fit')}}" width="600px" height="400px">
                 </div>
                 <div class="card-body">
                     <div class="card-title d-flex flex-row">

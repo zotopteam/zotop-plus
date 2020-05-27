@@ -185,40 +185,7 @@ if (! function_exists('array_change_key')) {
     }
 }
 
-if (! function_exists('preview')) {
 
-    /**
-     * 根据图片路径，预览站点内任意位置的图片
-     * 
-     * @param  string $path 图片路径 支持绝对路径，存储盘路径，public:uploads/abc.png
-     * @param  int $width 图片宽度
-     * @param  int $height 图片高度
-     * @param  boolean $fit 适应
-     * @return string 预览地址
-     */
-    function preview($path, $width=null, $height=null, $fit=false)
-    {
-        $filter = 'original';
-        
-        if ($width = intval($width)) {
-            $height = intval($height) ? $height : $width;
-            $filter = $fit ? "fit:{$width}-{$height}" : "resize:{$width}-{$height}";
-        }
-
-        if (strpos($path, ':')) {
-            [$disk, $path] = explode(':', $path);
-        } else {
-            $disk = 'root';
-            $path = path_base($path);
-        }
-
-        return route('image.preview', [
-            'disk'   => $disk,
-            'path'   => $path,
-            'filter' => $filter,
-        ]);
-    }
-}
 
 if (! function_exists('image')) {
     

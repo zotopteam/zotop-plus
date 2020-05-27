@@ -4,6 +4,7 @@ namespace Modules\Core\Http\Controllers\Admin;
 
 use App\Modules\Facades\Module;
 use App\Modules\Routing\AdminController as Controller;
+use App\Support\ImagePreview;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
@@ -192,6 +193,7 @@ class StorageController extends Controller
 
             // 删除目录
             if (Storage::disk($disk)->delete($path)) {
+                ImagePreview::file($disk.':'.$path)->static_delete();
                 return $this->success(trans('master.operated'), $request->referer());
             }
 

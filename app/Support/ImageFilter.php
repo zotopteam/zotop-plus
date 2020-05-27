@@ -4,7 +4,7 @@ namespace App\Support;
 use Intervention\Image\Filters\FilterInterface;
 use Intervention\Image\Image;
 
-class ImageFilter implements FilterInterface
+abstract class ImageFilter implements FilterInterface
 {
     /**
      * image filters 容器
@@ -46,11 +46,6 @@ class ImageFilter implements FilterInterface
 
             $class = static::$filters[$name];
 
-            // 如果没有任何参数，直接实例化类
-            if (empty($parameters)) {
-                return new $class();
-            }
-
             // 如果参数为数组，实例化并传入参数
             if (is_array($parameters)) {
                 return app($class, $parameters);
@@ -64,10 +59,13 @@ class ImageFilter implements FilterInterface
     }
 
     /**
-     * 应用滤器
-     * @return [type] [description]
+     * 快速应用滤镜
+     * @param  mixed $image 
+     * @param  string $filter 注册的滤镜名称
+     * @param  mixed $parameter 滤镜快捷参数，从滤镜__construct传入
+     * @return mixed
      */
-    public static function apply(Image $image, $filter, $parameter=null)
+    public static function apply($image, $filter, $parameter=null)
     {
         // 获取滤器
         if ($filter = static::get($filter, $parameter)) {
