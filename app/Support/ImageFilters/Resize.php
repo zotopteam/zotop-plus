@@ -10,27 +10,27 @@ class Resize extends ImageFilter
      * 图片宽度
      * @var integer
      */
-    protected $with;
+    public $with;
 
     /**
      * 图片宽度
      * @var integer
      */
-    protected $height;
+    public $height;
 
     /**
      * 是否限制图像的当前宽高比例
      *
      * @var bool
      */
-    protected $aspectRatio = true;
+    public $aspectRatio = true;
 
     /**
      * Determines whether keeping the image from being upsized.
      *
      * @var bool
      */
-    protected $upsize = true;
+    public $upsize = true;
 
     /**
      * 初始化

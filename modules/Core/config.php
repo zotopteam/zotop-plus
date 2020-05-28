@@ -23,17 +23,21 @@ return [
             'quality' => 90
         ],
         'watermark' => [
-            'enabled'  => 1,
-            'width'    => '500',
-            'height'   => '500',
-            'opacity'  => '50',
-            'type'     => 'text',
-            'text'     => '',
-            'font'     => ['file'=>'resources/fonts/default.otf','size'=>36,'color'=>'#ffffff'],
-            'image'    => '',
-            'position' => 'bottom-right',
-            'offset'   => ['x'=>10,'y'=>10],
-            'quality'  => '90'
+            'enabled'    => 1,
+            'width'      => '1920',
+            'height'     => '1200',
+            'opacity'    => 50,
+            'type'       => 'text',
+            'text'       => '',
+            'font_file'  => 'resources/fonts/default.otf',
+            'font_size'  => 36,
+            'font_color' => '#fffff',
+            'font_angle' => 0,
+            'image'      => '',
+            'position'   => 'bottom-right',
+            'offset_x'   => 10,
+            'offset_y'   => 10,
+            'quality'    => 90
         ],
     ],
     'log' => [

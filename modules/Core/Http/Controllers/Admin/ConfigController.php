@@ -2,16 +2,18 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
+use App\Modules\Routing\AdminController;
+use App\Modules\Traits\ModuleConfig;
+use App\Support\ImageFilter;
+use Artisan;
+use Filter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
-use App\Modules\Routing\AdminController;
-use App\Modules\Traits\ModuleConfig;
-use Modules\Core\Support\Watermark;
+use Intervention\Image\Facades\Image;
 use Modules\Core\Http\Requests\ConfigBaseRequest;
-use Filter;
-use Artisan;
+use Modules\Core\Support\Watermark;
 use Route;
 
 class ConfigController extends AdminController
@@ -65,14 +67,17 @@ class ConfigController extends AdminController
         // 生成加水印后图片预览
         if ($request->isMethod('POST')) {
             $config = $request->input('image.watermark');
-            $source = resource_path('watermark/test.jpg');
             $target = 'previews/watermarks/test.jpg';
+            $source = resource_path('watermark/test.jpg');
+            
+            // 生成水印图片
+            $source = Image::make($source);
+            $source = ImageFilter::apply($source, 'core-watermark', [
+                'config' => $config
+            ]);
+            $source->save(public_path($target));
 
-            if ((new Watermark)->with($config)->apply($source, public_path($target))) {
-                return $this->success(url($target).'?token='.str_random(20));
-            }
-
-            return $this->success(preview($source).'?token='.str_random(20));
+            return url($target).'?token='.str_random(20);
         }
     }    
 

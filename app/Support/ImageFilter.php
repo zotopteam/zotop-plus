@@ -44,14 +44,15 @@ abstract class ImageFilter implements FilterInterface
 
         if (isset(static::$filters[$name])) {
 
+            // 获取滤镜类
             $class = static::$filters[$name];
 
-            // 如果参数为数组，实例化并传入参数
+            // 如果参数为数组, 实例化并注入参数
             if (is_array($parameters)) {
                 return app($class, $parameters);
             }
 
-            // 如果参数为字符串，则直接传入
+            // 如果参数为字符串或者null，则直接传入
             return new $class($parameters);
         }
 
@@ -62,7 +63,7 @@ abstract class ImageFilter implements FilterInterface
      * 快速应用滤镜
      * @param  mixed $image 
      * @param  string $filter 注册的滤镜名称
-     * @param  mixed $parameter 滤镜快捷参数，从滤镜__construct传入
+     * @param  mixed $parameter 滤镜参数，从滤镜__construct传入
      * @return mixed
      */
     public static function apply($image, $filter, $parameter=null)

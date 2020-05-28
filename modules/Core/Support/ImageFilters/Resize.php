@@ -2,6 +2,7 @@
 namespace Modules\Core\Support\ImageFilters;
 
 use App\Support\ImageFilter;
+use Illuminate\Support\Arr;
 use Intervention\Image\Image;
 
 class Resize extends ImageFilter
@@ -10,49 +11,52 @@ class Resize extends ImageFilter
      * 是否开启
      * @var boolean
      */
-    protected $enabled = true;
+    public $enabled = true;
 
     /**
      * 图片最大宽度
      * @var integer
      */
-    protected $with;
+    public $width = 1920;
 
     /**
      * 图片最大高度
      * @var integer
      */
-    protected $height;
+    public $height = 1200;
 
     /**
      * 图片品质
      * @var integer
      */
-    protected $quality;
+    public $quality = 100;
 
     /**
      * 是否限制图像的当前宽高比例
      *
      * @var bool
      */
-    protected $aspectRatio = true;
+    public $aspectRatio = true;
 
     /**
      * Determines whether keeping the image from being upsized.
      *
      * @var bool
      */
-    protected $upsize = true;
+    public $upsize = true;
 
     /**
      * 初始化
      */
-    public function __construct()
+    public function __construct($config = [])
     {
-        $this->enabled = config('core.image.resize.enabled');
-        $this->width   = config('core.image.resize.width');
-        $this->height  = config('core.image.resize.height');
-        $this->quality = config('core.image.resize.quality');          
+        // 读取核心设置
+        $config = array_merge(config('core.image.resize'), (array) $config);
+
+        $this->enabled = Arr::get($config, 'enabled', $this->enabled);
+        $this->width   = Arr::get($config, 'width', $this->width);
+        $this->height  = Arr::get($config, 'height', $this->height);
+        $this->quality = Arr::get($config, 'quality', $this->quality);          
     }
 
     /**

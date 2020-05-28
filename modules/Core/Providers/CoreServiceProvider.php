@@ -133,7 +133,8 @@ class CoreServiceProvider extends ServiceProvider
     // 图片滤器
     public function imageFilter()
     {
-        ImageFilter::set('core-resize', \Modules\Core\Support\ImageFilters\Resize::class);     
+        ImageFilter::set('core-resize', \Modules\Core\Support\ImageFilters\Resize::class);
+        ImageFilter::set('core-watermark', \Modules\Core\Support\ImageFilters\Watermark::class);     
     }
 
     /**

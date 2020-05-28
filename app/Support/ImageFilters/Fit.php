@@ -10,26 +10,26 @@ class Fit extends ImageFilter
      * 图片宽度
      * @var integer
      */
-    protected $with;
+    public $with;
 
     /**
      * 图片宽度
      * @var integer
      */
-    protected $height;
+    public $height;
 
     /**
      * 裁剪位置
      * @var string
      */
-    protected $position = 'center';
+    public $position = 'center';
 
     /**
      * Determines whether keeping the image from being upsized.
      *
      * @var bool
      */
-    protected $upsize = true;
+    public $upsize = true;
 
     /**
      * 初始化

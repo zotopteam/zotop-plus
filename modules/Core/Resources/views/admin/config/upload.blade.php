@@ -167,7 +167,7 @@
                         {{trans('core::image.watermark.font')}}
                     </label>
                     <div class="col-8">
-                         {field type="radiocards" name="image[watermark][font][file]" options="Module::data('core::watermark.font.file')"}
+                         {field type="radiocards" name="image[watermark][font_file]" options="Module::data('core::watermark.font.file')"}
                     </div>
                 </div>
                 <div class="form-group row">
@@ -177,19 +177,26 @@
                     <div class="col-3">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.font.size')}}</span></div>
-                            {field type="select" name="image[watermark][font][size]" options="Module::data('core::watermark.font.size')"}
+                            {field type="select" name="image[watermark][font_size]" options="Module::data('core::watermark.font.size')"}
                             <div class="input-group-append"><span class="input-group-text">px</span></div>                
                         </div>
                     </div>
                     <div class="col-3">
                         <div class="input-group input-color">
                             <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.font.color')}}</span></div>
-                            {field type="text" name="image[watermark][font][color]"}
+                            {field type="text" name="image[watermark][font_color]"}
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-light btn-color"><i class="fa fa-palette fa-fw"></i></button>
                             </div>
                         </div>                
-                    </div>                
+                    </div>
+                   <div class="col-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.font.angle')}}</span></div>
+                            {field type="number" name="image[watermark][font_angle]" min="0" max="360"}
+                             <div class="input-group-append"><span class="input-group-text">°</span></div>                        
+                        </div>                
+                    </div>                                   
                 </div>            
                 <div class="form-group row">
                     <label for="image_watermark_text" class="col-2 col-form-label">
@@ -244,9 +251,9 @@
                 <div class="col-5">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.offset.x')}}</span></div>
-                        {field type="number" name="image[watermark][offset][x]" min="0"}
+                        {field type="number" name="image[watermark][offset_x]" min="0"}
                         <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.offset.y')}}</span></div>
-                        {field type="number" name="image[watermark][offset][y]" min="0"}
+                        {field type="number" name="image[watermark][offset_y]" min="0"}
                         <div class="input-group-append"><span class="input-group-text">px</span></div>
                     </div>
                     
@@ -322,19 +329,19 @@
                 var dialog = $.dialog({
                         title: title,
                         content: '',
-                        width: '50%',
-                        height: '60%',
+                        width: '80%',
+                        height: '70%',
                         ok: true,
                         padding:0
                 }, true).loading(true);
 
-                $.post("{{route('core.config.watermarktest')}}", data, function(msg){
-                    dialog.content('<a href="'+msg.content+'" target="_blank">' +
+                $.post("{{route('core.config.watermarktest')}}", data, function(image){
+                    dialog.content('<a href="'+image+'" target="_blank">' +
                      '  <div class="image-preview bg-image-preview full-height full-width d-flex justify-content-center p-3">' +
-                     '      <img src="'+msg.content+'" class="align-self-center">' +
+                     '      <img src="'+image+'" class="align-self-center">' +
                      '  </div>'+
                      '</a>');
-                },'json');
+                });
             });
         });
 

@@ -10,6 +10,10 @@ $(function(){
             
             console.log(jqXHR.status);
 
+            if (jqXHR.status == 200) {
+                return;
+            }
+            
             if (jqXHR.status == 401 || jqXHR.status == 419) {
                 top.location.reload();
                 return;
