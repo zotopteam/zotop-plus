@@ -69,7 +69,7 @@ class Mockery
      */
     public static function globalHelpers()
     {
-        require_once __DIR__.'/helpers.php';
+        require_once __DIR__ . '/helpers.php';
     }
 
     /**
@@ -78,21 +78,17 @@ class Mockery
     public static function builtInTypes()
     {
         $builtInTypes = array(
-            'self',
             'array',
-            'callable',
-            // Up to php 7
             'bool',
+            'callable',
             'float',
             'int',
-            'string',
             'iterable',
+            'object',
+            'self',
+            'string',
             'void',
         );
-
-        if (version_compare(PHP_VERSION, '7.2.0-dev') >= 0) {
-            $builtInTypes[] = 'object';
-        }
 
         return $builtInTypes;
     }
@@ -234,7 +230,7 @@ class Mockery
     }
 
     /**
-     * Setter for the $_generator static propery.
+     * Setter for the $_generator static property.
      *
      * @param \Mockery\Generator\Generator $generator
      */
@@ -592,10 +588,10 @@ class Mockery
                     $sample[] = "$key => $value";
                 }
 
-                $argument = "[".implode(", ", $sample)."]";
+                $argument = "[" . implode(", ", $sample) . "]";
             }
 
-            return ((strlen($argument) > 1000) ? substr($argument, 0, 1000).'...]' : $argument);
+            return ((strlen($argument) > 1000) ? substr($argument, 0, 1000) . '...]' : $argument);
         }
 
         if (is_bool($argument)) {
@@ -610,7 +606,7 @@ class Mockery
             return 'NULL';
         }
 
-        return "'".(string) $argument."'";
+        return "'" . (string) $argument . "'";
     }
 
     /**
@@ -858,29 +854,27 @@ class Mockery
     ) {
         $newMockName = 'demeter_' . md5($parent) . '_' . $method;
 
-        if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
-            $parRef = null;
-            $parRefMethod = null;
-            $parRefMethodRetType = null;
+        $parRef = null;
+        $parRefMethod = null;
+        $parRefMethodRetType = null;
 
-            $parentMock = $exp->getMock();
-            if ($parentMock !== null) {
-                $parRef = new ReflectionObject($parentMock);
-            }
+        $parentMock = $exp->getMock();
+        if ($parentMock !== null) {
+            $parRef = new ReflectionObject($parentMock);
+        }
 
-            if ($parRef !== null && $parRef->hasMethod($method)) {
-                $parRefMethod = $parRef->getMethod($method);
-                $parRefMethodRetType = $parRefMethod->getReturnType();
+        if ($parRef !== null && $parRef->hasMethod($method)) {
+            $parRefMethod = $parRef->getMethod($method);
+            $parRefMethodRetType = $parRefMethod->getReturnType();
 
-                if ($parRefMethodRetType !== null) {
-                    $nameBuilder = new MockNameBuilder();
-                    $nameBuilder->addPart('\\' . $newMockName);
-                    $type = PHP_VERSION_ID >= 70100 ? $parRefMethodRetType->getName() : (string)$parRefMethodRetType;
-                    $mock = self::namedMock($nameBuilder->build(), $type);
-                    $exp->andReturn($mock);
+            if ($parRefMethodRetType !== null) {
+                $nameBuilder = new MockNameBuilder();
+                $nameBuilder->addPart('\\' . $newMockName);
+                $type = $parRefMethodRetType->getName();
+                $mock = self::namedMock($nameBuilder->build(), $type);
+                $exp->andReturn($mock);
 
-                    return $mock;
-                }
+                return $mock;
             }
         }
 
