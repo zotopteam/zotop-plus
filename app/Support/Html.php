@@ -43,10 +43,9 @@ class Html
 
             $convert = $this->convertAttribute($key, $value);
 
-            if (! is_null($convert)) {
+            if (!is_null($convert)) {
                 $html[] = $convert;
             }
- 
         }
 
         return count($html) > 0 ? implode(' ', $html) : '';
@@ -78,7 +77,7 @@ class Html
         }
 
         // ['name'=>’aaa‘] 转化为 name='aaa'
-        if (! is_null($value)) {
+        if (!is_null($value)) {
             return $key . '="' . e($value, false) . '"';
         }
 
@@ -92,13 +91,13 @@ class Html
      */
     public function text($string)
     {
-        $string = trim(str_replace(array('<p>', '</p>', '<br>', '<br/>','<br />'), '', $string));
-        $string = '<p>'.preg_replace("/([\n]{1,})/i", "</p>\n<p>", $string).'</p>';
-        $string = str_replace(array('<p><br/></p>','<p></p>'), '', $string);
+        $string = trim(str_replace(array('<p>', '</p>', '<br>', '<br/>', '<br />'), '', $string));
+        $string = '<p>' . preg_replace("/([\n]{1,})/i", "</p>\n<p>", $string) . '</p>';
+        $string = str_replace(array('<p><br/></p>', '<p></p>'), '', $string);
         $string = str_replace(' ', '&nbsp;', htmlspecialchars($string));
 
         return $string;
-    }    
+    }
 
     /**
      * Dynamically handle calls to the class.
@@ -117,5 +116,5 @@ class Html
         }
 
         static::throwBadMethodCallException($method);
-    }       
+    }
 }

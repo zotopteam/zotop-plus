@@ -23,7 +23,7 @@ class PreviewController extends Controller
         $data = in_array($disk, $disks) ? Storage::disk($disk)->get($path) : base_path($path);
 
         // 缓存并处理图片预览
-        $preview = Image::cache(function($image) use ($data, $filter) {
+        $preview = Image::cache(function ($image) use ($data, $filter) {
 
             // 生成图片实例
             $image = $image->make($data);
@@ -32,7 +32,6 @@ class PreviewController extends Controller
             $image = ImageFilter::apply($image, $filter);
 
             return $image;
-
         }, config('image.preview.dynamic.lifetime', 10), true);
 
         return $preview->response();

@@ -26,7 +26,7 @@ class Filter extends Hook
 
 		$this->value = $param;
 
-		$this->listeners($hook)->each(function ($listener) use($args) {
+		$this->listeners($hook)->each(function ($listener) use ($args) {
 			$args[1] = $this->value;
 			$this->value = call_user_func_array($this->callback($listener['callback']), array_slice($args, 1));
 		});

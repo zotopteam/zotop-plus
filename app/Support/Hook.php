@@ -1,12 +1,13 @@
 <?php
+
 namespace App\Support;
 
 use Illuminate\Support\Traits\Macroable;
 
 abstract class Hook
 {
-    use Macroable;
-    
+	use Macroable;
+
 	/**
 	 * 存储hook
 	 * 
@@ -17,7 +18,8 @@ abstract class Hook
 	/**
 	 * 初始化 listeners
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->listeners = collect([]);
 	}
 
@@ -32,35 +34,35 @@ abstract class Hook
 	public function listen($hook, $callback, $priority = 50)
 	{
 		$this->listeners->push([
-            'hook'      => $hook,
-            'callback'  => $callback,
-            'priority'  => $priority
+			'hook'      => $hook,
+			'callback'  => $callback,
+			'priority'  => $priority
 		]);
 
 		return $this;
 	}
 
-    /**
-     * 删除hook
-     *
-     * @param string $hook 钩子名称
-     * @param mixed  删除键名（一般为回调名称）
-     * @return mixed
-     */
-    public function forget($hook, $callback=null)
-    {
-    	if ($callback) {
-	        $this->listeners->where('hook', $hook)->where('callback', $callback)->each(function ($listener, $key) {
-	                $this->listeners->forget($key);
-	        });
-        } else {
-	        $this->listeners->where('hook', $hook)->each(function ($listener, $key) {
-	                $this->listeners->forget($key);
-	        });        	
-        }
+	/**
+	 * 删除hook
+	 *
+	 * @param string $hook 钩子名称
+	 * @param mixed  删除键名（一般为回调名称）
+	 * @return mixed
+	 */
+	public function forget($hook, $callback = null)
+	{
+		if ($callback) {
+			$this->listeners->where('hook', $hook)->where('callback', $callback)->each(function ($listener, $key) {
+				$this->listeners->forget($key);
+			});
+		} else {
+			$this->listeners->where('hook', $hook)->each(function ($listener, $key) {
+				$this->listeners->forget($key);
+			});
+		}
 
-        return $this;
-    }	    
+		return $this;
+	}
 
 	/**
 	 * 获取排序过的监听器
@@ -90,7 +92,7 @@ abstract class Hook
 		if (is_callable($callback)) {
 			return $callback;
 		}
-		
+
 		throw new Exception('$callback is not a Callable', 1);
 	}
 

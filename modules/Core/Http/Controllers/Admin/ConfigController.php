@@ -5,16 +5,9 @@ namespace Modules\Core\Http\Controllers\Admin;
 use App\Modules\Routing\AdminController;
 use App\Modules\Traits\ModuleConfig;
 use App\Support\ImageFilter;
-use Artisan;
-use Filter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Intervention\Image\Facades\Image;
-use Modules\Core\Http\Requests\ConfigBaseRequest;
-use Modules\Core\Support\Watermark;
-use Route;
 
 class ConfigController extends AdminController
 {
@@ -69,17 +62,15 @@ class ConfigController extends AdminController
             $config = $request->input('image.watermark');
             $target = 'previews/watermarks/test.jpg';
             $source = resource_path('watermark/test.jpg');
-            
+
             // 生成水印图片
             $source = Image::make($source);
-            $source = ImageFilter::apply($source, 'core-watermark', [
-                'config' => $config
-            ]);
+            $source = ImageFilter::apply($source, 'core-watermark', $config);
             $source->save(public_path($target));
 
-            return url($target).'?token='.str_random(20);
+            return url($target) . '?token=' . str_random(20);
         }
-    }    
+    }
 
     /**
      * 邮件
@@ -95,7 +86,7 @@ class ConfigController extends AdminController
             $this->env([
                 'MAIL_DRIVER'       => $request->input('driver'),
                 'MAIL_FROM_ADDRESS' => $request->input('from.address'),
-                'MAIL_FROM_NAME'    => $request->input('from.name'),                
+                'MAIL_FROM_NAME'    => $request->input('from.name'),
                 'MAIL_HOST'         => $request->input('host'),
                 'MAIL_PORT'         => $request->input('port'),
                 'MAIL_USERNAME'     => $request->input('username'),
@@ -125,7 +116,7 @@ class ConfigController extends AdminController
             // 邮件接收者
             $to = $request->input('mailtest_sendto');
 
-           // 设置当前参数
+            // 设置当前参数
             $this->app['config']->set('mail', $request->all());
 
             // 使用新配置
@@ -134,7 +125,7 @@ class ConfigController extends AdminController
             // 发送邮件
             $this->app->make('mailer')->to($to)->send(new \Modules\Core\Emails\TestMail());
 
-            return $this->success(trans('master.operated'));                            
+            return $this->success(trans('master.operated'));
         }
 
         return new \Modules\Core\Emails\TestMail();
@@ -164,7 +155,7 @@ class ConfigController extends AdminController
         $this->title = trans('core::config.locale');
 
         return $this->view();
-    }  
+    }
 
     /**
      * 系统安全
@@ -186,14 +177,14 @@ class ConfigController extends AdminController
             ]);
 
             // 更改后台地址，本地或者测试环境下，route 已经加载，无法重新载入, 改用url生成
-            $redirectTo = url($request->input('backend.prefix', 'admin').'/core/config/safe');
+            $redirectTo = url($request->input('backend.prefix', 'admin') . '/core/config/safe');
 
             return $this->success(trans('master.saved'), $redirectTo);
-        }      
+        }
 
         $this->title  = trans('core::config.safe');
         $this->config = config('app') + config('core');
 
         return $this->view();
-    }         
+    }
 }

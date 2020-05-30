@@ -16,14 +16,14 @@
 Artisan::command('plupload:clear {--force}', function ($force) {
     $dir = storage_path('plupload');
 
-    if (! $this->laravel['files']->isDirectory($dir)) {
+    if (!$this->laravel['files']->isDirectory($dir)) {
         $this->error('Plupload temp directory does not existed!');
         return false;
     }
 
     foreach ($this->laravel['files']->files($dir) as $file) {
         //非强制模式下，只清除24小时以前的缓存
-        if (!$force && filemtime($file) > time() - 24*60*60) {
+        if (!$force && filemtime($file) > time() - 24 * 60 * 60) {
             continue;
         }
         $this->laravel['files']->delete($file);

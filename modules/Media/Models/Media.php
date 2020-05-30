@@ -1,4 +1,5 @@
 <?php
+
 namespace Modules\Media\Models;
 
 use Format;
@@ -10,7 +11,7 @@ use Modules\Core\Traits\UserRelation;
 
 class Media extends Model
 {
-	use UserRelation;
+    use UserRelation;
 
     /**
      * 与模型关联的数据表。
@@ -18,23 +19,23 @@ class Media extends Model
      * @var string
      */
     protected $table = 'media';
-	
-	
+
+
     /**
      * 可以被批量赋值的属性。
      *
      * @var array
      */
-    protected $fillable = ['parent_id','is_folder','disk','type','name','path','hash','url','extension','mimetype','width','height','size','module','controller','action','field','source_id','user_id','sort'];
-	
-	
+    protected $fillable = ['parent_id', 'is_folder', 'disk', 'type', 'name', 'path', 'hash', 'url', 'extension', 'mimetype', 'width', 'height', 'size', 'module', 'controller', 'action', 'field', 'source_id', 'user_id', 'sort'];
+
+
     /**
      * 不可被批量赋值的属性。
      *
      * @var array
      */
     protected $guarded = ['id'];
-	
+
 
     /**
      * boot
@@ -49,21 +50,21 @@ class Media extends Model
         });
 
         // 更新设置parent_id时，禁止为自身或者自身的子节点
-        static::updating(function($media) {
+        static::updating(function ($media) {
             if ($media->parent_id && in_array($media->id, static::parentIds($media->parent_id, true))) {
                 abort(403, trans('media::media.move.forbidden', [$media->name]));
                 return false;
             }
         });
 
-        static::deleting(function($media) {
+        static::deleting(function ($media) {
             if ($media->children()->count()) {
                 abort(403, trans('media::media.delete.notempty', [$media->name]));
             }
         });
 
         // 删除文件和文件的缩略图、预览图
-        static::deleted(function($file) {
+        static::deleted(function ($file) {
 
             // 删除记录的同时删除本地文件
             if ($file->disk && $file->path) {
@@ -72,12 +73,12 @@ class Media extends Model
                 // 删除预览图和缩略图位置
                 // todo……
             }
-        });        
-    }    
+        });
+    }
 
     /**
      * 关联子级别
-     * @return [type] [description]
+     * @return hasMany
      */
     public function children()
     {
@@ -86,7 +87,7 @@ class Media extends Model
 
     /**
      * 关联父级别
-     * @return [type] [description]
+     * @return belongsTo
      */
     public function parent()
     {
@@ -99,10 +100,10 @@ class Media extends Model
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSort($query, $sort=null)
+    public function scopeSort($query, $sort = null)
     {
         return $query->orderby('is_folder', 'desc')->orderby('sort', 'desc')->orderby('id', 'desc');
-    }            
+    }
 
     /**
      * 获取节点的全部父编号
@@ -112,7 +113,7 @@ class Media extends Model
      * @param  array   $parentIds 传递自身
      * @return array
      */
-    public static function parentIds($id, $self=false, &$parentIds=[])
+    public static function parentIds($id, $self = false, &$parentIds = [])
     {
         static $instance = null;
 
@@ -128,7 +129,7 @@ class Media extends Model
             $instance->parentIds($parentId, true, $parentIds);
         }
 
-        return array_reverse($parentIds);                
+        return array_reverse($parentIds);
     }
 
     /**
@@ -138,14 +139,14 @@ class Media extends Model
      * @param  boolean $self  是否包含自身
      * @return Collection
      */
-    public static function parents($id, $self=false)
+    public static function parents($id, $self = false)
     {
         $parentIds    = static::parentIds($id, $self);
         $parentSorts = array_flip($parentIds);
 
         // 获取父级并排序
         if ($parentIds) {
-            return (new static)->whereIn('id', $parentIds)->get()->sortBy(function($media) use($parentSorts) {
+            return (new static)->whereIn('id', $parentIds)->get()->sortBy(function ($media) use ($parentSorts) {
                 return $parentSorts[$media->id];
             });
         }
@@ -165,7 +166,7 @@ class Media extends Model
             return $this->created_at;
         }
 
-        return $this->created_at->diffForHumans();      
+        return $this->created_at->diffForHumans();
     }
 
 
@@ -190,6 +191,38 @@ class Media extends Model
     }
 
     /**
+     * 获取访问连接
+     * 1，文件夹返回访问连接
+     * 2，图片返回预览连接
+     *
+     * @return string
+     */
+    public function getLinkAttribute()
+    {
+        $link = null;
+
+        if ($this->type == 'folder') {
+            // 合并当前所有参数(排除分页参数)
+            $parameters = array_merge(
+                app('router')->current()->parameters(),
+                app('request')->except('page'),
+                [
+                    'folder_id' => $this->id
+                ]
+            );
+
+            $link = route(
+                app('router')->current()->getName(),
+                $parameters
+            );
+        } else if ($this->type == 'image') {
+            $link = preview($this->disk . ':' . $this->path);
+        }
+
+        return $link;
+    }
+
+    /**
      * 判定文件类型
      * @param  mixed $type 类型
      * @return boolean
@@ -202,7 +235,7 @@ class Media extends Model
         }
 
         return false;
-    }    
+    }
 
     /**
      * Dynamically pass missing methods to the user.
@@ -219,5 +252,5 @@ class Media extends Model
         }
 
         return parent::__call($method, $parameters);
-    }    
+    }
 }

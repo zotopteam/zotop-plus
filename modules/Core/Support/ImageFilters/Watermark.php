@@ -111,28 +111,26 @@ class Watermark extends ImageFilter
     /**
      * 初始化
      */
-    public function __construct($config = [])
+    public function __construct($parameter = null)
     {
         // 读取核心设置
-        $config = array_merge(config('core.image.watermark'), (array) $config);
-
-        $this->enabled    = Arr::get($config, 'enabled', $this->enabled);
-        $this->width      = Arr::get($config, 'width', $this->width);
-        $this->height     = Arr::get($config, 'height', $this->height);
-        $this->quality    = Arr::get($config, 'quality', $this->quality);
+        $this->enabled    = config('core.image.watermark.enabled', $this->enabled);
+        $this->width      = config('core.image.watermark.width', $this->width);
+        $this->height     = config('core.image.watermark.height', $this->height);
+        $this->quality    = config('core.image.watermark.quality', $this->quality);
         
-        $this->opacity    = Arr::get($config, 'opacity', $this->opacity);
-        $this->position   = Arr::get($config, 'position', $this->position);
-        $this->offset_x   = Arr::get($config, 'offset_x', $this->offset_x);
-        $this->offset_y   = Arr::get($config, 'offset_y', $this->offset_y);
+        $this->opacity    = config('core.image.watermark.opacity', $this->opacity);
+        $this->position   = config('core.image.watermark.position', $this->position);
+        $this->offset_x   = config('core.image.watermark.offset_x', $this->offset_x);
+        $this->offset_y   = config('core.image.watermark.offset_y', $this->offset_y);
         
-        $this->type       = Arr::get($config, 'type', $this->type);
-        $this->text       = Arr::get($config, 'text', $this->type);
-        $this->font_file  = Arr::get($config, 'font_file', $this->font_file);
-        $this->font_size  = Arr::get($config, 'font_size', $this->font_size);
-        $this->font_color = Arr::get($config, 'font_color', $this->font_color);
-        $this->font_angle = Arr::get($config, 'font_angle', $this->font_angle);
-        $this->image      = Arr::get($config, 'image', $this->image);
+        $this->type       = config('core.image.watermark.type', $this->type);
+        $this->text       = config('core.image.watermark.text', $this->type);
+        $this->font_file  = config('core.image.watermark.font_file', $this->font_file);
+        $this->font_size  = config('core.image.watermark.font_size', $this->font_size);
+        $this->font_color = config('core.image.watermark.font_color', $this->font_color);
+        $this->font_angle = config('core.image.watermark.font_angle', $this->font_angle);
+        $this->image      = config('core.image.watermark.image', $this->image);
     }
 
     /**

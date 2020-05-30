@@ -48,15 +48,18 @@ class Resize extends ImageFilter
     /**
      * 初始化
      */
-    public function __construct($config = [])
+    public function __construct($parameter = null)
     {
         // 读取核心设置
-        $config = array_merge(config('core.image.resize'), (array) $config);
+        $this->enabled = config('core.image.resize.enabled', $this->enabled);
+        $this->width   = config('core.image.resize.width', $this->width);
+        $this->height  = config('core.image.resize.height', $this->height);
+        $this->quality = config('core.image.resize.quality', $this->quality);
 
-        $this->enabled = Arr::get($config, 'enabled', $this->enabled);
-        $this->width   = Arr::get($config, 'width', $this->width);
-        $this->height  = Arr::get($config, 'height', $this->height);
-        $this->quality = Arr::get($config, 'quality', $this->quality);          
+        // 300-300 或者 300
+        if ($parameter) {
+            [$this->width, $this->height] = array_pad(explode('-', $parameter), 2, null);
+        }               
     }
 
     /**

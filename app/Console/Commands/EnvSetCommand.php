@@ -26,7 +26,7 @@ class EnvSetCommand extends Command
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
-    protected $files;    
+    protected $files;
 
     /**
      * Create a new command instance.
@@ -53,7 +53,7 @@ class EnvSetCommand extends Command
         // 获取env文件数据
         $env = $this->laravel->environmentFilePath();
 
-        $str = "\n".$this->files->get($env)."\n";
+        $str = "\n" . $this->files->get($env) . "\n";
 
         // 获取原有的行
         $start = strpos($str, "{$key}=");
@@ -69,7 +69,7 @@ class EnvSetCommand extends Command
 
         $str = trim($str, "\n");
 
-        $this->files->put($env, $str);  
+        $this->files->put($env, $str);
 
         $this->info("Set {$key} successfully!");
     }

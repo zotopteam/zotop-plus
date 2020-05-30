@@ -1,4 +1,5 @@
 <?php
+
 namespace Modules\Core\Support;
 
 use App\Modules\Facades\Module;
@@ -31,7 +32,7 @@ class StorageBrowser
      * 
      * @var string
      */
-    public $root;    
+    public $root;
 
     /**
      * 浏览目录
@@ -72,13 +73,13 @@ class StorageBrowser
      * 
      * @param string $root 根目录，默认为上传目录
      */
-    public function __construct(Request $request, $disk='public', $root='uploads', $dir='')
+    public function __construct(Request $request, $disk = 'public', $root = 'uploads', $dir = '')
     {
         $this->disk    = $disk;
         $this->storage = Storage::disk($disk);
         $this->root    = $root;
         $this->dir     = $dir ?: $request->input('dir');
-        $this->path    = trim(trim($this->root,'/').'/'.trim($this->dir,'/'), '/');
+        $this->path    = trim(trim($this->root, '/') . '/' . trim($this->dir, '/'), '/');
         $this->route   = app('router')->getCurrentRoute()->getName();
         $this->params  = array_merge(app('router')->getCurrentRoute()->parameters(), $request->all());
     }
@@ -100,13 +101,13 @@ class StorageBrowser
         while ($segments) {
             $dir  = implode('/', $segments);
             $name = array_pop($segments);
-            $href = route($this->route, array_merge($this->params, ['dir'=>trim($dir, '/')]));
-            $position[] = (object) compact('name','href');
+            $href = route($this->route, array_merge($this->params, ['dir' => trim($dir, '/')]));
+            $position[] = (object) compact('name', 'href');
         }
 
         $position = array_reverse($position);
 
-        return collect($position);  
+        return collect($position);
     }
 
     /**
@@ -126,8 +127,8 @@ class StorageBrowser
             array_pop($segments);
             $dir  = implode('/', $segments);
             $name = end($segments);
-            $href = route($this->route, array_merge($this->params, ['dir'=>trim($dir, '/')]));
-            $upfolder = (object) compact('name','href');
+            $href = route($this->route, array_merge($this->params, ['dir' => trim($dir, '/')]));
+            $upfolder = (object) compact('name', 'href');
             return $upfolder;
         }
 
@@ -145,7 +146,7 @@ class StorageBrowser
             'class' => 'js-prompt',
             'icon' => 'fa fa-folder',
             'name' => 'name',
-            'url'   => route('core.storage.folder.create', array_merge($this->params,['path'  => $this->path])),
+            'url'   => route('core.storage.folder.create', array_merge($this->params, ['path'  => $this->path])),
         ];
     }
 
@@ -170,7 +171,7 @@ class StorageBrowser
             $folder->realpath = $this->storage->path($path);
             $folder->size     = '';
             $folder->time     = Carbon::parse($this->storage->lastModified($path));
-            $folder->href     = route($this->route, array_merge($this->params, ['dir'=>$path]));
+            $folder->href     = route($this->route, array_merge($this->params, ['dir' => $path]));
             $folder->typename = trans('core::folder.type');
 
             $folder->action   = [
@@ -195,7 +196,7 @@ class StorageBrowser
             $folders[] = Filter::fire('core.storagebrower.folder', $folder, $this);
         }
 
-        return collect($folders);    
+        return collect($folders);
     }
 
     public function files()
@@ -216,7 +217,7 @@ class StorageBrowser
             $file->type      = File::humanType($path) ?? 'other';
             $file->icon      = File::icon($path);
             $file->url       = $this->storage->url($path);
-            $file->typename  = trans('core::file.type.'.$file->type);
+            $file->typename  = trans('core::file.type.' . $file->type);
             $file->width     = 0;
             $file->height    = 0;
             $file->action    = [
@@ -224,7 +225,7 @@ class StorageBrowser
                     'text' => trans('master.download'),
                     'icon' => 'fa fa-download',
                     'href' => route('core.storage.file.download', array_merge($this->params, ['path'  => $path])),
-                ],                
+                ],
                 'rename' => [
                     'text'  => trans('master.rename'),
                     'icon'  => 'fa fa-edit',
@@ -264,13 +265,13 @@ class StorageBrowser
      *
      * @param  string  $method
      * @param  array   $parameters
-     * @return \Modules\Core\Support\Watermark
+     * @return this
      *
      * @throws \BadMethodCallException
      */
     public function __call($method, $parameters)
     {
-        if (! Str::startsWith($method, 'with')) {
+        if (!Str::startsWith($method, 'with')) {
             throw new BadMethodCallException("Method [$method] does not exist on view.");
         }
 
@@ -287,5 +288,5 @@ class StorageBrowser
     public static function __callStatic($method, $parameters)
     {
         return (new static)->$method(...$parameters);
-    }         
+    }
 }

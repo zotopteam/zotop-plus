@@ -2,13 +2,12 @@
 
 namespace Modules\Core\Support;
 
-use App\Support\Facades\Filter;
-use Closure;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use App\Support\ImageFilter;
+use App\Support\Facades\Filter;
+use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class Upload
 {
@@ -46,12 +45,6 @@ class Upload
      * @var Illuminate\Http\UploadedFile
      */
     public $file;
-
-    /**
-     * 文件真实路径
-     * @var string
-     */
-    public $realpath;    
 
     /**
      * 文件路径
@@ -106,12 +99,10 @@ class Upload
      */
     public function __construct(UploadedFile $file)
     {
-        $this->file      = $file;
-        $this->request   = app('request');
-        $this->disk      = $this->disk();
-        $this->directory = $this->directory();
-        $this->types     = config('core.upload.types');
-        
+        $this->file    = $file;
+        $this->request = app('request');
+        $this->types   = config('core.upload.types');
+
         $this->realpath  = $this->file->getRealPath();
         $this->type      = $this->file->getHumanType();
         $this->extension = $this->file->getClientOriginalExtension();
@@ -119,6 +110,9 @@ class Upload
         $this->mimetype  = $this->file->getMimeType();
         $this->hash      = $this->file->getHash();
         $this->name      = $this->request->input('filename', $this->file->getClientOriginalName());
+
+        $this->disk      = $this->disk();
+        $this->directory = $this->directory();
     }
 
     /**
@@ -142,22 +136,9 @@ class Upload
             return $this->error($error);
         }
 
-        // 存储文件
-        $file = Storage::disk($this->disk)->putFileAs($this->directory, $this->file, $this->hash.'.'.$this->extension);
-
-        // 获取文件信息
-        $this->path     = $file;
-        $this->url      = Storage::disk($this->disk)->url($file);
-
-        // 获取图片信息
-        if ($this->type == 'image') {
-            // 获取宽高和大小
-            $image = Storage::disk($this->disk)->get($this->path);
-            $image = Image::make($image);
-            // $this->size   = $image->filesize();
-            $this->width  = $image->width();
-            $this->height = $image->height();            
-        }        
+        // 保存文件
+        $this->path     = $this->storageFile();
+        $this->url      = $this->storageUrl();
 
         // 过滤并返回数据
         $data = [
@@ -171,18 +152,74 @@ class Upload
             'width'     => $this->width,
             'height'    => $this->height,
             'path'      => $this->path,
-            'url'       => $this->url,        
+            'url'       => $this->url,
         ];
 
         return $this->success($data);
     }
 
     /**
+     * 存储文件，返回文件的存储路径（disk path）
+     *
+     * @return string
+     */
+    protected function storageFile()
+    {
+        // 因为要对图片加水印，所以单独处理图片存储
+        if ($this->type == 'image') {
+
+            // 图片缩放和水印
+            $image = Image::make($this->file);
+            $image = ImageFilter::apply($image, 'core-resize');
+            $image = ImageFilter::apply($image, 'core-watermark');
+
+            // 图片宽高
+            $this->width  = $image->width();
+            $this->height = $image->height();
+            $this->size   = $image->filesize();
+
+            // 存储图片
+            $this->path = $this->directory . '/' . $this->storageName();
+
+            if (Storage::disk($this->disk)->put($this->path, (string) $image->encode())) {
+                return $this->path;
+            }
+
+            return null;
+        }
+
+        // 其余类型文件直接存储
+        $this->path = Storage::disk($this->disk)->putFileAs($this->directory, $this->file, $this->storageName());
+        return $this->path;
+    }
+
+    /**
+     * 获取文件的存储url
+     *
+     * @return void
+     */
+    public function storageUrl()
+    {
+        return Storage::disk($this->disk)->url($this->path);
+    }
+
+    /**
+     * 文件存储名称 2020053012161412345.jpg
+     *
+     * @return string
+     */
+    protected function storageName()
+    {
+        return $this->hash . '.' . $this->extension;
+    }
+
+
+    /**
      * 设置或获取存储的磁盘
      * @param  string $disk
      * @return mixed
      */
-    public function disk($disk=null)
+    public function disk($disk = null)
     {
         if ($disk) {
             $this->disk = $disk;
@@ -197,7 +234,7 @@ class Upload
      * @param  string $directory
      * @return mixed
      */
-    public function directory($directory=null)
+    public function directory($directory = null)
     {
         if ($directory) {
             $this->directory = $directory;
@@ -205,35 +242,9 @@ class Upload
         }
 
         // 默认存储路径
-        $directory = 'uploads' . $this->type . '/' . date(config('core.upload.dir', 'Y/m/d'), time());
+        $directory = 'uploads/' . $this->type . '/' . date(config('core.upload.dir', 'Y/m/d'), time());
 
         return $this->request->input('dir', $directory);
-    }
-
-    /**
-     * 上传内容处理，如图片缩放或者水印等
-     * @return void
-     */
-    public function process()
-    {
-        if ($this->type == 'image') {
-            
-            try {
-                // 图片缩放
-                //app(Resize::class)->with($this->request->input('resize', []))->apply($this->realpath);
-                // 图片水印
-                //app(Watermark::class)->with($this->request->input('watermark', []))->apply($this->realpath);
-            } catch (\Exception $e) {
-            }
-            
-            // 获取宽高和大小
-            $image = Storage::disk($this->disk)->get($this->path);
-            $image = app('image')->make($image);
-
-            $this->size   = $image->filesize();
-            $this->width  = $image->width();
-            $this->height = $image->height();            
-        }
     }
 
     /**
@@ -244,18 +255,18 @@ class Upload
     {
         // 检查文件类型
         if (empty($this->type)) {
-            return 'type';            
+            return 'type';
         }
 
         // 检查文件类型是否开启
-        if (! Arr::get($this->types, "{$this->type}.enabled", 0)) {
+        if (!Arr::get($this->types, "{$this->type}.enabled", 0)) {
             return 'enabled';
         }
 
         // 检查文件格式
         if ($extensions = Arr::get($this->types, "{$this->type}.extensions", '')) {
-            if (! in_array($this->extension, explode(',', $extensions))) {
-                return 'extension';                
+            if (!in_array($this->extension, explode(',', $extensions))) {
+                return 'extension';
             }
         }
 
@@ -299,7 +310,7 @@ class Upload
     {
         $data = array_merge([
             'state' => true,
-            'content' => trans('core::file.upload.success',[
+            'content' => trans('core::file.upload.success', [
                 'type'      => $this->type,
                 'name'      => $this->name,
                 'extension' => $this->extension,
@@ -307,7 +318,6 @@ class Upload
             ]),
         ], $data);
 
-        return Filter::fire('core.file.upload', $data, $this);  
+        return Filter::fire('core.file.upload', $data, $this);
     }
-
 }

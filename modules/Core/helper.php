@@ -1,5 +1,5 @@
 <?php
-if (! function_exists('allow')) {
+if (!function_exists('allow')) {
 
     /**
      * 检查当前用户是否拥有权限
@@ -12,7 +12,7 @@ if (! function_exists('allow')) {
     }
 }
 
-if (! function_exists('array_deep')) {
+if (!function_exists('array_deep')) {
     /**
      * 将array_dot得到的数组反向为真实数组格式
      * @param  array  $arrayDot [description]
@@ -24,12 +24,12 @@ if (! function_exists('array_deep')) {
         foreach ($arrayDot as $key => $value) {
             array_set($array, $key, $value);
         }
-        return $array;  
+        return $array;
     }
 }
 
-if (! function_exists('array_object')) {
-    
+if (!function_exists('array_object')) {
+
     /**
      * 数组转对象
      * 
@@ -39,15 +39,15 @@ if (! function_exists('array_object')) {
     function array_object($array)
     {
         if (is_array($array)) {
-            return (object)array_map(__FUNCTION__, $array);
+            return (object) array_map(__FUNCTION__, $array);
         }
 
         return $array;
     }
 }
 
-if (! function_exists('object_array')) {
-    
+if (!function_exists('object_array')) {
+
     /**
      * 对象转数组
      * 
@@ -57,15 +57,15 @@ if (! function_exists('object_array')) {
     function object_array($object)
     {
         if (is_object($object)) {
-            $object = array_map(__FUNCTION__, (array)$object);
+            $object = array_map(__FUNCTION__, (array) $object);
         }
 
         return $object;
     }
 }
 
-if (! function_exists('str_array')) {
-    
+if (!function_exists('str_array')) {
+
     /**
      * 分隔字符串为数组，支持多个分隔符
      * 
@@ -86,16 +86,16 @@ if (! function_exists('str_array')) {
         $array = explode(array_shift($delimiters), $string);
 
         if ($delimiters) {
-            foreach($array as $key=>$val) {
-                 $array[$key] = str_array($val, ...$delimiters);
-            }         
+            foreach ($array as $key => $val) {
+                $array[$key] = str_array($val, ...$delimiters);
+            }
         }
 
         return $array;
     }
 }
 
-if (! function_exists('array_merge_deep')) {
+if (!function_exists('array_merge_deep')) {
     /**
      * 深层次合并数组
      * @param  array  $arrayDot [description]
@@ -121,7 +121,7 @@ if (! function_exists('array_merge_deep')) {
     }
 }
 
-if (! function_exists('array_nest')) {
+if (!function_exists('array_nest')) {
 
     /**
      * 将扁平并含有(id,parent_id)的数组转化为嵌套数组，并追加深度
@@ -148,12 +148,12 @@ if (! function_exists('array_nest')) {
      * @param  string $depth  转化后的节点深度
      * @return array
      */
-    function array_nest(array $array, $rootId=0, $rootDepth=0, $id='id', $parentid='parent_id', $children='children', $depth="depth")
+    function array_nest(array $array, $rootId = 0, $rootDepth = 0, $id = 'id', $parentid = 'parent_id', $children = 'children', $depth = "depth")
     {
 
         $nestArray = [];
         foreach ($array as $row) {
-            if(is_array($row) && isset($row[$id]) && isset($row[$parentid]) && $row[$parentid] == $rootId) {
+            if (is_array($row) && isset($row[$id]) && isset($row[$parentid]) && $row[$parentid] == $rootId) {
                 $row[$depth] = $rootDepth;
                 if ($nest = array_nest($array, $row[$id], $row[$depth] + 1, $id, $parentid, $children, $depth)) {
                     $row[$children] = $nest;
@@ -161,12 +161,12 @@ if (! function_exists('array_nest')) {
                 $nestArray[] = $row;
             }
         }
-        
+
         return $nestArray;
     }
 }
 
-if (! function_exists('array_change_key')) {
+if (!function_exists('array_change_key')) {
 
     /**
      * 改变数组键名
@@ -177,7 +177,7 @@ if (! function_exists('array_change_key')) {
      */
     function array_change_key(array $array, array $changes)
     {
-        foreach ($changes as $old => $new) {            
+        foreach ($changes as $old => $new) {
             array_set($array, $new, array_pull($array, $old));
         }
 
@@ -187,8 +187,8 @@ if (! function_exists('array_change_key')) {
 
 
 
-if (! function_exists('image')) {
-    
+if (!function_exists('image')) {
+
     /**
      * 根据图片Url获取图片访问完整路径或者缩略图路径
      * 
@@ -197,12 +197,12 @@ if (! function_exists('image')) {
      * @param  int $height 图片高度
      * @return string 临时图片URL
      */
-    function image($url, $width=null, $height=null, $fit=true)
+    function image($url, $width = null, $height = null, $fit = true)
     {
         $path = public_path($url);
 
         // 如果图片不存在
-        if ( empty($url) || !File::exists($path) ) {
+        if (empty($url) || !File::exists($path)) {
             $url  = app('themes')->asset('img/empty.jpg');
             $path = app('themes')->path('assets/img/empty.jpg');
         }
@@ -210,12 +210,12 @@ if (! function_exists('image')) {
         // 如果缩放图片
         if ($width || $height) {
             $url = md5($url);
-            $url = 'thumbnails/'.substr($url, 0, 2).'/'.substr($url, 2, 2).'/'.$url.'-'.intval($width).'-'.intval($height).'-'.intval($fit).'.'.File::extension($path);
+            $url = 'thumbnails/' . substr($url, 0, 2) . '/' . substr($url, 2, 2) . '/' . $url . '-' . intval($width) . '-' . intval($height) . '-' . intval($fit) . '.' . File::extension($path);
             $file = public_path($url);
 
             // 缩略图不存在，或者原图片被修改
-            if ( !File::exists($file) || File::lastModified($file) < File::lastModified($path) ) {           
-                
+            if (!File::exists($file) || File::lastModified($file) < File::lastModified($path)) {
+
                 // 如果目录不存在，尝试创建
                 if (!File::isDirectory($dir = dirname($file))) {
                     File::makeDirectory($dir, 0775, true);
@@ -228,18 +228,14 @@ if (! function_exists('image')) {
                 if ($width && $height && $fit) {
                     app('image')->make($file)->fit($width, $height)->save();
                 } else {
-                    app('image')->make($file)->resize($width, $height, function($constraint) {
+                    app('image')->make($file)->resize($width, $height, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     })->save();
                 }
-            }                     
+            }
         }
 
         return url($url);
     }
 }
-
-
-
-

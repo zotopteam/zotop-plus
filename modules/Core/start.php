@@ -38,7 +38,7 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 /**
  * 扩展 Request::referer 功能
  */
-Request::macro('referer', function() {
+Request::macro('referer', function () {
     // 如果前面有传入，比如表单传入
     if ($referer = request()->input('referer')) {
         return $referer;
@@ -49,14 +49,14 @@ Request::macro('referer', function() {
 /**
  * 扩展 Route:active 如果是当前route，则返回 active
  */
-Router::macro('active', function($route, $active="active", $normal='') {
+Router::macro('active', function ($route, $active = "active", $normal = '') {
     return Route::is($route) ? $active : $normal;
 });
 
 /**
  * 扩展File::mime方法, 获取文件类型audio/avi，text/xml 斜杠前面部分  
  */
-File::macro('mime', function($file) {
+File::macro('mime', function ($file) {
     if ($mimeType = static::mimeType($file)) {
         list($mime, $type) = explode('/', $mimeType);
         return $mime;
@@ -67,7 +67,7 @@ File::macro('mime', function($file) {
 /**
  * 扩展File::humanType方法, 获取文件的类型，依据系统可上传的类型判断
  */
-File::macro('humanType', function($file) {
+File::macro('humanType', function ($file) {
     $extension  = strpos($file, '.') ? static::extension($file) : trim($file, '.');
     $humanTypes = config('core.upload.types');
     foreach ($humanTypes as $type => $info) {
@@ -82,9 +82,9 @@ File::macro('humanType', function($file) {
 /**
  * 扩展File::icon方法, 获取文件图标  
  */
-File::macro('icon', function(...$file) {
+File::macro('icon', function (...$file) {
     $icon = \Module::data('core::file.icon');
-    foreach(func_get_args() as $file) {
+    foreach (func_get_args() as $file) {
         $extension = strpos($file, '.') ? static::extension($file) : trim($file, '.');
         if (isset($icon[$extension])) {
             return $icon[$extension];
@@ -96,8 +96,8 @@ File::macro('icon', function(...$file) {
 /**
  * 扩展File::meta, 从文件头部的注释中获取文件文本文件的meta说明信息
  */
-File::macro('meta', function($file, array $headers=[]) {
-    
+File::macro('meta', function ($file, array $headers = []) {
+
     // 获取的header
     $headers = $headers ? $headers : ['title', 'description', 'author', 'url'];
 
@@ -108,8 +108,8 @@ File::macro('meta', function($file, array $headers=[]) {
 
     // 从注释中获取meta
     foreach ($headers as $key) {
-        preg_match('/{{--\s*'.$key.':(.*?)\s*--}}/s', $data, $match);
-        ${$key} = $match ? trim($match[1]) : '';        
+        preg_match('/{{--\s*' . $key . ':(.*?)\s*--}}/s', $data, $match);
+        ${$key} = $match ? trim($match[1]) : '';
     }
 
     return compact($headers);
@@ -118,7 +118,7 @@ File::macro('meta', function($file, array $headers=[]) {
 /**
  * 扩展上传的获取文件类型，依据系统可上传的类型判断
  */
-UploadedFile::macro('getHumanType',function() {
+UploadedFile::macro('getHumanType', function () {
     $extension = $this->getClientOriginalExtension();
     return File::humanType($extension);
 });
@@ -126,7 +126,7 @@ UploadedFile::macro('getHumanType',function() {
 /**
  * 扩展上传的获取文件的hash（md5)值
  */
-UploadedFile::macro('getHash',function() {
+UploadedFile::macro('getHash', function () {
     $realpath = $this->getRealPath();
     return md5_file($realpath);
 });
@@ -136,7 +136,7 @@ UploadedFile::macro('getHash',function() {
  * whereSmart('type', 'aaa,bbb')
  * whereSmart('type', ['aaa','bbb'])
  */
-Builder::macro('whereSmart', function($column, $param, $separator=',') {
+Builder::macro('whereSmart', function ($column, $param, $separator = ',') {
 
     return $this->when(!empty($param), function ($query) use ($column, $param, $separator) {
 
@@ -148,7 +148,6 @@ Builder::macro('whereSmart', function($column, $param, $separator=',') {
 
         return $query->whereIn($column, $param);
     });
-
 });
 
 /**
@@ -156,7 +155,7 @@ Builder::macro('whereSmart', function($column, $param, $separator=',') {
  * searchIn('title,summary', 'keyword')
  * searchIn(['title','summary'], 'keyword')
  */
-Builder::macro('searchIn', function($column, $param, $separator=',') {
+Builder::macro('searchIn', function ($column, $param, $separator = ',') {
 
     return $this->when(!empty($param), function ($query) use ($column, $param, $separator) {
 
@@ -168,15 +167,14 @@ Builder::macro('searchIn', function($column, $param, $separator=',') {
             }
         });
     });
-    
 });
 
 
 /**
  * 文件上传
  */
-Form::macro('upload', function($attrs) {
-    
+Form::macro('upload', function ($attrs) {
+
     // 标签预处理
     $attrs = Filter::fire('core.field.upload.attrs', $attrs);
 
@@ -187,18 +185,18 @@ Form::macro('upload', function($attrs) {
     $id       = $this->getId($attrs);
     $value    = $this->getValue($attrs);
     $name     = $this->getName($attrs);
-    
+
     // 上传和选择参数
     $filetype  = $this->getAttribute($attrs, 'filetype');
     $url       = $this->getAttribute($attrs, 'url', route('core.file.upload_chunk'));
-    $allow     = $this->getAttribute($attrs, 'allow', $types->implode('extensions',','));
+    $allow     = $this->getAttribute($attrs, 'allow', $types->implode('extensions', ','));
     $maxsize   = $this->getAttribute($attrs, 'maxsize', 1024);
     $typename  = $this->getAttribute($attrs, 'typename', trans('core::file.type.files'));
     $folder    = $this->getAttribute($attrs, 'folder', '');
     $source_id = $this->getAttribute($attrs, 'source_id', '');
-    
+
     // 界面文字和图标
-    $select_text = $this->getAttribute($attrs, 'select_text', trans('core::field.upload.select', [$typename])); 
+    $select_text = $this->getAttribute($attrs, 'select_text', trans('core::field.upload.select', [$typename]));
     $button_icon = $this->getAttribute($attrs, 'button_icon', 'fa-upload');
     $button_text = $this->getAttribute($attrs, 'button_text', trans('core::field.upload.button', [$typename]));
 
@@ -225,13 +223,13 @@ Form::macro('upload', function($attrs) {
         'chunk_size'       => config('core.upload.chunk_size', '2mb'),
         'multipart_params' => $params,
         'filters'          => [
-            'max_file_size'      => $maxsize.'mb',
+            'max_file_size'      => $maxsize . 'mb',
             'mime_types'         => [[
                 'title'      => $select_text,
                 'extensions' => $allow
             ]],
             'prevent_duplicates' => true,
-        ] 
+        ]
     ]);
 
     // 高级上传及工具
@@ -241,7 +239,7 @@ Form::macro('upload', function($attrs) {
     $view = $this->getAttribute($attrs, 'view', 'core::field.upload');
 
     return $this->toHtmlString(
-            $this->view->make($view)
+        $this->view->make($view)
             ->with(compact('id', 'name', 'value', 'attrs', 'options', 'button_icon', 'button_text', 'select_text', 'tools'))
             ->render()
     );
@@ -254,8 +252,8 @@ Form::macro('upload', function($attrs) {
  * {field type="upload_image" value=""}
  * {field type="upload_image" value="" button="Upload" resize="['width'=>1920,height=>800,quality=>100,crop=>false]" params=>"[]"}
  */
-Form::macro('upload_image', function($attrs) {
-    
+Form::macro('upload_image', function ($attrs) {
+
     // 标签预处理
     $attrs = Filter::fire('core.field.upload_image.attrs', $attrs);
     $attrs = $attrs + [
@@ -300,8 +298,8 @@ Form::macro('upload_image', function($attrs) {
  * {field type="gallery" value=""}
  * {field type="gallery" value="" watermark="true" resize="['width'=>1920,height=>800,quality=>100,crop=>false]" params=>"[]"}
  */
-Form::macro('gallery', function($attrs) {
-    
+Form::macro('gallery', function ($attrs) {
+
     $attrs['value']  = $this->getValue($attrs);
     $attrs['value']  = is_array($attrs['value']) ? array_values($attrs['value']) : [];
     $attrs['view']   = $attrs['view'] ?? 'core::field.gallery';
@@ -313,7 +311,7 @@ Form::macro('gallery', function($attrs) {
 /**
  * 日期选择器
  */
-Form::macro('date', function($attrs) {
+Form::macro('date', function ($attrs) {
 
     $value = $this->getValue($attrs);
     $id    = $this->getId($attrs);
@@ -333,9 +331,9 @@ Form::macro('date', function($attrs) {
         'trigger'  => $this->getAttribute($attrs, 'trigger', 'click'),
     ]);
 
-    $options['elem']  = '#'.$id;
+    $options['elem']  = '#' . $id;
     $options['value'] = $value;
-    $options['btns']  = $options['btns'] && is_string($options['btns']) ? explode(',' , $options['btns']) : ['confirm'];
+    $options['btns']  = $options['btns'] && is_string($options['btns']) ? explode(',', $options['btns']) : ['confirm'];
 
     return $this->toHtmlString(
         $this->view->make('core::field.date')->with(compact('name', 'value', 'id', 'icon', 'attrs', 'options'))->render()
@@ -345,7 +343,7 @@ Form::macro('date', function($attrs) {
 /**
  * 日期时间选择器
  */
-Form::macro('year', function($attrs) {
+Form::macro('year', function ($attrs) {
     $attrs['type']   = 'year';
     return $this->macroCall('date',  [$attrs]);
 });
@@ -353,7 +351,7 @@ Form::macro('year', function($attrs) {
 /**
  * 日期时间选择器
  */
-Form::macro('month', function($attrs) {
+Form::macro('month', function ($attrs) {
     $attrs['type']   = 'month';
     return $this->macroCall('date',  [$attrs]);
 });
@@ -361,7 +359,7 @@ Form::macro('month', function($attrs) {
 /**
  * 日期时间选择器
  */
-Form::macro('datetime', function($attrs) {
+Form::macro('datetime', function ($attrs) {
     $attrs['type']   = 'datetime';
     return $this->macroCall('date',  [$attrs]);
 });
@@ -369,7 +367,7 @@ Form::macro('datetime', function($attrs) {
 /**
  * 时间选择器
  */
-Form::macro('time', function($attrs) {
+Form::macro('time', function ($attrs) {
     $attrs['type']   = 'time';
     return $this->macroCall('date',  [$attrs]);
 });
@@ -378,9 +376,9 @@ Form::macro('time', function($attrs) {
 /**
  * 单选组
  */
-Form::macro('radiogroup', function($attrs) {
+Form::macro('radiogroup', function ($attrs) {
     $value   = $this->getValue($attrs);
-    $name    = $this->getName($attrs);    
+    $name    = $this->getName($attrs);
     $options = $this->getAttribute($attrs, 'options',  []);
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'radiogroup-default');
@@ -400,9 +398,9 @@ Form::macro('radiogroup', function($attrs) {
  * 图片卡片 options = ['value'=>['img url']]
  * 图文卡片 options = ['value'=>['img url','show text']]
  */
-Form::macro('radiocards', function($attrs) {
+Form::macro('radiocards', function ($attrs) {
     $value   = $this->getValue($attrs);
-    $name    = $this->getName($attrs);    
+    $name    = $this->getName($attrs);
     $options = $this->getAttribute($attrs, 'options',  []);
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'radiocards-default');
@@ -421,16 +419,16 @@ Form::macro('radiocards', function($attrs) {
 /**
  * 是/否 开关
  */
-Form::macro('toggle', function($attrs) {
+Form::macro('toggle', function ($attrs) {
     $value   = $this->getValue($attrs);
     $id      = $this->getId($attrs);
     $name    = $this->getName($attrs);
 
     $enable  = $this->getAttribute($attrs, 'enable', 1);
     $disable = $this->getAttribute($attrs, 'disable', 0);
-    
+
     $value  = $value ?? $disable;
-    
+
     $class   = $this->getAttribute($attrs, 'class');
 
     return $this->toHtmlString(
@@ -441,7 +439,7 @@ Form::macro('toggle', function($attrs) {
 /**
  * 是/否
  */
-Form::macro('bool', function($attrs) {
+Form::macro('bool', function ($attrs) {
     // options
     $attrs['options'] = $this->getAttribute($attrs, 'options',  [
         1 => trans('master.yes'),
@@ -453,7 +451,7 @@ Form::macro('bool', function($attrs) {
 /**
  * 启用/禁用
  */
-Form::macro('enable', function($attrs){
+Form::macro('enable', function ($attrs) {
     // options
     $attrs['options'] = $this->getAttribute($attrs, 'options',  [
         1 => trans('master.enable'),
@@ -465,10 +463,10 @@ Form::macro('enable', function($attrs){
 /**
  * 多选组
  */
-Form::macro('checkboxgroup', function($attrs){
+Form::macro('checkboxgroup', function ($attrs) {
     $value   = $this->getValue($attrs);
     $value   = is_array($value) ? $value : [];
-    $name    = $this->getName($attrs);    
+    $name    = $this->getName($attrs);
     $options = $this->getAttribute($attrs, 'options', []);
     $column  = $this->getAttribute($attrs, 'column', 0);
     $class   = $this->getAttribute($attrs, 'class', 'checkboxgroup-default');
@@ -481,7 +479,7 @@ Form::macro('checkboxgroup', function($attrs){
 /**
  * 代码编辑器
  */
-Form::macro('code', function($attrs) {
+Form::macro('code', function ($attrs) {
     $value   = $this->getValue($attrs);
     $name    = $this->getName($attrs);
 
@@ -499,8 +497,8 @@ Form::macro('code', function($attrs) {
         'toolbar'       => $this->getAttribute($attrs, 'toolbar', false),
         'codeFold'      => $this->getAttribute($attrs, 'codeFold', true),
         'searchReplace' => $this->getAttribute($attrs, 'searchReplace', true),
-        'theme'         => $this->getAttribute($attrs, 'theme','default'),
-        'path'          => \Module::asset('core:editormd/lib', false).'/',
+        'theme'         => $this->getAttribute($attrs, 'theme', 'default'),
+        'path'          => \Module::asset('core:editormd/lib', false) . '/',
     ]);
 
     if ($options['height'] == 'auto') {
@@ -515,7 +513,7 @@ Form::macro('code', function($attrs) {
 /**
  * markdown编辑器
  */
-Form::macro('markdown', function($attrs) {
+Form::macro('markdown', function ($attrs) {
     $value   = $this->getValue($attrs);
     $name    = $this->getName($attrs);
 
@@ -527,8 +525,8 @@ Form::macro('markdown', function($attrs) {
         'codeFold'           => $this->getAttribute($attrs, 'codeFold', true),
         'saveHTMLToTextarea' => $this->getAttribute($attrs, 'saveHTMLToTextarea', true),
         'htmlDecode'         => $this->getAttribute($attrs, 'htmlDecode', 'style,script,iframe|on*'),
-        'theme'              => $this->getAttribute($attrs, 'theme','default'),
-        'path'               => \Module::asset('core:editormd/lib', false).'/',
+        'theme'              => $this->getAttribute($attrs, 'theme', 'default'),
+        'path'               => \Module::asset('core:editormd/lib', false) . '/',
     ]);
 
     if ($options['height'] == 'auto') {
@@ -543,7 +541,7 @@ Form::macro('markdown', function($attrs) {
 /**
  * 编辑器
  */
-Form::macro('editor', function($attrs) {
+Form::macro('editor', function ($attrs) {
 
     $attrs['type'] = 'textarea';
     $attrs['rows'] = 18;
@@ -555,7 +553,7 @@ Form::macro('editor', function($attrs) {
 /**
  * icon 选择器
  */
-Form::macro('icon', function($attrs) {
+Form::macro('icon', function ($attrs) {
 
     $value = $this->getValue($attrs);
     $id    = $this->getId($attrs);

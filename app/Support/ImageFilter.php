@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Support;
 
 use Intervention\Image\Filters\FilterInterface;
@@ -33,7 +34,7 @@ abstract class ImageFilter implements FilterInterface
      * @param  array $parameters 滤器参数
      * @return Filter
      */
-    public static function get($name, $parameters=null)
+    public static function get($name, $parameters = null)
     {
         $name = strtolower($name);
 
@@ -47,9 +48,13 @@ abstract class ImageFilter implements FilterInterface
             // 获取滤镜类
             $class = static::$filters[$name];
 
-            // 如果参数为数组, 实例化并注入参数
+            // 如果参数为数组, 实例化并传入参数
             if (is_array($parameters)) {
-                return app($class, $parameters);
+                $filter = new $class();
+                foreach ($parameters as $key => $value) {
+                    $filter->{$key} = $value;
+                }
+                return $filter;
             }
 
             // 如果参数为字符串或者null，则直接传入
@@ -66,7 +71,7 @@ abstract class ImageFilter implements FilterInterface
      * @param  mixed $parameter 滤镜参数，从滤镜__construct传入
      * @return mixed
      */
-    public static function apply($image, $filter, $parameter=null)
+    public static function apply($image, $filter, $parameter = null)
     {
         // 获取滤器
         if ($filter = static::get($filter, $parameter)) {
@@ -104,6 +109,6 @@ abstract class ImageFilter implements FilterInterface
             return $this;
         }
 
-        throw new \Exception('Call to undefined method '.get_class($this)."::{$method}()");
-    }       
+        throw new \Exception('Call to undefined method ' . get_class($this) . "::{$method}()");
+    }
 }

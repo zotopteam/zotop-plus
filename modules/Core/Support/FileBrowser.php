@@ -1,4 +1,5 @@
 <?php
+
 namespace Modules\Core\Support;
 
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class FileBrowser
      * 
      * @var string
      */
-    public $root;    
+    public $root;
 
     /**
      * 浏览目录
@@ -33,7 +34,7 @@ class FileBrowser
      * 当前绝对路径
      * @var string
      */
-    public $realpath;    
+    public $realpath;
 
     /**
      * 当前参数
@@ -57,11 +58,11 @@ class FileBrowser
      * 
      * @param string $root 根目录，默认为上传目录
      */
-    public function __construct(Request $request, $root='public/uploads', $dir='', $autoCreate=false)
+    public function __construct(Request $request, $root = 'public/uploads', $dir = '', $autoCreate = false)
     {
         $this->root       = $root;
         $this->dir        = $dir ?: $request->input('dir');
-        $this->path       = trim(trim($this->root,'/').'/'.trim($this->dir,'/'), '/');
+        $this->path       = trim(trim($this->root, '/') . '/' . trim($this->dir, '/'), '/');
         $this->realpath   = base_path($this->path);
         $this->route      = app('router')->getCurrentRoute()->getName();
         $this->parameters = app('router')->getCurrentRoute()->parameters();
@@ -84,11 +85,11 @@ class FileBrowser
         while ($segments) {
             $dir  = implode('/', $segments);
             $name = array_pop($segments);
-            $href = route($this->route, $this->parameters + ['dir'=>$dir] + $this->params);
-            $position[] = (object) compact('name','href');
+            $href = route($this->route, $this->parameters + ['dir' => $dir] + $this->params);
+            $position[] = (object) compact('name', 'href');
         }
         $position = array_reverse($position);
-        return collect($position);     
+        return collect($position);
     }
 
     /**
@@ -104,8 +105,8 @@ class FileBrowser
             array_pop($segments);
             $dir  = implode('/', $segments);
             $name = end($segments);
-            $href = route($this->route, $this->parameters + ['dir'=>$dir] + $this->params);
-            $upfolder = (object) compact('name','href');
+            $href = route($this->route, $this->parameters + ['dir' => $dir] + $this->params);
+            $upfolder = (object) compact('name', 'href');
             return $upfolder;
         }
 
@@ -129,17 +130,18 @@ class FileBrowser
             $path     = path_base($realpath);
             $size     = '';
             $time     = Carbon::parse(File::lastModified($realpath));
-            $href     = route($this->route, $this->parameters + ['dir'=>$this->dir.'/'.$name] + $this->params);
+            $href     = route($this->route, $this->parameters + ['dir' => $this->dir . '/' . $name] + $this->params);
             $typename = trans('core::folder.type');
-            $folder   = Filter::fire('core.filebrower.folder',
-                            compact('type','name','icon','path','size','time','href','realpath','typename'),
-                            $realpath
-                        );
+            $folder   = Filter::fire(
+                'core.filebrower.folder',
+                compact('type', 'name', 'icon', 'path', 'size', 'time', 'href', 'realpath', 'typename'),
+                $realpath
+            );
 
             $folders[] = array_object($folder);
         }
 
-        return collect($folders);    
+        return collect($folders);
     }
 
     public function files()
@@ -155,7 +157,7 @@ class FileBrowser
             $icon   = File::icon($realpath);
 
             // 获取meta信息中的标题和说明
-            $meta = File::meta($realpath);   
+            $meta = File::meta($realpath);
 
             // 如果是图片，获取图片宽高
             $width   = 0;
@@ -171,13 +173,14 @@ class FileBrowser
             }
 
             // 获取类型名称
-            $typename = trans('core::file.type.'.$type);
+            $typename = trans('core::file.type.' . $type);
 
             // 返回数据
-            $file     = Filter::fire('core.filebrower.file',
-                            compact('name','path','size','time','mime','type','icon','url','width','height','realpath','typename', 'meta'),
-                            $realpath
-                        );            
+            $file     = Filter::fire(
+                'core.filebrower.file',
+                compact('name', 'path', 'size', 'time', 'mime', 'type', 'icon', 'url', 'width', 'height', 'realpath', 'typename', 'meta'),
+                $realpath
+            );
 
             $files[] = array_object($file);
         }
@@ -190,13 +193,13 @@ class FileBrowser
      *
      * @param  string  $method
      * @param  array   $parameters
-     * @return \Modules\Core\Support\Watermark
+     * @return this
      *
      * @throws \BadMethodCallException
      */
     public function __call($method, $parameters)
     {
-        if (! Str::startsWith($method, 'with')) {
+        if (!Str::startsWith($method, 'with')) {
             throw new BadMethodCallException("Method [$method] does not exist on view.");
         }
 
@@ -213,5 +216,5 @@ class FileBrowser
     public static function __callStatic($method, $parameters)
     {
         return (new static)->$method(...$parameters);
-    }         
+    }
 }

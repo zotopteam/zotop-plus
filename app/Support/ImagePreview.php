@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Support;
 
 use App\Support\ImageFilter;
@@ -63,20 +64,23 @@ class ImagePreview
     }
 
     /**
-     * 文件路径hash值
+     * 文件路径md5 hash值
+     * 1，存储盘路径将使用 disk:path 模式
+     * 2，绝对路径将转化为站点根目录起始的相对路径
+     *
      * @return string
      */
     private function path_hash()
     {
         if ($this->disk) {
-            return md5($this->disk.':'.$this->path);
+            return md5($this->disk . ':' . $this->path);
         }
         return md5(path_base($this->path));
     }
 
     /**
      * 静态预览图存储相对路径
-     * 在预览图目录中，按照文件路径的hask值建立文件夹，存储对应规则的预览图文件
+     * 在预览图目录中，按照文件路径的hash值建立文件夹，存储该图片的全部预览图文件
      * @return string
      */
     private function static_path()
@@ -84,8 +88,8 @@ class ImagePreview
         $hash = $this->path_hash();
 
         $path = config('image.preview.static.directory', 'previews/images');
-        $path = $path.'/'.substr($hash, 0, 2).'/'.substr($hash, 2, 2).'/'.$hash;
-        $path = $path.'/'.md5("{$hash}-{$this->filter}-{$this->width}-{$this->height}").'.'.File::extension($this->path);
+        $path = $path . '/' . substr($hash, 0, 2) . '/' . substr($hash, 2, 2) . '/' . $hash;
+        $path = $path . '/' . md5("{$hash}-{$this->filter}-{$this->width}-{$this->height}") . '.' . File::extension($this->path);
 
         return $path;
     }
@@ -100,14 +104,14 @@ class ImagePreview
         $path = dirname($this->static_path());
 
         // 删除图片的所有存储的静态预览图
-        File::deleteDirectory(public_path($path)); 
+        File::deleteDirectory(public_path($path));
 
         // 删除全部空目录
         while (true) {
             // 获取上级目录
             $path = dirname($path);
             // 目录不为空则删除失败，跳出循环
-            if (! @rmdir(public_path($path))) {
+            if (!@rmdir(public_path($path))) {
                 break;
             }
         }
@@ -137,7 +141,7 @@ class ImagePreview
             $lastModified = $this->disk ? Storage::disk($this->disk)->lastModified($this->path) : File::lastModified($this->path);
 
             // 预览文件不存在或者源文件被修改
-            if (! File::exists($file) || File::lastModified($file) < $lastModified) {
+            if (!File::exists($file) || File::lastModified($file) < $lastModified) {
 
                 // 如果目录不存在，尝试创建
                 if (!File::isDirectory($dir = dirname($file))) {
@@ -151,7 +155,7 @@ class ImagePreview
                     'width'  => $this->width,
                     'height' => $this->height,
                 ]);
-                $image->save($file);                
+                $image->save($file);
             }
         }
 
@@ -214,6 +218,6 @@ class ImagePreview
             return $this;
         }
 
-        throw new \Exception('Call to undefined method '.get_class($this)."::{$method}()");
-    }       
+        throw new \Exception('Call to undefined method ' . get_class($this) . "::{$method}()");
+    }
 }

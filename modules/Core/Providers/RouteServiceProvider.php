@@ -60,5 +60,4 @@ class RouteServiceProvider extends ServiceProvider
     {
         require __DIR__ . '/../Routes/console.php';
     }
-    
 }

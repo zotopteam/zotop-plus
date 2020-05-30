@@ -19,11 +19,11 @@ class SupportServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('html', function($app) {
+        $this->app->singleton('html', function ($app) {
             return new Html($app);
         });
 
-        $this->app->singleton('form', function($app) {
+        $this->app->singleton('form', function ($app) {
             return new Form($app);
         });
 
@@ -33,7 +33,7 @@ class SupportServiceProvider extends ServiceProvider
 
         $this->app->singleton('hook.filter', function ($app) {
             return new Filter($app);
-        });            
+        });
     }
 
     /**
@@ -46,14 +46,14 @@ class SupportServiceProvider extends ServiceProvider
         /**
          * Adds a directive in Blade for actions
          */
-        Blade::directive('action', function($expression) {
+        Blade::directive('action', function ($expression) {
             return "<?php Action::fire($expression); ?>";
         });
 
         /**
          * Adds a directive in Blade for filters
          */
-        Blade::directive('filter', function($expression) {
+        Blade::directive('filter', function ($expression) {
             return "<?php echo Filter::fire($expression); ?>";
         });
 
@@ -61,9 +61,9 @@ class SupportServiceProvider extends ServiceProvider
         Blade::extend(function ($value) {
             $pattern = sprintf('/(@)?%sform(\s+[^}]+?)\s*%s/s', '{', '}');
 
-            return preg_replace_callback($pattern, function($matches){
+            return preg_replace_callback($pattern, function ($matches) {
                 $attrs = Blade::convertAttrs($matches[2]);
-                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::open(".$attrs."); ?>";
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::open(" . $attrs . "); ?>";
             }, $value);
         });
 
@@ -71,23 +71,23 @@ class SupportServiceProvider extends ServiceProvider
         Blade::extend(function ($value) {
             $pattern = sprintf('/(@)?%s(\/form)%s/s', '{', '}');
 
-            return preg_replace_callback($pattern, function ($matches)  {
+            return preg_replace_callback($pattern, function ($matches) {
                 return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::close(); ?>";
             }, $value);
-        });        
+        });
 
         // 解析{field ……}
         Blade::extend(function ($value) {
             $pattern = sprintf('/(@)?%sfield(\s+[^}]+?)\s*%s/s', '{', '}');
 
-            return preg_replace_callback($pattern, function ($matches)  {
+            return preg_replace_callback($pattern, function ($matches) {
                 $attrs = Blade::convertAttrs($matches[2]);
-                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::field(".$attrs."); ?>";
+                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::field(" . $attrs . "); ?>";
             }, $value);
         });
 
         // 定义滤器
         ImageFilter::set('fit', \App\Support\ImageFilters\Fit::class);
-        ImageFilter::set('resize', \App\Support\ImageFilters\Resize::class);     
+        ImageFilter::set('resize', \App\Support\ImageFilters\Resize::class);
     }
 }

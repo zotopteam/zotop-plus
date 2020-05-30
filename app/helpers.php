@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Str;
 
-if (! function_exists('dirsize')) {
+if (!function_exists('dirsize')) {
 
     /**
      * 递归获取目录大小
@@ -12,17 +12,17 @@ if (! function_exists('dirsize')) {
      * @return string
      */
     // 递归计算文件夹大小
-    function dirsize($dir, $format=true)
+    function dirsize($dir, $format = true)
     {
         $size = 0;
-        foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+        foreach (glob(rtrim($dir, '/') . '/*', GLOB_NOSORT) as $each) {
             $size += is_file($each) ? filesize($each) : dirsize($each, false);
         }
-        return $format? size_format($size) : $size;
+        return $format ? size_format($size) : $size;
     }
 }
 
-if (! function_exists('size_format')) {
+if (!function_exists('size_format')) {
 
     /**
      * 格式化size为可读格式
@@ -35,16 +35,15 @@ if (! function_exists('size_format')) {
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
         $index = 0;
-        while ($bytes >= 1024)
-        {
+        while ($bytes >= 1024) {
             $bytes /= 1024;
             $index++;
         }
-        return number_format($bytes, $decimals).' '.$units[$index];        
+        return number_format($bytes, $decimals) . ' ' . $units[$index];
     }
 }
 
-if (! function_exists('path_base')) {
+if (!function_exists('path_base')) {
     /**
      *
      * 将完整路径转化为base路径，base_path的反向函数,前后均不包含斜杠
@@ -61,7 +60,7 @@ if (! function_exists('path_base')) {
     }
 }
 
-if (! function_exists('trans_has')) {
+if (!function_exists('trans_has')) {
     /**
      * 检查是否存在对应翻译
      *
@@ -76,7 +75,7 @@ if (! function_exists('trans_has')) {
     }
 }
 
-if (! function_exists('trans_find')) {
+if (!function_exists('trans_find')) {
     /**
      * 翻译文件，可以从多个key中插座，没有找到翻译则结果返回空
      *
@@ -101,7 +100,7 @@ if (! function_exists('trans_find')) {
     }
 }
 
-if (! function_exists('module')) {
+if (!function_exists('module')) {
     /**
      * 获取module
      *
@@ -118,7 +117,7 @@ if (! function_exists('module')) {
     }
 }
 
-if (! function_exists('preview')) {
+if (!function_exists('preview')) {
 
     /**
      * 根据图片路径，预览站点内任意位置的图片
@@ -129,8 +128,9 @@ if (! function_exists('preview')) {
      * @param  string $filter fit=适应 resize=缩放
      * @return string 预览地址
      */
-    function preview($path, $width=null, $height=null, $filter='resize')
+    function preview($path, $width = null, $height = null, $filter = 'resize')
     {
+        //debug($path);
         $preview = \App\Support\ImagePreview::file($path);
 
         // 如果是预览原图，因为原图一般都比较大，所以直接生成动态访问地址
@@ -141,4 +141,3 @@ if (! function_exists('preview')) {
         return $preview->width($width)->height($height)->filter($filter)->url();
     }
 }
-

@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Support;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Traits\Macroable;
 
 class Format

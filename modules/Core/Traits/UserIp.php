@@ -1,4 +1,5 @@
 <?php
+
 namespace Modules\Core\Traits;
 
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,6 @@ trait UserIp
 
         static::creating(function ($model) {
             $model->user_ip = \Request::ip();
-        });        
+        });
     }
 }

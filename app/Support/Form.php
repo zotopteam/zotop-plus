@@ -72,7 +72,7 @@ class Form
         'submit' => 'btn btn-primary',
         'button' => 'btn btn-secondary',
         'reset'  => 'btn btn-light',
-    ];    
+    ];
 
     /**
      * 按钮字段
@@ -82,7 +82,7 @@ class Form
         'submit' => 'fa fa-save',
         'button' => 'fa fa-check-circle',
         'reset'  => 'fa fa-undo',
-    ];  
+    ];
 
     /**
      * 创建一个表单实例
@@ -104,14 +104,14 @@ class Form
     public function open(array $options = [])
     {
         // 键名小写
-        $options = array_change_key_case($options);    
+        $options = array_change_key_case($options);
 
         // 绑定模型的数组或者实例
         $this->bind = Arr::pull($options, 'bind', null);
 
         // 传递表单来源
         if ($referer = Arr::pull($options, 'referer')) {
-            $this->append[] = $this->hidden(['name'=>'_referer', 'value'=>$referer]);
+            $this->append[] = $this->hidden(['name' => '_referer', 'value' => $referer]);
         }
 
         $attributes = [
@@ -126,7 +126,7 @@ class Form
 
         $append = implode("\r\n", $this->append);
 
-        return '<form ' . $this->attributes($attributes) . '>' ."\r\n". $append;
+        return '<form ' . $this->attributes($attributes) . '>' . "\r\n" . $append;
     }
 
     /**
@@ -140,7 +140,7 @@ class Form
         $this->bind = null;
 
         return $this->toHtmlString('</form>');
-    }    
+    }
 
     /**
      * 表单方法
@@ -154,7 +154,7 @@ class Form
 
         // 如果是['DELETE', 'PATCH', 'PUT']方法之一，附加为表单隐藏域
         if (in_array($method, ['DELETE', 'PATCH', 'PUT'])) {
-            $this->append[] = $this->hidden(['name'=>'_method', 'value'=>$method]);
+            $this->append[] = $this->hidden(['name' => '_method', 'value' => $method]);
         }
 
         // 追加token
@@ -176,10 +176,10 @@ class Form
         $keys = ['url', 'route', 'action'];
 
         if ($attributes = Arr::only($options, $keys)) {
-            
+
             // 从属性中删除'url', 'route', 'action'
             Arr::forget($options, $keys);
-            
+
             foreach ($attributes as $method => $parameter) {
                 // ['route.name', 'parameter1', 'parameter2'……]
                 if (is_array($parameter)) {
@@ -206,7 +206,7 @@ class Form
 
         if ($attributes = Arr::only($options, $keys)) {
             Arr::forget($options, $keys);
-            return 'multipart/form-data';     
+            return 'multipart/form-data';
         }
 
         return null;
@@ -255,7 +255,7 @@ class Form
         $type = $this->findType($type);
 
         return $this->$type($attributes);
-    }    
+    }
 
 
     /**
@@ -284,7 +284,7 @@ class Form
         $token = $this->app['session.store']->token();
         $token = !empty($token) ? $token : $this->app['session']->token();
 
-        return $this->hidden(['name'=>'_token', 'value'=>$token]);
+        return $this->hidden(['name' => '_token', 'value' => $token]);
     }
 
     /**
@@ -295,17 +295,17 @@ class Form
     public function textarea(array $attributes)
     {
         $type  = Arr::pull($attributes, 'type');
-        
+
         $id    = $this->getId($attributes);
         $value = $this->getValue($attributes);
         $cols  = Arr::pull($attributes, 'cols', 50);
         $rows  = Arr::pull($attributes, 'rows', 10);
         $class = Arr::pull($attributes, 'class', $this->fieldDefaultClass);
 
-        $attributes = array_merge($attributes, compact('id', 'value', 'class', 'cols', 'rows'));        
-        
+        $attributes = array_merge($attributes, compact('id', 'value', 'class', 'cols', 'rows'));
+
         return $this->toHtmlString('<textarea ' . $this->attributes($attributes) . '>' . $value . '</textarea>');
-    }    
+    }
 
     /**
      * input 类型，<button type="……"></button>
@@ -315,15 +315,15 @@ class Form
     public function button(array $attributes)
     {
         $type       = Arr::pull($attributes, 'type', 'button');
-        $class      = Arr::pull($attributes, 'class', $this->fieldButtonClass[$type]);        
+        $class      = Arr::pull($attributes, 'class', $this->fieldButtonClass[$type]);
         $attributes = array_merge($attributes, compact('type', 'class'));
-        
+
         // 显示内容
         $value = Arr::pull($attributes, 'value', trans(Str::studly($type)));
 
         // 增加图标
         if ($icon = Arr::pull($attributes, 'icon', $this->fieldButtonIcon[$type])) {
-            $value = '<i class="' . $icon . ' fa-fw"></i> '.$value;
+            $value = '<i class="' . $icon . ' fa-fw"></i> ' . $value;
         }
 
         return $this->toHtmlString('<button ' . $this->attributes($attributes) . '>' . $value . '</button>');
@@ -365,7 +365,6 @@ class Form
         }
 
         return $this->toHtmlString('<select ' . $this->attributes($attributes) . '>' . implode('', $html) . '</select>');
-
     }
 
     /**
@@ -376,26 +375,26 @@ class Form
      * @param  bool $multiple 是否多选
      * @return string
      */
-    protected function convertSelectOptionGroup($label, $options, $selected, $multiple, $level=0)
+    protected function convertSelectOptionGroup($label, $options, $selected, $multiple, $level = 0)
     {
         $space = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $level);
 
         $attributes = [
-            'label' => $space.$label
+            'label' => $space . $label
         ];
 
         $html = [];
 
         foreach ($options as $value => $display) {
             if (is_array($display)) {
-                $html[] = $this->convertSelectOptionGroup($value, $display, $selected, $multiple, $level+1);
+                $html[] = $this->convertSelectOptionGroup($value, $display, $selected, $multiple, $level + 1);
             } else {
                 $html[] = $this->convertSelectOption($value, $display, $selected, $multiple);
-            }            
+            }
         }
 
         return $this->toHtmlString('<optgroup ' . $this->attributes($attributes) . '>' . implode('', $html) . '</optgroup>');
-    }    
+    }
 
     /**
      * 转换select的option
@@ -409,8 +408,8 @@ class Form
     {
         if ($multiple) {
             $isSelected = in_array($value, Arr::wrap($selected));
-        } else if (is_int($value) && is_bool($selected))  {
-            $isSelected = (bool)$value === $selected;
+        } else if (is_int($value) && is_bool($selected)) {
+            $isSelected = (bool) $value === $selected;
         } else {
             $isSelected = (string) $value === (string) $selected;
         }
@@ -468,7 +467,7 @@ class Form
         $id = Arr::pull($attributes, 'id');
 
         if (empty($id)) {
-            $id = $this->getName($attributes) .'-'.$value;
+            $id = $this->getName($attributes) . '-' . $value;
         }
 
         // 重新拼装
@@ -479,9 +478,9 @@ class Form
             $label = '<label for="' . $this->getId($attributes) . '">' . $label . '</label>';
         }
 
-        return $this->input($attributes).$label;        
+        return $this->input($attributes) . $label;
     }
-  
+
 
     /**
      * 添加class
@@ -489,8 +488,8 @@ class Form
      * @param  mixed   $add 添加的class
      * @param  boolean $prepend 是否前置
      * @return array
-     */    
-    public function addClass(&$attributes, $add, $prepend=false)
+     */
+    public function addClass(&$attributes, $add, $prepend = false)
     {
         $class = Arr::get($attributes, 'class');
         $class = is_string($class) ? explode(' ', $class) : $class;
@@ -504,7 +503,7 @@ class Form
 
         $class = array_values(array_unique($class));
         $attributes['class'] = $class;
-        return $class;        
+        return $class;
     }
 
     /**
@@ -526,7 +525,7 @@ class Form
      * @param  boolean $pull       是否从属性数组中删除
      * @return mixed
      */
-    public function getAttribute(&$attributes, $key, $default=null, $pull=true)
+    public function getAttribute(&$attributes, $key, $default = null, $pull = true)
     {
         // key可以是多个
         $keys = Arr::wrap($key);
@@ -547,7 +546,7 @@ class Form
         }
 
         // 属性存在，
-        if (! is_null($value)) {
+        if (!is_null($value)) {
 
             // 默认值如果为数组，则value也必须是数组，深度合并默认值默认值和value
             if (is_array($default)) {
@@ -559,7 +558,7 @@ class Form
 
             // 默认值是boolean，转换value为boolean
             if (is_bool($default)) {
-                $value = (boolean) $value;
+                $value = (bool) $value;
             }
 
             return $value;
@@ -575,7 +574,7 @@ class Form
      * @param  boolean $pull 是否从属性数组中删除，默认不删除
      * @return string
      */
-    public function getName(&$attributes, $default=null, $pull=false)
+    public function getName(&$attributes, $default = null, $pull = false)
     {
         return $this->getAttribute($attributes, 'name', $default, $pull);
     }
@@ -587,7 +586,7 @@ class Form
      * @param  boolean $pull 是否从属性数组中删除，默认不删除
      * @return string
      */
-    public function getId(&$attributes, $default=null, $pull=false)
+    public function getId(&$attributes, $default = null, $pull = false)
     {
         // 如果有id，直接获取id，否则获取name    
         $id = $this->getAttribute($attributes, ['id', 'name'], $default, $pull);
@@ -603,7 +602,7 @@ class Form
      * @param  boolean $pull 是否从属性数组中删除，默认不删除
      * @return mixed
      */
-    public function getValue(&$attributes, $default=null, $pull=false)
+    public function getValue(&$attributes, $default = null, $pull = false)
     {
         // 如果属性中存在value，直接返回
         if (Arr::has($attributes, 'value')) {
@@ -618,7 +617,7 @@ class Form
             // 从闪存数据中取值
             $old = $this->app['request']->old($key);
 
-            if (! is_null($old)) {
+            if (!is_null($old)) {
                 return $old;
             }
 
@@ -636,7 +635,7 @@ class Form
      */
     public function transformNameDot($name)
     {
-        return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $name);        
+        return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $name);
     }
 
     /**
@@ -647,7 +646,6 @@ class Form
      */
     protected function attributes($attributes)
     {
-        //Arr::get($attributes,'type') == 'select' && dump($attributes, $this->app['html']->attributes($attributes));
         return $this->app['html']->attributes($attributes);
     }
 
@@ -692,5 +690,5 @@ class Form
         }
 
         static::throwBadMethodCallException($method);
-    }    
+    }
 }

@@ -35,13 +35,11 @@ class Resize extends ImageFilter
     /**
      * 初始化
      */
-    public function __construct($width=null, $height=null)
+    public function __construct($parameter=null)
     {
-        if (strpos($width, '-')) {
-            [$this->width, $this->height] = explode('-', $width);
-        } else {
-            $this->width  = $width;
-            $this->height = $height;            
+        // 300-300 或者 300
+        if ($parameter) {
+            [$this->width, $this->height] = array_pad(explode('-', $parameter), 2, null);
         }
     }
 
