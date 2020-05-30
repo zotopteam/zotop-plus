@@ -21,6 +21,12 @@ class UploadChunk extends Component
     public $text;
 
     /**
+     * 上传提示文字，如：请选择图片
+     * @var string
+     */
+    public $title;
+
+    /**
      * 按钮图标
      * @var string
      */
@@ -33,6 +39,13 @@ class UploadChunk extends Component
     public $type;
 
     /**
+     * 上传最大尺寸
+     * @var string
+     */
+    public $maxsize;
+
+
+    /**
      * 传递参数
      * @var array
      */
@@ -42,13 +55,13 @@ class UploadChunk extends Component
      * 上传url
      * @var string
      */
-    public $url;    
+    public $url;
 
     /**
-     * 上传path
-     * @var string
+     * 是否允许同时上传多个文件
+     * @var boolean
      */
-    public $path;  
+    public $mutiple;
 
     /**
      * Create a new component instance.
@@ -57,23 +70,26 @@ class UploadChunk extends Component
      */
     public function __construct(
         $id         = null,
-        $text       = null,
         $icon       = 'fa fa-upload',
+        $text       = null,
+        $title      = null,
         $type       = null,
         $extensions = null,
         $params     = [],
         $url        = null,
-        $path       = null
-    )
-    {
-        $this->id         = $id ?? 'upload'.time();
+        $mutiple    = true,
+        $maxsize    = 0
+    ) {
+        $this->id         = $id ?? 'upload' . time();
         $this->text       = $text ?? trans('core::file.upload');
         $this->icon       = $icon;
         $this->type       = $type;
         $this->extensions = $extensions;
         $this->params     = $params;
         $this->url        = $url;
-        $this->path       = $path;
+        $this->maxsize    = (int) $maxsize;
+        $this->title      = $title;
+        $this->mutiple    = (bool) $mutiple;
     }
 
     /**
@@ -87,32 +103,34 @@ class UploadChunk extends Component
             $this->extensions = config("core.upload.types.{$this->type}.extensions", '*');
         }
 
+        // 如果没有传入type 
+        if (empty($this->maxsize)) {
+            $this->maxsize = config("core.upload.types.{$this->type}.maxsize", 1024);
+        }
+
         // 上传url
         if (empty($this->url)) {
             $this->url = route('core.file.upload_chunk', array_merge(Route::current()->parameters(), Request::all()));
         }
 
-        // 上传参数
-        $this->params = array_merge([
-            'module'     => app('current.module'),
-            'controller' => app('current.controller'),
-            'action'     => app('current.action'),
-            'path'       => $this->path,
-        ], (array)$this->params);
+        // 上传提示文字
+        if (empty($this->title)) {
+            $this->title = trans("core::file.type." . ($this->type ?? 'null'));
+        }
 
         // 返回组装参数
         return [
             'url'              => $this->url,
             'autostart'        => true,
-            'multi_selection'  => true,
+            'multi_selection'  => $this->mutiple,
             'multipart_params' => $this->params,
             'filters' => [
-                'max_file_size' => '10mb',
+                'max_file_size' => "{$this->maxsize}mb",
                 'mime_types' => [[
-                    'title'      => $this->type ? trans("core::file.type.{$this->type}") : trans("core::file.type.null"),
+                    'title'      => $this->title,
                     'extensions' => $this->extensions,
                 ]],
-                'prevent_duplicates' => true,
+                'prevent_duplicates' => false,
             ],
         ];
     }

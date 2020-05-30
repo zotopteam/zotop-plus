@@ -17,7 +17,7 @@ class Controller extends BaseController
      * app实例
      * 
      * @var mixed|\Illuminate\Foundation\Application
-     */    
+     */
     protected $app;
 
 
@@ -59,10 +59,10 @@ class Controller extends BaseController
     {
         $class = static::class;
         foreach (class_uses_recursive($class) as $trait) {
-            $method = 'boot'.class_basename($trait);
+            $method = 'boot' . class_basename($trait);
             if (method_exists($class, $method)) {
                 forward_static_call([$class, $method]);
-            }            
+            }
         }
     }
 
@@ -116,7 +116,8 @@ class Controller extends BaseController
      * @param string $key 模板显示变量
      * @return bool
      */
-    public function __isset($key) {
+    public function __isset($key)
+    {
         return isset($this->data[$key]);
     }
 
@@ -127,11 +128,12 @@ class Controller extends BaseController
      * @param string $key 模板显示变量
      * @return bool
      */
-    public function __unset($key) {
+    public function __unset($key)
+    {
         if (isset($this->data[$key])) {
             unset($this->data[$key]);
         }
-    }    
+    }
 
     /**
      * 显示View
@@ -145,7 +147,7 @@ class Controller extends BaseController
     {
         // 默认view为: module::controller/action
         if (empty($view)) {
-            $view = $this->app['current.module'].'::'.$this->app['current.controller'].'.'.$this->app['current.action'];
+            $view = $this->app['current.module'] . '::' . $this->app['current.controller'] . '.' . $this->app['current.action'];
         }
 
         // 转换模板数据
@@ -189,7 +191,7 @@ class Controller extends BaseController
      * @param  integer $time 跳转或者消息提示时间
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function success($content, $url='', $time=1)
+    public function success($content, $url = '', $time = 1)
     {
         return $this->message([
             'type'    => 'success',
@@ -207,7 +209,7 @@ class Controller extends BaseController
      * @param  integer $time 跳转或者消息提示时间
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function error($content, $time=5)
+    public function error($content, $time = 5)
     {
         return $this->message([
             'type'    => 'error',

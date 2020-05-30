@@ -38,7 +38,7 @@ class Upload
      * 请求
      * @var Illuminate\Http\Request
      */
-    public $request;
+    protected $request;
 
     /**
      * 上传文件对象
@@ -95,6 +95,12 @@ class Upload
     public $height = 0;
 
     /**
+     * 图片滤镜
+     * @var integer
+     */
+    public $filters;
+
+    /**
      * 初始化
      */
     public function __construct(UploadedFile $file)
@@ -113,6 +119,7 @@ class Upload
 
         $this->disk      = $this->disk();
         $this->directory = $this->directory();
+        $this->filters   = $this->filters();
     }
 
     /**
@@ -168,10 +175,14 @@ class Upload
         // 因为要对图片加水印，所以单独处理图片存储
         if ($this->type == 'image') {
 
-            // 图片缩放和水印
             $image = Image::make($this->file);
-            $image = ImageFilter::apply($image, 'core-resize');
-            $image = ImageFilter::apply($image, 'core-watermark');
+
+            // 应用图片滤镜
+            $filters = is_array($this->filters) ? $this->filters : explode(',', $this->filters);
+
+            foreach ($filters as $filter) {
+                $image = ImageFilter::apply($image, $filter);
+            }
 
             // 图片宽高
             $this->width  = $image->width();
@@ -210,7 +221,7 @@ class Upload
      */
     protected function storageName()
     {
-        return $this->hash . '.' . $this->extension;
+        return now()->format('YmdHisu') . rand(10000, 99999) . '.' . $this->extension;
     }
 
 
@@ -245,6 +256,21 @@ class Upload
         $directory = 'uploads/' . $this->type . '/' . date(config('core.upload.dir', 'Y/m/d'), time());
 
         return $this->request->input('dir', $directory);
+    }
+
+    /**
+     * 设置或获取图片滤镜
+     * @param  mixed $filters
+     * @return array
+     */
+    public function filters($filters = [])
+    {
+        if ($filters) {
+            $this->filters = $filters;
+            return $this;
+        }
+
+        return $this->request->input('filters', ['core-resize', 'core-watermark']);
     }
 
     /**

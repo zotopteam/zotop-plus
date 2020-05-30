@@ -33,10 +33,10 @@ class FileController extends AdminController
             File::put($this->path, $request->input('content'));
 
             return $this->success(trans('master.saved'));
-        }        
-        
+        }
 
-        $this->title   = trans('master.edit');        
+
+        $this->title   = trans('master.edit');
         $this->content = File::get($this->path);
         $this->mode    = File::extension($this->path);
 
@@ -63,11 +63,11 @@ class FileController extends AdminController
                 return $this->error(trans('core::file.name.required'));
             }
 
-            if (!strpos($newname,'.')) {
+            if (!strpos($newname, '.')) {
                 return $this->error(trans('core::file.extension.required'));
             }
 
-            $newpath = $this->path.'/'.$newname;
+            $newpath = $this->path . '/' . $newname;
             $content = $newname;
 
             if (File::exists($newpath)) {
@@ -77,9 +77,8 @@ class FileController extends AdminController
             if (File::put($newpath, $content)) {
                 return $this->success(trans('master.operated'), $request->referer());
             }
-            return $this->error(trans('master.operate.failed'));            
-        }        
-
+            return $this->error(trans('master.operate.failed'));
+        }
     }
 
     /**
@@ -102,11 +101,11 @@ class FileController extends AdminController
                 return $this->error(trans('core::file.name.required'));
             }
 
-            if (!strpos($newname,'.')) {
-                $newname = $newname.'.'.File::extension($this->path);
+            if (!strpos($newname, '.')) {
+                $newname = $newname . '.' . File::extension($this->path);
             }
 
-            $newpath = dirname($this->path).'/'.$newname;
+            $newpath = dirname($this->path) . '/' . $newname;
 
             if (File::exists($newpath)) {
                 return $this->error(trans('core::file.existed', [$newname]));
@@ -115,7 +114,7 @@ class FileController extends AdminController
             if (File::move($this->path, $newpath)) {
                 return $this->success(trans('master.operated'), $request->referer());
             }
-            return $this->error(trans('master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));
         }
     }
 
@@ -136,7 +135,7 @@ class FileController extends AdminController
             if (File::delete($this->path)) {
                 return $this->success(trans('master.deleted'), $request->referer());
             }
-            return $this->error(trans('master.deleted.failed'));            
+            return $this->error(trans('master.deleted.failed'));
         }
     }
 
@@ -154,14 +153,14 @@ class FileController extends AdminController
         // 保存数据
         if ($request->isMethod('POST')) {
 
-            $newpath = dirname($this->path).'/copy '.basename($this->path);
+            $newpath = dirname($this->path) . '/copy ' . basename($this->path);
 
             if (File::copy($this->path, $newpath)) {
                 return $this->success(trans('master.operated'), $request->referer());
             }
-            return $this->error(trans('master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));
         }
-    } 
+    }
 
     /**
      * 大文件上传，当前采用plupload，支持大文件分片上传
@@ -173,7 +172,6 @@ class FileController extends AdminController
         return Plupload::receive('file', function ($file) {
             return Upload::file($file)->save();
         });
-
     }
 
     /**
@@ -184,7 +182,7 @@ class FileController extends AdminController
     public function upload(Request $request)
     {
         \Debugbar::disable();
-        
+
         $file = $request->file('file');
 
         return Upload::file($file)->save();
@@ -198,7 +196,7 @@ class FileController extends AdminController
      * @return array
      */
     public function select(Request $request)
-    {       
+    {
         $browser = app(FileBrowser::class, [
             'root' => $request->input('root'),
             'dir'  => $request->input('dir')
@@ -209,7 +207,7 @@ class FileController extends AdminController
         $this->upfolder = $browser->upfolder();
         $this->position = $browser->position();
         $this->folders  = $browser->folders();
-        $this->files    = $browser->files()->filter(function($item) use($request) {
+        $this->files    = $browser->files()->filter(function ($item) use ($request) {
             return $item->type == $request->filetype;
         });
 
@@ -217,5 +215,5 @@ class FileController extends AdminController
         $this->select = $request->input('select', 0);
 
         return $this->view();
-    }    
+    }
 }

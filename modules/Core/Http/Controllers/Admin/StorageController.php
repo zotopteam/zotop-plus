@@ -58,7 +58,7 @@ class StorageController extends Controller
             }
 
             // 新的路径
-            $path = $path.'/'.$name;
+            $path = $path . '/' . $name;
 
             // 是否已经存在
             if (Storage::disk($disk)->exists($path)) {
@@ -70,7 +70,7 @@ class StorageController extends Controller
                 return $this->success(trans('master.operated'), $request->referer());
             }
 
-            return $this->error(trans('master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));
         }
     }
 
@@ -84,7 +84,7 @@ class StorageController extends Controller
     public function folderRename(Request $request, $disk)
     {
         if ($request->isMethod('POST')) {
-            
+
             $path    = $request->input('path');
             $name    = $request->input('name');
 
@@ -94,7 +94,7 @@ class StorageController extends Controller
             }
 
             // 新路径
-            $newpath = File::dirname($path).'/'.$name;
+            $newpath = File::dirname($path) . '/' . $name;
 
             // 是否存在
             if (Storage::disk($disk)->exists($newpath)) {
@@ -106,7 +106,7 @@ class StorageController extends Controller
                 return $this->success(trans('master.operated'), $request->referer());
             }
 
-            return $this->error(trans('master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));
         }
     }
 
@@ -126,14 +126,14 @@ class StorageController extends Controller
             // 为确保安全，禁止删除含有文件或者文件夹的目录
             if (Storage::disk($disk)->files($path) || Storage::disk($disk)->directories($path)) {
                 return $this->error(trans('core::folder.delete.notempty', [basename($path)]));
-            }            
+            }
 
             // 删除目录
             if (Storage::disk($disk)->deleteDirectory($path)) {
                 return $this->success(trans('master.operated'), $request->referer());
             }
 
-            return $this->error(trans('master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));
         }
     }
 
@@ -157,12 +157,12 @@ class StorageController extends Controller
             }
 
             //补齐文件后缀
-            if (empty(File::extension($name))){
-                $name = $name.'.'.File::extension($path);
+            if (empty(File::extension($name))) {
+                $name = $name . '.' . File::extension($path);
             }
 
             // 新的路径
-            $newpath = dirname($path).'/'.$name;
+            $newpath = dirname($path) . '/' . $name;
 
             // 新路径是否存在
             if (Storage::disk($disk)->exists($newpath)) {
@@ -174,7 +174,7 @@ class StorageController extends Controller
                 return $this->success(trans('master.operated'), $request->referer());
             }
 
-            return $this->error(trans('master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));
         }
     }
 
@@ -189,15 +189,15 @@ class StorageController extends Controller
     {
         if ($request->isMethod('DELETE')) {
 
-            $path    = $request->input('path');        
+            $path    = $request->input('path');
 
             // 删除目录
             if (Storage::disk($disk)->delete($path)) {
-                ImagePreview::file($disk.':'.$path)->static_delete();
+                ImagePreview::file($disk . ':' . $path)->static_delete();
                 return $this->success(trans('master.operated'), $request->referer());
             }
 
-            return $this->error(trans('master.operate.failed'));            
+            return $this->error(trans('master.operate.failed'));
         }
     }
 

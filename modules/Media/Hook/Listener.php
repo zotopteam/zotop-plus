@@ -1,9 +1,10 @@
 <?php
+
 namespace Modules\Media\Hook;
 
-use Route;
-use Auth;
 use Modules\Media\Models\Media;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 
 class Listener
 {
@@ -21,7 +22,7 @@ class Listener
             'icon' => 'fa fa-images bg-info text-white',
             'tips' => trans('media::media.description'),
         ];
-        
+
         return $start;
     }
 
@@ -44,16 +45,16 @@ class Listener
      */
     public function upload($data, $upload)
     {
-        if ($data['state']) {    
-            
+        if ($data['state']) {
+
             // 合并信息
             $fileinfo = array_merge($data, [
-                'parent_id' => $upload->request->input('folder_id', 0),
-                'module' => $upload->request->input('module', null),
-                'controller' => $upload->request->input('controller', null),
-                'action' => $upload->request->input('action', null),
-                'field' => $upload->request->input('field', null),
-                'source_id' => $upload->request->input('source_id', null),
+                'parent_id'  => Request::input('folder_id', 0),
+                'module'     => Request::input('module', null),
+                'controller' => Request::input('controller', null),
+                'action'     => Request::input('action', null),
+                'field'      => Request::input('field', null),
+                'source_id'  => Request::input('source_id', null),
             ]);
 
             // 保存文件信息
@@ -63,7 +64,7 @@ class Listener
 
             $data['media_id'] = $media->id;
         }
-        
+
         return $data;
     }
 
@@ -76,36 +77,36 @@ class Listener
      */
     public function select($tools, $params)
     {
-        $typename = trans('core::file.type.'.$params['type']);
+        $typename = trans('core::file.type.' . $params['type']);
 
         // 删除core模块的目录选择
         unset($tools['dir']);
 
         $select = [
             'uploaded'   => [
-                'text'   => trans('media::media.insert.from.uploaded',[$typename]),
+                'text'   => trans('media::media.insert.from.uploaded', [$typename]),
                 'icon'   => 'fa fa-cloud',
                 'href'   => route('media.select.uploaded', $params),
                 'active' => Route::active('media.select.uploaded'),
             ],
             'libarary' => [
-                'text'   => trans('media::media.insert.from.library',[$typename]),
+                'text'   => trans('media::media.insert.from.library', [$typename]),
                 'icon'   => 'fa fa-database',
                 'href'   => route('media.select.library', [0] + $params),
                 'active' => Route::active('media.select.library'),
             ],
             'disk' => [
-                'text'   => trans('media::media.insert.from.disk',[$typename]),
+                'text'   => trans('media::media.insert.from.disk', [$typename]),
                 'icon'   => 'fa fa-server',
                 'href'   => route('media.select.disk', $params),
                 'active' => Route::active('media.select.disk'),
             ],
             'dir' => [
-                'text'   => trans('media::media.insert.from.dir',[$typename]),
+                'text'   => trans('media::media.insert.from.dir', [$typename]),
                 'icon'   => 'fa fa-folder',
                 'href'   => route('media.select.dir', $params),
                 'active' => Route::active('media.select.dir'),
-            ],                      
+            ],
         ];
 
         return array_merge($tools, $select);

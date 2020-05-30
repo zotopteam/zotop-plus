@@ -14,10 +14,9 @@
         <div class="main-title mr-auto">{{trans('media::media.root')}}</div>
         @endif
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary file-upload" id="file-upload"
-                data-url="{{route('core.file.upload_chunk')}}">
-                <i class="fa fa-fw fa-upload"></i> {{trans('core::file.upload')}}
-            </a>
+
+            <x-upload-chunk :params="['folder_id'=>$parent_id]" />
+
             <a href="javascript:;" class="btn btn-primary js-prompt"
                 data-url="{{route('media.create',[$parent_id,'folder'])}}" data-prompt="{{trans('core::folder.name')}}"
                 data-name="name">
@@ -197,58 +196,7 @@
 @endsection
 
 @push('js')
-<script type="text/javascript" src="{{Module::asset('core:plupload/plupload.full.min.js')}}"></script>
-<script type="text/javascript" src="{{Module::asset('core:plupload/i18n/'.App::getLocale().'.js')}}"></script>
-<script type="text/javascript" src="{{Module::asset('core:plupload/jquery.plupload.js')}}"></script>
-<script type="text/javascript">
-    // upload
-    $('.file-upload').each(function(){
-        var self = $(this);
-        var url = self.data('url');
-        var success = 0;
-        var options = {
-                url : url,
-                autostart : true, //自动开始
-                multi_selection : true, //是否可以选择多个文件
-                multipart_params: {
-                    'folder_id'  : '{{$parent_id ?? 0}}',
-                    'module'     : '{{app('current.module')}}',
-                    'controller' : '{{app('current.controller')}}',
-                    'action'     : '{{app('current.action')}}',
-                    'user_id'    : '{{Auth::user()->id}}',
-                    'token'      : '{{Auth::user()->token}}'
-                },
-                started : function(up){
-                    self.data('progress', $.progress());
-                },
-                progress : function(up,file){
-                    self.data('progress').percent(up.total.percent);
-                },
-                uploaded : function(up, file, response){
-                    // 单个文件上传完成 返回信息在 response 中
-                    if (response.result.state) {
-                        $.success(response.result.content);
-                        success ++;
-                    } else {
-                        $.error(response.result.content);
-                    }
-                },                
-                complete : function(up, files){
-                    // 全部上传完成
-                    self.data('progress').close().remove();
 
-                    if (success > 0) {
-                        location.reload();
-                    }
-                },
-                error : function(error, detail){
-                    $.error(detail);
-                }
-        };
-
-        self.plupload(options);
-    });
-</script>
 <script type="text/javascript">
     // post data
     function postData(url, data, callback) {

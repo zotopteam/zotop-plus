@@ -192,7 +192,6 @@ Form::macro('upload', function ($attrs) {
     $allow     = $this->getAttribute($attrs, 'allow', $types->implode('extensions', ','));
     $maxsize   = $this->getAttribute($attrs, 'maxsize', 1024);
     $typename  = $this->getAttribute($attrs, 'typename', trans('core::file.type.files'));
-    $folder    = $this->getAttribute($attrs, 'folder', '');
     $source_id = $this->getAttribute($attrs, 'source_id', '');
 
     // 界面文字和图标
@@ -211,7 +210,6 @@ Form::macro('upload', function ($attrs) {
         'controller' => app('current.controller'),
         'action'     => app('current.action'),
         'field'      => $name,
-        'folder'     => $folder ?: '',
         'source_id'  => $source_id ?: '',
         'user_id'    => Auth::user()->id,
         'token'      => Auth::user()->token
@@ -250,43 +248,38 @@ Form::macro('upload', function ($attrs) {
  *
  * 
  * {field type="upload_image" value=""}
- * {field type="upload_image" value="" button="Upload" resize="['width'=>1920,height=>800,quality=>100,crop=>false]" params=>"[]"}
+ * {field type="upload_image" value="" button="Upload" resize="core-resize" watermark="false" params=>"[]"}
  */
 Form::macro('upload_image', function ($attrs) {
 
     // 标签预处理
-    $attrs = Filter::fire('core.field.upload_image.attrs', $attrs);
-    $attrs = $attrs + [
+    $attrs = Filter::fire('core.field.upload_image.attrs', array_merge([
         'filetype'    => 'image',
         'typename'    => trans('core::file.type.image'),
         'button_icon' => 'fa-image',
         'allow'       => $this->getAttribute($attrs, 'allow', config('core.upload.types.image.extensions')),
         'preview'     => $this->getAttribute($attrs, 'preview', 'image')
-    ];
+    ], $attrs));
 
-    // 获取系统设置的默认压缩设置
-    $resize = config('core.image.resize.enabled', true) ? [
-        'width'   => config('core.image.resize.width', 1920),
-        'height'  => config('core.image.resize.height', 1920),
-        'quality' => config('core.image.resize.quality', 100),
-        'crop'    => config('core.image.resize.crop',  false)
-    ] : [];
+    // 图片滤镜
+    $filters = $this->getAttribute($attrs, 'filters', []);
 
-    // 获取标签设置的resize
-    // 1：如果未设置，则读取系统默认，传递给后端处理
-    // 2：如果是数组（包含空数组），合并默认设置，传递给后端处理
-    // 3：设置为true或者false，传递给后端进行处理
-    $resize = $this->getAttribute($attrs, 'resize', $resize);
+    // 获取标签中设置的图片 resize 和 watermark
+    // 1, 如果值为false，不缩放
+    // 2, 如果未设置，则使用系统默认的 core-resize 和 core-watermark 滤镜，传递给后端处理
+    // 3, 如果是字符串，则为滤镜名称
+    if ($resize = $this->getAttribute($attrs, 'resize', 'core-resize')) {
+        $filters[] = $resize;
+    }
 
-    // 水印设置
-    $watermark = config('core.image.watermark');
-    $watermark = $this->getAttribute($attrs, 'watermark', $watermark);
-
-    //resize 设置传递给plupload
-    $attrs['options'] = ['resize' => $resize];
+    if ($watermark = $this->getAttribute($attrs, 'watermark', 'core-watermark')) {
+        $filters[] = $watermark;
+    }
 
     //resize 和 watermark 设置传给后端
-    $attrs['params']  = ['resize' => $resize, 'watermark' => $watermark];
+    $attrs['params']  = [
+        'filters' => empty($filters) ? 'null' : implode(',', $filters)
+    ];
 
     return $this->macroCall('upload',  [$attrs]);
 });
@@ -296,7 +289,7 @@ Form::macro('upload_image', function ($attrs) {
  *
  * 
  * {field type="gallery" value=""}
- * {field type="gallery" value="" watermark="true" resize="['width'=>1920,height=>800,quality=>100,crop=>false]" params=>"[]"}
+ * {field type="gallery" value="" watermark="true" resize="true" params=>"[]"}
  */
 Form::macro('gallery', function ($attrs) {
 

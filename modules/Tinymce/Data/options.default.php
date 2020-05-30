@@ -41,7 +41,7 @@ $options = [
     'images_upload_credentials'     => true,
     'images_reuse_filename'         => true,
     'imagetools_toolbar'            => 'alignleft aligncenter alignright | editimage imageoptions',
-    'paste_data_images'             => true,    
+    'paste_data_images'             => true,
     'elementpath'                   => false,
     'draggable_modal'               => true,
     'convert_urls '                 => false,
@@ -58,7 +58,7 @@ $options = [
 $theme = app('themes')->find(config('site.theme', 'default'));
 
 if ($content_css = optional($theme)->asset('css/content.css')) {
-     $options['content_css'][] = $content_css;
+    $options['content_css'][] = $content_css;
 }
 
 return $options;

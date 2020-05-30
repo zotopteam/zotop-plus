@@ -36,16 +36,6 @@ class MediaController extends AdminController
 
         $this->media = $media->sort()->paginate(25);
 
-        // $this->media->getCollection()->transform(function ($item) {
-        //     if ($item->is_folder) {
-        //         $item->link = route('media.index', $item->id);
-        //     } else {
-        //         $item->link = preview($item->url);
-        //     }
-        //     return $item;
-        // });
-
-
         return $this->view();
     }
 
@@ -220,22 +210,14 @@ class MediaController extends AdminController
             $this->parent_url = null;
         }
 
-        // 查询数据并分页
+        // 查询数据并分页 TODO: 改造成folders 和 files
         $this->media = Media::where('parent_id', $parent_id)->when($request->type, function ($query, $type) {
-            $query->where('type', 'folder')->orWhere('type', $type);
+            $query->whereIn('type', ['folder', $type]);
         })->when($request->extension, function ($query, $extension) {
-            $query->whereNull('extension')->orWhereIn('extension', explode(',', $extension));
+            $query->where(function ($query) use ($extension) {
+                $query->whereNull('extension')->orWhereIn('extension', explode(',', $extension));
+            });
         })->sort()->paginate(48);
-
-        // 补充url字段
-        $this->media->getCollection()->transform(function ($item) use ($params) {
-            if ($item->isFolder()) {
-                $item->link = route('media.select.library', [$item->id] + $params);
-            } else {
-                $item->link = url($item->url);
-            }
-            return $item;
-        });
 
         $this->title = trans('media::media.insert.from.library', [$request->typename]);
 
@@ -244,9 +226,9 @@ class MediaController extends AdminController
 
     /**
      * 从磁盘中选择文件
-     * @param  Request $request [description]
-     * @param  string  $disk    [description]
-     * @return [type]           [description]
+     * @param  Request $request 
+     * @param  string  $disk  磁盘
+     * @return View
      */
     public function selectFromDisk(Request $request, $disk = 'public')
     {
@@ -254,6 +236,7 @@ class MediaController extends AdminController
 
         $browser = app(StorageBrowser::class, [
             'root' => '',
+            'disk' => $disk,
             'dir'  => $request->input('dir', 'uploads/image/2020/05')
         ]);
 
