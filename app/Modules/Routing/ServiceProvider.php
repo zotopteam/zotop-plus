@@ -19,7 +19,7 @@ abstract class ServiceProvider extends RouteServiceProvider
      *
      * @var string
      */
-    protected $module = '';    
+    protected $module = '';
 
     /**
      * 定义路由绑定
@@ -41,8 +41,8 @@ abstract class ServiceProvider extends RouteServiceProvider
         parent::register();
 
         // 注册闭包命令行
-        $this->mapConsoleRoutes();       
-    }    
+        $this->mapConsoleRoutes();
+    }
 
     /**
      * 前端路由文件地址
@@ -92,7 +92,7 @@ abstract class ServiceProvider extends RouteServiceProvider
     {
         $this->mapApiRoutes($router);
         $this->mapFrontRoutes($router);
-        $this->mapAdminRoutes($router);         
+        $this->mapAdminRoutes($router);
     }
 
     /**
@@ -105,14 +105,14 @@ abstract class ServiceProvider extends RouteServiceProvider
         if ($apiRouteFile = $this->getApiRouteFile()) {
             $router->group([
                 'module'     => $this->module,
-                'namespace'  => $this->namespace.'\\'.$this->app['config']->get('modules.types.api.dirs.controller'),
+                'namespace'  => $this->namespace . '\\' . $this->app['config']->get('modules.types.api.dirs.controller'),
                 'prefix'     => $this->app['config']->get('modules.types.api.prefix'),
                 'middleware' => $this->app['config']->get('modules.types.api.middleware'),
             ], function (Router $router) use ($apiRouteFile) {
                 require $apiRouteFile;
             });
         }
-    }       
+    }
 
     /**
      * 定义前端路由
@@ -126,12 +126,12 @@ abstract class ServiceProvider extends RouteServiceProvider
                 'module'     => $this->module,
                 'namespace'  => $this->namespace,
                 'prefix'     => $this->app['config']->get('modules.types.frontend.prefix'),
-                'middleware' => $this->app['config']->get('modules.types.frontend.middleware'),      
+                'middleware' => $this->app['config']->get('modules.types.frontend.middleware'),
             ], function (Router $router) use ($frontRouteFile) {
                 require $frontRouteFile;
             });
         }
-    }  
+    }
 
     /**
      * 定义后端路由
@@ -143,9 +143,9 @@ abstract class ServiceProvider extends RouteServiceProvider
         if ($adminRouteFile = $this->getAdminRouteFile()) {
             $router->group([
                 'module'     => $this->module,
-                'namespace'  => $this->namespace.'\\'.$this->app['config']->get('modules.types.backend.dirs.controller'),
+                'namespace'  => $this->namespace . '\\' . $this->app['config']->get('modules.types.backend.dirs.controller'),
                 'prefix'     => $this->app['config']->get('modules.types.backend.prefix'),
-                'middleware' => $this->app['config']->get('modules.types.backend.middleware'),     
+                'middleware' => $this->app['config']->get('modules.types.backend.middleware'),
             ], function (Router $router) use ($adminRouteFile) {
                 require $adminRouteFile;
             });
@@ -162,5 +162,5 @@ abstract class ServiceProvider extends RouteServiceProvider
         if ($consoleRouteFile  = $this->getConsoleRouteFile()) {
             require $consoleRouteFile;
         }
-    }   
+    }
 }

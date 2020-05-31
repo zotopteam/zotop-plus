@@ -3,9 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class MigrateStatusCommand extends Command
 {
@@ -23,7 +20,7 @@ class MigrateStatusCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Show the status of module\'s migrations'; 
+    protected $description = 'Show the status of module\'s migrations';
 
     /**
      * Create a new command instance.
@@ -62,7 +59,7 @@ class MigrateStatusCommand extends Command
      */
     private function status($module)
     {
-        $this->info(PHP_EOL.'Show status of module:'.$module->getName().'('.$module->getTitle().')'.PHP_EOL);
+        $this->info(PHP_EOL . 'Show status of module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 
         $path = $this->getMigrationPath($module);
 

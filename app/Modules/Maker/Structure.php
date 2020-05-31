@@ -1,8 +1,6 @@
 <?php
-namespace App\Modules\Maker;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+namespace App\Modules\Maker;
 
 class Structure
 {
@@ -65,7 +63,7 @@ class Structure
         'smallInteger'  => 'smallIncrements',
         'mediumInteger' => 'mediumIncrements',
         'bigInteger'    => 'bigIncrements',
-        'integer'       => 'increments',        
+        'integer'       => 'increments',
     ];
 
     /**
@@ -74,15 +72,15 @@ class Structure
      * @param array|collection $indexes 索引集合
      * @param array|collection $foreignKeys 外键集合
      */
-    public function __construct($columns, $indexes=[], $foreignKeys=[])
+    public function __construct($columns, $indexes = [], $foreignKeys = [])
     {
-        $this->columns = collect($columns)->map(function($column) {
+        $this->columns = collect($columns)->map(function ($column) {
             return $this->formatColumn($column);
         });
 
-        $this->indexes = collect($indexes)->map(function($index) {
+        $this->indexes = collect($indexes)->map(function ($index) {
             return $this->formatIndex($index);
-        })->filter(function($index){
+        })->filter(function ($index) {
             return !empty($index['columns']);
         });
 
@@ -96,7 +94,7 @@ class Structure
      * @param array $indexes 索引数组
      * @return this
      */
-    public static function instance($columns, $indexes=[], $foreignKeys=[])
+    public static function instance($columns, $indexes = [], $foreignKeys = [])
     {
         return new static($columns, $indexes, $foreignKeys);
     }
@@ -164,12 +162,12 @@ class Structure
         $column = array_merge($this->columnFormatDefault, $column);
 
         // 转化创建时间、更新时间和删除时间为 timestamp 类型
-        if (in_array($column['name'], ['created_at','updated_at', 'deleted_at'])) {
+        if (in_array($column['name'], ['created_at', 'updated_at', 'deleted_at'])) {
             $column['type'] = 'timestamp';
         }
 
         // 去掉不允许长度的 length 属性
-        if (! in_array($column['type'], ['char', 'string', 'float', 'double','decimal','enum'])) {
+        if (!in_array($column['type'], ['char', 'string', 'float', 'double', 'decimal', 'enum'])) {
             $column['length'] = null;
         }
 
@@ -192,7 +190,7 @@ class Structure
         $columns = $this->columns->pluck('name')->all();
 
         foreach ($index['columns'] as $key => $column) {
-            if (! in_array($column, $columns)) {
+            if (!in_array($column, $columns)) {
                 unset($index['columns'][$key]);
             }
         }
@@ -205,7 +203,7 @@ class Structure
         if ($index['type'] == 'primary') {
             // Laravel 的自增已经添加了主键
             $increments = $this->increments();
-            if ($increments && $increments != $index['name'] ) {
+            if ($increments && $increments != $index['name']) {
                 $index['columns'] = [$increments];
             }
             $index['name'] = 'PRIMARY';
@@ -247,10 +245,10 @@ class Structure
      */
     public function dropColumn($name)
     {
-        return $this->columns->filter(function($column) use($name) {
+        return $this->columns->filter(function ($column) use ($name) {
             return $column['name'] != $name;
         });
-    }    
+    }
 
     /**
      * 添加索引
@@ -275,9 +273,9 @@ class Structure
         });
 
         // 字段转换
-        $columns = $this->columns->map(function($column) use ($singeIndexes) {
+        $columns = $this->columns->map(function ($column) use ($singeIndexes) {
             // 获取字段单个索引
-            $index = $singeIndexes->filter(function($index) use($column) {
+            $index = $singeIndexes->filter(function ($index) use ($column) {
                 return $column['name'] == $index['columns'][0];
             });
             // 单索引追加index类型字段
@@ -286,12 +284,12 @@ class Structure
         })->values();
 
         // 复合索引转换
-        $indexes = $mutipleIndexes->map(function($index) {
+        $indexes = $mutipleIndexes->map(function ($index) {
             return $this->convertIndex($index);
         })->values();
 
         // 外键转换
-        $foreignKeys = $this->foreignKeys->map(function($foreignKey) {
+        $foreignKeys = $this->foreignKeys->map(function ($foreignKey) {
             return $this->convertForeignKey($foreignKey);
         })->values();
 
@@ -299,9 +297,9 @@ class Structure
         $blank = collect(['']);
 
         return $columns->merge($blank)
-                ->merge($indexes)->merge($blank)
-                ->merge($foreignKeys)
-                ->implode(PHP_EOL."            ");
+            ->merge($indexes)->merge($blank)
+            ->merge($foreignKeys)
+            ->implode(PHP_EOL . "            ");
     }
 
     /**
@@ -320,7 +318,7 @@ class Structure
         }
 
         return $method;
-    }    
+    }
 
     /**
      * 转换字段为 blurpoint 字符串
@@ -339,7 +337,7 @@ class Structure
         $convert[$method] = [$column['name']];
 
         // 自增类型的主键不能有 unsigned,nullable,default,index,unique,primary 等
-        if (! $column['increments']) {
+        if (!$column['increments']) {
 
             if ($column['unsigned']) {
                 $convert['unsigned'] = [];
@@ -349,12 +347,12 @@ class Structure
                 $convert['nullable'] = [];
             }
 
-            if (! is_null($column['default'])) {
+            if (!is_null($column['default'])) {
                 $convert['default'] = [$column['default']];
             }
 
             //   'text','mediumText','longText' 类型字段不使用索引
-            if ($column['index'] && !in_array($method, ['text','mediumText','longText'])) {
+            if ($column['index'] && !in_array($method, ['text', 'mediumText', 'longText'])) {
                 $convert[$column['index']] = [$column['name']];
             }
 
@@ -365,25 +363,24 @@ class Structure
 
             // 浮点类型的参数返回数组  [10,2] 或者数字 10 (精度默认2) ，允许浮点
             if (in_array($method, ['decimal', 'float', 'double'])) {
-                
+
                 if ($column['length']) {
-                    list($total, $places) = explode(',', $column['length'].',2');
+                    list($total, $places) = explode(',', $column['length'] . ',2');
                     $convert[$method][] = intval($total);
                     $convert[$method][] = intval($places);
                 }
 
-                if (! is_null($column['default'])) {
+                if (!is_null($column['default'])) {
                     $convert['default'] = [floatval($column['default'])];
                 }
             }
 
             // 数字类型，默认值必须是数字
             if (in_array($method, ['boolean', 'tinyInteger', 'smallInteger', 'integer', 'bigInteger', 'mediumInteger'])) {
-                if (! is_null($column['default'])) {
+                if (!is_null($column['default'])) {
                     $convert['default'] = [intval($column['default'])];
-                }                
+                }
             }
-
         }
 
         if ($column['comment']) {
@@ -398,7 +395,7 @@ class Structure
      * 
      * @param  array $index 索引
      * @return string
-     */ 
+     */
     public function convertIndex($index)
     {
         // Laravel方法的参数：primary, index, unique 函数的最多允许两个参数
@@ -431,7 +428,7 @@ class Structure
         $convert['references'] = [$foreignKey['references']];
         $convert['on']         = [$foreignKey['on']];
 
-        if (! empty($foreignKey['name'])) {
+        if (!empty($foreignKey['name'])) {
             $convert['foreign'][] = $foreignKey['name'];
         }
 
@@ -480,7 +477,7 @@ class Structure
     public function convertBluepointArgument($argument)
     {
         if (is_array($argument)) {
-            return "['".implode("', '", $argument)."']";
+            return "['" . implode("', '", $argument) . "']";
         }
 
         if (is_bool($argument)) {
@@ -495,7 +492,6 @@ class Structure
             return 'null';
         }
 
-        return "'".$argument."'";       
+        return "'" . $argument . "'";
     }
-
 }

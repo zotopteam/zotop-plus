@@ -3,9 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class EnableCommand extends Command
 {
@@ -22,7 +19,7 @@ class EnableCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Enable the specified module.'; 
+    protected $description = 'Enable the specified module.';
 
     /**
      * Create a new command instance.
@@ -51,13 +48,12 @@ class EnableCommand extends Command
             }
 
             $module->enable();
-            
+
             $this->info("Module [{$module}] enable successfully.");
-            $this->call('route:clear');  
+            $this->call('route:clear');
             return;
         }
 
         $this->error("Module [{$module}] does not installed.");
     }
-
 }

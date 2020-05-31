@@ -3,7 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class ListenerMakeCommand extends GeneratorCommand
@@ -25,7 +24,7 @@ class ListenerMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new listener for the specified module.'; 
+    protected $description = 'Create a new listener for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -61,7 +60,6 @@ class ListenerMakeCommand extends GeneratorCommand
                 'event_name'     => $this->getEventName(),
                 'event_fullname' => $this->getEventFullName(),
             ]);
-
         }
 
         return true;
@@ -82,6 +80,6 @@ class ListenerMakeCommand extends GeneratorCommand
      */
     protected function getEventFullName()
     {
-        return $this->getDirNamespace('events') . '\\' .$this->getEventName();
-    }    
+        return $this->getDirNamespace('events') . '\\' . $this->getEventName();
+    }
 }

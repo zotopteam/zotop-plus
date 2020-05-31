@@ -6,5 +6,4 @@ use Illuminate\Http\JsonResponse;
 
 class JsonMessageResponse extends JsonResponse
 {
-    
 }

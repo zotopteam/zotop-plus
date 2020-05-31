@@ -3,9 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class UninstallCommand extends Command
 {
@@ -22,7 +19,7 @@ class UninstallCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Uninstall the specified module.'; 
+    protected $description = 'Uninstall the specified module.';
 
     /**
      * Create a new command instance.
@@ -44,15 +41,14 @@ class UninstallCommand extends Command
         $module = $this->laravel['modules']->findOrFail($this->argument('module'));
 
         if ($module->isInstalled()) {
-            
+
             $module->uninstall();
-            
+
             $this->info("Module [{$module}] uninstall successfully.");
-            $this->call('route:clear');  
+            $this->call('route:clear');
             return;
         }
 
         $this->error("Module [{$module}] does not installed.");
     }
-
 }

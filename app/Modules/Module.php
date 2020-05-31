@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -17,7 +18,7 @@ class Module
     use Macroable, ForwardsCalls {
         Macroable::__call as macroCall;
     }
-    
+
     /**
      * The application instance.
      *
@@ -39,7 +40,7 @@ class Module
 
     /**
      * The module activator
-     * @var array
+     * @var \App\Modules\Activator
      */
     public $activator;
 
@@ -57,7 +58,7 @@ class Module
     {
         $this->app        = $app;
         $this->activator  = $app['modules.activator'];
-        $this->path       = $path;        
+        $this->path       = $path;
         $this->attributes = $attributes;
     }
 
@@ -67,7 +68,7 @@ class Module
      * @param  mixed $default 默认值
      * @return mixed
      */
-    public function attribute($key, $default=null)
+    public function attribute($key, $default = null)
     {
         return Arr::get($this->attributes, strtolower($key), $default);
     }
@@ -109,7 +110,7 @@ class Module
         // 禁用的模块不会自动加载翻译文件，此次加载，TODO：加载json翻译有问题，无法临时加载
         if ($this->isDisabled()) {
             $this->registerTranslation();
-        }        
+        }
 
         return trans($this->title);
     }
@@ -172,7 +173,7 @@ class Module
      */
     public function getConfig()
     {
-        return $this->activator->getConfig($this);        
+        return $this->activator->getConfig($this);
     }
 
     /**
@@ -180,7 +181,7 @@ class Module
      * @param array $config 配置数组
      * @return void
      */
-    public function setConfig(array $config=[])
+    public function setConfig(array $config = [])
     {
         return $this->activator->setConfig($this, $config);
     }
@@ -191,13 +192,13 @@ class Module
      * @param  boolean $isDirKey 是否为子路径键名
      * @return sting
      */
-    public function getPath($subpath=null, $isDirKey=false)
+    public function getPath($subpath = null, $isDirKey = false)
     {
         if ($subpath) {
             if ($isDirKey) {
                 $subpath = $this->app['config']->get("modules.paths.dirs.{$subpath}");
             }
-            return $this->path.DIRECTORY_SEPARATOR.ltrim($subpath, DIRECTORY_SEPARATOR);
+            return $this->path . DIRECTORY_SEPARATOR . ltrim($subpath, DIRECTORY_SEPARATOR);
         }
 
         return $this->path;
@@ -228,7 +229,7 @@ class Module
      */
     public function isEnabled()
     {
-        return ! $this->activator->isDisabled($this);
+        return !$this->activator->isDisabled($this);
     }
 
     /**
@@ -247,8 +248,8 @@ class Module
      */
     protected function dispatch($event)
     {
-        $this->app['events']->dispatch(sprintf('modules.%s.' . $event, $this->getLowerName()), [$this]);     
-    }    
+        $this->app['events']->dispatch(sprintf('modules.%s.' . $event, $this->getLowerName()), [$this]);
+    }
 
     /**
      * 启用
@@ -294,7 +295,7 @@ class Module
         Artisan::call('module:migrate', [
             'module'  => $this->name,
             '--force' => true,
-            '--seed'  => (boolean) $this->seed,
+            '--seed'  => (bool) $this->seed,
         ]);
 
         // 发布资源
@@ -320,7 +321,7 @@ class Module
         Artisan::call('module:migrate', [
             'module'  => $this->name,
             '--force' => true,
-            '--seed'  => (boolean) $this->seed,
+            '--seed'  => (bool) $this->seed,
         ]);
 
         // 发布资源
@@ -330,7 +331,7 @@ class Module
         ]);
 
         $this->activator->upgrade($this);
-        $this->dispatch('upgraded');        
+        $this->dispatch('upgraded');
     }
 
     /**
@@ -345,7 +346,7 @@ class Module
         Artisan::call('module:migrate-reset', [
             'module'  => $this->name,
             '--force' => true,
-        ]);        
+        ]);
         // 删除资源
         Artisan::call('module:publish', [
             'module'   => $this->name,
@@ -368,7 +369,7 @@ class Module
         $this->boot();
 
         $this->dispatch('deleting');
-        $this->app['files']->deleteDirectory($this->getPath());    
+        $this->app['files']->deleteDirectory($this->getPath());
         $this->dispatch('deleted');
     }
 
@@ -380,18 +381,18 @@ class Module
      * @param  mixed $default 默认值
      * @return mixed
      */
-    public function data($name, array $args=[], $default=null)
+    public function data($name, array $args = [], $default = null)
     {
-        $file = $this->getPath('Data'.DIRECTORY_SEPARATOR.$name.'.php');
+        $file = $this->getPath('Data' . DIRECTORY_SEPARATOR . $name . '.php');
 
-        if (! $this->app['files']->isFile($file)) {
+        if (!$this->app['files']->isFile($file)) {
             return $default;
         }
 
-        return value(function() use ($file, $args) {
+        return value(function () use ($file, $args) {
             @extract($args);
             return require $file;
-        });        
+        });
     }
 
     /**
@@ -400,13 +401,13 @@ class Module
      * @param boolean $version 是否附带版本号
      * @return string
      */
-    public function asset($asset, $version=true)
+    public function asset($asset, $version = true)
     {
         // 获取资源的完整路径 (publish之后在public目录下的路径)
         $path = $this->app['config']->get('modules.paths.assets') . DIRECTORY_SEPARATOR . $this->getLowerName() . DIRECTORY_SEPARATOR . $asset;
 
         // 如果文件不存在，则直接返回null
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             return null;
         }
 
@@ -416,7 +417,7 @@ class Module
 
         // 为防止缓存，追加版本号
         if ($version) {
-            return $url.'?version='.$this->getVersion();
+            return $url . '?version=' . $this->getVersion();
         }
 
         return $url;
@@ -445,7 +446,7 @@ class Module
         $loader = AliasLoader::getInstance();
         foreach ($this->attribute('aliases', []) as $alias => $class) {
             $loader->alias($alias, $class);
-        }               
+        }
     }
 
     /**
@@ -456,7 +457,7 @@ class Module
     {
         foreach ($this->attribute('providers', []) as $provider) {
             $this->app->register($provider);
-        }        
+        }
     }
 
     /**
@@ -467,7 +468,7 @@ class Module
     {
         foreach ($this->attribute('files', []) as $file) {
             include $this->getPath($file);
-        }              
+        }
     }
 
     /**
@@ -478,7 +479,7 @@ class Module
     {
         $this->registerTranslation();
         $this->registerFactories();
-        
+
         $this->dispatch('boot');
     }
 
@@ -502,7 +503,7 @@ class Module
     {
         //加载模块配置
         $this->app['config']->set($this->getLowerName(), $this->getConfig());
-    }    
+    }
 
     /**
      * 注册Factories
@@ -511,10 +512,10 @@ class Module
     protected function registerFactories()
     {
         // 非产品环境下注册Factories
-        if (! $this->app->environment('production')) {
+        if (!$this->app->environment('production')) {
             $this->app->make(Factory::class)->load($this->path . DIRECTORY_SEPARATOR . $this->app['config']->get('modules.paths.dirs.factory'));
-        }        
-    }    
+        }
+    }
 
     /**
      * Handle call to __get method.
@@ -566,5 +567,5 @@ class Module
     public function __toString()
     {
         return $this->getStudlyName();
-    }    
+    }
 }

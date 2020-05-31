@@ -3,9 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class MigrateResetCommand extends Command
 {
@@ -25,7 +22,7 @@ class MigrateResetCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Rollback module\'s all database migration'; 
+    protected $description = 'Rollback module\'s all database migration';
 
     /**
      * Create a new command instance.
@@ -64,7 +61,7 @@ class MigrateResetCommand extends Command
      */
     private function reset($module)
     {
-        $this->info(PHP_EOL.'Reset the module:'.$module->getName().'('.$module->getTitle().')'.PHP_EOL);
+        $this->info(PHP_EOL . 'Reset the module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 
         $path = $this->getMigrationPath($module);
 

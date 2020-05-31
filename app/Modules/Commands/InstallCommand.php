@@ -3,9 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class InstallCommand extends Command
 {
@@ -23,7 +20,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Install the specified module.'; 
+    protected $description = 'Install the specified module.';
 
     /**
      * Create a new command instance.
@@ -44,17 +41,16 @@ class InstallCommand extends Command
     {
         $module = $this->laravel['modules']->findOrFail($this->argument('module'));
 
-        if (! $module->isInstalled()) {
-            
+        if (!$module->isInstalled()) {
+
             $module->seed = $this->option('seed');
             $module->install();
-            
+
             $this->info("Module [{$module}] install successfully.");
-            $this->call('route:clear');  
+            $this->call('route:clear');
             return;
         }
 
         $this->error("Module [{$module}] has already installed.");
     }
-
 }

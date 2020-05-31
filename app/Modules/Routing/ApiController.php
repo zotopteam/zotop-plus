@@ -2,13 +2,15 @@
 
 namespace App\Modules\Routing;
 
+use App\Modules\Routing\JsonMessageResponse;
+
 class ApiController extends Controller
 {
     /**
      * 消息提示
      * 
      * @param  array  $msg 消息内容
-     * @return json
+     * @return JsonMessageResponse
      */
     public function message(array $msg)
     {
@@ -21,17 +23,16 @@ class ApiController extends Controller
     /**
      * 消息提示：success
      * 
-     * @param  mixed  $content  消息内容 字符串或者数组
-     * @param  string  $url  跳转路径
+     * @param  string  $message  消息内容
+     * @param  integer $code 消息代码 0-1000 为success
      * @param  integer $time 跳转或者消息提示时间
-     * @return json
+     * @return JsonMessageResponse
      */
-    public function success($content, $url='', $time=1)
+    public function success($message, $code = 0, $time = 1)
     {
         return $this->message([
-            'type'    => 'success',
-            'content' => $content,
-            'url'     => $url,
+            'code'    => $code,
+            'message' => $message,
             'time'    => $time
         ]);
     }
@@ -40,17 +41,17 @@ class ApiController extends Controller
     /**
      * 消息提示：error
      * 
-     * @param  mixed  $content  消息内容 字符串或者数组
+     * @param  string  $message  消息内容
+     * @param  integer $code 错误代码
      * @param  integer $time 跳转或者消息提示时间
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * @return JsonMessageResponse
      */
-    public function error($content, $code=10000, $time=5)
+    public function error($message, $code = 1001, $time = 5)
     {
         return $this->message([
-            'type'    => 'error',
-            'content' => $content,
             'code'    => $code,
+            'message' => $message,
             'time'    => $time
         ]);
-    }    
+    }
 }

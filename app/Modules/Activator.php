@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules;
 
 use App\Modules\Module;
@@ -6,8 +7,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 
 class Activator
@@ -38,7 +37,7 @@ class Activator
     public function __construct(Application $app)
     {
         $this->app      = $app;
-        $this->cacheKey = $this->app['config']->get('modules.cache.key').'-activator';
+        $this->cacheKey = $this->app['config']->get('modules.cache.key') . '-activator';
         $this->modules  = $this->getModules();
     }
 
@@ -47,7 +46,7 @@ class Activator
      * @param  string $key 键名
      * @return mixed
      */
-    public function modules($key=null)
+    public function modules($key = null)
     {
         if ($key) {
             return Arr::get($this->modules, $key);
@@ -63,13 +62,13 @@ class Activator
     private function getModules()
     {
         try {
-            return $this->app['cache']->rememberForever($this->cacheKey, function() {
-                return DB::table('modules')->get()->keyBy('module')->transform(function($item){
+            return $this->app['cache']->rememberForever($this->cacheKey, function () {
+                return DB::table('modules')->get()->keyBy('module')->transform(function ($item) {
                     $item->config   = json_decode($item->config, true);
                     $item->disabled = (bool) $item->disabled;
                     return (array) $item;
                 })->toArray();
-            });          
+            });
         } catch (QueryException $e) {
             return [];
         }
@@ -83,7 +82,7 @@ class Activator
      */
     public function isInstalled(Module $module)
     {
-        if ( $this->modules($module->getLowerName()) ) {
+        if ($this->modules($module->getLowerName())) {
             return true;
         }
 
@@ -97,11 +96,11 @@ class Activator
      */
     public function isDisabled(Module $module)
     {
-        if (! $this->isInstalled($module)) {
+        if (!$this->isInstalled($module)) {
             return true;
         }
 
-        if ( $this->modules($module->getLowerName().'.disabled') ) {
+        if ($this->modules($module->getLowerName() . '.disabled')) {
             return true;
         }
 
@@ -115,7 +114,7 @@ class Activator
      */
     public function getVersion(Module $module)
     {
-        return $this->modules($module->getLowerName().'.version');
+        return $this->modules($module->getLowerName() . '.version');
     }
 
     /**
@@ -126,7 +125,7 @@ class Activator
     public function getConfig(Module $module)
     {
         if ($this->isInstalled($module)) {
-            return $this->modules($module->getLowerName().'.config');
+            return $this->modules($module->getLowerName() . '.config');
         }
 
         return [];
@@ -138,7 +137,7 @@ class Activator
      * @param array $data
      * @return boolean
      */
-    public function setConfig(Module $module, array $data=[])
+    public function setConfig(Module $module, array $data = [])
     {
         // 本地设置
         $config = $module->getOriginalConfig();
@@ -153,10 +152,10 @@ class Activator
             }
         }
 
-       return $this->update($module, [
-            'config'     => json_encode($config),          
-        ]);   
-    }    
+        return $this->update($module, [
+            'config'     => json_encode($config),
+        ]);
+    }
 
     /**
      * 安装
@@ -186,10 +185,10 @@ class Activator
     {
         $data['updated_at'] = now()->format('Y-m-d H:i:s');
 
-        DB::table('modules')->where('module', $module->getLowerName())->update($data);        
+        DB::table('modules')->where('module', $module->getLowerName())->update($data);
 
         $this->app['cache']->forget($this->cacheKey);
-        return true;     
+        return true;
     }
 
     /**
@@ -214,7 +213,7 @@ class Activator
         return $this->update($module, [
             'disabled'    => 1,
         ]);
-    }    
+    }
 
 
     /**
@@ -229,7 +228,7 @@ class Activator
 
         // 更新版本信息
         return $this->update($module, [
-            'version' => $module->getOriginalVersion()          
+            'version' => $module->getOriginalVersion()
         ]);
     }
 
@@ -243,6 +242,6 @@ class Activator
         DB::table('modules')->where('module', $module->getLowerName())->delete();
 
         $this->app['cache']->forget($this->cacheKey);
-        return true;        
-    }         
+        return true;
+    }
 }

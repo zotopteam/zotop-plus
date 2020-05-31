@@ -2,8 +2,6 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class JobMakeCommand extends GeneratorCommand
@@ -24,7 +22,7 @@ class JobMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new job for the specified module.'; 
+    protected $description = 'Create a new job for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -53,8 +51,7 @@ class JobMakeCommand extends GeneratorCommand
         if ($this->option('sync')) {
             $this->stub = 'job_sync';
         }
-        
+
         return true;
     }
-
 }

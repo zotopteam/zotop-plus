@@ -23,7 +23,7 @@ class CommandMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a command for the specified module.'; 
+    protected $description = 'Create a command for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -42,7 +42,7 @@ class CommandMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $stub = 'command';
-  
+
     /**
      * 重载prepare
      * @return boolean
@@ -64,5 +64,5 @@ class CommandMakeCommand extends GeneratorCommand
     private function getSignature()
     {
         return $this->getModuleLowerName() . ':' . str_replace('_', '-', $this->getLowerNameInput());
-    }  
+    }
 }

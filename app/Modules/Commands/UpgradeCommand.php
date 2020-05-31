@@ -3,9 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class UpgradeCommand extends Command
 {
@@ -23,7 +20,7 @@ class UpgradeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Upgrade the specified module.'; 
+    protected $description = 'Upgrade the specified module.';
 
     /**
      * Create a new command instance.
@@ -48,11 +45,10 @@ class UpgradeCommand extends Command
             $module->seed = $this->option('seed');
             $module->upgrade();
             $this->info("Module [{$module}] upgrade successfully.");
-            $this->call('route:clear');  
+            $this->call('route:clear');
             return;
         }
 
         $this->error("Module [{$module}] does not installed.");
     }
-
 }

@@ -3,9 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class DisbaleCommand extends Command
 {
@@ -22,7 +19,7 @@ class DisbaleCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Disable the specified module.'; 
+    protected $description = 'Disable the specified module.';
 
     /**
      * Create a new command instance.
@@ -51,7 +48,7 @@ class DisbaleCommand extends Command
             }
 
             $module->disable();
-            
+
             $this->info("Module [{$module}] disable successfully.");
             $this->call('route:clear');
             return;
@@ -59,5 +56,4 @@ class DisbaleCommand extends Command
 
         $this->error("Module [{$module}] does not installed.");
     }
-
 }

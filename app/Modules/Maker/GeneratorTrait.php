@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\Maker;
 
 use App\Modules\Maker\Lang;
@@ -14,7 +15,7 @@ trait GeneratorTrait
      * 获取模块全局配置
      * @return array
      */
-    public function getConfig($key=null)
+    public function getConfig($key = null)
     {
         if ($key) {
             $value = $this->laravel['config']->get("modules.{$key}");
@@ -34,7 +35,7 @@ trait GeneratorTrait
      * @param  string $key
      * @return array
      */
-    public function getConfigPaths($key=null)
+    public function getConfigPaths($key = null)
     {
         return $key ? $this->getConfig("paths.{$key}") : $this->getConfig('paths');
     }
@@ -44,17 +45,17 @@ trait GeneratorTrait
      * @param  string $key
      * @return array
      */
-    public function getConfigDirs($key=null)
+    public function getConfigDirs($key = null)
     {
         return $key ? $this->getConfigPaths("dirs.{$key}") : $this->getConfigPaths('dirs');
-    }    
+    }
 
     /**
      * 获取模块全局目录配置
      * @param  string $key
      * @return array
      */
-    public function getConfigFiles($key=null)
+    public function getConfigFiles($key = null)
     {
         return $key ? $this->getConfigPaths("files.{$key}") : $this->getConfigPaths('files');
     }
@@ -64,10 +65,10 @@ trait GeneratorTrait
      * @param  string $key
      * @return array
      */
-    public function getConfigTypes($key=null)
+    public function getConfigTypes($key = null)
     {
         return $key ? $this->getConfig("types.{$key}") : $this->getConfig('types');
-    }    
+    }
 
     /**
      * 获取模块全局的命名空间
@@ -105,7 +106,7 @@ trait GeneratorTrait
      * 获取模块小写名称
      * @return string
      */
-    public function getModuleLowerName($value='')
+    public function getModuleLowerName($value = '')
     {
         return strtolower($this->getModuleName());
     }
@@ -134,7 +135,7 @@ trait GeneratorTrait
      */
     public function getModuleNamespace()
     {
-        return $this->getNamespace() .'\\'.$this->getModuleStudlyName();
+        return $this->getNamespace() . '\\' . $this->getModuleStudlyName();
     }
 
     /**
@@ -143,19 +144,19 @@ trait GeneratorTrait
      * @param  boolean $isPath  是否为路径
      * @return string
      */
-    public function getModulePath($subpath=null, $isPath=true)
+    public function getModulePath($subpath = null, $isPath = true)
     {
-        $path = $this->getConfigPaths('modules').DIRECTORY_SEPARATOR.$this->getModuleStudlyName();
+        $path = $this->getConfigPaths('modules') . DIRECTORY_SEPARATOR . $this->getModuleStudlyName();
 
         if (empty($subpath)) {
             return $path;
         }
 
         if ($isPath) {
-            return $path.DIRECTORY_SEPARATOR.$subpath;;
+            return $path . DIRECTORY_SEPARATOR . $subpath;;
         }
-        
-        return $path.DIRECTORY_SEPARATOR.$this->getConfigPaths($subpath);
+
+        return $path . DIRECTORY_SEPARATOR . $this->getConfigPaths($subpath);
     }
 
     /**
@@ -165,7 +166,7 @@ trait GeneratorTrait
      */
     public function getDirNamespace($dirKey)
     {
-        return $this->getModuleNamespace().'\\'.str_replace('/', '\\', $this->getConfigDirs($dirKey));
+        return $this->getModuleNamespace() . '\\' . str_replace('/', '\\', $this->getConfigDirs($dirKey));
     }
 
     /**
@@ -173,18 +174,18 @@ trait GeneratorTrait
      * @param  string $stub      stub name
      * @return string
      */
-    public function getStubPath($stub=null)
+    public function getStubPath($stub = null)
     {
-        $path = __DIR__ . DIRECTORY_SEPARATOR .'Stubs';
+        $path = __DIR__ . DIRECTORY_SEPARATOR . 'Stubs';
 
         if ($stub) {
 
             //如果不包含扩展名，则扩展名为stub
-            if (! Str::contains($stub, '.')) {
-                $stub = $stub.'.stub';
+            if (!Str::contains($stub, '.')) {
+                $stub = $stub . '.stub';
             }
 
-            return $path . DIRECTORY_SEPARATOR .$stub;
+            return $path . DIRECTORY_SEPARATOR . $stub;
         }
 
         return $path;
@@ -199,8 +200,8 @@ trait GeneratorTrait
     {
         $path = $this->getStubPath($stub);
 
-        if (! $this->laravel['files']->exists($path)) {
-            $this->warn('Unknown: '. $path);
+        if (!$this->laravel['files']->exists($path)) {
+            $this->warn('Unknown: ' . $path);
             return null;
         }
 
@@ -212,9 +213,9 @@ trait GeneratorTrait
      * 
      * @param  string|array|null $key  为空时返回替换数组，其余为设置值
      * @param  string|null $value 
-     * @return string        
+     * @return mixed        
      */
-    public function replace($key=null, $value=null)
+    public function replace($key = null, $value = null)
     {
         if (empty($this->replaces)) {
 
@@ -233,9 +234,8 @@ trait GeneratorTrait
 
             //命名空间替换
             foreach ($this->getConfigDirs() as $name => $path) {
-                $this->replaces[$name.'_namespace'] = str_replace('/', '\\', $path);
+                $this->replaces[$name . '_namespace'] = str_replace('/', '\\', $path);
             }
-
         }
 
         if (empty($key)) {
@@ -264,7 +264,7 @@ trait GeneratorTrait
 
         foreach ($this->replace() as $search => $replace) {
             $content = str_replace('$' . strtoupper($search) . '$', $replace, $content);
-        }        
+        }
 
         return $content;
     }
@@ -275,24 +275,24 @@ trait GeneratorTrait
      * @param  string $path 相对模块的路径
      * @return string       
      */
-    public function generateStubFile($stub, $path, $force=false)
+    public function generateStubFile($stub, $path, $force = false)
     {
         $path = $this->getModulePath($path);
 
-        if (! $force && $this->laravel['files']->exists($path)) {
+        if (!$force && $this->laravel['files']->exists($path)) {
 
             if ($this->laravel->runningInConsole()) {
-                $this->warn('Existed: '. $path);
+                $this->warn('Existed: ' . $path);
                 return false;
             }
 
-            throw new FileExistedException('Existed: '. $path, 1);
+            throw new FileExistedException('Existed: ' . $path, 1);
         }
 
         if ($content = $this->renderStub($stub)) {
 
             // 自动创建不存在的目录
-            if (! $this->laravel['files']->isDirectory($dir = dirname($path))) {
+            if (!$this->laravel['files']->isDirectory($dir = dirname($path))) {
                 $this->laravel['files']->makeDirectory($dir, 0775, true);
             }
 
@@ -303,7 +303,7 @@ trait GeneratorTrait
 
             $this->laravel['files']->put($path, $content);
 
-            $this->info('Created: '.$path);
+            $this->info('Created: ' . $path);
             return true;
         }
 
@@ -317,7 +317,7 @@ trait GeneratorTrait
      */
     public function generateGitKeep($path)
     {
-        $this->laravel['files']->put($path . DIRECTORY_SEPARATOR .'.gitkeep', 'git keep');
+        $this->laravel['files']->put($path . DIRECTORY_SEPARATOR . '.gitkeep', 'git keep');
     }
 
     /**
@@ -327,17 +327,17 @@ trait GeneratorTrait
      * @param  bollean $force 是否覆盖
      * @return void
      */
-    public function generateArrayLang($name, $data=[], $force=false)
+    public function generateArrayLang($name, $data = [], $force = false)
     {
         $lang = $this->laravel['config']->get('app.locale');
         $lang = Lang::instance($this->getModuleStudlyName(), $lang);
 
         if ($lang->name($name)->data($data)->save($force)) {
-            $this->info('Created: '.$lang->getPath());
+            $this->info('Created: ' . $lang->getPath());
             return;
         }
 
-        $this->warn('Existed: '.$lang->getPath());
+        $this->warn('Existed: ' . $lang->getPath());
     }
 
     /**
@@ -348,18 +348,18 @@ trait GeneratorTrait
      * @param  bollean $force 是否覆盖
      * @return void
      */
-    public function generateJsonLang($data=[], $force=false)
+    public function generateJsonLang($data = [], $force = false)
     {
-        $lang = $this->laravel['config']->get('app.locale');        
+        $lang = $this->laravel['config']->get('app.locale');
         $lang = Lang::instance($this->getModuleStudlyName(), $lang);
 
         if ($lang->data($data)->save($force)) {
-            $this->info('Created: '.$lang->getPath());
+            $this->info('Created: ' . $lang->getPath());
             return;
         }
 
-        $this->warn('Existed: '.$lang->getPath());
-    }    
+        $this->warn('Existed: ' . $lang->getPath());
+    }
 
     /**
      * 创建目录
@@ -369,7 +369,7 @@ trait GeneratorTrait
      */
     protected function makeDirectory($path)
     {
-        if (! $this->laravel['files']->isDirectory(dirname($path))) {
+        if (!$this->laravel['files']->isDirectory(dirname($path))) {
             $this->laravel['files']->makeDirectory(dirname($path), 0777, true, true);
             return true;
         }
@@ -385,12 +385,12 @@ trait GeneratorTrait
     protected function deleteFiles($files)
     {
         $files = Arr::wrap($files);
-        
+
         // 删除文件
         //array_map([$this->laravel['files'], 'delete'], $files);
         foreach ($files as $file) {
             $this->laravel['files']->delete($file);
-            $this->warn('Deleted: '.$file);
-        }        
-    }          
+            $this->warn('Deleted: ' . $file);
+        }
+    }
 }

@@ -3,9 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class MigrateRollbackCommand extends Command
 {
@@ -26,7 +23,7 @@ class MigrateRollbackCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Rollback the last module migration'; 
+    protected $description = 'Rollback the last module migration';
 
     /**
      * Create a new command instance.
@@ -65,7 +62,7 @@ class MigrateRollbackCommand extends Command
      */
     private function rollback($module)
     {
-        $this->info(PHP_EOL.'Rollback the module:'.$module->getName().'('.$module->getTitle().')'.PHP_EOL);
+        $this->info(PHP_EOL . 'Rollback the module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 
         $path = $this->getMigrationPath($module);
 
@@ -75,7 +72,7 @@ class MigrateRollbackCommand extends Command
             '--database' => $this->option('database'),
             '--pretend'  => $this->option('pretend'),
             '--force'    => $this->option('force'),
-            '--step'     => $this->option('step'),            
+            '--step'     => $this->option('step'),
         ]);
     }
 

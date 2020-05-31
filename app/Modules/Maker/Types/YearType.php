@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\Maker\Types;
 
 use Doctrine\DBAL\Types\Type;
@@ -7,11 +8,11 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 class YearType extends Type
 {
-	/**
-	 * Get the type name
-	 * 
-	 * @return string
-	 */
+    /**
+     * Get the type name
+     * 
+     * @return string
+     */
     public function getName()
     {
         return 'year';

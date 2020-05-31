@@ -3,9 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class MigrateCommand extends Command
 {
@@ -27,7 +24,7 @@ class MigrateCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Migrate the migrations from the specified module or from all modules.'; 
+    protected $description = 'Migrate the migrations from the specified module or from all modules.';
 
     /**
      * Create a new command instance.
@@ -66,7 +63,7 @@ class MigrateCommand extends Command
      */
     private function migrate($module)
     {
-        $this->info(PHP_EOL.'Migrate the module:'.$module->getName().'('.$module->getTitle().')'.PHP_EOL);
+        $this->info(PHP_EOL . 'Migrate the module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 
         $path = $this->getMigrationPath($module);
 

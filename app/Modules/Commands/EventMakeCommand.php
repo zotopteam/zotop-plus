@@ -2,8 +2,6 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class EventMakeCommand extends GeneratorCommand
@@ -23,7 +21,7 @@ class EventMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a event for the specified module.'; 
+    protected $description = 'Create a event for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -42,6 +40,4 @@ class EventMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $stub = 'event';
-  
-
 }

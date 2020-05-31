@@ -2,7 +2,6 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
 use App\Modules\Maker\GeneratorCommand;
@@ -26,7 +25,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new model for the specified module.'; 
+    protected $description = 'Create a new model for the specified module.';
 
 
     /**
@@ -101,8 +100,8 @@ class ModelMakeCommand extends GeneratorCommand
     public function getFillable()
     {
         // 从数据表中直接读取字段
-        if ( $columns = $this->getTableColums()) {
-            return "['".implode("','", $columns)."']";
+        if ($columns = $this->getTableColums()) {
+            return "['" . implode("','", $columns) . "']";
         }
 
         return '[]';
@@ -113,7 +112,7 @@ class ModelMakeCommand extends GeneratorCommand
      * @return string
      */
     public function getGuarded()
-    {                
+    {
         return '[]';
     }
 

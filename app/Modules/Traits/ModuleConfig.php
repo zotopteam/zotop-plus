@@ -2,9 +2,9 @@
 
 namespace App\Modules\Traits;
 
-use File;
-use Artisan;
-use Module;
+use App\Modules\Facades\Module;
+use Illuminate\Support\Facades\Artisan;
+
 
 trait ModuleConfig
 {
@@ -35,7 +35,7 @@ trait ModuleConfig
      * @param  string $value 键值，如：local，如果为null，则为删除
      * @return bool
      */
-    private function env($key, $value='')
+    private function env($key, $value = '')
     {
         $envs = [];
 
@@ -51,12 +51,12 @@ trait ModuleConfig
             Artisan::call('env:set', [
                 'key'   => $key,
                 'value' => $value
-            ]);   
+            ]);
         }
 
         // 清理配置和路由缓存
-        Artisan::call('config:clear');        
-        Artisan::call('route:clear'); 
+        Artisan::call('config:clear');
+        Artisan::call('route:clear');
 
         return $this;
     }

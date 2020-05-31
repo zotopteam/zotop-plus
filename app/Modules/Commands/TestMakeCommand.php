@@ -3,7 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class TestMakeCommand extends GeneratorCommand
@@ -24,7 +23,7 @@ class TestMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new feature or unit test class for the specified module.'; 
+    protected $description = 'Create a new feature or unit test class for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -43,14 +42,14 @@ class TestMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $stub = 'test';
- 
+
     /**
      * 生成前准备
      * @return boolean
-     */  
+     */
     public function prepare()
     {
-        $this->stub = 'test/'.$this->getTypeInput();
+        $this->stub = 'test/' . $this->getTypeInput();
 
         return true;
     }
@@ -63,7 +62,7 @@ class TestMakeCommand extends GeneratorCommand
     {
         $type = strtolower($this->option('type'));
 
-        if (! in_array($type, ['feature', 'unit'])) {
+        if (!in_array($type, ['feature', 'unit'])) {
             $type = 'feature';
         }
 
@@ -75,15 +74,14 @@ class TestMakeCommand extends GeneratorCommand
      * 获取类的命名空间
      * @return string
      */
-    public function getClassNamespace($dirKey=null)
+    public function getClassNamespace($dirKey = null)
     {
         $namespace = $this->getDirNamespace($this->dirKey);
-        
+
         // 获取当前类型的目录
         $dir       = $this->getTypeInput();
-        
-        return $namespace . '\\' . Str::studly($dir);
 
+        return $namespace . '\\' . Str::studly($dir);
     }
 
     /**
@@ -93,10 +91,10 @@ class TestMakeCommand extends GeneratorCommand
     public function getFilePath()
     {
         $path = $this->getConfigDirs($this->dirKey);
-        
+
         // 获取当前类型的目录
         $dir  = $this->getTypeInput();
 
         return  $path . DIRECTORY_SEPARATOR . Str::studly($dir) . DIRECTORY_SEPARATOR . $this->getFileName();
-    }        
+    }
 }

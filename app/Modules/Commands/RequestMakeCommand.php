@@ -2,8 +2,6 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class RequestMakeCommand extends GeneratorCommand
@@ -23,7 +21,7 @@ class RequestMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new request class for the specified module.'; 
+    protected $description = 'Create a new request class for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -42,7 +40,7 @@ class RequestMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $stub = 'request';
-  
+
     /**
      * 生成前准备
      * @return boolean
@@ -54,5 +52,5 @@ class RequestMakeCommand extends GeneratorCommand
         ]);
 
         return true;
-    }    
+    }
 }

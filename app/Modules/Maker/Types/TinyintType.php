@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\Maker\Types;
 
 use Doctrine\DBAL\Types\Type;
@@ -9,11 +10,11 @@ use DB;
 
 class TinyintType extends IntegerType
 {
-	/**
-	 * Get the type name
-	 * 
-	 * @return string
-	 */
+    /**
+     * Get the type name
+     * 
+     * @return string
+     */
     public function getName()
     {
         return 'tinyint';
@@ -49,10 +50,10 @@ class TinyintType extends IntegerType
      */
     protected function getMysqlPlatformSQLDeclaration(array $fieldDeclaration)
     {
-        $unsigned   = ! empty($fieldDeclaration['unsigned']) ? ' UNSIGNED' : '';
-        $increments = ! empty($fieldDeclaration['autoincrement']) ? ' AUTO_INCREMENT' : '';
+        $unsigned   = !empty($fieldDeclaration['unsigned']) ? ' UNSIGNED' : '';
+        $increments = !empty($fieldDeclaration['autoincrement']) ? ' AUTO_INCREMENT' : '';
 
-        return 'TINYINT(3)'.$unsigned.$increments;
+        return 'TINYINT(3)' . $unsigned . $increments;
     }
 
     /**
@@ -66,7 +67,7 @@ class TinyintType extends IntegerType
     {
         $boolean = false;
 
-        $result = DB::select("show columns from ".$table." where Field = '".$column."'");
+        $result = DB::select("show columns from " . $table . " where Field = '" . $column . "'");
 
         // tinyint类型且长度等于1时为boolean字段
         if ($result && stripos($result[0]->Type, 'tinyint(1)') !== false) {

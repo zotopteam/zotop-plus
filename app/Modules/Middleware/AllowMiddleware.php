@@ -4,7 +4,6 @@ namespace App\Modules\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Authorization
@@ -14,14 +13,13 @@ use Illuminate\Support\Facades\Auth;
 class AllowMiddleware
 {
     /**
-     * @param $request
+     * @param Request $request
      * @param \Closure $next
      * @param $permission
      * @return \Illuminate\Http\RedirectResponse|Response
      */
-    public function handle($request, \Closure $next, $permission)
+    public function handle(Request $request, \Closure $next, $permission)
     {
         return $next($request);
     }
-
 }

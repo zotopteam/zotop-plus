@@ -3,8 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 
 class SeedCommand extends Command
@@ -24,7 +22,7 @@ class SeedCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Seed the module\'s database with records'; 
+    protected $description = 'Seed the module\'s database with records';
 
     /**
      * Create a new command instance.
@@ -63,7 +61,7 @@ class SeedCommand extends Command
      */
     private function seed($module)
     {
-        $this->info(PHP_EOL.'Seed the module:'.$module->getName().'('.$module->getTitle().')'.PHP_EOL);
+        $this->info(PHP_EOL . 'Seed the module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 
         $seeders = Arr::wrap($module->getSeeders());
 
@@ -74,20 +72,18 @@ class SeedCommand extends Command
 
         foreach ($seeders as $seeder) {
 
-            if (! class_exists($seeder)) {
-                $this->error('Class does not exiests: '.$seeder);
+            if (!class_exists($seeder)) {
+                $this->error('Class does not exiests: ' . $seeder);
                 continue;
             }
 
-            $this->info('Seeding:'.$seeder);
+            $this->info('Seeding:' . $seeder);
 
             $this->call('db:seed', [
                 '--class' => $seeder,
                 '--database' => $this->option('database'),
-                '--force'    => $this->option('force'),                
+                '--force'    => $this->option('force'),
             ]);
         }
-        
     }
-
 }

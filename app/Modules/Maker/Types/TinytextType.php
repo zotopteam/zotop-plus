@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\Maker\Types;
 
 use Doctrine\DBAL\Types\Type;

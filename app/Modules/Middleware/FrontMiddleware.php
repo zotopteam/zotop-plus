@@ -4,9 +4,7 @@ namespace App\Modules\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Foundation\Application;
-use Route;
 
 class FrontMiddleware
 {

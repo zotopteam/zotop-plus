@@ -3,9 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class MigrateRefreshCommand extends Command
 {
@@ -26,7 +23,7 @@ class MigrateRefreshCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Refresh module\'s all database migration'; 
+    protected $description = 'Refresh module\'s all database migration';
 
     /**
      * Create a new command instance.
@@ -65,14 +62,14 @@ class MigrateRefreshCommand extends Command
      */
     private function refresh($module)
     {
-        $this->info(PHP_EOL.'Refresh the module:'.$module->getName().'('.$module->getTitle().')'.PHP_EOL);
+        $this->info(PHP_EOL . 'Refresh the module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 
         $this->call('module:migrate-reset', [
             'module'     => $module->getName(),
             '--database' => $this->option('database'),
             '--force'    => $this->option('force'),
         ]);
-        
+
         $this->call('module:migrate', [
             'module'     => $module->getName(),
             '--database' => $this->option('database'),
@@ -85,5 +82,4 @@ class MigrateRefreshCommand extends Command
             ]);
         }
     }
-
 }

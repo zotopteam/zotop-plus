@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
 class PublishCommand extends Command
-{    
+{
     /**
      * The name and signature of the console command.
      *
@@ -28,7 +28,7 @@ class PublishCommand extends Command
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
-    protected $files;    
+    protected $files;
 
     /**
      * Create a new command instance.
@@ -61,13 +61,13 @@ class PublishCommand extends Command
         // 发布全部模块
         foreach ($this->laravel['modules']->all() as $module) {
 
-            if ($action=='publish' && $module->isDisabled()) {
+            if ($action == 'publish' && $module->isDisabled()) {
                 continue;
             }
 
-            if ($action=='unpublish' && $module->isEnabled()) {
+            if ($action == 'unpublish' && $module->isEnabled()) {
                 continue;
-            }            
+            }
 
             $this->$action($module);
         }
@@ -82,17 +82,17 @@ class PublishCommand extends Command
     {
         $sourcePath      = $this->getSourcePath($module);
         $destinationPath = $this->getDestinationPath($module);
-        
+
         // 删除目标目录
         $this->files->deleteDirectory($destinationPath);
 
         // 复制资源到目标目录
-        if (! $this->files->isDirectory($sourcePath)) {
+        if (!$this->files->isDirectory($sourcePath)) {
             return;
         }
 
         // 创建目标文件夹
-        if (! $this->files->isDirectory($destinationPath)) {
+        if (!$this->files->isDirectory($destinationPath)) {
             $this->files->makeDirectory($destinationPath, 0775, true);
         }
 
@@ -108,7 +108,7 @@ class PublishCommand extends Command
      * @return void
      */
     public function unpublish($module)
-    {        
+    {
         $destinationPath = $this->getDestinationPath($module);
         $this->files->deleteDirectory($destinationPath);
         $this->info("Unpublish {$module} successfully!");
@@ -135,7 +135,6 @@ class PublishCommand extends Command
     {
         $path = $this->laravel['config']->get('modules.paths.assets');
 
-        return $path.DIRECTORY_SEPARATOR.$module->getLowerName();
+        return $path . DIRECTORY_SEPARATOR . $module->getLowerName();
     }
-
 }

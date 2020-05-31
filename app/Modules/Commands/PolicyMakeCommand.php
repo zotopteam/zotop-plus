@@ -3,7 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class PolicyMakeCommand extends GeneratorCommand
@@ -24,7 +23,7 @@ class PolicyMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new policy for the specified module.'; 
+    protected $description = 'Create a new policy for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -106,7 +105,6 @@ class PolicyMakeCommand extends GeneratorCommand
      */
     protected function getInputModelFullName()
     {
-        return $this->getDirNamespace('model') . '\\' .$this->getInputModelBaseName();
-    }      
-
+        return $this->getDirNamespace('model') . '\\' . $this->getInputModelBaseName();
+    }
 }

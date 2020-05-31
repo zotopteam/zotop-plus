@@ -56,7 +56,7 @@ class Lang
         $this->module     = Str::Studly($module);
         $this->lang       = $lang;
 
-        if (! $this->filesystem->exists($this->getModulePath('module.json'))) {
+        if (!$this->filesystem->exists($this->getModulePath('module.json'))) {
             throw new ModuleNotFoundException("Module {$this->module} does not exist！");
         }
     }
@@ -72,7 +72,7 @@ class Lang
         return new static($module, $lang);
     }
 
-     /**
+    /**
      * 设置名称
      * @param  string $data
      * @return this
@@ -81,7 +81,7 @@ class Lang
     {
         $this->name = strtolower($this->filesystem->name($name));
         return $this;
-    }  
+    }
 
     /**
      * 设置数据
@@ -89,14 +89,14 @@ class Lang
      * @param  mixed $value
      * @return this
      */
-    public function data($key, $value=null)
+    public function data($key, $value = null)
     {
         if (is_array($key)) {
             $this->data = array_merge($this->data, $key);
         }
 
-        if(is_string($key)) {
-            $this->data = array_merge($this->data, [$key=>$value]);
+        if (is_string($key)) {
+            $this->data = array_merge($this->data, [$key => $value]);
         }
 
         return $this;
@@ -107,11 +107,11 @@ class Lang
      * @param  string $subpath 
      * @return string
      */
-    protected function getModulePath($subpath=null)
+    protected function getModulePath($subpath = null)
     {
         $path = $this->config->get('modules.paths.modules');
-        $path = $path.DIRECTORY_SEPARATOR.$this->module;
-        return $subpath? $path.DIRECTORY_SEPARATOR.$subpath : $path;
+        $path = $path . DIRECTORY_SEPARATOR . $this->module;
+        return $subpath ? $path . DIRECTORY_SEPARATOR . $subpath : $path;
     }
 
     /**
@@ -123,12 +123,12 @@ class Lang
         $path = $this->getModulePath($this->config->get('modules.paths.dirs.lang'));
 
         if ($this->name) {
-            $path = $path.DIRECTORY_SEPARATOR.$this->lang.DIRECTORY_SEPARATOR.$this->name.'.php';
+            $path = $path . DIRECTORY_SEPARATOR . $this->lang . DIRECTORY_SEPARATOR . $this->name . '.php';
         } else {
-            $path = $path.DIRECTORY_SEPARATOR.$this->lang.'.json';
+            $path = $path . DIRECTORY_SEPARATOR . $this->lang . '.json';
         }
 
-        return $path;       
+        return $path;
     }
 
     /**
@@ -153,17 +153,17 @@ class Lang
         $data = collect($this->data);
 
         // 获取键名最大长度
-        $maxlength = $data->keys()->map(function($key) {
+        $maxlength = $data->keys()->map(function ($key) {
             return strlen($key);
         })->max();
 
         $newline = "\r\n";
 
-        $content = $data->transform(function($value, $key) use($maxlength, $newline) {
-            return "    ".str_pad("'".$key."'", $maxlength + 2, "  ")." => '".addslashes($value)."',".$newline;
+        $content = $data->transform(function ($value, $key) use ($maxlength, $newline) {
+            return "    " . str_pad("'" . $key . "'", $maxlength + 2, "  ") . " => '" . addslashes($value) . "'," . $newline;
         })->implode('');
-        
-        return '<?php'.$newline.'return ['.$newline.$content.'];';         
+
+        return '<?php' . $newline . 'return [' . $newline . $content . '];';
     }
 
     /**
@@ -191,11 +191,11 @@ class Lang
      * @param  string $default 默认值
      * @return mixed
      */
-    public function get($key=null, $default=null)
+    public function get($key = null, $default = null)
     {
         $path = $this->getPath();
 
-        if(! $this->filesystem->isFile($path)) {
+        if (!$this->filesystem->isFile($path)) {
             return [];
         }
 
@@ -207,7 +207,7 @@ class Lang
             $lang = json_decode($this->filesystem->get($path), true);
         }
 
-        $lang = is_array($lang) ? $lang : []; 
+        $lang = is_array($lang) ? $lang : [];
 
         if ($key) {
             return isset($lang[$key]) ? $lang[$key] : $default;
@@ -232,12 +232,12 @@ class Lang
      * @param  mixed  $value 键值 
      * @return boolean
      */
-    public function set($key, $value='')
+    public function set($key, $value = '')
     {
         $this->data = $this->get();
 
         if (is_string($key)) {
-            $this->data = array_merge($this->data, [$key=>$value]);
+            $this->data = array_merge($this->data, [$key => $value]);
         }
 
         if (is_array($key)) {
@@ -259,7 +259,7 @@ class Lang
         if (isset($this->data[$key])) {
             unset($this->data[$key]);
         }
-        
+
         return $this->save(true);
     }
 
@@ -268,7 +268,7 @@ class Lang
      * @param  boolean $force 是否覆盖已有文件
      * @return boolean
      */
-    public function save($force=false)
+    public function save($force = false)
     {
         $path = $this->getPath();
 
@@ -276,7 +276,7 @@ class Lang
             return false;
         }
 
-        if (! $this->filesystem->isDirectory($dir = dirname($path))) {
+        if (!$this->filesystem->isDirectory($dir = dirname($path))) {
             $this->filesystem->makeDirectory($dir, 0775, true);
         }
 
@@ -292,5 +292,4 @@ class Lang
     {
         return $this->filesystem->delete($this->getPath());
     }
-
 }

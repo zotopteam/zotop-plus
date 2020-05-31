@@ -2,8 +2,6 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class SeederMakeCommand extends GeneratorCommand
@@ -24,7 +22,7 @@ class SeederMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new seeder for the specified module.'; 
+    protected $description = 'Create a new seeder for the specified module.';
 
 
     /**
@@ -50,6 +48,5 @@ class SeederMakeCommand extends GeneratorCommand
         $this->appendName = $this->option('master') ? 'DatabaseSeeder' : 'TableSeeder';
 
         parent::handle();
-    }    
-
+    }
 }

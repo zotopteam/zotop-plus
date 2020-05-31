@@ -3,7 +3,6 @@
 namespace App\Modules\Commands;
 
 use App\Modules\Maker\GeneratorCommand;
-use App\Modules\Maker\Lang;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -26,7 +25,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new controller for the specified module.'; 
+    protected $description = 'Create a new controller for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -45,7 +44,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $stub = 'controller';
-      
+
     /**
      * 重载prepare
      * @return boolean
@@ -63,7 +62,7 @@ class ControllerMakeCommand extends GeneratorCommand
                 'model_list'            => $this->getModelList(),
                 'model_var'             => $this->getModelInput(),
                 'controller_lower_name' => $this->getControllerLowerName(),
-            ]);            
+            ]);
         } else {
             $this->stub = $this->stub . '/plain';
         }
@@ -111,14 +110,14 @@ class ControllerMakeCommand extends GeneratorCommand
      * 获取输入的 name
      * @return string
      */
-    public function getTypeInput($key=null)
+    public function getTypeInput($key = null)
     {
         $type  = strtolower($this->option('type'));
-        
+
         $types = $this->getConfigTypes($type);
 
         return $key ? Arr::get($types, $key) : $type;
-    }    
+    }
 
     /**
      * 获取输入的 model
@@ -133,13 +132,13 @@ class ControllerMakeCommand extends GeneratorCommand
      * 获取类的命名空间
      * @return string
      */
-    public function getClassNamespace($dirKey=null)
+    public function getClassNamespace($dirKey = null)
     {
         $namespace = $this->getDirNamespace($this->dirKey);
 
         // 获取当前类型的目录
         $dir = $this->getTypeInput('dirs.controller');
-        
+
         if ($dir) {
             return $namespace . '\\' . Str::studly($dir);
         }
@@ -186,7 +185,7 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * 获取模型的复数名词
      * @return string
-     */    
+     */
     public function getModelList()
     {
         return Str::plural($this->getModelInput());
@@ -206,11 +205,11 @@ class ControllerMakeCommand extends GeneratorCommand
      * @param  string $action 控制器动作名称 index,create,edit,show
      * @return void
      */
-    public function generateView($action, $force=false)
+    public function generateView($action, $force = false)
     {
-        $stub = $this->stub . '/' .$action;
-        $path = $this->getConfigDirs('views').DIRECTORY_SEPARATOR. $this->getTypeInput("dirs.view");
-        $path = $path . DIRECTORY_SEPARATOR.$this->getLowerNameInput() . DIRECTORY_SEPARATOR . $action . '.blade.php';
+        $stub = $this->stub . '/' . $action;
+        $path = $this->getConfigDirs('views') . DIRECTORY_SEPARATOR . $this->getTypeInput("dirs.view");
+        $path = $path . DIRECTORY_SEPARATOR . $this->getLowerNameInput() . DIRECTORY_SEPARATOR . $action . '.blade.php';
 
         $this->generateStubFile($stub, $path, $force);
     }

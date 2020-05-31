@@ -5,9 +5,6 @@ namespace App\Modules\Commands;
 use App\Modules\Exceptions\ModuleExistedException;
 use App\Modules\Maker\GeneratorTrait;
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class ModuleMakeCommand extends Command
 {
@@ -27,7 +24,7 @@ class ModuleMakeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create a new module.'; 
+    protected $description = 'Create a new module.';
 
     /**
      * Create a new command instance.
@@ -48,22 +45,21 @@ class ModuleMakeCommand extends Command
     {
         // 覆盖模块
         if ($this->hasModule()) {
-            
-            if (! $this->option('force')) {
+
+            if (!$this->option('force')) {
 
                 if ($this->laravel->runningInConsole()) {
-                    $this->error('Module '.$this->getModuleStudlyName().' already exist!');
-                    return;                    
+                    $this->error('Module ' . $this->getModuleStudlyName() . ' already exist!');
+                    return;
                 }
 
-                throw new ModuleExistedException('Module '.$this->getModuleStudlyName().' already exist!', 1);
-                
+                throw new ModuleExistedException('Module ' . $this->getModuleStudlyName() . ' already exist!', 1);
             }
 
             $this->laravel['files']->deleteDirectory($this->getModulePath());
         }
-        
-        
+
+
         // 创建文件
         $this->generateFiles();
         //创建图标
@@ -75,7 +71,7 @@ class ModuleMakeCommand extends Command
         // 创建语言
         $this->generateLang();
 
-        $this->info('Module '.$this->getModuleStudlyName().' created successfully!');
+        $this->info('Module ' . $this->getModuleStudlyName() . ' created successfully!');
     }
 
     /**
@@ -101,7 +97,7 @@ class ModuleMakeCommand extends Command
         $destinationPath = $this->getModulePath('module.png');
 
         $this->laravel['files']->copy($sourcePath, $destinationPath);
-        $this->info('Copied: '.$destinationPath);
+        $this->info('Copied: ' . $destinationPath);
     }
 
     /**
@@ -115,9 +111,9 @@ class ModuleMakeCommand extends Command
         foreach ($dirs as $key => $path) {
             $path = $this->getModulePath($path);
 
-            if (! $this->laravel['files']->isDirectory($path)) {
+            if (!$this->laravel['files']->isDirectory($path)) {
                 $this->laravel['files']->makeDirectory($path, 0755, true);
-                $this->info('Created: '.$path);
+                $this->info('Created: ' . $path);
             }
         }
     }
@@ -136,7 +132,6 @@ class ModuleMakeCommand extends Command
             'module' => $this->getModuleStudlyName(),
             '--type' => 'route',
         ]);
-
     }
 
     /**

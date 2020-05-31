@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules;
 
 use App\Modules\Exceptions\ModuleNotFoundException;
@@ -74,7 +75,7 @@ class Repository
             return $a['order'] > $b['order'] ? 1 : -1;
         });
 
-        return $modules;        
+        return $modules;
     }
 
     /**
@@ -98,7 +99,7 @@ class Repository
      * @param  boolean $enabled true=获取启用 false=获取禁用
      * @return array
      */
-    public function enabled($enabled=true)
+    public function enabled($enabled = true)
     {
         $modules = $this->all();
 
@@ -108,10 +109,9 @@ class Repository
                 unset($modules[$key]);
             }
 
-            if (! $enabled && $module->isEnabled()) {
+            if (!$enabled && $module->isEnabled()) {
                 unset($modules[$key]);
-            }            
-
+            }
         }
 
         return $modules;
@@ -122,7 +122,7 @@ class Repository
      * @param  boolean $enabled true=获取启用 false=获取禁用
      * @return array
      */
-    public function installed($installed=true)
+    public function installed($installed = true)
     {
         $modules = $this->all();
 
@@ -132,14 +132,13 @@ class Repository
                 unset($modules[$key]);
             }
 
-            if (! $installed && $module->isInstalled()) {
+            if (!$installed && $module->isInstalled()) {
                 unset($modules[$key]);
-            }            
-
+            }
         }
 
         return $modules;
-    }    
+    }
 
     /**
      * 检查模块是否存在
@@ -184,7 +183,7 @@ class Repository
      * @param  mixed $default 默认值
      * @return mixed
      */
-    public function data($name, array $args=[], $default=null)
+    public function data($name, array $args = [], $default = null)
     {
         $data = $default;
 
@@ -204,7 +203,7 @@ class Repository
      * @param boolean $version 是否附带版本号
      * @return string
      */
-    public function asset($asset, $version=true)
+    public function asset($asset, $version = true)
     {
         list($module, $url) = explode(':', $asset);
 
@@ -221,7 +220,7 @@ class Repository
      * @param  string $type  类型，js || css，不指定类型时，根据资源的后缀自动判断
      * @return string
      */
-    public function load($asset, $type=null)
+    public function load($asset, $type = null)
     {
         $load = [];
 
@@ -229,7 +228,7 @@ class Repository
 
             // 确定文件类型
             $type = $type ? strtolower($type) : strtolower(Str::afterLast($asset, '.'));
-            
+
             // 获取资源的完整url
             $url  = $this->asset($asset, true);
 
@@ -238,16 +237,16 @@ class Repository
                 $this->loads[$url] = true;
 
                 if ($type == 'js') {
-                    $load[] = '<script src="'.$url.'"></script>';
+                    $load[] = '<script src="' . $url . '"></script>';
                 }
 
                 if ($type == 'css') {
-                    $load[] = '<link href="'.$url.'" rel="stylesheet">';
-                }            
+                    $load[] = '<link href="' . $url . '" rel="stylesheet">';
+                }
             }
         }
 
-        return implode($load, "\r\n");
+        return implode("\r\n", $load);
     }
 
     /**
@@ -269,6 +268,6 @@ class Repository
     {
         foreach ($this->enabled() as $module) {
             $module->boot();
-        }        
+        }
     }
 }

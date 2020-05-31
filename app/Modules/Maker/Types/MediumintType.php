@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Modules\Maker\Types;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\IntegerType;
+
 /**
  * Type that maps an SQL MediumintType to a PHP string.
  *
@@ -50,9 +52,9 @@ class MediumintType extends IntegerType
      */
     protected function getMysqlPlatformSQLDeclaration(array $fieldDeclaration)
     {
-        $unsigned   = ! empty($fieldDeclaration['unsigned']) ? ' UNSIGNED' : '';
-        $increments = ! empty($fieldDeclaration['autoincrement']) ? ' AUTO_INCREMENT' : '';
+        $unsigned   = !empty($fieldDeclaration['unsigned']) ? ' UNSIGNED' : '';
+        $increments = !empty($fieldDeclaration['autoincrement']) ? ' AUTO_INCREMENT' : '';
 
-        return 'MEDIUMINT'.$unsigned.$increments;
+        return 'MEDIUMINT' . $unsigned . $increments;
     }
 }

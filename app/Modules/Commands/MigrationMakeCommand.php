@@ -2,8 +2,6 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use App\Modules\Maker\GeneratorCommand;
 use App\Modules\Exceptions\ClassExistedException;
 
@@ -24,7 +22,7 @@ class MigrationMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new blank migration file for the specified module.'; 
+    protected $description = 'Create a new blank migration file for the specified module.';
 
 
     /**
@@ -47,12 +45,12 @@ class MigrationMakeCommand extends GeneratorCommand
     public function prepare()
     {
         if ($migration = $this->getMigrationCreatedAsThis()) {
-            
-            if (! $this->option('force')) {
+
+            if (!$this->option('force')) {
 
                 if ($this->laravel->runningInConsole()) {
                     $this->error("A {$this->getClassName()} class already exists. file: {$migration}");
-                    return false;                    
+                    return false;
                 }
 
                 throw new ClassExistedException("A {$this->getClassName()} class already exists. file: {$migration}");
@@ -79,7 +77,7 @@ class MigrationMakeCommand extends GeneratorCommand
      */
     public function getFileName()
     {
-        return date('Y_m_d_His').'_'.$this->getLowerNameInput().'.'.$this->extension;
+        return date('Y_m_d_His') . '_' . $this->getLowerNameInput() . '.' . $this->extension;
     }
 
     /**
@@ -90,7 +88,7 @@ class MigrationMakeCommand extends GeneratorCommand
     {
         $path       = $this->laravel['config']->get("modules.paths.dirs.{$this->dirKey}");
         $path       = $this->getModulePath($path);
-        $pattern    = $path.DIRECTORY_SEPARATOR.'*.'.$this->extension;
+        $pattern    = $path . DIRECTORY_SEPARATOR . '*.' . $this->extension;
         $migrations = $this->laravel['files']->glob($pattern);
 
         foreach ($migrations as $path) {

@@ -28,7 +28,7 @@ class ModulesServiceProvider extends ServiceProvider
         //注册中间件
         foreach ($this->middlewares as $name => $middleware) {
             $this->app['router']->aliasMiddleware($name, "App\\Modules\\Middleware\\{$middleware}");
-        }    
+        }
 
         // 启动全部模块
         $this->app->register(BootstrapServiceProvider::class);
@@ -49,6 +49,6 @@ class ModulesServiceProvider extends ServiceProvider
             return new Activator($app);
         });
 
-        $this->mergeConfigFrom(__DIR__.'/Config/modules.php', 'modules');        
-    } 
+        $this->mergeConfigFrom(__DIR__ . '/Config/modules.php', 'modules');
+    }
 }

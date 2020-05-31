@@ -5,7 +5,6 @@ namespace App\Modules\Maker;
 use App\Modules\Exceptions\TableNotFoundException;
 use App\Modules\Maker\Structure;
 use Doctrine\DBAL\Types\Type;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -53,38 +52,38 @@ class Table
         'json'      => 'text',
         'jsonb'     => 'text',
         'bit'       => 'boolean',
-        'enum'      => 'string',      
+        'enum'      => 'string',
         // Postgres types
         '_text'     => 'text',
         '_int4'     => 'integer',
         '_numeric'  => 'float',
         'cidr'      => 'string',
         'inet'      => 'string',
-    ];    
+    ];
 
     /**
      * @var array
      */
     private $customTypes = [
-        // 'enum'          => 'App\Modules\Maker\Types\EnumType',
-        // 'json'          => 'App\Modules\Maker\Types\JsonType',
-        'year'          => 'App\Modules\Maker\Types\YearType',
-        'tinyint'     => 'App\Modules\Maker\Types\TinyintType',
-        'mediumint'     => 'App\Modules\Maker\Types\MediumintType',
-        'timestamp'     => 'App\Modules\Maker\Types\TimestampType',
-        'longtext'      => 'App\Modules\Maker\Types\LongtextType',
-        'mediumtext'    => 'App\Modules\Maker\Types\MediumtextType',
-        //'tinytext'      => 'App\Modules\Maker\Types\TinytextType',
-    ];    
+        // 'enum'       => 'App\Modules\Maker\Types\EnumType',
+        // 'json'       => 'App\Modules\Maker\Types\JsonType',
+        // 'tinytext'   => 'App\Modules\Maker\Types\TinytextType',
+        'year'       => 'App\Modules\Maker\Types\YearType',
+        'tinyint'    => 'App\Modules\Maker\Types\TinyintType',
+        'mediumint'  => 'App\Modules\Maker\Types\MediumintType',
+        'timestamp'  => 'App\Modules\Maker\Types\TimestampType',
+        'longtext'   => 'App\Modules\Maker\Types\LongtextType',
+        'mediumtext' => 'App\Modules\Maker\Types\MediumtextType',
+    ];
 
     public function __construct()
     {
         $this->schema = Schema::getConnection()->getDoctrineSchemaManager();
         $this->prefix = Schema::getConnection()->getTablePrefix();
 
-       // 注册自定义的字段类型
+        // 注册自定义的字段类型
         foreach ($this->customTypes as $type => $class) {
-            
+
             // 注册type数组
             $this->registerTypes[$type] = $type;
 
@@ -97,29 +96,29 @@ class Table
         }
 
         // https://github.com/laravel/framework/issues/1346
-        foreach ($this->registerTypes as $from=>$to) {
+        foreach ($this->registerTypes as $from => $to) {
             $this->schema->getDatabasePlatform()->registerDoctrineTypeMapping($from, $to);
-        }              
+        }
     }
-    
+
     /**
      * 获取全部的数据表
      * @param  boolean $prefix 是否包含前缀
      * @return mixed
      */
-    public static function all($prefix=false)
+    public static function all($prefix = false)
     {
         $instance  = new static;
 
         $tables = $instance->schema->listTableNames();
 
         if ($prefix == false) {
-            $tables = array_map(function($table) use ($instance) {
+            $tables = array_map(function ($table) use ($instance) {
                 return Str::after($table, $instance->prefix);
-            }, $tables);     
+            }, $tables);
         }
 
-        $tables = array_map('strtolower', $tables);       
+        $tables = array_map('strtolower', $tables);
 
         return $tables;
     }
@@ -172,7 +171,7 @@ class Table
      * @param  boolean $prefix 是否含前缀
      * @return string
      */
-    public function name($prefix=false)
+    public function name($prefix = false)
     {
         return $prefix ? $this->prefix . $this->table : $this->table;
     }
@@ -183,7 +182,7 @@ class Table
      * @return bool
      */
     public function rename($name)
-    {   
+    {
         Schema::rename($this->table, $name);
 
         if (Schema::hasTable($name)) {
@@ -211,18 +210,18 @@ class Table
      */
     public function columns()
     {
-        $columns = $this->schema->listTableColumns($this->prefix.$this->table);
+        $columns = $this->schema->listTableColumns($this->prefix . $this->table);
 
-        return collect($columns)->transform(function($column) {
+        return collect($columns)->transform(function ($column) {
             return [
                 'name'       => $column->getName(),
                 'type'       => $this->getColumnType($column),
                 'length'     => $this->getColumnLength($column),
                 'default'    => $column->getDefault(),
-                'nullable'   => intval(! $column->getNotNull()),
+                'nullable'   => intval(!$column->getNotNull()),
                 'unsigned'   => intval($column->getUnsigned()),
                 'increments' => intval($column->getAutoincrement()),
-                'comment'    => $column->getComment(),              
+                'comment'    => $column->getComment(),
             ];
         });
     }
@@ -240,7 +239,7 @@ class Table
             $type = 'char';
         }
 
-        if($type == 'tinyint' && $column->getType()->isBoolean($this->name(true), $column->getName())) {
+        if ($type == 'tinyint' && $column->getType()->isBoolean($this->name(true), $column->getName())) {
             $type = 'boolean';
         }
 
@@ -259,13 +258,13 @@ class Table
         $type   = $this->getColumnType($column);
 
         // 去除laravel中没有长度参数的类型
-        if (! in_array($type, ['char', 'string', 'float', 'double','decimal','enum'])) {
+        if (!in_array($type, ['char', 'string', 'float', 'double', 'decimal', 'enum'])) {
             $length = null;
         }
 
         // 获取浮点类型的精度
-        if (in_array($type , ['decimal', 'float', 'double'])) {
-            $length = $column->getPrecision().','.$column->getScale();
+        if (in_array($type, ['decimal', 'float', 'double'])) {
+            $length = $column->getPrecision() . ',' . $column->getScale();
         }
 
         return $length;
@@ -278,9 +277,9 @@ class Table
      */
     public function indexes()
     {
-        $indexes = $this->schema->listTableIndexes($this->prefix.$this->table);
+        $indexes = $this->schema->listTableIndexes($this->prefix . $this->table);
 
-        return collect($indexes)->transform(function($index) {
+        return collect($indexes)->transform(function ($index) {
             return [
                 'name'    => $index->getName(),
                 'columns' => $index->getColumns(),
@@ -298,13 +297,13 @@ class Table
     {
         $type = 'index';
 
-        if ( $index->isUnique() ) {
+        if ($index->isUnique()) {
             $type = 'unique';
         }
 
-        if ( $index->isPrimary() ) {
+        if ($index->isPrimary()) {
             $type = 'primary';
-        }    
+        }
 
         return $type;
     }
@@ -315,9 +314,9 @@ class Table
      */
     public function foreignKeys()
     {
-        $foreignKeys = $this->schema->listTableForeignKeys($this->prefix.$this->table);
+        $foreignKeys = $this->schema->listTableForeignKeys($this->prefix . $this->table);
 
-        return collect($foreignKeys)->transform(function($foreignKey) {
+        return collect($foreignKeys)->transform(function ($foreignKey) {
             return [
                 'name'       => $this->getForeignKeyName($foreignKey),
                 'column'     => $foreignKey->getLocalColumns()[0],
@@ -325,7 +324,7 @@ class Table
                 'on'         => $this->getForeignTableName($foreignKey),
                 'onUpdate'   => $foreignKey->getOption('onUpdate'),
                 'onDelete'   => $foreignKey->getOption('onDelete'),
-            ];            
+            ];
         });
     }
 
@@ -371,7 +370,7 @@ class Table
     public function getBlueprints()
     {
         return Structure::instance($this->columns(), $this->indexes(), $this->foreignKeys())->getBluepoints();
-    }       
+    }
 
     /**
      * Handle call __toString.
@@ -381,5 +380,4 @@ class Table
     {
         return $this->name();
     }
-
 }

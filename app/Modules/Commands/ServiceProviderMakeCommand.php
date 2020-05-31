@@ -2,8 +2,6 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class ServiceProviderMakeCommand extends GeneratorCommand
@@ -24,7 +22,7 @@ class ServiceProviderMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new service provider for the specified module.'; 
+    protected $description = 'Create a new service provider for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -43,14 +41,14 @@ class ServiceProviderMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $stub = 'provider';
- 
+
     /**
      * 生成前准备
      * @return boolean
-     */  
+     */
     public function prepare()
     {
-        $this->stub = 'provider/'.$this->getTypeInput();
+        $this->stub = 'provider/' . $this->getTypeInput();
 
         return true;
     }
@@ -71,11 +69,10 @@ class ServiceProviderMakeCommand extends GeneratorCommand
             } else {
                 $name = $this->getModuleName();
             }
-
         }
 
         return strtolower($name);
-    }   
+    }
 
     /**
      * 获取输入的类型，支持：常规=plain, 事件=event, 路由=route
@@ -85,7 +82,7 @@ class ServiceProviderMakeCommand extends GeneratorCommand
     {
         $type = strtolower($this->option('type'));
 
-        if (! in_array($type, ['event', 'route'])) {
+        if (!in_array($type, ['event', 'route'])) {
             return 'plain';
         }
 

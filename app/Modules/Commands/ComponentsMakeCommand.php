@@ -24,7 +24,7 @@ class ComponentsMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new component for the specified module.'; 
+    protected $description = 'Create a new component for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -57,7 +57,7 @@ class ComponentsMakeCommand extends GeneratorCommand
         if ($this->getViewInput()) {
             $this->stub = $this->stubDir . '/view';
         }
-        
+
         return true;
     }
 
@@ -81,7 +81,7 @@ class ComponentsMakeCommand extends GeneratorCommand
     public function generateView($type, $force = false)
     {
         $stub = $this->stubDir . '/view_blade';
-        $path = $this->getConfigDirs('views').DIRECTORY_SEPARATOR. $this->getConfigTypes("{$type}.dirs.view");
+        $path = $this->getConfigDirs('views') . DIRECTORY_SEPARATOR . $this->getConfigTypes("{$type}.dirs.view");
         $path = $path . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $this->getLowerNameInput() . '.blade.php';
 
         $this->generateStubFile($stub, $path, $force);
@@ -89,15 +89,15 @@ class ComponentsMakeCommand extends GeneratorCommand
 
     /**
      * 获取输入的 view
-     * @return string
+     * @return array
      */
     public function getViewInput()
     {
         $view  = $this->option('view');
 
         // 过滤掉不允许的值
-        return array_filter((array)$view, function($item){
-            return in_array($item, ['backend','frontend','api']);
+        return array_filter((array) $view, function ($item) {
+            return in_array($item, ['backend', 'frontend', 'api']);
         });
-    } 
+    }
 }

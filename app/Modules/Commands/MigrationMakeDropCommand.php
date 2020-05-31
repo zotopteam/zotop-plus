@@ -4,7 +4,6 @@ namespace App\Modules\Commands;
 
 use App\Modules\Maker\GeneratorCommand;
 use App\Modules\Maker\Table;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class MigrationMakeDropCommand extends GeneratorCommand
@@ -26,7 +25,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new drop migration file for the specified module.'; 
+    protected $description = 'Create a new drop migration file for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -75,8 +74,8 @@ class MigrationMakeDropCommand extends GeneratorCommand
         $this->fields = $this->getFields();
         $this->prefix = date('Y_m_d_His');
 
-        parent::handle();        
-    }   
+        parent::handle();
+    }
 
     /**
      * 重载prepare
@@ -84,7 +83,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
      */
     public function prepare()
     {
-        if (! empty($this->fields)) {
+        if (!empty($this->fields)) {
             $this->stub = 'migration/drop_fields';
         }
 
@@ -131,7 +130,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
     {
         $fields = $this->option('fields');
 
-        if (empty($fields) ) {
+        if (empty($fields)) {
             $table = Table::find($this->getTableName());
             if ($table->exists()) {
                 $fields = $table->getBlueprints();
@@ -140,7 +139,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
 
         return $fields;
     }
-    
+
     /**
      * 存在多个update, 类名随机
      * @return string
@@ -149,7 +148,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
     {
         return Str::studly("drop_{$this->table}_table");
     }
-    
+
     /**
      * 重载文件名称
      * @return string

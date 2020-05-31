@@ -3,7 +3,6 @@
 namespace App\Modules\Commands;
 
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class MigrationMakeUpdateCommand extends GeneratorCommand
@@ -26,7 +25,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new update migration file for the specified module.'; 
+    protected $description = 'Create a new update migration file for the specified module.';
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
@@ -75,7 +74,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
         $this->prefix = date('Y_m_d_His');
         $this->append = date('YmdHis');
 
-        parent::handle();        
+        parent::handle();
     }
 
     /**
@@ -127,7 +126,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
     public function getFieldsUp()
     {
         return $this->option('fields_up');
-    }    
+    }
 
     /**
      * 获取回滚的字段
@@ -136,7 +135,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
     public function getFieldsDown()
     {
         return $this->option('fields_down');
-    }  
+    }
 
     /**
      * 存在多个update, 类名随机
@@ -146,7 +145,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
     {
         return Str::studly("update_{$this->table}_table_{$this->append}");
     }
-    
+
     /**
      * 重载文件名称
      * @return string

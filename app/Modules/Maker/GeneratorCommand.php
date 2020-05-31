@@ -4,7 +4,6 @@ namespace App\Modules\Maker;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 abstract class GeneratorCommand extends Command
 {
@@ -43,8 +42,8 @@ abstract class GeneratorCommand extends Command
     public function handle()
     {
         // 检查模块是否存在
-        if (! $this->hasModule()) {
-            $this->error('Module '.$this->getModuleStudlyName().' does not exist!');
+        if (!$this->hasModule()) {
+            $this->error('Module ' . $this->getModuleStudlyName() . ' does not exist!');
             return;
         }
 
@@ -58,7 +57,7 @@ abstract class GeneratorCommand extends Command
 
         if ($this->prepare()) {
             $this->generate();
-        }        
+        }
     }
 
     /**
@@ -67,7 +66,7 @@ abstract class GeneratorCommand extends Command
      */
     public function prepare()
     {
-        return true;     
+        return true;
     }
 
     /**
@@ -87,17 +86,17 @@ abstract class GeneratorCommand extends Command
      */
     public function generated()
     {
-        return true;     
+        return true;
     }
 
     /**
      * 获取类的命名空间
      * @return string
      */
-    public function getClassNamespace($dirKey=null)
+    public function getClassNamespace($dirKey = null)
     {
         return $this->getDirNamespace($this->dirKey);
-    }    
+    }
 
     /**
      * 获取输入的 name
@@ -130,7 +129,7 @@ abstract class GeneratorCommand extends Command
      * 获取类名称
      * @return string
      */
-    Public function getClassName()
+    public function getClassName()
     {
         $className = $this->getStudlyNameInput();
 
@@ -148,7 +147,7 @@ abstract class GeneratorCommand extends Command
      */
     public function getClassFullName()
     {
-        return $this->getClassNamespace().'\\'.$this->getClassName();
+        return $this->getClassNamespace() . '\\' . $this->getClassName();
     }
 
     /**
@@ -157,7 +156,7 @@ abstract class GeneratorCommand extends Command
      */
     public function getFileName()
     {
-        return $this->getClassName().'.'.$this->extension;
+        return $this->getClassName() . '.' . $this->extension;
     }
 
     /**
@@ -168,5 +167,4 @@ abstract class GeneratorCommand extends Command
     {
         return $this->getConfigDirs($this->dirKey) . DIRECTORY_SEPARATOR . $this->getFileName();
     }
-    
 }

@@ -7,7 +7,7 @@ return [
     | Modules namespace
     |--------------------------------------------------------------------------
     */
-    
+
     'namespace' => 'Modules',
 
     /*
@@ -36,7 +36,7 @@ return [
         |--------------------------------------------------------------------------
         | 
         */
-       
+
         'dirs' => [
             'data'             => 'Data',
             'command'          => 'Console',
@@ -70,7 +70,7 @@ return [
         | Module files
         |--------------------------------------------------------------------------
         | 
-        */        
+        */
         'files' => [
             'module'         => 'module.json',
             'composer'       => 'composer.json',
@@ -82,7 +82,7 @@ return [
             'routes/front'   => 'Routes/front.php',
             'routes/console' => 'Routes/console.php',
             'gitkeep/asset'  => 'Resources/assets/.gitkeep',
-            'gitkeep/view'   => 'Resources/views/.gitkeep',               
+            'gitkeep/view'   => 'Resources/views/.gitkeep',
         ]
     ],
 
@@ -94,7 +94,7 @@ return [
     'types' => [
         'frontend' => [
             'prefix'     => '',
-            'middleware' => ['web','module','front'],
+            'middleware' => ['web', 'module', 'front'],
             'theme'      => 'default',
             'dirs'       => [
                 'controller' => '',
@@ -103,8 +103,8 @@ return [
         ],
         'backend' => [
             'prefix'     => 'admin',
-            'middleware' => ['web','module','admin'],
-            'theme'      => 'admin',            
+            'middleware' => ['web', 'module', 'admin'],
+            'theme'      => 'admin',
             'dirs'       => [
                 'controller' => 'Admin',
                 'view'       => 'admin',
@@ -113,12 +113,12 @@ return [
         'api' => [
             'prefix'     => 'api',
             'middleware' => ['api', 'module'],
-            'theme'      => 'api',            
+            'theme'      => 'api',
             'dirs'       => [
                 'controller' => 'Api',
                 'view'       => 'api',
             ]
-        ],        
+        ],
     ],
 
     /*
@@ -135,7 +135,7 @@ return [
             'homepage' => 'http://www.zotop.com',
         ],
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | 缓存设置
@@ -146,5 +146,5 @@ return [
         'key'      => 'zotop-modules',
         'lifetime' => 60,
     ],
-      
+
 ];
