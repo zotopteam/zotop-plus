@@ -75,40 +75,23 @@ class Listener
      * @param  array $params 传入参数
      * @return array
      */
-    public function select($tools, $params)
+    public function uploadTools($tools, $params)
     {
-        $typename = trans('core::file.type.' . $params['type']);
-
-        // 删除core模块的目录选择
-        unset($tools['dir']);
-
         $select = [
             'uploaded'   => [
-                'text'   => trans('media::media.insert.from.uploaded', [$typename]),
+                'text'   => trans('media::media.insert.from.uploaded'),
                 'icon'   => 'fa fa-cloud',
                 'href'   => route('media.select.uploaded', $params),
                 'active' => Route::active('media.select.uploaded'),
             ],
             'libarary' => [
-                'text'   => trans('media::media.insert.from.library', [$typename]),
+                'text'   => trans('media::media.insert.from.library'),
                 'icon'   => 'fa fa-database',
                 'href'   => route('media.select.library', [0] + $params),
                 'active' => Route::active('media.select.library'),
             ],
-            'disk' => [
-                'text'   => trans('media::media.insert.from.disk', [$typename]),
-                'icon'   => 'fa fa-server',
-                'href'   => route('media.select.disk', $params),
-                'active' => Route::active('media.select.disk'),
-            ],
-            'dir' => [
-                'text'   => trans('media::media.insert.from.dir', [$typename]),
-                'icon'   => 'fa fa-folder',
-                'href'   => route('media.select.dir', $params),
-                'active' => Route::active('media.select.dir'),
-            ],
         ];
 
-        return array_merge($tools, $select);
+        return array_merge($select, $tools);
     }
 }

@@ -1,10 +1,9 @@
 /*!
- * CMS login css
- * Copyright 2011-2017 zotop, Inc.
+ * zotop plus admin login css
+ * Copyright 2011-2020 zotop, Inc.
  */
 
 body {
-    /*background: #18181A;  for IE9 */
     /*background: linear-gradient(to bottom, #101012, #1A1A1C, #151517);*/
     /*background: #f8fcff;*/
     background-color: linear-gradient(to bottom, #f8fcff, #f8fcff, #f8fcff);

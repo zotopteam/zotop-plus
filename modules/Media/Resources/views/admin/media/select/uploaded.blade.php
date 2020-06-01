@@ -1,7 +1,7 @@
 @extends('layouts.dialog')
 
 @section('content')
-@include('media::media.select.side')
+<x-sidebar :data="['core::field.upload.tools', Request::all()]" class="w-auto" />
 <div class="main">
     <div class="main-header">
         <div class="main-title mr-auto">
@@ -11,29 +11,19 @@
 
             <x-upload-chunk />
 
-            @if (request()->input('select', 0) != 1)
-            <a href="javascript:;" class="btn btn-light js-select-all d-none">
-                <i class="fa fa-check-square fa-fw"></i> {{trans('media::media.select.all')}}
-            </a>
-            @endif
             <a href="javascript:location.reload();" class="btn btn-light" title="{{trans('master.refresh')}}">
                 <i class="fa fa-sync"></i>
             </a>
         </div>
     </div>
-    <div class="main-header progress p-0 rounded-0 d-none">
-        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar"
-            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
-    </div>
     <div class="main-body scrollable p-2" id="file-upload-dragdrop">
         <div class="card-grid">
             @foreach($files as $file)
             <label class="card-check d-block m-0" data-type="file">
-                @if (request()->input('select', 0) == 1)
-                <input type="radio" name="file_ids[]" value="{{$file->id}}" class="form-control form-control-check">
-                @else
-                <input type="checkbox" name="file_ids[]" value="{{$file->id}}" class="form-control form-control-check">
-                @endif
+                <input type="{{request('mutiple') ? 'checkbox' : 'radio'}}" name="file" value="{{$file->url}}"
+                    class="form-control form-control-check" data-name="{{$file->name}}" data-url="{{$file->url}}"
+                    data-type="{{$file->type}}">
+
                 <div class="card card-md bg-light js-contextmenu">
                     <div class="card-thumb pos-r">
                         <div class="pos-a pos-full d-flex justify-content-center bg-image-preview">
@@ -119,20 +109,18 @@
     currentDialog.callbacks['ok'] = function () {
         var selected  = new Array();
 
-        $('[data-type="file"]').each(function() {
-            if ($(this).find('input.form-control-check').is(':checked')) {
-                var data = $(this).find('[name=data]').val();
-                    data = $.parseJSON(data);
-                selected.push(data);                
+        $('[data-type="file"] input').each(function() {
+            if ($(this).is(':checked')) {
+                selected.push($(this).data());
             }
         });
 
         if (selected.length) {
-            this.close(selected).remove(); 
-        } else {
-            $.error('{{ trans('master.select.min', [1]) }}');
+            this.close(selected).remove();
+            return true;
         }
         
+        $.error('{{ trans('master.select.min', [1]) }}');
         return false;
     }
 

@@ -9,21 +9,23 @@
         </div>
     </div>
     <div class="main-body scrollable">
-        <div class="grid grid-lg p-3">
-                @foreach(Filter::fire('global.start',[]) as $s)
-                <a href="{{$s['href']}}" class="shortcut shortcut-media {{$s['class'] ?? ''}}" target="{{$s['target'] ?? '_self'}}">
-                    <div class="shortcut-icon">
-                        <i class="{{$s['icon']}}"></i>
-                        @if(isset($s['badge']))
-                        <b class="shortcut-badge badge badge-xs badge-danger">{{$s['badge']}}</b>
-                        @endif       
-                    </div>
-                    <div class="shortcut-text">
-                        <h2>{{$s['text']}}</h2>
-                        <p>{{$s['tips']}}</p>      
-                    </div>
-                </a>    
-                @endforeach
+        <div class="grid grid-md grid-hover p-3">
+            @foreach(Filter::fire('global.start',[]) as $s)
+            <a href="{{$s['href']}}"
+                class="grid-item rounded text-reset text-decoration-none d-flex align-items-center p-2 {{$s['class'] ?? ''}}"
+                target="{{$s['target'] ?? '_self'}}">
+                <div class="grid-item-icon mr-2 pos-r">
+                    @if(isset($s['badge']))
+                    <b class="pos-a mt-n1 ml-n1 badge badge-xs badge-danger">{{$s['badge']}}</b>
+                    @endif
+                    <i class="icon-md {{$s['icon']}} f-2 rounded text-center py-2"></i>
+                </div>
+                <div class="grid-item-text overflow-hidden flex-grow-1">
+                    <div class="text-lg text-truncate">{{$s['text']}}</div>
+                    <div class="text-sm text-truncate">{{$s['tips']}}</div>
+                </div>
+            </a>
+            @endforeach
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
@@ -37,10 +39,8 @@
             @if(config('app.debug'))
             <span class="badge badge-warning px-2"> <i class="fa fa-bug"></i> debug</span>
             @endif
-        </span>        
+        </span>
     </div>
 </div>
 
 @endsection
-
-

@@ -6,7 +6,7 @@ return [
     'upload.select'             => '选择:0',
     'upload.replace'            => '重新上传',
 
-    'insert.from.dir'           => '上传目录',
+    'insert.from.disk'           => '存储盘',
 
     'upload.multiple'           => '批量上传',
     'describe.multiple'         => '批量描述',

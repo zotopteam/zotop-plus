@@ -99,6 +99,7 @@ $router->group(['prefix' => 'core'], function (Router $router) {
         $router->post('file/rename', 'StorageController@fileRename')->name('core.storage.file.rename')->middleware('allow:core.storage.file.rename');
         $router->delete('file/delete', 'StorageController@fileDelete')->name('core.storage.file.delete')->middleware('allow:core.storage.file.delete');
         $router->get('file/download', 'StorageController@fileDownload')->name('core.storage.file.download')->middleware('allow:core.storage.file.download');
+        $router->get('file/select', 'StorageController@fileSelect')->name('core.storage.file.select');
     });
 
     // 文件管理
@@ -108,9 +109,9 @@ $router->group(['prefix' => 'core'], function (Router $router) {
         $router->any('delete', 'FileController@delete')->name('core.file.delete')->middleware('allow:core.file.delete');
         $router->any('copy', 'FileController@copy')->name('core.file.copy')->middleware('allow:core.file.copy');
         $router->any('rename', 'FileController@rename')->name('core.file.rename')->middleware('allow:core.file.rename');
-        $router->any('upload_chunk', 'FileController@uploadChunk')->name('core.file.upload_chunk')->middleware('allow:core.file.upload');
-        $router->any('upload', 'FileController@upload')->name('core.file.upload')->middleware('allow:core.file.upload');
-        $router->any('select', 'FileController@select')->name('core.file.select')->middleware('allow:core.file.select');
+        $router->any('upload_chunk', 'FileController@uploadChunk')->name('core.file.upload_chunk');
+        $router->any('upload', 'FileController@upload')->name('core.file.upload');
+        $router->any('select', 'FileController@select')->name('core.file.select');
     });
 
     // 文件夹

@@ -26,20 +26,23 @@
         <ul class="nav global-navbar tabdropable">
             <li class="brand dropdown">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                    aria-expanded="false">{{config('zotop.name')}}</a>
+                    aria-expanded="false">
+                    {{config('zotop.name')}}
+                </a>
                 <div class="dropdown-menu dropdown-start">
-                    <div class="grid grid-xs grid-gap-none">
+                    <div class="grid grid-xs grid-gap-none grid-hover text-center">
                         @foreach(Filter::fire('global.start',[]) as $s)
-                        <a href="{{$s['href']}}" class="shortcut shortcut-thumb {{$s['class'] ?? ''}}"
+                        <a href="{{$s['href']}}"
+                            class="grid-item rounded text-reset text-decoration-none p-2 {{$s['class'] ?? ''}}"
                             target="{{$s['target'] ?? '_self'}}">
-                            <div class="shortcut-icon">
-                                <i class="{{$s['icon']}}"></i>
+                            <div class="grid-item-icon pos-r">
+                                <i class="icon-md f-2 rounded py-2 {{$s['icon']}}"></i>
                                 @if(isset($s['badge']))
-                                <b class="shortcut-badge badge badge-xs badge-danger">{{$s['badge']}}</b>
+                                <b class="pos-a mt-n2 ml-n2 badge badge-xs badge-danger">{{$s['badge']}}</b>
                                 @endif
                             </div>
-                            <div class="shortcut-text">
-                                <h2>{{$s['text']}}</h2>
+                            <div class="grid-item-text text-sm text-truncate">
+                                {{$s['text']}}
                             </div>
                         </a>
                         @endforeach

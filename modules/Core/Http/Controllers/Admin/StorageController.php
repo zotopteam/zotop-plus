@@ -221,4 +221,24 @@ class StorageController extends Controller
         return Storage::disk($disk)->download($path, $name);
     }
 
+    /**
+     * 列表
+     * @param  Request $request
+     * @param  string $disk 磁盘名称
+     * @return mixed
+     * @return Response
+     */
+    public function fileSelect(Request $request, $disk)
+    {
+        $this->disk    = $disk;
+        $this->disks   = Module::data('core::storage.disks');
+        $this->title   = Arr::get($this->disks, "{$disk}.title");
+        $this->browser = app(StorageBrowser::class, [
+            'disk' => $disk,
+            'root' => '',
+            'dir'  => $request->input('dir')
+        ]);
+
+        return $this->view();
+    }
 }

@@ -9,7 +9,7 @@ return [
     'delete.notempty'      => '[ :0 ] 下面尚有文件或者文件夹，无法删除 ',
     'move.help'            => '移动到此处',
     'move.unchange'        => '[ :0 ] 已经在当前位置',
-    'move.forbidden'       => '不能将 [ :0 ] 移动到自身或其子文件夹下',   
+    'move.forbidden'       => '不能将 [ :0 ] 移动到自身或其子文件夹下',
 
     'name'                 => '名称',
     'size'                 => '大小',
@@ -24,6 +24,4 @@ return [
 
     'insert.from.uploaded' => '已上传',
     'insert.from.library'  => '媒体库',
-    'insert.from.dir'      => '目录',
-    'insert.from.disk'     => '存储磁盘',    
 ];

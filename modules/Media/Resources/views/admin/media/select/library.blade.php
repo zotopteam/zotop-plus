@@ -1,7 +1,7 @@
 @extends('layouts.dialog')
 
 @section('content')
-@include('media::media.select.side')
+<x-sidebar :data="['core::field.upload.tools', Request::all()]" class="w-auto" />
 <div class="main">
     <div class="main-header">
         <div class="main-title mr-auto">
@@ -39,13 +39,13 @@
 
         <div class="card-grid">
             @foreach($media as $m)
-            <label class="card-check d-flex flex-column" data-select="{{$m->isFolder() ? 'no' : 'yes'}}"
-                data-type="{{$m->type}}" data-link="{{$m->link}}">
-                @if (request()->input('select', 0) == 1)
-                <input type="radio" name="file_ids[]" value="{{$m->id}}" class="form-control form-control-check">
-                @else
-                <input type="checkbox" name="file_ids[]" value="{{$m->id}}" class="form-control form-control-check">
-                @endif
+            <label class="card-check d-flex flex-column" data-type="{{$m->type == 'folder' ? 'folder' : 'file'}}"
+                data-link="{{$m->link}}">
+
+                <input type="{{request('mutiple') ? 'checkbox' : 'radio'}}" name="file" value="{{$m->url}}"
+                    class="form-control form-control-check" data-name="{{$m->name}}" data-url="{{$m->url}}"
+                    data-type="{{$m->type}}">
+
                 <div class="card bg-light js-contextmenu">
                     <div class="card-thumb pos-r">
                         @if ($m->isFolder())
@@ -110,7 +110,6 @@
                                 <b class="contextmenu-item-text">{{trans('master.delete')}}</b>
                             </a>
                         </div>
-                        <textarea name="data" class="d-none">{!! json_encode($m) !!}</textarea>
                     </div>
                 </div>
             </label>
@@ -149,26 +148,23 @@
 </style>
 @endpush
 @push('js')
-
 <script type="text/javascript">
     // 确定按钮回调
     currentDialog.callbacks['ok'] = function () {
         var selected  = new Array();
 
-        $('[data-select="yes"]').each(function() {
-            if ($(this).find('input.form-control-check').is(':checked')) {
-                var data = $(this).find('[name=data]').val();
-                    data = $.parseJSON(data);
-                selected.push(data);                
+        $('[data-type="file"] input').each(function() {
+            if ($(this).is(':checked')) {
+                selected.push($(this).data());
             }
         });
 
         if (selected.length) {
             this.close(selected).remove();
-        } else {
-            $.error('{{ trans('master.select.min', [1]) }}');
+            return true;
         }
         
+        $.error('{{ trans('master.select.min', [1]) }}');
         return false;
     }
 

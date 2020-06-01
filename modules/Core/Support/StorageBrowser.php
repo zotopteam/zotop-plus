@@ -144,8 +144,8 @@ class StorageBrowser
         return (object) [
             'title' => trans('core::folder.create'),
             'class' => 'js-prompt',
-            'icon' => 'fa fa-folder',
-            'name' => 'name',
+            'icon'  => 'fa fa-folder',
+            'name'  => 'name',
             'url'   => route('core.storage.folder.create', array_merge($this->params, ['path'  => $this->path])),
         ];
     }
@@ -220,7 +220,28 @@ class StorageBrowser
             $file->typename  = trans('core::file.type.' . $file->type);
             $file->width     = 0;
             $file->height    = 0;
+
+            // 获取图片宽高
+            if ($file->type == 'image' && $imagesize = @getimagesize($file->realpath)) {
+                [$file->width, $file->height] = $imagesize;
+            }
+
+            // 忽略点开头的文件
+            if ($file->name[0] == '.') {
+                continue;
+            }
+
             $file->action    = [
+                'view' => [
+                    'text'  => trans('master.view'),
+                    'icon'  => 'fa fa-eye',
+                    'class' => 'js-image',
+                    'attrs' => [
+                        'data-url'  => preview($this->disk . ':' . $path),
+                        'data-info' => $file->size . ($file->width ? " / {$file->width}px × {$file->height} px" : ''),
+                    ],
+
+                ],
                 'download' => [
                     'text' => trans('master.download'),
                     'icon' => 'fa fa-download',
@@ -244,15 +265,7 @@ class StorageBrowser
                 ],
             ];
 
-            // 获取图片宽高
-            if ($file->type == 'image' && $imagesize = @getimagesize($file->realpath)) {
-                [$file->width, $file->height] = $imagesize;
-            }
 
-            // 忽略点开头的文件
-            if ($file->name[0] == '.') {
-                continue;
-            }
 
             $files[] = Filter::fire('core.storagebrower.file', $file, $this);
         }

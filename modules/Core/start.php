@@ -199,12 +199,12 @@ Form::macro('upload', function ($attrs) {
     $button_icon = $this->getAttribute($attrs, 'button_icon', 'fa-upload');
     $button_text = $this->getAttribute($attrs, 'button_text', trans('core::field.upload.button', [$typename]));
 
-    //选择个数
-    $select = $this->getAttribute($attrs, 'select', 1);
+    // 多选，默认为单选
+    $mutiple =  $this->getAttribute($attrs, 'mutiple', false);
 
     // 附加参数
     $params = $this->getAttribute($attrs, 'params',  [
-        'select'     => $select,
+        'mutiple'    => $mutiple,
         'type'       => $filetype ?: '',
         'module'     => app('current.module'),
         'controller' => app('current.controller'),
@@ -226,7 +226,7 @@ Form::macro('upload', function ($attrs) {
                 'title'      => $select_text,
                 'extensions' => $allow
             ]],
-            'prevent_duplicates' => true,
+            'prevent_duplicates' => false,
         ]
     ]);
 
@@ -293,10 +293,10 @@ Form::macro('upload_image', function ($attrs) {
  */
 Form::macro('gallery', function ($attrs) {
 
-    $attrs['value']  = $this->getValue($attrs);
-    $attrs['value']  = is_array($attrs['value']) ? array_values($attrs['value']) : [];
-    $attrs['view']   = $attrs['view'] ?? 'core::field.gallery';
-    $attrs['select'] = $attrs['select'] ?? 0;
+    $attrs['value']   = $this->getValue($attrs);
+    $attrs['value']   = is_array($attrs['value']) ? array_values($attrs['value']) : [];
+    $attrs['view']    = $attrs['view'] ?? 'core::field.gallery';
+    $attrs['mutiple'] = true;
 
     return $this->macroCall('upload_image',  [$attrs]);
 });
