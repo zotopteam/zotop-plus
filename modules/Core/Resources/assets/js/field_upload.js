@@ -1,103 +1,105 @@
 // 单文件上传
-(function($) {
+(function ($) {
 
-	$.fn.upload_field = function(options) {
+	$.fn.upload_field = function (options) {
 
-		return this.each(function() {
-			
-			var upload   = $(this).find('button.btn-upload');
-			var input    = $(this).find('input:first');			
+		return this.each(function () {
+
+			var upload = $(this).find('button.btn-upload');
+			var input = $(this).find('input:first');
 			var progress = $(this).find('.progress');
-			var select   = $(this).find('.js-upload-field-select');
+			var select = $(this).find('.js-upload-field-select');
 
-			var callback = function(value) {
+			var callback = function (value) {
 				input.val(value);
 			}
 
 			//图片预览
 			if (input.attr('preview') == 'image') {
-				input.popover({placement:'bottom',html:true,trigger:'hover',sanitize:false,content:function(){
-					var value = input.val();
-					var width = $(window).width() * 0.25;
-					var height = $(window).height() * 0.25;
-					return '<div class="image bg-image-preview p-3"><img src="'+ value +'" style="max-width:'+width+'px;max-height:'+height+'px;"/></div>';
-				}}).on('show.bs.popover', function () {
+				input.popover({
+					placement: 'bottom',
+					html: true,
+					trigger: 'hover',
+					sanitize: false,
+					content: function () {
+						var value = input.val();
+						var width = $(window).width() * 0.25;
+						var height = $(window).height() * 0.25;
+						return '<div class="image bg-image-preview p-3"><img src="' + value + '" style="max-width:' + width + 'px;max-height:' + height + 'px;"/></div>';
+					}
+				}).on('show.bs.popover', function () {
 					var value = input.val();
 					if (value && !input.hasClass('error')) {
 						//$(input.data('bs.popover').getTipElement()).addClass('popover-image-preview');
 						return true;
 					}
-  					return false;
+					return false;
 				});
-			}			
+			}
 
 			// 文件上传
 			var defaults = {
-		        multi_selection : false, //是否可以选择多个文件
-		        autostart : true, //自动开始
-		        filters: {
-		            max_file_size:'20mb',
-		            mime_types : [
-		                { title : "Image files", extensions : "jpg,jpeg,gif,png"},
-		            ],
-		            prevent_duplicates:false //阻止多次上传同一个文件
-		        },
-				progress : function(up,file){
-					progress.removeClass('d-none');
-		            progress.find('.progress-bar').width(up.total.percent+'%').html(up.total.percent+'%');
+				multi_selection: false, //是否可以选择多个文件
+				autostart: true, //自动开始
+				filters: {
+					max_file_size: '20mb',
+					mime_types: [{
+						title: "Image files",
+						extensions: "jpg,jpeg,gif,png"
+					}, ],
+					prevent_duplicates: false //阻止多次上传同一个文件
 				},
-		        uploaded : function(up, file, response){
+				progress: function (up, file) {
+					progress.removeClass('d-none');
+					progress.find('.progress-bar').width(up.total.percent + '%').html(up.total.percent + '%');
+				},
+				uploaded: function (up, file, response) {
 
-		            // 单个文件上传完成 返回信息在 response 中
-		            if (response.result.state) {
-		            	callback(response.result.url);
-		            } else {
-		            	$.error(response.result.content);
-		            }
+					// 单个文件上传完成 返回信息在 response 中
+					if (response.result.state) {
+						callback(response.result.url);
+					} else {
+						$.error(response.result.content);
+					}
 
-		        },
-		        complete : function(up, files){
-		            // 全部上传完成
-		            progress.addClass('d-none');
-		            progress.find('.progress-bar').width('0%').html('');
-		        },
-				error : function(error, detail){
+				},
+				complete: function (up, files) {
+					// 全部上传完成
+					progress.addClass('d-none');
+					progress.find('.progress-bar').width('0%').html('');
+				},
+				error: function (error, detail) {
 					$.error(detail);
 				}
-    		};
+			};
 
-    		options = $.extend({}, defaults, options);
+			options = $.extend({}, defaults, options);
 			upload.plupload(options);
 
 			// 文件选择
-			select.on('click', function() {
+			select.on('click', function () {
 
 				// 属性
-				var url   = $(this).data('url');
+				var url = $(this).data('url');
 				var title = $(this).data('title');
 
 				// 对话框
-		        var dialog = $.dialog({
-			            title        : title,
-			            url          : url,
-			            width        : '95%',
-			            height       : '75%',
-			            padding      : 0,
-			            ok           : $.noop,
-			            cancel       : $.noop,
-			            oniframeload : function() {
-			                this.loading(false);
-			            },
-			            opener       :window
-		        }, true).loading(true); 				
+				var dialog = $.dialog({
+					title: title,
+					url: url,
+					width: '95%',
+					height: '75%',
+					ok: $.noop,
+					cancel: $.noop
+				}, true).loading(true);
 
-		        // 监听对话框关闭传值
+				// 监听对话框关闭传值
 				dialog.addEventListener('close', function () {
 					var selected = this.returnValue;
-	            	if (selected && selected.length) {
-	                	callback(selected[0].url);
-	                }
-				});		        
+					if (selected && selected.length) {
+						callback(selected[0].url);
+					}
+				});
 
 			});
 		});

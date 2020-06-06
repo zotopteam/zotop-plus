@@ -68,11 +68,11 @@ class BladeCompiler extends LaravelBladeCompiler
         if ($this->tags) {
 
             // 获取全部标签正则
-            $pattern = sprintf('/(@)?%s('.implode('|', array_keys($this->tags)).')(\s+[^}]+?)\s*%s/s', '{', '}');
+            $pattern = sprintf('/(@)?%s(' . implode('|', array_keys($this->tags)) . ')(\s+[^}]+?)\s*%s/s', '{', '}');
 
             // 正则替换
-            return preg_replace_callback($pattern, function($matches) {
-                
+            return preg_replace_callback($pattern, function ($matches) {
+
                 // 如果有@符号，@{block……} ，直接去掉@符号返回标签
                 if ($matches[1]) {
                     return substr($matches[0], 1);
@@ -82,8 +82,7 @@ class BladeCompiler extends LaravelBladeCompiler
                 $tag   = $matches[2];
                 $attrs = static::convertAttrs($matches[3]);
 
-                return "<?php echo Blade::tagCallback('".$tag."', ".$attrs.", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])); ?>";
-
+                return "<?php echo Blade::tagCallback('" . $tag . "', " . $attrs . ", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path'])); ?>";
             }, $value);
         }
 
@@ -100,7 +99,7 @@ class BladeCompiler extends LaravelBladeCompiler
     public function tagCallback($tag, $attrs, $vars)
     {
         if (isset($this->tags[$tag]) && $callback = $this->tags[$tag]) {
-            
+
             // 如果回调是类函数：字符串且包含@符号
             if (is_string($callback) && strpos($callback, '@')) {
                 $callback = explode('@', $callback);
@@ -108,9 +107,9 @@ class BladeCompiler extends LaravelBladeCompiler
             }
 
             // 获取标签缓存属性 cache="60"
-            if ($cache = (int)Arr::get($attrs, 'cache')) {
+            if ($cache = (int) Arr::get($attrs, 'cache')) {
                 $key = md5(serialize($attrs));
-                return Cache::remember($key, $cache, function() use ($callback, $attrs, $vars){
+                return Cache::remember($key, $cache, function () use ($callback, $attrs, $vars) {
                     return call_user_func_array($callback, [$attrs, $vars]);
                 });
             }
@@ -138,7 +137,7 @@ class BladeCompiler extends LaravelBladeCompiler
                 $first = array_shift($vars);
                 $array = $first . '[\'' . implode('\'][\'', $vars) . '\']';
                 $value = str_replace($match, $array, $value);
-            }        
+            }
         }
 
         return $value;
@@ -152,7 +151,7 @@ class BladeCompiler extends LaravelBladeCompiler
      */
 
     public function convertAttrs($str)
-    { 
+    {
         $attrs = $this->convertAttrsToArray($str);
         $attrs = $this->convertArrayToString($attrs);
 
@@ -171,12 +170,12 @@ class BladeCompiler extends LaravelBladeCompiler
         $attrs = array();
 
         preg_match_all("/\s+([a-z0-9_-]+)\s*\=\s*\"(.*?)\"/i", stripslashes($str), $matches, PREG_SET_ORDER);
-        
+
         foreach ($matches as $v) {
             $attrs[$v[1]] = $v[2];
-        }    
-        
-        return $attrs;        
+        }
+
+        return $attrs;
     }
 
     /**
@@ -195,7 +194,7 @@ class BladeCompiler extends LaravelBladeCompiler
                 // 递归
                 if (is_array($val)) {
                     $str .= "'$key'=>" . $this->convertArrayToString($val) . ",";
-                } else {                    
+                } else {
                     $str .= "'$key'=>" . $this->convertStringToValue($val) . ",";
                 }
             }
@@ -221,7 +220,7 @@ class BladeCompiler extends LaravelBladeCompiler
             return $val;
         }
         // 'null','true','false' 直接返回  'key'=>null,  'key'=>false,  'key'=>true 
-        if (in_array(strtolower($val), ['null','true','false'])) {
+        if (in_array(strtolower($val), ['null', 'true', 'false'])) {
             return $val;
         }
         // [……]，数组直接返回， 'key'=>[……],
@@ -230,10 +229,9 @@ class BladeCompiler extends LaravelBladeCompiler
         }
         // test(……)，A::test(……) 函数或者方法直接返回 'key'=>test(……),'key'=>A::test(……),
         if (preg_match('/[a-zA-Z\\_\x7f-\xff][a-zA-Z0-9_\x7f-\xff:]*\(.*?\)/', $val)) {
-             return $val;
+            return $val;
         }
         // 字符串类型加单引号后返回，TODO：可能有些数据需要处理 addslashes($val)
-        return "'".$val."'";
+        return "'" . $val . "'";
     }
-
 }

@@ -5,15 +5,16 @@
 <div class="main">
     <div class="main-header">
         @if($keywords = request('keywords'))
-            <div class="main-back">
-                <a href="{{route('content.content.index',$parent->id)}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
-            </div>
-            <div class="main-title mr-auto">
-                {{$parent->title}}
-            </div>                    
-            <div class="main-title mr-auto">
-                {{trans('master.searching', [$keywords])}}
-            </div>        
+        <div class="main-back">
+            <a href="{{route('content.content.index',$parent->id)}}"><i
+                    class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
+        </div>
+        <div class="main-title mr-auto">
+            {{$parent->title}}
+        </div>
+        <div class="main-title mr-auto">
+            {{trans('master.searching', [$keywords])}}
+        </div>
         @else
         <div class="main-title mr-auto">
             {{$parent->title}}
@@ -22,60 +23,65 @@
             @php($menus = Module::data('content::menu.create', get_defined_vars()))
             @if($menus->count()>1)
             <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-plus"></i> {{trans('content::content.create')}}
                 </button>
                 <div class="dropdown-menu dropdown-menu-primary">
                     @foreach($menus as $model)
-                        <a class="dropdown-item" href="{{route('content.content.create',[$parent->id, $model->id])}}" title="{{$model->description}}" data-placement="left">
-                            <i class="dropdown-item-icon {{$model->icon}} fa-fw"></i>
-                            <b class="dropdown-item-text">{{$model->name}}</b>
-                        </a>
+                    <a class="dropdown-item" href="{{route('content.content.create',[$parent->id, $model->id])}}"
+                        title="{{$model->description}}" data-placement="left">
+                        <i class="dropdown-item-icon {{$model->icon}} fa-fw"></i>
+                        <b class="dropdown-item-text">{{$model->name}}</b>
+                    </a>
                     @endforeach
                 </div>
             </div>
             @else
-                @foreach($menus as $model)
-                    <a class="btn btn-primary" href="{{route('content.content.create',[$parent->id, $model->id])}}" title="{{$model->description}}">
-                        <i class="btn-icon fa fa-plus fa-fw"></i>
-                        <b class="btn-text">{{$model->name}}</b>
-                    </a>
-                @endforeach            
-            @endif     
+            @foreach($menus as $model)
+            <a class="btn btn-primary" href="{{route('content.content.create',[$parent->id, $model->id])}}"
+                title="{{$model->description}}">
+                <i class="btn-icon fa fa-plus fa-fw"></i>
+                <b class="btn-text">{{$model->name}}</b>
+            </a>
+            @endforeach
+            @endif
         </div>
         @endif
         <div class="main-action">
             {form route="content.content.index" class="form-inline form-search" method="get"}
-                <div class="input-group">
-                    <input name="keywords" value="{{$keywords}}" class="form-control border-primary" type="search" placeholder="{{trans('master.keywords.placeholder')}}" required="required" aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
-                    </div>
+            <div class="input-group">
+                <input name="keywords" value="{{$keywords}}" class="form-control border-primary" type="search"
+                    placeholder="{{trans('master.keywords.placeholder')}}" required="required" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
                 </div>
+            </div>
             {/form}
-        </div>              
+        </div>
     </div>
-    @if (empty($keywords))    
+    @if (empty($keywords))
     <div class="main-header breadcrumb text-xs p-2 m-0">
         @if ($parent->id)
         <a href="{{route('content.content.index',[$parent->parent_id])}}" class="breadcrumb-item breadcrumb-extra">
             <i class="fa fa-fw fa-arrow-up"></i>{{trans('content::content.up')}}
         </a>
         @else
-        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i class="fa fa-arrow-up"></i>{{trans('content::content.up')}}</a>
+        <a href="javascript:;" class="breadcrumb-item breadcrumb-extra disabled"><i
+                class="fa fa-arrow-up"></i>{{trans('content::content.up')}}</a>
         @endif
         <a class="breadcrumb-item" href="{{route('content.content.index')}}">{{trans('content::content.root')}}</a>
         @foreach($path as $p)
-        <a class="breadcrumb-item" href="{{route('content.content.index', $p->id)}}">{{$p->title}}</a> 
-        @endforeach      
+        <a class="breadcrumb-item" href="{{route('content.content.index', $p->id)}}">{{$p->title}}</a>
+        @endforeach
     </div>
-    @endif    
+    @endif
     <div class="main-body scrollable">
         @if($contents->count() == 0)
-            <div class="nodata">{{trans('master.nodata')}}</div>
+        <div class="nodata">{{trans('master.nodata')}}</div>
         @else
-            <table class="table table-nowrap table-sortable table-hover checkable">
-                <thead>
+        <table class="table table-nowrap table-sortable table-hover checkable">
+            <thead>
                 <tr>
                     <td class="drag"></td>
                     <td class="select">
@@ -88,121 +94,135 @@
                     <td width="5%">{{trans('content::content.status.label')}}</td>
                     <td width="10%"></td>
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+            <tbody>
                 @foreach($contents as $content)
-                    <tr class="checkable-item" data-id="{{$content->id}}" data-sort="{{$content->sort}}" data-stick="{{$content->stick}}" data-title="{{$content->title}}">
-                        <td class="drag"></td>
-                        <td class="select">
-                            <input type="checkbox" name="ids[]" value="{{$content->id}}" class="checkable-checkbox text-muted">
-                        </td>
-                        @if ($content->image)
-                        <td class="text-center px-2" width="1%">
-                            
-                            <a href="javascript:;" class="js-image" data-url="{{$content->image}}" data-title="{{$content->title}}">
-                                <div class="icon icon-md">
-                                    <img src="{{$content->image}}">
-                                </div>
+                <tr class="checkable-item" data-id="{{$content->id}}" data-sort="{{$content->sort}}"
+                    data-stick="{{$content->stick}}" data-title="{{$content->title}}">
+                    <td class="drag"></td>
+                    <td class="select">
+                        <input type="checkbox" name="ids[]" value="{{$content->id}}"
+                            class="checkable-checkbox text-muted">
+                    </td>
+                    @if ($content->image)
+                    <td class="text-center px-2" width="1%">
+
+                        <a href="javascript:;" class="js-image" data-url="{{$content->image}}"
+                            data-title="{{$content->title}}">
+                            <div class="icon icon-md">
+                                <img src="{{$content->image}}">
+                            </div>
+                        </a>
+                    </td>
+                    @else
+                    <td class="p-0"></td>
+                    @endif
+                    <td class="px-2">
+                        <div class="title">
+                            <i class="{{$content->model->icon}} fa-fw text-warning" title="{{$content->model->name}}"
+                                data-toggle="tooltip"></i>
+                            @if ($content->model->nestable)
+                            <a href="{{route('content.content.index', $content->id)}}">
+                                {{$content->title}}
                             </a>
-                        </td>
-                        @else
-                        <td class="p-0"></td>
-                        @endif
-                        <td class="px-2">
-                            <div class="title">
-                                <i class="{{$content->model->icon}} fa-fw text-warning" title="{{$content->model->name}}" data-toggle="tooltip"></i> 
-                                @if ($content->model->nestable)
-                                    <a href="{{route('content.content.index', $content->id)}}">
-                                        {{$content->title}}
-                                    </a>
-                                @else
-                                    {{$content->title}}
-                                @endif
-                            </div>
-                            <div class="manage">
-                                @if ($manage = Filter::fire('content.manage', [], $content))
-                                    @if ($flatten = array_slice($manage, 0, 6))
-                                        @foreach ($flatten as $k=>$s)
-                                        <div class="manage-item">
-                                            <a href="{{$s.href ?? 'javascript:;'}}" class="{{$s.class ?? ''}}" {!!Html::attributes($s.attrs ?? [])!!}>
-                                                <i class="{{$s.icon ?? ''}} fa-fw"></i> {{$s.text ?? ''}}
-                                            </a>
-                                        </div>
-                                        @endforeach                                
-                                    @endif
-                                    
-                                    @if ($dropdown = array_slice($manage, 6))
-                                        <div class="manage-item dropdown">
-                                            <a href="javascript:;" data-toggle="dropdown">
-                                                <i class="fa fa-ellipsis-h fa-fw"></i><i class="fa fa-angle-down"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-primary">
-                                                @foreach ($dropdown as $k=>$s)
-                                                    <a href="{{$s.href ?? 'javascript:;'}}" class="dropdown-item {{$s.class ?? ''}}" {!!Html::attributes($s.attrs ?? [])!!}>
-                                                        <i class="dropdown-item-icon {{$s.icon ?? ''}} fa-fw"></i>
-                                                        <b class="dropdown-item-text">{{$s.text ?? ''}}</b>
-                                                    </a>                                            
-                                                @endforeach
-                                            </div>                                                                                  
-                                        </div>
-                                    @endif
-                                @endif
-                            </div>
-                        </td>
-                        <td width="1%">
-                            <a href="javascript:;" class="js-post" data-url="{{route('content.content.stick', [$content->id])}}">
-                            @if ($content->stick)
-                                <i class="fa fa-arrow-circle-up fa-2x text-primary" rel="stick-down" title="{{trans('content::content.unstick')}}" data-toggle="tooltip"></i>
                             @else
-                                <i class="fa fa-arrow-circle-up fa-2x text-muted" rel="stick-up" title="{{trans('content::content.stick')}}" data-toggle="tooltip"></i>
+                            {{$content->title}}
                             @endif
-                            </a>
-                        </td>
-                        <td class="text-center">{{$content->hits}}</td>
-                        <td><strong>{{$content->user->username}}</strong></td>
-                        <td></td>
-                        <td>
-                            <i class="{{$content->status_icon}} fa-fw fa-2x" title="{{$content->status_name}}" data-toggle="tooltip"></i>
-                        </td>
-                        <td>
-                            @if (in_array($content->status,['publish']))
-                            <div>{{trans('content::content.publish_at.label')}}</div>
-                            <div>{{$content->publish_at}}</div>
-                            @elseif (in_array($content->status,['future']))
-                            <div>{{trans('content::content.status.future')}}</div>
-                            <div>{{$content->publish_at}}</div>                     
+                        </div>
+                        <div class="manage">
+                            @if ($manage = Filter::fire('content.manage', [], $content))
+                            @if ($flatten = array_slice($manage, 0, 6))
+                            @foreach ($flatten as $k=>$s)
+                            <div class="manage-item">
+                                <a href="{{$s.href ?? 'javascript:;'}}" class="{{$s.class ?? ''}}"
+                                    {!!Html::attributes($s.attrs ?? [])!!}>
+                                    <i class="{{$s.icon ?? ''}} fa-fw"></i> {{$s.text ?? ''}}
+                                </a>
+                            </div>
+                            @endforeach
+                            @endif
+
+                            @if ($dropdown = array_slice($manage, 6))
+                            <div class="manage-item dropdown">
+                                <a href="javascript:;" data-toggle="dropdown">
+                                    <i class="fa fa-ellipsis-h fa-fw"></i><i class="fa fa-angle-down"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-primary">
+                                    @foreach ($dropdown as $k=>$s)
+                                    <a href="{{$s.href ?? 'javascript:;'}}" class="dropdown-item {{$s.class ?? ''}}"
+                                        {!!Html::attributes($s.attrs ?? [])!!}>
+                                        <i class="dropdown-item-icon {{$s.icon ?? ''}} fa-fw"></i>
+                                        <b class="dropdown-item-text">{{$s.text ?? ''}}</b>
+                                    </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
+                            @endif
+                        </div>
+                    </td>
+                    <td width="1%">
+                        <a href="javascript:;" class="js-post"
+                            data-url="{{route('content.content.stick', [$content->id])}}">
+                            @if ($content->stick)
+                            <i class="fa fa-arrow-circle-up fa-2x text-primary" rel="stick-down"
+                                title="{{trans('content::content.unstick')}}" data-toggle="tooltip"></i>
                             @else
-                            <div>{{trans('content::content.updated_at.label')}}</div>
-                            <div>{{$content->updated_at}}</div>
-                            @endif                            
-                        </td>
-                    </tr>
+                            <i class="fa fa-arrow-circle-up fa-2x text-muted" rel="stick-up"
+                                title="{{trans('content::content.stick')}}" data-toggle="tooltip"></i>
+                            @endif
+                        </a>
+                    </td>
+                    <td class="text-center">{{$content->hits}}</td>
+                    <td><strong>{{$content->user->username}}</strong></td>
+                    <td></td>
+                    <td>
+                        <i class="{{$content->status_icon}} fa-fw fa-2x" title="{{$content->status_name}}"
+                            data-toggle="tooltip"></i>
+                    </td>
+                    <td>
+                        @if (in_array($content->status,['publish']))
+                        <div>{{trans('content::content.publish_at.label')}}</div>
+                        <div>{{$content->publish_at}}</div>
+                        @elseif (in_array($content->status,['future']))
+                        <div>{{trans('content::content.status.future')}}</div>
+                        <div>{{$content->publish_at}}</div>
+                        @else
+                        <div>{{trans('content::content.updated_at.label')}}</div>
+                        <div>{{$content->updated_at}}</div>
+                        @endif
+                    </td>
+                </tr>
                 @endforeach
 
-                </tbody>
-            </table>
-        @endif                       
+            </tbody>
+        </table>
+        @endif
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="main-action mr-auto">
-            <button type="button" class="btn btn-outline-success checkable-operator disabled" disabled="disabled" data-operate="move">
+            <button type="button" class="btn btn-outline-success checkable-operator disabled" disabled="disabled"
+                data-operate="move">
                 <i class="fa fa-arrows-alt fa-fw"></i> {{trans('master.move')}}
             </button>
 
             <div class="btn-group dropup">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle checkable-operator disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle checkable-operator disabled"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-ellipsis-h fa-fw"></i>
                 </button>
-                <div class="dropdown-menu dropdown-menu-primary">    
-                @foreach (\Modules\Content\Models\Content::status() as $k=>$s)
-                @continue($k == 'future')
-                <a href="javascript:;" class="dropdown-item checkable-operator disabled" disabled="disabled" data-operate="status" data-status="{{$k}}" data-url="{{route('content.content.status',[$k])}}">
-                    <i class="{{$s.icon}} fa-fw"></i> {{$s.name}}
-                </a>
-                @endforeach
-                <a href="javascript:;" class="dropdown-item checkable-operator disabled" disabled="disabled" data-operate="delete" data-confirm="{{trans('content::content.delete.confirm')}}">
-                    <i class="fa fa-times fa-fw"></i> {{trans('content::content.destroy')}}
-                </a>                
+                <div class="dropdown-menu dropdown-menu-primary">
+                    @foreach (\Modules\Content\Models\Content::status() as $k=>$s)
+                    @continue($k == 'future')
+                    <a href="javascript:;" class="dropdown-item checkable-operator disabled" disabled="disabled"
+                        data-operate="status" data-status="{{$k}}" data-url="{{route('content.content.status',[$k])}}">
+                        <i class="{{$s.icon}} fa-fw"></i> {{$s.name}}
+                    </a>
+                    @endforeach
+                    <a href="javascript:;" class="dropdown-item checkable-operator disabled" disabled="disabled"
+                        data-operate="delete" data-confirm="{{trans('content::content.delete.confirm')}}">
+                        <i class="fa fa-times fa-fw"></i> {{trans('content::content.destroy')}}
+                    </a>
                 </div>
             </div>
         </div>
@@ -215,7 +235,7 @@
 @endpush
 @push('js')
 <script type="text/javascript">
-// post data
+    // post data
 function postData(url, data, callback) {
     $.post(url, data, function(msg) {
         $.msg(msg);
@@ -239,11 +259,7 @@ function moveDialog(callback) {
             callback(this);
             return false;
         },
-        cancel       : $.noop,
-        oniframeload : function() {
-            this.loading(false);
-        },
-        opener       : window
+        cancel       : $.noop
     }, true).loading(true);        
 }
 
@@ -318,7 +334,7 @@ $(function(){
 });
 </script>
 <script type="text/javascript">
-$(function(){
+    $(function(){
     // 拖动停止更新当前的排序及当前数据之前的数据
     var dragstop = function(evt, ui, tr) {
         

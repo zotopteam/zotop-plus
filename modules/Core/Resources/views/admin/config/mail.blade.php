@@ -1,46 +1,47 @@
 @extends('layouts.master')
 
 @section('content')
-
-@include('core::config.side')
-
+<x-sidebar data="core::config.navbar" :header="trans('core::config.title')" />
 <div class="main">
     <div class="main-header">
         <div class="main-title mr-auto">
             {{$title}}
         </div>
-    </div> 
-    
+    </div>
+
     <div class="main-body scrollable">
         <div class="container-fluid">
             {form bind="config('mail')" route="core.config.mail" method="post" id="config" autocomplete="off"}
 
             <div class="form-title row">{{trans('core::config.mail.base')}}</div>
             <div class="form-group row">
-                <label for="driver" class="col-2 col-form-label required">{{trans('core::config.mail.driver.label')}}</label>
+                <label for="driver"
+                    class="col-2 col-form-label required">{{trans('core::config.mail.driver.label')}}</label>
                 <div class="col-8">
-                    {field type="select" options="Module::data('core::config.mail_drivers')" name="driver" required="required" column="1"}
-                    
+                    {field type="select" options="Module::data('core::config.mail_drivers')" name="driver"
+                    required="required" column="1"}
+
                     @if ($errors->has('driver'))
                     <span class="form-help text-error">{{ $errors->first('driver') }}</span>
                     @else
                     <span class="form-help">{{trans('core::config.mail.driver.help')}}</span>
                     <span class="form-help" data-depend="[name=driver]" data-when="value=log" data-then="show">
-                    {{trans('core::config.mail.drivers.log.help')}}
+                        {{trans('core::config.mail.drivers.log.help')}}
                     </span>
                     @endif
                 </div>
-            </div>            
+            </div>
             <div class="form-group row">
-                <label for="from[address]" class="col-2 col-form-label required">{{trans('core::config.mail.from.address.label')}}</label>
+                <label for="from[address]"
+                    class="col-2 col-form-label required">{{trans('core::config.mail.from.address.label')}}</label>
                 <div class="col-8">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-envelope fa-fw"></i></span>
                         </div>
                         {field type="email" name="from[address]" required="required"}
-                    </div>                   
-                    
+                    </div>
+
                     @if ($errors->has('from.address'))
                     <span class="form-help text-error">{{ $errors->first('from.address') }}</span>
                     @else
@@ -49,18 +50,19 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="from[name]" class="col-2 col-form-label required">{{trans('core::config.mail.from.name.label')}}</label>
+                <label for="from[name]"
+                    class="col-2 col-form-label required">{{trans('core::config.mail.from.name.label')}}</label>
                 <div class="col-8">
                     {field type="text" name="from[name]" required="required"}
-                    
+
                     @if ($errors->has('from.name'))
                     <span class="form-help text-error">{{ $errors->first('from.name') }}</span>
                     @else
                     <span class="form-help">{{trans('core::config.mail.from.name.help')}}</span>
                     @endif
                 </div>
-            </div>  
-            
+            </div>
+
             <div data-depend="[name=driver]" data-when="value=smtp" data-then="show">
                 <div class="form-title row">{{trans('core::config.mail.smtp')}}</div>
 
@@ -68,19 +70,19 @@
                     <label for="host" class="col-2 col-form-label">{{trans('core::config.mail.host.label')}}</label>
                     <div class="col-8">
                         {field type="text" name="host"}
-                        
+
                         @if ($errors->has('host'))
                         <span class="form-help text-error">{{ $errors->first('host') }}</span>
                         @else
                         <span class="form-help">{{trans('core::config.mail.host.help')}}</span>
                         @endif
                     </div>
-                </div>            
+                </div>
                 <div class="form-group row">
                     <label for="port" class="col-2 col-form-label">{{trans('core::config.mail.port.label')}}</label>
                     <div class="col-8">
                         {field type="text" name="port"}
-                        
+
                         @if ($errors->has('port'))
                         <span class="form-help text-error">{{ $errors->first('port') }}</span>
                         @else
@@ -90,10 +92,11 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="encryption" class="col-2 col-form-label">{{trans('core::config.mail.encryption.label')}}</label>
+                    <label for="encryption"
+                        class="col-2 col-form-label">{{trans('core::config.mail.encryption.label')}}</label>
                     <div class="col-8">
                         {field type="radiogroup" options="['tls'=>'TLS','ssl'=>'SSL']" name="encryption"}
-                        
+
                         @if ($errors->has('encryption'))
                         <span class="form-help text-error">{{ $errors->first('encryption') }}</span>
                         @else
@@ -102,22 +105,24 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="username" class="col-2 col-form-label">{{trans('core::config.mail.username.label')}}</label>
+                    <label for="username"
+                        class="col-2 col-form-label">{{trans('core::config.mail.username.label')}}</label>
                     <div class="col-8">
                         {field type="text" name="username"}
-                        
+
                         @if ($errors->has('username'))
                         <span class="form-help text-error">{{ $errors->first('username') }}</span>
                         @else
                         <span class="form-help">{{trans('core::config.mail.username.help')}}</span>
                         @endif
                     </div>
-                </div>            
+                </div>
                 <div class="form-group row">
-                    <label for="password" class="col-2 col-form-label">{{trans('core::config.mail.password.label')}}</label>
+                    <label for="password"
+                        class="col-2 col-form-label">{{trans('core::config.mail.password.label')}}</label>
                     <div class="col-8">
                         {field type="password2" name="password"}
-                        
+
                         @if ($errors->has('password'))
                         <span class="form-help text-error">{{ $errors->first('password') }}</span>
                         @else
@@ -127,11 +132,12 @@
                 </div>
             </div>
             {/form}
-            
+
             {form route="core.config.mailtest" method="post" id="mailtest" autocomplete="off" nosubmited="nosubmited"}
             <div class="form-title row">{{trans('core::config.mail.test')}}</div>
             <div class="form-group row">
-                <label for="test" class="col-2 col-form-label required">{{trans('core::config.mail.test.label')}}</label>
+                <label for="test"
+                    class="col-2 col-form-label required">{{trans('core::config.mail.test.label')}}</label>
                 <div class="col-8">
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -143,9 +149,9 @@
                                 <i class="fa fa-paper-plane fa-fw text-center"></i>
                                 {{trans('core::config.mail.test.send')}}
                             </button>
-                        </div>                        
-                    </div>                   
-                    
+                        </div>
+                    </div>
+
                     @if ($errors->has('from.address'))
                     <span class="form-help text-error">{{ $errors->first('from.address') }}</span>
                     @else
@@ -153,21 +159,20 @@
                     @endif
                 </div>
             </div>
-            {/form}          
+            {/form}
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
             {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
         </div>
-    </div>    
+    </div>
 </div>
 
 @endsection
 
 @push('js')
 <script type="text/javascript">
-
     $(function(){
 
         $('[name="from[address]"]').change(function(){

@@ -3,11 +3,11 @@
 </a>
 
 @push('js')
-    {!! Module::load('core:plupload/plupload.full.min.js') !!}
-    {!! Module::load('core:plupload/i18n/'.App::getLocale().'.js') !!}
-    {!! Module::load('core:plupload/jquery.plupload.js') !!}
-    <script type="text/javascript">
-        $(function() {
+{!! Module::load('core:plupload/plupload.full.min.js') !!}
+{!! Module::load('core:plupload/i18n/'.App::getLocale().'.js') !!}
+{!! Module::load('core:plupload/jquery.plupload.js') !!}
+<script type="text/javascript">
+    $(function() {
             var upload_btn = $('#{{$id}}');
             var upload_success = 0;
             var upload_options = $.extend({}, @json($options), {
@@ -40,8 +40,7 @@
                     }
             });
 
-            console.log(upload_options);
             upload_btn.plupload(upload_options);
         });
-    </script>
+</script>
 @endpush

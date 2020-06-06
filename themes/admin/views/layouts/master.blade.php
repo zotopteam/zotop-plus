@@ -32,16 +32,14 @@
                 <div class="dropdown-menu dropdown-start">
                     <div class="grid grid-xs grid-gap-none grid-hover text-center">
                         @foreach(Filter::fire('global.start',[]) as $s)
-                        <a href="{{$s['href']}}"
-                            class="grid-item rounded text-reset text-decoration-none p-2 {{$s['class'] ?? ''}}"
-                            target="{{$s['target'] ?? '_self'}}">
-                            <div class="grid-item-icon pos-r">
-                                <i class="icon-md f-2 rounded py-2 {{$s['icon']}}"></i>
+                        <a href="{{$s['href']}}" class="grid-item p-1 {{$s['class'] ?? ''}}">
+                            <div class="grid-item-icon mt-1 bg-transparent pos-r">
+                                <i class="fw-3 fh-3 fs-2 rounded py-2 {{$s['icon']}}"></i>
                                 @if(isset($s['badge']))
                                 <b class="pos-a mt-n2 ml-n2 badge badge-xs badge-danger">{{$s['badge']}}</b>
                                 @endif
                             </div>
-                            <div class="grid-item-text text-sm text-truncate">
+                            <div class="grid-item-text mt-1 text-truncate">
                                 {{$s['text']}}
                             </div>
                         </a>

@@ -7,6 +7,7 @@ use App\Support\ImageFilter;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\View\Components\Search;
 use Modules\Core\View\Components\SideBar;
 use Modules\Core\View\Components\UploadChunk;
 
@@ -128,6 +129,7 @@ class CoreServiceProvider extends ServiceProvider
 
         Blade::component(UploadChunk::class, 'upload-chunk');
         Blade::component(SideBar::class, 'sidebar');
+        Blade::component(Search::class, 'search');
     }
 
     // 图片滤器

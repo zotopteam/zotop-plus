@@ -51,9 +51,13 @@ class Media extends Model
 
         // 更新设置parent_id时，禁止为自身或者自身的子节点
         static::updating(function ($media) {
-            if ($media->parent_id && in_array($media->id, static::parentIds($media->parent_id, true))) {
-                abort(403, trans('media::media.move.forbidden', [$media->name]));
-                return false;
+
+            // 移动文件或者目录时，禁止移动到自身或者自身的子目录下面
+            if ($media->parent_id && $media->isDirty('parent_id')) {
+                $parents = static::find($media->parent_id)->parents;
+                if (in_array($media->id, array_keys($parents))) {
+                    abort(403, trans('media::media.move.forbidden', [$media->name]));
+                }
             }
         });
 
@@ -65,7 +69,6 @@ class Media extends Model
 
         // 删除文件和文件的缩略图、预览图
         static::deleted(function ($file) {
-
             // 删除记录的同时删除本地文件
             if ($file->disk && $file->path) {
                 // 获取文件的真实路径 TODO:暂时放publick中，后续增加多位置存储
@@ -80,9 +83,18 @@ class Media extends Model
      * 关联子级别
      * @return hasMany
      */
+    public function child()
+    {
+        return $this->hasMany(self::class, 'parent_id', 'id');
+    }
+
+    /**
+     * 关联递归子级别
+     * @return hasMany
+     */
     public function children()
     {
-        return $this->hasMany('Modules\Media\Models\Media', 'parent_id', 'id');
+        return $this->child()->with('children');
     }
 
     /**
@@ -91,7 +103,16 @@ class Media extends Model
      */
     public function parent()
     {
-        return $this->belongsTo('Modules\Media\Models\Media', 'parent_id', 'id');
+        return $this->belongsTo(self::class, 'parent_id', 'id');
+    }
+
+    /**
+     * 关联递归父级别
+     * @return belongsTo
+     */
+    public function parents()
+    {
+        return $this->parent()->with('parents');
     }
 
     /**
@@ -106,52 +127,28 @@ class Media extends Model
     }
 
     /**
-     * 获取节点的全部父编号
-     * 
-     * @param  mixed  $id         编号
-     * @param  boolean $self      是否包含自身
-     * @param  array   $parentIds 传递自身
+     * 获取全部父级数组
+     *
      * @return array
      */
-    public static function parentIds($id, $self = false, &$parentIds = [])
+    public function getParentsAttribute()
     {
-        static $instance = null;
+        $parents[$this->id] = $this;
 
-        if (empty($instance)) {
-            $instance = new static;
+        $parent_id = $this->parent_id;
+
+        // 递归查询父级
+        while (true) {
+            if ($parent = $this->find($parent_id, ['id', 'parent_id', 'name'])) {
+                $parents[$parent->id] = $parent;
+                if ($parent_id = $parent->parent_id) {
+                    continue;
+                }
+            }
+            break;;
         }
 
-        if ($id && $self) {
-            $parentIds[] = $id;
-        }
-
-        if ($id && $parentId = $instance->where('id', $id)->value('parent_id')) {
-            $instance->parentIds($parentId, true, $parentIds);
-        }
-
-        return array_reverse($parentIds);
-    }
-
-    /**
-     * 获取父级
-     * 
-     * @param  int  $id    节点编号
-     * @param  boolean $self  是否包含自身
-     * @return Collection
-     */
-    public static function parents($id, $self = false)
-    {
-        $parentIds    = static::parentIds($id, $self);
-        $parentSorts = array_flip($parentIds);
-
-        // 获取父级并排序
-        if ($parentIds) {
-            return (new static)->whereIn('id', $parentIds)->get()->sortBy(function ($media) use ($parentSorts) {
-                return $parentSorts[$media->id];
-            });
-        }
-
-        return collect([]);
+        return array_reverse($parents, true);
     }
 
     /**
@@ -169,6 +166,18 @@ class Media extends Model
         return $this->created_at->diffForHumans();
     }
 
+    /**
+     * 输出磁盘的完整路径，盘符:路径，如：public:images/2020/06/abc.jpg
+     *
+     * @return string
+     */
+    public function getDiskPathAttribute()
+    {
+        if ($this->disk && $this->path) {
+            return $this->disk . ':' . $this->path;
+        }
+        return null;
+    }
 
     /**
      * 获取友好的文件大小
@@ -188,38 +197,6 @@ class Media extends Model
     public function getIconAttribute()
     {
         return app('files')->icon($this->extension, $this->type);
-    }
-
-    /**
-     * 获取访问连接
-     * 1，文件夹返回访问连接
-     * 2，图片返回预览连接
-     *
-     * @return string
-     */
-    public function getLinkAttribute()
-    {
-        $link = null;
-
-        if ($this->type == 'folder') {
-            // 合并当前所有参数(排除分页参数)
-            $parameters = array_merge(
-                app('router')->current()->parameters(),
-                app('request')->except('page'),
-                [
-                    'folder_id' => $this->id
-                ]
-            );
-
-            $link = route(
-                app('router')->current()->getName(),
-                $parameters
-            );
-        } else if ($this->type == 'image') {
-            $link = preview($this->disk . ':' . $this->path);
-        }
-
-        return $link;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 @section('content')
 
-@include('core::administrator.side')
+<x-sidebar data="core::administrator.navbar" :header="trans('core::administrator.title')" />
 
 <div class="main">
     <div class="main-header">
@@ -13,14 +13,14 @@
             <a href="{{route('core.administrator.create')}}" class="btn btn-primary">
                 <i class="fa fa-plus"></i> {{trans('master.create')}}
             </a>
-        </div>        
+        </div>
     </div>
     <div class="main-body scrollable">
         @if($users->count() == 0)
-            <div class="nodata">{{trans('master.nodata')}}</div>
+        <div class="nodata">{{trans('master.nodata')}}</div>
         @else
-            <table class="table table-nowrap table-hover" >
-                <thead>
+        <table class="table table-nowrap table-hover">
+            <thead>
                 <tr>
                     <th class="text-center" width="1%">{{trans('master.status')}}</th>
                     <th>{{trans('core::administrator.username.label')}}</th>
@@ -29,54 +29,59 @@
                     <th width="15%">{{trans('core::administrator.email.label')}}</th>
                     <th width="15%">{{trans('core::administrator.login_at.label')}}</th>
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+            <tbody>
                 @foreach($users as $user)
-                    <tr>
-                        <td class="text-center">
-                            <i class="fa fa-2x {{$user->disabled ? 'fa-times-circle text-error' : 'fa-check-circle text-success'}}"></i>
-                        </td>
-                        <td>
-                            <div class="title">
-                                {{$user->username}}
-                            </div>
-                            @if ($user->isSuper())
-                            <div class="text-sm text-important">{{trans('core::administrator.model.super')}}</div>
-                            @else
-                            <div class="text-sm text-muted">
-                                @foreach ($user->roles as $role)
-                                    <span>{{$role->name}}</span>
-                                @endforeach
-                            </div>
-                            @endif
-                            <div class="manage">
-                                <a class="manage-item" href="{{route('core.administrator.edit', $user->id)}}"><i class="fa fa-edit"></i> {{trans('master.edit')}}</a>
-                                @if (! $user->isSuper())
-                                <a class="manage-item js-confirm" href="javascript:;" data-url="{{route('core.administrator.status', $user->id)}}">
-                                    @if($user->disabled)
-                                    <i class="fa fa-check-circle"></i> {{trans('master.active')}}
-                                    @else
-                                    <i class="fa fa-times-circle"></i> {{trans('master.disable')}}
-                                    @endif                                    
-                                </a>
-                                <a class="manage-item js-delete" href="javascript:;" data-url="{{route('core.administrator.destroy', $user->id)}}"><i class="fa fa-times"></i> {{trans('master.delete')}}</a>
+                <tr>
+                    <td class="text-center">
+                        <i
+                            class="fa fa-2x {{$user->disabled ? 'fa-times-circle text-error' : 'fa-check-circle text-success'}}"></i>
+                    </td>
+                    <td>
+                        <div class="title">
+                            {{$user->username}}
+                        </div>
+                        @if ($user->isSuper())
+                        <div class="text-sm text-important">{{trans('core::administrator.model.super')}}</div>
+                        @else
+                        <div class="text-sm text-muted">
+                            @foreach ($user->roles as $role)
+                            <span>{{$role->name}}</span>
+                            @endforeach
+                        </div>
+                        @endif
+                        <div class="manage">
+                            <a class="manage-item" href="{{route('core.administrator.edit', $user->id)}}"><i
+                                    class="fa fa-edit"></i> {{trans('master.edit')}}</a>
+                            @if (! $user->isSuper())
+                            <a class="manage-item js-confirm" href="javascript:;"
+                                data-url="{{route('core.administrator.status', $user->id)}}">
+                                @if($user->disabled)
+                                <i class="fa fa-check-circle"></i> {{trans('master.active')}}
+                                @else
+                                <i class="fa fa-times-circle"></i> {{trans('master.disable')}}
                                 @endif
-                            </div>
+                            </a>
+                            <a class="manage-item js-delete" href="javascript:;"
+                                data-url="{{route('core.administrator.destroy', $user->id)}}"><i
+                                    class="fa fa-times"></i> {{trans('master.delete')}}</a>
+                            @endif
+                        </div>
 
-                        </td>
-                        <td>{{$user->nickname}}</td>
-                        <td>{{$user->mobile}}</td>
-                        <td>{{$user->email}}</td>
-                        <td>
-                            <div class="text-sm">{{$user->login_ip}}</div>
-                            <div class="text-sm">{{$user->login_at}}</div>
-                        </td>
-                    </tr>
+                    </td>
+                    <td>{{$user->nickname}}</td>
+                    <td>{{$user->mobile}}</td>
+                    <td>{{$user->email}}</td>
+                    <td>
+                        <div class="text-sm">{{$user->login_ip}}</div>
+                        <div class="text-sm">{{$user->login_at}}</div>
+                    </td>
+                </tr>
                 @endforeach
 
-                </tbody>
-            </table>
-        @endif                       
+            </tbody>
+        </table>
+        @endif
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">

@@ -1,4 +1,7 @@
 <?php
+
+use Illuminate\Support\Facades\Route;
+
 return [
     'upload' => [
         'text'   => trans('core::config.upload'),
@@ -17,7 +20,7 @@ return [
         'href'   => route('core.config.locale'),
         'icon'  => 'fa fa-map',
         'active' => Route::is('core.config.locale'),
-    ],            
+    ],
     'safe'   => [
         'text'   => trans('core::config.safe'),
         'href'   => route('core.config.safe'),

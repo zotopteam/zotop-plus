@@ -1,16 +1,14 @@
 @extends('layouts.master')
 
 @section('content')
-
-@include('core::config.side')
-
+<x-sidebar data="core::config.navbar" :header="trans('core::config.title')" />
 <div class="main">
     <div class="main-header">
         <div class="main-title mr-auto">
             {{$title}}
         </div>
         <div class="main-action">
-            {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}     
+            {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
         </div>
     </div>
     <div class="main-body scrollable">
@@ -20,7 +18,9 @@
             <div class="form-title row">{{trans('core::config.upload.base')}}</div>
 
             <div class="form-group row">
-                <label for="types" class="col-2 col-form-label required">{{trans('core::config.upload.types.label')}}</label>
+                <label for="types" class="col-2 col-form-label required">
+                    {{trans('core::config.upload.types.label')}}
+                </label>
                 <div class="col-8">
                     <div class="form-control">
                         <table class="table table-inside table-nowrap table-hover">
@@ -29,7 +29,8 @@
                                     <th width="10%">{{trans('core::config.upload.types.type')}}</th>
                                     <th>{{trans('core::config.upload.types.extensions')}}</th>
                                     <th width="25%">{{trans('core::config.upload.types.maxsize')}}</th>
-                                    <th width="12%" class="text-center">{{trans('core::config.upload.types.enabled')}}</th>
+                                    <th width="12%" class="text-center">{{trans('core::config.upload.types.enabled')}}
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -39,17 +40,20 @@
                                     <td>{field type="text" name="upload[types]['.$type.'][extensions]"}</td>
                                     <td>
                                         <div class="input-group">
-                                            {field type="number" name="upload[types]['.$type.'][maxsize]" min="0" required="required}
-                                            <div class="input-group-append"><span class="input-group-text">MB</span></div>
+                                            {field type="number" name="upload[types]['.$type.'][maxsize]" min="0"
+                                            required="required}
+                                            <div class="input-group-append"><span class="input-group-text">MB</span>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td class="text-center">{field type="toggle" name="upload[types]['.$type.'][enabled]"}</td>
+                                    <td class="text-center">{field type="toggle"
+                                        name="upload[types]['.$type.'][enabled]"}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                                       
+
                     @if ($errors->has('types'))
                     <span class="form-help text-error">{{ $errors->first('types') }}</span>
                     @else
@@ -60,10 +64,12 @@
             </div>
 
             <div class="form-group row">
-                <label for="dir" class="col-2 col-form-label required">{{trans('core::config.upload.dir.label')}}</label>
+                <label for="dir" class="col-2 col-form-label required">
+                    {{trans('core::config.upload.dir.label')}}
+                </label>
                 <div class="col-8">
                     {field type="radiogroup" name="upload[dir]" options="Module::data('core::upload.dir')"}
-                    
+
                     @if ($errors->has('dir'))
                     <span class="form-help text-error">{{ $errors->first('dir') }}</span>
                     @else
@@ -74,29 +80,33 @@
 
 
             <div class="form-title row">{{trans('core::image.resize')}}</div>
-            
+
             <div class="form-group row">
-                <label for="resize_enabled" class="col-2 col-form-label">{{trans('core::image.resize.enabled')}}</label>
+                <label for="resize_enabled" class="col-2 col-form-label">
+                    {{trans('core::image.resize.enabled')}}
+                </label>
                 <div class="col-8">
                     {field type="toggle" name="image[resize][enabled]"}
-                    
+
                     @if ($errors->has('enabled'))
                     <span class="form-help text-error">{{ $errors->first('enabled') }}</span>
                     @endif
                 </div>
-            </div>            
+            </div>
 
             <div class="form-group row">
                 <label for="resize_max" class="col-2 col-form-label">{{trans('core::image.resize.max')}}</label>
                 <div class="col-5">
                     <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.resize.width')}}</span></div>
+                        <div class="input-group-prepend"><span
+                                class="input-group-text">{{trans('core::image.resize.width')}}</span></div>
                         {field type="number" name="image[resize][width]" min="0"}
-                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.resize.height')}}</span></div>
+                        <div class="input-group-prepend"><span
+                                class="input-group-text">{{trans('core::image.resize.height')}}</span></div>
                         {field type="number" name="image[resize][height]" min="0"}
                         <div class="input-group-append"><span class="input-group-text">px</span></div>
                     </div>
-                    
+
                     @if ($errors->has('max'))
                     <span class="form-help text-error">{{ $errors->first('max') }}</span>
                     @else
@@ -111,7 +121,7 @@
                 </label>
                 <div class="col-5">
                     {field type="number" name="image[resize][quality]" min="0" max="100"}
-                    
+
                     @if ($errors->has('quality'))
                     <span class="form-help text-error">{{ $errors->first('quality') }}</span>
                     @else
@@ -120,31 +130,34 @@
                 </div>
             </div>
             <div class="form-title row">{{trans('core::image.watermark')}}</div>
-            
+
             <div class="form-group row">
                 <label for="image_watermark_enabled" class="col-2 col-form-label">
                     {{trans('core::image.watermark.enabled')}}
                 </label>
                 <div class="col-8">
                     {field type="toggle" name="image[watermark][enabled]"}
-                    
+
                     @if ($errors->has('enabled'))
                     <span class="form-help text-error">{{ $errors->first('enabled') }}</span>
                     @endif
                 </div>
-            </div>            
+            </div>
 
             <div class="form-group row">
-                <label for="image_watermark_min" class="col-2 col-form-label">{{trans('core::image.watermark.min')}}</label>
+                <label for="image_watermark_min"
+                    class="col-2 col-form-label">{{trans('core::image.watermark.min')}}</label>
                 <div class="col-5">
                     <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.width')}}</span></div>
+                        <div class="input-group-prepend"><span
+                                class="input-group-text">{{trans('core::image.watermark.width')}}</span></div>
                         {field type="number" name="image[watermark][width]" min="0"}
-                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.height')}}</span></div>
+                        <div class="input-group-prepend"><span
+                                class="input-group-text">{{trans('core::image.watermark.height')}}</span></div>
                         {field type="number" name="image[watermark][height]" min="0"}
                         <div class="input-group-append"><span class="input-group-text">px</span></div>
                     </div>
-                    
+
                     @if ($errors->has('min'))
                     <span class="form-help text-error">{{ $errors->first('min') }}</span>
                     @else
@@ -158,16 +171,19 @@
                     {{trans('core::image.watermark.type')}}
                 </label>
                 <div class="col-5">
-                    {field type="radiogroup" name="image[watermark][type]" options="Module::data('core::watermark.type')"}
+                    {field type="radiogroup" name="image[watermark][type]"
+                    options="Module::data('core::watermark.type')"}
                 </div>
             </div>
-            <div class="watermark-options" rel="text" data-depend="#watermark-type :radio" data-when="value=text" data-then="show">
+            <div class="watermark-options" rel="text" data-depend="#watermark-type :radio" data-when="value=text"
+                data-then="show">
                 <div class="form-group row">
                     <label for="image_watermark_font" class="col-2 col-form-label">
                         {{trans('core::image.watermark.font')}}
                     </label>
                     <div class="col-8">
-                         {field type="radiocards" name="image[watermark][font_file]" options="Module::data('core::watermark.font.file')"}
+                        {field type="radiocards" name="image[watermark][font_file]"
+                        options="Module::data('core::watermark.font.file')"}
                     </div>
                 </div>
                 <div class="form-group row">
@@ -176,49 +192,56 @@
                     </label>
                     <div class="col-3">
                         <div class="input-group">
-                            <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.font.size')}}</span></div>
-                            {field type="select" name="image[watermark][font_size]" options="Module::data('core::watermark.font.size')"}
-                            <div class="input-group-append"><span class="input-group-text">px</span></div>                
+                            <div class="input-group-prepend"><span
+                                    class="input-group-text">{{trans('core::image.watermark.font.size')}}</span></div>
+                            {field type="select" name="image[watermark][font_size]"
+                            options="Module::data('core::watermark.font.size')"}
+                            <div class="input-group-append"><span class="input-group-text">px</span></div>
                         </div>
                     </div>
                     <div class="col-3">
                         <div class="input-group input-color">
-                            <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.font.color')}}</span></div>
+                            <div class="input-group-prepend"><span
+                                    class="input-group-text">{{trans('core::image.watermark.font.color')}}</span></div>
                             {field type="text" name="image[watermark][font_color]"}
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-light btn-color"><i class="fa fa-palette fa-fw"></i></button>
+                                <button type="button" class="btn btn-light btn-color"><i
+                                        class="fa fa-palette fa-fw"></i></button>
                             </div>
-                        </div>                
+                        </div>
                     </div>
-                   <div class="col-3">
+                    <div class="col-3">
                         <div class="input-group">
-                            <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.font.angle')}}</span></div>
+                            <div class="input-group-prepend"><span
+                                    class="input-group-text">{{trans('core::image.watermark.font.angle')}}</span></div>
                             {field type="number" name="image[watermark][font_angle]" min="0" max="360"}
-                             <div class="input-group-append"><span class="input-group-text">°</span></div>                        
-                        </div>                
-                    </div>                                   
-                </div>            
+                            <div class="input-group-append"><span class="input-group-text">°</span></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group row">
                     <label for="image_watermark_text" class="col-2 col-form-label">
                         {{trans('core::image.watermark.text')}}
                     </label>
                     <div class="col-8">
-                         {field type="text" name="image[watermark][text]"}
+                        {field type="text" name="image[watermark][text]"}
                     </div>
                 </div>
             </div>
-            <div class="watermark-options" rel="image" data-depend="#watermark-type :radio" data-when="value=image" data-then="show">
+            <div class="watermark-options" rel="image" data-depend="#watermark-type :radio" data-when="value=image"
+                data-then="show">
                 <div class="form-group row">
                     <label for="image_watermark_image" class="col-2 col-form-label">
                         {{trans('core::image.watermark.image')}}
                     </label>
                     <div class="col-8">
-                        {field type="upload_image" name="image[watermark][image]" allow="png" resize="false" watermark="false" tools="false"}
+                        {field type="upload_image" name="image[watermark][image]" allow="png" resize="false"
+                        watermark="false" tools="false"}
                         @if ($errors->has('image.watermark.image'))
                         <span class="form-help text-error">{{ $errors->first('image.watermark.image') }}</span>
                         @else
                         <span class="form-help">{{trans('core::image.watermark.image.help')}}</span>
-                        @endif                         
+                        @endif
                     </div>
                 </div>
             </div>
@@ -231,15 +254,16 @@
                         <table class="table table-nowrap ">
                             <tbody>
                                 <tr>
-                                @foreach (Module::data('core::watermark.position') as $value=>$postion)
+                                    @foreach (Module::data('core::watermark.position') as $value=>$postion)
                                     <td class="text-center">
-                                        {field type="radio" name="image[watermark][position]" id="$value" value="$value" label="$postion"}
+                                        {field type="radio" name="image[watermark][position]" id="$value" value="$value"
+                                        label="$postion"}
                                     </td>
                                     @if($loop->iteration%3==0 && $loop->iteration < $loop->count)
-                                    </tr>
-                                    <tr>
+                                </tr>
+                                <tr>
                                     @endif
-                                @endforeach
+                                    @endforeach
                                 </tr>
                             </tbody>
                         </table>
@@ -247,44 +271,47 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="image_watermark_offset" class="col-2 col-form-label">{{trans('core::image.watermark.offset')}}</label>
+                <label for="image_watermark_offset"
+                    class="col-2 col-form-label">{{trans('core::image.watermark.offset')}}</label>
                 <div class="col-5">
                     <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.offset.x')}}</span></div>
+                        <div class="input-group-prepend"><span
+                                class="input-group-text">{{trans('core::image.watermark.offset.x')}}</span></div>
                         {field type="number" name="image[watermark][offset_x]" min="0"}
-                        <div class="input-group-prepend"><span class="input-group-text">{{trans('core::image.watermark.offset.y')}}</span></div>
+                        <div class="input-group-prepend"><span
+                                class="input-group-text">{{trans('core::image.watermark.offset.y')}}</span></div>
                         {field type="number" name="image[watermark][offset_y]" min="0"}
                         <div class="input-group-append"><span class="input-group-text">px</span></div>
                     </div>
-                    
+
                     @if ($errors->has('offset'))
                     <span class="form-help text-error">{{ $errors->first('offset') }}</span>
                     @else
                     <span class="form-help">{{trans('core::image.watermark.offset.help')}}</span>
                     @endif
                 </div>
-            </div>            
+            </div>
             <div class="form-group row">
                 <label for="watermark_opacity" class="col-2 col-form-label">
                     {{trans('core::image.watermark.opacity')}}
                 </label>
                 <div class="col-5">
                     {field type="number" name="image[watermark][opacity]" min="1" max="100"}
-                    
+
                     @if ($errors->has('watermark.opacity'))
                     <span class="form-help text-error">{{ $errors->first('watermark.opacity') }}</span>
                     @else
                     <span class="form-help">{{trans('core::image.watermark.opacity.help')}}</span>
                     @endif
                 </div>
-            </div>                  
+            </div>
             <div class="form-group row">
                 <label for="watermark_quality" class="col-2 col-form-label">
                     {{trans('core::image.watermark.quality')}}
                 </label>
                 <div class="col-5">
                     {field type="number" name="image[watermark][quality]" min="0" max="100"}
-                    
+
                     @if ($errors->has('watermark.quality'))
                     <span class="form-help text-error">{{ $errors->first('watermark.quality') }}</span>
                     @else
@@ -300,7 +327,7 @@
                         {{trans('core::image.watermark.test')}}
                     </div>
                 </div>
-            </div>                                                                                  
+            </div>
             {/form}
         </div>
     </div><!-- main-body -->
@@ -309,16 +336,15 @@
 @endsection
 
 @push('css')
-    {!! Module::load('core:spectrum/spectrum.css') !!}
-    {!! Module::load('core:spectrum/spectrum.zotop.css') !!}     
+{!! Module::load('core:spectrum/spectrum.css') !!}
+{!! Module::load('core:spectrum/spectrum.zotop.css') !!}
 @endpush
 
 @push('js')
-    {!! Module::load('core:spectrum/spectrum.js') !!}
-    {!! Module::load('core:spectrum/field_color.js') !!}
-    <script type="text/javascript">
-
-        $(function(){
+{!! Module::load('core:spectrum/spectrum.js') !!}
+{!! Module::load('core:spectrum/field_color.js') !!}
+<script type="text/javascript">
+    $(function(){
             $('.input-color').field_color({allowEmpty:false});
         });
 
@@ -345,5 +371,5 @@
             });
         });
 
-    </script>
+</script>
 @endpush

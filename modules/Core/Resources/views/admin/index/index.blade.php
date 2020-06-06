@@ -11,16 +11,15 @@
     <div class="main-body scrollable">
         <div class="grid grid-md grid-hover p-3">
             @foreach(Filter::fire('global.start',[]) as $s)
-            <a href="{{$s['href']}}"
-                class="grid-item rounded text-reset text-decoration-none d-flex align-items-center p-2 {{$s['class'] ?? ''}}"
+            <a href="{{$s['href']}}" class="grid-item flex-row align-items-center p-2 {{$s['class'] ?? ''}}"
                 target="{{$s['target'] ?? '_self'}}">
-                <div class="grid-item-icon mr-2 pos-r">
+                <div class="mr-2 pos-r">
                     @if(isset($s['badge']))
                     <b class="pos-a mt-n1 ml-n1 badge badge-xs badge-danger">{{$s['badge']}}</b>
                     @endif
-                    <i class="icon-md {{$s['icon']}} f-2 rounded text-center py-2"></i>
+                    <i class="fw-3 fh-3 {{$s['icon']}} fs-2 rounded text-center py-2"></i>
                 </div>
-                <div class="grid-item-text overflow-hidden flex-grow-1">
+                <div class="overflow-hidden flex-grow-1">
                     <div class="text-lg text-truncate">{{$s['text']}}</div>
                     <div class="text-sm text-truncate">{{$s['tips']}}</div>
                 </div>

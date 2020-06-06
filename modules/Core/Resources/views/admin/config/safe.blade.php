@@ -2,8 +2,8 @@
 
 @section('content')
 
-@include('core::config.side')
-
+@section('content')
+<x-sidebar data="core::config.navbar" :header="trans('core::config.title')" />
 <div class="main">
     <div class="main-header">
         <div class="main-title mr-auto">
@@ -12,8 +12,8 @@
         <div class="main-action">
             {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
         </div>
-    </div> 
-    
+    </div>
+
     <div class="main-body scrollable">
         <div class="container-fluid">
             {form bind="$config" route="core.config.safe" method="post" id="config" autocomplete="off"}
@@ -23,8 +23,9 @@
             <div class="form-group row">
                 <label for="env" class="col-2 col-form-label required">{{trans('core::config.env.label')}}</label>
                 <div class="col-8">
-                    {field type="radiocards" name="env" options="Module::data('core::config.envs')" column="1" required="required"}
-                    
+                    {field type="radiocards" name="env" options="Module::data('core::config.envs')" column="1"
+                    required="required"}
+
                     @if ($errors->has('env'))
                     <span class="form-help text-error">{{ $errors->first('env') }}</span>
                     @else
@@ -37,7 +38,7 @@
                 <label for="debug" class="col-2 col-form-label">{{trans('core::config.debug.label')}}</label>
                 <div class="col-8">
                     {field type="toggle" name="debug"}
-                    
+
                     @if ($errors->has('debug'))
                     <span class="form-help text-error">{{ $errors->first('debug') }}</span>
                     @else
@@ -47,12 +48,13 @@
             </div>
 
             <div class="form-title row">{{trans('core::config.safe.admin')}}</div>
-            
+
             <div class="form-group row">
-                <label for="admin_prefix" class="col-2 col-form-label required">{{trans('core::config.admin_prefix.label')}}</label>
+                <label for="admin_prefix"
+                    class="col-2 col-form-label required">{{trans('core::config.admin_prefix.label')}}</label>
                 <div class="col-8">
                     {field type="text" name="backend[prefix]" required="required"}
-                    
+
                     @if ($errors->has('admin_prefix'))
                     <span class="form-help text-error">{{ $errors->first('admin_prefix') }}</span>
                     @else
@@ -78,14 +80,14 @@
                             <span class="input-group-text">
                                 {{trans('core::config.log.unit')}}
                             </span>
-                        </div>                        
+                        </div>
                     </div>
 
                     <span class="form-help">{{trans('core::config.log.help')}}</span>
                 </div>
             </div>
 
-            {/form}           
+            {/form}
         </div>
     </div><!-- main-body -->
 </div>

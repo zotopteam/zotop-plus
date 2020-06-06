@@ -27,7 +27,7 @@ class StorageController extends Controller
     {
         $this->disk    = $disk;
         $this->disks   = Module::data('core::storage.disks');
-        $this->title   = Arr::get($this->disks, "{$disk}.title");
+        $this->title   = Arr::get($this->disks, "{$disk}.text");
         $this->browser = app(StorageBrowser::class, [
             'disk' => $disk,
             'root' => '',
@@ -232,7 +232,7 @@ class StorageController extends Controller
     {
         $this->disk    = $disk;
         $this->disks   = Module::data('core::storage.disks');
-        $this->title   = Arr::get($this->disks, "{$disk}.title");
+        $this->title   = Arr::get($this->disks, "{$disk}.text");
         $this->browser = app(StorageBrowser::class, [
             'disk' => $disk,
             'root' => '',

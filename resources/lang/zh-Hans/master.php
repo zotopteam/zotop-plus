@@ -40,6 +40,7 @@ return [
     'move'                     => '移动',
     'moved'                    => '移动成功！',
     'rename'                   => '重命名',
+    'rename.prompt'            => '请输入新名称',
     'renamed'                  => '重命名成功！',
     'download'                 => '下载',
     'clear'                    => '清理',
@@ -83,5 +84,5 @@ return [
     'id'                       => '编号',
     'title'                    => '标题',
     'name'                     => '名称',
-    
+
 ];

@@ -1,12 +1,12 @@
 /*! Global js */
 
 // Ajax 全局
-$(function() {
+$(function () {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
         },
-        error: function(jqXHR) {
+        error: function (jqXHR) {
 
             console.log(jqXHR.status);
 
@@ -40,11 +40,11 @@ $(function() {
 });
 
 
-$(function() {
+$(function () {
 
     // tooltip
     $(document).tooltip({
-        placement: function(tip, element) {
+        placement: function (tip, element) {
             return $(element).data('placement') ? $(element).data('placement') : 'bottom';
         },
         selector: '[data-toggle="tooltip"],a[title]',
@@ -53,15 +53,21 @@ $(function() {
     });
 
     // maxlength
-    $('input[maxlength],textarea[maxlength]').maxlength({ alwaysShow: true, appendToParent: true, threshold: 10, separator: '/', placement: 'bottom-right-inside' });
+    $('input[maxlength],textarea[maxlength]').maxlength({
+        alwaysShow: true,
+        appendToParent: true,
+        threshold: 10,
+        separator: '/',
+        placement: 'bottom-right-inside'
+    });
 
-    $('textarea[maxlength]').on('autosize.resized', function() {
+    $('textarea[maxlength]').on('autosize.resized', function () {
         $(this).trigger('maxlength.reposition');
     });
 
     // 复制到剪贴板
     var clipboard = new ClipboardJS('.btn-copy');
-    clipboard.on('success', function(e) {
+    clipboard.on('success', function (e) {
         e.clearSelection();
         $.success($(e.trigger).data('success'));
     });
@@ -69,10 +75,10 @@ $(function() {
 
 
 //dialog
-$(function() {
+$(function () {
 
     // ajax post 点击链接使用post链接，并返回提示信息
-    $(document).on('click', '.js-post', function(event) {
+    $(document).on('click', '.js-post', function (event) {
         event.preventDefault();
 
         var icon = $(this).find('.fa');
@@ -85,7 +91,7 @@ $(function() {
             $.loading();
         }
 
-        $.post(href, data, function(msg) {
+        $.post(href, data, function (msg) {
             $.msg(msg);
 
             if (icon.length > 0) {
@@ -96,7 +102,7 @@ $(function() {
         event.stopPropagation();
     });
 
-    $(document).on('click', '.js-confirm', function(event) {
+    $(document).on('click', '.js-confirm', function (event) {
         event.preventDefault();
 
         var href = $(this).data('url') || $(this).attr('href');
@@ -104,13 +110,13 @@ $(function() {
         var confirm = $(this).data('confirm') || $.trans('您确定要 [ {0} ] 嘛?', text);
         var method = $(this).data('method') || 'POST';
 
-        var dialog = $.confirm(confirm, function() {
+        var dialog = $.confirm(confirm, function () {
             dialog.loading(true);
             $.ajax({
                 url: href,
                 type: method,
                 dataType: 'json',
-                success: function(msg) {
+                success: function (msg) {
                     dialog.close().remove();
                     $.msg(msg);
                 }
@@ -121,7 +127,7 @@ $(function() {
         event.stopPropagation();
     });
 
-    $(document).on('click', '.js-delete', function(event) {
+    $(document).on('click', '.js-delete', function (event) {
         event.preventDefault();
 
         var href = $(this).data('url') || $(this).attr('href');
@@ -129,13 +135,13 @@ $(function() {
         var confirm = $(this).data('confirm') || $.trans('您确定要 {0} 嘛?', text);
         var method = $(this).data('method') || 'DELETE';
 
-        var dialog = $.confirm(confirm, function() {
+        var dialog = $.confirm(confirm, function () {
             dialog.loading(true);
             $.ajax({
                 url: href,
                 type: method,
                 dataType: 'json',
-                success: function(msg) {
+                success: function (msg) {
                     dialog.close().remove();
                     $.msg(msg);
                 }
@@ -146,7 +152,7 @@ $(function() {
         event.stopPropagation();
     });
 
-    $(document).on('click', '.js-open', function(event) {
+    $(document).on('click', '.js-open', function (event) {
         event.preventDefault();
 
         var url = $(this).data('url') || $(this).attr('href');
@@ -159,16 +165,13 @@ $(function() {
             width: width,
             height: height,
             ok: $.noop,
-            cancel: $.noop,
-            oniframeload: function() {
-                this.loading(false);
-            }
+            cancel: $.noop
         }, true).loading(true);
 
         event.stopPropagation();
     });
 
-    $(document).on('click', '.js-prompt', function(event) {
+    $(document).on('click', '.js-prompt', function (event) {
         event.preventDefault();
 
         var href = $(this).data('url') || $(this).attr('href');
@@ -178,17 +181,17 @@ $(function() {
         var type = $(this).data('type') || 'text';
         var title = $(this).attr('title') || $(this).data('original-title') || $(this).text();
         var posts = {};
-        var dialog = $.prompt(prompt, function(newvalue, input) {
+        var dialog = $.prompt(prompt, function (newvalue, input) {
             posts[name] = newvalue;
             dialog.loading(true);
-            $.post(href, posts, function(msg) {
+            $.post(href, posts, function (msg) {
                 if (msg.type == 'success') {
                     dialog.close().remove();
                 } else {
                     dialog.loading(false);
                 }
                 $.msg(msg);
-            }, 'json').fail(function(jqXHR) {
+            }, 'json').fail(function (jqXHR) {
                 input.select();
                 input.focus();
                 dialog.loading(false);
@@ -200,7 +203,7 @@ $(function() {
         event.stopPropagation();
     });
 
-    $(document).on('click', '.js-image', function(event) {
+    $(document).on('click', '.js-image', function (event) {
         event.preventDefault();
 
         var url = $(this).data('url') || $(this).attr('src');
@@ -212,7 +215,7 @@ $(function() {
         event.stopPropagation();
     });
 
-    $(document).on('contextmenu', '.js-contextmenu', function(event) {
+    $(document).on('contextmenu', '.js-contextmenu', function (event) {
 
         // contextmenu 必须在当前元素之内
         var contextmenu = $(this).data('contextmenu') || '.contextmenu';
@@ -237,28 +240,28 @@ $(function() {
 
 
 //表格行排序 sortable
-$(function() {
+$(function () {
 
-    $("table.table-sortable").each(function(index, table) {
+    $("table.table-sortable").each(function (index, table) {
         $(table).sortable({
             items: "tbody > tr:not(.ui-sortable-disabled)",
             handle: "td.drag",
             axis: "y",
             placeholder: "ui-sortable-placeholder",
-            helper: function(e, ui) {
-                ui.children().each(function() {
+            helper: function (e, ui) {
+                ui.children().each(function () {
                     $(this).width($(this).width());
                 });
                 return ui;
             },
-            start: function(e, ui) {
+            start: function (e, ui) {
                 ui.placeholder.height(ui.helper[0].scrollHeight);
             },
-            update: function() {
+            update: function () {
                 // 如果是表单内拖动，自动提交表单
                 var form = $(this).parents('form');
                 if (form.length) {
-                    $.post(form.attr('action'), form.serialize(), function(msg) {
+                    $.post(form.attr('action'), form.serialize(), function (msg) {
                         $.msg(msg);
                     }, 'json');
                 }
@@ -268,8 +271,8 @@ $(function() {
 
 });
 
-$(function() {
-    var notification_check = function() {
+$(function () {
+    var notification_check = function () {
 
         var notification = $('.global-notification');
 
@@ -281,7 +284,7 @@ $(function() {
         notification.find('.global-tool-icon').addClass('animation-flicker');
 
         // 请求接口并获取结果        
-        $.getJSON(cms.notification.check.url, function(result) {
+        $.getJSON(cms.notification.check.url, function (result) {
             if (result.count) {
                 notification.find('.global-tool-badge').removeClass('d-none').html(result.count);
                 notification.find('.global-tool-icon').addClass('animation-flicker');

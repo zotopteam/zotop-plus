@@ -15,11 +15,21 @@ class ThemesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('themes', function($app) {
+        // 覆盖系统默认的BladeCompiler
+        $this->app->singleton('blade.compiler', function ($app) {
+            return new \App\Themes\BladeCompiler(
+                $app['files'],
+                $app['config']['view.compiled']
+            );
+        });
+
+        // 注册themes
+        $this->app->singleton('themes', function ($app) {
             return new Repository($app);
         });
 
-        $this->mergeConfigFrom(__DIR__.'/Config/themes.php', 'themes');        
+        // 合并配置
+        $this->mergeConfigFrom(__DIR__ . '/Config/themes.php', 'themes');
     }
 
     /**
@@ -29,34 +39,11 @@ class ThemesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // 注册主题
         $this->app->register(BootstrapServiceProvider::class);
 
-        $this->bladeExtend();
-        $this->paginatorDefault();       
-
-    }
-
-    /**
-     * 模板扩展
-     * @return void
-     */
-    public function bladeExtend()
-    {
-        // 覆盖系统默认的BladeCompiler
-        $this->app->singleton('blade.compiler', function ($app) {
-            return new \App\Themes\BladeCompiler(
-                $app['files'], $app['config']['view.compiled']
-            );
-        });         
-    }
-
-    /**
-     * 设置默认分页代码
-     * @return null
-     */
-    public function paginatorDefault()
-    {
+        //设置默认分页代码
         Paginator::defaultView('pagination.default');
-        Paginator::defaultSimpleView('pagination.simple');     
-    }        
+        Paginator::defaultSimpleView('pagination.simple');
+    }
 }

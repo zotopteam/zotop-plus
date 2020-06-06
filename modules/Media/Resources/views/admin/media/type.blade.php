@@ -1,23 +1,18 @@
 @extends('layouts.master')
 
 @section('content')
-<x-sidebar data="media::sidebar" :header="trans('media::media.title')" active="index" class="fw-10" />
-<div class="main">
+<x-sidebar data="media::sidebar" :header="trans('media::media.title')" :active="$type" class="fw-10" />
+<div class="main checkable">
     <div class="main-header">
 
         <div class="main-title mr-auto">
-            {{request('keywords') ? trans('master.search.results') : ($media->name ?? trans('media::media.root'))}}
+            {{request('keywords') ? trans('master.search.results') : $title}}
         </div>
 
         <div class="main-action">
             <x-search />
             @if (!request('keywords'))
-            <x-upload-chunk :params="['folder_id'=>$folder_id]" />
-            <a href="javascript:;" class="btn btn-primary js-prompt"
-                data-url="{{route('media.create',[$folder_id, 'folder'])}}" data-prompt="{{trans('core::folder.name')}}"
-                data-name="name">
-                <i class="fa fa-fw fa-folder-plus"></i> {{trans('core::folder.create')}}
-            </a>
+            <x-upload-chunk />
             @endif
             <a href="javascript:;" class="btn btn-success checkable-operator disabled" data-operate="move"
                 data-url="{{route('media.move')}}" data-title="{{trans('master.move')}}">
@@ -27,13 +22,9 @@
                 data-confirm="{{trans('master.delete.confirm')}}" data-url="{{route('media.destroy')}}">
                 <i class="fa fa-times fa-fw"></i> {{trans('master.delete')}}
             </a>
-
         </div>
     </div>
     <div class="main-header bg-light text-xs p-1">
-        @if (!request('keywords'))
-        <x-media-breadcrumb :media="$media" />
-        @endif
         <div class="d-flex ml-auto px-2">
             <input type="checkbox" class="checkable-all fs-1" />
         </div>
@@ -89,8 +80,7 @@
                     });                    
                 })
             }                
-        });
-              
+        });                 
     });      
 </script>
 @endpush

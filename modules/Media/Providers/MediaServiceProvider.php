@@ -2,7 +2,10 @@
 
 namespace Modules\Media\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Media\View\Components\MediaBreadcrumb;
+use Modules\Media\View\Components\MediaList;
 
 class MediaServiceProvider extends ServiceProvider
 {
@@ -21,7 +24,7 @@ class MediaServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-    }    
+    }
 
     /**
      * Register the service provider.
@@ -30,7 +33,9 @@ class MediaServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // 模板扩展
+        Blade::component(MediaBreadcrumb::class, 'media-breadcrumb');
+        Blade::component(MediaList::class, 'media-list');
     }
 
     /**

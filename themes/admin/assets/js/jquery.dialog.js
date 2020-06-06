@@ -152,7 +152,16 @@
 			}
 
 			// 传递当前窗口
-			options.opener = window;
+			if (! options.opener) {
+				options.opener = window;
+			}
+
+			// iframe 模式自动关闭加载
+			if (options.url) {
+	            options.oniframeload = function() {
+	                this.loading(false);
+	            };				
+			}
 
 			// modal 模式
 			if (typeof modal === 'boolean' && modal ) {

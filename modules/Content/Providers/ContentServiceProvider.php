@@ -2,12 +2,12 @@
 
 namespace Modules\Content\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Modules\Content\Models\Content;
 use Modules\Content\Models\Model;
+use Modules\Content\Models\Content;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
 use Modules\Content\Support\ModelHelper;
-use Blade;
 
 
 class ContentServiceProvider extends ServiceProvider
@@ -41,20 +41,20 @@ class ContentServiceProvider extends ServiceProvider
         // });        
 
         // 监听卸载
-        $this->app['events']->listen('modules.content.uninstalling', function($module) {
+        $this->app['events']->listen('modules.content.uninstalling', function ($module) {
 
             //内容数据大于5条时候，禁止卸载模块
             abort_if(Content::count() > 5, 403, trans('content::module.uninstall.forbidden'));
 
             // 卸载所有自动生成的表
-            Model::all()->each(function($model) {
+            Model::all()->each(function ($model) {
                 $model->table && Schema::dropIfExists($model->table);
             });
         });
 
         // 解析模板
         $this->baldeContentTag();
-    }    
+    }
 
     /**
      * Register the service provider.
@@ -79,7 +79,7 @@ class ContentServiceProvider extends ServiceProvider
     private function baldeContentTag()
     {
         // 解析{content:list ……}
-        Blade::tag('content:list', function($attrs, $vars) {
+        Blade::tag('content:list', function ($attrs, $vars) {
 
             $id       = array_get($attrs, 'id', 0); // 内容编号
             $slug     = array_get($attrs, 'slug', null);  // 内容slug
@@ -99,9 +99,9 @@ class ContentServiceProvider extends ServiceProvider
             $query = Content::with(str_array($with, ','))->publish()->model($model)->sort($sort);
 
             // 查询子节点
-            $query->when($subdir, function($query, $subdir) use($id) {
+            $query->when($subdir, function ($query, $subdir) use ($id) {
                 return $query->whereSmart('parent_id', Content::childrenIds($id, true, 'category'));
-            }, function($query) use($id) {
+            }, function ($query) use ($id) {
                 return $query->where('parent_id', $id);
             });
 
@@ -124,14 +124,13 @@ class ContentServiceProvider extends ServiceProvider
 
             return app('view')->make($view)
                 ->with($vars)
-                ->with('attrs', ['id'=>$id] + $attrs)
+                ->with('attrs', ['id' => $id] + $attrs)
                 ->with('list', $list)
                 ->render();
-
         });
 
         // 解析{content_navbar ……}
-        Blade::tag('content:navbar', function($attrs, $vars) {
+        Blade::tag('content:navbar', function ($attrs, $vars) {
 
             $id    = array_get($attrs, 'id', 0);
             $size  = array_get($attrs, 'size', 0); // 显示条数 0=显示全部
@@ -139,7 +138,7 @@ class ContentServiceProvider extends ServiceProvider
 
             // 查询
             $query = Content::publish()->sort()->where('parent_id', $id);
-            $query->when($size, function($query, $size){
+            $query->when($size, function ($query, $size) {
                 $query->limit($size);
             });
 
@@ -150,11 +149,11 @@ class ContentServiceProvider extends ServiceProvider
                 ->with('attrs', $attrs)
                 ->with('navbar', $navbar)
                 ->render();
-        });        
+        });
 
         // 路径 {content_path id="$content->id" self="true" view="content::tag.path"}
-        Blade::tag('content:path', function($attrs, $vars) {
-            
+        Blade::tag('content:path', function ($attrs, $vars) {
+
             $id    = array_get($attrs, 'id', 0); // 内容编号
             $self  = array_get($attrs, 'self', true); // 是否显示自身
             $view  = array_get($attrs, 'view', "content::tag.path"); //模板
@@ -168,6 +167,6 @@ class ContentServiceProvider extends ServiceProvider
             }
 
             return null;
-        });                  
-    }    
+        });
+    }
 }

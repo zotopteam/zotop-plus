@@ -2,13 +2,14 @@
 
 namespace Modules\Media\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
-use Modules\Core\Support\FileBrowser;
-use Modules\Core\Support\StorageBrowser;
+use App\Modules\Facades\Module;
 use Modules\Media\Models\Media;
+use Modules\Core\Support\FileBrowser;
+use Illuminate\Support\Facades\Storage;
+use App\Modules\Routing\AdminController;
+use Modules\Core\Support\StorageBrowser;
 
 class MediaController extends AdminController
 {
@@ -17,24 +18,51 @@ class MediaController extends AdminController
      *
      * @return Response
      */
-    public function index(Request $request, $parent_id = 0, $type = null)
+    public function index(Request $request, $folder_id = 0)
     {
         $this->title     = trans('media::media.title');
-        $this->parent_id = $parent_id;
-        $this->type      = $type ?? $request->input('type');
-        $this->keywords  = $request->input('keywords');
-        $this->parent    = Media::findOrNew($parent_id);
-        $this->parents   = Media::parents($parent_id, true);
+        $this->folder_id = $folder_id;
+        $this->media     = Media::find($folder_id);
 
-        $media = Media::with('user');
+        // 如果有关键词，则执行全局搜索，否则显示当前文件夹内容
+        $this->media_list = Media::with('user')->when($request->keywords, function ($query, $keywords) {
+            $query->searchIn('name', $keywords);
+        }, function ($query) use ($folder_id) {
+            $query->where('parent_id', $folder_id);
+        })->sort()->paginate(50);
 
-        if ($this->keywords) {
-            $media->where('name', 'like', '%' . $this->keywords . '%');
-        } else {
-            $media->where('parent_id', $parent_id);
-        }
+        return $this->view();
+    }
 
-        $this->media = $media->sort()->paginate(25);
+    /**
+     * 类型
+     *
+     * @return Response
+     */
+    public function type(Request $request, $type)
+    {
+        $this->title      = trans("core::file.type.{$type}");
+        $this->type       = $type;
+        $this->media_list = Media::with('user')
+            ->searchIn('name', $request->keywords)
+            ->where('type', $type)
+            ->sort()
+            ->paginate(50);
+
+        return $this->view();
+    }
+
+    /**
+     * 详情
+     *
+     * @return Response
+     */
+    public function show(Request $request, $id)
+    {
+        $this->title = trans("master.show");
+        $this->disks = Module::data('core::storage.disks');
+        $this->id    = $id;
+        $this->media = Media::findOrFail($id);
 
         return $this->view();
     }
@@ -44,16 +72,16 @@ class MediaController extends AdminController
      * 
      * @return Response
      */
-    public function create(Request $request, $parent_id, $type)
+    public function create(Request $request, $folder_id, $type)
     {
         // 保存数据
         if ($request->isMethod('POST')) {
 
             $media = new Media;
             $media->fill($request->all());
-            $media->parent_id = $parent_id;
+            $media->parent_id = $folder_id;
             $media->type = $type;
-            $media->is_folder = 1;
+            $media->is_folder = $type == 'folder' ? 1 : 0;
             $media->save();
 
             return $this->success(trans('master.created'), $request->referer());
@@ -83,16 +111,15 @@ class MediaController extends AdminController
      *
      * @return Response
      */
-    public function move(Request $request, $parent_id = null)
+    public function move(Request $request, $folder_id = null)
     {
         if ($request->isMethod('POST')) {
 
             $id        = $request->input('id');
-            $parent_id = $request->input('parent_id');
+            $parent_id = $request->input('folder_id');
 
             // 获取数据并移动
-            $media = is_array($id) ? Media::whereIn('id', $id) : Media::where('id', $id);
-            $media->sort()->get()->each(function ($item, $key) use ($parent_id) {
+            Media::whereSmart('id', $id)->get()->each(function ($item) use ($parent_id) {
                 $item->parent_id = $parent_id;
                 $item->save();
             });
@@ -101,24 +128,39 @@ class MediaController extends AdminController
         }
 
         // 缓存当前选择的节点编号，下次进入时候直接展示该节点
-        if (!is_null($parent_id)) {
-            session(['media_move_parent_id' => $parent_id]);
+        if (!is_null($folder_id)) {
+            session(['media_move_to_folder_id' => $folder_id]);
+            $this->folder_id = $folder_id;
         } else {
-            $parent_id = session('media_move_parent_id', 0);
+            $this->folder_id = session('media_move_to_folder_id', 0);
         }
 
         // 当前排序的父节点
-        $this->parent   = Media::findOrNew($parent_id);
+        $this->media   = Media::find($this->folder_id);
 
-        // 获取全部父节点
-        $this->parents = Media::parents($parent_id, true);
-
-        // 获取当前节点下面的全部数据（包含搜索）
-        $this->media = Media::where('is_folder', 1)->where('parent_id', $parent_id)->when($request->keywords, function ($query, $keywords) {
-            return $query->where('name', 'like', '%' . $keywords . '%');
-        })->sort()->paginate(36);
+        // 获取当前节点下的全部文件夹或者获取搜索的文件夹
+        $this->media_list = Media::when($request->keywords, function ($query, $keywords) {
+            $query->searchIn('name', $keywords);
+        }, function ($query) {
+            $query->where('parent_id', $this->folder_id);
+        })->sort()->paginate(50);
 
         return $this->view();
+    }
+
+    /**
+     * 下载文件
+     *
+     * @param Request $request
+     * @param integer $id
+     * @return Response
+     */
+    public function download(Request $request, $id)
+    {
+        $media = Media::findOrFail($id);
+        $name  = pathinfo($media->name, PATHINFO_FILENAME) . '.' . $media->extension;
+
+        return Storage::disk($media->disk)->download($media->path, $name);
     }
 
     /**
@@ -148,7 +190,7 @@ class MediaController extends AdminController
      */
     public function selectFromUploaded(Request $request)
     {
-        $file = Media::where('type', '<>', 'folder');
+        $file = Media::where('is_folder', 0);
 
         // 当传入的有source_id ，从source_id获取，不从 action和field获取
         if ($request->source_id) {
@@ -159,20 +201,11 @@ class MediaController extends AdminController
 
         // 筛选条件
         foreach ($from as $key => $value) {
-
-            if (empty($value)) {
-                continue;
-            }
-
-            if ($key == 'extension') {
-                $file->whereIn('extension', explode(',', $value));
-            } else {
-                $file->where($key, $value);
-            }
+            $file->whereSmart($key, $value);
         }
 
         $this->params = $request->all();
-        $this->files  = $file->orderby('sort', 'desc')->paginate(24);
+        $this->files  = $file->orderby('sort', 'desc')->paginate(50);
         $this->title  = trans('media::media.insert.from.uploaded', [$request->typename]);
 
         return $this->view('media::media.select.uploaded');
@@ -183,43 +216,32 @@ class MediaController extends AdminController
      *
      * @return Response
      */
-    public function selectFromLibrary(Request $request, $parent_id = 0)
+    public function selectFromLibrary(Request $request, $folder_id = null)
     {
-        // 参数
-        $this->params    = $params = $request->all();
+        $this->title = trans('media::media.insert.from.library', [$request->typename]);
 
-        // 当前文件夹编号
-        $this->parent_id = $parent_id;
-
-        // 当前文件夹信息
-        $this->parent    = Media::find($parent_id);
-
-        // 文件夹路径
-        $this->parents   = Media::parents($parent_id, true)->map(function ($item) use ($params) {
-            $item->url = route('media.select.library', [$item->id] + $params);
-            return $item;
-        });
-
-        // 根目录
-        $this->root_url = route('media.select.library', [0] + $params);
-
-        // 上级url
-        if ($this->parent) {
-            $this->parent_url = route('media.select.library', [$this->parent->parent_id] + $params);
+        // 缓存当前选择的节点编号，下次进入时候直接展示该节点
+        if (!is_null($folder_id)) {
+            session(['media_select_folder_id' => $folder_id]);
+            $this->folder_id = $folder_id;
         } else {
-            $this->parent_url = null;
+            $this->folder_id = session('media_select_folder_id', 0);
         }
 
-        // 查询数据并分页 TODO: 改造成folders 和 files
-        $this->media = Media::where('parent_id', $parent_id)->when($request->type, function ($query, $type) {
-            $query->whereIn('type', ['folder', $type]);
-        })->when($request->extension, function ($query, $extension) {
-            $query->where(function ($query) use ($extension) {
-                $query->whereNull('extension')->orWhereIn('extension', explode(',', $extension));
-            });
-        })->sort()->paginate(48);
+        // 当前文件夹信息
+        $this->media    = Media::find($this->folder_id);
 
-        $this->title = trans('media::media.insert.from.library', [$request->typename]);
+        // 查询数据并分页
+        $this->media_list = Media::when($request->keywords, function ($query, $keywords) {
+            $query->searchIn('name', $keywords);
+        }, function ($query) {
+            $query->where('parent_id', $this->folder_id);
+        })->where(function ($query) use ($request) {
+            $query->where('type', 'folder')->orWhere(function ($query) use ($request) {
+                $query->whereSmart('type', $request->type)->whereSmart('extension', $request->extension);
+            });
+        })->sort()->paginate(50);
+
 
         return $this->view('media::media.select.library');
     }
