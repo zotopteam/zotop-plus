@@ -34,7 +34,12 @@
                         @foreach(Filter::fire('global.start',[]) as $s)
                         <a href="{{$s['href']}}" class="grid-item p-1 {{$s['class'] ?? ''}}">
                             <div class="grid-item-icon mt-1 bg-transparent pos-r">
+                                @if (isset($s['icon']))
                                 <i class="fw-3 fh-3 fs-2 rounded py-2 {{$s['icon']}}"></i>
+                                @endif
+                                @if (isset($s['image']))
+                                <div class="fw-3 fh-3 rounded overflow-hidden"><img src="{{$s['image']}}"></div>
+                                @endif
                                 @if(isset($s['badge']))
                                 <b class="pos-a mt-n2 ml-n2 badge badge-xs badge-danger">{{$s['badge']}}</b>
                                 @endif
@@ -57,7 +62,7 @@
         <ul class="nav global-navbar global-tools ml-auto">
             @foreach(Filter::fire('global.tools',[]) as $tools)
             <li class="global-tool">
-                <a {!!Html::attributes(array_except($tools,['icon','text','badge','badgeClass']))!!}>
+                <a {!!Html::attributes(Arr::except($tools,['icon','text','badge','badgeClass']))!!}>
                     @if(isset($tools['badge']))
                     <span
                         class="global-tool-badge badge {{$tools['badgeClass'] ?? 'badge-danger'}} {{$tools['badge'] ? 'd-block' : 'd-none'}}">
@@ -68,7 +73,8 @@
                     <i class="global-tool-icon {{$tools['icon']}} fa-fw"></i>
                     @endif
                     @if(isset($tools['text']))
-                    <span class="global-tool-text d-none d-xl-inline-block">{{$tools['text']}}</span>@endif
+                    <span class="global-tool-text d-none d-xl-inline-block">{{$tools['text']}}</span>
+                    @endif
                 </a>
             </li>
             @endforeach

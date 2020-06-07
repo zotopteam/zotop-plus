@@ -13,11 +13,16 @@
             @foreach(Filter::fire('global.start',[]) as $s)
             <a href="{{$s['href']}}" class="grid-item flex-row align-items-center p-2 {{$s['class'] ?? ''}}"
                 target="{{$s['target'] ?? '_self'}}">
-                <div class="mr-2 pos-r">
+                <div class="mr-2 d-flex justify-content-center align-item-center pos-r">
                     @if(isset($s['badge']))
                     <b class="pos-a mt-n1 ml-n1 badge badge-xs badge-danger">{{$s['badge']}}</b>
                     @endif
+                    @if (isset($s['icon']))
                     <i class="fw-3 fh-3 {{$s['icon']}} fs-2 rounded text-center py-2"></i>
+                    @endif
+                    @if (isset($s['image']))
+                    <div class="fw-3 fh-3 rounded overflow-hidden"><img src="{{$s['image']}}" class="img-fluid"></div>
+                    @endif
                 </div>
                 <div class="overflow-hidden flex-grow-1">
                     <div class="text-lg text-truncate">{{$s['text']}}</div>

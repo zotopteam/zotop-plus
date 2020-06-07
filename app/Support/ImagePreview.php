@@ -2,10 +2,11 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Str;
 use App\Support\ImageFilter;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class ImagePreview
 {
@@ -49,7 +50,8 @@ class ImagePreview
 
         // 磁盘模式
         if (strpos($this->path, ':')) {
-            [$this->disk, $this->path] = explode(':', $this->path);
+            $this->disk = Str::before($this->path, ':');
+            $this->path = Str::afterLast($this->path, ':');
         }
     }
 

@@ -185,9 +185,9 @@ class Repository
      */
     public function data($name, array $args = [], $default = null)
     {
-        $data = $default;
-
-        list($module, $file) = explode('::', $name);
+        $data   = $default;
+        $module = Str::before($name, ':');
+        $file   = Str::afterLast($name, ':');
 
         if ($module = $this->findOrFail($module)) {
             $data = $module->data($file, $args, $default);
@@ -198,6 +198,23 @@ class Repository
     }
 
     /**
+     * 获取模块文件路径
+     * @param  string $path 模块名称:文件相对路径，例如：core:module.png
+     * @return string
+     */
+    public function path($path)
+    {
+        $module = Str::before($path, ':');
+        $path   = Str::afterLast($path, ':');
+
+        if ($module = $this->findOrFail($module)) {
+            return $module->getPath($path);
+        }
+
+        return null;
+    }
+
+    /**
      * 获取资源url
      * @param  string $asset 模块名称:文件相对路径，例如：core:css/global.css
      * @param boolean $version 是否附带版本号
@@ -205,7 +222,8 @@ class Repository
      */
     public function asset($asset, $version = true)
     {
-        list($module, $url) = explode(':', $asset);
+        $module = Str::before($asset, ':');
+        $url    = Str::afterLast($asset, ':');
 
         if ($module = $this->findOrFail($module)) {
             return $module->asset($url, $version);
