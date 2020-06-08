@@ -1,6 +1,6 @@
-<div class="grid grid-hover p-2 {{$class}}">
+<div class="grid grid-hover p-2 {{$class}} ias-container">
     @foreach ($list as $item)
-    <div class="checkable-item">
+    <div class="checkable-item ias-item">
         @if ($checkable)
         <input type="{{$mutiple ? 'checkbox' : 'radio'}}" name="{{$mutiple ? 'id[]' : 'id'}}" value="{{$item->id}}"
             class="form-control-check checkable-checkbox" data-url="{{$item->url}}" data-name="{{$item->name}}"
@@ -40,7 +40,9 @@
     </div>
     @endforeach
 </div>
-
+<div class="ias-spinner text-center d-none">
+    <i class="fa fa-spin fa-spinner"></i>
+</div>
 @push('js')
 <script>
     $(function(){

@@ -227,7 +227,7 @@
             </div>
         </div>
 
-        {{ $contents->appends($_GET)->links() }}
+        {{ $contents->withQueryString()->links() }}
     </div>
 </div>
 @endsection

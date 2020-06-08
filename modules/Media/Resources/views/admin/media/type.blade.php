@@ -32,9 +32,11 @@
     <div class="main-body scrollable" id="file-upload-dragdrop">
         <x-media-list :list="$media_list" class="grid-sm grid-gap-xs" />
     </div><!-- main-body -->
-    @if ($media_list->lastPage() > 1)
+    @if ($media_list->hasPages())
     <div class="main-footer">
-        {{ $media_list->withQueryString()->links() }}
+        <div class="ml-auto">
+            {{ $media_list->withQueryString()->links() }}
+        </div>
     </div>
     @endif
 </div>

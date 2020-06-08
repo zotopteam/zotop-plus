@@ -29,7 +29,7 @@ class MediaController extends AdminController
             $query->searchIn('name', $keywords);
         }, function ($query) use ($folder_id) {
             $query->where('parent_id', $folder_id);
-        })->sort()->paginate(50);
+        })->sort()->paginate(49);
 
         return $this->view();
     }
@@ -47,7 +47,7 @@ class MediaController extends AdminController
             ->searchIn('name', $request->keywords)
             ->where('type', $type)
             ->sort()
-            ->paginate(50);
+            ->paginate(49);
 
         return $this->view();
     }
@@ -143,7 +143,7 @@ class MediaController extends AdminController
             $query->searchIn('name', $keywords);
         }, function ($query) {
             $query->where('parent_id', $this->folder_id);
-        })->sort()->paginate(50);
+        })->sort()->paginate(49);
 
         return $this->view();
     }
@@ -205,7 +205,7 @@ class MediaController extends AdminController
         }
 
         $this->params = $request->all();
-        $this->files  = $file->orderby('sort', 'desc')->paginate(50);
+        $this->files  = $file->orderby('sort', 'desc')->paginate(49);
         $this->title  = trans('media::media.insert.from.uploaded', [$request->typename]);
 
         return $this->view('media::media.select.uploaded');
@@ -240,69 +240,9 @@ class MediaController extends AdminController
             $query->where('type', 'folder')->orWhere(function ($query) use ($request) {
                 $query->whereSmart('type', $request->type)->whereSmart('extension', $request->extension);
             });
-        })->sort()->paginate(50);
+        })->sort()->paginate(49);
 
 
         return $this->view('media::media.select.library');
-    }
-
-    /**
-     * 从磁盘中选择文件
-     * @param  Request $request 
-     * @param  string  $disk  磁盘
-     * @return View
-     */
-    public function selectFromDisk(Request $request, $disk = 'public')
-    {
-        $this->title = trans('media::media.insert.from.library', [$request->typename]);
-
-        $browser = app(StorageBrowser::class, [
-            'root' => '',
-            'disk' => $disk,
-            'dir'  => $request->input('dir', 'uploads/image/2020/05')
-        ]);
-
-        $this->params   = $browser->params;
-        $this->path     = $browser->path;
-        $this->upfolder = $browser->upfolder();
-        $this->position = $browser->position();
-        $this->folders  = $browser->folders();
-        $this->files    = $browser->files()->filter(function ($item) use ($request) {
-            return $item->type == $request->type;
-        });
-
-        // 选择文件个数，默认不限制
-        $this->select = $request->input('select', 0);
-
-        return $this->view('media::media.select.disk');
-    }
-
-    /**
-     * 从目录中选择文件
-     *
-     * @return Response
-     */
-    public function selectFromDir(Request $request, $root = 'public')
-    {
-        $browser = app(FileBrowser::class, [
-            'root' => $root,
-            'dir'  => $request->input('dir')
-        ]);
-
-        $this->params   = $browser->params;
-        $this->path     = $browser->path;
-        $this->upfolder = $browser->upfolder();
-        $this->position = $browser->position();
-        $this->folders  = $browser->folders();
-        $this->files    = $browser->files()->filter(function ($item) use ($request) {
-            return $item->type == $request->type;
-        });
-
-        // 选择文件个数，默认不限制
-        $this->select = $request->input('select', 0);
-
-        $this->title = trans('media::media.insert.from.library', [$request->typename]);
-
-        return $this->view('media::media.select.dir');
     }
 }

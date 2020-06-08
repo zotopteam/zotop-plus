@@ -27,7 +27,7 @@
     <div class="main-body scrollable">
         <x-media-list :list="$media_list" class="grid-sm grid-gap-xs" :checkable="false" :moveable="false" />
     </div><!-- main-body -->
-    @if ($media_list->lastPage() > 1)
+    @if ($media_list->hasPages())
     <div class="main-footer">
         <div class="mx-auto">
             {{ $media_list->withQueryString()->links() }}

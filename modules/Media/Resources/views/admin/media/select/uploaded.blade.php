@@ -17,13 +17,13 @@
 
         </div>
     </div>
-    <div class="main-body scrollable" id="file-upload-dragdrop">
+    <div class="main-body scrollable ias-scrollable" id="file-upload-dragdrop">
         <x-media-list :list="$files" class="grid-sm grid-gap-sm markable" :mutiple="request('mutiple')"
             :moveable="false" />
     </div><!-- main-body -->
-    @if ($files->lastPage() > 1)
+    @if ($files->hasPages())
     <div class="main-footer text-sm p-1">
-        {{ $files->appends($params)->links() }}
+        {{ $files->appends($params)->links('pagination.ias') }}
     </div>
     @endif
 </div>

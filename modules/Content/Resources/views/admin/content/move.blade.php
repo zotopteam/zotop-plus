@@ -79,10 +79,10 @@
         </div>
         @endif
     </div><!-- main-body -->
-    @if ($contents->lastPage() > 1)
+    @if ($contents->hasPages())
     <div class="main-footer">
         <div class="mx-auto">
-            {{ $contents->appends($_GET)->links() }}
+            {{ $contents->withQueryString()->links() }}
         </div>
     </div>
     @endif

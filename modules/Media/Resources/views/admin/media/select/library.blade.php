@@ -28,13 +28,13 @@
         <x-media-breadcrumb :media="$media" />
     </div>
     @endif
-    <div class="main-body scrollable p-2" id="file-upload-dragdrop">
+    <div class="main-body scrollable ias-scrollable p-2" id="file-upload-dragdrop">
         <x-media-list :list="$media_list" class="grid-sm grid-gap-sm markable" :mutiple="request('mutiple')"
             :moveable="false" />
     </div><!-- main-body -->
-    @if ($media_list->lastPage() > 1)
+    @if ($media_list->hasPages())
     <div class="main-footer text-sm p-1">
-        {{ $media_list->withQueryString()->links() }}
+        {{ $media_list->withQueryString()->links('pagination.ias') }}
     </div>
     @endif
 </div>
