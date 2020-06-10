@@ -4,15 +4,15 @@ namespace Modules\Block\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Modules\Core\Traits\UserRelation;
+use App\Traits\UserRelation;
 use Modules\Block\Models\Block;
 
 class Datalist extends Model
 {
     use UserRelation;
-   
+
     protected $table = 'block_datalist';
-    protected $fillable = ['block_id','source_id','module','data','user_id','sort','stick','status'];
+    protected $fillable = ['block_id', 'source_id', 'module', 'data', 'user_id', 'sort', 'stick', 'status'];
 
     /**
      * 属性转换
@@ -41,13 +41,13 @@ class Datalist extends Model
         static::creating(function ($model) {
             $model->status = 'publish';
             $model->sort   = time();
-        });        
+        });
 
         // 保存后
         static::saved(function ($model) {
             static::updateBlockData($model->block_id);
-        });        
-    }   
+        });
+    }
 
     /**
      * 获取字段信息
@@ -56,7 +56,7 @@ class Datalist extends Model
      * @param  array  $data        区块数据
      * @return array
      */
-    public static function fields($block_fields, $data=[])
+    public static function fields($block_fields, $data = [])
     {
         $fields = [];
 
@@ -68,8 +68,8 @@ class Datalist extends Model
             $help  = array_pull($field, 'help');
 
             // 重组字段数据
-            $field['id']   = 'data_'.$field['name'];
-            $field['name'] = 'data['.$field['name'].']';
+            $field['id']   = 'data_' . $field['name'];
+            $field['name'] = 'data[' . $field['name'] . ']';
 
             // 如果是上传字段
             if (in_array($field['type'], ['upload', 'upload_image', 'upload_file'])) {
@@ -84,11 +84,11 @@ class Datalist extends Model
                 } elseif ($resize['type'] == 'system') {
                     $field['resize'] = true;
                 } elseif ($resize['type'] == 'thumb') {
-                    $field['resize'] = ['width'=>$resize['width'],'height'=>$resize['height']];
+                    $field['resize'] = ['width' => $resize['width'], 'height' => $resize['height']];
                 } elseif ($resize['type'] == 'crop') {
-                    $field['resize'] = ['width'=>$resize['width'],'height'=>$resize['height'],'crop'=>true];
+                    $field['resize'] = ['width' => $resize['width'], 'height' => $resize['height'], 'crop' => true];
                 }
-            }            
+            }
 
             // 重组字段数据
             $fields[] = [
@@ -110,7 +110,7 @@ class Datalist extends Model
     public static function history($block_id)
     {
         $history = static::where('status', 'history')->where('block_id', $block_id)->get();
-        
+
         return $history;
     }
 
@@ -123,7 +123,7 @@ class Datalist extends Model
     public static function publish($block_id)
     {
         $publish = static::with('user')->where('status', 'publish')->where('block_id', $block_id)->get();
-        
+
         return $publish;
     }
 
@@ -165,7 +165,7 @@ class Datalist extends Model
      * @return string
      */
     public function getTitleAttribute($value)
-    {        
+    {
         return $this->data['title'] ?? '';
     }
 
@@ -195,5 +195,5 @@ class Datalist extends Model
     {
         $this->timestamps = false;
         return $this;
-    }            
+    }
 }

@@ -14,27 +14,16 @@ class RegionController extends AdminController
      *
      * @return Response
      */
-    public function index($parent_id = 0)
+    public function index($id = 0)
     {
-        
-        $this->title     = trans('region::region.title');
-        $this->parent_id = $parent_id;
-        $this->parents   = Region::parents($parent_id, true);
-        $this->regions   = Region::where('parent_id', $parent_id)->orderBy('sort')->get();
+        $this->title   = trans('region::region.title');
+        $this->id      = $id;
+        $this->region  = Region::find($id);
+        $this->regions = Region::where('parent_id', $id)->orderBy('sort')->get();
 
-        //$data = Region::enabled()->nestArray();
-        //$data = Region::enabled()->nestJson();
-        //$data = Region::parentIds($parent_id, true);
-        //$data = Region::parents($parent_id, true);
-        //$data = Region::childIds($parent_id);
-        //$data = Region::top($parent_id);
-        //$data = Region::enabled()->children($parent_id, true)->toArray();
-        //$data = Region::enabled()->nestArray(1);
-        // $data = Region::parent($parent_id);
+        //$children = Region::with('children')->where('parent_id', 0)->enabled()->orderBy('sort')->get()->toArray();
+        //debug($children);
 
-        // $data = Region::child($parent_id);
-        // debug($data);
-        
         return $this->view();
     }
 
@@ -96,7 +85,6 @@ class RegionController extends AdminController
         $this->validate($request, ['title' => 'required', 'parent_id' => 'required|numeric']);
 
         $region = Region::findOrFail($id);
-
         $region->fill($request->all());
         $region->save();
 
@@ -110,11 +98,12 @@ class RegionController extends AdminController
      */
     public function destroy(Request $request, $id)
     {
-        if (Region::child($id)->count()) {
-            return $this->error(trans('region::module.destroy.forbidden'));
+        $region = Region::findOrFail($id);
+
+        if ($region->child->count()) {
+            return $this->error(trans('region::region.destroy.forbidden'));
         }
 
-        $region = Region::findOrFail($id);
         $region->delete();
 
         return $this->success(trans('master.operated'), $request->referer());
@@ -128,6 +117,7 @@ class RegionController extends AdminController
     public function sort(Request $request)
     {
         $sort_id = $request->input('sort_id');
+
         foreach ($sort_id as $i => $id) {
             Region::where('id', $id)->update(['sort' => $i]);
         }
@@ -143,10 +133,10 @@ class RegionController extends AdminController
      */
     public function disable(Request $request, $id)
     {
-        // 禁用会同时禁用全部下级子节点
-        if ($childids = Region::childIds($id, true)) {
-            Region::whereIn('id', $childids)->update(['disabled' => 1]);
-        }
+        $region = Region::findOrFail($id);
+        $region->disabled = 1;
+        $region->save();
+
         return $this->success(trans('master.operated'), $request->referer());
     }
 
@@ -158,15 +148,10 @@ class RegionController extends AdminController
      */
     public function enable(Request $request, $id)
     {
-        // 如果父节点被禁用，则无法启用子节点
-        if ($parent = Region::parent($id)) {
-            return $this->error(trans('region::module.enable.forbidden'));
-        }
+        $region = Region::findOrFail($id);
+        $region->disabled = 0;
+        $region->save();
 
-        // 启用会同时禁用全部下级子节点
-        if ($childids = Region::childIds($id, true)) {
-            Region::whereIn('id', $childids)->update(['disabled' => 0]);
-        }
         return $this->success(trans('master.operated'), $request->referer());
     }
 }

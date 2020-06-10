@@ -1,10 +1,13 @@
 <?php
-namespace Modules\Core\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+namespace App\Traits;
+
+
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * 表含有user_id，保存时自动写入用户编号
+ */
 trait UserRelation
 {
     /**
@@ -21,14 +24,15 @@ trait UserRelation
         static::creating(function ($model) {
             $model->user_id = Auth::User()->id ?? 0;
         });
-
-        // static::addGlobalScope('user', function (Builder $builder) {
-        //     $builder->with('user');
-        // });            
     }
+
 
     public function user()
     {
-        return $this->belongsTo('Modules\Core\Models\User')->withDefault();
-    }    
+        $guard    = config('auth.defaults.guard');
+        $provider = config("auth.guards.{$guard}.provider");
+        $model    = config("auth.providers.{$provider}.model");
+
+        return $this->belongsTo($model)->withDefault();
+    }
 }

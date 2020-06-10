@@ -4,17 +4,17 @@ namespace Modules\Block\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Modules\Core\Traits\UserRelation;
+use App\Traits\UserRelation;
 use Module;
 use Action;
 
 class Block extends Model
 {
     use UserRelation;
-    
+
     protected $table = 'block';
 
-    protected $fillable = ['category_id','type','slug','name','description','rows','data','view','interval','fields','commend','sort','user_id','disabled'];
+    protected $fillable = ['category_id', 'type', 'slug', 'name', 'description', 'rows', 'data', 'view', 'interval', 'fields', 'commend', 'sort', 'user_id', 'disabled'];
 
     /**
      * 属性转换
@@ -43,7 +43,7 @@ class Block extends Model
         // 保存后
         static::deleted(function ($model) {
             Action::fire('block.deleted', $model);
-        });            
+        });
     }
 
     /**
@@ -54,7 +54,7 @@ class Block extends Model
      * @param  mixed $default 默认值
      * @return mixed
      */
-    public static function type($type=null, $field=null, $default=null)
+    public static function type($type = null, $field = null, $default = null)
     {
         $types = Module::data('block::types');
 
@@ -78,7 +78,7 @@ class Block extends Model
     public function scopeSort($query)
     {
         return $query->orderby('sort', 'asc')->orderby('id', 'asc');
-    }    
+    }
 
     /**
      * 区块类型名称
@@ -87,7 +87,7 @@ class Block extends Model
      * @return string
      */
     public function getTypeNameAttribute($value)
-    {        
+    {
         return static::type($this->type, 'name');
     }
 
@@ -98,8 +98,8 @@ class Block extends Model
      * @return string
      */
     public function getSlugIncludeAttribute($value)
-    {        
-        return '{block slug="'.$this->slug.'"}';
+    {
+        return '{block slug="' . $this->slug . '"}';
     }
 
     /**
@@ -109,9 +109,9 @@ class Block extends Model
      * @return string
      */
     public function getSourceIdAttribute($value)
-    {        
-        return 'block-'.$this->id;
-    }    
+    {
+        return 'block-' . $this->id;
+    }
 
     /**
      * 获取字段，为了排序需要去掉key名
@@ -121,7 +121,6 @@ class Block extends Model
      */
     public function getFieldsAttribute($value)
     {
-        return $value ? array_values(json_decode($value,true)) : $value;
+        return $value ? array_values(json_decode($value, true)) : $value;
     }
-
 }

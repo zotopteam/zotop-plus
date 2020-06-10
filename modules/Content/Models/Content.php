@@ -1,15 +1,16 @@
 <?php
+
 namespace Modules\Content\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\Core\Traits\UserRelation;
+use App\Traits\UserRelation;
 use Modules\Content\Support\Modelable;
 use Modules\Content\Extend\Extendable;
 use Module;
 
 class Content extends Model
 {
-	use UserRelation, Extendable, Modelable;
+    use UserRelation, Extendable, Modelable;
 
     /**
      * 与模型关联的数据表。
@@ -17,31 +18,31 @@ class Content extends Model
      * @var string
      */
     protected $table = 'content';
-	
-	
+
+
     /**
      * 可以被批量赋值的属性。
      *
      * @var array
      */
-    protected $fillable = ['parent_id','model_id','title','title_style','slug','image','keywords','summary','link','view','hits','comments','status','stick','sort','user_id','source_id','publish_at'];
-	
-	
+    protected $fillable = ['parent_id', 'model_id', 'title', 'title_style', 'slug', 'image', 'keywords', 'summary', 'link', 'view', 'hits', 'comments', 'status', 'stick', 'sort', 'user_id', 'source_id', 'publish_at'];
+
+
     /**
      * 不可被批量赋值的属性。
      *
      * @var array
      */
     protected $guarded = ['id'];
-	
-	
+
+
     /**
      * 属性转换
      *
      * @var array
      */
     //protected $casts = [];
-	
+
 
     /**
      * boot
@@ -51,7 +52,7 @@ class Content extends Model
         parent::boot();
 
         // 更新设置parent_id时，禁止为自身或者自身的子节点
-        static::updating(function($content) {
+        static::updating(function ($content) {
             if ($content->parent_id && in_array($content->id, static::parentIds($content->parent_id, true))) {
                 abort(403, trans('content::content.move.forbidden', [$content->title]));
                 return false;
@@ -59,7 +60,7 @@ class Content extends Model
         });
 
         // 保存前数据处理
-        static::saving(function($content) {
+        static::saving(function ($content) {
 
             $content->slug       = $content->slug ?: null;
             $content->sort       = $content->sort ?: time();
@@ -78,20 +79,18 @@ class Content extends Model
                 $content->status = 'publish';
                 $content->publish_at = now();
             }
-
         });
 
         // 保存后处理数据
-        static::saved(function($content) {
-
+        static::saved(function ($content) {
         });
 
-        static::deleting(function($content) {
+        static::deleting(function ($content) {
             if ($content->children()->count()) {
                 abort(403, trans('content::content.delete.notempty'));
             }
         });
-    }  
+    }
 
     /**
      * 关联的模型数据
@@ -117,7 +116,7 @@ class Content extends Model
     public function parent()
     {
         return $this->belongsTo('Modules\Content\Models\Content', 'parent_id', 'id');
-    }    
+    }
 
     /**
      * 获取内容的状态
@@ -144,7 +143,7 @@ class Content extends Model
      * @param  array   $parentIds 传递自身
      * @return array
      */
-    public static function parentIds($id, $self=false, &$parentIds=[])
+    public static function parentIds($id, $self = false, &$parentIds = [])
     {
         if ($self) {
             $parentIds[] = $id;
@@ -154,7 +153,7 @@ class Content extends Model
             static::parentIds($parentId, true, $parentIds);
         }
 
-        return array_reverse($parentIds);                
+        return array_reverse($parentIds);
     }
 
     /**
@@ -165,8 +164,8 @@ class Content extends Model
      * @param  mixed   $model_id  子节点类型
      * @param  array   $childrenIds  传递自身
      * @return array
-     */    
-    public static function childrenIds($id, $self=false, $model_id=[], &$childrenIds=[])
+     */
+    public static function childrenIds($id, $self = false, $model_id = [], &$childrenIds = [])
     {
         if ($id && $self) {
             $childrenIds[] = $id;
@@ -179,8 +178,8 @@ class Content extends Model
             static::childrenIds($children_id, true, $model_id, $childrenIds);
         }
 
-        return $childrenIds;    
-    }    
+        return $childrenIds;
+    }
 
     /**
      * 获取路径
@@ -189,7 +188,7 @@ class Content extends Model
      * @param  boolean $self  是否包含自身
      * @return Collection
      */
-    public static function path($id, $self=true, &$paths=[])
+    public static function path($id, $self = true, &$paths = [])
     {
         if ($id && $content = static::find($id)) {
 
@@ -210,7 +209,7 @@ class Content extends Model
      */
     public function getStatusNameAttribute($value)
     {
-        return array_get(static::status(), $this->status.'.name');
+        return array_get(static::status(), $this->status . '.name');
     }
 
     /**
@@ -220,7 +219,7 @@ class Content extends Model
      */
     public function getStatusIconAttribute($value)
     {
-        return array_get(static::status(), $this->status.'.icon');
+        return array_get(static::status(), $this->status . '.icon');
     }
 
     /**
@@ -248,7 +247,7 @@ class Content extends Model
         }
 
         if (isset($this->parent->models)) {
-            return array_get($this->parent->models, $this->model_id.'.view');
+            return array_get($this->parent->models, $this->model_id . '.view');
         }
 
         return $this->model->view;
@@ -279,7 +278,7 @@ class Content extends Model
      * @param string|array sort 例如：stick desc,id desc
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSort($query, $sort=null)
+    public function scopeSort($query, $sort = null)
     {
         return $query->orderby('stick', 'desc')->orderby('sort', 'desc')->orderby('id', 'desc');
     }
@@ -315,5 +314,5 @@ class Content extends Model
     public static function __callStatic($method, $parameters)
     {
         return (new static)->$method(...$parameters);
-    }    
+    }
 }

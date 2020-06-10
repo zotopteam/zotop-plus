@@ -120,8 +120,12 @@ class MediaController extends AdminController
 
             // 获取数据并移动
             Media::whereSmart('id', $id)->get()->each(function ($item) use ($parent_id) {
-                $item->parent_id = $parent_id;
-                $item->save();
+                try {
+                    $item->parent_id = $parent_id;
+                    $item->save();
+                } catch (\App\Traits\Exceptions\NestableMoveException $e) {
+                    abort(403, trans('media::media.move.forbidden', [$item->name]));
+                }
             });
 
             return $this->success(trans('master.moved'));
@@ -173,11 +177,12 @@ class MediaController extends AdminController
         // 操作项编号可以通过uri或者post传入
         $id = $id ?? $request->input('id');
 
-        // 单个操作或者批量操作
-        $media = is_array($id) ? Media::whereIn('id', $id) : Media::where('id', $id);
-
-        $media->sort()->get()->each(function ($item, $key) {
-            $item->delete();
+        Media::whereSmart('id', $id)->get()->each(function ($item) {
+            try {
+                $item->delete();
+            } catch (\App\Traits\Exceptions\NestableDeleteException $e) {
+                abort(403, trans('media::media.delete.notempty', [$item->name]));
+            }
         });
 
         return $this->success(trans('master.deleted'), $request->referer());

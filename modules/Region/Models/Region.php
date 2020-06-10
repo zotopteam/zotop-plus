@@ -2,8 +2,8 @@
 
 namespace Modules\Region\Models;
 
+use App\Traits\Nestable;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Core\Traits\Nestable;
 
 class Region extends Model
 {
@@ -14,7 +14,7 @@ class Region extends Model
      * @var boolean
      */
     public $timestamps = FALSE;
-    
+
     /**
      * 可填充项
      * @var array
@@ -30,5 +30,4 @@ class Region extends Model
     {
         return $query->where('disabled', 0);
     }
-   
 }

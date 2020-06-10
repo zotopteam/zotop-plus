@@ -1,8 +1,9 @@
 <?php
+
 namespace Modules\Content\Models;
 
 use Illuminate\Database\Eloquent\Model as LaravelModel;
-use Modules\Core\Traits\UserRelation;
+use App\Traits\UserRelation;
 use Modules\Content\Models\Field;
 use Modules\Content\Models\Content;
 use Modules\Content\Support\ModelTable;
@@ -11,31 +12,31 @@ use Modules\Content\Support\ModelHelper;
 class Model extends LaravelModel
 {
     use UserRelation;
-	
+
     /**
      * 与模型关联的数据表。
      *
      * @var string
      */
     protected $table = 'content_model';
-	
-	
+
+
     /**
      * 可以被批量赋值的属性。
      *
      * @var array
      */
-    protected $fillable = ['id','icon','name','description','module','model','table','fillable','casts','view','nestable','posts','sort','disabled','user_id'];
-	
-	
+    protected $fillable = ['id', 'icon', 'name', 'description', 'module', 'model', 'table', 'fillable', 'casts', 'view', 'nestable', 'posts', 'sort', 'disabled', 'user_id'];
+
+
     /**
      * 不可被批量赋值的属性。
      *
      * @var array
      */
     protected $guarded = [];
-	
-	
+
+
     /**
      * 属性转换
      *
@@ -45,20 +46,20 @@ class Model extends LaravelModel
         'fillable' => 'array',
         'casts'    => 'array',
     ];
-	
-	
+
+
     /**
      * 执行模型是否自动维护时间戳.
      *
      * @var bool
      */
     //public $timestamps = false;
-    
+
     /**
      * id 字符串格式，关闭自动增长
      *
      * @var bool
-     */    
+     */
     public $incrementing = false;
 
     /**
@@ -69,12 +70,12 @@ class Model extends LaravelModel
         parent::boot();
 
         // 创建模型
-        static::creating(function($model) {
+        static::creating(function ($model) {
             $model->module = $model->module ?: 'content';
         });
 
         // 修改模型标识 id 时对应的关联数据
-        static::updating(function($model) {
+        static::updating(function ($model) {
             // 如果id改变
             if ($model->isDirty('id')) {
 
@@ -98,7 +99,7 @@ class Model extends LaravelModel
         });
 
         // 为安全考虑，禁止删除非空的模型
-        static::deleting(function($model) {
+        static::deleting(function ($model) {
 
             // 如果已经有数据，不能删除
             if (Content::where('model_id', $model->id)->count()) {
@@ -113,18 +114,18 @@ class Model extends LaravelModel
                 $table = ModelTable::find($model->id);
                 $table->drop();
                 $model->setAttribute('table', null);
-            }                    
+            }
         });
 
         // 保存模型时
-        static::saved(function($model) {
+        static::saved(function ($model) {
             ModelHelper::refreshExtend($model);
         });
 
         // 删除模型时
-        static::deleted(function($model) {
+        static::deleted(function ($model) {
             ModelHelper::refreshExtend($model);
-        });       
+        });
     }
 
     /**
@@ -133,7 +134,7 @@ class Model extends LaravelModel
     public function field()
     {
         return $this->hasMany('Modules\Content\Models\Field', 'model_id', 'id');
-    }  
+    }
 
     /**
      * 关联的数据
