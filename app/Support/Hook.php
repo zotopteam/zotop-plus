@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Exception;
 use Illuminate\Support\Traits\Macroable;
 
 abstract class Hook
@@ -11,9 +12,9 @@ abstract class Hook
 	/**
 	 * 存储hook
 	 * 
-	 * @var array
+	 * @var \Illuminate\Support\Collection
 	 */
-	protected $listeners = null;
+	protected $listeners;
 
 	/**
 	 * 初始化 listeners
@@ -67,7 +68,7 @@ abstract class Hook
 	/**
 	 * 获取排序过的监听器
 	 * 
-	 * @return array
+	 * @return \Illuminate\Support\Collection
 	 */
 	public function listeners($hook)
 	{
@@ -77,12 +78,12 @@ abstract class Hook
 	/**
 	 * 获取回调
 	 * 
-	 * @param  mixed $callback Callback
-	 * @return mixed A closure, an array if "class@method" or a string if "function_name"
+	 * @param  mixed $callback 回调，支持 闭包，类方法"class@method"
+	 * @return mixed
 	 */
 	protected function callback($callback)
 	{
-		// 类函数：字符串且包含@符号
+		// 类方法：字符串且包含@符号
 		if (is_string($callback) && strpos($callback, '@')) {
 			$callback = explode('@', $callback);
 			return array(app('\\' . $callback[0]), $callback[1]);
@@ -97,9 +98,9 @@ abstract class Hook
 	}
 
 	/**
-	 * Fires a new action
-	 * @param  string $action Name of action
-	 * @param  array  $args   Arguments passed to the action
+	 * 触发动作或者滤器
+	 * @param  string $hook 滤器名称
+	 * @param  array  $args 参数
 	 */
-	abstract function fire($action, $args);
+	abstract function fire($hook, $args);
 }

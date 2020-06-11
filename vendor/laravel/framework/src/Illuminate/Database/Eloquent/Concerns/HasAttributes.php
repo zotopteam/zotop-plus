@@ -231,6 +231,11 @@ trait HasAttributes
                 $attributes[$key] = $attributes[$key]->format(explode(':', $value, 2)[1]);
             }
 
+            if ($attributes[$key] && $attributes[$key] instanceof DateTimeInterface &&
+                $this->isClassCastable($key)) {
+                $attributes[$key] = $this->serializeDate($attributes[$key]);
+            }
+
             if ($attributes[$key] instanceof Arrayable) {
                 $attributes[$key] = $attributes[$key]->toArray();
             }
@@ -410,7 +415,8 @@ trait HasAttributes
         // If the "attribute" exists as a method on the model, we will just assume
         // it is a relationship and will load and return results from the query
         // and hydrate the relationship's value on the "relationships" array.
-        if (method_exists($this, $key)) {
+        if (method_exists($this, $key) ||
+            (static::$relationResolvers[get_class($this)][$key] ?? null)) {
             return $this->getRelationshipFromMethod($key);
         }
     }

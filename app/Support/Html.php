@@ -2,9 +2,9 @@
 
 namespace App\Support;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Contracts\Foundation\Application;
 
 class Html
 {
@@ -15,14 +15,14 @@ class Html
     /**
      * app 实例
      *
-     * @var Html
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
     /**
      * 创建一个表单实例
      *
-     * @param  app
+     * @param \Illuminate\Contracts\Foundation\Application $app
      */
     public function __construct(Application $app)
     {
@@ -86,6 +86,7 @@ class Html
 
     /**
      * 文本转html，一般用于格式化textarea的显示值
+     * 
      * @param string $string
      * @return string
      */

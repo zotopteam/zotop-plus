@@ -14,11 +14,11 @@ class Filter extends Hook
 	protected $value = null;
 
 	/**
-	 * 过滤器钩子触发
+	 * 滤器钩子触发
 	 * 
 	 * @param  string $hook  钩子名称
 	 * @param  mixed $param  值
-	 * @return mixed
+	 * @return mixed 总是返回对param的修改
 	 */
 	public function fire($hook, $param)
 	{

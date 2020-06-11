@@ -20,13 +20,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Traits\ForwardsCalls;
 use JsonSerializable;
 
-/**
- * 
- *
- * @mixin \Eloquent
- * @mixin \Illuminate\Database\Eloquent\Builder
- * @mixin \Illuminate\Database\Query\Builder
- */
 abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializable, QueueableEntity, UrlRoutable
 {
     use Concerns\HasAttributes,
@@ -1730,6 +1723,10 @@ abstract class Model implements Arrayable, ArrayAccess, Jsonable, JsonSerializab
     {
         if (in_array($method, ['increment', 'decrement'])) {
             return $this->$method(...$parameters);
+        }
+
+        if ($resolver = (static::$relationResolvers[get_class($this)][$method] ?? null)) {
+            return $resolver($this);
         }
 
         return $this->forwardCallTo($this->newQuery(), $method, $parameters);

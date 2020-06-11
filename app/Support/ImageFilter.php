@@ -2,8 +2,8 @@
 
 namespace App\Support;
 
-use Intervention\Image\Filters\FilterInterface;
 use Intervention\Image\Image;
+use Intervention\Image\Filters\FilterInterface;
 
 abstract class ImageFilter implements FilterInterface
 {
@@ -103,7 +103,7 @@ abstract class ImageFilter implements FilterInterface
      */
     public function __call($method, $parameters)
     {
-        // 如果当前类存在属性，则直接赋值给属性
+        // 如果当前类存在属性，则直接用属性名方法赋值给属性
         if ($parameters && property_exists($this, $method)) {
             $this->$method = reset($parameters);
             return $this;

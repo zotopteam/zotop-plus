@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Support\ImageFilters;
 
 use App\Support\ImageFilter;
@@ -34,8 +35,10 @@ class Resize extends ImageFilter
 
     /**
      * 初始化
+     *
+     * @param string $parameter 图片宽高的快捷形式 如：600-500 或者 300
      */
-    public function __construct($parameter=null)
+    public function __construct($parameter = null)
     {
         // 300-300 或者 300
         if ($parameter) {
@@ -45,8 +48,9 @@ class Resize extends ImageFilter
 
     /**
      * 应用滤器
-     * @param  Image  $image
-     * @return Image
+     * 
+     * @param  \Intervention\Image\Image $image
+     * @return \Intervention\Image\Image
      */
     public function applyFilter(Image $image)
     {
@@ -54,7 +58,7 @@ class Resize extends ImageFilter
         $this->height = intval($this->height) ? intval($this->height) : $this->width;
 
         if ($this->width && $this->height) {
-            return $image->resize($this->width, $this->height, function($constraint) {
+            return $image->resize($this->width, $this->height, function ($constraint) {
                 if ($this->aspectRatio) {
                     $constraint->aspectRatio();
                 }
@@ -65,5 +69,5 @@ class Resize extends ImageFilter
         }
 
         return $image;
-    }  
+    }
 }

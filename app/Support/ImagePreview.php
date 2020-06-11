@@ -42,6 +42,7 @@ class ImagePreview
 
     /**
      * 初始化
+     * 
      * @param string $path 文件路径
      */
     public function __construct($path)
@@ -57,8 +58,9 @@ class ImagePreview
 
     /**
      * 静态初始化
+     * 
      * @param string $path  文件路径
-     * @param ImagePreview
+     * @return $this
      */
     public static function file($path)
     {
@@ -67,6 +69,7 @@ class ImagePreview
 
     /**
      * 文件路径md5 hash值
+     * 
      * 1，存储盘路径将使用 disk:path 模式
      * 2，绝对路径将转化为站点根目录起始的相对路径
      *
@@ -77,12 +80,14 @@ class ImagePreview
         if ($this->disk) {
             return md5($this->disk . ':' . $this->path);
         }
+
         return md5(path_base($this->path));
     }
 
     /**
      * 静态预览图存储相对路径
      * 在预览图目录中，按照文件路径的hash值建立文件夹，存储该图片的全部预览图文件
+     * 
      * @return string
      */
     private function static_path()

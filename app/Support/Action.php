@@ -8,11 +8,11 @@ class Action extends Hook
 {
 
 	/**
-	 * 过滤器钩子触发
+	 * 动作钩子触发
 	 * 
 	 * @param  string $hook  钩子名称
 	 * @param  mixed $param  值
-	 * @return mixed         总是返$param
+	 * @return void
 	 */
 	public function fire($hook, $param = null)
 	{
