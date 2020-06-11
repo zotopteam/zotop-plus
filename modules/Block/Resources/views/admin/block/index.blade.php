@@ -8,26 +8,24 @@
         <div class="main-title mr-auto">
             {{request('keywords') ? trans('master.search.results') : $category->name}}
         </div>
-        <div class="main-action">
-            @if (!request('keywords'))
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-plus"></i> {{trans('block::block.create')}}
-                </button>
-                <div class="dropdown-menu dropdown-menu-primary">
-                    @foreach(Module::data('block::types') as $key=>$val)
-                    <a class="dropdown-item" href="{{route('block.create',[$category->id, $key])}}"
-                        title="{{$val['help']}}" data-placement="left">
-                        <i class="dropdown-item-icon {{$val['icon']}} fa-fw"></i>
-                        <b class="dropdown-item-text">{{$val['name']}}</b>
-                    </a>
-                    @endforeach
-                </div>
+        @if (!request('keywords'))
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="fa fa-plus"></i> {{trans('block::block.create')}}
+            </button>
+            <div class="dropdown-menu dropdown-menu-primary">
+                @foreach(Module::data('block::types') as $key=>$val)
+                <a class="dropdown-item" href="{{route('block.create',[$category->id, $key])}}" title="{{$val['help']}}"
+                    data-placement="left">
+                    <i class="dropdown-item-icon {{$val['icon']}} fa-fw"></i>
+                    <b class="dropdown-item-text">{{$val['name']}}</b>
+                </a>
+                @endforeach
             </div>
-            @endif
-            <x-search />
         </div>
+        @endif
+        <x-search />
     </div>
     <div class="main-body scrollable">
         @if($blocks->count() == 0)

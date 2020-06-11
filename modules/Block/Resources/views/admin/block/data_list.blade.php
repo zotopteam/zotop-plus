@@ -3,45 +3,49 @@
 @section('content')
 <div class="main">
     <div class="main-header">
-        @if ($block->data)        
+        @if ($block->data)
         <div class="main-back">
-            <a href="{{route('block.index',$block->category_id)}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
+            <a href="{{route('block.index',$block->category_id)}}"><i
+                    class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         @endif
         <div class="main-title mr-auto">
             {{$block->name}} - {{$title}}
         </div>
         <div class="main-action">
-            <a href="javascript:;" class="btn btn-primary js-open" data-url="{{route('block.datalist.create', $block->id)}}" data-width="800" data-height="400">
+            <a href="javascript:;" class="btn btn-primary js-open"
+                data-url="{{route('block.datalist.create', $block->id)}}" data-width="800" data-height="400">
                 <i class="fa fa-plus fa-fw"></i> {{trans('master.create')}}
             </a>
-            @if ($block->data)   
-            <a href="javascript:;" class="btn btn-info js-open" data-url="{{route('block.preview', $block->id)}}" data-width="80%" data-height="60%">
+            @if ($block->data)
+            <a href="javascript:;" class="btn btn-info js-open" data-url="{{route('block.preview', $block->id)}}"
+                data-width="80%" data-height="60%">
                 <i class="fa fa-eye fa-fw"></i> {{trans('block::block.preview')}}
             </a>
             @endif
-            @if ($history = \Modules\Block\Models\Datalist::history($block->id)->count())    
+            @if ($history = \Modules\Block\Models\Datalist::history($block->id)->count())
             <a class="btn btn-info" href="{{route('block.datalist.history', $block->id)}}">
-                <i class="fa fa-history fa-fw"></i> {{trans('block::datalist.history')}} <span class="badge badge-pill badge-light">{{$history}}</span>
+                <i class="fa fa-history fa-fw"></i> {{trans('block::datalist.history')}} <span
+                    class="badge badge-pill badge-light">{{$history}}</span>
             </a>
-            @endif          
+            @endif
             <a class="btn btn-info" href="{{route('block.edit', $block->id)}}">
                 <i class="fa fa-cog fa-fw"></i> {{trans('block::block.setting')}}
-            </a>            
+            </a>
         </div>
     </div>
-    
+
     <div class="main-body scrollable">
 
         <table class="table table-nowrap table-sortable table-hover">
             <thead>
-            <tr>
-                <td class="drag"></td>
-                <td width="2%">{{trans('block::datalist.row')}}</td>
-                <td>{{trans('block::datalist.title')}}</td>
-                <td width="10%" class="text-center"></td>
-                <td width="10%">{{trans('master.lastmodify')}}</td>
-            </tr>
+                <tr>
+                    <td class="drag"></td>
+                    <td width="2%">{{trans('block::datalist.row')}}</td>
+                    <td>{{trans('block::datalist.title')}}</td>
+                    <td width="10%" class="text-center"></td>
+                    <td width="10%">{{trans('master.lastmodify')}}</td>
+                </tr>
             </thead>
             <tbody>
                 @foreach (\Modules\Block\Models\Datalist::publish($block->id) as $i=>$datalist)
@@ -49,38 +53,45 @@
                 <tr data-id="{{$datalist->id}}" data-sort="{{$datalist->sort}}" data-stick="{{$datalist->stick}}">
                     <td class="drag"></td>
                     <td>{{$i+1}}</td>
-                    <td valign="middle">
-                        @if ($datalist->image_preview)
-                            <a href="javascript:;" class="js-image" data-url="{{preview($datalist->image_preview)}}" data-title="{{$datalist->title}}">
-                                <div class="image-preview bg-image-preview text-center float-left mr-3">
-                                    <img src="{{preview($datalist->image_preview, 64, 64)}}">
-                                </div>
-                            </a>
+                    <td class="d-flex align-items-center">
+                        @if ($datalist->image)
+                        <a href="javascript:;" class="fw-3 fh-2 overflow-hidden float-left mr-3  js-image"
+                            data-url="{{$datalist->image}}" data-title="{{$datalist->title}}">
+                            <img src="{{$datalist->image}}" class="img-fluid">
+                        </a>
                         @endif
-                        <div class="title">
-                            {{$datalist->title}}
-                        </div>
-                        <div class="manage">
-                            @if ($datalist->stick)
-                            <a class="manage-item js-confirm" href="{{route('block.datalist.stick', [$datalist->id, 0])}}">
-                                <i class="fas fa-arrow-circle-down"></i> {{trans('block::datalist.stick.off')}}
-                            </a>
-                            @else
-                            <a class="manage-item js-confirm" href="{{route('block.datalist.stick', [$datalist->id, 1])}}">
-                                <i class="fas fa-arrow-circle-up"></i> {{trans('block::datalist.stick.on')}}
-                            </a>
-                            @endif                           
-                            <a class="manage-item js-open" href="javascript:;"  data-url="{{route('block.datalist.edit', $datalist->id)}}" data-width="800" data-height="400">
-                                <i class="fa fa-edit"></i> {{trans('master.edit')}}
-                            </a>
-                            <a class="manage-item js-delete" href="javascript:;" data-url="{{route('block.datalist.destroy', $datalist->id)}}">
-                                <i class="fa fa-times"></i> {{trans('master.delete')}}
-                            </a>
+                        <div>
+                            <div class="title">
+                                {{$datalist->title}}
+                            </div>
+                            <div class="manage">
+                                @if ($datalist->stick)
+                                <a class="manage-item js-confirm"
+                                    href="{{route('block.datalist.stick', [$datalist->id, 0])}}">
+                                    <i class="fas fa-arrow-circle-down"></i> {{trans('block::datalist.stick.off')}}
+                                </a>
+                                @else
+                                <a class="manage-item js-confirm"
+                                    href="{{route('block.datalist.stick', [$datalist->id, 1])}}">
+                                    <i class="fas fa-arrow-circle-up"></i> {{trans('block::datalist.stick.on')}}
+                                </a>
+                                @endif
+                                <a class="manage-item js-open" href="javascript:;"
+                                    data-url="{{route('block.datalist.edit', $datalist->id)}}" data-width="800"
+                                    data-height="400">
+                                    <i class="fa fa-edit"></i> {{trans('master.edit')}}
+                                </a>
+                                <a class="manage-item js-delete" href="javascript:;"
+                                    data-url="{{route('block.datalist.destroy', $datalist->id)}}">
+                                    <i class="fa fa-times"></i> {{trans('master.delete')}}
+                                </a>
+                            </div>
                         </div>
                     </td>
                     <td class="text-center">
                         @if ($datalist->stick)
-                        <i class="fas fa-arrow-circle-up fa-2x text-success" title="{{trans('block::datalist.stick.on')}}" data-toggle="tooltip"></i>
+                        <i class="fas fa-arrow-circle-up fa-2x text-success"
+                            title="{{trans('block::datalist.stick.on')}}" data-toggle="tooltip"></i>
                         @endif
                     </td>
                     <td>
@@ -102,11 +113,11 @@
         <div class="mr-auto">
             {{$block->description}}
         </div>
-        @if ($block->rows)        
+        @if ($block->rows)
         <div class="ml-auto text-nowrap">
             {{trans('block::block.rows')}} : {{$block->rows}}
         </div>
-        @endif       
+        @endif
     </div>
 </div>
 @endsection

@@ -6,22 +6,22 @@
         <div class="main-title">
             {{$title}}
         </div>
-        @if($id && $parents = $region->parents)
-        <div class="main-action mr-auto text-sm">
-            <nav class="breadcrumb">
-                <a class="breadcrumb-item" href="{{route('region.index')}}">
-                    <i class="fa fa-home"></i>
-                </a>
-                @foreach($parents as $p)
-                <a class="breadcrumb-item" href="{{route('region.index', $p->id)}}">{{$p->title}}</a>
-                @endforeach
-            </nav>
-        </div>
-        @endif
-        <div class="main-action ml-auto">
-            <a href="javascript:;" data-url="{{route('region.create', $id)}}" data-width="800" data-height="300"
-                class="btn btn-primary js-open"> <i class="fa fa-plus"></i> {{trans('region::region.create')}}</a>
-        </div>
+
+        <nav class="breadcrumb mr-auto text-sm">
+            <a class="breadcrumb-item" href="{{route('region.index')}}">
+                <i class="fa fa-home"></i>
+            </a>
+            @if($id && $parents = $region->parents)
+            @foreach($parents as $p)
+            <a class="breadcrumb-item" href="{{route('region.index', $p->id)}}">{{$p->title}}</a>
+            @endforeach
+            @endif
+        </nav>
+
+        <a href="javascript:;" data-url="{{route('region.create', $id)}}" data-width="800" data-height="300"
+            class="btn btn-primary js-open">
+            <i class="fa fa-plus"></i> {{trans('region::region.create')}}
+        </a>
     </div>
     <div class="main-body scrollable">
 
@@ -31,7 +31,7 @@
             <thead>
                 <tr>
                     <td class="drag"></td>
-                    <td width="1%"></td>
+                    <td class="text-center" width="1%">{{trans('region::region.id')}}</td>
                     <td>{{trans('region::region.name')}}</td>
                     <td class="state" width="2%">{{trans('region::region.state')}}</td>
                 </tr>
@@ -40,7 +40,7 @@
                 @foreach($regions as $region)
                 <tr class="item {{$region->disabled ? 'disabled' : 'active'}}">
                     <td class="drag"> <input type="hidden" name="sort_id[]" value="{{$region->id}}" /> </td>
-                    <td>
+                    <td class="text-center">
                         {{$region->id}}
                     </td>
                     <td>
@@ -90,11 +90,3 @@
     </div>
 </div>
 @endsection
-
-@push('css')
-
-@endpush
-
-@push('js')
-
-@endpush

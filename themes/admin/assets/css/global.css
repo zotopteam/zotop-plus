@@ -2077,6 +2077,7 @@ fieldset[disabled] .btn {
     display: flex;
     font-size: 1.4rem;
     padding: 0.75rem 0.75rem;
+    line-height: 1.2;
     position: relative;
     clear: both;
     z-index: 1;
@@ -2132,6 +2133,7 @@ fieldset[disabled] .btn {
     border-bottom: 1px solid #efefef;
     padding: 0.75rem 0.5rem;
     align-items: center !important;
+    line-height: 1.2;
 }
 
 .main-header .main-back a {
@@ -2155,8 +2157,8 @@ fieldset[disabled] .btn {
 }
 
 .main-header .main-title {
-    font-size: 1.4rem;
-    padding: 0 0.5rem;
+    font-size: 1.5rem;
+    padding: 1px 0.5rem;
     max-width: 50%;
     overflow: hidden;
     white-space: nowrap;

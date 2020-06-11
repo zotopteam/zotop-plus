@@ -266,7 +266,9 @@ class Form
     protected function input(array $attributes)
     {
         $type  = Arr::pull($attributes, 'type', 'text');
-        $class = Arr::pull($attributes, 'class', $this->fieldDefaultClass);
+        $class = Arr::pull($attributes, 'class', null);
+        $class = $class ? $this->fieldDefaultClass . " {$class}" : $this->fieldDefaultClass;
+
         $id    = $this->getId($attributes);
         $value = $this->getValue($attributes);
 
@@ -300,7 +302,8 @@ class Form
         $value = $this->getValue($attributes);
         $cols  = Arr::pull($attributes, 'cols', 50);
         $rows  = Arr::pull($attributes, 'rows', 10);
-        $class = Arr::pull($attributes, 'class', $this->fieldDefaultClass);
+        $class = Arr::pull($attributes, 'class', null);
+        $class = $class ? $this->fieldDefaultClass . " {$class}" : $this->fieldDefaultClass;
 
         $attributes = array_merge($attributes, compact('id', 'value', 'class', 'cols', 'rows'));
 
@@ -314,8 +317,10 @@ class Form
      */
     public function button(array $attributes)
     {
-        $type       = Arr::pull($attributes, 'type', 'button');
-        $class      = Arr::pull($attributes, 'class', $this->fieldButtonClass[$type]);
+        $type  = Arr::pull($attributes, 'type', 'button');
+        $class = Arr::pull($attributes, 'class', null);
+        $class = $class ? $this->fieldButtonClass[$type] . " {$class}" : $this->fieldButtonClass[$type];
+
         $attributes = array_merge($attributes, compact('type', 'class'));
 
         // 显示内容
@@ -336,7 +341,11 @@ class Form
      */
     public function select(array $attributes)
     {
-        $class    = Arr::pull($attributes, 'class', $this->fieldDefaultClass);
+        // 样式
+        $class    = Arr::pull($attributes, 'class', null);
+        $class    = $class ? $this->fieldDefaultClass . " {$class}" : $this->fieldDefaultClass;
+
+        // 是否为多选
         $multiple = Arr::pull($attributes, 'multiple') ? true : false;
 
         $attributes = array_merge($attributes, compact('class', 'multiple'));
@@ -370,7 +379,7 @@ class Form
     /**
      * 转换select的optgroup
      * @param  mixed $label    选项标签
-     * @param  string $options 选项组
+     * @param  array $options 选项组
      * @param  mixed $selected 选择的项
      * @param  bool $multiple 是否多选
      * @return string

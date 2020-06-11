@@ -166,7 +166,7 @@ class Datalist extends Model
      */
     public function getTitleAttribute($value)
     {
-        return $this->data['title'] ?? '';
+        return $this->data['title'] ?? null;
     }
 
     /**
@@ -175,16 +175,9 @@ class Datalist extends Model
      * @param  string  $value
      * @return string
      */
-    public function getImagePreviewAttribute($value)
+    public function getImageAttribute($value)
     {
-        $image = $this->data['image'] ?? '';
-
-        // 如果有图片，返回图片路径，用于预览
-        if ($image) {
-            return public_path($image);
-        }
-
-        return '';
+        return $this->data['image'] ?? null;
     }
 
     /**

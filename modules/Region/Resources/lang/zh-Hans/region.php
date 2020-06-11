@@ -7,6 +7,7 @@ return [
     'child'             => '下级管理',
     'parent'            => '上级',
     'state'             => '状态',
+    'id'                => '编号',
     'name'              => '名称',
     'sort'              => '排序',
     'create'            => '添加',
@@ -16,5 +17,4 @@ return [
     'destroy'           => '删除',
     'destroy.confirm'   => '您确定要删除 [ :0 ] 吗？',
     'destroy.forbidden' => '尚有下级区域，如需删除，请先删除下级区域',
-    'enable.forbidden'  => '无法启用，上级区域被禁用',
 ];

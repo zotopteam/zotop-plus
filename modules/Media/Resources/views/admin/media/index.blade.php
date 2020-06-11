@@ -9,26 +9,23 @@
             {{request('keywords') ? trans('master.search.results') : ($media->name ?? trans('media::media.root'))}}
         </div>
 
-        <div class="main-action">
-            <x-search />
-            @if (!request('keywords'))
-            <x-upload-chunk :params="['folder_id'=>$folder_id]" />
-            <a href="javascript:;" class="btn btn-primary js-prompt"
-                data-url="{{route('media.create',[$folder_id, 'folder'])}}" data-prompt="{{trans('core::folder.name')}}"
-                data-name="name">
-                <i class="fa fa-fw fa-folder-plus"></i> {{trans('core::folder.create')}}
-            </a>
-            @endif
-            <a href="javascript:;" class="btn btn-success checkable-operator disabled" data-operate="move"
-                data-url="{{route('media.move')}}" data-title="{{trans('master.move')}}">
-                <i class="fa fa-arrows-alt fa-fw"></i> {{trans('master.move')}}
-            </a>
-            <a href="javascript:;" class="btn btn-danger checkable-operator disabled" data-operate="delete"
-                data-confirm="{{trans('master.delete.confirm')}}" data-url="{{route('media.destroy')}}">
-                <i class="fa fa-times fa-fw"></i> {{trans('master.delete')}}
-            </a>
-
-        </div>
+        <x-search />
+        @if (!request('keywords'))
+        <x-upload-chunk :params="['folder_id'=>$folder_id]" />
+        <a href="javascript:;" class="btn btn-primary js-prompt"
+            data-url="{{route('media.create',[$folder_id, 'folder'])}}" data-prompt="{{trans('core::folder.name')}}"
+            data-name="name">
+            <i class="fa fa-fw fa-folder-plus"></i> {{trans('core::folder.create')}}
+        </a>
+        @endif
+        <a href="javascript:;" class="btn btn-success checkable-operator disabled" data-operate="move"
+            data-url="{{route('media.move')}}" data-title="{{trans('master.move')}}">
+            <i class="fa fa-arrows-alt fa-fw"></i> {{trans('master.move')}}
+        </a>
+        <a href="javascript:;" class="btn btn-danger checkable-operator disabled" data-operate="delete"
+            data-confirm="{{trans('master.delete.confirm')}}" data-url="{{route('media.destroy')}}">
+            <i class="fa fa-times fa-fw"></i> {{trans('master.delete')}}
+        </a>
     </div>
     <div class="main-header bg-light text-xs p-1">
         @if (!request('keywords'))
