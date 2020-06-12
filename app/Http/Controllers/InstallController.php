@@ -20,14 +20,14 @@ class InstallController extends Controller
      * app实例
      * 
      * @var mixed|\Illuminate\Foundation\Application
-     */    
+     */
     protected $app;
 
     /**
      * 本地语言
      * 
      * @var string
-     */    
+     */
     protected $locale;
 
     /**
@@ -53,19 +53,19 @@ class InstallController extends Controller
         $this->app = app();
 
         // view实例
-        $this->view    = $this->app->make('view');      
-        
+        $this->view    = $this->app->make('view');
+
         // wizard
-        $this->wizard  = ['welcome','check','config','database','modules','finished'];
-        
+        $this->wizard  = ['welcome', 'check', 'config', 'database', 'modules', 'finished'];
+
         // 获取当前动作指针
         $this->current = array_search(Route::getCurrentRoute()->getActionMethod(), $this->wizard);
 
         // 获取前一个动作
         $this->prev    = ($this->current > 0) ? $this->wizard[$this->current - 1] : null;
-        
+
         // 获取下一个动作
-        $this->next    = ($this->current < (count($this->wizard) -1)) ? $this->wizard[$this->current+1] : null;
+        $this->next    = ($this->current < (count($this->wizard) - 1)) ? $this->wizard[$this->current + 1] : null;
 
         // 获取当前动作
         $this->current = $this->wizard[$this->current];
@@ -93,7 +93,7 @@ class InstallController extends Controller
     public function __get($key)
     {
         return $this->data[$key];
-    }    
+    }
 
     /**
      * 显示View
@@ -123,9 +123,9 @@ class InstallController extends Controller
      * @param  integer $time 跳转或者消息提示时间
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function success($msg, $url='', $time=2)
+    public function success($msg, $url = '', $time = 2)
     {
-        $msg = is_array($msg) ? $msg : ['content'=>$msg];
+        $msg = is_array($msg) ? $msg : ['content' => $msg];
 
         $msg = array_merge($msg, [
             'state' => true,
@@ -145,9 +145,9 @@ class InstallController extends Controller
      * @param  integer $time 跳转或者消息提示时间
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function error($msg, $time=5)
+    public function error($msg, $time = 5)
     {
-        $msg = is_array($msg) ? $msg : ['content'=>$msg];
+        $msg = is_array($msg) ? $msg : ['content' => $msg];
 
         $msg = array_merge($msg, [
             'state' => false,
@@ -156,7 +156,7 @@ class InstallController extends Controller
         ]);
 
         return $this->message($msg);
-    }        
+    }
 
     /**
      * Display the installer welcome page.
@@ -174,7 +174,7 @@ class InstallController extends Controller
         // 创建磁盘连接
         Artisan::call('storage:link');
 
-        // 设置当前域名
+        // 设置当前主域名
         Artisan::call('env:set', [
             'key'   => 'APP_URL',
             'value' => $request->root()
@@ -200,36 +200,36 @@ class InstallController extends Controller
         }
 
         // php extensions
-        foreach(config('install.php_extensions', []) as $extension) {
-            if(!extension_loaded($extension)) {
+        foreach (config('install.php_extensions', []) as $extension) {
+            if (!extension_loaded($extension)) {
                 $check = false;
                 $error['php_extensions'][$extension] = false;
             }
         }
-            // if function doesn't exist we can't check apache modules
-        if(function_exists('apache_get_modules') && $apache_get_modules = apache_get_modules()) {
+        // if function doesn't exist we can't check apache modules
+        if (function_exists('apache_get_modules') && $apache_get_modules = apache_get_modules()) {
 
             foreach (config('install.apache', []) as $requirement) {
-                if(!in_array($requirement, apache_get_modules())) {
+                if (!in_array($requirement, apache_get_modules())) {
                     $check = false;
                     $error['apache'][$requirement] = false;
                 }
             }
         }
 
-        foreach(config('install.permissions', []) as $path => $permission) {
-            
+        foreach (config('install.permissions', []) as $path => $permission) {
+
             $realpath = base_path($path);
 
-            if ($this->app['files']->exists($realpath)) {         
+            if ($this->app['files']->exists($realpath)) {
                 $server_permission = substr(sprintf('%o', fileperms($realpath)), -4);
-                if($server_permission < $permission) {
+                if ($server_permission < $permission) {
                     $check = false;
                     $error['permissions'][$path] = [$permission, $server_permission];
                 }
             } else {
                 $check = false;
-                $error['permissions'][$path] = [$permission, null];                
+                $error['permissions'][$path] = [$permission, null];
             }
         }
 
@@ -247,7 +247,7 @@ class InstallController extends Controller
     public function config(ConfigRepository $config, Request $request)
     {
         if ($request->isMethod('POST')) {
-            
+
             // 缓存站点设置，安装完成时最后写入
             $request->session()->put('install.site', $request->input('site'));
 
@@ -258,8 +258,8 @@ class InstallController extends Controller
             $request->session()->save();
 
             // 测试数据库是否能正常连接
-            $env    = $request->input('env');           
-            
+            $env    = $request->input('env');
+
             // 数据库配置
             $config['database.default']                                            = $env['DB_CONNECTION'];
             $config['database.connections.' . $env['DB_CONNECTION'] . '.host']     = $env['DB_HOST'];
@@ -276,7 +276,7 @@ class InstallController extends Controller
                 app('db')->reconnect()->getPdo();
 
                 foreach ($env as $key => $value) {
-                    Artisan::call('env:set', ['key' => $key, 'value'=>$value]);  
+                    Artisan::call('env:set', ['key' => $key, 'value' => $value]);
                 }
 
                 return $this->success('success', route("install.{$this->next}"));
@@ -310,15 +310,14 @@ class InstallController extends Controller
             }
 
             // 初始安装
-            if ($action == 'init') {        
+            if ($action == 'init') {
                 try {
-                    Artisan::call('migrate');  
+                    Artisan::call('migrate');
                     return $this->success('success', route("install.{$this->next}"));
                 } catch (Exception $e) {
                     return $this->error($e->getMessage());
                 }
             }
-
         }
 
         $this->installed = false;
@@ -329,7 +328,7 @@ class InstallController extends Controller
         }
 
         return $this->view();
-    }    
+    }
 
     /**
      * Display the installer check page.
@@ -342,7 +341,7 @@ class InstallController extends Controller
             // 安装模块
             if ($name  = $request->input('name')) {
                 Module::findOrFail($name)->install();
-                return $this->success($name.' install success');
+                return $this->success($name . ' install success');
             }
         }
 
@@ -368,7 +367,7 @@ class InstallController extends Controller
             // 插入超级管理员
             User::updateOrCreate([
                 'username'       => $this->admin['username'],
-            ],[
+            ], [
                 'password'       => \Hash::make($this->admin['password']),
                 'model_id'       => 'super',
                 'email'          => $this->admin['email'],
@@ -380,12 +379,12 @@ class InstallController extends Controller
             Module::findOrFail('site')->setConfig($this->site);
 
             // 设置为已安装
-            Artisan::call('env:set', ['key'=>'APP_INSTALLED', 'value'=>'true']);
+            Artisan::call('env:set', ['key' => 'APP_INSTALLED', 'value' => 'true']);
 
             // 重启系统
             Artisan::call('reboot');
         }
 
         return $this->view();
-    }                               
+    }
 }
