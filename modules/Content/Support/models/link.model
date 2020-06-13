@@ -1,1 +1,182 @@
-{"model":{"id":"link","icon":"fas fa-link","name":"\u94fe\u63a5","description":"\u6307\u5411\u5176\u5b83\u5730\u5740\u7684\u94fe\u63a5","module":"content","model":null,"table":null,"fillable":[],"casts":[],"view":"","nestable":0,"posts":0,"sort":4,"disabled":0,"user_id":0,"created_at":"2019-03-24 16:07:12","updated_at":"2019-03-24 16:07:12"},"field":[{"id":27,"model_id":"link","label":"\u6807\u9898","type":"title","name":"title","default":null,"settings":{"required":1,"maxlength":255},"help":null,"post":1,"search":0,"system":1,"position":"main","width":"w-100","sort":0,"disabled":0,"created_at":"2019-03-24 16:07:12","updated_at":"2019-03-24 16:07:12"},{"id":28,"model_id":"link","label":"\u522b\u540d","type":"slug","name":"slug","default":null,"settings":{"required":0,"maxlength":255,"unique":1},"help":null,"post":1,"search":0,"system":1,"position":"main","width":"w-100","sort":2,"disabled":1,"created_at":"2019-03-24 16:07:12","updated_at":"2019-03-24 16:07:12"},{"id":29,"model_id":"link","label":"\u56fe\u50cf","type":"upload_image","name":"image","default":null,"settings":{"required":0,"maxlength":255,"resize":0,"watermark":0},"help":null,"post":1,"search":0,"system":1,"position":"main","width":"w-100","sort":3,"disabled":0,"created_at":"2019-03-24 16:07:12","updated_at":"2019-03-24 16:07:12"},{"id":30,"model_id":"link","label":"\u5173\u952e\u8bcd","type":"keywords","name":"keywords","default":null,"settings":{"required":0,"maxlength":100},"help":null,"post":1,"search":0,"system":1,"position":"main","width":"w-100","sort":4,"disabled":0,"created_at":"2019-03-24 16:07:12","updated_at":"2019-03-24 16:07:12"},{"id":31,"model_id":"link","label":"\u6458\u8981","type":"summary","name":"summary","default":null,"settings":{"required":0,"maxlength":100},"help":null,"post":1,"search":0,"system":1,"position":"main","width":"w-100","sort":5,"disabled":0,"created_at":"2019-03-24 16:07:12","updated_at":"2019-03-24 16:07:12"},{"id":32,"model_id":"link","label":"\u6a21\u677f","type":"view","name":"view","default":null,"settings":{"required":0,"maxlength":100},"help":null,"post":1,"search":0,"system":1,"position":"main","width":"w-100","sort":6,"disabled":1,"created_at":"2019-03-24 16:07:12","updated_at":"2019-03-24 16:07:12"},{"id":33,"model_id":"link","label":"\u94fe\u63a5","type":"link","name":"link","default":"","settings":{"required":"1","maxlength":255,"placeholder":""},"help":"","post":1,"search":0,"system":1,"position":"main","width":"w-100","sort":1,"disabled":0,"created_at":"2019-03-24 16:07:12","updated_at":"2019-03-24 16:07:12"}],"view":""}
+{
+    "model": {
+        "id": "link",
+        "icon": "fas fa-link",
+        "name": "链接",
+        "description": "指向其它地址的链接",
+        "module": "content",
+        "model": null,
+        "table": null,
+        "fillable": [],
+        "casts": [],
+        "view": "",
+        "nestable": 0,
+        "posts": 0,
+        "sort": 5,
+        "disabled": 0,
+        "user_id": 1,
+        "created_at": "2020-06-13T09:45:49.000000Z",
+        "updated_at": "2020-06-13T09:45:49.000000Z"
+    },
+    "field": [
+        {
+            "id": 36,
+            "model_id": "link",
+            "label": "标题",
+            "type": "title",
+            "name": "title",
+            "default": null,
+            "settings": {
+                "required": 1,
+                "maxlength": 255
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "main",
+            "width": "w-100",
+            "sort": 0,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:49.000000Z",
+            "updated_at": "2020-06-13T09:45:49.000000Z"
+        },
+        {
+            "id": 37,
+            "model_id": "link",
+            "label": "别名",
+            "type": "slug",
+            "name": "slug",
+            "default": null,
+            "settings": {
+                "required": 0,
+                "maxlength": 255,
+                "unique": 1
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "main",
+            "width": "w-100",
+            "sort": 2,
+            "disabled": 1,
+            "created_at": "2020-06-13T09:45:49.000000Z",
+            "updated_at": "2020-06-13T09:45:49.000000Z"
+        },
+        {
+            "id": 38,
+            "model_id": "link",
+            "label": "图像",
+            "type": "upload_image",
+            "name": "image",
+            "default": null,
+            "settings": {
+                "required": 0,
+                "maxlength": 255,
+                "resize": 0,
+                "watermark": 0
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "main",
+            "width": "w-100",
+            "sort": 3,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:49.000000Z",
+            "updated_at": "2020-06-13T09:45:49.000000Z"
+        },
+        {
+            "id": 39,
+            "model_id": "link",
+            "label": "关键词",
+            "type": "keywords",
+            "name": "keywords",
+            "default": null,
+            "settings": {
+                "required": 0,
+                "maxlength": 100
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "main",
+            "width": "w-100",
+            "sort": 4,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:49.000000Z",
+            "updated_at": "2020-06-13T09:45:49.000000Z"
+        },
+        {
+            "id": 40,
+            "model_id": "link",
+            "label": "摘要",
+            "type": "summary",
+            "name": "summary",
+            "default": null,
+            "settings": {
+                "required": 0,
+                "maxlength": 100
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "main",
+            "width": "w-100",
+            "sort": 5,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:49.000000Z",
+            "updated_at": "2020-06-13T09:45:49.000000Z"
+        },
+        {
+            "id": 41,
+            "model_id": "link",
+            "label": "模板",
+            "type": "view",
+            "name": "view",
+            "default": null,
+            "settings": {
+                "required": 0,
+                "maxlength": 100
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "main",
+            "width": "w-100",
+            "sort": 6,
+            "disabled": 1,
+            "created_at": "2020-06-13T09:45:49.000000Z",
+            "updated_at": "2020-06-13T09:45:49.000000Z"
+        },
+        {
+            "id": 42,
+            "model_id": "link",
+            "label": "链接",
+            "type": "link",
+            "name": "link",
+            "default": "",
+            "settings": {
+                "required": "1",
+                "maxlength": 255,
+                "placeholder": ""
+            },
+            "help": "",
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "main",
+            "width": "w-100",
+            "sort": 1,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:50.000000Z",
+            "updated_at": "2020-06-13T09:45:50.000000Z"
+        }
+    ],
+    "view": ""
+}

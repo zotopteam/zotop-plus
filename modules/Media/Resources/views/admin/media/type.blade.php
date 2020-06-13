@@ -12,7 +12,7 @@
         <div class="main-action">
             <x-search />
             @if (!request('keywords'))
-            <x-upload-chunk />
+            <x-upload-chunk :type="$type" />
             @endif
             <a href="javascript:;" class="btn btn-success checkable-operator disabled" data-operate="move"
                 data-url="{{route('media.move')}}" data-title="{{trans('master.move')}}">

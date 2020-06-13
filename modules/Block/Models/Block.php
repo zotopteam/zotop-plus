@@ -99,7 +99,7 @@ class Block extends Model
      */
     public function getSlugIncludeAttribute($value)
     {
-        return '{block slug="' . $this->slug . '"}';
+        return '<x-block slug="' . $this->slug . '" />';
     }
 
     /**
@@ -110,7 +110,7 @@ class Block extends Model
      */
     public function getSourceIdAttribute($value)
     {
-        return 'block-' . $this->id;
+        return "block-{$this->id}";
     }
 
     /**

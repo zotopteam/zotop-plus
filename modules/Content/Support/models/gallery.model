@@ -1,1 +1,238 @@
-{"model":{"id":"gallery","icon":"fas fa-file","name":"\u56fe\u96c6","description":"\u56fe\u96c6\u6216\u8005\u753b\u5eca","module":"content","model":"Modules\\Content\\Models\\ContentModel","table":"content_model_gallery","fillable":["id","gallery","content"],"casts":{"gallery":"array"},"view":"content::gallery","nestable":0,"posts":0,"sort":5,"disabled":0,"user_id":1,"created_at":"2019-06-08 17:40:53","updated_at":"2019-06-28 10:57:59"},"field":[{"id":35,"model_id":"gallery","label":"\u6807\u9898","type":"title","name":"title","default":null,"settings":{"required":1,"maxlength":255},"help":null,"post":1,"search":0,"system":1,"position":"main","width":"w-66","sort":0,"disabled":0,"created_at":"2019-06-08 17:40:53","updated_at":"2019-06-28 10:55:12"},{"id":36,"model_id":"gallery","label":"\u522b\u540d","type":"slug","name":"slug","default":null,"settings":{"required":0,"maxlength":255,"unique":1},"help":null,"post":1,"search":0,"system":1,"position":"main","width":"w-33","sort":1,"disabled":0,"created_at":"2019-06-08 17:40:53","updated_at":"2019-06-28 10:55:12"},{"id":37,"model_id":"gallery","label":"\u5c01\u9762\u56fe\u7247","type":"upload_image","name":"image","default":null,"settings":{"required":"0","maxlength":255,"resize":"0","watermark":"0","placeholder":null},"help":null,"post":1,"search":0,"system":1,"position":"side","width":"w-100","sort":1,"disabled":0,"created_at":"2019-06-08 17:40:53","updated_at":"2019-06-28 10:55:48"},{"id":38,"model_id":"gallery","label":"\u5173\u952e\u8bcd","type":"keywords","name":"keywords","default":null,"settings":{"required":0,"maxlength":100},"help":null,"post":1,"search":0,"system":1,"position":"side","width":"w-100","sort":0,"disabled":0,"created_at":"2019-06-08 17:40:53","updated_at":"2019-06-28 10:55:12"},{"id":39,"model_id":"gallery","label":"\u6458\u8981","type":"summary","name":"summary","default":null,"settings":{"required":0,"maxlength":100},"help":null,"post":1,"search":0,"system":1,"position":"side","width":"w-100","sort":2,"disabled":0,"created_at":"2019-06-08 17:40:53","updated_at":"2019-06-28 10:55:12"},{"id":40,"model_id":"gallery","label":"\u6a21\u677f","type":"view","name":"view","default":null,"settings":{"required":0,"maxlength":100},"help":null,"post":1,"search":0,"system":1,"position":"side","width":"w-100","sort":3,"disabled":1,"created_at":"2019-06-08 17:40:53","updated_at":"2019-06-28 10:55:12"},{"id":41,"model_id":"gallery","label":"\u94fe\u63a5","type":"link","name":"link","default":null,"settings":{"required":0,"maxlength":255},"help":null,"post":1,"search":0,"system":1,"position":"side","width":"w-100","sort":4,"disabled":1,"created_at":"2019-06-08 17:40:53","updated_at":"2019-06-28 10:55:12"},{"id":42,"model_id":"gallery","label":"\u56fe\u96c6","type":"gallery","name":"gallery","default":null,"settings":{"required":"1","min":"0","max":"999","resize":"1","watermark":"1"},"help":null,"post":1,"search":0,"system":0,"position":"main","width":"w-100","sort":2,"disabled":0,"created_at":"2019-06-27 16:47:14","updated_at":"2019-06-28 10:55:12"},{"id":43,"model_id":"gallery","label":"\u8bf4\u660e","type":"editor","name":"content","default":null,"settings":{"required":"0","rows":"10","resize":"1","watermark":"1","placeholder":null},"help":null,"post":1,"search":0,"system":0,"position":"main","width":"w-100","sort":5,"disabled":0,"created_at":"2019-06-28 10:57:59","updated_at":"2019-06-28 10:57:59"}],"view":""}
+{
+    "model": {
+        "id": "gallery",
+        "icon": "fas fa-file",
+        "name": "图集",
+        "description": "图集或者画廊",
+        "module": "content",
+        "model": "Modules\\Content\\Models\\ContentModel",
+        "table": "content_model_gallery",
+        "fillable": [
+            "id",
+            "gallery",
+            "content"
+        ],
+        "casts": {
+            "gallery": "array"
+        },
+        "view": "content::gallery",
+        "nestable": 0,
+        "posts": 0,
+        "sort": 4,
+        "disabled": 0,
+        "user_id": 1,
+        "created_at": "2020-06-13T09:45:28.000000Z",
+        "updated_at": "2020-06-13T09:45:29.000000Z"
+    },
+    "field": [
+        {
+            "id": 27,
+            "model_id": "gallery",
+            "label": "标题",
+            "type": "title",
+            "name": "title",
+            "default": null,
+            "settings": {
+                "required": 1,
+                "maxlength": 255
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "main",
+            "width": "w-66",
+            "sort": 0,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:28.000000Z",
+            "updated_at": "2020-06-13T09:45:28.000000Z"
+        },
+        {
+            "id": 28,
+            "model_id": "gallery",
+            "label": "别名",
+            "type": "slug",
+            "name": "slug",
+            "default": null,
+            "settings": {
+                "required": 0,
+                "maxlength": 255,
+                "unique": 1
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "main",
+            "width": "w-33",
+            "sort": 1,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:28.000000Z",
+            "updated_at": "2020-06-13T09:45:28.000000Z"
+        },
+        {
+            "id": 29,
+            "model_id": "gallery",
+            "label": "封面图片",
+            "type": "upload_image",
+            "name": "image",
+            "default": null,
+            "settings": {
+                "required": "0",
+                "maxlength": 255,
+                "resize": "0",
+                "watermark": "0",
+                "placeholder": null
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "side",
+            "width": "w-100",
+            "sort": 1,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:28.000000Z",
+            "updated_at": "2020-06-13T09:45:28.000000Z"
+        },
+        {
+            "id": 30,
+            "model_id": "gallery",
+            "label": "关键词",
+            "type": "keywords",
+            "name": "keywords",
+            "default": null,
+            "settings": {
+                "required": 0,
+                "maxlength": 100
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "side",
+            "width": "w-100",
+            "sort": 0,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:28.000000Z",
+            "updated_at": "2020-06-13T09:45:28.000000Z"
+        },
+        {
+            "id": 31,
+            "model_id": "gallery",
+            "label": "摘要",
+            "type": "summary",
+            "name": "summary",
+            "default": null,
+            "settings": {
+                "required": 0,
+                "maxlength": 100
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "side",
+            "width": "w-100",
+            "sort": 2,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:28.000000Z",
+            "updated_at": "2020-06-13T09:45:28.000000Z"
+        },
+        {
+            "id": 32,
+            "model_id": "gallery",
+            "label": "模板",
+            "type": "view",
+            "name": "view",
+            "default": null,
+            "settings": {
+                "required": 0,
+                "maxlength": 100
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "side",
+            "width": "w-100",
+            "sort": 3,
+            "disabled": 1,
+            "created_at": "2020-06-13T09:45:28.000000Z",
+            "updated_at": "2020-06-13T09:45:28.000000Z"
+        },
+        {
+            "id": 33,
+            "model_id": "gallery",
+            "label": "链接",
+            "type": "link",
+            "name": "link",
+            "default": null,
+            "settings": {
+                "required": 0,
+                "maxlength": 255
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 1,
+            "position": "side",
+            "width": "w-100",
+            "sort": 4,
+            "disabled": 1,
+            "created_at": "2020-06-13T09:45:28.000000Z",
+            "updated_at": "2020-06-13T09:45:28.000000Z"
+        },
+        {
+            "id": 34,
+            "model_id": "gallery",
+            "label": "图集",
+            "type": "gallery",
+            "name": "gallery",
+            "default": null,
+            "settings": {
+                "required": "1",
+                "min": "0",
+                "max": "999",
+                "resize": "1",
+                "watermark": "1"
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 0,
+            "position": "main",
+            "width": "w-100",
+            "sort": 2,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:29.000000Z",
+            "updated_at": "2020-06-13T09:45:29.000000Z"
+        },
+        {
+            "id": 35,
+            "model_id": "gallery",
+            "label": "说明",
+            "type": "editor",
+            "name": "content",
+            "default": null,
+            "settings": {
+                "required": "0",
+                "rows": "10",
+                "resize": "1",
+                "watermark": "1",
+                "placeholder": null
+            },
+            "help": null,
+            "post": 1,
+            "search": 0,
+            "system": 0,
+            "position": "main",
+            "width": "w-100",
+            "sort": 5,
+            "disabled": 0,
+            "created_at": "2020-06-13T09:45:29.000000Z",
+            "updated_at": "2020-06-13T09:45:29.000000Z"
+        }
+    ],
+    "view": ""
+}

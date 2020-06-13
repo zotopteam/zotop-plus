@@ -1,1 +1,3 @@
-{!! $block->data !!}
+<div {{$attributes}}>
+    {!! $block->data !!}
+</div>

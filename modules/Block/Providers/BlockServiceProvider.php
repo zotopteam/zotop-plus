@@ -2,9 +2,10 @@
 
 namespace Modules\Block\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Block\Models\Block;
-use Blade;
+use Modules\Block\View\Components\BlockComponent;
 
 class BlockServiceProvider extends ServiceProvider
 {
@@ -23,12 +24,12 @@ class BlockServiceProvider extends ServiceProvider
     public function boot()
     {
         // 监听卸载
-        $this->app['events']->listen('modules.block.uninstalling', function($module) {
+        $this->app['events']->listen('modules.block.uninstalling', function ($module) {
             abort_if(Block::count() > 0, 403, trans('block::block.uninstall.forbidden'));
         });
 
-        $this->baldeBlockTag();
-    }    
+        $this->BladeExtend();
+    }
 
     /**
      * Register the service provider.
@@ -50,28 +51,13 @@ class BlockServiceProvider extends ServiceProvider
         return [];
     }
 
-    private function baldeBlockTag()
+    /**
+     * 模板扩展
+     *
+     * @return void
+     */
+    private function BladeExtend()
     {
-        // 解析{block ……}
-        Blade::tag('block', function($attrs, $vars) {
-
-            $id   = array_get($attrs, 'id');
-            $slug = array_get($attrs, 'slug');
-            $view = array_get($attrs, 'view');
-
-            if ($id || $slug) {
-
-                $block = $id ? Block::Where('id', $id)->first() : Block::where('slug', $slug)->first();
-
-                // 如果block存在，解析并返回
-                if ($block) {
-                    return app('view')->make($view ?: $block->view)->with($vars)->with('attrs',$attrs)->with('block',$block)->render();
-                }
-
-                return trans('block::block.notexist', [$id ?: $slug]);
-            }
-            
-            return null;
-        });
+        Blade::component(BlockComponent::class, 'block');
     }
 }
