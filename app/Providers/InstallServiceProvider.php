@@ -54,7 +54,6 @@ class InstallServiceProvider extends ServiceProvider
 
         // 强制进入安装
         header('Location:' . url('install'));
-
-        exit('The cms has not been installed. Please use the installer to install it');
+        exit;
     }
 }

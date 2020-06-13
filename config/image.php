@@ -27,7 +27,7 @@ return array(
     | static ：在public/previews/images目录下生成预览图片
     */
     'preview' => [
-        'mode'    => env('IMAGE_PREVIEW_MODE', 'static'),
+        'mode'    => env('IMAGE_PREVIEW_MODE', 'dynamic'),
         'dynamic' => [
             'lifetime' => 10, //缓存时间，单位分钟
         ],

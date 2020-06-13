@@ -12,5 +12,8 @@ use Illuminate\Support\Facades\Route;
 | to using a Closure or controller method. Build something great!
 |
 */
-Route::get('preview/image/{filter}/{disk}/{path}', 'PreviewController@image')->name('preview.image')->where('path', '.*');
 
+Route::get('preview/image/{filter}/{disk}/{path}', 'PreviewController@image')
+    ->name('preview.image')
+    ->where('path', '.*')
+    ->middleware('cache.headers:public;max_age=2628000;etag');
