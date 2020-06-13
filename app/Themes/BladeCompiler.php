@@ -26,7 +26,6 @@ class BladeCompiler extends LaravelBladeCompiler
      * @var array
      */
     protected $compilers = [
-        'DotArray',
         'Extensions',
         'Tags',
         'Statements',
@@ -120,28 +119,6 @@ class BladeCompiler extends LaravelBladeCompiler
         return null;
     }
 
-    /**
-     * 解析点数组语法
-     *
-     * @param  string  $value
-     * @return string
-     */
-    protected function compileDotArray($value)
-    {
-        // 正则匹配所有 $var.name…… 或者 $var.name.key 的字符        
-        if (preg_match_all('/\$(([a-zA-Z0-9_]+)((\.[a-zA-Z0-9_]+|(?R))+))/s', $value, $matches, PREG_OFFSET_CAPTURE)) {
-            while ($matches[0]) {
-                $match = array_pop($matches[0]);
-                $match = $match[0];
-                $vars  = explode('.', $match);
-                $first = array_shift($vars);
-                $array = $first . '[\'' . implode('\'][\'', $vars) . '\']';
-                $value = str_replace($match, $array, $value);
-            }
-        }
-
-        return $value;
-    }
 
     /**
      * 将标签字符串转化为数组字符串
