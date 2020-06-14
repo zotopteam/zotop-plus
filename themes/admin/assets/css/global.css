@@ -1313,13 +1313,11 @@ label.form-label {
     font-weight: bold;
 }
 
-.col-form-field {}
-
-.form-field {}
 
 .form-control {
     min-width: 3rem;
 }
+
 
 .form-control[disabled],
 fieldset[disabled] .form-control {
@@ -1333,8 +1331,15 @@ div.form-control {
 }
 
 
-/*label.radio,label.checkbox{cursor:pointer;padding-top:calc(.5rem - 2px);padding-bottom:calc(.5rem - 2px);padding-right:1rem;margin:0;}
-*/
+.form-control-plaintext{
+    background-color:transparent !important;
+    border: solid 1px transparent !important;
+    transition: none !important;
+}
+
+.form-control-plaintext:focus {
+    box-shadow: none !important;
+}
 
 
 /*checkbox radio*/

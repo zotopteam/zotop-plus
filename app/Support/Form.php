@@ -218,7 +218,7 @@ class Form
      * @param  string  $type 类型名称
      * @return boolean
      */
-    public function hasType($type)
+    protected function hasType($type)
     {
         return $this->hasMacro($type) || method_exists($this, $type) || in_array($type, Arr::flatten($this->types));
     }
@@ -228,7 +228,7 @@ class Form
      * @param  array $types 类型
      * @return string
      */
-    public function findType(...$types)
+    protected function findType(...$types)
     {
         foreach ($types as $type) {
             if ($this->hasType($type)) {
@@ -498,7 +498,7 @@ class Form
      * @param  boolean $prepend 是否前置
      * @return array
      */
-    public function addClass(&$attributes, $add, $prepend = false)
+    protected function addClass(&$attributes, $add, $prepend = false)
     {
         $class = Arr::get($attributes, 'class');
         $class = is_string($class) ? explode(' ', $class) : $class;
@@ -520,7 +520,7 @@ class Form
      * @param  array $attributes 属性
      * @return null
      */
-    public function removeClass(&$attributes)
+    protected function removeClass(&$attributes)
     {
         $attributes['class'] = null;
         return null;
@@ -534,7 +534,7 @@ class Form
      * @param  boolean $pull       是否从属性数组中删除
      * @return mixed
      */
-    public function getAttribute(&$attributes, $key, $default = null, $pull = true)
+    protected function getAttribute(&$attributes, $key, $default = null, $pull = true)
     {
         // key可以是多个
         $keys = Arr::wrap($key);
@@ -583,7 +583,7 @@ class Form
      * @param  boolean $pull 是否从属性数组中删除，默认不删除
      * @return string
      */
-    public function getName(&$attributes, $default = null, $pull = false)
+    protected function getName(&$attributes, $default = null, $pull = false)
     {
         return $this->getAttribute($attributes, 'name', $default, $pull);
     }
@@ -595,7 +595,7 @@ class Form
      * @param  boolean $pull 是否从属性数组中删除，默认不删除
      * @return string
      */
-    public function getId(&$attributes, $default = null, $pull = false)
+    protected function getId(&$attributes, $default = null, $pull = false)
     {
         // 如果有id，直接获取id，否则获取name    
         $id = $this->getAttribute($attributes, ['id', 'name'], $default, $pull);
@@ -611,7 +611,7 @@ class Form
      * @param  boolean $pull 是否从属性数组中删除，默认不删除
      * @return mixed
      */
-    public function getValue(&$attributes, $default = null, $pull = false)
+    protected function getValue(&$attributes, $default = null, $pull = false)
     {
         // 如果属性中存在value，直接返回
         if (Arr::has($attributes, 'value')) {
@@ -642,7 +642,7 @@ class Form
      * @param  string $name 字段名
      * @return string
      */
-    public function transformNameDot($name)
+    protected function transformNameDot($name)
     {
         return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $name);
     }
