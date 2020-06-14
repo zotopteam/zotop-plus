@@ -10,19 +10,19 @@
             {{$title}} : {{$name}}
         </div>
         <div class="main-action">
-            {field type="submit" form="table-form" value="trans('master.save')" class="btn btn-primary"}
+            <z-field type="submit" form="table-form" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
     
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form route="['developer.table.edit', $module, $name]" id="table-form" method="post" autocomplete="off"}
+            <z-form route="['developer.table.edit', $module, $name]" id="table-form" method="post" autocomplete="off">
 
             <div class="form-group">
                 <label for="name" class="form-label required">{{trans('developer::table.name')}}</label>
                 <div class="form-field">
-                    {field type="text" name="name" required="required" value="$name"}
+                    <z-field type="text" name="name" required="required" value="$name"/>
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -36,7 +36,7 @@
                 <i class="fa fa-spinner fa-spin"></i>
             </div>
 
-            {/form}
+            </z-form>
 
         </div>
     </div><!-- main-body -->

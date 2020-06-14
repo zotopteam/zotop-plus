@@ -2,7 +2,7 @@
     <div class="checkboxgroup-row">
         @foreach((array)$options as $k=>$v)
             <div class="checkboxgroup-item d-inline-block">
-            {field type="checkbox" name="$name.'[]'" value="$k" checked="in_array($k, $value)" class="$name.'-valid'" label="$v"}
+            <z-field type="checkbox" name="$name.'[]'" value="$k" checked="in_array($k, $value)" class="$name.'-valid'" label="$v"/>
             </div> 
         @if($column && $loop->iteration%$column==0)
         </div>

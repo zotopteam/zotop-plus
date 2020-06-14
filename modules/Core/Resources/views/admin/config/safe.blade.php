@@ -10,21 +10,21 @@
             {{$title}}
         </div>
         <div class="main-action">
-            {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
+            <z-field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
 
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form bind="$config" route="core.config.safe" method="post" id="config" autocomplete="off"}
+            <z-form bind="$config" route="core.config.safe" method="post" id="config" autocomplete="off">
 
             <div class="form-title row">{{trans('core::config.safe.base')}}</div>
 
             <div class="form-group row">
                 <label for="env" class="col-2 col-form-label required">{{trans('core::config.env.label')}}</label>
                 <div class="col-8">
-                    {field type="radiocards" name="env" options="Module::data('core::config.envs')" column="1"
-                    required="required"}
+                    <z-field type="radiocards" name="env" options="Module::data('core::config.envs')" column="1"
+                    required="required"/>
 
                     @if ($errors->has('env'))
                     <span class="form-help text-error">{{ $errors->first('env') }}</span>
@@ -37,7 +37,7 @@
             <div class="form-group row">
                 <label for="debug" class="col-2 col-form-label">{{trans('core::config.debug.label')}}</label>
                 <div class="col-8">
-                    {field type="toggle" name="debug"}
+                    <z-field type="toggle" name="debug"/>
 
                     @if ($errors->has('debug'))
                     <span class="form-help text-error">{{ $errors->first('debug') }}</span>
@@ -53,7 +53,7 @@
                 <label for="admin_prefix"
                     class="col-2 col-form-label required">{{trans('core::config.admin_prefix.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="backend[prefix]" required="required"}
+                    <z-field type="text" name="backend[prefix]" required="required"/>
 
                     @if ($errors->has('admin_prefix'))
                     <span class="form-help text-error">{{ $errors->first('admin_prefix') }}</span>
@@ -67,7 +67,7 @@
                 <label for="debug" class="col-2 col-form-label">{{trans('core::config.log.label')}}</label>
                 <div class="col-8">
 
-                    {field type="toggle" name="log[enabled]"}
+                    <z-field type="toggle" name="log[enabled]"/>
 
                     <div class="input-group" data-depend="[name='log[enabled]']" data-when="value=1" data-then="show">
                         <div class="input-group-prepend">
@@ -75,7 +75,7 @@
                                 {{trans('core::config.log.expire')}}
                             </span>
                         </div>
-                        {field type="number" name="log[expire]" required="required" min="1"}
+                        <z-field type="number" name="log[expire]" required="required" min="1"/>
                         <div class="input-group-append">
                             <span class="input-group-text">
                                 {{trans('core::config.log.unit')}}
@@ -87,7 +87,7 @@
                 </div>
             </div>
 
-            {/form}
+            </z-form>
         </div>
     </div><!-- main-body -->
 </div>

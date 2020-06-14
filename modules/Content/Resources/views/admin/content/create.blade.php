@@ -26,21 +26,21 @@
             </a>
         </div>        
         <div class="main-action">
-             {field type="submit" form="content-form" value="trans('content::content.status.publish')" class="btn btn-success" data-status="publish" data-action="back"}
-             {field type="submit" form="content-form" value="trans('content::content.save.draft')" class="btn btn-primary"}
+             <z-field type="submit" form="content-form" value="trans('content::content.status.publish')" class="btn btn-success" data-status="publish" data-action="back"/>
+             <z-field type="submit" form="content-form" value="trans('content::content.save.draft')" class="btn btn-primary"/>
         </div>
     </div>  
     <div class="main-body bg-light scrollable">
         <div class="container-fluid">
 
-            {form bind="$content" route="content.content.store" id="content-form" method="post" autocomplete="off"}
+            <z-form bind="$content" route="content.content.store" id="content-form" method="post" autocomplete="off">
 
-                {field type="hidden" name="_action"}
-                {field type="hidden" name="parent_id" required="required"}
-                {field type="hidden" name="model_id" required="required"}
-                {field type="hidden" name="source_id" required="required"}
-                {field type="hidden" name="status" required="required"}
-                {field type="hidden" name="publish_at"}
+                <z-field type="hidden" name="_action"/>
+                <z-field type="hidden" name="parent_id" required="required"/>
+                <z-field type="hidden" name="model_id" required="required"/>
+                <z-field type="hidden" name="source_id" required="required"/>
+                <z-field type="hidden" name="status" required="required"/>
+                <z-field type="hidden" name="publish_at"/>
             
                 <div class="row">
                     <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}} d-flex flex-wrap p-0">
@@ -57,7 +57,7 @@
                     </div>
                     @endif
                 </div>
-            {/form}
+            </z-form>
 
         </div>
     </div><!-- main-body -->

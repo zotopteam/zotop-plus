@@ -49,7 +49,7 @@
         </div>
         @endif
         <div class="main-action">
-            {form route="content.content.index" class="form-inline form-search" method="get"}
+            <z-form route="content.content.index" class="form-inline form-search" method="get">
             <div class="input-group">
                 <input name="keywords" value="{{$keywords}}" class="form-control border-primary" type="search"
                     placeholder="{{trans('master.keywords.placeholder')}}" required="required" aria-label="Search">
@@ -57,7 +57,7 @@
                     <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i> </button>
                 </div>
             </div>
-            {/form}
+            </z-form>
         </div>
     </div>
     @if (empty($keywords))

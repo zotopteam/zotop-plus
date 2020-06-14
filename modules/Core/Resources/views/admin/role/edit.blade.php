@@ -10,21 +10,21 @@
             {{$title}}
         </div>
         <div class="main-action">
-            {field type="submit" form="role" value="trans('master.save')" class="btn btn-primary"}
+            <z-field type="submit" form="role" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
     
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form bind="$role" route="['core.role.update',$id]" method="PUT" id="role" autocomplete="off"}
+            <z-form bind="$role" route="['core.role.update',$id]" method="PUT" id="role" autocomplete="off">
 
             <div class="form-title row">{{trans('core::role.form.base')}}</div>
 
             <div class="form-group row">
                 <label for="name" class="col-2 col-form-label required">{{trans('core::role.name.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="name" required="required"}
+                    <z-field type="text" name="name" required="required"/>
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -37,7 +37,7 @@
             <div class="form-group row">
                 <label for="description" class="col-2 col-form-label required">{{trans('core::role.description.label')}}</label>
                 <div class="col-8">
-                    {field type="textarea" name="description" rows="3" maxlength="255"}
+                    <z-field type="textarea" name="description" rows="3" maxlength="255"/>
 
                     @if ($errors->has('description'))
                     <span class="form-help text-error">{{ $errors->first('description') }}</span>
@@ -71,7 +71,7 @@
                             <div class="role-group-body">
                             @foreach ($val as $k=>$v)
                                 <div class="d-inline-block">
-                                {field type="checkbox" name="permissions[]" value="$k" data-module="$m" label="trans($v)"}
+                                <z-field type="checkbox" name="permissions[]" value="$k" data-module="$m" label="trans($v)"/>
                                 </div>
                             @endforeach
                             </div>
@@ -79,7 +79,7 @@
                         @else
                         <div class="col-auto">
                             <div class="d-inline-block">
-                            {field type="checkbox" name="permissions[]" id="$key" value="$key" data-module="$m" label="trans($val)"}
+                            <z-field type="checkbox" name="permissions[]" id="$key" value="$key" data-module="$m" label="trans($val)"/>
                             </div>
                         </div>
                         @endif
@@ -88,7 +88,7 @@
                 </div>
             </div>
             @endforeach
-            {/form}
+            </z-form>
 
         </div>
     </div><!-- main-body -->

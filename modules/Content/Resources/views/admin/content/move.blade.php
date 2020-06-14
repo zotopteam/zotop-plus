@@ -21,7 +21,7 @@
         </div>
         @endif
         <div class="main-action ml-auto">
-            {form route="['content.content.move', $parent->id]" class="form-inline form-search" method="get"}
+            <z-form route="['content.content.move', $parent->id]" class="form-inline form-search" method="get">
             <div class="input-group">
                 <input name="keywords" value="{{$keywords}}" class="form-control" type="search"
                     placeholder="{{trans('master.keywords.placeholder')}}" required="required" aria-label="Search">
@@ -29,7 +29,7 @@
                     <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i></button>
                 </div>
             </div>
-            {/form}
+            </z-form>
         </div>
         <div class="main-action">
             <a href="javascript:location.reload()" class="btn btn-light" title="{{trans('master.refresh')}}">

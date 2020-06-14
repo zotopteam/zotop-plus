@@ -2,7 +2,7 @@
 
 @section('content')
 <section class="d-flex justify-content-center full-height">
-    {form route="admin.login" method="post" class="form-login align-self-center" autocomplete="off" nosubmited="nosubmited"}
+    <z-form route="admin.login" method="post" class="form-login align-self-center" autocomplete="off" nosubmited="nosubmited">
         <div class="card card-login">    
             <div class="card-header bg-primary text-white text-center pos-r">
                 <div class="site-name text-truncate">{{config('site.name') ?: config('zotop.name') }}</div>
@@ -28,7 +28,7 @@
                             <label for="username" class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-user fa-fw text-primary"></i></span>
                             </label>
-                            {field type="text" name="username" required="required" autofocus="autofocus" placeholder="trans('core::auth.account.placeholder')" data-msg-required="trans('core::auth.account.required')"}
+                            <z-field type="text" name="username" required="required" autofocus="autofocus" placeholder="trans('core::auth.account.placeholder')" data-msg-required="trans('core::auth.account.required')"/>
                             <div class="input-group-append" title="{{trans('core::auth.remember')}}" data-toggle="tooltip" data-placement="right">
                                 <div class="input-group-text">
                                     <input type="checkbox" class="form-control text-muted text-md" name="remember" tabindex="-1" {{ old('remember') ? 'checked' : ''}}>
@@ -45,7 +45,7 @@
                             <label for="password" class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-lock fa-fw text-primary"></i></span>
                             </label>                    
-                            {field type="password" name="password" required="required" placeholder="trans('core::auth.password.placeholder')" data-msg-required="trans('core::auth.password.required')"}
+                            <z-field type="password" name="password" required="required" placeholder="trans('core::auth.password.placeholder')" data-msg-required="trans('core::auth.password.required')"/>
                         </div>
 
                         @if ($errors->has('password'))
@@ -54,11 +54,11 @@
 
                 </div>
                 <div class="form-group">
-                        {field type="submit" value="trans('core::auth.submit')" icon="" class="btn btn-primary btn-block"}
+                        <z-field type="submit" value="trans('core::auth.submit')" icon="" class="btn btn-primary btn-block"/>
                 </div>
             </div>
         </div>
-    {/form}
+    </z-form>
 </section>
 @endsection
 

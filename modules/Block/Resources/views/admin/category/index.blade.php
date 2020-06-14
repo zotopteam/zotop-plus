@@ -20,7 +20,7 @@
         @if($categories->count() == 0)
             <div class="nodata">{{trans('block::category.nodata')}}</div>
         @else
-            {form route="block.category.sort" action="post"}
+            <z-form route="block.category.sort" action="post">
             <table class="table table-nowrap table-sortable table-hover">
                 <thead>
                 <tr>
@@ -56,7 +56,7 @@
                     @endforeach
                 </tbody>
             </table>
-            {/form}
+            </z-form>
         @endif                       
     </div><!-- main-body -->
     <div class="main-footer">

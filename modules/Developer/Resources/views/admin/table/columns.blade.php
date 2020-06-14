@@ -34,7 +34,7 @@
                             <input type="text" name="columns[{{$k}}][name]" class="form-control form-control-name required" value="{{$v['name']}}" columnname="true" uniquename="true">
                         </td>
                         <td>
-                            {field type="select" name="columns['.$k.'][type]" options="Module::data('developer::table.column.types')" value="$v['type']" class="form-control column-check"}
+                            <z-field type="select" name="columns['.$k.'][type]" options="Module::data('developer::table.column.types')" value="$v['type']" class="form-control column-check"/>
                         </td>
                         <td>
                             @if (in_array($v['type'], ['char', 'string', 'float', 'double','decimal','enum']))

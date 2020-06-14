@@ -10,24 +10,24 @@
             {{$title}} : {{$model->name}} ({{$model->id}})
         </div>
         <div class="main-action">
-            {field type="submit" form="field-form" value="trans('master.save')" class="btn btn-primary"}
+            <z-field type="submit" form="field-form" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
     
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form bind="$field" route="content.field.store" id="field-form" method="post" autocomplete="off"}
+            <z-form bind="$field" route="content.field.store" id="field-form" method="post" autocomplete="off">
 
-            {field type="hidden" name="model_id" required="required"}
-            {field type="hidden" name="system" required="required"}
+            <z-field type="hidden" name="model_id" required="required"/>
+            <z-field type="hidden" name="system" required="required"/>
 
             <div class="form-title row">{{trans('content::field.form.base')}}</div>
 
             <div class="form-group row">
                 <label for="label" class="col-2 col-form-label required">{{trans('content::field.label.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="label" required="required"}
+                    <z-field type="text" name="label" required="required"/>
 
                     @if ($errors->has('label'))
                     <span class="form-help text-error">{{ $errors->first('label') }}</span>
@@ -41,9 +41,9 @@
                 <label for="name" class="col-2 col-form-label required">{{trans('content::field.name.label')}}</label>
                 <div class="col-8">
                     @if ($field->system)
-                        {field type="translate" name="name" source="label" format="id" disabled="disabled"}
+                        <z-field type="translate" name="name" source="label" format="id" disabled="disabled"/>
                     @else
-                        {field type="translate" name="name" source="label" format="id" required="required" maxlength="64"}
+                        <z-field type="translate" name="name" source="label" format="id" required="required" maxlength="64"/>
                     @endif
 
                     @if ($errors->has('name'))
@@ -60,7 +60,7 @@
                 <label for="type" class="col-2 col-form-label">{{trans('content::field.type.label')}}</label>
                 <div class="col-8">
 
-                    {field type="select" name="type" options="Module::data('content::field.type.options', $field->toArray())" required="required"}
+                    <z-field type="select" name="type" options="Module::data('content::field.type.options', $field->toArray())" required="required"/>
 
                     @if ($errors->has('type'))
                     <span class="form-help text-error">{{ $errors->first('type') }}</span>
@@ -73,7 +73,7 @@
             <div class="form-group row">
                 <label for="help" class="col-2 col-form-label">{{trans('content::field.help.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="help"}
+                    <z-field type="text" name="help"/>
 
                     @if ($errors->has('help'))
                     <span class="form-help text-error">{{ $errors->first('help') }}</span>
@@ -90,7 +90,7 @@
             <div class="form-group row">
                 <label for="default" class="col-2 col-form-label">{{trans('content::field.default.label')}}</label>
                 <div class="col-8">
-                    {field type="textarea" name="default" rows="2"}
+                    <z-field type="textarea" name="default" rows="2"/>
 
                     @if ($errors->has('default'))
                     <span class="form-help text-error">{{ $errors->first('default') }}</span>
@@ -105,7 +105,7 @@
             <div class="form-group row">
                 <label for="post" class="col-2 col-form-label">{{trans('content::field.post.label')}}</label>
                 <div class="col-8">
-                    {field type="bool" name="post"}
+                    <z-field type="bool" name="post"/>
 
                     @if ($errors->has('post'))
                     <span class="form-help text-error">{{ $errors->first('post') }}</span>
@@ -118,7 +118,7 @@
             <div class="form-group row">
                 <label for="position" class="col-2 col-form-label">{{trans('content::field.position.label')}}</label>
                 <div class="col-8">
-                    {field type="radiogroup" name="position" options="['main'=>trans('content::field.layout.main'),'side' => trans('content::field.layout.side')]"}
+                    <z-field type="radiogroup" name="position" options="['main'=>trans('content::field.layout.main'),'side' => trans('content::field.layout.side')]"/>
 
                     @if ($errors->has('position'))
                     <span class="form-help text-error">{{ $errors->first('position') }}</span>
@@ -128,7 +128,7 @@
                 </div>
             </div>  
 
-            {/form}
+            </z-form>
 
         </div>
     </div><!-- main-body -->

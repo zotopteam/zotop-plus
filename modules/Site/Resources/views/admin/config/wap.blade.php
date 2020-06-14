@@ -10,18 +10,18 @@
             {{$title}}
         </div>
         <div class="main-action">
-            {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
+            <z-field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div> 
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form bind="$config" route="site.config.wap" method="post" id="config" autocomplete="off"}
+            <z-form bind="$config" route="site.config.wap" method="post" id="config" autocomplete="off">
 
             <div class="form-group row">
                 <label for="wap-name" class="col-2 col-form-label">{{trans('site::config.wap.name.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="wap[name]"}
+                    <z-field type="text" name="wap[name]"/>
                     <span class="form-help">{{trans('site::config.wap.name.help')}}</span>
                 </div>
             </div>
@@ -29,7 +29,7 @@
             <div class="form-group row">
                 <label for="wap-url" class="col-2 col-form-label">{{trans('site::config.wap.url.label')}}</label>
                 <div class="col-8">
-                    {field type="url" name="wap[url]"}
+                    <z-field type="url" name="wap[url]"/>
                     <span class="form-help">{{trans('site::config.wap.url.help')}}</span>
                 </div>
             </div>
@@ -37,7 +37,7 @@
             <div class="form-group row">
                 <label for="wap-theme" class="col-2 col-form-label required">{{trans('site::config.wap.theme.label')}}</label>
                 <div class="col-8">
-                    {field type="radiocards" name="wap[theme]" options="Module::data('site::theme.frontend')" class="radiocards-lg" column="4"}                
+                    <z-field type="radiocards" name="wap[theme]" options="Module::data('site::theme.frontend')" class="radiocards-lg" column="4"/>                
                     <span class="form-help">{{trans('site::config.wap.theme.help')}}</span>
                 </div>
             </div>
@@ -45,11 +45,11 @@
             <div class="form-group row">
                 <label for="wap-logo" class="col-2 col-form-label">{{trans('site::config.wap.logo.label')}}</label>
                 <div class="col-8">
-                    {field type="upload_image" name="wap[logo]" resize="false" watermark="false"}
+                    <z-field type="upload_image" name="wap[logo]" resize="false" watermark="false"/>
                     <span class="form-help">{{trans('site::config.wap.logo.help')}}</span>
                 </div>
             </div>
-            {/form}           
+            </z-form>           
         </div>
     </div><!-- main-body -->
 </div>

@@ -23,7 +23,7 @@
     </div>
     <div class="main-body scrollable">
         @if(count($keys))
-        {form route="['developer.translate.save', $module, 'filename'=>$filename]" id="translate-form" method="post" autocomplete="off"}
+        <z-form route="['developer.translate.save', $module, 'filename'=>$filename]" id="translate-form" method="post" autocomplete="off">
         <table class="table table-nowrap table-hover table-sortable">
             <thead>
                 <tr>

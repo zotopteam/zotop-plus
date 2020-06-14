@@ -2,10 +2,10 @@
 
 @section('content')
 
-    {form route="core.file.editor" method="post" class="form code-editor full-width full-height"}
-        {field type="hidden" name="file" value="$file"}
-        {field type="code" name="content" value="$content" width="100%" height="100%" mode="$mode"}
-    {/form}
+    <z-form route="core.file.editor" method="post" class="form code-editor full-width full-height">
+        <z-field type="hidden" name="file" value="$file"/>
+        <z-field type="code" name="content" value="$content" width="100%" height="100%" mode="$mode"/>
+    </z-form>
 
 @endsection
 

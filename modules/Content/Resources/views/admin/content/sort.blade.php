@@ -30,7 +30,7 @@
         @endif
         @endif
         <div class="main-action ml-auto">
-            {form route="['content.content.sort', $parent->id]" class="form-inline form-search" method="get"}
+            <z-form route="['content.content.sort', $parent->id]" class="form-inline form-search" method="get">
             <input type="hidden" name="id" value="{{$sort->id}}">
             <div class="input-group">
                 <input name="keywords" value="{{$keywords}}" class="form-control" type="search"
@@ -39,7 +39,7 @@
                     <button class="btn btn-primary" type="submit"> <i class="fa fa-fw fa-search"></i></button>
                 </div>
             </div>
-            {/form}
+            </z-form>
         </div>
         <div class="main-action">
             <a href="javascript:location.reload()" class="btn btn-light" title="{{trans('master.refresh')}}">

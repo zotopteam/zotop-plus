@@ -10,21 +10,21 @@
             {{$title}}
         </div>
         <div class="main-action">
-            {field type="submit" form="block-form" value="trans('block::block.save.next')" class="btn btn-primary"}            
+            <z-field type="submit" form="block-form" value="trans('block::block.save.next')" class="btn btn-primary"/>            
         </div>
     </div>
     
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form bind="$block" route="block.store" id="block-form" method="post" autocomplete="off"}
+            <z-form bind="$block" route="block.store" id="block-form" method="post" autocomplete="off">
             
-            {field type="hidden" name="type" required="required"}
+            <z-field type="hidden" name="type" required="required"/>
 
             <div class="form-group row">
                 <label for="category_id" class="col-2 col-form-label required">{{trans('block::block.category_id')}}</label>
                 <div class="col-8">
-                    {field type="select" name="category_id" options="Module::data('block::category.select')" required="required"}
+                    <z-field type="select" name="category_id" options="Module::data('block::category.select')" required="required"/>
 
                     @if ($errors->has('category_id'))
                     <span class="form-help text-error">{{ $errors->first('category_id') }}</span>
@@ -37,7 +37,7 @@
             <div class="form-group row">
                 <label for="name" class="col-2 col-form-label required">{{trans('block::block.name')}}</label>
                 <div class="col-8">
-                    {field type="text" name="name" required="required"}
+                    <z-field type="text" name="name" required="required"/>
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -50,7 +50,7 @@
             <div class="form-group row">
                 <label for="slug" class="col-2 col-form-label required">{{trans('block::block.slug')}}</label>
                 <div class="col-8">
-                    {field type="translate" name="slug" source="name" format="slug" required="required" maxlength="64"}
+                    <z-field type="translate" name="slug" source="name" format="slug" required="required" maxlength="64"/>
 
                     @if ($errors->has('slug'))
                     <span class="form-help text-error">{{ $errors->first('slug') }}</span>
@@ -63,7 +63,7 @@
             <div class="form-group row">
                 <label for="description" class="col-2 col-form-label">{{trans('block::block.description')}}</label>
                 <div class="col-8">
-                    {field type="textarea" name="description" rows="3"}
+                    <z-field type="textarea" name="description" rows="3"/>
 
                     @if ($errors->has('description'))
                     <span class="form-help text-error">{{ $errors->first('description') }}</span>
@@ -76,7 +76,7 @@
             <div class="form-group row">
                 <label for="view" class="col-2 col-form-label required">{{trans('block::block.view')}}</label>
                 <div class="col-8">
-                    {field type="view" name="view" required="required"}
+                    <z-field type="view" name="view" required="required"/>
 
                     @if ($errors->has('view'))
                     <span class="form-help text-error">{{ $errors->first('view') }}</span>
@@ -85,7 +85,7 @@
                     @endif                       
                 </div>
             </div>            
-            {/form}
+            </z-form>
 
         </div>
     </div><!-- main-body -->

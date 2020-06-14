@@ -3,7 +3,8 @@
 namespace App\Support\Compilers;
 
 /**
- * 模板扩展，解析点格式的数组
+ * 模板扩展，解析表单标签
+ * 如：<z-form></z-form> <z-field/> <z-text/> <z-textarea/>
  * 
  * @package App\Support
  */
@@ -24,14 +25,14 @@ class ZFormCompiler
     }
 
     /**
-     * 解析form标签，如： {form bind="$config" method="post"} 
+     * 解析form起始标签，如： <z-form bind="$config" method="post">
      *
      * @param string $value
      * @return string
      */
     private function compileFormOpeningTag($value)
     {
-        // 解析 {form}
+        // 正则捕获 
         $pattern = "/(@)?
             <
                 \s*
@@ -76,7 +77,7 @@ class ZFormCompiler
     }
 
     /**
-     * 解析form关闭标签，如： {/form} 
+     * 解析form关闭标签，如： </z-form>
      *
      * @param string $value
      * @return string
@@ -93,14 +94,19 @@ class ZFormCompiler
     }
 
     /**
-     * 解析field标签，如： {field type="editor" options="Module::data(……)"} 
-     *
+     * 解析字段标签
+     *  
+     * <z-field type="editor" options="Module::data(……)" /> 
+     * <z-field type="text" name="title"/>
+     * <z-text name="title"/> 
+     * <z-textarea name="summary"/> 
+     * 
      * @param string $value
      * @return string
      */
     private function compileFieldTag($value)
     {
-        // 解析 {field}
+        // 正则捕获
         $pattern = "/(@)?
             <
                 \s*
@@ -127,7 +133,7 @@ class ZFormCompiler
         /x";
 
         $value   = preg_replace_callback($pattern, function ($matches) {
-            //dd($matches);
+
             // 如果@开头，直接返回去掉@后的字符串
             if ($matches[1]) {
                 return substr($matches[0], 1);

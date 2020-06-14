@@ -25,7 +25,7 @@
     </div>
     <div class="main-body scrollable">
 
-        {form route="region.sort" action="post"}
+        <z-form route="region.sort" action="post">
         <input type="hidden" name="parent_id" value="{{$id}}" />
         <table class="table table-nowrap table-sortable table-hover">
             <thead>
@@ -80,7 +80,7 @@
                 @endforeach
             </tbody>
         </table>
-        {/form}
+        </z-form>
 
     </div><!-- main-body -->
     <div class="main-footer">

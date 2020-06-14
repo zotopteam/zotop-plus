@@ -27,25 +27,25 @@
         </div>
         <div class="main-action">
             
-            {field type="submit" form="content-form" value="trans('content::content.status.publish')" class="btn btn-success" data-status="publish" data-action="back"}
+            <z-field type="submit" form="content-form" value="trans('content::content.status.publish')" class="btn btn-success" data-status="publish" data-action="back"/>
             @if ($content->status == 'draft')
-                {field type="submit" form="content-form" value="trans('content::content.save.draft')" class="btn btn-primary"}
+                <z-field type="submit" form="content-form" value="trans('content::content.save.draft')" class="btn btn-primary"/>
             @else
-                {field type="submit" form="content-form" value="trans('content::content.save')" class="btn btn-primary"}
+                <z-field type="submit" form="content-form" value="trans('content::content.save')" class="btn btn-primary"/>
             @endif
         </div>   
     </div>
     <div class="main-body bg-light scrollable">
         <div class="container-fluid">
 
-        {form bind="$content" route="['content.content.update', $id]" id="content-form" method="put" autocomplete="off"}
+        <z-form bind="$content" route="['content.content.update', $id]" id="content-form" method="put" autocomplete="off">
             
-            {field type="hidden" name="_action"}
-            {field type="hidden" name="parent_id" required="required"}
-            {field type="hidden" name="model_id" required="required"}
-            {field type="hidden" name="source_id" required="required"}
-            {field type="hidden" name="status" required="required"}
-            {field type="hidden" name="publish_at"}
+            <z-field type="hidden" name="_action"/>
+            <z-field type="hidden" name="parent_id" required="required"/>
+            <z-field type="hidden" name="model_id" required="required"/>
+            <z-field type="hidden" name="source_id" required="required"/>
+            <z-field type="hidden" name="status" required="required"/>
+            <z-field type="hidden" name="publish_at"/>
             
 
             <div class="row">
@@ -63,7 +63,7 @@
                 </div>
                 @endif
             </div>
-            {/form}
+            </z-form>
 
         </div>
     </div><!-- main-body -->

@@ -11,15 +11,15 @@
 
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form bind="config('mail')" route="core.config.mail" method="post" id="config" autocomplete="off"}
+            <z-form bind="config('mail')" route="core.config.mail" method="post" id="config" autocomplete="off">
 
             <div class="form-title row">{{trans('core::config.mail.base')}}</div>
             <div class="form-group row">
                 <label for="driver"
                     class="col-2 col-form-label required">{{trans('core::config.mail.driver.label')}}</label>
                 <div class="col-8">
-                    {field type="select" options="Module::data('core::config.mail_drivers')" name="driver"
-                    required="required" column="1"}
+                    <z-field type="select" options="Module::data('core::config.mail_drivers')" name="driver"
+                    required="required" column="1"/>
 
                     @if ($errors->has('driver'))
                     <span class="form-help text-error">{{ $errors->first('driver') }}</span>
@@ -39,7 +39,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-envelope fa-fw"></i></span>
                         </div>
-                        {field type="email" name="from[address]" required="required"}
+                        <z-field type="email" name="from[address]" required="required"/>
                     </div>
 
                     @if ($errors->has('from.address'))
@@ -53,7 +53,7 @@
                 <label for="from[name]"
                     class="col-2 col-form-label required">{{trans('core::config.mail.from.name.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="from[name]" required="required"}
+                    <z-field type="text" name="from[name]" required="required"/>
 
                     @if ($errors->has('from.name'))
                     <span class="form-help text-error">{{ $errors->first('from.name') }}</span>
@@ -69,7 +69,7 @@
                 <div class="form-group row">
                     <label for="host" class="col-2 col-form-label">{{trans('core::config.mail.host.label')}}</label>
                     <div class="col-8">
-                        {field type="text" name="host"}
+                        <z-field type="text" name="host"/>
 
                         @if ($errors->has('host'))
                         <span class="form-help text-error">{{ $errors->first('host') }}</span>
@@ -81,7 +81,7 @@
                 <div class="form-group row">
                     <label for="port" class="col-2 col-form-label">{{trans('core::config.mail.port.label')}}</label>
                     <div class="col-8">
-                        {field type="text" name="port"}
+                        <z-field type="text" name="port"/>
 
                         @if ($errors->has('port'))
                         <span class="form-help text-error">{{ $errors->first('port') }}</span>
@@ -95,7 +95,7 @@
                     <label for="encryption"
                         class="col-2 col-form-label">{{trans('core::config.mail.encryption.label')}}</label>
                     <div class="col-8">
-                        {field type="radiogroup" options="['tls'=>'TLS','ssl'=>'SSL']" name="encryption"}
+                        <z-field type="radiogroup" options="['tls'=>'TLS','ssl'=>'SSL']" name="encryption"/>
 
                         @if ($errors->has('encryption'))
                         <span class="form-help text-error">{{ $errors->first('encryption') }}</span>
@@ -108,7 +108,7 @@
                     <label for="username"
                         class="col-2 col-form-label">{{trans('core::config.mail.username.label')}}</label>
                     <div class="col-8">
-                        {field type="text" name="username"}
+                        <z-field type="text" name="username"/>
 
                         @if ($errors->has('username'))
                         <span class="form-help text-error">{{ $errors->first('username') }}</span>
@@ -121,7 +121,7 @@
                     <label for="password"
                         class="col-2 col-form-label">{{trans('core::config.mail.password.label')}}</label>
                     <div class="col-8">
-                        {field type="password2" name="password"}
+                        <z-field type="password2" name="password"/>
 
                         @if ($errors->has('password'))
                         <span class="form-help text-error">{{ $errors->first('password') }}</span>
@@ -131,9 +131,9 @@
                     </div>
                 </div>
             </div>
-            {/form}
+            </z-form>
 
-            {form route="core.config.mailtest" method="post" id="mailtest" autocomplete="off" nosubmited="nosubmited"}
+            <z-form route="core.config.mailtest" method="post" id="mailtest" autocomplete="off" nosubmited="nosubmited">
             <div class="form-title row">{{trans('core::config.mail.test')}}</div>
             <div class="form-group row">
                 <label for="test"
@@ -143,7 +143,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-envelope fa-fw"></i></span>
                         </div>
-                        {field type="email" name="mailtest_sendto" required="required"}
+                        <z-field type="email" name="mailtest_sendto" required="required"/>
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" id="mailtest">
                                 <i class="fa fa-paper-plane fa-fw text-center"></i>
@@ -159,12 +159,12 @@
                     @endif
                 </div>
             </div>
-            {/form}
+            </z-form>
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
-            {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
+            <z-field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
 </div>

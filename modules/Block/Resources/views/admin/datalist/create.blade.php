@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="container-fluid">
-        {form bind="$datalist" route="block.datalist.store" id="datalist-form" method="post" autocomplete="off"}
-        {field type="hidden" name="block_id" required="required"}
-        {field type="hidden" name="source_id" required="required"}
-        {field type="hidden" name="module" required="required"}
+        <z-form bind="$datalist" route="block.datalist.store" id="datalist-form" method="post" autocomplete="off">
+        <z-field type="hidden" name="block_id" required="required"/>
+        <z-field type="hidden" name="source_id" required="required"/>
+        <z-field type="hidden" name="module" required="required"/>
         @foreach ($fields as $field)            
         <div class="form-group">
             <label for="{{array_get($field, 'field.id')}}" class="form-label {{array_get($field, 'field.required')}}">
@@ -17,7 +17,7 @@
         </div>
         @endforeach
 
-        {/form}
+        </z-form>
     </div>
 @endsection
 

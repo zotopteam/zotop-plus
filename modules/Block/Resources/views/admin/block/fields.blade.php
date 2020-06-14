@@ -53,11 +53,11 @@
                     @if ($v['show'] == 2)
                     <input type="hidden" name="fields[{{$k}}][type]" class="form-control required"
                         value="{{$v['type']}}">
-                    {field type="select" options="Module::data('block::fields.types')" value="$v['type']"
-                    disabled="disabled" class="form-control-sm"}
+                    <z-field type="select" options="Module::data('block::fields.types')" value="$v['type']"
+                    disabled="disabled" class="form-control-sm"/>
                     @else
-                    {field type="select" name="fields['.$k.'][type]" options="Module::data('block::fields.types')"
-                    value="$v['type']" class="form-control-sm field-type"}
+                    <z-field type="select" name="fields['.$k.'][type]" options="Module::data('block::fields.types')"
+                    value="$v['type']" class="form-control-sm field-type"/>
                     @endif
                 </td>
                 <td class="field-settings">

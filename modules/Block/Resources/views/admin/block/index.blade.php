@@ -31,7 +31,7 @@
         @if($blocks->count() == 0)
         <div class="nodata">{{trans('master.nodata')}}</div>
         @else
-        {form route="block.sort" action="post"}
+        <z-form route="block.sort" action="post">
         <table class="table table-nowrap table-sortable table-hover">
             <thead>
                 <tr>
@@ -87,7 +87,7 @@
 
             </tbody>
         </table>
-        {/form}
+        </z-form>
         @endif
     </div><!-- main-body -->
     <div class="main-footer">

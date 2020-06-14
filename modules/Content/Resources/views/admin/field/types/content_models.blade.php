@@ -15,11 +15,11 @@
             </td>
             <td>
                 @if ($model->view)                
-                {field type="view" name="$name.'['.$model->id.'][view]'" value="$model->view ?? null" required="required"}
+                <z-field type="view" name="$name.'['.$model->id.'][view]'" value="$model->view ?? null" required="required"/>
                 @endif
             </td>
             <td class="text-center">
-                {field type="toggle" name="$name.'['.$model->id.'][enabled]'" value="$model->enabled"}
+                <z-field type="toggle" name="$name.'['.$model->id.'][enabled]'" value="$model->enabled"/>
             </td>
         </tr>
         @endforeach

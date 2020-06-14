@@ -3,7 +3,7 @@
 @section('content')
 <div class="main scrollable">
 
-    {form route="['developer.migration.create', $module]" method="post" class="form p-3" autocomplete="off"}
+    <z-form route="['developer.migration.create', $module]" method="post" class="form p-3" autocomplete="off">
 
         <div class="container-fluid">
             <div class="form-group">
@@ -11,7 +11,7 @@
                     {{trans('developer::migration.command')}}
                 </label>
                 <div class="form-field">
-                    {field type="radiogroup" name="command" options="Module::data('developer::migration.command')" column="1"}
+                    <z-field type="radiogroup" name="command" options="Module::data('developer::migration.command')" column="1"/>
 
                     @if ($errors->has('command'))
                     <span class="form-help text-error">{{ $errors->first('command') }}</span>
@@ -29,7 +29,7 @@
                     </span>
                 </label>
                 <div class="form-field">
-                    {field type="text" name="name" pattern="^[a-z][a-z0-9_]+[a-z]$" required="required"}
+                    <z-field type="text" name="name" pattern="^[a-z][a-z0-9_]+[a-z]$" required="required"/>
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -38,7 +38,7 @@
                 </div>                      
             </div>
         </div> 
-    {/form}
+    </z-form>
 </div>
 
 

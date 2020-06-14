@@ -3,14 +3,14 @@
 @section('content')
 <div class="main scrollable">
 
-    {form bind="$category" route="block.category.store" id="category-form" class="form p-3" autocomplete="off"}
+    <z-form bind="$category" route="block.category.store" id="category-form" class="form p-3" autocomplete="off">
 
         <div class="container-fluid">
 
             <div class="form-group">
                 <label for="name" class="form-label required">{{trans('block::category.name')}}</label>
                 <div class="form-field">
-                    {field type="text" name="name" required="required"}
+                    <z-field type="text" name="name" required="required"/>
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -23,7 +23,7 @@
             <div class="form-group">
                 <label for="description" class="form-label">{{trans('block::category.description')}}</label>
                 <div class="form-field">
-                    {field type="textarea" name="description" rows="5"}
+                    <z-field type="textarea" name="description" rows="5"/>
 
                     @if ($errors->has('description'))
                     <span class="form-help text-error">{{ $errors->first('description') }}</span>
@@ -34,7 +34,7 @@
             </div>                       
         </div>
 
-    {/form}
+    </z-form>
 </div>
 
 

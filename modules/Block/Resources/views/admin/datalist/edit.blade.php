@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container-fluid">
-    {form bind="$datalist" route="['block.datalist.update', $datalist->id]" id="datalist-form" method="put" autocomplete="off"}
+    <z-form bind="$datalist" route="['block.datalist.update', $datalist->id]" id="datalist-form" method="put" autocomplete="off">
 
-    {field type="hidden" name="block_id" required="required"}
+    <z-field type="hidden" name="block_id" required="required"/>
 
     @foreach ($fields as $field)            
     <div class="form-group">
@@ -17,7 +17,7 @@
     </div>
     @endforeach
 
-    {/form}
+    </z-form>
 </div>
 @endsection
 

@@ -202,7 +202,7 @@ class FormTagCompiler
         $value = trim($value, "'");
 
         // 如果是以$开头为变量  'key'=>$value, 'key'=>1234
-        if ($value[0] == '$' || is_numeric($value)) {
+        if (strpos($value, '$') === 0 || is_numeric($value)) {
             return $value;
         }
 

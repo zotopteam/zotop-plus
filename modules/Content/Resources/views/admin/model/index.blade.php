@@ -20,7 +20,7 @@
         @if($models->count() == 0 && $import->count() == 0)
             <div class="nodata">{{trans('master.nodata')}}</div>
         @else
-            {form route="content.model.sort" method="post"}
+            <z-form route="content.model.sort" method="post">
             <table class="table table-nowrap table-sortable table-hover">
                 <thead>
                 <tr>
@@ -107,7 +107,7 @@
                 @endforeach
                 </tbody>
             </table>
-            {/form}
+            </z-form>
         @endif                       
     </div><!-- main-body -->
     <div class="main-footer">

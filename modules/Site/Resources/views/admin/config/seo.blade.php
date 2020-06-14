@@ -10,19 +10,19 @@
             {{$title}}
         </div>
         <div class="main-action">
-            {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
+            <z-field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form bind="$config" route="site.config.seo" method="post" id="config" autocomplete="off"}
+            <z-form bind="$config" route="site.config.seo" method="post" id="config" autocomplete="off">
             <div class="form-title row">{{trans('site::config.seo.global.title')}}</div>
 
             <div class="form-group row">
                 <label for="title" class="col-2 col-form-label required">{{trans('site::config.title.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="title" required="required"}
+                    <z-field type="text" name="title" required="required"/>
                     
                     @if ($errors->has('title'))
                     <span class="form-help text-error">{{ $errors->first('title') }}</span>
@@ -35,7 +35,7 @@
             <div class="form-group row">
                 <label for="keywords" class="col-2 col-form-label required">{{trans('site::config.keywords.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="keywords" required="required"}
+                    <z-field type="text" name="keywords" required="required"/>
                     
                     @if ($errors->has('keywords'))
                     <span class="form-help text-error">{{ $errors->first('keywords') }}</span>
@@ -48,7 +48,7 @@
             <div class="form-group row">
                 <label for="description" class="col-2 col-form-label required">{{trans('site::config.description.label')}}</label>
                 <div class="col-8">
-                    {field type="textarea" name="description" required="required" rows="5"}
+                    <z-field type="textarea" name="description" required="required" rows="5"/>
                     
                     @if ($errors->has('description'))
                     <span class="form-help text-error">{{ $errors->first('description') }}</span>
@@ -63,7 +63,7 @@
             <div class="form-group row">
                 <label for="index_keywords" class="col-2 col-form-label">{{trans('site::config.index_keywords.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="index_keywords"}
+                    <z-field type="text" name="index_keywords"/>
                     
                     @if ($errors->has('index_keywords'))
                     <span class="form-help text-error">{{ $errors->first('index_keywords') }}</span>
@@ -76,7 +76,7 @@
             <div class="form-group row">
                 <label for="index_meta" class="col-2 col-form-label">{{trans('site::config.index_meta.label')}}</label>
                 <div class="col-8">
-                    {field type="code" name="index_meta" placeholder="trans('site::config.index_meta.placeholder')" rows="5"}
+                    <z-field type="code" name="index_meta" placeholder="trans('site::config.index_meta.placeholder')" rows="5"/>
                     
                     @if ($errors->has('index_meta'))
                     <span class="form-help text-error">{{ $errors->first('index_meta') }}</span>
@@ -85,7 +85,7 @@
                     @endif
                 </div>
             </div>                     
-            {/form}
+            </z-form>
         </div>
     </div><!-- main-body -->
 </div>

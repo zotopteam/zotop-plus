@@ -7,7 +7,7 @@
             {{$title}}
         </div>
         <div class="main-action">
-            {form route="core.log.index" class="form-inline form-search" method="get"}
+            <z-form route="core.log.index" class="form-inline form-search" method="get">
             <div class="input-group">
                 <input name="keywords" value="{{request('keywords')}}" class="form-control border-primary" type="search"
                     placeholder="{{trans('master.keywords.placeholder')}}" required="required" aria-label="Search">
@@ -18,7 +18,7 @@
                     @endif
                 </div>
             </div>
-            {/form}
+            </z-form>
         </div>
     </div>
     <div class="main-body scrollable">

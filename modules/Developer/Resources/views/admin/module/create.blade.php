@@ -3,14 +3,14 @@
 @section('content')
 <div class="main scrollable">
 
-    {form route="developer.module.store" method="post" class="form m-4" autocomplete="off"}
+    <z-form route="developer.module.store" method="post" class="form m-4" autocomplete="off">
 
         <div class="container-fluid">
 
             <div class="form-group">
                 <label for="name" class="form-label required">{{trans('developer::module.name.label')}}</label>
                 <div class="form-field">
-                    {field type="text" name="name" pattern="^[a-z]+$" required="required"}
+                    <z-field type="text" name="name" pattern="^[a-z]+$" required="required"/>
 
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -23,7 +23,7 @@
             <div class="form-group">
                 <label for="plain" class="form-label required">{{trans('developer::module.style.label')}}</label>
                 <div class="form-field">
-                    {field type="radiogroup" name="style" options="Module::data('developer::module.styles')" required="required" column="1"}
+                    <z-field type="radiogroup" name="style" options="Module::data('developer::module.styles')" required="required" column="1"/>
 
                     @if ($errors->has('style'))
                     <span class="form-help text-error">{{ $errors->first('style') }}</span>
@@ -35,7 +35,7 @@
                        
         </div>
 
-    {/form}
+    </z-form>
 </div>
 
 

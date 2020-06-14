@@ -10,19 +10,19 @@
             {{$title}}
         </div>
         <div class="main-action">
-            {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
+            <z-field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div> 
     
     <div class="main-body scrollable">
         <div class="container-fluid">
-            {form bind="$config" route="site.config.base" method="post" id="config" autocomplete="off"}
+            <z-form bind="$config" route="site.config.base" method="post" id="config" autocomplete="off">
             <div class="form-title row">{{trans('site::config.base.info')}}</div>
 
             <div class="form-group row">
                 <label for="name" class="col-2 col-form-label required">{{trans('site::config.name.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="name" required="required"}
+                    <z-field type="text" name="name" required="required"/>
                     
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
@@ -36,7 +36,7 @@
                 <label for="url" class="col-2 col-form-label required">{{trans('site::config.url.label')}}</label>
                 <div class="col-8">
 
-                    {field type="url" name="url"}
+                    <z-field type="url" name="url"/>
                     
                     @if ($errors->has('url'))
                     <span class="form-help text-error">{{ $errors->first('url') }}</span>
@@ -49,7 +49,7 @@
             <div class="form-group row">
                 <label for="slogan" class="col-2 col-form-label">{{trans('site::config.slogan.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="slogan"}
+                    <z-field type="text" name="slogan"/>
                     
                     @if ($errors->has('slogan'))
                     <span class="form-help text-error">{{ $errors->first('slogan') }}</span>
@@ -64,7 +64,7 @@
             <div class="form-group row">
                 <label for="copyright" class="col-2 col-form-label">{{trans('site::config.copyright.label')}}</label>
                 <div class="col-8">
-                    {field type="text" name="copyright"}
+                    <z-field type="text" name="copyright"/>
                     
                     @if ($errors->has('copyright'))
                     <span class="form-help text-error">{{ $errors->first('copyright') }}</span>
@@ -80,7 +80,7 @@
                 <label for="theme" class="col-2 col-form-label required">{{trans('site::config.theme.label')}}</label>
                 <div class="col-8">
                     
-                    {field type="radiocards" name="theme" options="Module::data('site::theme.frontend')" class="radiocards-lg" column="4"}                
+                    <z-field type="radiocards" name="theme" options="Module::data('site::theme.frontend')" class="radiocards-lg" column="4"/>                
                     
                     @if ($errors->has('theme'))
                     <span class="form-help text-error">{{ $errors->first('theme') }}</span>
@@ -94,7 +94,7 @@
                 <label for="logo" class="col-2 col-form-label">{{trans('site::config.logo.label')}}</label>
                 <div class="col-8">
 
-                    {field type="upload_image" name="logo" resize="false" watermark="false"}
+                    <z-field type="upload_image" name="logo" resize="false" watermark="false"/>
 
                     @if ($errors->has('logo'))
                     <span class="form-help text-error">{{ $errors->first('logo') }}</span>
@@ -108,7 +108,7 @@
                 <label for="favicon" class="col-2 col-form-label">{{trans('site::config.favicon.label')}}</label>
                 <div class="col-8">
 
-                    {field type="upload" name="favicon" allow="png,ico" preview="image"}
+                    <z-field type="upload" name="favicon" allow="png,ico" preview="image"/>
                        
                     @if ($errors->has('favicon'))
                     <span class="form-help text-error">{{ $errors->first('favicon') }}</span>
@@ -118,7 +118,7 @@
                 </div>
             </div>
 
-            {/form}           
+            </z-form>           
         </div>
     </div><!-- main-body -->
 </div>

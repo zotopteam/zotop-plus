@@ -20,7 +20,7 @@ return [
     | This value is the version of zotop.
     */
 
-    'version' => '3.0.0327',
+    'version' => '3.6.0614',
 
 
     /*
@@ -31,7 +31,7 @@ return [
     | This value is the release of zotop. 
     */
 
-    'release' => '20200327',
+    'release' => '20200614',
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ return [
     | This value is the description of zotop.
     */
 
-    'title' => 'zotop plus',    
+    'title' => 'zotop plus',
 
     /*
     |--------------------------------------------------------------------------
@@ -51,7 +51,7 @@ return [
     | This value is the description of zotop.
     */
 
-    'description' => 'Based on Laravel 7 and Bootstrap 4, Support modules and themes, Better && Easier Laravel CMS',   
+    'description' => 'Based on Laravel 7 and Bootstrap 4, Support modules and themes, Better && Easier Laravel CMS',
 
     /*
     |--------------------------------------------------------------------------
@@ -81,7 +81,7 @@ return [
     | This value is the document url of zotop
     */
 
-    'document' => 'http://doc.zotop.com/',  
+    'document' => 'http://doc.zotop.com/',
 
     /*
     |--------------------------------------------------------------------------

@@ -8,13 +8,13 @@
             {{$title}}
         </div>
         <div class="main-action">
-            {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
+            <z-field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form bind="$config" route="core.config.upload" method="post" id="config" autocomplete="off"}
+            <z-form bind="$config" route="core.config.upload" method="post" id="config" autocomplete="off">
             <div class="form-title row">{{trans('core::config.upload.base')}}</div>
 
             <div class="form-group row">
@@ -37,17 +37,17 @@
                                 @foreach (Module::data('core::file.types') as $type=>$name)
                                 <tr>
                                     <td>{{$name}}</td>
-                                    <td>{field type="text" name="upload[types]['.$type.'][extensions]"}</td>
+                                    <td><z-field type="text" name="upload[types]['.$type.'][extensions]"/></td>
                                     <td>
                                         <div class="input-group">
-                                            {field type="number" name="upload[types]['.$type.'][maxsize]" min="0"
-                                            required="required}
+                                            <z-field type="number" name="upload[types]['.$type.'][maxsize]" min="0"
+                                            required="required/>
                                             <div class="input-group-append"><span class="input-group-text">MB</span>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="text-center">{field type="toggle"
-                                        name="upload[types]['.$type.'][enabled]"}</td>
+                                    <td class="text-center"><z-field type="toggle"
+                                        name="upload[types]['.$type.'][enabled]"/></td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -68,7 +68,7 @@
                     {{trans('core::config.upload.dir.label')}}
                 </label>
                 <div class="col-8">
-                    {field type="radiogroup" name="upload[dir]" options="Module::data('core::upload.dir')"}
+                    <z-field type="radiogroup" name="upload[dir]" options="Module::data('core::upload.dir')"/>
 
                     @if ($errors->has('dir'))
                     <span class="form-help text-error">{{ $errors->first('dir') }}</span>
@@ -86,7 +86,7 @@
                     {{trans('core::image.resize.enabled')}}
                 </label>
                 <div class="col-8">
-                    {field type="toggle" name="image[resize][enabled]"}
+                    <z-field type="toggle" name="image[resize][enabled]"/>
 
                     @if ($errors->has('enabled'))
                     <span class="form-help text-error">{{ $errors->first('enabled') }}</span>
@@ -100,10 +100,10 @@
                     <div class="input-group">
                         <div class="input-group-prepend"><span
                                 class="input-group-text">{{trans('core::image.resize.width')}}</span></div>
-                        {field type="number" name="image[resize][width]" min="0"}
+                        <z-field type="number" name="image[resize][width]" min="0"/>
                         <div class="input-group-prepend"><span
                                 class="input-group-text">{{trans('core::image.resize.height')}}</span></div>
-                        {field type="number" name="image[resize][height]" min="0"}
+                        <z-field type="number" name="image[resize][height]" min="0"/>
                         <div class="input-group-append"><span class="input-group-text">px</span></div>
                     </div>
 
@@ -120,7 +120,7 @@
                     {{trans('core::image.resize.quality')}}
                 </label>
                 <div class="col-5">
-                    {field type="number" name="image[resize][quality]" min="0" max="100"}
+                    <z-field type="number" name="image[resize][quality]" min="0" max="100"/>
 
                     @if ($errors->has('quality'))
                     <span class="form-help text-error">{{ $errors->first('quality') }}</span>
@@ -136,7 +136,7 @@
                     {{trans('core::image.watermark.enabled')}}
                 </label>
                 <div class="col-8">
-                    {field type="toggle" name="image[watermark][enabled]"}
+                    <z-field type="toggle" name="image[watermark][enabled]"/>
 
                     @if ($errors->has('enabled'))
                     <span class="form-help text-error">{{ $errors->first('enabled') }}</span>
@@ -151,10 +151,10 @@
                     <div class="input-group">
                         <div class="input-group-prepend"><span
                                 class="input-group-text">{{trans('core::image.watermark.width')}}</span></div>
-                        {field type="number" name="image[watermark][width]" min="0"}
+                        <z-field type="number" name="image[watermark][width]" min="0"/>
                         <div class="input-group-prepend"><span
                                 class="input-group-text">{{trans('core::image.watermark.height')}}</span></div>
-                        {field type="number" name="image[watermark][height]" min="0"}
+                        <z-field type="number" name="image[watermark][height]" min="0"/>
                         <div class="input-group-append"><span class="input-group-text">px</span></div>
                     </div>
 
@@ -171,8 +171,8 @@
                     {{trans('core::image.watermark.type')}}
                 </label>
                 <div class="col-5">
-                    {field type="radiogroup" name="image[watermark][type]"
-                    options="Module::data('core::watermark.type')"}
+                    <z-field type="radiogroup" name="image[watermark][type]"
+                    options="Module::data('core::watermark.type')"/>
                 </div>
             </div>
             <div class="watermark-options" rel="text" data-depend="#watermark-type :radio" data-when="value=text"
@@ -182,8 +182,8 @@
                         {{trans('core::image.watermark.font')}}
                     </label>
                     <div class="col-8">
-                        {field type="radiocards" name="image[watermark][font_file]"
-                        options="Module::data('core::watermark.font.file')"}
+                        <z-field type="radiocards" name="image[watermark][font_file]"
+                        options="Module::data('core::watermark.font.file')"/>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -194,8 +194,8 @@
                         <div class="input-group">
                             <div class="input-group-prepend"><span
                                     class="input-group-text">{{trans('core::image.watermark.font.size')}}</span></div>
-                            {field type="select" name="image[watermark][font_size]"
-                            options="Module::data('core::watermark.font.size')"}
+                            <z-field type="select" name="image[watermark][font_size]"
+                            options="Module::data('core::watermark.font.size')"/>
                             <div class="input-group-append"><span class="input-group-text">px</span></div>
                         </div>
                     </div>
@@ -203,7 +203,7 @@
                         <div class="input-group input-color">
                             <div class="input-group-prepend"><span
                                     class="input-group-text">{{trans('core::image.watermark.font.color')}}</span></div>
-                            {field type="text" name="image[watermark][font_color]"}
+                            <z-field type="text" name="image[watermark][font_color]"/>
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-light btn-color"><i
                                         class="fa fa-palette fa-fw"></i></button>
@@ -214,7 +214,7 @@
                         <div class="input-group">
                             <div class="input-group-prepend"><span
                                     class="input-group-text">{{trans('core::image.watermark.font.angle')}}</span></div>
-                            {field type="number" name="image[watermark][font_angle]" min="0" max="360"}
+                            <z-field type="number" name="image[watermark][font_angle]" min="0" max="360"/>
                             <div class="input-group-append"><span class="input-group-text">°</span></div>
                         </div>
                     </div>
@@ -224,7 +224,7 @@
                         {{trans('core::image.watermark.text')}}
                     </label>
                     <div class="col-8">
-                        {field type="text" name="image[watermark][text]"}
+                        <z-field type="text" name="image[watermark][text]"/>
                     </div>
                 </div>
             </div>
@@ -235,8 +235,8 @@
                         {{trans('core::image.watermark.image')}}
                     </label>
                     <div class="col-8">
-                        {field type="upload_image" name="image[watermark][image]" allow="png" resize="false"
-                        watermark="false" tools="false"}
+                        <z-field type="upload_image" name="image[watermark][image]" allow="png" resize="false"
+                        watermark="false" tools="false"/>
                         @if ($errors->has('image.watermark.image'))
                         <span class="form-help text-error">{{ $errors->first('image.watermark.image') }}</span>
                         @else
@@ -256,8 +256,8 @@
                                 <tr>
                                     @foreach (Module::data('core::watermark.position') as $value=>$postion)
                                     <td class="text-center">
-                                        {field type="radio" name="image[watermark][position]" id="$value" value="$value"
-                                        label="$postion"}
+                                        <z-field type="radio" name="image[watermark][position]" id="$value" value="$value"
+                                        label="$postion"/>
                                     </td>
                                     @if($loop->iteration%3==0 && $loop->iteration < $loop->count)
                                 </tr>
@@ -277,10 +277,10 @@
                     <div class="input-group">
                         <div class="input-group-prepend"><span
                                 class="input-group-text">{{trans('core::image.watermark.offset.x')}}</span></div>
-                        {field type="number" name="image[watermark][offset_x]" min="0"}
+                        <z-field type="number" name="image[watermark][offset_x]" min="0"/>
                         <div class="input-group-prepend"><span
                                 class="input-group-text">{{trans('core::image.watermark.offset.y')}}</span></div>
-                        {field type="number" name="image[watermark][offset_y]" min="0"}
+                        <z-field type="number" name="image[watermark][offset_y]" min="0"/>
                         <div class="input-group-append"><span class="input-group-text">px</span></div>
                     </div>
 
@@ -296,7 +296,7 @@
                     {{trans('core::image.watermark.opacity')}}
                 </label>
                 <div class="col-5">
-                    {field type="number" name="image[watermark][opacity]" min="1" max="100"}
+                    <z-field type="number" name="image[watermark][opacity]" min="1" max="100"/>
 
                     @if ($errors->has('watermark.opacity'))
                     <span class="form-help text-error">{{ $errors->first('watermark.opacity') }}</span>
@@ -310,7 +310,7 @@
                     {{trans('core::image.watermark.quality')}}
                 </label>
                 <div class="col-5">
-                    {field type="number" name="image[watermark][quality]" min="0" max="100"}
+                    <z-field type="number" name="image[watermark][quality]" min="0" max="100"/>
 
                     @if ($errors->has('watermark.quality'))
                     <span class="form-help text-error">{{ $errors->first('watermark.quality') }}</span>
@@ -328,7 +328,7 @@
                     </div>
                 </div>
             </div>
-            {/form}
+            </z-form>
         </div>
     </div><!-- main-body -->
 </div>

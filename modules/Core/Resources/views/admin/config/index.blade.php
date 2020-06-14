@@ -11,14 +11,14 @@
     <div class="main-body scrollable">
         <div class="container-fluid">
 
-            {form bind="config('module.core')" route="core.config.index" method="post" id="config" autocomplete="off"}
+            <z-form bind="config('module.core')" route="core.config.index" method="post" id="config" autocomplete="off">
 
-            {/form}
+            </z-form>
         </div>
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mr-auto">
-            {field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"}
+            <z-field type="submit" form="config" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
 
