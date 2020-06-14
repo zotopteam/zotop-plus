@@ -9,6 +9,7 @@ use App\Support\Filter;
 use App\Support\ImageFilter;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use App\Support\Compilers\ZFormCompiler;
 use App\Support\Compilers\FormTagCompiler;
 use App\Support\Compilers\DotArrayCompiler;
 
@@ -53,6 +54,11 @@ class SupportServiceProvider extends ServiceProvider
         // 模板编译扩展，解析简单标签 {form bind="$model"} {field type="input"} {/form}
         $this->app['blade.compiler']->extend(function ($view) {
             return $this->app[FormTagCompiler::class]->compile($view);
+        });
+
+        // 模板编译扩展，解析z-form标签 <z-form bind="$model"> <z-field type="input"/> </z-form>
+        $this->app['blade.compiler']->extend(function ($view) {
+            return $this->app[ZFormCompiler::class]->compile($view);
         });
 
         /**
