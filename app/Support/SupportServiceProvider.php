@@ -9,6 +9,8 @@ use App\Support\Filter;
 use App\Support\ImageFilter;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use App\Support\Compilers\FormTagCompiler;
+use App\Support\Compilers\DotArrayCompiler;
 
 class SupportServiceProvider extends ServiceProvider
 {
@@ -43,6 +45,16 @@ class SupportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // 模板编译扩展，解析点格式的数组 $a.b.c => $a['b']['c'], @$a.b.c => $a.b.c
+        $this->app['blade.compiler']->extend(function ($view) {
+            return $this->app[DotArrayCompiler::class]->compile($view);
+        });
+
+        // 模板编译扩展，解析简单标签 {form bind="$model"} {field type="input"} {/form}
+        $this->app['blade.compiler']->extend(function ($view) {
+            return $this->app[FormTagCompiler::class]->compile($view);
+        });
+
         /**
          * Adds a directive in Blade for actions
          */
@@ -57,34 +69,6 @@ class SupportServiceProvider extends ServiceProvider
             return "<?php echo Filter::fire($expression); ?>";
         });
 
-        // 解析{form ……}
-        Blade::extend(function ($value) {
-            $pattern = sprintf('/(@)?%sform(\s+[^}]+?)\s*%s/s', '{', '}');
-
-            return preg_replace_callback($pattern, function ($matches) {
-                $attrs = Blade::convertAttrs($matches[2]);
-                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::open(" . $attrs . "); ?>";
-            }, $value);
-        });
-
-        // 解析{/form}
-        Blade::extend(function ($value) {
-            $pattern = sprintf('/(@)?%s(\/form)%s/s', '{', '}');
-
-            return preg_replace_callback($pattern, function ($matches) {
-                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::close(); ?>";
-            }, $value);
-        });
-
-        // 解析{field ……}
-        Blade::extend(function ($value) {
-            $pattern = sprintf('/(@)?%sfield(\s+[^}]+?)\s*%s/s', '{', '}');
-
-            return preg_replace_callback($pattern, function ($matches) {
-                $attrs = Blade::convertAttrs($matches[2]);
-                return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::field(" . $attrs . "); ?>";
-            }, $value);
-        });
 
         // 定义滤器
         ImageFilter::set('fit', \App\Support\ImageFilters\Fit::class);

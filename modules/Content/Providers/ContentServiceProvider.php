@@ -53,7 +53,7 @@ class ContentServiceProvider extends ServiceProvider
         });
 
         // 解析模板
-        $this->baldeContentTag();
+        //$this->baldeContentTag();
     }
 
     /**
@@ -78,6 +78,7 @@ class ContentServiceProvider extends ServiceProvider
 
     private function baldeContentTag()
     {
+
         // 解析{content:list ……}
         Blade::tag('content:list', function ($attrs, $vars) {
 

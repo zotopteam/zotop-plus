@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Themes;
+namespace App\Support\Compilers;
 
 
 /**
  * 模板扩展，解析点格式的数组
  * 
- * @package App\Themes
+ * @package App\Support
  */
 class DotArrayCompiler
 {
