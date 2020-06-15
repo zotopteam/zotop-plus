@@ -7,7 +7,12 @@ use Modules\Core\Models\User;
 
 class Role extends Model
 {
-    protected $fillable = ['name','description','permissions'];
+    /**
+     * 可以被批量赋值的属性。
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'description', 'permissions'];
 
     /**
      * 属性转换

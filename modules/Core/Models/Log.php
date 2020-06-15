@@ -24,7 +24,7 @@ class Log extends Model
      *
      * @var array
      */
-    //protected $fillable = ['type','user_id','user_ip','url','module','controller','action','content','request'];
+    protected $fillable = ['type', 'user_id', 'user_ip', 'url', 'module', 'controller', 'action', 'content', 'request'];
 
 
     /**
@@ -46,12 +46,12 @@ class Log extends Model
 
 
     /**
-     * boot
+     * booted
+     * 
+     * @return void
      */
-    public static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         // 删除超出有效期的日志
         static::saved(function ($log) {
             static::where('created_at', '<', now()->modify('-' . config('core.log.expire', 30) . ' days'))->delete();

@@ -19,7 +19,6 @@ class Content extends Model
      */
     protected $table = 'content';
 
-
     /**
      * 可以被批量赋值的属性。
      *
@@ -45,12 +44,12 @@ class Content extends Model
 
 
     /**
-     * boot
+     * booted
+     * 
+     * @return void
      */
-    public static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         // 更新设置parent_id时，禁止为自身或者自身的子节点
         static::updating(function ($content) {
             if ($content->parent_id && in_array($content->id, static::parentIds($content->parent_id, true))) {

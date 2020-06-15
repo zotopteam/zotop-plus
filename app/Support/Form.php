@@ -204,7 +204,7 @@ class Form
     {
         $keys = ['files', 'enctype'];
 
-        if ($attributes = Arr::only($options, $keys)) {
+        if (Arr::only($options, $keys)) {
             Arr::forget($options, $keys);
             return 'multipart/form-data';
         }

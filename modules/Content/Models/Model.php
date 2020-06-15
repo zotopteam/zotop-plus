@@ -20,7 +20,6 @@ class Model extends LaravelModel
      */
     protected $table = 'content_model';
 
-
     /**
      * 可以被批量赋值的属性。
      *
@@ -28,14 +27,12 @@ class Model extends LaravelModel
      */
     protected $fillable = ['id', 'icon', 'name', 'description', 'module', 'model', 'table', 'fillable', 'casts', 'view', 'nestable', 'posts', 'sort', 'disabled', 'user_id'];
 
-
     /**
      * 不可被批量赋值的属性。
      *
      * @var array
      */
     protected $guarded = [];
-
 
     /**
      * 属性转换
@@ -46,7 +43,6 @@ class Model extends LaravelModel
         'fillable' => 'array',
         'casts'    => 'array',
     ];
-
 
     /**
      * 执行模型是否自动维护时间戳.
@@ -63,12 +59,12 @@ class Model extends LaravelModel
     public $incrementing = false;
 
     /**
-     * boot
+     * booted
+     * 
+     * @return void
      */
-    public static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         // 创建模型
         static::creating(function ($model) {
             $model->module = $model->module ?: 'content';

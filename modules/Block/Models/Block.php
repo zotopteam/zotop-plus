@@ -12,8 +12,18 @@ class Block extends Model
 {
     use UserRelation;
 
+    /**
+     * 与模型关联的数据表。
+     *
+     * @var string
+     */
     protected $table = 'block';
 
+    /**
+     * 可以被批量赋值的属性。
+     *
+     * @var array
+     */
     protected $fillable = ['category_id', 'type', 'slug', 'name', 'description', 'rows', 'data', 'view', 'interval', 'fields', 'commend', 'sort', 'user_id', 'disabled'];
 
     /**
@@ -27,14 +37,12 @@ class Block extends Model
     ];
 
     /**
-     * 全局作用域
+     * booted
      * 
-     * @return null
+     * @return void
      */
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         // 保存后
         static::saved(function ($model) {
             Action::fire('block.saved', $model);

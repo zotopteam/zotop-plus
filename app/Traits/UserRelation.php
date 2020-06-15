@@ -26,7 +26,10 @@ trait UserRelation
         });
     }
 
-
+    /**
+     * 关联用户
+     * @return \Illuminate\Database\Eloquent\Relations\BelongTo
+     */
     public function user()
     {
         $guard    = config('auth.defaults.guard');

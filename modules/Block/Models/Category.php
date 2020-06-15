@@ -7,25 +7,34 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Category extends Model
 {
+    /**
+     * 与模型关联的数据表。
+     *
+     * @var string
+     */
     protected $table = 'block_category';
-    protected $fillable = ["name","description"];
 
     /**
-     * 全局作用域
-     * 
-     * @return null
+     * 可以被批量赋值的属性。
+     *
+     * @var array
      */
-    protected static function boot()
-    {
-        parent::boot();
+    protected $fillable = ["name", "description"];
 
+    /**
+     * booted
+     * 
+     * @return void
+     */
+    protected static function booted()
+    {
         // 为安全考虑，禁止删除非空的模型
-        static::deleting(function($category) {
+        static::deleting(function ($category) {
 
             // 如果已经有数据，不能删除
             if ($category->block()->count()) {
                 abort(403, trans('block::category.delete.hasblock'));
-            }                   
+            }
         });
     }
 
@@ -33,7 +42,8 @@ class Category extends Model
      * 和block的关联
      * @return hasMany
      */
-    public function block() {
+    public function block()
+    {
         return $this->hasMany(Block::class, 'category_id', 'id');
     }
 
@@ -46,5 +56,5 @@ class Category extends Model
     public function scopeSort($query)
     {
         return $query->orderby('sort', 'asc')->orderby('id', 'asc');
-    }    
+    }
 }

@@ -11,7 +11,18 @@ class Datalist extends Model
 {
     use UserRelation;
 
+    /**
+     * 与模型关联的数据表。
+     *
+     * @var string
+     */
     protected $table = 'block_datalist';
+
+    /**
+     * 可以被批量赋值的属性。
+     *
+     * @var array
+     */
     protected $fillable = ['block_id', 'source_id', 'module', 'data', 'user_id', 'sort', 'stick', 'status'];
 
     /**
@@ -24,14 +35,12 @@ class Datalist extends Model
     ];
 
     /**
-     * 全局作用域
+     * booted
      * 
-     * @return null
+     * @return void
      */
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         // sort
         static::addGlobalScope('sort', function (Builder $builder) {
             $builder->orderby('stick', 'desc')->orderby('sort', 'desc');

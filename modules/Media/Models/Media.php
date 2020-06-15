@@ -37,13 +37,13 @@ class Media extends Model
 
 
     /**
-     * boot
+     * booted
+     * 
+     * @return void
      */
-    public static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
-        // 创建时保存排序，文件夹在最前面
+        // 创建时保存排序
         static::creating(function ($media) {
             $media->sort = $media->sort ?: time();
         });
