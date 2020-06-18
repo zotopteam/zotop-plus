@@ -26,7 +26,7 @@
             "id": 43,
             "model_id": "page",
             "label": "标题",
-            "type": "title",
+            "type": "content_title",
             "name": "title",
             "default": "",
             "settings": {
@@ -75,7 +75,7 @@
             "id": 45,
             "model_id": "page",
             "label": "关键词",
-            "type": "keywords",
+            "type": "content_keywords",
             "name": "keywords",
             "default": null,
             "settings": {
@@ -97,7 +97,7 @@
             "id": 46,
             "model_id": "page",
             "label": "摘要",
-            "type": "summary",
+            "type": "content_summary",
             "name": "summary",
             "default": null,
             "settings": {
@@ -187,7 +187,7 @@
             "id": 50,
             "model_id": "page",
             "label": "别名",
-            "type": "slug",
+            "type": "content_slug",
             "name": "slug",
             "default": null,
             "settings": {

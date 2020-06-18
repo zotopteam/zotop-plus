@@ -4,11 +4,9 @@
 <x-sidebar data="media::sidebar" :header="trans('media::media.title')" active="index" class="fw-10" />
 <div class="main">
     <div class="main-header">
-
         <div class="main-title mr-auto">
             {{request('keywords') ? trans('master.search.results') : ($media->name ?? trans('media::media.root'))}}
         </div>
-
         <x-search />
         @if (!request('keywords'))
         <x-upload-chunk :params="['folder_id'=>$folder_id]" />

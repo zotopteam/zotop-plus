@@ -1,4 +1,5 @@
 <?php
+
 namespace Modules\Content\Hook;
 
 use Route;
@@ -19,11 +20,11 @@ class Listener
             $start['content-index'] = [
                 'text'  => trans('content::content.title'),
                 'href'  => route('content.content.index'),
-                'icon'  => 'fa fa-newspaper bg-success text-white', 
+                'icon'  => 'fa fa-newspaper bg-success text-white',
                 'tips'  => trans('content::content.description'),
             ];
         }
-      
+
         return $start;
     }
 
@@ -55,13 +56,13 @@ class Listener
     public function types($types, $args)
     {
         // models 设置为全局可用
-        $types['models'] = [
+        $types['content_models'] = [
             'name'     => trans('content::field.type.models'),
             'view'     => '',
             'method'   => 'text',
             'cast'     => 'array',
-            'settings' => ['required'=>1]
-        ];     
+            'settings' => ['required' => 1]
+        ];
 
         return $types;
     }
@@ -93,9 +94,9 @@ class Listener
         // 复制
         $manage['duplicate'] = [
             'text'  => trans('master.duplicate'),
-            'href' => route('content.content.duplicate', [$content->id]),            
+            'href' => route('content.content.duplicate', [$content->id]),
             'icon'  => 'fas fa-copy',
-        ];        
+        ];
 
         // 移动
         $manage['move'] = [
@@ -108,11 +109,11 @@ class Listener
         // 排序
         $manage['sort'] = [
             'text'  => trans('content::content.sort'),
-            'href'  => route('content.content.sort', ['parent_id'=>$content->parent_id, 'id'=>$content->id]),
+            'href'  => route('content.content.sort', ['parent_id' => $content->parent_id, 'id' => $content->id]),
             'icon'  => 'fa fa-sort-amount-up',
             'class' => 'js-open',
-            'attrs' => ['data-width' => '80%','data-height' => '70%']
-        ];        
+            'attrs' => ['data-width' => '80%', 'data-height' => '70%']
+        ];
 
         // 回收站中的数据可以永久删除
         if ($content->status == 'trash') {
@@ -126,7 +127,7 @@ class Listener
 
         foreach (Content::status() as $status => $value) {
             // 不显示自身状态和定时发布状态，定时发布取决于发布时间，如果发布时，时间是未来时间，则自动判定为定时发布
-            if ($status == $content->status || $status == 'future' ) {
+            if ($status == $content->status || $status == 'future') {
                 continue;
             }
 
@@ -135,12 +136,12 @@ class Listener
                 'href'  => route('content.content.status', [$status, $content->id]),
                 'icon'  => $value['icon'],
                 'class' => 'js-post',
-            ];              
+            ];
         }
 
         // 待审状态时，发布显示通过审核
         if ($content->status == 'pending') {
-            $manage['publish']['text'] = trans('content::content.status.approved').'&'.$manage['publish']['text'];
+            $manage['publish']['text'] = trans('content::content.status.approved') . '&' . $manage['publish']['text'];
         }
 
         // 如果状态是future或者发布，不显示发布按钮
@@ -159,8 +160,8 @@ class Listener
             'href'  => route('content.content.stick', [$content->id]),
             'icon'  => 'fa fa-arrow-circle-up',
             'class' => 'js-post',
-        ];    
+        ];
 
         return $manage;
-    }   
+    }
 }

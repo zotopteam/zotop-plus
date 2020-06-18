@@ -48,7 +48,7 @@ class Block extends Model
             Action::fire('block.saved', $model);
         });
 
-        // 保存后
+        // 删除后
         static::deleted(function ($model) {
             Action::fire('block.deleted', $model);
         });

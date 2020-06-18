@@ -28,7 +28,7 @@
             "id": 9,
             "model_id": "article",
             "label": "标题",
-            "type": "title",
+            "type": "content_title",
             "name": "title",
             "default": null,
             "settings": {
@@ -50,7 +50,7 @@
             "id": 10,
             "model_id": "article",
             "label": "别名",
-            "type": "slug",
+            "type": "content_slug",
             "name": "slug",
             "default": "",
             "settings": {
@@ -97,7 +97,7 @@
             "id": 12,
             "model_id": "article",
             "label": "关键词",
-            "type": "keywords",
+            "type": "content_keywords",
             "name": "keywords",
             "default": null,
             "settings": {
@@ -119,7 +119,7 @@
             "id": 13,
             "model_id": "article",
             "label": "摘要",
-            "type": "summary",
+            "type": "content_summary",
             "name": "summary",
             "default": null,
             "settings": {

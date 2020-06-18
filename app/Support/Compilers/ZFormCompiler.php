@@ -2,6 +2,8 @@
 
 namespace App\Support\Compilers;
 
+use Illuminate\Support\Str;
+
 /**
  * 模板扩展，解析表单标签
  * 如：<z-form></z-form> <z-field/> <z-text/> <z-textarea/>
@@ -185,9 +187,8 @@ class ZFormCompiler
                 $attribute = $match['attribute'];
                 // 获取标签值，如果值不存在，直接转换为true, 如 checked 转换为 checked=true
                 $value = isset($match['value']) ? $match['value'] : 'true';
-                // 去除前后的双引号和单引号
-                $value = trim($value, '"');
-                $value = trim($value, "'");
+                // 去除前后的双引号或者单引号
+                $value = Str::startsWith($value, ['"', '\'']) ? substr($value, 1, -1) : $value;
                 // 某些值无法被判断为动态值，需要在属性标签前面明确标注英文冒号
                 // 处理明确标记为动态值的标签 :bind="$config" 
                 if (strpos($attribute, ':') === 0) {

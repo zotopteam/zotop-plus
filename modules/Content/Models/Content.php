@@ -2,15 +2,16 @@
 
 namespace Modules\Content\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Traits\UserRelation;
-use Modules\Content\Support\Modelable;
-use Modules\Content\Extend\Extendable;
 use Module;
+use App\Traits\Nestable;
+use App\Traits\UserRelation;
+use Modules\Content\Extend\Extendable;
+use Modules\Content\Support\Modelable;
+use Illuminate\Database\Eloquent\Model;
 
 class Content extends Model
 {
-    use UserRelation, Extendable, Modelable;
+    use UserRelation, Nestable, Extendable, Modelable;
 
     /**
      * 与模型关联的数据表。
@@ -50,14 +51,6 @@ class Content extends Model
      */
     protected static function booted()
     {
-        // 更新设置parent_id时，禁止为自身或者自身的子节点
-        static::updating(function ($content) {
-            if ($content->parent_id && in_array($content->id, static::parentIds($content->parent_id, true))) {
-                abort(403, trans('content::content.move.forbidden', [$content->title]));
-                return false;
-            }
-        });
-
         // 保存前数据处理
         static::saving(function ($content) {
 
@@ -85,7 +78,7 @@ class Content extends Model
         });
 
         static::deleting(function ($content) {
-            if ($content->children()->count()) {
+            if ($content->child()->count()) {
                 abort(403, trans('content::content.delete.notempty'));
             }
         });
@@ -97,24 +90,6 @@ class Content extends Model
     public function model()
     {
         return $this->belongsTo('Modules\Content\Models\Model', 'model_id', 'id');
-    }
-
-    /**
-     * 关联子级别
-     * @return [type] [description]
-     */
-    public function children()
-    {
-        return $this->hasMany('Modules\Content\Models\Content', 'parent_id', 'id');
-    }
-
-    /**
-     * 关联父级别
-     * @return [type] [description]
-     */
-    public function parent()
-    {
-        return $this->belongsTo('Modules\Content\Models\Content', 'parent_id', 'id');
     }
 
     /**
@@ -134,72 +109,6 @@ class Content extends Model
         return $status;
     }
 
-    /**
-     * 获取节点的全部父编号
-     * 
-     * @param  mixed  $id         编号
-     * @param  boolean $self      是否包含自身
-     * @param  array   $parentIds 传递自身
-     * @return array
-     */
-    public static function parentIds($id, $self = false, &$parentIds = [])
-    {
-        if ($self) {
-            $parentIds[] = $id;
-        }
-
-        if ($parentId = static::where('id', $id)->value('parent_id')) {
-            static::parentIds($parentId, true, $parentIds);
-        }
-
-        return array_reverse($parentIds);
-    }
-
-    /**
-     * 获取节点的全部子节点编号
-     * 
-     * @param  mixed  $id         编号
-     * @param  boolean $self      是否包含自身
-     * @param  mixed   $model_id  子节点类型
-     * @param  array   $childrenIds  传递自身
-     * @return array
-     */
-    public static function childrenIds($id, $self = false, $model_id = [], &$childrenIds = [])
-    {
-        if ($id && $self) {
-            $childrenIds[] = $id;
-        }
-
-        // 递归获取子节点
-        $children_ids = static::where('parent_id', $id)->whereSmart('model_id', $model_id)->pluck('id');
-
-        foreach ($children_ids as $children_id) {
-            static::childrenIds($children_id, true, $model_id, $childrenIds);
-        }
-
-        return $childrenIds;
-    }
-
-    /**
-     * 获取路径
-     * 
-     * @param  int  $id    节点编号
-     * @param  boolean $self  是否包含自身
-     * @return Collection
-     */
-    public static function path($id, $self = true, &$paths = [])
-    {
-        if ($id && $content = static::find($id)) {
-
-            if ($self) {
-                $paths[] = $content;
-            }
-
-            static::path($content->parent_id, true, $paths);
-        }
-
-        return array_reverse($paths);
-    }
 
     /**
      * 获取内容状态名称
@@ -219,19 +128,6 @@ class Content extends Model
     public function getStatusIconAttribute($value)
     {
         return array_get(static::status(), $this->status . '.icon');
-    }
-
-    /**
-     * 获取节点的一级节点编号，如果本身就是一级节点，返回自身
-     * 
-     * @param  int  $id 编号
-     * @return int
-     */
-    public function getTopIdAttribute($value)
-    {
-        $parentIds = static::parentIds($this->id, true);
-
-        return reset($parentIds);
     }
 
     /**

@@ -1,12 +1,14 @@
 <?php
 
-use App\Support\Facades\Filter;
-use App\Support\Facades\Form;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
+use App\Support\Facades\Form;
 use Illuminate\Routing\Router;
+use App\Support\Facades\Filter;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\File;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -37,14 +39,46 @@ Filter::listen('module.manage', 'Modules\Core\Hooks\Hook@moduleManageCore');
 
 /**
  * 扩展 Request::referer 功能
+ * 返回页面的来源
  */
 Request::macro('referer', function () {
-    // 如果前面有传入，比如表单传入
-    if ($referer = request()->input('referer')) {
+
+    // 如果前面有传入，比如表单传入，直接返回传入值
+    if ($referer = $this->input('_referer')) {
         return $referer;
     }
-    return \URL::previous();
+
+    // 如果有存储值，取出存储值
+    if ($this->session()->has('_referer')) {
+        return $this->session()->pull('_referer');
+    }
+
+    // 返回前面的值
+    return URL::previous();
 });
+
+/**
+ * 扩展 Request::remember 功能
+ * 键值存在，则存储键值，如果传入参数的键值不存在，则返回上一次存储的键值
+ */
+Request::macro('remember', function ($key, $default = null) {
+
+    // 从路由或者参数中获取键值
+    $var = $this->route($key) ?? $this->input($key);
+
+    // 每个页面存储的数据独立
+    $key = $this->route()->uri() . '_' . $key;
+
+    // 如果键值存在，存储并返回键值
+    if (!is_null($var)) {
+        $this->session()->put($key, $var);
+        return $var;
+    }
+
+    // 如果键值不存在，则返回上一次存储的键值
+    return $this->session()->get($key, $default);
+});
+
 
 /**
  * 扩展 Route:active 如果是当前route，则返回 active
@@ -58,8 +92,7 @@ Router::macro('active', function ($route, $active = "active", $normal = '') {
  */
 File::macro('mime', function ($file) {
     if ($mimeType = static::mimeType($file)) {
-        list($mime, $type) = explode('/', $mimeType);
-        return $mime;
+        return Str::before($mimeType, '/');
     }
     return null;
 });

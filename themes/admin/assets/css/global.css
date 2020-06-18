@@ -698,17 +698,18 @@ a[disabled] {
     padding: 0.25rem;
     box-shadow: 3px 3px 0 rgba(12, 12, 12, 0.03);
     margin: .25rem 0 0;
+    font-size: 0.875rem;
 }
 
 .dropdown-head {
-    color: #333;
+    color: #333333;
     padding: 0.5rem 10px;
     margin-bottom: 0.25rem;
     border-bottom: solid 1px #e5e5e5;
 }
 
 .dropdown-item {
-    padding: 0.5rem;
+    padding: 0.35rem;
     transition: all 0.2s ease-out 0s;
     white-space: nowrap;
     border-radius: 3px;
@@ -815,6 +816,13 @@ a[disabled] {
     color: #cccccc !important;
 }
 
+.text-truncate-1 {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
 .text-truncate-2 {
     white-space: normal;
     display: -webkit-box;
@@ -860,12 +868,36 @@ a[disabled] {
     font-size: 1.25rem !important;
 }
 
+.scale-n5 {
+    transform: scale(0.5);
+}
+.scale-n4 {
+    transform: scale(0.6);
+}
+.scale-n3 {
+    transform: scale(0.7);
+}
+.scale-n2 {
+    transform: scale(0.8);
+}
+.scale-n1 {
+    transform: scale(0.9);
+}
+.scale-left {
+    transform-origin: left;
+}
+.scale-center {
+    transform-origin: center;
+}
+.scale-right{
+    transform-origin: right;
+}
+
 .image {
     overflow: hidden;
 }
-
 .image img {
-    width: 100%;
+    max-width: 100%;
     transition: all .5s ease-in-out;
 }
 
@@ -1606,15 +1638,33 @@ textarea {
 .badge {
     font-size: 70%;
     padding: .25em .5em;
-}
-
-.badge-pill {
-    padding: .25em .7em;
+    
 }
 
 .badge-danger {
     background-color: #ff0000;
-    border-radius: 0.5rem;
+    color:rgba(255,255,255,0.8);
+}
+
+.badge-warning {
+    color:rgba(0,0,0,0.6);
+}
+
+.badge-light {
+    background-color: #efefef;
+    color:rgba(0,0,0,0.6);
+}
+
+.badge-info {
+    color:rgba(255,255,255,0.8);
+}
+
+.badge-success {
+    color:rgba(255,255,255,0.8);
+}
+
+.badge-primary {
+    color:rgba(255,255,255,0.8);
 }
 
 .btn {
@@ -1705,7 +1755,8 @@ fieldset[disabled] .btn {
 .breadcrumb-item+.breadcrumb-item::before {
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
-    content: '\f105'
+    padding-right: .2rem;
+    content: '\f105';
 }
 
 .breadcrumb-extra+.breadcrumb-item::before {
@@ -1715,42 +1766,6 @@ fieldset[disabled] .btn {
 .breadcrumb-item:hover {
     text-decoration: none !important;
 }
-
-
-/*icon*/
-
-.icon {
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.icon img {
-    max-width: 100%;
-    max-height: 100%;
-    align-self: center;
-}
-
-.icon-xs {
-    width: 1rem;
-    height: 1rem;
-}
-
-.icon-sm {
-    width: 2rem;
-    height: 2rem;
-}
-
-.icon-md {
-    width: 3rem;
-    height: 3rem;
-}
-
-.icon-lg {
-    width: 4rem;
-    height: 4rem;
-}
-
 
 /*grid*/
 
@@ -2059,10 +2074,10 @@ fieldset[disabled] .btn {
 .side {
     display: flex;
     flex-direction: column;
-    /*background:#f6fafd;*/
     color: #666;
     width: 16%;
     height: 100%;
+    flex: none;
 }
 
 .side:after {
@@ -2118,7 +2133,7 @@ fieldset[disabled] .btn {
     height: 0;
     margin: .5rem 0;
     overflow: hidden;
-    border-top: 1px solid #e9ecef;
+    border-top: 1px solid #f3f3f3;
     clear: both;
 }
 

@@ -2,13 +2,14 @@
 
 namespace Modules\Content\Http\Controllers\Admin;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
-use Modules\Content\Models\Content;
-use Modules\Content\Models\Model;
 use Modules\Content\Models\Field;
+use Modules\Content\Models\Model;
+use Modules\Content\Models\Content;
 use Modules\Content\Support\ModelForm;
+use App\Modules\Routing\AdminController;
 use Modules\Content\Http\Requests\ContentRequest;
 
 class ContentController extends AdminController
@@ -18,29 +19,30 @@ class ContentController extends AdminController
      *
      * @return Response
      */
-    public function index(Request $request, $parent_id=0)
+    public function index(Request $request, $id = 0)
     {
-        // 获取父节点
-        if ($parent_id) {
-            $this->parent = Content::findOrFail($parent_id);
-        } else {
-            $this->parent        = new Content;
-            $this->parent->id    = 0;
-            $this->parent->title = trans('content::content.root');
-        }
-
-        // 获取全部父级
-        $this->path   = Content::path($this->parent->id);
+        $this->id      = $id;
+        $this->content = $id ? Content::findOrFail($id) : null;
+        $this->title   = $id ? $this->content->title : trans('content::content.root');
 
         // 分页获取
-        $this->contents = Content::with('user','model')->when($request->keywords, function($query, $keywords) {
+        $this->contents = Content::with('user', 'model')->when($request->keywords, function ($query, $keywords) {
             $query->searchIn('title,keywords,summary', $keywords);
-        }, function($query) use($parent_id) {
-            $query->where('parent_id', $parent_id);
+        }, function ($query) use ($id) {
+            $query->where('parent_id', $id);
         })->sort()->paginate(25);
 
-        // 页面标题
-        $this->title = $this->parent->title .' '. trans('content::content.title'); 
+        // 创建菜单
+        $this->creates = Model::Enabled()->get()->filter(function ($item) {
+            // 如果定义了可用模型，返回启用的模型
+            if ($models = data_get($this->content, 'models')) {
+                return Arr::get($models, "{$item->id}.enabled");
+            }
+            return true;
+        });
+
+        // 展示方式
+        $this->show = $request->remember('show', 'list');
 
         return $this->view();
     }
@@ -50,22 +52,11 @@ class ContentController extends AdminController
      * 
      * @return Response
      */
-    public function create($parent_id, $model_id)
+    public function create($id, $model_id)
     {
-        // 获取父节点
-        if ($parent_id) {
-            $this->parent = Content::findOrFail($parent_id);
-        } else {
-            $this->parent        = new Content;
-            $this->parent->id    = 0;
-            $this->parent->title = trans('content::content.root');
-        }
-
-        // 获取路径
-        $this->path   = Content::path($this->parent->id);
 
         $this->content = Content::findOrNew(0);
-        $this->content->parent_id = $parent_id;
+        $this->content->parent_id = $id;
         $this->content->model_id  = $model_id;
         $this->content->source_id = md5(microtime(true));
         $this->content->status    = 'draft';
@@ -88,7 +79,7 @@ class ContentController extends AdminController
      * @return Response
      */
     public function store(ContentRequest $request)
-    {        
+    {
         $content = new Content;
         $content->fill($request->all());
         $content->save();
@@ -96,9 +87,9 @@ class ContentController extends AdminController
         // 保存并返回
         if ($request->input('_action') == 'back') {
             return $this->success(trans('master.created'), route('content.content.index', $content->parent_id));
-        }    
+        }
 
-         return $this->success(trans('master.created'), route('content.content.edit', $content->id));
+        return $this->success(trans('master.created'), route('content.content.edit', $content->id));
     }
 
     /**
@@ -114,7 +105,7 @@ class ContentController extends AdminController
         $this->content = Content::findOrFail($id);
 
         return $this->view();
-    }    
+    }
 
     /**
      * 编辑
@@ -126,20 +117,10 @@ class ContentController extends AdminController
         $this->id      = $id;
         $this->content = Content::findOrFail($id);
 
-        // 获取父节点
-        if ($this->content->parent_id) {
-            $this->parent = Content::findOrFail($this->content->parent_id);
-        } else {
-            $this->parent        = new Content;
-            $this->parent->id    = 0;
-            $this->parent->title = trans('content::content.root');
-        }
-
-        $this->path   = Content::path($this->parent->id);
         $this->model  = Model::find($this->content->model_id);
-        $this->form   = ModelForm::get($this->content->model_id, $this->content->source_id);     
+        $this->form   = ModelForm::get($this->content->model_id, $this->content->source_id);
 
-        $this->title   = trans('content::content.edit.model', [$this->model->name]);   
+        $this->title   = trans('content::content.edit.model', [$this->model->name]);
 
         return $this->view();
     }
@@ -153,7 +134,7 @@ class ContentController extends AdminController
     public function update(ContentRequest $request, $id)
     {
         $content = Content::findOrFail($id);
-        $content->fill($request->all());        
+        $content->fill($request->all());
         $content->save();
 
         // 保存并返回
@@ -187,11 +168,11 @@ class ContentController extends AdminController
 
         $this->path   = Content::path($this->parent->id);
         $this->model  = Model::find($this->content->model_id);
-        $this->form   = ModelForm::get($this->content->model_id, $this->content->source_id);   
+        $this->form   = ModelForm::get($this->content->model_id, $this->content->source_id);
 
-        $this->title   = trans('content::content.duplicate.model', [$this->model->name]);   
-        
-        return $this->view('content::content.create');        
+        $this->title   = trans('content::content.duplicate.model', [$this->model->name]);
+
+        return $this->view('content::content.create');
     }
 
     /**
@@ -199,7 +180,7 @@ class ContentController extends AdminController
      *
      * @return Response
      */
-    public function status(Request $request, $status, $id=null)
+    public function status(Request $request, $status, $id = null)
     {
         if ($request->isMethod('POST')) {
 
@@ -207,13 +188,13 @@ class ContentController extends AdminController
             $id = $id ?? $request->input('id');
 
             // 单个操作或者批量操作
-             Content::whereSmart('id', $id)->get()->each(function($item, $key) use($request, $status) {
+            Content::whereSmart('id', $id)->get()->each(function ($item, $key) use ($request, $status) {
                 $item->status = $status;
                 $item->save();
             });
-    
+
             return $this->success(trans('master.operated'), $request->referer());
-        }     
+        }
     }
 
     /**
@@ -227,8 +208,8 @@ class ContentController extends AdminController
         $content->stick = $content->stick ? 0 : 1;
         $content->save();
 
-        return $this->success(trans('master.operated'), route('content.content.index', $content->parent_id));        
-    }      
+        return $this->success(trans('master.operated'), route('content.content.index', $content->parent_id));
+    }
 
     /**
      * 排序
@@ -244,47 +225,47 @@ class ContentController extends AdminController
             $stick = $request->input('stick');
 
             // 将当前列表 $sort 之前的数据的 sort 全部加 1， 为拖动的数据保留出位置
-            Content::withoutTimestamps()->where('parent_id', $parent_id)->where('sort','>=', $sort)->increment('sort', 1);        
+            Content::withoutTimestamps()->where('parent_id', $parent_id)->where('sort', '>=', $sort)->increment('sort', 1);
 
             // 更新当前数据的排序和置顶信息，如果排在置顶数据之前，自动置顶，如果排在非置顶数据后，自动取消置顶
             Content::where('id', $id)->update([
                 'sort'  => $sort,
                 'stick' => $stick,
             ]);
-            
+
             return $this->success(trans('master.sorted'), $request->referer());
         }
 
         // 当前排序节点
         $this->sort = Content::findOrFail($request->id);
-        
+
         // 获取父节点
         if ($parent_id) {
             $this->parent = Content::findOrFail($parent_id);
         } else {
             $this->parent = new Content;
             $this->parent->id = 0;
-            $this->parent->title = trans('content::content.root');            
+            $this->parent->title = trans('content::content.root');
         }
 
         // 获取路径
-        $this->path = Content::path($this->parent->id); 
+        $this->path = Content::path($this->parent->id);
 
         // 获取当前节点下面的全部数据（包含搜索）
-        $this->contents = Content::with('user','model')->where('parent_id', $parent_id)
+        $this->contents = Content::with('user', 'model')->where('parent_id', $parent_id)
             ->searchIn('title,keywords,summary', $request->keywords)
             ->sort()
             ->paginate(25);
 
-        return $this->view();        
+        return $this->view();
     }
 
-   /**
+    /**
      * 移动
      *
      * @return Response
      */
-    public function move(Request $request, $parent_id=null)
+    public function move(Request $request, $parent_id = null)
     {
         if ($request->isMethod('POST')) {
 
@@ -292,7 +273,7 @@ class ContentController extends AdminController
             $parent_id = $request->input('parent_id');
 
             // 获取数据并移动
-            Content::whereSmart('id', $id)->get()->each(function($item, $key) use($parent_id) {
+            Content::whereSmart('id', $id)->get()->each(function ($item, $key) use ($parent_id) {
                 // 更新当前节点
                 $item->parent_id = $parent_id;
                 $item->save();
@@ -303,7 +284,7 @@ class ContentController extends AdminController
 
         // 缓存当前选择的节点编号，下次进入时候直接展示该节点
         if (!is_null($parent_id)) {
-            session(['content_move_parent_id'=>$parent_id]);
+            session(['content_move_parent_id' => $parent_id]);
         } else {
             $parent_id = session('content_move_parent_id', 0);
         }
@@ -318,10 +299,10 @@ class ContentController extends AdminController
         }
 
         // 获取全部父节点
-        $this->path   = Content::path($this->parent->id);      
+        $this->path   = Content::path($this->parent->id);
 
         // 获取当前节点下面的全部数据（包含搜索）
-        $this->contents = Content::whereHas('model', function($query) {
+        $this->contents = Content::whereHas('model', function ($query) {
             $query->where('nestable', 1);
         })->where('parent_id', $parent_id)->searchIn('title,keywords,summary', $request->keywords)->sort()->paginate(36);
 
@@ -333,16 +314,16 @@ class ContentController extends AdminController
      *
      * @return Response
      */
-    public function destroy(Request $request, $id=null)
+    public function destroy(Request $request, $id = null)
     {
         // 操作项编号可以通过uri或者post传入
         $id = $id ?? $request->input('id');
 
         // 单个操作或者批量操作
-        Content::whereSmart('id', $id)->get()->each(function($item, $key) {
+        Content::whereSmart('id', $id)->get()->each(function ($item, $key) {
             $item->delete();
-        });        
+        });
 
-        return $this->success(trans('master.deleted'), $request->referer());        
+        return $this->success(trans('master.deleted'), $request->referer());
     }
 }

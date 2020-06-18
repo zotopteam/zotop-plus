@@ -139,4 +139,15 @@ class Model extends LaravelModel
     {
         return $this->hasMany('Modules\Content\Models\Content', 'model_id', 'id');
     }
+
+    /**
+     * 获取可以使用的模型
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeEnabled($query)
+    {
+        return $query->where('disabled', 0)->orderBy('sort', 'asc');
+    }
 }

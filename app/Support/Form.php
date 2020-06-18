@@ -109,24 +109,16 @@ class Form
         // 绑定模型的数组或者实例
         $this->bind = Arr::pull($options, 'bind', null);
 
-        // 传递表单来源
-        if ($referer = Arr::pull($options, 'referer')) {
-            $this->append[] = $this->hidden(['name' => '_referer', 'value' => $referer]);
-        }
-
-        $attributes = [
+        // 获取标签
+        $attributes = array_merge([
             'method'         => $this->formMethod($options),
             'action'         => $this->formAction($options),
             'enctype'        => $this->formEnctype($options),
             'class'          => Arr::pull($options, 'class', $this->formDefaultClass),
             'accept-charset' => 'UTF-8',
-        ];
+        ], $options);
 
-        $attributes = array_merge($attributes, $options);
-
-        $append = implode("\r\n", $this->append);
-
-        return '<form ' . $this->attributes($attributes) . '>' . "\r\n" . $append;
+        return '<form ' . $this->attributes($attributes) . '>' . "\r\n" . implode("\r\n", $this->append);
     }
 
     /**
@@ -155,6 +147,19 @@ class Form
         // 如果是['DELETE', 'PATCH', 'PUT']方法之一，附加为表单隐藏域
         if (in_array($method, ['DELETE', 'PATCH', 'PUT'])) {
             $this->append[] = $this->hidden(['name' => '_method', 'value' => $method]);
+        }
+
+        // 传递表单来源
+        if ($referer = Arr::pull($options, 'referer')) {
+            // 如果为真
+            if ($referer === true || $referer === 'referer') {
+                $referer = $this->app['request']->referer();
+            }
+            // 如果为当前页
+            if ($referer == 'current') {
+                $referer = $this->app['request']->fullUrl();
+            }
+            $this->append[] = $this->hidden(['name' => '_referer', 'value' => $referer]);
         }
 
         // 追加token

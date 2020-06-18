@@ -16,7 +16,7 @@ class BlockController extends AdminController
      *
      * @return Response
      */
-    public function index($category_id = 0)
+    public function index(Request $request, $category_id = 0)
     {
         $this->title = trans('block::block.title');
 
@@ -155,7 +155,6 @@ class BlockController extends AdminController
         $this->title    = trans('block::block.data.edit');
         $this->id       = $id;
         $this->block    = Block::findOrFail($id);
-        //$this->category = Category::findOrFail($this->block->category_id);
 
         // 获取数据维护视图
         $view = Block::type($this->block->type, 'data', 'block::block.data');

@@ -7,7 +7,9 @@ use Modules\Content\Models\Content;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Modules\Content\Support\ModelHelper;
+use Modules\Content\View\Components\ContentList;
+use Modules\Content\View\Components\ContentAdminList;
+use Modules\Content\View\Components\ContentAdminBreadcrumb;
 
 
 class ContentServiceProvider extends ServiceProvider
@@ -51,9 +53,6 @@ class ContentServiceProvider extends ServiceProvider
                 $model->table && Schema::dropIfExists($model->table);
             });
         });
-
-        // 解析模板
-        //$this->baldeContentTag();
     }
 
     /**
@@ -63,7 +62,10 @@ class ContentServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // 模板扩展
+        Blade::component(ContentAdminList::class, 'content-admin-list');
+        Blade::component(ContentAdminBreadcrumb::class, 'content-admin-breadcrumb');
+        Blade::component(ContentList::class, 'content-list');
     }
 
     /**
@@ -75,6 +77,7 @@ class ContentServiceProvider extends ServiceProvider
     {
         return [];
     }
+
 
     private function baldeContentTag()
     {

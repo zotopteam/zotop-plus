@@ -9,12 +9,6 @@
         <div class="main-title">
             {{$title}}
         </div>
-        <div class="main-breadcrumb breadcrumb text-xs p-1 px-2 m-0 mx-2">
-            <a class="breadcrumb-item" href="{{route('content.content.index')}}">{{trans('content::content.root')}}</a>
-            @foreach($path as $p)
-            <a class="breadcrumb-item" href="{{route('content.content.index', $p->id)}}">{{$p->title}}</a> 
-            @endforeach              
-        </div>
         <div class="main-action ml-auto">
             <a href="javascript:;" class="text-decoration-none js-future">
                 <span class="text-primary js-future-label">
@@ -24,36 +18,38 @@
                     {{$content->publish_at > now() ? $content->publish_at : null}}
                 </span>
             </a>
-        </div>        
-        <div class="main-action">
-             <z-field type="submit" form="content-form" value="trans('content::content.status.publish')" class="btn btn-success" data-status="publish" data-action="back"/>
-             <z-field type="submit" form="content-form" value="trans('content::content.save.draft')" class="btn btn-primary"/>
         </div>
-    </div>  
+        <div class="main-action">
+            <z-field type="submit" form="content-form" value="trans('content::content.status.publish')"
+                class="btn btn-success" data-status="publish" data-action="back" />
+            <z-field type="submit" form="content-form" value="trans('content::content.save.draft')"
+                class="btn btn-primary" />
+        </div>
+    </div>
     <div class="main-body bg-light scrollable">
         <div class="container-fluid">
 
             <z-form bind="$content" route="content.content.store" id="content-form" method="post" autocomplete="off">
 
-                <z-field type="hidden" name="_action"/>
-                <z-field type="hidden" name="parent_id" required="required"/>
-                <z-field type="hidden" name="model_id" required="required"/>
-                <z-field type="hidden" name="source_id" required="required"/>
-                <z-field type="hidden" name="status" required="required"/>
-                <z-field type="hidden" name="publish_at"/>
-            
+                <z-field type="hidden" name="_action" />
+                <z-field type="hidden" name="parent_id" required="required" />
+                <z-field type="hidden" name="model_id" required="required" />
+                <z-field type="hidden" name="source_id" required="required" />
+                <z-field type="hidden" name="status" required="required" />
+                <z-field type="hidden" name="publish_at" />
+
                 <div class="row">
                     <div class="{{$form->side->count() ? 'col-9 col-md-9 col-sm-12' : 'col-12'}} d-flex flex-wrap p-0">
                         @foreach ($form->main as $item)
-                            @include('content::content.field')
-                        @endforeach                    
+                        @include('content::content.field')
+                        @endforeach
                     </div>
 
                     @if ($form->side->count())
                     <div class="col-3 col-md-3 col-sm-12 p-0">
                         @foreach ($form->side as $item)
-                            @include('content::content.field')                       
-                        @endforeach                    
+                        @include('content::content.field')
+                        @endforeach
                     </div>
                     @endif
                 </div>
@@ -65,9 +61,9 @@
 @endsection
 
 @push('js')
-    {!! Module::load('core:laydate/laydate.js') !!}
-    <script type="text/javascript">
-        $(function(){
+{!! Module::load('core:laydate/laydate.js') !!}
+<script type="text/javascript">
+    $(function(){
 
             $('.js-future').on('click',function() {
                 laydate.render({
@@ -97,5 +93,5 @@
             })
 
         })
-    </script>
+</script>
 @endpush

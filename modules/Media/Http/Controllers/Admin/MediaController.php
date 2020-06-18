@@ -131,13 +131,8 @@ class MediaController extends AdminController
             return $this->success(trans('master.moved'));
         }
 
-        // 缓存当前选择的节点编号，下次进入时候直接展示该节点
-        if (!is_null($folder_id)) {
-            session(['media_move_to_folder_id' => $folder_id]);
-            $this->folder_id = $folder_id;
-        } else {
-            $this->folder_id = session('media_move_to_folder_id', 0);
-        }
+        // 记忆当前选择的文件夹编号，下次进入时，直接显示该文件夹
+        $this->folder_id = $request->remember('folder_id', 0);
 
         // 当前排序的父节点
         $this->media   = Media::find($this->folder_id);
@@ -225,13 +220,8 @@ class MediaController extends AdminController
     {
         $this->title = trans('media::media.insert.from.library', [$request->typename]);
 
-        // 缓存当前选择的节点编号，下次进入时候直接展示该节点
-        if (!is_null($folder_id)) {
-            session(['media_select_folder_id' => $folder_id]);
-            $this->folder_id = $folder_id;
-        } else {
-            $this->folder_id = session('media_select_folder_id', 0);
-        }
+        // 记忆当前选择的文件夹编号，下次进入时，直接显示该文件夹
+        $this->folder_id = $request->remember('folder_id', 0);
 
         // 当前文件夹信息
         $this->media    = Media::find($this->folder_id);

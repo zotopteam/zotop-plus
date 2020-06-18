@@ -29,7 +29,7 @@
             "id": 27,
             "model_id": "gallery",
             "label": "标题",
-            "type": "title",
+            "type": "content_title",
             "name": "title",
             "default": null,
             "settings": {
@@ -51,7 +51,7 @@
             "id": 28,
             "model_id": "gallery",
             "label": "别名",
-            "type": "slug",
+            "type": "content_slug",
             "name": "slug",
             "default": null,
             "settings": {
@@ -99,7 +99,7 @@
             "id": 30,
             "model_id": "gallery",
             "label": "关键词",
-            "type": "keywords",
+            "type": "content_keywords",
             "name": "keywords",
             "default": null,
             "settings": {
@@ -121,7 +121,7 @@
             "id": 31,
             "model_id": "gallery",
             "label": "摘要",
-            "type": "summary",
+            "type": "content_summary",
             "name": "summary",
             "default": null,
             "settings": {
