@@ -78,7 +78,7 @@
         @endif
     </div>
     <div class="main-body scrollable">
-        <x-content-admin-list :list="$contents" />
+        <x-content-admin-list :list="$contents" :view="$show" :sortable="route('content.content.sort', $id)" />
     </div><!-- main-body -->
     @if ($contents->hasPages())
     <div class="main-footer">

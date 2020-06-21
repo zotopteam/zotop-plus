@@ -84,6 +84,10 @@ a:hover {
     outline: 0 none;
 }
 
+a:focus {
+    outline: 0 none;
+}
+
 a.disabled,
 a[disabled] {
     cursor: not-allowed;
@@ -662,13 +666,13 @@ a[disabled] {
     max-width: 100%;
 }
 
-.tooltip-error.bs-tooltip-auto[x-placement^=bottom] .arrow::before,
-.tooltip-error.bs-tooltip-bottom .arrow::before {
+.tooltip-error.bs-tooltip-auto[x-placement^=bottom] .arrow:before,
+.tooltip-error.bs-tooltip-bottom .arrow:before {
     border-bottom-color: #ff0000;
 }
 
-.tooltip-error.bs-tooltip-auto[x-placement^=top] .arrow::before,
-.tooltip-error.bs-tooltip-top .arrow::before {
+.tooltip-error.bs-tooltip-auto[x-placement^=top] .arrow:before,
+.tooltip-error.bs-tooltip-top .arrow:before {
     border-top-color: #ff0000;
 }
 
@@ -699,6 +703,7 @@ a[disabled] {
     box-shadow: 3px 3px 0 rgba(12, 12, 12, 0.03);
     margin: .25rem 0 0;
     font-size: 0.875rem;
+    line-height: 1.5;
 }
 
 .dropdown-head {
@@ -711,7 +716,6 @@ a[disabled] {
 .dropdown-item {
     padding: 0.35rem;
     transition: all 0.2s ease-out 0s;
-    white-space: nowrap;
     border-radius: 3px;
 }
 
@@ -736,10 +740,6 @@ a[disabled] {
 .dropdown-menu-primary .dropdown-item {
     color: #0062cc;
     padding: 0.5rem;
-    border-radius: 3px;
-    transition: all 0.2s ease-out 0s;
-    white-space: nowrap;
-    display: block;
 }
 
 .dropdown-menu-primary .dropdown-item:hover {
@@ -774,7 +774,7 @@ a[disabled] {
     top: -6px;
 }
 
-.dropdown-toggle::after {
+.dropdown-toggle:after {
     margin-bottom: -0.1rem;
 }
 
@@ -868,6 +868,7 @@ a[disabled] {
     font-size: 1.25rem !important;
 }
 
+
 .scale-n5 {
     transform: scale(0.5);
 }
@@ -932,7 +933,7 @@ a[disabled] {
     outline: 0 none;
 }
 
-.manage-item+.manage-item::before {
+.manage-item+.manage-item:before {
     display: inline-block;
     padding-right: .5rem;
     padding-left: .5rem;
@@ -1752,14 +1753,14 @@ fieldset[disabled] .btn {
     text-overflow: ellipsis;
 }
 
-.breadcrumb-item+.breadcrumb-item::before {
+.breadcrumb-item+.breadcrumb-item:before {
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     padding-right: .2rem;
     content: '\f105';
 }
 
-.breadcrumb-extra+.breadcrumb-item::before {
+.breadcrumb-extra+.breadcrumb-item:before {
     content: ''
 }
 
@@ -1767,8 +1768,76 @@ fieldset[disabled] .btn {
     text-decoration: none !important;
 }
 
-/*grid*/
+.stretched-link-ignore {
+    z-index: 2;
+}
 
+.checkable-item .checkable-control+.checkable-control-circle {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 5rem;
+    background-color: #70c0e7;
+    margin: .5rem;
+    padding: 0;
+    line-height: 1;
+    position: relative;
+}
+
+.checkable-item .checkable-control+.checkable-control-circle:after{
+    content: "\f00c";
+    font: 900 .875rem/1 'Font Awesome 5 Free';
+    z-index: 1;
+    position: absolute;
+    top: 4px;
+    right: 2.5px;
+    color: #ffffff;
+}
+
+.checkable-item .checkable-control:checked+.checkable-control-circle {
+    background-color: #66bb00;
+    display: block;
+}
+
+
+.checkable-item .checkable-control+.checkable-control-triangle:before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: 2rem solid #70c0e7;
+    border-left: 2rem solid transparent;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    margin: 0;
+}
+
+.checkable-item .checkable-control+.checkable-control-triangle:after {
+    content: "\f00c";
+    font: 900 .875rem/1 'Font Awesome 5 Free';
+    z-index: 2;
+    position: absolute;
+    top: 3px;
+    right: 2px;
+    color: #ffffff;
+}
+
+.checkable-item .checkable-control:checked+.checkable-control-triangle:before {
+    border-top-color: #66bb00;
+    display: block;
+}
+
+.checkable-item .hover-show {
+    display: none;
+}
+
+.checkable-item:hover .hover-show,
+.checkable-item .checkable-control:checked,
+.checkable-item .checkable-control:checked+.hover-show {
+    display: block;
+}
+
+/*grid*/
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
@@ -1826,6 +1895,7 @@ fieldset[disabled] .btn {
 .grid .grid-item {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .grid .grid-item-icon {
@@ -1840,13 +1910,29 @@ fieldset[disabled] .btn {
 
 .grid .grid-item-text {
     font-size: 0.75rem;
-    padding: 0.25rem;
+    margin-top: 0.5rem;
 }
 
 .grid .grid-item-icon img {
     border-radius: .25rem;
     max-width: 100%;
     height: auto;
+}
+
+.grid .grid-item-badge {
+    position: absolute;
+    top: 0rem;
+    right: 0rem;
+    z-index: 2;
+    line-height: normal;
+}
+
+.grid .grid-item-badge-right {
+    right: 0rem;
+}
+
+.grid .grid-item-badge-left {
+    left: 0rem;
 }
 
 .grid-hover .grid-item {
@@ -1862,65 +1948,10 @@ fieldset[disabled] .btn {
     background-color: #e5f3fb;
 }
 
-.grid .checkable-item {
-    position: relative;
-    cursor: pointer;
-}
-
-.grid .checkable-item input.form-control-check {
-    visibility: hidden;
-    background-color: #ffffff !important;
-    position: absolute;
-    top: .5rem;
-    right: .5rem;
-    margin: 0;
-    padding: 0;
-    font-size: 1.25rem;
-    width: 1rem;
-    height: 1rem;
-}
-
-.grid .checkable-item:hover input.form-control-check,
-.grid .checkable-item input.form-control-check:checked {
-    visibility: visible;
-}
-
-.grid .checkable-item input.form-control-check:hover+.grid-item,
-.grid .checkable-item input.form-control-check:checked+.grid-item {
-    border: 1px solid #70c0e7;
-    background-color: #e5f3fb;
-}
-
-.grid.markable input.form-control-check {
-    visibility: hidden !important;
-}
-
-.grid.markable input.form-control-check:checked+.grid-item {
+.grid .grid-item:hover.selected,
+.grid .grid-item.selected {
     border: 1px solid #66bb00;
     background-color: #fafff6;
-}
-
-.grid.markable input.form-control-check:checked+.grid-item:before {
-    content: "";
-    width: 0;
-    height: 0;
-    border-top: 2rem solid #66bb00;
-    border-left: 2rem solid transparent;
-    position: absolute;
-    display: block;
-    right: 1px;
-    top: 1px;
-    z-index: 1;
-}
-
-.grid.markable input.form-control-check:checked+.grid-item:after {
-    content: "\f00c";
-    position: absolute;
-    top: .15rem;
-    right: .15rem;
-    color: #fff;
-    font: 900 1rem/1 'Font Awesome 5 Free';
-    z-index: 2;
 }
 
 .global-header {
@@ -2196,7 +2227,7 @@ fieldset[disabled] .btn {
     margin: 0;
 }
 
-.main-header .breadcrumb-item+.breadcrumb-item::before {
+.main-header .breadcrumb-item+.breadcrumb-item:before {
     color: #ccc;
 }
 

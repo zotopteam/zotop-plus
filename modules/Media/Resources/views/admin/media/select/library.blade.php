@@ -29,8 +29,8 @@
     </div>
     @endif
     <div class="main-body scrollable ias-scrollable p-2" id="file-upload-dragdrop">
-        <x-media-list :list="$media_list" class="grid-sm grid-gap-sm markable" :mutiple="request('mutiple')"
-            :moveable="false" />
+        <x-media-list :list="$media_list" class="grid-sm grid-gap-sm" :checkable="request('type')"
+            :mutiple="request('mutiple')" action="view,rename,delete" />
     </div><!-- main-body -->
     @if ($media_list->hasPages())
     <div class="main-footer text-sm p-1">
@@ -46,7 +46,7 @@
     currentDialog.callbacks['ok'] = function () {
         var selected  = new Array();
 
-        $('.file-item').prev('input').each(function() {
+        $('.file-item').find('input.checkable-control').each(function() {
             if ($(this).prop('checked')) {
                 selected.push($(this).data());
             }
@@ -66,10 +66,9 @@
     $(function(){
         // 文件快捷操作改为选择
         $(document).off('click.file').on('click.file', '.file-item', function(e) {
-            if ($(e.target).parents('.dropdown').length == 0) {
-                var input = $(this).prev('input');
+            var input = $(this).find('input.checkable-control');
                 input.prop('checked', !input.prop('checked'));
-            }
+            $('.checkable').data('checkable').update();
             return false;
         });
     });

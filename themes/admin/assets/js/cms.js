@@ -78,7 +78,7 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
         ignore   : '.checkable-ignore,.disabled', //忽略项
         all      : '.checkable-all',    //全部选择控件
         operator : '.checkable-operator', // 关联操作按钮
-        checkbox : '.checkable-checkbox', //选择控件
+        checkbox : '.checkable-control', //选择控件
         checked  : 'selected checked' //选中后的样式
     };
 
@@ -112,7 +112,6 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                 checkboxes.filter(selector).each(function() {
                     $(this).prop('checked', state);
                     $(this).data('state', state);
-                    $(this).closest(options.item).toggleClass(options.checked, this.checked);
                 });
                 self.update();
             },
@@ -121,7 +120,6 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                 checkboxes.each(function(){
                     $(this).prop('checked', state);
                     $(this).data('state', state);
-                    $(this).closest(options.item).toggleClass(options.checked, this.checked);
                 });
                 self.update();
             },
@@ -134,6 +132,15 @@ return s=s[o.cache],f(o.props,function(t,n){var o=n.idx,a=r[o],h=s[o],c=u[n.type
                 $(options.all).each(function(){
                     $(this).prop('checked', state);
                     $(this).data('state', state);
+                });
+
+                // 更新选择状态
+                item.each(function() {
+                    if ($(this).find(options.checkbox).prop('checked')) {
+                        $(this).addClass(options.checked);
+                    } else {
+                         $(this).removeClass(options.checked);
+                    }
                 });
 
                 // 更新关联操作状态

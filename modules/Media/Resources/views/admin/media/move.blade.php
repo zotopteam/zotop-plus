@@ -25,7 +25,7 @@
         <x-media-breadcrumb :media="$media" />
     </div>
     <div class="main-body scrollable">
-        <x-media-list :list="$media_list" class="grid-sm grid-gap-xs" :checkable="false" :moveable="false" />
+        <x-media-list :list="$media_list" class="grid-sm grid-gap-sm" :checkable="false" :moveable="false" />
     </div><!-- main-body -->
     @if ($media_list->hasPages())
     <div class="main-footer">

@@ -77,6 +77,7 @@ return [
     'search.results.empty'     => '很抱歉，没有搜索到相关内容',
     'lastmodify'               => '最后修改',
     'select'                   => '选择',
+    'select.placeholder'       => '请选择',
     'select.min'               => '至少选择 :0 项',
     'select.max'               => '最多选择 :0 项',
     'page.previous'            => '上一页',

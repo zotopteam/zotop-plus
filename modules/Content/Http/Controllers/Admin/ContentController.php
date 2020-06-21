@@ -212,47 +212,35 @@ class ContentController extends AdminController
     }
 
     /**
-     * 排序
+     * 拖动排序 和手动排序
      *
-     * @return json
+     * @return mixed
      */
-    public function sort(Request $request, $parent_id)
+    public function sort(Request $request, $id)
     {
         if ($request->isMethod('POST')) {
 
-            $id    = $request->input('id');
-            $sort  = $request->input('sort');
-            $stick = $request->input('stick');
-
             // 将当前列表 $sort 之前的数据的 sort 全部加 1， 为拖动的数据保留出位置
-            Content::withoutTimestamps()->where('parent_id', $parent_id)->where('sort', '>=', $sort)->increment('sort', 1);
+            Content::withoutTimestamps()
+                ->where('parent_id', $id)
+                ->where('sort', '>=', $request->sort)
+                ->increment('sort', 1);
 
             // 更新当前数据的排序和置顶信息，如果排在置顶数据之前，自动置顶，如果排在非置顶数据后，自动取消置顶
-            Content::where('id', $id)->update([
-                'sort'  => $sort,
-                'stick' => $stick,
+            Content::where('id', $request->id)->update([
+                'sort'  => $request->sort,
+                'stick' => $request->stick,
             ]);
 
             return $this->success(trans('master.sorted'), $request->referer());
         }
 
-        // 当前排序节点
-        $this->sort = Content::findOrFail($request->id);
+        // 当前排序内容
+        $this->id   = $id;
+        $this->sort = Content::findOrFail($id);
 
-        // 获取父节点
-        if ($parent_id) {
-            $this->parent = Content::findOrFail($parent_id);
-        } else {
-            $this->parent = new Content;
-            $this->parent->id = 0;
-            $this->parent->title = trans('content::content.root');
-        }
-
-        // 获取路径
-        $this->path = Content::path($this->parent->id);
-
-        // 获取当前节点下面的全部数据（包含搜索）
-        $this->contents = Content::with('user', 'model')->where('parent_id', $parent_id)
+        // 获取内容的全部同级数据（包含搜索）
+        $this->contents = Content::with('user', 'model')->where('parent_id', $this->sort->parent_id)
             ->searchIn('title,keywords,summary', $request->keywords)
             ->sort()
             ->paginate(25);
@@ -263,9 +251,9 @@ class ContentController extends AdminController
     /**
      * 移动
      *
-     * @return Response
+     * @return mixed
      */
-    public function move(Request $request, $parent_id = null)
+    public function move(Request $request, $id = null)
     {
         if ($request->isMethod('POST')) {
 
@@ -283,28 +271,17 @@ class ContentController extends AdminController
         }
 
         // 缓存当前选择的节点编号，下次进入时候直接展示该节点
-        if (!is_null($parent_id)) {
-            session(['content_move_parent_id' => $parent_id]);
-        } else {
-            $parent_id = session('content_move_parent_id', 0);
-        }
-
-        // 当前排序的父节点
-        if ($parent_id) {
-            $this->parent = Content::findOrFail($parent_id);
-        } else {
-            $this->parent        = new Content;
-            $this->parent->id    = 0;
-            $this->parent->title = trans('content::content.root');
-        }
-
-        // 获取全部父节点
-        $this->path   = Content::path($this->parent->id);
+        $this->id = $request->remember('id', 0);
+        $this->content = $this->id ? Content::findOrFail($this->id) : null;
 
         // 获取当前节点下面的全部数据（包含搜索）
-        $this->contents = Content::whereHas('model', function ($query) {
-            $query->where('nestable', 1);
-        })->where('parent_id', $parent_id)->searchIn('title,keywords,summary', $request->keywords)->sort()->paginate(36);
+        $this->contents = Content::where('parent_id', $this->id)
+            ->searchIn('title,keywords,summary', $request->keywords)
+            ->whereHas('model', function ($query) {
+                $query->where('nestable', 1);
+            })
+            ->sort()
+            ->paginate(36);
 
         return $this->view();
     }

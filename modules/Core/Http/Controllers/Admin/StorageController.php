@@ -236,7 +236,7 @@ class StorageController extends Controller
         $this->browser = app(StorageBrowser::class, [
             'disk' => $disk,
             'root' => '',
-            'dir'  => $request->input('dir')
+            'dir'  => $request->remember('dir')
         ]);
 
         return $this->view();

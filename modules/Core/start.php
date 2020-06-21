@@ -9,6 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -61,7 +62,7 @@ Request::macro('referer', function () {
  * 扩展 Request::remember 功能
  * 键值存在，则存储键值，如果传入参数的键值不存在，则返回上一次存储的键值
  */
-Request::macro('remember', function ($key, $default = null) {
+Request::macro('remember', function ($key, $default = null, $minutes = 365 * 24 * 60) {
 
     // 从路由或者参数中获取键值
     $var = $this->route($key) ?? $this->input($key);
@@ -71,12 +72,12 @@ Request::macro('remember', function ($key, $default = null) {
 
     // 如果键值存在，存储并返回键值
     if (!is_null($var)) {
-        $this->session()->put($key, $var);
+        Cookie::queue($key, $var, $minutes);
         return $var;
     }
 
     // 如果键值不存在，则返回上一次存储的键值
-    return $this->session()->get($key, $default);
+    return $this->cookie($key, $default);
 });
 
 

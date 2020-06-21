@@ -2,6 +2,7 @@
 
 namespace Modules\Content\View\Components;
 
+use Illuminate\Support\Arr;
 use Illuminate\View\Component;
 use App\Support\Facades\Filter;
 use Modules\Content\Models\Content;
@@ -36,29 +37,71 @@ class ContentAdminList extends Component
      */
     public $mutiple;
 
+
     /**
-     * 是否可选择
+     * 是否可排序
      *
      * @var 
      */
-    public $moveable;
+    public $sortable;
+
+    /**
+     * 是否可以嵌套访问，禁止后，无法进入目录下级
+     *
+     * @var 
+     */
+    public $nestable;
+
+    /**
+     * 允许的操作
+     *
+     * @var array
+     */
+    public $action;
+
+    /**
+     * 视图
+     *
+     * @var string
+     */
+    public $view;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($list, $class = null, $checkable = true, $mutiple = true, $moveable = true)
-    {
+    public function __construct(
+        $list,
+        $class     = null,
+        $checkable = true,
+        $mutiple   = true,
+        $sortable  = null,
+        $nestable  = true,
+        $action    = true,
+        $view      = null
+    ) {
         $this->list      = $list;
         $this->class     = $class;
         $this->checkable = $checkable;
         $this->mutiple   = $mutiple;
-        $this->moveable  = $moveable;
+        $this->sortable  = $sortable;
+        $this->nestable  = $nestable;
+        $this->action    = $action;
+        $this->view      = $view;
 
         // 多选时可以使用拖拽选择
         if ($this->checkable) {
             $this->class .= $this->mutiple ? ' checkable selectable' : ' checkable';
+        }
+
+        if ($this->sortable) {
+            $this->class .= ' sortable';
+        }
+
+        // 字符串转为数组
+        if ($this->action && is_string($this->action)) {
+            $this->action = explode(',', $this->action);
         }
     }
 
@@ -113,6 +156,7 @@ class ContentAdminList extends Component
     public function getAction($item)
     {
         $action = [];
+
         // 查看和预览
         $action['view'] = [
             'text'  => $item->status == 'publish' ? trans('content::content.view') : trans('content::content.preview'),
@@ -138,19 +182,33 @@ class ContentAdminList extends Component
         // 移动
         $action['move'] = [
             'text'  => trans('master.move'),
-            'icon'  => 'fas fa-arrows-alt',
+            'icon'  => 'fa fa-arrows-alt',
             'class' => 'js-move',
-            'attrs' => ['data-id' => $item->id, 'data-parent_id' => $item->parent_id]
+            'attrs' => [
+                'data-id'    => $item->id,
+                'data-url'   => route('content.content.move'),
+                'data-title' => trans('master.move'),
+            ],
+        ];
+
+        // 置顶操作
+        $action['stick'] = [
+            'text'  => $item->stick ? trans('content::content.unstick') : trans('content::content.stick'),
+            'href'  => route('content.content.stick', $item->id),
+            'icon'  => $item->stick ? 'fa fa-arrow-circle-down' : 'fa fa-arrow-circle-up',
+            'class' => 'js-post',
         ];
 
         // 排序
-        $action['sort'] = [
-            'text'  => trans('content::content.sort'),
-            'href'  => route('content.content.sort', ['parent_id' => $item->parent_id, 'id' => $item->id]),
-            'icon'  => 'fa fa-sort-amount-up',
-            'class' => 'js-open',
-            'attrs' => ['data-width' => '80%', 'data-height' => '70%']
-        ];
+        if ($this->sortable) {
+            $action['sort'] = [
+                'text'  => trans('content::content.sort'),
+                'href'  => route('content.content.sort', [$item->id]),
+                'icon'  => 'fa fa-sort-amount-up',
+                'class' => 'js-open',
+                'attrs' => ['data-width' => '80%', 'data-height' => '70%']
+            ];
+        }
 
         // 回收站中的数据可以永久删除
         if ($item->status == 'trash') {
@@ -163,6 +221,7 @@ class ContentAdminList extends Component
         }
 
         foreach (Content::status() as $status => $value) {
+
             // 不显示自身状态和定时发布状态，定时发布取决于发布时间，如果发布时，时间是未来时间，则自动判定为定时发布
             if ($status == $item->status || $status == 'future') {
                 continue;
@@ -181,7 +240,19 @@ class ContentAdminList extends Component
             $action['publish']['text'] = trans('content::content.approved') . ' & ' . $action['publish']['text'];
         }
 
-        return Filter::fire('content.item.action', $action, $item);
+        $action = Filter::fire('content.item.action', $action, $item);
+
+        // 默认返回全部
+        if ($this->action === true) {
+            return $action;
+        }
+
+        // 传入允许的action
+        if (!empty($this->action)) {
+            return Arr::only($action, $this->action);
+        }
+
+        return [];
     }
 
     /**
@@ -191,10 +262,18 @@ class ContentAdminList extends Component
      */
     public function render()
     {
+        // 返回空数据
         if (!$this->list->count()) {
-            return view('content::components.empty');
+            return view('components.empty');
         }
 
-        return view('content::components.list')->with('list', $this->getList());
+        // 快捷视图
+        if (in_array($this->view, ['grid', 'list'])) {
+            $view = "content::components.{$this->view}";
+        } else {
+            $view = $this->view;
+        }
+
+        return view($view)->with('list', $this->getList());
     }
 }

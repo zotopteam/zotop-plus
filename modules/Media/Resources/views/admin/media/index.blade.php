@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="main-body scrollable" id="file-upload-dragdrop">
-        <x-media-list :list="$media_list" class="grid-sm grid-gap-xs" />
+        <x-media-list :list="$media_list" class="grid-sm grid-gap-sm" />
     </div><!-- main-body -->
     @if ($media_list->hasPages())
     <div class="main-footer justify-content-end">

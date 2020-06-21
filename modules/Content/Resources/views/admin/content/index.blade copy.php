@@ -12,14 +12,12 @@
 
             @if($creates->count() > 1)
             <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-plus"></i> {{trans('content::content.create')}}
                 </button>
                 <div class="dropdown-menu dropdown-menu-primary">
                     @foreach($creates as $model)
-                    <a class="dropdown-item" href="{{route('content.content.create',[$id, $model->id])}}"
-                        title="{{$model->description}}" data-placement="left">
+                    <a class="dropdown-item" href="{{route('content.content.create',[$id, $model->id])}}" title="{{$model->description}}" data-placement="left">
                         <i class="dropdown-item-icon {{$model->icon}} fa-fw"></i>
                         <b class="dropdown-item-text">{{$model->name}}</b>
                     </a>
@@ -28,34 +26,29 @@
             </div>
             @else
             @foreach($creates as $model)
-            <a class="btn btn-primary" href="{{route('content.content.create',[$id, $model->id])}}"
-                title="{{$model->description}}">
+            <a class="btn btn-primary" href="{{route('content.content.create',[$id, $model->id])}}" title="{{$model->description}}">
                 <i class="btn-icon fa fa-plus fa-fw"></i>
                 <b class="btn-text">{{$model->name}}</b>
             </a>
             @endforeach
             @endif
 
-            <button type="button" class="btn btn-outline-success checkable-operator disabled" disabled="disabled"
-                data-operate="move">
+            <button type="button" class="btn btn-outline-success checkable-operator disabled" disabled="disabled" data-operate="move">
                 <i class="fa fa-arrows-alt fa-fw"></i> {{trans('master.move')}}
             </button>
 
             <div class="btn-group dropdown">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle checkable-operator disabled"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle checkable-operator disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-ellipsis-h fa-fw"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-primary">
                     @foreach (\Modules\Content\Models\Content::status() as $k=>$s)
                     @continue($k == 'future')
-                    <a href="javascript:;" class="dropdown-item checkable-operator disabled" disabled="disabled"
-                        data-operate="status" data-status="{{$k}}" data-url="{{route('content.content.status',[$k])}}">
+                    <a href="javascript:;" class="dropdown-item checkable-operator disabled" disabled="disabled" data-operate="status" data-status="{{$k}}" data-url="{{route('content.content.status',[$k])}}">
                         <i class="{{$s.icon}} fa-fw"></i> {{$s.name}}
                     </a>
                     @endforeach
-                    <a href="javascript:;" class="dropdown-item checkable-operator disabled" disabled="disabled"
-                        data-operate="delete" data-confirm="{{trans('content::content.delete.confirm')}}">
+                    <a href="javascript:;" class="dropdown-item checkable-operator disabled" disabled="disabled" data-operate="delete" data-confirm="{{trans('content::content.delete.confirm')}}">
                         <i class="fa fa-times fa-fw"></i> {{trans('content::content.destroy')}}
                     </a>
                 </div>
@@ -87,18 +80,15 @@
             </thead>
             <tbody>
                 @foreach($contents as $content)
-                <tr class="checkable-item" data-id="{{$content->id}}" data-sort="{{$content->sort}}"
-                    data-stick="{{$content->stick}}" data-title="{{$content->title}}">
+                <tr class="checkable-item" data-id="{{$content->id}}" data-sort="{{$content->sort}}" data-stick="{{$content->stick}}" data-title="{{$content->title}}">
                     <td class="drag"></td>
                     <td class="select">
-                        <input type="checkbox" name="ids[]" value="{{$content->id}}"
-                            class="checkable-checkbox text-muted">
+                        <input type="checkbox" name="ids[]" value="{{$content->id}}" class="checkable-control text-muted">
                     </td>
                     @if ($content->image)
                     <td class="text-center px-2" width="1%">
 
-                        <a href="javascript:;" class="js-image" data-url="{{$content->image}}"
-                            data-title="{{$content->title}}">
+                        <a href="javascript:;" class="js-image" data-url="{{$content->image}}" data-title="{{$content->title}}">
                             <div class="icon icon-md">
                                 <img src="{{$content->image}}">
                             </div>
@@ -109,8 +99,7 @@
                     @endif
                     <td class="px-2">
                         <div class="title">
-                            <i class="{{$content->model->icon}} fa-fw text-warning" title="{{$content->model->name}}"
-                                data-toggle="tooltip"></i>
+                            <i class="{{$content->model->icon}} fa-fw text-warning" title="{{$content->model->name}}" data-toggle="tooltip"></i>
                             @if ($content->model->nestable)
                             <a href="{{route('content.content.index', $content->id)}}">
                                 {{$content->title}}
@@ -124,8 +113,7 @@
                             @if ($flatten = array_slice($manage, 0, 6))
                             @foreach ($flatten as $k=>$s)
                             <div class="manage-item">
-                                <a href="{{$s.href ?? 'javascript:;'}}" class="{{$s.class ?? ''}}"
-                                    {!!Html::attributes($s.attrs ?? [])!!}>
+                                <a href="{{$s.href ?? 'javascript:;'}}" class="{{$s.class ?? ''}}" {!!Html::attributes($s.attrs ?? [])!!}>
                                     <i class="{{$s.icon ?? ''}} fa-fw"></i> {{$s.text ?? ''}}
                                 </a>
                             </div>
@@ -139,8 +127,7 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-primary">
                                     @foreach ($dropdown as $k=>$s)
-                                    <a href="{{$s.href ?? 'javascript:;'}}" class="dropdown-item {{$s.class ?? ''}}"
-                                        {!!Html::attributes($s.attrs ?? [])!!}>
+                                    <a href="{{$s.href ?? 'javascript:;'}}" class="dropdown-item {{$s.class ?? ''}}" {!!Html::attributes($s.attrs ?? [])!!}>
                                         <i class="dropdown-item-icon {{$s.icon ?? ''}} fa-fw"></i>
                                         <b class="dropdown-item-text">{{$s.text ?? ''}}</b>
                                     </a>
@@ -152,14 +139,11 @@
                         </div>
                     </td>
                     <td width="1%">
-                        <a href="javascript:;" class="js-post"
-                            data-url="{{route('content.content.stick', [$content->id])}}">
+                        <a href="javascript:;" class="js-post" data-url="{{route('content.content.stick', [$content->id])}}">
                             @if ($content->stick)
-                            <i class="fa fa-arrow-circle-up fa-2x text-primary" rel="stick-down"
-                                title="{{trans('content::content.unstick')}}" data-toggle="tooltip"></i>
+                            <i class="fa fa-arrow-circle-up fa-2x text-primary" rel="stick-down" title="{{trans('content::content.unstick')}}" data-toggle="tooltip"></i>
                             @else
-                            <i class="fa fa-arrow-circle-up fa-2x text-muted" rel="stick-up"
-                                title="{{trans('content::content.stick')}}" data-toggle="tooltip"></i>
+                            <i class="fa fa-arrow-circle-up fa-2x text-muted" rel="stick-up" title="{{trans('content::content.stick')}}" data-toggle="tooltip"></i>
                             @endif
                         </a>
                     </td>
@@ -167,8 +151,7 @@
                     <td><strong>{{$content->user->username}}</strong></td>
                     <td></td>
                     <td>
-                        <i class="{{$content->status_icon}} fa-fw fa-2x" title="{{$content->status_name}}"
-                            data-toggle="tooltip"></i>
+                        <i class="{{$content->status_icon}} fa-fw fa-2x" title="{{$content->status_name}}" data-toggle="tooltip"></i>
                     </td>
                     <td>
                         @if (in_array($content->status,['publish']))
@@ -203,146 +186,165 @@
 @push('js')
 <script type="text/javascript">
     // post data
-function postData(url, data, callback) {
-    $.post(url, data, function(msg) {
-        $.msg(msg);
+    function postData(url, data, callback) {
+        $.post(url, data, function(msg) {
+            $.msg(msg);
 
-        if (msg.type == 'success') {
-            callback(); 
-        }
-    });    
-}
+            if (msg.type == 'success') {
+                callback();
+            }
+        });
+    }
 
-// move dialog
-function moveDialog(callback) {
-    return $.dialog({
-        id      : 'move-content',
-        title   : '{{ trans('master.move') }}',
-        url     : '{{ route('content.content.move')}}',
-        width   : '75%',
-        height  : '75%',
-        padding : 0,
-        ok      : function() {
-            callback(this);
-            return false;
-        },
-        cancel       : $.noop
-    }, true).loading(true);        
-}
+    // move dialog
+    function moveDialog(callback) {
+        return $.dialog({
+            id: 'move-content',
+            title: '{{ trans('
+            master.move ') }}',
+            url: '{{ route('
+            content.content.move ')}}',
+            width: '75%',
+            height: '75%',
+            padding: 0,
+            ok: function() {
+                callback(this);
+                return false;
+            },
+            cancel: $.noop
+        }, true).loading(true);
+    }
 
-// move data
-function moveData(id, parent_id, callback) {
-    postData('{{route('content.content.move')}}', {id:id, parent_id:parent_id}, callback);
-}
+    // move data
+    function moveData(id, parent_id, callback) {
+        postData('{{route('
+            content.content.move ')}}', {
+                id: id,
+                parent_id: parent_id
+            }, callback);
+    }
 
 
-$(function(){
+    $(function() {
 
-    // 单个取消置顶
-    $('[rel=stick-down]').on('mouseover', function(){
-        $(this).removeClass('fa-arrow-circle-up').addClass('fa-arrow-circle-down');
-    }).on('mouseout', function(){
-        $(this).removeClass('fa-arrow-circle-down').addClass('fa-arrow-circle-up');
-    });
+        // 单个取消置顶
+        $('[rel=stick-down]').on('mouseover', function() {
+            $(this).removeClass('fa-arrow-circle-up').addClass('fa-arrow-circle-down');
+        }).on('mouseout', function() {
+            $(this).removeClass('fa-arrow-circle-down').addClass('fa-arrow-circle-up');
+        });
 
-    // 单个置顶
-    $('[rel=stick-up]').on('mouseover', function(){
-        $(this).removeClass('text-muted').addClass('text-primary');
-    }).on('mouseout', function(){
-        $(this).removeClass('text-primary').addClass('text-muted');
-    })        
-
-    // 单个移动
-    $(document).on('click', 'a.js-move', function(event) {
-        event.preventDefault();
-        var id = $(this).data('id');
-        moveDialog(function(dialog) {
-            moveData(id, dialog.parent_id, function(){
-                dialog.close().remove();
-                location.reload();
-            });
+        // 单个置顶
+        $('[rel=stick-up]').on('mouseover', function() {
+            $(this).removeClass('text-muted').addClass('text-primary');
+        }).on('mouseout', function() {
+            $(this).removeClass('text-primary').addClass('text-muted');
         })
-        event.stopPropagation();
-    });
 
-    // 批量操作
-    $(document).on('click','.checkable-operator', function(event) {
-        event.preventDefault();
-        
-        var ids     = $('.checkable').data('checkable').val();
-        var operate = $(this).data('operate');
-
-        // 移动
-        if (operate == 'move') {
+        // 单个移动
+        $(document).on('click', 'a.js-move', function(event) {
+            event.preventDefault();
+            var id = $(this).data('id');
             moveDialog(function(dialog) {
-                moveData(ids, dialog.parent_id, function(){
+                moveData(id, dialog.parent_id, function() {
                     dialog.close().remove();
                     location.reload();
                 });
-            })        
-        }
-
-        // 状态
-        if (operate == 'status') {
-            postData($(this).data('url'), {id:ids});
-        }
-
-        // 永久删除
-        if (operate == 'delete') {
-            $.confirm($(this).data('confirm'), function(){
-                postData('{{route('content.content.destroy')}}', {id:ids});
             })
-        }
+            event.stopPropagation();
+        });
 
-        event.stopPropagation();
+        // 批量操作
+        $(document).on('click', '.checkable-operator', function(event) {
+            event.preventDefault();
+
+            var ids = $('.checkable').data('checkable').val();
+            var operate = $(this).data('operate');
+
+            // 移动
+            if (operate == 'move') {
+                moveDialog(function(dialog) {
+                    moveData(ids, dialog.parent_id, function() {
+                        dialog.close().remove();
+                        location.reload();
+                    });
+                })
+            }
+
+            // 状态
+            if (operate == 'status') {
+                postData($(this).data('url'), {
+                    id: ids
+                });
+            }
+
+            // 永久删除
+            if (operate == 'delete') {
+                $.confirm($(this).data('confirm'), function() {
+                    postData('{{route('
+                        content.content.destroy ')}}', {
+                            id: ids
+                        });
+                })
+            }
+
+            event.stopPropagation();
+        });
+
+
     });
-
-
-});
 </script>
 <script type="text/javascript">
-    $(function(){
-    // 拖动停止更新当前的排序及当前数据之前的数据
-    var dragstop = function(evt, ui, tr) {
-        
-        var oldindex = tr.data('originalIndex');
-        var newindex = tr.prop('rowIndex');
-        
-        if(oldindex == newindex) { return; }
+    $(function() {
+        // 拖动停止更新当前的排序及当前数据之前的数据
+        var dragstop = function(evt, ui, tr) {
 
-        var prev = ui.item.siblings('tr').eq(newindex-2); // 排到这一行之后
-        var next = ui.item.siblings('tr').eq(newindex-1); // 排到这一行之前
+            var oldindex = tr.data('originalIndex');
+            var newindex = tr.prop('rowIndex');
 
-        var id = tr.data('id');
-        var newsort = ( newindex==1 || prev.data('sort') < next.data('sort') ) ? next.data('sort') + 1 : prev.data('sort');
-        var newstick = ( newindex < oldindex ) ? next.data('stick') : prev.data('stick');
+            if (oldindex == newindex) {
+                return;
+            }
 
-        //console.log(oldindex+'---'+newindex+'--'+ neworder +'--'+ newstick);
+            var prev = ui.item.siblings('tr').eq(newindex - 2); // 排到这一行之后
+            var next = ui.item.siblings('tr').eq(newindex - 1); // 排到这一行之前
 
-        $.post('{{route('content.content.sort', $id)}}',{id:id, sort:newsort, stick:newstick}, function(data) {
-            $.msg(data);
-        },'json');      
-    };  
+            var id = tr.data('id');
+            var newsort = (newindex == 1 || prev.data('sort') < next.data('sort')) ? next.data('sort') + 1 : prev.data('sort');
+            var newstick = (newindex < oldindex) ? next.data('stick') : prev.data('stick');
 
-    $("table.table-sortable").sortable({
-        items: "tbody > tr",
-        handle: "td.drag",
-        axis: "y",
-        placeholder:"ui-sortable-placeholder",
-        helper: function(e,tr){
-            tr.children().each(function(){
-                $(this).width($(this).width());
-            });
-            return tr;
-        },
-        start:function (event,ui) {
-            ui.placeholder.height(ui.helper[0].scrollHeight);
-            ui.item.data('originalIndex', ui.item.prop('rowIndex'));
-        },      
-        stop:function(event,ui){
-            dragstop.apply(this, Array.prototype.slice.call(arguments).concat(ui.item));
-        }
-    });
-})
+            //console.log(oldindex+'---'+newindex+'--'+ neworder +'--'+ newstick);
+
+            $.post('{{route('
+                content.content.sort ', $id)}}', {
+                    id: id,
+                    sort: newsort,
+                    stick: newstick
+                },
+                function(data) {
+                    $.msg(data);
+                }, 'json');
+        };
+
+        $("table.table-sortable").sortable({
+            items: "tbody > tr",
+            handle: "td.drag",
+            axis: "y",
+            placeholder: "ui-sortable-placeholder",
+            helper: function(e, tr) {
+                tr.children().each(function() {
+                    $(this).width($(this).width());
+                });
+                return tr;
+            },
+            start: function(event, ui) {
+                ui.placeholder.height(ui.helper[0].scrollHeight);
+                ui.item.data('originalIndex', ui.item.prop('rowIndex'));
+            },
+            stop: function(event, ui) {
+                dragstop.apply(this, Array.prototype.slice.call(arguments).concat(ui.item));
+            }
+        });
+    })
 </script>
 @endpush

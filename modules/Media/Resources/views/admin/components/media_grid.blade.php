@@ -1,62 +1,71 @@
 <div class="grid grid-hover p-2 {{$class}} ias-container">
     @foreach ($list as $item)
-    <div class="checkable-item ias-item">
-        @if ($checkable)
-        <input type="{{$mutiple ? 'checkbox' : 'radio'}}" name="{{$mutiple ? 'id[]' : 'id'}}" value="{{$item->id}}"
-            class="form-control-check checkable-checkbox" data-url="{{$item->url}}" data-name="{{$item->name}}"
-            data-type="{{$item->type}}" />
+    <div class="grid-item checkable-item selectable-item ias-item  {{$item->is_folder ? 'folder-item' : 'file-item'}} p-1 h-100 cur-p"
+        data-type="{{$item->type}}" data-link="{{$item->link}}">
+        @if ($checkable === true || in_array($item->type, $checkable))
+        <div class="grid-item-badge js-click-ignore">
+            <input type="{{$mutiple ? 'checkbox' : 'radio'}}" name="{{$mutiple ? 'id[]' : 'id'}}" value="{{$item->id}}"
+                id="checkable-control-{{$item->id}}" class="checkable-control d-none" data-url="{{$item->url}}"
+                data-name="{{$item->name}}" data-type="{{$item->type}}" />
+            <label for="checkable-control-{{$item->id}}" class="checkable-control-circle hover-show"></label>
+        </div>
         @endif
-        <div class="grid-item {{$item->is_folder ? 'folder-item' : 'file-item'}} p-1 h-100" data-type="{{$item->type}}"
-            data-link="{{$item->link}}">
-            <div class="grid-item-icon fh-8">
-                @if ($item->type == 'folder')
-                <i class="fa fa-folder fs-6 text-warning"></i>
-                @elseif ($item->type == 'image')
-                <img src="{{preview($item->diskpath, 300)}}">
-                @else
-                <i class="{{$item->icon}} fs-6 text-info"></i>
-                @endif
+        <div class="grid-item-icon fh-8">
+            @if ($item->type == 'folder')
+            <i class="fa fa-folder fs-6 text-warning"></i>
+            @elseif ($item->type == 'image')
+            <img src="{{preview($item->diskpath, 300)}}">
+            @else
+            <i class="{{$item->icon}} fs-6 text-info"></i>
+            @endif
+        </div>
+        <div class="grid-item-text d-flex flex-row">
+            <div class="grid-item-name text-sm text-break text-truncate text-truncate-2 mr-auto">
+                {{$item->name}}
             </div>
-            <div class="grid-item-text d-flex flex-row">
-                <div class="grid-item-name text-sm text-break text-truncate text-truncate-2 mr-auto">
-                    {{$item->name}}
-                </div>
-                <div class="grid-item-action ml-2 dropdown">
-                    <a href="javascript:;" data-toggle="dropdown" class="dropdown-trigger py-1" aria-expanded="false">
-                        <i class="fa fa-ellipsis-h fa-fw mt-1"></i>
+            <div class="grid-item-action  ml-2 dropdown js-click-ignore">
+                <a href="javascript:;" data-toggle="dropdown" class="p-1" aria-expanded="false">
+                    <i class="fa fa-ellipsis-h fa-fw mt-1"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-primary">
+                    @foreach ($item->action as $a)
+                    <a href="{{$a.href ?? 'javascript:;'}}" class="dropdown-item {{$a.class ?? ''}}" {!!
+                        Html::attributes($a.attrs ?? []) !!}>
+                        <i class="dropdown-item-icon {{$a.icon ?? ''}} fa-fw"></i>
+                        <b class="dropdown-item-text"> {{$a.text}}</b>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-primary">
-                        @foreach ($item->action as $action)
-                        <a href="{{$action.href ?? 'javascript:;'}}" class="dropdown-item {{$action.class ?? ''}}" {!!
-                            Html::attributes($action.attrs ?? []) !!}>
-                            <i class="dropdown-item-icon {{$action.icon ?? ''}} fa-fw"></i>
-                            <b class="dropdown-item-text"> {{$action.text}}</b>
-                        </a>
-                        @endforeach
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
+
     @endforeach
 </div>
 <div class="ias-spinner text-center d-none">
     <i class="fa fa-spin fa-spinner"></i>
 </div>
 @push('js')
+@if ($nestable)
 <script>
     $(function(){
         // 文件夹快捷操作
         $(document).on('click.folder', '.folder-item', function(e) {
-            if ($(e.target).parents('.dropdown').length == 0) {
+            if ($(e.target).parents('.js-click-ignore').length == 0) {
                 location.href = $(this).data('link');
                 return true;              
             }
         });
+    });
+</script>
+@endif
 
+@if ($action === true || in_array('view', $action))
+<script>
+    $(function(){        
         // 文件快捷操作
         $(document).on('click.file', '.file-item', function(e) {
-            if ($(e.target).parents('.dropdown').length == 0) {
+            if ($(e.target).parents('.js-click-ignore').length == 0) {
                 var type = $(this).data('type');
                 if (type == 'image') {
                     $.image($(this).data('link'));
@@ -66,7 +75,9 @@
         });
     });
 </script>
-@if($moveable)
+@endif
+
+@if ($action === true || in_array('move', $action))
 <script>
     $(function(){        
         // 单个文件夹和文件移动
@@ -99,14 +110,14 @@
     $(function(){
         // 拖动选择
         $('.selectable').selectable({
-            filter: '.checkable-item',
+            filter: '.selectable-item',
             distance: 30,
             selecting:function(evnet, ui){
-                $(ui.selecting).find('.checkable-checkbox').prop('checked', true);
+                $(ui.selecting).find('.checkable-control').prop('checked', true);
                 $('.checkable').data('checkable').update();
             },
             unselecting:function(evnet, ui){
-                $(ui.unselecting).find('.checkable-checkbox').prop('checked', false);
+                $(ui.unselecting).find('.checkable-control').prop('checked', false);
                 $('.checkable').data('checkable').update();
             }
         });

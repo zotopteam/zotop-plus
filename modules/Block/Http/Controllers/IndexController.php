@@ -20,7 +20,8 @@ class IndexController extends FrontController
      */
     public function preview(Request $request, $id)
     {
-        $this->block = Block::findOrFail($id);
+        $this->id = $id;
+
         return $this->view();
     }
 }
