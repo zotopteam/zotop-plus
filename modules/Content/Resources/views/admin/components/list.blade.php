@@ -12,34 +12,40 @@
                     value="{{$content->id}}" class="checkable-control text-muted">
             </td>
             @endif
-            <td class="text-center px-2" width="1%">
-                @if ($content->image)
-                <a href="javascript:;" class="d-flex fw-3 fh-3 overflow-hidden js-image" data-url="{{$content->image}}"
-                    data-title="{{$content->title}}">
-                    <span class="align-self-center"><img src="{{$content->image}}" class="img-fluid rounded"></span>
+            <td class="text-center" width="1%">
+                @if ($content->nestable)
+                <i class="{{$content->model->icon}} text-warning fs-3"></i>
+                @elseif ($content->image)
+                <a href="javascript:;"
+                    class="d-flex justify-content-center align-items-center fw-3 fh-3 overflow-hidden js-image"
+                    data-url="{{$content->image}}" data-title="{{$content->title}}">
+                    <img src="{{$content->image}}" class="img-fluid rounded">
                 </a>
+                @else
+                <i class="{{$content->model->icon}} text-info fs-3"></i>
                 @endif
             </td>
             <td>
                 <div class="title text-truncate text-truncate-1 mb-1 ignore-click-selectable">
-                    @if ($nestable && $content->model->nestable)
-                    <a href="{{route('content.content.index', $content->id)}}">
+                    @if ($content->nestable)
+                    <a href="{{$content->nestable}}">
                         {{$content->title}}
                     </a>
                     @else
                     {{$content->title}}
                     @endif
                 </div>
+                @if ($statusbar)
                 <div class="scale-n3 scale-left">
                     <div class="badge badge-warning badge-pill" title="{{$content->model->name}}" data-toggle="tooltip">
                         <i class="{{$content->model->icon}}"></i>
                         {{$content->model->name}}
                     </div>
-                    <div class="badge badge-info badge-pill" title="{{$content->status_name}}" data-toggle="tooltip">
+                    <div class="badge badge-{{$content->status_color}} badge-pill" title="{{$content->status_name}}"
+                        data-toggle="tooltip">
                         <i class="{{$content->status_icon}}"></i>
                         {{$content->status_name}}
                     </div>
-
                     @if ($content->stick)
                     <div class="badge badge-success badge-pill" title="{{trans('content::content.sticked')}}"
                         data-toggle="tooltip">
@@ -48,6 +54,7 @@
                     </div>
                     @endif
                 </div>
+                @endif
 
             </td>
             <td width="1%">

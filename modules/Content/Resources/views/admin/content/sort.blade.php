@@ -5,7 +5,7 @@
 <div class="main">
     <div class="main-header">
         <div class="main-title mr-auto">
-            {{trans('master.select.placeholder')}}
+            {{trans('content::content.sort.help', [Str::limit($sort->title, 20)])}}
         </div>
         <x-search />
         <a href="javascript:location.reload()" class="btn btn-light" title="{{trans('master.refresh')}}">
@@ -13,7 +13,7 @@
         </a>
     </div>
     <div class="main-body scrollable">
-        <x-content-admin-list :list="$contents" allow="view" :mutiple="false" :nestable="false" />
+        <x-content-admin-list :list="$contents" :action="false" allow="view" :mutiple="false" :nestable="false" />
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="mx-auto">
@@ -26,9 +26,6 @@
 @push('js')
 <script type="text/javascript">
     $(function(){
-
-    // statusbar
-    currentDialog.title('{{trans('content::content.sort.help', [Str::limit($sort->title, 50)])}}');
 
     // 确定按钮回调
     currentDialog.callbacks['ok'] = function () {

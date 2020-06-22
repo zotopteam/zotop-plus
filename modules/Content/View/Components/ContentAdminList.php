@@ -37,7 +37,6 @@ class ContentAdminList extends Component
      */
     public $mutiple;
 
-
     /**
      * 是否可排序
      *
@@ -60,6 +59,20 @@ class ContentAdminList extends Component
     public $action;
 
     /**
+     * 是否显示状态
+     *
+     * @var array
+     */
+    public $statusbar;
+
+    /**
+     * 无数据时的视图 或者 无数据时的文字
+     *
+     * @var string
+     */
+    public $empty;
+
+    /**
      * 视图
      *
      * @var string
@@ -79,7 +92,9 @@ class ContentAdminList extends Component
         $sortable  = null,
         $nestable  = true,
         $action    = true,
-        $view      = null
+        $statusbar = true,
+        $empty     = null,
+        $view      = 'list'
     ) {
         $this->list      = $list;
         $this->class     = $class;
@@ -88,6 +103,8 @@ class ContentAdminList extends Component
         $this->sortable  = $sortable;
         $this->nestable  = $nestable;
         $this->action    = $action;
+        $this->statusbar = $statusbar;
+        $this->empty     = $empty;
         $this->view      = $view;
 
         // 多选时可以使用拖拽选择
@@ -100,8 +117,10 @@ class ContentAdminList extends Component
         }
 
         // 字符串转为数组
-        if ($this->action && is_string($this->action)) {
-            $this->action = explode(',', $this->action);
+        if ($this->action) {
+            $this->action = is_string($this->action) ? explode(',', $this->action) : $this->action;
+        } else {
+            $this->action = [];
         }
     }
 
@@ -109,43 +128,40 @@ class ContentAdminList extends Component
     {
         $list = [];
         foreach ($this->list as $item) {
-            $item->link   = $this->getLink($item);
-            $item->action = $this->getAction($item);
+            $item->nestable = $this->getNestable($item);
+            $item->action   = $this->getAction($item);
             $list[] = $item;
         }
         return $list;
     }
 
     /**
-     * 获取访问连接
+     * 获取嵌套访问连接
      * 1，文件夹返回访问连接
-     * 2，图片返回预览连接
      *
      * @return string
      */
-    public function getLink($item)
+    public function getNestable($item)
     {
-        $link = null;
+        $nestable = null;
 
-        if ($item->type == 'folder') {
+        if ($this->nestable && $item->model->nestable) {
             // 合并当前所有参数(排除分页参数)
             $parameters = array_merge(
                 app('router')->current()->parameters(),
                 app('request')->except('page', 'keywords'),
                 [
-                    'folder_id' => $item->id
+                    'id' => $item->id
                 ]
             );
 
-            $link = route(
+            $nestable = route(
                 app('router')->current()->getName(),
                 $parameters
             );
-        } else if ($item->type == 'image') {
-            $link = preview($item->diskpath);
         }
 
-        return Filter::fire('content.item.link', $link, $item);
+        return $nestable;
     }
 
     /**
@@ -264,7 +280,9 @@ class ContentAdminList extends Component
     {
         // 返回空数据
         if (!$this->list->count()) {
-            return view('components.empty');
+            return view('components.empty', [
+                'empty' => $this->empty
+            ]);
         }
 
         // 快捷视图

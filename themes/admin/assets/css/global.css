@@ -1781,6 +1781,7 @@ fieldset[disabled] .btn {
     padding: 0;
     line-height: 1;
     position: relative;
+    cursor: pointer;
 }
 
 .checkable-item .checkable-control+.checkable-control-circle:after{
@@ -1798,6 +1799,9 @@ fieldset[disabled] .btn {
     display: block;
 }
 
+.checkable-item .checkable-control+.checkable-control-triangle {
+    cursor: pointer;
+}
 
 .checkable-item .checkable-control+.checkable-control-triangle:before {
     content: "";

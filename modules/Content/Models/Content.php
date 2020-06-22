@@ -4,6 +4,7 @@ namespace Modules\Content\Models;
 
 use Module;
 use App\Traits\Nestable;
+use Illuminate\Support\Arr;
 use App\Traits\UserRelation;
 use Modules\Content\Extend\Extendable;
 use Modules\Content\Support\Modelable;
@@ -117,7 +118,7 @@ class Content extends Model
      */
     public function getStatusNameAttribute($value)
     {
-        return array_get(static::status(), $this->status . '.name');
+        return Arr::get(static::status(), $this->status . '.name');
     }
 
     /**
@@ -127,7 +128,17 @@ class Content extends Model
      */
     public function getStatusIconAttribute($value)
     {
-        return array_get(static::status(), $this->status . '.icon');
+        return Arr::get(static::status(), $this->status . '.icon');
+    }
+
+    /**
+     * 获取内容状态颜色
+     * @param  mixed $value
+     * @return string
+     */
+    public function getStatusColorAttribute($value)
+    {
+        return Arr::get(static::status(), $this->status . '.color', 'info');
     }
 
     /**
@@ -142,7 +153,7 @@ class Content extends Model
         }
 
         if (isset($this->parent->models)) {
-            return array_get($this->parent->models, $this->model_id . '.view');
+            return Arr::get($this->parent->models, $this->model_id . '.view');
         }
 
         return $this->model->view;

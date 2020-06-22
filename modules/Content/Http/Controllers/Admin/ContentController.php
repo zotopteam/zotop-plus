@@ -30,7 +30,7 @@ class ContentController extends AdminController
             $query->searchIn('title,keywords,summary', $keywords);
         }, function ($query) use ($id) {
             $query->where('parent_id', $id);
-        })->sort()->paginate(25);
+        })->sort()->paginate(50);
 
         // 创建菜单
         $this->creates = Model::Enabled()->get()->filter(function ($item) {
@@ -157,16 +157,6 @@ class ContentController extends AdminController
         $this->content = Content::findOrFail($id);
         $this->content->source_id = md5(microtime(true));
 
-        // 获取父节点
-        if ($this->content->parent_id) {
-            $this->parent = Content::findOrFail($this->content->parent_id);
-        } else {
-            $this->parent        = new Content;
-            $this->parent->id    = 0;
-            $this->parent->title = trans('content::content.root');
-        }
-
-        $this->path   = Content::path($this->parent->id);
         $this->model  = Model::find($this->content->model_id);
         $this->form   = ModelForm::get($this->content->model_id, $this->content->source_id);
 
@@ -243,7 +233,7 @@ class ContentController extends AdminController
         $this->contents = Content::with('user', 'model')->where('parent_id', $this->sort->parent_id)
             ->searchIn('title,keywords,summary', $request->keywords)
             ->sort()
-            ->paginate(25);
+            ->paginate(50);
 
         return $this->view();
     }
@@ -258,7 +248,7 @@ class ContentController extends AdminController
         if ($request->isMethod('POST')) {
 
             $id        = $request->input('id');
-            $parent_id = $request->input('parent_id');
+            $parent_id = $request->input('move_to');
 
             // 获取数据并移动
             Content::whereSmart('id', $id)->get()->each(function ($item, $key) use ($parent_id) {
@@ -275,12 +265,15 @@ class ContentController extends AdminController
         $this->content = $this->id ? Content::findOrFail($this->id) : null;
 
         // 获取当前节点下面的全部数据（包含搜索）
-        $this->contents = Content::where('parent_id', $this->id)
-            ->searchIn('title,keywords,summary', $request->keywords)
+        $this->contents = Content::sort()
+            ->when($request->keywords, function ($query, $keywords) {
+                $query->searchIn('title,keywords,summary', $keywords);
+            }, function ($query) {
+                $query->where('parent_id', $this->id);
+            })
             ->whereHas('model', function ($query) {
                 $query->where('nestable', 1);
             })
-            ->sort()
             ->paginate(36);
 
         return $this->view();
