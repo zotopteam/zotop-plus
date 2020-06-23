@@ -21,16 +21,23 @@ class ContentController extends AdminController
      */
     public function index(Request $request, $id = 0)
     {
+        // 记住当前url，编辑并保持后返回当前页面
+        $request->session()->put('content-back-url', $request->fullUrl());
+
         $this->id      = $id;
         $this->content = $id ? Content::findOrFail($id) : null;
         $this->title   = $id ? $this->content->title : trans('content::content.root');
 
         // 分页获取
-        $this->contents = Content::with('user', 'model')->when($request->keywords, function ($query, $keywords) {
-            $query->searchIn('title,keywords,summary', $keywords);
-        }, function ($query) use ($id) {
-            $query->where('parent_id', $id);
-        })->sort()->paginate(50);
+        $this->contents = Content::with('user', 'model')
+            ->where('status', '<>', 'trash')
+            ->when($request->keywords, function ($query, $keywords) {
+                $query->searchIn('title,keywords,summary', $keywords);
+            }, function ($query) use ($id) {
+                $query->where('parent_id', $id);
+            })
+            ->sort()
+            ->paginate(50);
 
         // 创建菜单
         $this->creates = Model::Enabled()->get()->filter(function ($item) {
@@ -46,6 +53,7 @@ class ContentController extends AdminController
 
         return $this->view();
     }
+
 
     /**
      * 新建
@@ -86,7 +94,7 @@ class ContentController extends AdminController
 
         // 保存并返回
         if ($request->input('_action') == 'back') {
-            return $this->success(trans('master.created'), route('content.content.index', $content->parent_id));
+            return $this->success(trans('master.created'), $request->session()->get('content-back-url'));
         }
 
         return $this->success(trans('master.created'), route('content.content.edit', $content->id));
@@ -139,7 +147,7 @@ class ContentController extends AdminController
 
         // 保存并返回
         if ($request->input('_action') == 'back') {
-            return $this->success(trans('master.updated'), route('content.content.index', $content->parent_id));
+            return $this->success(trans('master.updated'), $request->session()->get('content-back-url'));
         }
 
         return $this->success(trans('master.updated'));
@@ -166,7 +174,7 @@ class ContentController extends AdminController
     }
 
     /**
-     * 更改状态
+     * 状态
      *
      * @return Response
      */
@@ -185,6 +193,24 @@ class ContentController extends AdminController
 
             return $this->success(trans('master.operated'), $request->referer());
         }
+
+        // 记住当前url，编辑并保持后返回当前页面
+        $request->session()->put('content-back-url', $request->fullUrl());
+
+        $this->status = $status;
+        $this->title  = trans("content::content.status.{$status}");
+
+        // 分页获取
+        $this->contents = Content::with('user', 'model')
+            ->where('status', $status)
+            ->searchIn('title,keywords,summary', $request->keywords)
+            ->sort()
+            ->paginate(50);
+
+        // 展示方式
+        $this->show = $request->remember('show', 'list');
+
+        return $this->view();
     }
 
     /**
@@ -252,9 +278,12 @@ class ContentController extends AdminController
 
             // 获取数据并移动
             Content::whereSmart('id', $id)->get()->each(function ($item, $key) use ($parent_id) {
-                // 更新当前节点
-                $item->parent_id = $parent_id;
-                $item->save();
+                try {
+                    $item->parent_id = $parent_id;
+                    $item->save();
+                } catch (\App\Traits\Exceptions\NestableMoveException $e) {
+                    abort(403, trans('content::content.move.forbidden', [$item->title]));
+                }
             });
 
             return $this->success(trans('master.moved'));
@@ -291,7 +320,11 @@ class ContentController extends AdminController
 
         // 单个操作或者批量操作
         Content::whereSmart('id', $id)->get()->each(function ($item, $key) {
-            $item->delete();
+            try {
+                $item->delete();
+            } catch (\App\Traits\Exceptions\NestableDeleteException $e) {
+                abort(403, trans('content::content.delete.notempty', [$item->title]));
+            }
         });
 
         return $this->success(trans('master.deleted'), $request->referer());

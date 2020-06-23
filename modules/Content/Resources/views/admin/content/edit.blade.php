@@ -4,32 +4,29 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{Request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
+            <a href="{{Request::session()->get('content-back-url')}}"><i
+                    class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
         <div class="main-title">
             {{$title}}
         </div>
-        <div class="main-action ml-auto">
-            <a href="javascript:;" class="text-decoration-none js-future">
-                <span class="text-primary js-future-label">
-                    <i class="fa fa-clock"></i> {{trans('content::content.status.future')}}
-                </span>
-                <span class="text-secondary d-inline-block js-future-datetime">
-                    {{$content->publish_at > now() ? $content->publish_at : null}}
-                </span>
-            </a>
+        <div class="badge badge-{{$content->status_color}} scale-n2 scale-left mr-auto">
+            <i class="{{$content->status_icon}} fa-fw"></i> {{$content->status_name}}
         </div>
-        <div class="main-action">
 
-            <z-field type="submit" form="content-form" value="trans('content::content.status.publish')"
-                class="btn btn-success" data-status="publish" data-action="back" />
-            @if ($content->status == 'draft')
-            <z-field type="submit" form="content-form" value="trans('content::content.save.draft')"
-                class="btn btn-primary" />
-            @else
-            <z-field type="submit" form="content-form" value="trans('content::content.save')" class="btn btn-primary" />
-            @endif
-        </div>
+        <a href="javascript:;" class="text-decoration-none js-future mr-2">
+            <span class="text-primary js-future-label">
+                <i class="fa fa-clock"></i> {{trans('content::content.status.future')}}
+            </span>
+            <span class="text-secondary d-inline-block js-future-datetime">
+                {{$content->publish_at > now() ? $content->publish_at : null}}
+            </span>
+        </a>
+
+        <z-field type="submit" form="content-form" value="trans('content::content.save')" class="btn btn-primary" />
+
+        <z-field type="submit" form="content-form" value="trans('content::content.publish')" class="btn btn-success"
+            data-status="publish" data-action="back" />
     </div>
     <div class="main-body bg-light scrollable">
         <div class="container-fluid">

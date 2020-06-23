@@ -6,7 +6,7 @@
         <ul class="nav nav-pills nav-side">
             @foreach(Module::data('content::navbar') as $n)
             <li class="nav-item">
-                <a class="nav-link d-flex justify-content-between align-items-center {{$n['class'] ?? ''}}"
+                <a class="nav-link d-flex justify-content-between align-items-center {{$n['class'] ?? ''}} {{$n['active'] ? 'active' : ''}}"
                     href="{{$n['href']}}">
                     <span>
                         <i class="nav-icon {{$n['icon'] ?? ''}}"></i>

@@ -10,7 +10,7 @@ $navbar['index'] = [
     'text'  => trans('content::content.index'),
     'href'  => route('content.content.index'),
     'icon'  => 'fa fa-folder',
-    'class' => Route::active('content.content.index'),
+    'active' => Route::is('content.content.index'),
     'badge' => null,
 ];
 
@@ -25,9 +25,9 @@ $counts = Content::select('status', DB::raw('COUNT(id) AS count'))
 foreach (Content::status() as $status => $item) {
     $navbar[$status] = [
         'text'  => $item['name'],
-        'href'  => route('content.content.index'),
+        'href'  => route('content.content.status', $status),
         'icon'  => $item['icon'],
-        'class' => Route::active('content.content.status'),
+        'active' => Route::is('content.content.status') && Request::route('status') == $status,
         'badge' => Arr::get($counts, $status)
     ];
 }

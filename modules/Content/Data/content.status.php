@@ -6,12 +6,6 @@ return [
         'icon'  => 'fa fa-check-circle',
         'color' => 'success',
     ],
-    'trash' => [
-        'name'  => trans('content::content.status.trash'),
-        'text'  => trans('content::content.trash'),
-        'icon'  => 'fa fa-trash-alt',
-        'color' => 'light',
-    ],
     'future' => [
         'name'  => trans('content::content.status.future'),
         'text'  => trans('content::content.future'),
@@ -35,5 +29,11 @@ return [
         'text'  => trans('content::content.unapproved'),
         'icon'  => 'fa fa-exclamation-triangle',
         'color' => 'danger',
+    ],
+    'trash' => [
+        'name'  => trans('content::content.status.trash'),
+        'text'  => trans('content::content.trash'),
+        'icon'  => 'fa fa-trash-alt',
+        'color' => 'dark',
     ],
 ];

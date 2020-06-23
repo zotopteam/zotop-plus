@@ -1699,6 +1699,15 @@ textarea {
     border-color: rgba(0, 0, 0, .15) !important;
 }
 
+.btn-outline-light {
+    border-color: rgba(0, 0, 0, .15) !important;
+    color: #333;
+}
+
+.btn-outline-light.disabled, .btn-outline-light:disabled {
+    color:#666;
+}
+
 .btn.disabled,
 .btn:disabled,
 .btn[disabled],

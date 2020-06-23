@@ -226,16 +226,6 @@ class ContentAdminList extends Component
             ];
         }
 
-        // 回收站中的数据可以永久删除
-        if ($item->status == 'trash') {
-            $action['delete'] = [
-                'text'  => trans('content::content.destroy'),
-                'href'  => route('content.content.destroy', [$item->id]),
-                'icon'  => 'fa fa-times',
-                'class' => 'js-delete',
-            ];
-        }
-
         foreach (Content::status() as $status => $value) {
 
             // 不显示自身状态和定时发布状态，定时发布取决于发布时间，如果发布时，时间是未来时间，则自动判定为定时发布
@@ -248,6 +238,16 @@ class ContentAdminList extends Component
                 'href'  => route('content.content.status', [$status, $item->id]),
                 'icon'  => $value['icon'],
                 'class' => 'js-post',
+            ];
+        }
+
+        // 回收站中的数据可以永久删除
+        if ($item->status == 'trash') {
+            $action['delete'] = [
+                'text'  => trans('content::content.destroy'),
+                'href'  => route('content.content.destroy', [$item->id]),
+                'icon'  => 'fa fa-times',
+                'class' => 'js-delete',
             ];
         }
 

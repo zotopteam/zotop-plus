@@ -4,27 +4,25 @@
 <div class="main">
     <div class="main-header">
         <div class="main-back">
-            <a href="{{Request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
+            <a href="{{Request::session()->get('content-back-url')}}"><i
+                    class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
         </div>
-        <div class="main-title">
+        <div class="main-title mr-auto">
             {{$title}}
         </div>
-        <div class="main-action ml-auto">
-            <a href="javascript:;" class="text-decoration-none js-future">
-                <span class="text-primary js-future-label">
-                    <i class="fa fa-clock"></i> {{trans('content::content.status.future')}}
-                </span>
-                <span class="text-secondary d-inline-block js-future-datetime">
-                    {{$content->publish_at > now() ? $content->publish_at : null}}
-                </span>
-            </a>
-        </div>
-        <div class="main-action">
-            <z-field type="submit" form="content-form" value="trans('content::content.status.publish')"
-                class="btn btn-success" data-status="publish" data-action="back" />
-            <z-field type="submit" form="content-form" value="trans('content::content.save.draft')"
-                class="btn btn-primary" />
-        </div>
+        <a href="javascript:;" class="text-decoration-none js-future mr-2">
+            <span class="text-primary js-future-label">
+                <i class="fa fa-clock"></i> {{trans('content::content.status.future')}}
+            </span>
+            <span class="text-secondary d-inline-block js-future-datetime">
+                {{$content->publish_at > now() ? $content->publish_at : null}}
+            </span>
+        </a>
+
+        <z-field type="submit" form="content-form" value="trans('content::content.publish')" class="btn btn-success"
+            data-status="publish" data-action="back" />
+        <z-field type="submit" form="content-form" value="trans('content::content.save.draft')"
+            class="btn btn-primary" />
     </div>
     <div class="main-body bg-light scrollable">
         <div class="container-fluid">
