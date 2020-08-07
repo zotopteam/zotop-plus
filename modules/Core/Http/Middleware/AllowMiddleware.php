@@ -17,11 +17,10 @@ class AllowMiddleware
     public function handle($request, \Closure $next, $permission)
     {
         // 检查用户是否有权限 $permission
-        if (! Auth::user()->allow($permission)) {
-            abort(403);
+        if (!Auth::user()->allow($permission)) {
+            abort(403, __('Sorry, you are forbidden from accessing this page.'));
         }
 
-        return $next($request); 
+        return $next($request);
     }
-
 }
