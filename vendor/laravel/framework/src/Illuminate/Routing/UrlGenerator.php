@@ -320,7 +320,7 @@ class UrlGenerator implements UrlGeneratorContract
      */
     public function signedRoute($name, $parameters = [], $expiration = null, $absolute = true)
     {
-        $parameters = $this->formatParameters($parameters);
+        $parameters = Arr::wrap($parameters);
 
         if (array_key_exists('signature', $parameters)) {
             throw new InvalidArgumentException(
@@ -366,6 +366,17 @@ class UrlGenerator implements UrlGeneratorContract
     {
         return $this->hasCorrectSignature($request, $absolute)
             && $this->signatureHasNotExpired($request);
+    }
+
+    /**
+     * Determine if the given request has a valid signature for a relative URL.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public function hasValidRelativeSignature(Request $request)
+    {
+        return $this->hasValidSignature($request, false);
     }
 
     /**
@@ -616,25 +627,25 @@ class UrlGenerator implements UrlGeneratorContract
     /**
      * Force the scheme for URLs.
      *
-     * @param  string  $scheme
+     * @param  string|null  $scheme
      * @return void
      */
     public function forceScheme($scheme)
     {
         $this->cachedScheme = null;
 
-        $this->forceScheme = $scheme.'://';
+        $this->forceScheme = $scheme ? $scheme.'://' : null;
     }
 
     /**
      * Set the forced root URL.
      *
-     * @param  string  $root
+     * @param  string|null  $root
      * @return void
      */
     public function forceRootUrl($root)
     {
-        $this->forcedRoot = rtrim($root, '/');
+        $this->forcedRoot = $root ? rtrim($root, '/') : null;
 
         $this->cachedRoot = null;
     }

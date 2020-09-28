@@ -210,7 +210,7 @@ class Str
     public static function endsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if (substr($haystack, -strlen($needle)) === (string) $needle) {
+            if ($needle !== '' && substr($haystack, -strlen($needle)) === (string) $needle) {
                 return true;
             }
         }
@@ -368,6 +368,45 @@ class Str
         }
 
         return rtrim($matches[0]).$end;
+    }
+
+    /**
+     * Pad both sides of a string with another.
+     *
+     * @param  string  $value
+     * @param  int  $length
+     * @param  string  $pad
+     * @return string
+     */
+    public static function padBoth($value, $length, $pad = ' ')
+    {
+        return str_pad($value, $length, $pad, STR_PAD_BOTH);
+    }
+
+    /**
+     * Pad the left side of a string with another.
+     *
+     * @param  string  $value
+     * @param  int  $length
+     * @param  string  $pad
+     * @return string
+     */
+    public static function padLeft($value, $length, $pad = ' ')
+    {
+        return str_pad($value, $length, $pad, STR_PAD_LEFT);
+    }
+
+    /**
+     * Pad the right side of a string with another.
+     *
+     * @param  string  $value
+     * @param  int  $length
+     * @param  string  $pad
+     * @return string
+     */
+    public static function padRight($value, $length, $pad = ' ')
+    {
+        return str_pad($value, $length, $pad, STR_PAD_RIGHT);
     }
 
     /**

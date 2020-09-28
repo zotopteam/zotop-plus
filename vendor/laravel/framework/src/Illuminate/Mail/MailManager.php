@@ -169,7 +169,7 @@ class MailManager implements FactoryContract
         }
 
         if (trim($transport) === '' || ! method_exists($this, $method = 'create'.ucfirst($transport).'Transport')) {
-            throw new InvalidArgumentException("Unsupported mail transport [{$config['transport']}].");
+            throw new InvalidArgumentException("Unsupported mail transport [{$transport}].");
         }
 
         return $this->{$method}($config);
@@ -438,6 +438,19 @@ class MailManager implements FactoryContract
         }
 
         $this->app['config']['mail.default'] = $name;
+    }
+
+    /**
+     * Disconnect the given mailer and remove from local cache.
+     *
+     * @param  string|null  $name
+     * @return void
+     */
+    public function purge($name = null)
+    {
+        $name = $name ?: $this->getDefaultDriver();
+
+        unset($this->mailers[$name]);
     }
 
     /**

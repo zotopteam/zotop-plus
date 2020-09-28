@@ -48,7 +48,7 @@ If you find a bot/spider/crawler user agent that CrawlerDetect fails to detect, 
 Failing that, just create an issue with the user agent you have found, and we'll take it from there :)
 
 ### Laravel Package
-If you would like to use this with Laravel 4/5, please see [Laravel-Crawler-Detect](https://github.com/JayBizzle/Laravel-Crawler-Detect)
+If you would like to use this with Laravel, please see [Laravel-Crawler-Detect](https://github.com/JayBizzle/Laravel-Crawler-Detect)
 
 ### Symfony Bundle
 To use this library with Symfony 2/3/4, check out the [CrawlerDetectBundle](https://github.com/nicolasmure/CrawlerDetectBundle).
@@ -68,6 +68,10 @@ To use this library in a .net standard (including .net core) based project, chec
 ### Ruby Gem
 
 To use this library with Ruby on Rails or any Ruby-based application, check out [crawler_detect](https://github.com/loadkpi/crawler_detect) gem.
+
+### Go Module
+
+To use this library with Go, check out the [crawlerdetect](https://github.com/x-way/crawlerdetect) module.
 
 _Parts of this class are based on the brilliant [MobileDetect](https://github.com/serbanghita/Mobile-Detect)_
 

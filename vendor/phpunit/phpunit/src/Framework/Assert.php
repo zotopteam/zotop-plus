@@ -9,13 +9,35 @@
  */
 namespace PHPUnit\Framework;
 
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
+use const PHP_EOL;
+use function array_shift;
+use function array_unshift;
+use function assert;
+use function class_exists;
+use function count;
+use function debug_backtrace;
+use function explode;
+use function file_get_contents;
+use function func_get_args;
+use function implode;
+use function interface_exists;
+use function is_array;
+use function is_bool;
+use function is_int;
+use function is_iterable;
+use function is_object;
+use function is_string;
+use function preg_match;
+use function preg_split;
+use function sprintf;
+use function strpos;
 use ArrayAccess;
 use Countable;
+use DOMAttr;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
-use PHPUnit\Framework\Constraint\ArraySubset;
-use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
@@ -27,6 +49,9 @@ use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\Constraint\IsEqualCanonicalizing;
+use PHPUnit\Framework\Constraint\IsEqualIgnoringCase;
+use PHPUnit\Framework\Constraint\IsEqualWithDelta;
 use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsFinite;
 use PHPUnit\Framework\Constraint\IsIdentical;
@@ -52,14 +77,12 @@ use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
-use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml;
-use ReflectionObject;
-use Traversable;
+use PHPUnit\Util\Xml\Loader as XmlLoader;
 
 /**
  * A set of assertion methods.
@@ -83,14 +106,14 @@ abstract class Assert
      */
     public static function assertArrayHasKey($key, $array, string $message = ''): void
     {
-        if (!(\is_int($key) || \is_string($key))) {
+        if (!(is_int($key) || is_string($key))) {
             throw InvalidArgumentException::create(
                 1,
                 'integer or string'
             );
         }
 
-        if (!(\is_array($array) || $array instanceof ArrayAccess)) {
+        if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw InvalidArgumentException::create(
                 2,
                 'array or ArrayAccess'
@@ -98,43 +121,6 @@ abstract class Assert
         }
 
         $constraint = new ArrayHasKey($key);
-
-        static::assertThat($array, $constraint, $message);
-    }
-
-    /**
-     * Asserts that an array has a specified subset.
-     *
-     * @param array|ArrayAccess $subset
-     * @param array|ArrayAccess $array
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3494
-     */
-    public static function assertArraySubset($subset, $array, bool $checkForObjectIdentity = false, string $message = ''): void
-    {
-        self::createWarning('assertArraySubset() is deprecated and will be removed in PHPUnit 9.');
-
-        if (!(\is_array($subset) || $subset instanceof ArrayAccess)) {
-            throw InvalidArgumentException::create(
-                1,
-                'array or ArrayAccess'
-            );
-        }
-
-        if (!(\is_array($array) || $array instanceof ArrayAccess)) {
-            throw InvalidArgumentException::create(
-                2,
-                'array or ArrayAccess'
-            );
-        }
-
-        $constraint = new ArraySubset($subset, $checkForObjectIdentity);
 
         static::assertThat($array, $constraint, $message);
     }
@@ -151,14 +137,14 @@ abstract class Assert
      */
     public static function assertArrayNotHasKey($key, $array, string $message = ''): void
     {
-        if (!(\is_int($key) || \is_string($key))) {
+        if (!(is_int($key) || is_string($key))) {
             throw InvalidArgumentException::create(
                 1,
                 'integer or string'
             );
         }
 
-        if (!(\is_array($array) || $array instanceof ArrayAccess)) {
+        if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw InvalidArgumentException::create(
                 2,
                 'array or ArrayAccess'
@@ -179,51 +165,9 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
-    public static function assertContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
+    public static function assertContains($needle, iterable $haystack, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if (\is_string($haystack)) {
-            self::createWarning('Using assertContains() with string haystacks is deprecated and will not be supported in PHPUnit 9. Refactor your test to use assertStringContainsString() or assertStringContainsStringIgnoringCase() instead.');
-        }
-
-        if (!$checkForObjectIdentity) {
-            self::createWarning('The optional $checkForObjectIdentity parameter of assertContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertContainsEquals() instead.');
-        }
-
-        if ($checkForNonObjectIdentity) {
-            self::createWarning('The optional $checkForNonObjectIdentity parameter of assertContains() is deprecated and will be removed in PHPUnit 9.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertContains() is deprecated and will be removed in PHPUnit 9.');
-        }
-        // @codeCoverageIgnoreEnd
-
-        if (\is_array($haystack) ||
-            (\is_object($haystack) && $haystack instanceof Traversable)) {
-            $constraint = new TraversableContains(
-                $needle,
-                $checkForObjectIdentity,
-                $checkForNonObjectIdentity
-            );
-        } elseif (\is_string($haystack)) {
-            if (!\is_string($needle)) {
-                throw InvalidArgumentException::create(
-                    1,
-                    'string'
-                );
-            }
-
-            $constraint = new StringContains(
-                $needle,
-                $ignoreCase
-            );
-        } else {
-            throw InvalidArgumentException::create(
-                2,
-                'array, traversable or string'
-            );
-        }
+        $constraint = new TraversableContainsIdentical($needle);
 
         static::assertThat($haystack, $constraint, $message);
     }
@@ -236,88 +180,17 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a haystack that is stored in a static attribute of a class
-     * or an attribute of an object contains a needle.
-     *
-     * @param object|string $haystackClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeContains($needle, string $haystackAttributeName, $haystackClassOrObject, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
-    {
-        self::createWarning('assertAttributeContains() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertContains(
-            $needle,
-            static::readAttribute($haystackClassOrObject, $haystackAttributeName),
-            $message,
-            $ignoreCase,
-            $checkForObjectIdentity,
-            $checkForNonObjectIdentity
-        );
-    }
-
-    /**
      * Asserts that a haystack does not contain a needle.
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
-    public static function assertNotContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
+    public static function assertNotContains($needle, iterable $haystack, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if (\is_string($haystack)) {
-            self::createWarning('Using assertNotContains() with string haystacks is deprecated and will not be supported in PHPUnit 9. Refactor your test to use assertStringNotContainsString() or assertStringNotContainsStringIgnoringCase() instead.');
-        }
-
-        if (!$checkForObjectIdentity) {
-            self::createWarning('The optional $checkForObjectIdentity parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotContainsEquals() instead.');
-        }
-
-        if ($checkForNonObjectIdentity) {
-            self::createWarning('The optional $checkForNonObjectIdentity parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9.');
-        }
-        // @codeCoverageIgnoreEnd
-
-        if (\is_array($haystack) ||
-            (\is_object($haystack) && $haystack instanceof Traversable)) {
-            $constraint = new LogicalNot(
-                new TraversableContains(
-                    $needle,
-                    $checkForObjectIdentity,
-                    $checkForNonObjectIdentity
-                )
-            );
-        } elseif (\is_string($haystack)) {
-            if (!\is_string($needle)) {
-                throw InvalidArgumentException::create(
-                    1,
-                    'string'
-                );
-            }
-
-            $constraint = new LogicalNot(
-                new StringContains(
-                    $needle,
-                    $ignoreCase
-                )
-            );
-        } else {
-            throw InvalidArgumentException::create(
-                2,
-                'array, traversable or string'
-            );
-        }
+        $constraint = new LogicalNot(
+            new TraversableContainsIdentical($needle)
+        );
 
         static::assertThat($haystack, $constraint, $message);
     }
@@ -327,33 +200,6 @@ abstract class Assert
         $constraint = new LogicalNot(new TraversableContainsEqual($needle));
 
         static::assertThat($haystack, $constraint, $message);
-    }
-
-    /**
-     * Asserts that a haystack that is stored in a static attribute of a class
-     * or an attribute of an object does not contain a needle.
-     *
-     * @param object|string $haystackClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeNotContains($needle, string $haystackAttributeName, $haystackClassOrObject, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
-    {
-        self::createWarning('assertAttributeNotContains() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertNotContains(
-            $needle,
-            static::readAttribute($haystackClassOrObject, $haystackAttributeName),
-            $message,
-            $ignoreCase,
-            $checkForObjectIdentity,
-            $checkForNonObjectIdentity
-        );
     }
 
     /**
@@ -397,32 +243,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a haystack that is stored in a static attribute of a class
-     * or an attribute of an object contains only values of a given type.
-     *
-     * @param object|string $haystackClassOrObject
-     * @param bool          $isNativeType
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeContainsOnly(string $type, string $haystackAttributeName, $haystackClassOrObject, ?bool $isNativeType = null, string $message = ''): void
-    {
-        self::createWarning('assertAttributeContainsOnly() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertContainsOnly(
-            $type,
-            static::readAttribute($haystackClassOrObject, $haystackAttributeName),
-            $isNativeType,
-            $message
-        );
-    }
-
-    /**
      * Asserts that a haystack does not contain only values of a given type.
      *
      * @throws ExpectationFailedException
@@ -447,33 +267,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a haystack that is stored in a static attribute of a class
-     * or an attribute of an object does not contain only values of a given
-     * type.
-     *
-     * @param object|string $haystackClassOrObject
-     * @param bool          $isNativeType
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeNotContainsOnly(string $type, string $haystackAttributeName, $haystackClassOrObject, ?bool $isNativeType = null, string $message = ''): void
-    {
-        self::createWarning('assertAttributeNotContainsOnly() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertNotContainsOnly(
-            $type,
-            static::readAttribute($haystackClassOrObject, $haystackAttributeName),
-            $isNativeType,
-            $message
-        );
-    }
-
-    /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
      * @param Countable|iterable $haystack
@@ -484,37 +277,13 @@ abstract class Assert
      */
     public static function assertCount(int $expectedCount, $haystack, string $message = ''): void
     {
-        if (!$haystack instanceof Countable && !\is_iterable($haystack)) {
+        if (!$haystack instanceof Countable && !is_iterable($haystack)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
         }
 
         static::assertThat(
             $haystack,
             new Count($expectedCount),
-            $message
-        );
-    }
-
-    /**
-     * Asserts the number of elements of an array, Countable or Traversable
-     * that is stored in an attribute.
-     *
-     * @param object|string $haystackClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeCount(int $expectedCount, string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeCount() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertCount(
-            $expectedCount,
-            static::readAttribute($haystackClassOrObject, $haystackAttributeName),
             $message
         );
     }
@@ -530,7 +299,7 @@ abstract class Assert
      */
     public static function assertNotCount(int $expectedCount, $haystack, string $message = ''): void
     {
-        if (!$haystack instanceof Countable && !\is_iterable($haystack)) {
+        if (!$haystack instanceof Countable && !is_iterable($haystack)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
         }
 
@@ -542,62 +311,14 @@ abstract class Assert
     }
 
     /**
-     * Asserts the number of elements of an array, Countable or Traversable
-     * that is stored in an attribute.
-     *
-     * @param object|string $haystackClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeNotCount(int $expectedCount, string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeNotCount() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertNotCount(
-            $expectedCount,
-            static::readAttribute($haystackClassOrObject, $haystackAttributeName),
-            $message
-        );
-    }
-
-    /**
      * Asserts that two variables are equal.
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertEquals($expected, $actual, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): void
+    public static function assertEquals($expected, $actual, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($delta !== 0.0) {
-            self::createWarning('The optional $delta parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsWithDelta() instead.');
-        }
-
-        if ($maxDepth !== 10) {
-            self::createWarning('The optional $maxDepth parameter of assertEquals() is deprecated and will be removed in PHPUnit 9.');
-        }
-
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
-        $constraint = new IsEqual(
-            $expected,
-            $delta,
-            $maxDepth,
-            $canonicalize,
-            $ignoreCase
-        );
+        $constraint = new IsEqual($expected);
 
         static::assertThat($actual, $constraint, $message);
     }
@@ -610,13 +331,7 @@ abstract class Assert
      */
     public static function assertEqualsCanonicalizing($expected, $actual, string $message = ''): void
     {
-        $constraint = new IsEqual(
-            $expected,
-            0.0,
-            10,
-            true,
-            false
-        );
+        $constraint = new IsEqualCanonicalizing($expected);
 
         static::assertThat($actual, $constraint, $message);
     }
@@ -629,13 +344,7 @@ abstract class Assert
      */
     public static function assertEqualsIgnoringCase($expected, $actual, string $message = ''): void
     {
-        $constraint = new IsEqual(
-            $expected,
-            0.0,
-            10,
-            false,
-            true
-        );
+        $constraint = new IsEqualIgnoringCase($expected);
 
         static::assertThat($actual, $constraint, $message);
     }
@@ -648,7 +357,7 @@ abstract class Assert
      */
     public static function assertEqualsWithDelta($expected, $actual, float $delta, string $message = ''): void
     {
-        $constraint = new IsEqual(
+        $constraint = new IsEqualWithDelta(
             $expected,
             $delta
         );
@@ -657,71 +366,15 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a variable is equal to an attribute of an object.
-     *
-     * @param object|string $actualClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeEquals($expected, string $actualAttributeName, $actualClassOrObject, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): void
-    {
-        self::createWarning('assertAttributeEquals() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertEquals(
-            $expected,
-            static::readAttribute($actualClassOrObject, $actualAttributeName),
-            $message,
-            $delta,
-            $maxDepth,
-            $canonicalize,
-            $ignoreCase
-        );
-    }
-
-    /**
      * Asserts that two variables are not equal.
      *
-     * @param float $delta
-     * @param int   $maxDepth
-     * @param bool  $canonicalize
-     * @param bool  $ignoreCase
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertNotEquals($expected, $actual, string $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false): void
+    public static function assertNotEquals($expected, $actual, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($delta !== 0.0) {
-            self::createWarning('The optional $delta parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsWithDelta() instead.');
-        }
-
-        if ($maxDepth !== 10) {
-            self::createWarning('The optional $maxDepth parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9.');
-        }
-
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         $constraint = new LogicalNot(
-            new IsEqual(
-                $expected,
-                $delta,
-                $maxDepth,
-                $canonicalize,
-                $ignoreCase
-            )
+            new IsEqual($expected)
         );
 
         static::assertThat($actual, $constraint, $message);
@@ -736,13 +389,7 @@ abstract class Assert
     public static function assertNotEqualsCanonicalizing($expected, $actual, string $message = ''): void
     {
         $constraint = new LogicalNot(
-            new IsEqual(
-                $expected,
-                0.0,
-                10,
-                true,
-                false
-            )
+            new IsEqualCanonicalizing($expected)
         );
 
         static::assertThat($actual, $constraint, $message);
@@ -757,13 +404,7 @@ abstract class Assert
     public static function assertNotEqualsIgnoringCase($expected, $actual, string $message = ''): void
     {
         $constraint = new LogicalNot(
-            new IsEqual(
-                $expected,
-                0.0,
-                10,
-                false,
-                true
-            )
+            new IsEqualIgnoringCase($expected)
         );
 
         static::assertThat($actual, $constraint, $message);
@@ -778,40 +419,13 @@ abstract class Assert
     public static function assertNotEqualsWithDelta($expected, $actual, float $delta, string $message = ''): void
     {
         $constraint = new LogicalNot(
-            new IsEqual(
+            new IsEqualWithDelta(
                 $expected,
                 $delta
             )
         );
 
         static::assertThat($actual, $constraint, $message);
-    }
-
-    /**
-     * Asserts that a variable is not equal to an attribute of an object.
-     *
-     * @param object|string $actualClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeNotEquals($expected, string $actualAttributeName, $actualClassOrObject, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): void
-    {
-        self::createWarning('assertAttributeNotEquals() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertNotEquals(
-            $expected,
-            static::readAttribute($actualClassOrObject, $actualAttributeName),
-            $message,
-            $delta,
-            $maxDepth,
-            $canonicalize,
-            $ignoreCase
-        );
     }
 
     /**
@@ -828,29 +442,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a static attribute of a class or an attribute of an object
-     * is empty.
-     *
-     * @param object|string $haystackClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeEmpty(string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeEmpty() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertEmpty(
-            static::readAttribute($haystackClassOrObject, $haystackAttributeName),
-            $message
-        );
-    }
-
-    /**
      * Asserts that a variable is not empty.
      *
      * @throws ExpectationFailedException
@@ -864,29 +455,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a static attribute of a class or an attribute of an object
-     * is not empty.
-     *
-     * @param object|string $haystackClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeNotEmpty(string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeNotEmpty() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertNotEmpty(
-            static::readAttribute($haystackClassOrObject, $haystackAttributeName),
-            $message
-        );
-    }
-
-    /**
      * Asserts that a value is greater than another value.
      *
      * @throws ExpectationFailedException
@@ -895,29 +463,6 @@ abstract class Assert
     public static function assertGreaterThan($expected, $actual, string $message = ''): void
     {
         static::assertThat($actual, static::greaterThan($expected), $message);
-    }
-
-    /**
-     * Asserts that an attribute is greater than another value.
-     *
-     * @param object|string $actualClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeGreaterThan($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeGreaterThan() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertGreaterThan(
-            $expected,
-            static::readAttribute($actualClassOrObject, $actualAttributeName),
-            $message
-        );
     }
 
     /**
@@ -936,29 +481,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that an attribute is greater than or equal to another value.
-     *
-     * @param object|string $actualClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeGreaterThanOrEqual($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeGreaterThanOrEqual() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertGreaterThanOrEqual(
-            $expected,
-            static::readAttribute($actualClassOrObject, $actualAttributeName),
-            $message
-        );
-    }
-
-    /**
      * Asserts that a value is smaller than another value.
      *
      * @throws ExpectationFailedException
@@ -967,29 +489,6 @@ abstract class Assert
     public static function assertLessThan($expected, $actual, string $message = ''): void
     {
         static::assertThat($actual, static::lessThan($expected), $message);
-    }
-
-    /**
-     * Asserts that an attribute is smaller than another value.
-     *
-     * @param object|string $actualClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeLessThan($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeLessThan() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertLessThan(
-            $expected,
-            static::readAttribute($actualClassOrObject, $actualAttributeName),
-            $message
-        );
     }
 
     /**
@@ -1004,59 +503,20 @@ abstract class Assert
     }
 
     /**
-     * Asserts that an attribute is smaller than or equal to another value.
-     *
-     * @param object|string $actualClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeLessThanOrEqual($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeLessThanOrEqual() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertLessThanOrEqual(
-            $expected,
-            static::readAttribute($actualClassOrObject, $actualAttributeName),
-            $message
-        );
-    }
-
-    /**
      * Asserts that the contents of one file is equal to the contents of another
      * file.
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertFileEquals(string $expected, string $actual, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+    public static function assertFileEquals(string $expected, string $actual, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertFileEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertFileEqualsCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertFileEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertFileEqualsIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         static::assertFileExists($expected, $message);
         static::assertFileExists($actual, $message);
 
-        $constraint = new IsEqual(
-            \file_get_contents($expected),
-            0.0,
-            10,
-            $canonicalize,
-            $ignoreCase
-        );
+        $constraint = new IsEqual(file_get_contents($expected));
 
-        static::assertThat(\file_get_contents($actual), $constraint, $message);
+        static::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1071,14 +531,11 @@ abstract class Assert
         static::assertFileExists($expected, $message);
         static::assertFileExists($actual, $message);
 
-        $constraint = new IsEqual(
-            \file_get_contents($expected),
-            0.0,
-            10,
-            true
+        $constraint = new IsEqualCanonicalizing(
+            file_get_contents($expected)
         );
 
-        static::assertThat(\file_get_contents($actual), $constraint, $message);
+        static::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1093,15 +550,9 @@ abstract class Assert
         static::assertFileExists($expected, $message);
         static::assertFileExists($actual, $message);
 
-        $constraint = new IsEqual(
-            \file_get_contents($expected),
-            0.0,
-            10,
-            false,
-            true
-        );
+        $constraint = new IsEqualIgnoringCase(file_get_contents($expected));
 
-        static::assertThat(\file_get_contents($actual), $constraint, $message);
+        static::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1111,32 +562,16 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertFileNotEquals(string $expected, string $actual, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+    public static function assertFileNotEquals(string $expected, string $actual, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertFileNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertFileNotEqualsCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertFileNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertFileNotEqualsIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         static::assertFileExists($expected, $message);
         static::assertFileExists($actual, $message);
 
         $constraint = new LogicalNot(
-            new IsEqual(
-                \file_get_contents($expected),
-                0.0,
-                10,
-                $canonicalize,
-                $ignoreCase
-            )
+            new IsEqual(file_get_contents($expected))
         );
 
-        static::assertThat(\file_get_contents($actual), $constraint, $message);
+        static::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1152,15 +587,10 @@ abstract class Assert
         static::assertFileExists($actual, $message);
 
         $constraint = new LogicalNot(
-            new IsEqual(
-                \file_get_contents($expected),
-                0.0,
-                10,
-                true
-            )
+            new IsEqualCanonicalizing(file_get_contents($expected))
         );
 
-        static::assertThat(\file_get_contents($actual), $constraint, $message);
+        static::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1176,16 +606,10 @@ abstract class Assert
         static::assertFileExists($actual, $message);
 
         $constraint = new LogicalNot(
-            new IsEqual(
-                \file_get_contents($expected),
-                0.0,
-                10,
-                false,
-                true
-            )
+            new IsEqualIgnoringCase(file_get_contents($expected))
         );
 
-        static::assertThat(\file_get_contents($actual), $constraint, $message);
+        static::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1195,27 +619,11 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertStringEqualsFile(string $expectedFile, string $actualString, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+    public static function assertStringEqualsFile(string $expectedFile, string $actualString, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertStringEqualsFile() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringEqualsFileCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertStringEqualsFile() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringEqualsFileIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         static::assertFileExists($expectedFile, $message);
 
-        $constraint = new IsEqual(
-            \file_get_contents($expectedFile),
-            0.0,
-            10,
-            $canonicalize,
-            $ignoreCase
-        );
+        $constraint = new IsEqual(file_get_contents($expectedFile));
 
         static::assertThat($actualString, $constraint, $message);
     }
@@ -1231,12 +639,7 @@ abstract class Assert
     {
         static::assertFileExists($expectedFile, $message);
 
-        $constraint = new IsEqual(
-            \file_get_contents($expectedFile),
-            0.0,
-            10,
-            true
-        );
+        $constraint = new IsEqualCanonicalizing(file_get_contents($expectedFile));
 
         static::assertThat($actualString, $constraint, $message);
     }
@@ -1252,13 +655,7 @@ abstract class Assert
     {
         static::assertFileExists($expectedFile, $message);
 
-        $constraint = new IsEqual(
-            \file_get_contents($expectedFile),
-            0.0,
-            10,
-            false,
-            true
-        );
+        $constraint = new IsEqualIgnoringCase(file_get_contents($expectedFile));
 
         static::assertThat($actualString, $constraint, $message);
     }
@@ -1270,28 +667,12 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertStringNotEqualsFile(string $expectedFile, string $actualString, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+    public static function assertStringNotEqualsFile(string $expectedFile, string $actualString, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertStringNotEqualsFile() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringNotEqualsFileCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertStringNotEqualsFile() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringNotEqualsFileIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         static::assertFileExists($expectedFile, $message);
 
         $constraint = new LogicalNot(
-            new IsEqual(
-                \file_get_contents($expectedFile),
-                0.0,
-                10,
-                $canonicalize,
-                $ignoreCase
-            )
+            new IsEqual(file_get_contents($expectedFile))
         );
 
         static::assertThat($actualString, $constraint, $message);
@@ -1309,12 +690,7 @@ abstract class Assert
         static::assertFileExists($expectedFile, $message);
 
         $constraint = new LogicalNot(
-            new IsEqual(
-                \file_get_contents($expectedFile),
-                0.0,
-                10,
-                true
-            )
+            new IsEqualCanonicalizing(file_get_contents($expectedFile))
         );
 
         static::assertThat($actualString, $constraint, $message);
@@ -1332,13 +708,7 @@ abstract class Assert
         static::assertFileExists($expectedFile, $message);
 
         $constraint = new LogicalNot(
-            new IsEqual(
-                \file_get_contents($expectedFile),
-                0.0,
-                10,
-                false,
-                true
-            )
+            new IsEqualIgnoringCase(file_get_contents($expectedFile))
         );
 
         static::assertThat($actualString, $constraint, $message);
@@ -1361,8 +731,25 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
+    public static function assertIsNotReadable(string $filename, string $message = ''): void
+    {
+        static::assertThat($filename, new LogicalNot(new IsReadable), $message);
+    }
+
+    /**
+     * Asserts that a file/dir exists and is not readable.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4062
+     */
     public static function assertNotIsReadable(string $filename, string $message = ''): void
     {
+        self::createWarning('assertNotIsReadable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertIsNotReadable() instead.');
+
         static::assertThat($filename, new LogicalNot(new IsReadable), $message);
     }
 
@@ -1383,8 +770,25 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
+    public static function assertIsNotWritable(string $filename, string $message = ''): void
+    {
+        static::assertThat($filename, new LogicalNot(new IsWritable), $message);
+    }
+
+    /**
+     * Asserts that a file/dir exists and is not writable.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4065
+     */
     public static function assertNotIsWritable(string $filename, string $message = ''): void
     {
+        self::createWarning('assertNotIsWritable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertIsNotWritable() instead.');
+
         static::assertThat($filename, new LogicalNot(new IsWritable), $message);
     }
 
@@ -1405,8 +809,25 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
+    public static function assertDirectoryDoesNotExist(string $directory, string $message = ''): void
+    {
+        static::assertThat($directory, new LogicalNot(new DirectoryExists), $message);
+    }
+
+    /**
+     * Asserts that a directory does not exist.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4068
+     */
     public static function assertDirectoryNotExists(string $directory, string $message = ''): void
     {
+        self::createWarning('assertDirectoryNotExists() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertDirectoryDoesNotExist() instead.');
+
         static::assertThat($directory, new LogicalNot(new DirectoryExists), $message);
     }
 
@@ -1428,10 +849,28 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertDirectoryNotIsReadable(string $directory, string $message = ''): void
+    public static function assertDirectoryIsNotReadable(string $directory, string $message = ''): void
     {
         self::assertDirectoryExists($directory, $message);
-        self::assertNotIsReadable($directory, $message);
+        self::assertIsNotReadable($directory, $message);
+    }
+
+    /**
+     * Asserts that a directory exists and is not readable.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4071
+     */
+    public static function assertDirectoryNotIsReadable(string $directory, string $message = ''): void
+    {
+        self::createWarning('assertDirectoryNotIsReadable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertDirectoryIsNotReadable() instead.');
+
+        self::assertDirectoryExists($directory, $message);
+        self::assertIsNotReadable($directory, $message);
     }
 
     /**
@@ -1452,10 +891,28 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertDirectoryNotIsWritable(string $directory, string $message = ''): void
+    public static function assertDirectoryIsNotWritable(string $directory, string $message = ''): void
     {
         self::assertDirectoryExists($directory, $message);
-        self::assertNotIsWritable($directory, $message);
+        self::assertIsNotWritable($directory, $message);
+    }
+
+    /**
+     * Asserts that a directory exists and is not writable.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4074
+     */
+    public static function assertDirectoryNotIsWritable(string $directory, string $message = ''): void
+    {
+        self::createWarning('assertDirectoryNotIsWritable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertDirectoryIsNotWritable() instead.');
+
+        self::assertDirectoryExists($directory, $message);
+        self::assertIsNotWritable($directory, $message);
     }
 
     /**
@@ -1475,8 +932,25 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
+    public static function assertFileDoesNotExist(string $filename, string $message = ''): void
+    {
+        static::assertThat($filename, new LogicalNot(new FileExists), $message);
+    }
+
+    /**
+     * Asserts that a file does not exist.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4077
+     */
     public static function assertFileNotExists(string $filename, string $message = ''): void
     {
+        self::createWarning('assertFileNotExists() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertFileDoesNotExist() instead.');
+
         static::assertThat($filename, new LogicalNot(new FileExists), $message);
     }
 
@@ -1498,10 +972,28 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertFileNotIsReadable(string $file, string $message = ''): void
+    public static function assertFileIsNotReadable(string $file, string $message = ''): void
     {
         self::assertFileExists($file, $message);
-        self::assertNotIsReadable($file, $message);
+        self::assertIsNotReadable($file, $message);
+    }
+
+    /**
+     * Asserts that a file exists and is not readable.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4080
+     */
+    public static function assertFileNotIsReadable(string $file, string $message = ''): void
+    {
+        self::createWarning('assertFileNotIsReadable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertFileIsNotReadable() instead.');
+
+        self::assertFileExists($file, $message);
+        self::assertIsNotReadable($file, $message);
     }
 
     /**
@@ -1522,10 +1014,28 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertFileNotIsWritable(string $file, string $message = ''): void
+    public static function assertFileIsNotWritable(string $file, string $message = ''): void
     {
         self::assertFileExists($file, $message);
-        self::assertNotIsWritable($file, $message);
+        self::assertIsNotWritable($file, $message);
+    }
+
+    /**
+     * Asserts that a file exists and is not writable.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4083
+     */
+    public static function assertFileNotIsWritable(string $file, string $message = ''): void
+    {
+        self::createWarning('assertFileNotIsWritable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertFileIsNotWritable() instead.');
+
+        self::assertFileExists($file, $message);
+        self::assertIsNotWritable($file, $message);
     }
 
     /**
@@ -1652,7 +1162,7 @@ abstract class Assert
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
 
-        if (!\class_exists($className)) {
+        if (!class_exists($className)) {
             throw InvalidArgumentException::create(2, 'class name');
         }
 
@@ -1672,7 +1182,7 @@ abstract class Assert
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
 
-        if (!\class_exists($className)) {
+        if (!class_exists($className)) {
             throw InvalidArgumentException::create(2, 'class name');
         }
 
@@ -1698,7 +1208,7 @@ abstract class Assert
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
 
-        if (!\class_exists($className)) {
+        if (!class_exists($className)) {
             throw InvalidArgumentException::create(2, 'class name');
         }
 
@@ -1722,7 +1232,7 @@ abstract class Assert
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
 
-        if (!\class_exists($className)) {
+        if (!class_exists($className)) {
             throw InvalidArgumentException::create(2, 'class name');
         }
 
@@ -1750,7 +1260,7 @@ abstract class Assert
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
 
-        if (!\is_object($object)) {
+        if (!is_object($object)) {
             throw InvalidArgumentException::create(2, 'object');
         }
 
@@ -1776,7 +1286,7 @@ abstract class Assert
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
 
-        if (!\is_object($object)) {
+        if (!is_object($object)) {
             throw InvalidArgumentException::create(2, 'object');
         }
 
@@ -1811,30 +1321,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a variable and an attribute of an object have the same type
-     * and value.
-     *
-     * @param object|string $actualClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeSame($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeSame() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertSame(
-            $expected,
-            static::readAttribute($actualClassOrObject, $actualAttributeName),
-            $message
-        );
-    }
-
-    /**
      * Asserts that two variables do not have the same type and value.
      * Used on objects, it asserts that two variables do not reference
      * the same object.
@@ -1844,7 +1330,7 @@ abstract class Assert
      */
     public static function assertNotSame($expected, $actual, string $message = ''): void
     {
-        if (\is_bool($expected) && \is_bool($actual)) {
+        if (is_bool($expected) && is_bool($actual)) {
             static::assertNotEquals($expected, $actual, $message);
         }
 
@@ -1853,30 +1339,6 @@ abstract class Assert
             new LogicalNot(
                 new IsIdentical($expected)
             ),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that a variable and an attribute of an object do not have the
-     * same type and value.
-     *
-     * @param object|string $actualClassOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeNotSame($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeNotSame() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertNotSame(
-            $expected,
-            static::readAttribute($actualClassOrObject, $actualAttributeName),
             $message
         );
     }
@@ -1894,38 +1356,13 @@ abstract class Assert
      */
     public static function assertInstanceOf(string $expected, $actual, string $message = ''): void
     {
-        if (!\class_exists($expected) && !\interface_exists($expected)) {
+        if (!class_exists($expected) && !interface_exists($expected)) {
             throw InvalidArgumentException::create(1, 'class or interface name');
         }
 
         static::assertThat(
             $actual,
             new IsInstanceOf($expected),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that an attribute is of a given type.
-     *
-     * @param object|string $classOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     *
-     * @psalm-param class-string $expected
-     */
-    public static function assertAttributeInstanceOf(string $expected, string $attributeName, $classOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeInstanceOf() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertInstanceOf(
-            $expected,
-            static::readAttribute($classOrObject, $attributeName),
             $message
         );
     }
@@ -1943,7 +1380,7 @@ abstract class Assert
      */
     public static function assertNotInstanceOf(string $expected, $actual, string $message = ''): void
     {
-        if (!\class_exists($expected) && !\interface_exists($expected)) {
+        if (!class_exists($expected) && !interface_exists($expected)) {
             throw InvalidArgumentException::create(1, 'class or interface name');
         }
 
@@ -1952,74 +1389,6 @@ abstract class Assert
             new LogicalNot(
                 new IsInstanceOf($expected)
             ),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that an attribute is of a given type.
-     *
-     * @param object|string $classOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     *
-     * @psalm-param class-string $expected
-     */
-    public static function assertAttributeNotInstanceOf(string $expected, string $attributeName, $classOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeNotInstanceOf() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertNotInstanceOf(
-            $expected,
-            static::readAttribute($classOrObject, $attributeName),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that a variable is of a given type.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
-     * @codeCoverageIgnore
-     */
-    public static function assertInternalType(string $expected, $actual, string $message = ''): void
-    {
-        self::createWarning('assertInternalType() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertIsArray(), assertIsBool(), assertIsFloat(), assertIsInt(), assertIsNumeric(), assertIsObject(), assertIsResource(), assertIsString(), assertIsScalar(), assertIsCallable(), or assertIsIterable() instead.');
-
-        static::assertThat(
-            $actual,
-            new IsType($expected),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that an attribute is of a given type.
-     *
-     * @param object|string $classOrObject
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function assertAttributeInternalType(string $expected, string $attributeName, $classOrObject, string $message = ''): void
-    {
-        self::createWarning('assertAttributeInternalType() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertInternalType(
-            $expected,
-            static::readAttribute($classOrObject, $attributeName),
             $message
         );
     }
@@ -2144,6 +1513,23 @@ abstract class Assert
     }
 
     /**
+     * Asserts that a variable is of type resource and is closed.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @psalm-assert resource $actual
+     */
+    public static function assertIsClosedResource($actual, string $message = ''): void
+    {
+        static::assertThat(
+            $actual,
+            new IsType(IsType::TYPE_CLOSED_RESOURCE),
+            $message
+        );
+    }
+
+    /**
      * Asserts that a variable is of type string.
      *
      * @throws ExpectationFailedException
@@ -2207,28 +1593,6 @@ abstract class Assert
         static::assertThat(
             $actual,
             new IsType(IsType::TYPE_ITERABLE),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that a variable is not of a given type.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
-     * @codeCoverageIgnore
-     */
-    public static function assertNotInternalType(string $expected, $actual, string $message = ''): void
-    {
-        self::createWarning('assertNotInternalType() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertIsNotArray(), assertIsNotBool(), assertIsNotFloat(), assertIsNotInt(), assertIsNotNumeric(), assertIsNotObject(), assertIsNotResource(), assertIsNotString(), assertIsNotScalar(), assertIsNotCallable(), or assertIsNotIterable() instead.');
-
-        static::assertThat(
-            $actual,
-            new LogicalNot(
-                new IsType($expected)
-            ),
             $message
         );
     }
@@ -2353,6 +1717,23 @@ abstract class Assert
     }
 
     /**
+     * Asserts that a variable is not of type resource.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @psalm-assert !resource $actual
+     */
+    public static function assertIsNotClosedResource($actual, string $message = ''): void
+    {
+        static::assertThat(
+            $actual,
+            new LogicalNot(new IsType(IsType::TYPE_CLOSED_RESOURCE)),
+            $message
+        );
+    }
+
+    /**
      * Asserts that a variable is not of type string.
      *
      * @throws ExpectationFailedException
@@ -2421,26 +1802,14 @@ abstract class Assert
     }
 
     /**
-     * Asserts that an attribute is of a given type.
-     *
-     * @param object|string $classOrObject
+     * Asserts that a string matches a given regular expression.
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
      */
-    public static function assertAttributeNotInternalType(string $expected, string $attributeName, $classOrObject, string $message = ''): void
+    public static function assertMatchesRegularExpression(string $pattern, string $string, string $message = ''): void
     {
-        self::createWarning('assertAttributeNotInternalType() is deprecated and will be removed in PHPUnit 9.');
-
-        static::assertNotInternalType(
-            $expected,
-            static::readAttribute($classOrObject, $attributeName),
-            $message
-        );
+        static::assertThat($string, new RegularExpression($pattern), $message);
     }
 
     /**
@@ -2448,9 +1817,15 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4086
      */
     public static function assertRegExp(string $pattern, string $string, string $message = ''): void
     {
+        self::createWarning('assertRegExp() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertMatchesRegularExpression() instead.');
+
         static::assertThat($string, new RegularExpression($pattern), $message);
     }
 
@@ -2460,8 +1835,31 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
+    public static function assertDoesNotMatchRegularExpression(string $pattern, string $string, string $message = ''): void
+    {
+        static::assertThat(
+            $string,
+            new LogicalNot(
+                new RegularExpression($pattern)
+            ),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that a string does not match a given regular expression.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4089
+     */
     public static function assertNotRegExp(string $pattern, string $string, string $message = ''): void
     {
+        self::createWarning('assertNotRegExp() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertDoesNotMatchRegularExpression() instead.');
+
         static::assertThat(
             $string,
             new LogicalNot(
@@ -2484,11 +1882,11 @@ abstract class Assert
      */
     public static function assertSameSize($expected, $actual, string $message = ''): void
     {
-        if (!$expected instanceof Countable && !\is_iterable($expected)) {
+        if (!$expected instanceof Countable && !is_iterable($expected)) {
             throw InvalidArgumentException::create(1, 'countable or iterable');
         }
 
-        if (!$actual instanceof Countable && !\is_iterable($actual)) {
+        if (!$actual instanceof Countable && !is_iterable($actual)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
         }
 
@@ -2512,11 +1910,11 @@ abstract class Assert
      */
     public static function assertNotSameSize($expected, $actual, string $message = ''): void
     {
-        if (!$expected instanceof Countable && !\is_iterable($expected)) {
+        if (!$expected instanceof Countable && !is_iterable($expected)) {
             throw InvalidArgumentException::create(1, 'countable or iterable');
         }
 
-        if (!$actual instanceof Countable && !\is_iterable($actual)) {
+        if (!$actual instanceof Countable && !is_iterable($actual)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
         }
 
@@ -2570,7 +1968,7 @@ abstract class Assert
         static::assertThat(
             $string,
             new StringMatchesFormatDescription(
-                \file_get_contents($formatFile)
+                file_get_contents($formatFile)
             ),
             $message
         );
@@ -2590,7 +1988,7 @@ abstract class Assert
             $string,
             new LogicalNot(
                 new StringMatchesFormatDescription(
-                    \file_get_contents($formatFile)
+                    file_get_contents($formatFile)
                 )
             ),
             $message
@@ -2709,8 +2107,8 @@ abstract class Assert
      */
     public static function assertXmlFileEqualsXmlFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
-        $expected = Xml::loadFile($expectedFile);
-        $actual   = Xml::loadFile($actualFile);
+        $expected = (new XmlLoader)->loadFile($expectedFile);
+        $actual   = (new XmlLoader)->loadFile($actualFile);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2720,12 +2118,12 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
+     * @throws \PHPUnit\Util\Exception
      */
     public static function assertXmlFileNotEqualsXmlFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
-        $expected = Xml::loadFile($expectedFile);
-        $actual   = Xml::loadFile($actualFile);
+        $expected = (new XmlLoader)->loadFile($expectedFile);
+        $actual   = (new XmlLoader)->loadFile($actualFile);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2737,12 +2135,19 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
+     * @throws \PHPUnit\Util\Xml\Exception
      */
     public static function assertXmlStringEqualsXmlFile(string $expectedFile, $actualXml, string $message = ''): void
     {
-        $expected = Xml::loadFile($expectedFile);
-        $actual   = Xml::load($actualXml);
+        if (!is_string($actualXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+
+            $actual = $actualXml;
+        } else {
+            $actual = (new XmlLoader)->load($actualXml);
+        }
+
+        $expected = (new XmlLoader)->loadFile($expectedFile);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2754,12 +2159,19 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
+     * @throws \PHPUnit\Util\Xml\Exception
      */
     public static function assertXmlStringNotEqualsXmlFile(string $expectedFile, $actualXml, string $message = ''): void
     {
-        $expected = Xml::loadFile($expectedFile);
-        $actual   = Xml::load($actualXml);
+        if (!is_string($actualXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+
+            $actual = $actualXml;
+        } else {
+            $actual = (new XmlLoader)->load($actualXml);
+        }
+
+        $expected = (new XmlLoader)->loadFile($expectedFile);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2772,12 +2184,25 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
+     * @throws \PHPUnit\Util\Xml\Exception
      */
     public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
     {
-        $expected = Xml::load($expectedXml);
-        $actual   = Xml::load($actualXml);
+        if (!is_string($expectedXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $expectedXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+
+            $expected = $expectedXml;
+        } else {
+            $expected = (new XmlLoader)->load($expectedXml);
+        }
+
+        if (!is_string($actualXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+
+            $actual = $actualXml;
+        } else {
+            $actual = (new XmlLoader)->load($actualXml);
+        }
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2790,12 +2215,25 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
+     * @throws \PHPUnit\Util\Xml\Exception
      */
     public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
     {
-        $expected = Xml::load($expectedXml);
-        $actual   = Xml::load($actualXml);
+        if (!is_string($expectedXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $expectedXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+
+            $expected = $expectedXml;
+        } else {
+            $expected = (new XmlLoader)->load($expectedXml);
+        }
+
+        if (!is_string($actualXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+
+            $actual = $actualXml;
+        } else {
+            $actual = (new XmlLoader)->load($actualXml);
+        }
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2806,9 +2244,15 @@ abstract class Assert
      * @throws AssertionFailedError
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4091
      */
     public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, bool $checkAttributes = false, string $message = ''): void
     {
+        self::createWarning('assertEqualXMLStructure() is deprecated and will be removed in PHPUnit 10.');
+
         $expectedElement = Xml::import($expectedElement);
         $actualElement   = Xml::import($actualElement);
 
@@ -2822,7 +2266,7 @@ abstract class Assert
             static::assertSame(
                 $expectedElement->attributes->length,
                 $actualElement->attributes->length,
-                \sprintf(
+                sprintf(
                     '%s%sNumber of attributes on node "%s" does not match',
                     $message,
                     !empty($message) ? "\n" : '',
@@ -2834,11 +2278,11 @@ abstract class Assert
                 $expectedAttribute = $expectedElement->attributes->item($i);
                 $actualAttribute   = $actualElement->attributes->getNamedItem($expectedAttribute->name);
 
-                \assert($expectedAttribute instanceof \DOMAttr);
+                assert($expectedAttribute instanceof DOMAttr);
 
                 if (!$actualAttribute) {
                     static::fail(
-                        \sprintf(
+                        sprintf(
                             '%s%sCould not find attribute "%s" on node "%s"',
                             $message,
                             !empty($message) ? "\n" : '',
@@ -2856,7 +2300,7 @@ abstract class Assert
         static::assertSame(
             $expectedElement->childNodes->length,
             $actualElement->childNodes->length,
-            \sprintf(
+            sprintf(
                 '%s%sNumber of child nodes of "%s" differs',
                 $message,
                 !empty($message) ? "\n" : '',
@@ -2882,7 +2326,7 @@ abstract class Assert
      */
     public static function assertThat($value, Constraint $constraint, string $message = ''): void
     {
-        self::$count += \count($constraint);
+        self::$count += count($constraint);
 
         $constraint->evaluate($value, $message);
     }
@@ -2944,7 +2388,7 @@ abstract class Assert
     public static function assertJsonStringEqualsJsonFile(string $expectedFile, string $actualJson, string $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
-        $expectedJson = \file_get_contents($expectedFile);
+        $expectedJson = file_get_contents($expectedFile);
 
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
@@ -2961,7 +2405,7 @@ abstract class Assert
     public static function assertJsonStringNotEqualsJsonFile(string $expectedFile, string $actualJson, string $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
-        $expectedJson = \file_get_contents($expectedFile);
+        $expectedJson = file_get_contents($expectedFile);
 
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
@@ -2986,8 +2430,8 @@ abstract class Assert
         static::assertFileExists($expectedFile, $message);
         static::assertFileExists($actualFile, $message);
 
-        $actualJson   = \file_get_contents($actualFile);
-        $expectedJson = \file_get_contents($expectedFile);
+        $actualJson   = file_get_contents($actualFile);
+        $expectedJson = file_get_contents($expectedFile);
 
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
@@ -3013,8 +2457,8 @@ abstract class Assert
         static::assertFileExists($expectedFile, $message);
         static::assertFileExists($actualFile, $message);
 
-        $actualJson   = \file_get_contents($actualFile);
-        $expectedJson = \file_get_contents($expectedFile);
+        $actualJson   = file_get_contents($actualFile);
+        $expectedJson = file_get_contents($expectedFile);
 
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
@@ -3034,7 +2478,7 @@ abstract class Assert
      */
     public static function logicalAnd(): LogicalAnd
     {
-        $constraints = \func_get_args();
+        $constraints = func_get_args();
 
         $constraint = new LogicalAnd;
         $constraint->setConstraints($constraints);
@@ -3044,7 +2488,7 @@ abstract class Assert
 
     public static function logicalOr(): LogicalOr
     {
-        $constraints = \func_get_args();
+        $constraints = func_get_args();
 
         $constraint = new LogicalOr;
         $constraint->setConstraints($constraints);
@@ -3059,7 +2503,7 @@ abstract class Assert
 
     public static function logicalXor(): LogicalXor
     {
-        $constraints = \func_get_args();
+        $constraints = func_get_args();
 
         $constraint = new LogicalXor;
         $constraint->setConstraints($constraints);
@@ -3112,25 +2556,6 @@ abstract class Assert
         return new IsNan;
     }
 
-    /**
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function attribute(Constraint $constraint, string $attributeName): Attribute
-    {
-        self::createWarning('attribute() is deprecated and will be removed in PHPUnit 9.');
-
-        return new Attribute($constraint, $attributeName);
-    }
-
-    /**
-     * @deprecated Use containsEqual() or containsIdentical() instead
-     */
-    public static function contains($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): TraversableContains
-    {
-        return new TraversableContains($value, $checkForObjectIdentity, $checkForNonObjectIdentity);
-    }
-
     public static function containsEqual($value): TraversableContainsEqual
     {
         return new TraversableContainsEqual($value);
@@ -3159,29 +2584,24 @@ abstract class Assert
         return new ArrayHasKey($key);
     }
 
-    public static function equalTo($value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): IsEqual
+    public static function equalTo($value): IsEqual
     {
-        return new IsEqual($value, $delta, $maxDepth, $canonicalize, $ignoreCase);
+        return new IsEqual($value, 0.0, false, false);
     }
 
-    /**
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function attributeEqualTo(string $attributeName, $value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): Attribute
+    public static function equalToCanonicalizing($value): IsEqualCanonicalizing
     {
-        self::createWarning('attributeEqualTo() is deprecated and will be removed in PHPUnit 9.');
+        return new IsEqualCanonicalizing($value);
+    }
 
-        return static::attribute(
-            static::equalTo(
-                $value,
-                $delta,
-                $maxDepth,
-                $canonicalize,
-                $ignoreCase
-            ),
-            $attributeName
-        );
+    public static function equalToIgnoringCase($value): IsEqualIgnoringCase
+    {
+        return new IsEqualIgnoringCase($value);
+    }
+
+    public static function equalToWithDelta($value, float $delta): IsEqualWithDelta
+    {
+        return new IsEqualWithDelta($value, $delta);
     }
 
     public static function isEmpty(): IsEmpty
@@ -3310,153 +2730,6 @@ abstract class Assert
     }
 
     /**
-     * Returns the value of an attribute of a class or an object.
-     * This also works for attributes that are declared protected or private.
-     *
-     * @param object|string $classOrObject
-     *
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function readAttribute($classOrObject, string $attributeName)
-    {
-        self::createWarning('readAttribute() is deprecated and will be removed in PHPUnit 9.');
-
-        if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(2, 'valid attribute name');
-        }
-
-        if (\is_string($classOrObject)) {
-            if (!\class_exists($classOrObject)) {
-                throw InvalidArgumentException::create(
-                    1,
-                    'class name'
-                );
-            }
-
-            return static::getStaticAttribute(
-                $classOrObject,
-                $attributeName
-            );
-        }
-
-        if (\is_object($classOrObject)) {
-            return static::getObjectAttribute(
-                $classOrObject,
-                $attributeName
-            );
-        }
-
-        throw InvalidArgumentException::create(
-            1,
-            'class name or object'
-        );
-    }
-
-    /**
-     * Returns the value of a static attribute.
-     * This also works for attributes that are declared protected or private.
-     *
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function getStaticAttribute(string $className, string $attributeName)
-    {
-        self::createWarning('getStaticAttribute() is deprecated and will be removed in PHPUnit 9.');
-
-        if (!\class_exists($className)) {
-            throw InvalidArgumentException::create(1, 'class name');
-        }
-
-        if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(2, 'valid attribute name');
-        }
-
-        try {
-            $class = new \ReflectionClass($className);
-            // @codeCoverageIgnoreStart
-        } catch (\ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
-
-        while ($class) {
-            $attributes = $class->getStaticProperties();
-
-            if (\array_key_exists($attributeName, $attributes)) {
-                return $attributes[$attributeName];
-            }
-
-            $class = $class->getParentClass();
-        }
-
-        throw new Exception(
-            \sprintf(
-                'Attribute "%s" not found in class.',
-                $attributeName
-            )
-        );
-    }
-
-    /**
-     * Returns the value of an object's attribute.
-     * This also works for attributes that are declared protected or private.
-     *
-     * @param object $object
-     *
-     * @throws Exception
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
-     * @codeCoverageIgnore
-     */
-    public static function getObjectAttribute($object, string $attributeName)
-    {
-        self::createWarning('getObjectAttribute() is deprecated and will be removed in PHPUnit 9.');
-
-        if (!\is_object($object)) {
-            throw InvalidArgumentException::create(1, 'object');
-        }
-
-        if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(2, 'valid attribute name');
-        }
-
-        $reflector = new ReflectionObject($object);
-
-        do {
-            try {
-                $attribute = $reflector->getProperty($attributeName);
-
-                if (!$attribute || $attribute->isPublic()) {
-                    return $object->$attributeName;
-                }
-
-                $attribute->setAccessible(true);
-                $value = $attribute->getValue($object);
-                $attribute->setAccessible(false);
-
-                return $value;
-            } catch (\ReflectionException $e) {
-            }
-        } while ($reflector = $reflector->getParentClass());
-
-        throw new Exception(
-            \sprintf(
-                'Attribute "%s" not found in object.',
-                $attributeName
-            )
-        );
-    }
-
-    /**
      * Mark the test as incomplete.
      *
      * @throws IncompleteTestError
@@ -3479,8 +2752,8 @@ abstract class Assert
     public static function markTestSkipped(string $message = ''): void
     {
         if ($hint = self::detectLocationHint($message)) {
-            $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
-            \array_unshift($trace, $hint);
+            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+            array_unshift($trace, $hint);
 
             throw new SyntheticSkippedError($hint['message'], 0, $hint['file'], (int) $hint['line'], $trace);
         }
@@ -3507,10 +2780,10 @@ abstract class Assert
     private static function detectLocationHint(string $message): ?array
     {
         $hint  = null;
-        $lines = \preg_split('/\r\n|\r|\n/', $message);
+        $lines = preg_split('/\r\n|\r|\n/', $message);
 
-        while (\strpos($lines[0], '__OFFSET') !== false) {
-            $offset = \explode('=', \array_shift($lines));
+        while (strpos($lines[0], '__OFFSET') !== false) {
+            $offset = explode('=', array_shift($lines));
 
             if ($offset[0] === '__OFFSET_FILE') {
                 $hint['file'] = $offset[1];
@@ -3522,7 +2795,7 @@ abstract class Assert
         }
 
         if ($hint) {
-            $hint['message'] = \implode(\PHP_EOL, $lines);
+            $hint['message'] = implode(PHP_EOL, $lines);
         }
 
         return $hint;
@@ -3530,12 +2803,12 @@ abstract class Assert
 
     private static function isValidObjectAttributeName(string $attributeName): bool
     {
-        return (bool) \preg_match('/[^\x00-\x1f\x7f-\x9f]+/', $attributeName);
+        return (bool) preg_match('/[^\x00-\x1f\x7f-\x9f]+/', $attributeName);
     }
 
     private static function isValidClassAttributeName(string $attributeName): bool
     {
-        return (bool) \preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName);
+        return (bool) preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName);
     }
 
     /**
@@ -3543,9 +2816,9 @@ abstract class Assert
      */
     private static function createWarning(string $warning): void
     {
-        foreach (\debug_backtrace() as $step) {
+        foreach (debug_backtrace() as $step) {
             if (isset($step['object']) && $step['object'] instanceof TestCase) {
-                \assert($step['object'] instanceof TestCase);
+                assert($step['object'] instanceof TestCase);
 
                 $step['object']->addWarning($warning);
 

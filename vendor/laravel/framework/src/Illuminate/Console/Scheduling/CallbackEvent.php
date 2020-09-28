@@ -5,6 +5,7 @@ namespace Illuminate\Console\Scheduling;
 use Illuminate\Contracts\Container\Container;
 use InvalidArgumentException;
 use LogicException;
+use Throwable;
 
 class CallbackEvent extends Event
 {
@@ -28,11 +29,12 @@ class CallbackEvent extends Event
      * @param  \Illuminate\Console\Scheduling\EventMutex  $mutex
      * @param  string  $callback
      * @param  array  $parameters
+     * @param  \DateTimeZone|string|null  $timezone
      * @return void
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(EventMutex $mutex, $callback, array $parameters = [])
+    public function __construct(EventMutex $mutex, $callback, array $parameters = [], $timezone = null)
     {
         if (! is_string($callback) && ! is_callable($callback)) {
             throw new InvalidArgumentException(
@@ -43,6 +45,7 @@ class CallbackEvent extends Event
         $this->mutex = $mutex;
         $this->callback = $callback;
         $this->parameters = $parameters;
+        $this->timezone = $timezone;
     }
 
     /**
@@ -74,11 +77,17 @@ class CallbackEvent extends Event
             $response = is_object($this->callback)
                         ? $container->call([$this->callback, '__invoke'], $this->parameters)
                         : $container->call($this->callback, $this->parameters);
+        } catch (Throwable $e) {
+            $this->exitCode = 1;
+
+            throw $e;
         } finally {
             $this->removeMutex();
 
             parent::callAfterCallbacks($container);
         }
+
+        $this->exitCode = $response === false ? 1 : 0;
 
         return $response;
     }

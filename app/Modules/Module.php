@@ -8,10 +8,8 @@ use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Foundation\ProviderRepository;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Artisan;
+
 
 class Module
 {
@@ -511,9 +509,9 @@ class Module
      */
     protected function registerFactories()
     {
-        // 非产品环境下注册Factories
+        // 非产品环境下注册Factories TODO: laravel 8.x 不再支持该方法
         if (!$this->app->environment('production')) {
-            $this->app->make(Factory::class)->load($this->path . DIRECTORY_SEPARATOR . $this->app['config']->get('modules.paths.dirs.factory'));
+            //$this->app->make(Factory::class)->load($this->path . DIRECTORY_SEPARATOR . $this->app['config']->get('modules.paths.dirs.factory'));
         }
     }
 

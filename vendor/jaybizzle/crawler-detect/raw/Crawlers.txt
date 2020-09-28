@@ -1,11 +1,12 @@
-.*Java.*outbrain
  YLT
 ^b0t$
 ^bluefish 
 ^Calypso v\/
+^Corax
 ^COMODO DCV
 ^DangDang
 ^DavClnt
+^DHSH
 ^FDM 
 ^git\/
 ^Goose\/
@@ -19,9 +20,11 @@
 ^Microsoft URL Control
 ^NG\/[0-9\.]
 ^NING\/
+^Nuclei
 ^PHP\/[0-9]
 ^RMA\/
 ^Ruby|Ruby\/[0-9]
+^Swurl 
 ^VSE\/[0-9]
 ^WordPress\.com
 ^XRL\/[0-9]
@@ -29,6 +32,7 @@
 008\/
 13TABS
 192\.comAgent
+2GDPR\/
 2ip\.ru
 404enemy
 7Siters
@@ -40,6 +44,7 @@ Abonti
 Aboundex
 aboutthedomain
 Accoona-AI-Agent
+acebookexternalhit\/
 acoon
 acrylicapps\.com\/pulp
 Acunetix
@@ -54,6 +59,7 @@ adscanner
 Adstxtaggregator
 adstxt-worker
 adstxt\.com
+AffiliateLabz\/
 agentslug
 AHC
 aihit
@@ -69,6 +75,7 @@ allloadin
 AllSubmitter
 alyze\.info
 amagit
+^Amazon CloudFront$
 ^Amazon Simple Notification Service Agent$
 Anarchie
 AndroidDownloadManager
@@ -84,6 +91,7 @@ Apache-HttpAsyncClient
 Apache-HttpClient
 ApacheBench
 Apexoo
+apimon\.de
 APIs-Google
 AportWorm\/
 AppBeat\/
@@ -114,6 +122,7 @@ Backlink-Ceck
 backlink-check
 BacklinkHttpStatus
 BackStreet
+BackupLand
 BackWeb
 Bad-Neighborhood
 Badass
@@ -179,6 +188,7 @@ catexplorador
 CC Metadata Scaper
 Cegbfeieh
 censys
+centuryb.o.t9[at]gmail.com
 Cerberian Drtrs
 CERT\.at-Statistics-Survey
 cg-eye
@@ -213,6 +223,7 @@ Commons-HttpClient
 commonscan
 contactbigdatafr
 contentkingapp
+Contextual Code Sites Explorer
 convera
 CookieReports
 copyright sheriff
@@ -227,6 +238,7 @@ Crowsnest
 Criteo
 CSHttp
 CSSCheck
+Cula\/
 curb
 Curious George
 curl
@@ -265,6 +277,7 @@ docoloc
 Dolphin http client
 DomainAppender
 DomainLabz
+Domains Project\/
 Donuts Content Explorer
 dotMailer content retrieval
 dotSemantic
@@ -335,8 +348,10 @@ FeedBunch\/
 FeedBurner
 feeder
 Feedly
+Feedshow\/
 FeedshowOnline
 Feedspot
+FeedViewer\/
 Feedwind\/
 FeedZcollector
 feeltiptop
@@ -344,6 +359,7 @@ Fetch API
 Fetch\/[0-9]
 Fever\/[0-9]
 FHscan
+Fiery%20Feeds
 Filestack
 Fimap
 findlink
@@ -361,11 +377,13 @@ FoundSeoTool
 http:\/\/www.neomo.de\/
 free thumbnails
 Freeuploader
+FreshRSS
 Funnelback
 Fuzz Faster U Fool
 G-i-g-a-b-o-t
 g00g1e\.net
 ganarvisitas
+gdnplus\.com
 geek-tools
 Genieo
 GentleSource
@@ -382,6 +400,7 @@ Ghost Inspector
 GigablastOpenSource
 GIS-LABS
 github-camo
+GitHub-Hookshot
 github\.com
 Goldfire Server
 Go [\d\.]* package http
@@ -390,6 +409,7 @@ Go-Ahead-Got-It
 Go-http-client
 Go!Zilla
 gobyus
+Gofeed
 gofetch
 GomezAgent
 gooblog
@@ -400,6 +420,7 @@ Google favicon
 Google Keyword Suggestion
 Google Keyword Tool
 Google Page Speed Insights
+Google-Podcast
 Google PP Default
 Google Search Console
 Google Web Preview
@@ -506,6 +527,7 @@ IDG Twitter Links Resolver
 IDwhois\/
 Iframely
 igdeSpyder
+iGooglePortal
 IlTrovatore
 Image Fetch
 Image Sucker
@@ -554,6 +576,8 @@ iZSearch
 JAHHO
 janforman
 Jaunt\/
+Java.*outbrain
+javelin\.io
 Jbrofuzz
 Jersey\/
 JetCar
@@ -612,9 +636,9 @@ linkdex
 LinkExaminer
 linkfluence
 linkpeek
-LinkPreviewGenerator
 LinkScan
 LinksManager
+LinkPreview
 LinkTiger
 LinkWalker
 Lipperhey
@@ -628,6 +652,7 @@ looid\.com
 looksystems\.net
 ltx71
 lua-resty-http
+Lush Http Client
 lwp-request
 lwp-trivial
 LWP::Simple
@@ -658,8 +683,8 @@ MemGator
 Metaspinner
 MetaURI
 MFC_Tear_Sample
-MicroMessenger\/
 Microsearch
+Microsoft\.Data\.Mashup
 Microsoft Office 
 Microsoft Outlook
 Microsoft Windows Network Diagnostics
@@ -673,7 +698,6 @@ Miniflux
 Mister PiX
 mixdata dot com
 mixed-content-scan
-Mixmax-LinkPreview
 mixnode
 Mnogosearch
 mogimogi
@@ -698,10 +722,13 @@ MuckRack\/
 muhstik-scan
 MVAClient
 MxToolbox\/
+myseosnapshot
 nagios
 Najdi\.si
 Name Intelligence
+NameFo\.com
 Nameprotect
+nationalarchives
 Navroad
 NearSite
 Needle
@@ -728,6 +755,7 @@ newsme
 newspaper\/
 NetSystemsResearch
 Nexgate Ruby Client
+nghttp2
 NG-Search
 Nibbler
 NICErsPRO
@@ -770,6 +798,7 @@ Openstat\/
 OpenVAS
 OPPO A33
 Optimizer
+Open Source RSS
 Orbiter
 OrgProbe\/
 orion-semantics
@@ -777,6 +806,7 @@ Outlook-Express
 Outlook-iOS
 ow\.ly
 Owler
+Owlin
 ownCloud News
 OxfordCloudService
 Page Valet
@@ -806,6 +836,7 @@ PhantomJS Screenshoter
 PhantomJS\/
 Photon\/
 phpservermon
+php-requests
 Pi-Monster
 Picscout
 Picsearch
@@ -834,6 +865,7 @@ Porkbun
 Port Monitor
 postano
 PostmanRuntime
+postplanner\.com
 PostPost
 postrank
 PowerPoint\/
@@ -843,7 +875,7 @@ PrintFriendly
 PritTorrent
 Prlog
 probethenet
-Project 25499
+Project ?25499
 prospectb2b
 Protopage
 ProWebWalker
@@ -864,6 +896,7 @@ Qseero
 Qualidator
 QueryN Metasearch
 queuedriver
+QuiteRSS
 Quora Link Preview
 Qwantify
 Radian6
@@ -909,6 +942,7 @@ ScanAlert
 Scoop
 scooter
 ScoutJet
+ScopeContentAG-HTTP-Client
 ScoutURLMonitor
 ScrapeBox Page Scanner
 Scrapy
@@ -954,6 +988,7 @@ shortURL lengthener
 ShortLinkTranslate
 shrinktheweb
 Sideqik
+Siege
 SimplePie
 SimplyFast
 Siphon
@@ -981,6 +1016,7 @@ sitexy\.com
 SkypeUriPreview
 Slack\/
 slider\.com
+sli-systems\.com
 slurp
 SlySearch
 SmartDownload
@@ -1018,6 +1054,7 @@ SSL Labs
 ssl-tools
 StackRambler
 Statastico\/
+Statically-Screenshot
 StatusCake
 Steeler
 Stratagems Kumo
@@ -1030,6 +1067,7 @@ summify
 SuperHTTP
 Surphace Scout
 Suzuran
+swcd 
 Symfony BrowserKit
 Symfony2 BrowserKit
 SynHttpClient-Built
@@ -1041,6 +1079,7 @@ tAkeOut
 Tarantula\/
 Taringa UGC
 TarmotGezgin
+techiaith\.cymru
 Teleport
 Telesoft
 Telesphoreo
@@ -1095,6 +1134,7 @@ uclassify
 UdmSearch
 unchaos
 unirest-java
+ultimate_sitemap_parser
 UniversalFeedParser
 Unshorten\.It
 Untiny
@@ -1136,6 +1176,7 @@ W3C-mobileOK
 WAC-OFU
 Wallpapers\/[0-9]+
 WallpapersHD
+WakeletLinkExpander
 wangling
 Wappalyzer
 WatchMouse
@@ -1199,13 +1240,16 @@ WeSEE
 wf84
 Wfuzz\/
 wget
+WhatCMS
 WhatsApp
 WhatsMyIP
 WhatWeb
 WhereGoes\?
 Whibse
+WhoAPI\/
 WhoRunsCoinHive
 Whynder Magnet
+WinHTTP\/
 WinHttp-Autoproxy-Service
 Windows-RSS-Platform
 WinPodder
@@ -1234,6 +1278,7 @@ WWWOFFLE
 x09Mozilla
 x22Mozilla
 XaxisSemanticsClassifier
+XenForo\/
 Xenu Link Sleuth
 XING-contenttabreceiver
 xpymep([0-9]?)\.exe
@@ -1243,6 +1288,7 @@ Yaanb
 yacy
 Yahoo Link Preview
 YahooCacheSystem
+YahooMailProxy
 YahooYSMcm
 YandeG
 Yandex(?!Search)
@@ -1250,6 +1296,7 @@ yanga
 yeti
 Yo-yo
 Yoleo Consumer
+yomins\.com
 yoogliFetchAgent
 YottaaMonitor
 Your-Website-Sucks
@@ -1270,5 +1317,6 @@ ZnajdzFoto
 ZnHTTP
 Zombie\.js
 Zoom\.Mac
+ZoteroTranslationServer
 ZyBorg
 [a-z0-9\-_]*(bot|crawl|archiver|transcoder|spider|uptime|validator|fetcher|cron|checker|reader|extractor|monitoring|analyzer|scraper)

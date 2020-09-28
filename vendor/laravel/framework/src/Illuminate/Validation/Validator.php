@@ -277,7 +277,7 @@ class Validator implements ValidatorContract
     }
 
     /**
-     * Parse the data array, converting dots to ->.
+     * Parse the data array, converting dots and asterisks.
      *
      * @param  array  $data
      * @return array
@@ -301,6 +301,40 @@ class Validator implements ValidatorContract
         }
 
         return $newData;
+    }
+
+    /**
+     * Replace the placeholders used in data keys.
+     *
+     * @param  array  $data
+     * @return array
+     */
+    protected function replacePlaceholders($data)
+    {
+        $originalData = [];
+
+        foreach ($data as $key => $value) {
+            $originalData[$this->replacePlaceholderInString($key)] = is_array($value)
+                        ? $this->replacePlaceholders($value)
+                        : $value;
+        }
+
+        return $originalData;
+    }
+
+    /**
+     * Replace the placeholders in the given string.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function replacePlaceholderInString(string $value)
+    {
+        return str_replace(
+            [$this->dotPlaceholder, '__asterisk__'],
+            ['.', '*'],
+            $value
+        );
     }
 
     /**
@@ -401,7 +435,8 @@ class Validator implements ValidatorContract
      */
     protected function removeAttribute($attribute)
     {
-        unset($this->data[$attribute], $this->rules[$attribute]);
+        Arr::forget($this->data, $attribute);
+        Arr::forget($this->rules, $attribute);
     }
 
     /**
@@ -464,7 +499,7 @@ class Validator implements ValidatorContract
             }
         }
 
-        return $results;
+        return $this->replacePlaceholders($results);
     }
 
     /**
@@ -694,6 +729,10 @@ class Validator implements ValidatorContract
      */
     protected function validateUsingCustomRule($attribute, $value, $rule)
     {
+        $attribute = $this->replacePlaceholderInString($attribute);
+
+        $value = is_array($value) ? $this->replacePlaceholders($value) : $value;
+
         if (! $rule->passes($attribute, $value)) {
             $this->failedRules[$attribute][get_class($rule)] = [];
 
@@ -717,12 +756,14 @@ class Validator implements ValidatorContract
      */
     protected function shouldStopValidating($attribute)
     {
+        $cleanedAttribute = $this->replacePlaceholderInString($attribute);
+
         if ($this->hasRule($attribute, ['Bail'])) {
-            return $this->messages->has($attribute);
+            return $this->messages->has($cleanedAttribute);
         }
 
-        if (isset($this->failedRules[$attribute]) &&
-            array_key_exists('uploaded', $this->failedRules[$attribute])) {
+        if (isset($this->failedRules[$cleanedAttribute]) &&
+            array_key_exists('uploaded', $this->failedRules[$cleanedAttribute])) {
             return true;
         }
 
@@ -730,8 +771,8 @@ class Validator implements ValidatorContract
         // and that rule already failed then we should stop validation at this point
         // as now there is no point in calling other rules with this field empty.
         return $this->hasRule($attribute, $this->implicitRules) &&
-               isset($this->failedRules[$attribute]) &&
-               array_intersect(array_keys($this->failedRules[$attribute]), $this->implicitRules);
+               isset($this->failedRules[$cleanedAttribute]) &&
+               array_intersect(array_keys($this->failedRules[$cleanedAttribute]), $this->implicitRules);
     }
 
     /**
@@ -748,7 +789,11 @@ class Validator implements ValidatorContract
             $this->passes();
         }
 
-        $attribute = str_replace('__asterisk__', '*', $attribute);
+        $attribute = str_replace(
+            [$this->dotPlaceholder, '__asterisk__'],
+            ['.', '*'],
+            $attribute
+        );
 
         if (in_array($rule, $this->excludeRules)) {
             return $this->excludeAttribute($attribute);

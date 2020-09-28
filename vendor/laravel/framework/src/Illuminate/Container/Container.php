@@ -234,6 +234,10 @@ class Container implements ArrayAccess, ContainerContract
         // bound into this container to the abstract type and we will just wrap it
         // up inside its own Closure to give us more convenience when extending.
         if (! $concrete instanceof Closure) {
+            if (! is_string($concrete)) {
+                throw new \TypeError(self::class.'::bind(): Argument #2 ($concrete) must be of type Closure|string|null');
+            }
+
             $concrete = $this->getClosure($abstract, $concrete);
         }
 
@@ -858,7 +862,7 @@ class Container implements ArrayAccess, ContainerContract
         $results = [];
 
         foreach ($dependencies as $dependency) {
-            // If this dependency has a override for this particular build we will use
+            // If the dependency has an override for this particular build we will use
             // that instead as the value. Otherwise, we will continue with this run
             // of resolutions and let reflection attempt to determine the result.
             if ($this->hasParameterOverride($dependency)) {
@@ -1156,11 +1160,9 @@ class Container implements ArrayAccess, ContainerContract
      */
     public function getAlias($abstract)
     {
-        if (! isset($this->aliases[$abstract])) {
-            return $abstract;
-        }
-
-        return $this->getAlias($this->aliases[$abstract]);
+        return isset($this->aliases[$abstract])
+                    ? $this->getAlias($this->aliases[$abstract])
+                    : $abstract;
     }
 
     /**
@@ -1171,9 +1173,7 @@ class Container implements ArrayAccess, ContainerContract
      */
     protected function getExtenders($abstract)
     {
-        $abstract = $this->getAlias($abstract);
-
-        return $this->extenders[$abstract] ?? [];
+        return $this->extenders[$this->getAlias($abstract)] ?? [];
     }
 
     /**

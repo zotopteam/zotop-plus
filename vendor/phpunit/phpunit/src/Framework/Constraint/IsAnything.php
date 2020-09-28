@@ -17,7 +17,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 final class IsAnything extends Constraint
 {
     /**
-     * Evaluates the constraint for parameter $other
+     * Evaluates the constraint for parameter $other.
      *
      * If $returnResult is set to false (the default), an exception is thrown
      * in case of a failure. null is returned otherwise.
@@ -28,7 +28,7 @@ final class IsAnything extends Constraint
      *
      * @throws ExpectationFailedException
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false)
+    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
         return $returnResult ? true : null;
     }
