@@ -115,7 +115,7 @@ class Router implements BindingRegistrar, RegistrarContract
     /**
      * All of the verbs supported by the router.
      *
-     * @var array
+     * @var string[]
      */
     public static $verbs = ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
 
@@ -1049,7 +1049,7 @@ class Router implements BindingRegistrar, RegistrarContract
     /**
      * Get the currently dispatched route instance.
      *
-     * @return \Illuminate\Routing\Route
+     * @return \Illuminate\Routing\Route|null
      */
     public function getCurrentRoute()
     {
@@ -1230,6 +1230,29 @@ class Router implements BindingRegistrar, RegistrarContract
             ->setContainer($this->container);
 
         $this->container->instance('routes', $this->routes);
+    }
+
+    /**
+     * Remove any duplicate middleware from the given array.
+     *
+     * @param  array  $middleware
+     * @return array
+     */
+    public static function uniqueMiddleware(array $middleware)
+    {
+        $seen = [];
+        $result = [];
+
+        foreach ($middleware as $value) {
+            $key = \is_object($value) ? \spl_object_id($value) : $value;
+
+            if (! isset($seen[$key])) {
+                $seen[$key] = true;
+                $result[] = $value;
+            }
+        }
+
+        return $result;
     }
 
     /**

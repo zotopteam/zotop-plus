@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\CliArguments;
 
+use function array_map;
 use function array_merge;
 use function class_exists;
 use function explode;
@@ -42,6 +43,7 @@ final class Builder
         'warm-coverage-cache',
         'coverage-filter=',
         'coverage-clover=',
+        'coverage-cobertura=',
         'coverage-crap4j=',
         'coverage-html=',
         'coverage-php=',
@@ -60,6 +62,8 @@ final class Builder
         'generate-configuration',
         'globals-backup',
         'group=',
+        'covers=',
+        'uses=',
         'help',
         'resolve-dependencies',
         'ignore-dependencies',
@@ -151,6 +155,7 @@ final class Builder
         $warmCoverageCache                          = null;
         $coverageFilter                             = null;
         $coverageClover                             = null;
+        $coverageCobertura                          = null;
         $coverageCrap4J                             = null;
         $coverageHtml                               = null;
         $coveragePhp                                = null;
@@ -179,6 +184,8 @@ final class Builder
         $generateConfiguration                      = null;
         $migrateConfiguration                       = null;
         $groups                                     = null;
+        $testsCovering                              = null;
+        $testsUsing                                 = null;
         $help                                       = null;
         $includePath                                = null;
         $iniSettings                                = [];
@@ -284,6 +291,11 @@ final class Builder
 
                     break;
 
+                case '--coverage-cobertura':
+                    $coverageCobertura = $option[1];
+
+                    break;
+
                 case '--coverage-crap4j':
                     $coverageCrap4J = $option[1];
 
@@ -371,6 +383,16 @@ final class Builder
 
                 case '--exclude-group':
                     $excludeGroups = explode(',', $option[1]);
+
+                    break;
+
+                case '--covers':
+                    $testsCovering = array_map('strtolower', explode(',', $option[1]));
+
+                    break;
+
+                case '--uses':
+                    $testsUsing = array_map('strtolower', explode(',', $option[1]));
 
                     break;
 
@@ -781,6 +803,7 @@ final class Builder
             $columns,
             $configuration,
             $coverageClover,
+            $coverageCobertura,
             $coverageCrap4J,
             $coverageHtml,
             $coveragePhp,
@@ -811,6 +834,8 @@ final class Builder
             $generateConfiguration,
             $migrateConfiguration,
             $groups,
+            $testsCovering,
+            $testsUsing,
             $help,
             $includePath,
             $iniSettings,

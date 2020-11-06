@@ -13,6 +13,7 @@ use const PHP_EOL;
 use const PHP_SAPI;
 use const PHP_VERSION;
 use function array_diff;
+use function array_map;
 use function assert;
 use function class_exists;
 use function count;
@@ -65,10 +66,11 @@ use PHPUnit\Util\Xml\SchemaDetector;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\Driver\Driver;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
+use SebastianBergmann\CodeCoverage\Report\Cobertura as CoberturaReport;
 use SebastianBergmann\CodeCoverage\Report\Crap4j as Crap4jReport;
 use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReport;
 use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
@@ -389,6 +391,10 @@ final class TestRunner extends BaseTestRunner
                 $codeCoverageReports++;
             }
 
+            if (isset($arguments['coverageCobertura'])) {
+                $codeCoverageReports++;
+            }
+
             if (isset($arguments['coverageCrap4J'])) {
                 $codeCoverageReports++;
             }
@@ -449,9 +455,9 @@ final class TestRunner extends BaseTestRunner
             try {
                 if (isset($codeCoverageConfiguration) &&
                     ($codeCoverageConfiguration->pathCoverage() || (isset($arguments['pathCoverage']) && $arguments['pathCoverage'] === true))) {
-                    $codeCoverageDriver = Driver::forLineAndPathCoverage($this->codeCoverageFilter);
+                    $codeCoverageDriver = (new Selector)->forLineAndPathCoverage($this->codeCoverageFilter);
                 } else {
-                    $codeCoverageDriver = Driver::forLineCoverage($this->codeCoverageFilter);
+                    $codeCoverageDriver = (new Selector)->forLineCoverage($this->codeCoverageFilter);
                 }
 
                 $codeCoverage = new CodeCoverage(
@@ -514,14 +520,10 @@ final class TestRunner extends BaseTestRunner
                         $warnings[] = 'Incorrect filter configuration, code coverage will not be processed';
                     }
 
-                    $codeCoverageReports = 0;
-
                     unset($codeCoverage);
                 }
             } catch (CodeCoverageException $e) {
                 $warnings[] = $e->getMessage();
-
-                $codeCoverageReports = 0;
             }
         }
 
@@ -686,6 +688,21 @@ final class TestRunner extends BaseTestRunner
                 try {
                     $writer = new CloverReport;
                     $writer->process($codeCoverage, $arguments['coverageClover']);
+
+                    $this->codeCoverageGenerationSucceeded();
+
+                    unset($writer);
+                } catch (CodeCoverageException $e) {
+                    $this->codeCoverageGenerationFailed($e);
+                }
+            }
+
+            if (isset($arguments['coverageCobertura'])) {
+                $this->codeCoverageGenerationStart('Cobertura XML');
+
+                try {
+                    $writer = new CoberturaReport;
+                    $writer->process($codeCoverage, $arguments['coverageCobertura']);
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -889,6 +906,10 @@ final class TestRunner extends BaseTestRunner
 
             if (!isset($arguments['coverageClover']) && $codeCoverageConfiguration->hasClover()) {
                 $arguments['coverageClover'] = $codeCoverageConfiguration->clover()->target()->path();
+            }
+
+            if (!isset($arguments['coverageCobertura']) && $codeCoverageConfiguration->hasCobertura()) {
+                $arguments['coverageCobertura'] = $codeCoverageConfiguration->cobertura()->target()->path();
             }
 
             if (!isset($arguments['coverageCrap4J']) && $codeCoverageConfiguration->hasCrap4j()) {
@@ -1122,7 +1143,9 @@ final class TestRunner extends BaseTestRunner
     {
         if (!$arguments['filter'] &&
             empty($arguments['groups']) &&
-            empty($arguments['excludeGroups'])) {
+            empty($arguments['excludeGroups']) &&
+            empty($arguments['testsCovering']) &&
+            empty($arguments['testsUsing'])) {
             return;
         }
 
@@ -1139,6 +1162,30 @@ final class TestRunner extends BaseTestRunner
             $filterFactory->addFilter(
                 new ReflectionClass(IncludeGroupFilterIterator::class),
                 $arguments['groups']
+            );
+        }
+
+        if (!empty($arguments['testsCovering'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass(IncludeGroupFilterIterator::class),
+                array_map(
+                    static function (string $name): string {
+                        return '__phpunit_covers_' . $name;
+                    },
+                    $arguments['testsCovering']
+                )
+            );
+        }
+
+        if (!empty($arguments['testsUsing'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass(IncludeGroupFilterIterator::class),
+                array_map(
+                    static function (string $name): string {
+                        return '__phpunit_uses_' . $name;
+                    },
+                    $arguments['testsUsing']
+                )
             );
         }
 

@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Route as SymfonyRoute;
 
 class Route
 {
-    use Macroable, RouteDependencyResolverTrait;
+    use CreatesRegularExpressionRouteConstraints, Macroable, RouteDependencyResolverTrait;
 
     /**
      * The URI pattern the route responds to.
@@ -303,7 +303,7 @@ class Route
     {
         $this->compileRoute();
 
-        foreach ($this->getValidators() as $validator) {
+        foreach (self::getValidators() as $validator) {
             if (! $includingMethod && $validator instanceof MethodValidator) {
                 continue;
             }
@@ -947,9 +947,9 @@ class Route
 
         $this->computedMiddleware = [];
 
-        return $this->computedMiddleware = array_unique(array_merge(
+        return $this->computedMiddleware = Router::uniqueMiddleware(array_merge(
             $this->middleware(), $this->controllerMiddleware()
-        ), SORT_REGULAR);
+        ));
     }
 
     /**

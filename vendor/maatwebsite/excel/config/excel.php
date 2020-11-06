@@ -25,6 +25,16 @@ return [
 
         /*
         |--------------------------------------------------------------------------
+        | Enable strict null comparison
+        |--------------------------------------------------------------------------
+        |
+        | When enabling strict null comparison empty cells ('') will
+        | be added to the sheet.
+        */
+        'strict_null_comparison' => false,
+
+        /*
+        |--------------------------------------------------------------------------
         | CSV Settings
         |--------------------------------------------------------------------------
         |
@@ -75,6 +85,19 @@ return [
         |
         */
         'read_only' => true,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ignore Empty
+        |--------------------------------------------------------------------------
+        |
+        | When dealing with imports, you might be interested in ignoring
+        | rows that have null values or empty strings. By default rows
+        | containing empty strings or empty values are not ignored but can be
+        | ignored by enabling the setting ignore_empty to true.
+        |
+        */
+        'ignore_empty' => false,
 
         /*
         |--------------------------------------------------------------------------

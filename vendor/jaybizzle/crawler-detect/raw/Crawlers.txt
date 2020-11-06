@@ -21,7 +21,7 @@
 ^NG\/[0-9\.]
 ^NING\/
 ^Nuclei
-^PHP\/[0-9]
+^PHP\/
 ^RMA\/
 ^Ruby|Ruby\/[0-9]
 ^Swurl 
@@ -75,13 +75,13 @@ allloadin
 AllSubmitter
 alyze\.info
 amagit
-^Amazon CloudFront$
 ^Amazon Simple Notification Service Agent$
 Anarchie
 AndroidDownloadManager
 Anemone
 AngleSharp
 annotate_google
+Anthill
 Ant\.com
 Anturis Agent
 AnyEvent-HTTP\/
@@ -104,6 +104,7 @@ Arachnophilia
 aria2
 Arukereso
 asafaweb
+Asana\/
 AskQuickly
 Ask Jeeves
 ASPSeek
@@ -148,6 +149,7 @@ binlar
 biNu image cacher
 Bitacle
 biz_Directory
+BKCTwitterUnshortener\/
 Black Hole
 Blackboard Safeassign
 BlackWidow
@@ -191,6 +193,7 @@ censys
 centuryb.o.t9[at]gmail.com
 Cerberian Drtrs
 CERT\.at-Statistics-Survey
+cf-facebook
 cg-eye
 changedetection
 ChangesMeter
@@ -369,6 +372,7 @@ FlipboardBrowserProxy
 FlipboardProxy
 FlipboardRSS
 Flock\/
+Florienzh\/
 fluffy
 Flunky
 flynxapp
@@ -517,6 +521,7 @@ HttpUrlConnection
 httrack
 huaweisymantec
 HubSpot 
+HubSpot-Link-Resolver
 Humanlinks
 i2kconnect\/
 Iblog
@@ -630,6 +635,7 @@ Likse
 limber\.io
 Link Valet
 link_thumbnailer
+LinkAnalyser
 LinkAlarm\/
 linkCheck
 linkdex
@@ -659,6 +665,7 @@ LWP::Simple
 lycos
 LYT\.SR
 mabontland
+MacOutlook\/
 Mag-Net
 MagpieRSS
 Mail\.Ru
@@ -673,6 +680,7 @@ MarkWatch
 Mass Downloader
 masscan\/
 Mata Hari
+mattermost
 Mediametric
 Mediapartners-Google
 mediawords
@@ -685,7 +693,7 @@ MetaURI
 MFC_Tear_Sample
 Microsearch
 Microsoft\.Data\.Mashup
-Microsoft Office 
+Microsoft Office
 Microsoft Outlook
 Microsoft Windows Network Diagnostics
 Microsoft-WebDAV-MiniRedir
@@ -826,6 +834,7 @@ Pavuk
 PayPal IPN
 pcBrowser
 Pcore-HTTP
+PDF24 URL To PDF
 Pearltrees
 PECL::HTTP
 peerindex
@@ -858,6 +867,7 @@ plumanalytics
 PocketImageCache
 PocketParser
 Pockey
+PodcastAddict\/
 POE-Component-Client-HTTP
 Polymail\/
 Pompos
@@ -900,6 +910,7 @@ QuiteRSS
 Quora Link Preview
 Qwantify
 Radian6
+Railgun\/
 RankActive
 RankFlex
 RankSonicSiteAuditor
@@ -927,6 +938,7 @@ Robozilla
 ROI Hunter
 RPT-HTTPClient
 RSSOwl
+RSSMix\/
 RyowlEngine
 safe-agent-scanner
 SalesIntelligent
@@ -956,6 +968,7 @@ searchenginepromotionhelp
 Searchestate
 SearchExpress
 SearchSight
+SearchWP
 Seeker
 semanticdiscovery
 semanticjuice
@@ -1058,6 +1071,7 @@ Statically-Screenshot
 StatusCake
 Steeler
 Stratagems Kumo
+Stripe\/
 Stroke\.cz
 StudioFACA
 StumbleUpon
@@ -1070,6 +1084,7 @@ Suzuran
 swcd 
 Symfony BrowserKit
 Symfony2 BrowserKit
+Syndirella\/
 SynHttpClient-Built
 Sysomos
 sysscan
@@ -1264,6 +1279,7 @@ worldping-api
 WordupinfoSearch
 wotbox
 WP Engine Install Performance API
+WP Rocket
 wpif
 wprecon\.com survey
 WPScan

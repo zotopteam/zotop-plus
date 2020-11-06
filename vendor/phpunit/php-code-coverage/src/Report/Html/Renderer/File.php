@@ -43,7 +43,6 @@ use const T_EXIT;
 use const T_EXTENDS;
 use const T_FINAL;
 use const T_FINALLY;
-use const T_FN;
 use const T_FOR;
 use const T_FOREACH;
 use const T_FUNCTION;
@@ -991,43 +990,44 @@ final class File extends Renderer
 
     private function createPopoverContentForTest(string $test, array $testData): string
     {
-        switch ($testData['status']) {
-            case BaseTestRunner::STATUS_PASSED:
-                switch ($testData['size']) {
-                    case 'small':
-                        $testCSS = ' class="covered-by-small-tests"';
+        $testCSS = '';
 
-                        break;
+        if ($testData['fromTestcase']) {
+            switch ($testData['status']) {
+                case BaseTestRunner::STATUS_PASSED:
+                    switch ($testData['size']) {
+                        case 'small':
+                            $testCSS = ' class="covered-by-small-tests"';
 
-                    case 'medium':
-                        $testCSS = ' class="covered-by-medium-tests"';
+                            break;
 
-                        break;
+                        case 'medium':
+                            $testCSS = ' class="covered-by-medium-tests"';
 
-                    default:
-                        $testCSS = ' class="covered-by-large-tests"';
+                            break;
 
-                        break;
-                }
+                        default:
+                            $testCSS = ' class="covered-by-large-tests"';
 
-                break;
+                            break;
+                    }
 
-            case BaseTestRunner::STATUS_SKIPPED:
-            case BaseTestRunner::STATUS_INCOMPLETE:
-            case BaseTestRunner::STATUS_RISKY:
-            case BaseTestRunner::STATUS_WARNING:
-                $testCSS = ' class="warning"';
+                    break;
 
-                break;
+                case BaseTestRunner::STATUS_SKIPPED:
+                case BaseTestRunner::STATUS_INCOMPLETE:
+                case BaseTestRunner::STATUS_RISKY:
+                case BaseTestRunner::STATUS_WARNING:
+                    $testCSS = ' class="warning"';
 
-            case BaseTestRunner::STATUS_FAILURE:
-            case BaseTestRunner::STATUS_ERROR:
-                $testCSS = ' class="danger"';
+                    break;
 
-                break;
+                case BaseTestRunner::STATUS_FAILURE:
+                case BaseTestRunner::STATUS_ERROR:
+                    $testCSS = ' class="danger"';
 
-            default:
-                $testCSS = '';
+                    break;
+            }
         }
 
         return sprintf(
@@ -1091,7 +1091,6 @@ final class File extends Renderer
             T_EXTENDS       => true,
             T_FINAL         => true,
             T_FINALLY       => true,
-            T_FN            => true,
             T_FOR           => true,
             T_FOREACH       => true,
             T_FUNCTION      => true,
@@ -1128,6 +1127,10 @@ final class File extends Renderer
             T_YIELD         => true,
             T_YIELD_FROM    => true,
         ];
+
+        if (defined('T_FN')) {
+            self::$keywordTokens[constant('T_FN')] = true;
+        }
 
         if (defined('T_MATCH')) {
             self::$keywordTokens[constant('T_MATCH')] = true;

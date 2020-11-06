@@ -177,7 +177,13 @@ abstract class Factory
      */
     public function raw($attributes = [], ?Model $parent = null)
     {
-        return $this->state($attributes)->getExpandedAttributes($parent);
+        if ($this->count === null) {
+            return $this->state($attributes)->getExpandedAttributes($parent);
+        }
+
+        return array_map(function () use ($attributes, $parent) {
+            return $this->state($attributes)->getExpandedAttributes($parent);
+        }, range(1, $this->count));
     }
 
     /**
@@ -232,6 +238,20 @@ abstract class Factory
         }
 
         return $results;
+    }
+
+    /**
+     * Create a callback that persists a model in the database when invoked.
+     *
+     * @param  array  $attributes
+     * @param  \Illuminate\Database\Eloquent\Model|null  $parent
+     * @return \Closure
+     */
+    public function lazy(array $attributes = [], ?Model $parent = null)
+    {
+        return function () use ($attributes, $parent) {
+            return $this->create($attributes, $parent);
+        };
     }
 
     /**
@@ -705,9 +725,13 @@ abstract class Factory
 
         $relationship = Str::camel(Str::substr($method, 3));
 
-        $factory = static::factoryForModel(
-            get_class($this->newModel()->{$relationship}()->getRelated())
-        );
+        $relatedModel = get_class($this->newModel()->{$relationship}()->getRelated());
+
+        if (method_exists($relatedModel, 'newFactory')) {
+            $factory = $relatedModel::newFactory() ?: static::factoryForModel($relatedModel);
+        } else {
+            $factory = static::factoryForModel($relatedModel);
+        }
 
         if (Str::startsWith($method, 'for')) {
             return $this->for($factory->state($parameters[0] ?? []), $relationship);

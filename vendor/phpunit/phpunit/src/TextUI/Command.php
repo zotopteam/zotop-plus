@@ -18,7 +18,6 @@ use function class_exists;
 use function copy;
 use function extension_loaded;
 use function fgets;
-use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
 use function getcwd;
@@ -26,12 +25,14 @@ use function ini_get;
 use function ini_set;
 use function is_callable;
 use function is_dir;
+use function is_file;
 use function is_string;
 use function printf;
 use function realpath;
 use function sort;
 use function sprintf;
 use function stream_resolve_include_path;
+use function strpos;
 use function trim;
 use function version_compare;
 use PharIo\Manifest\ApplicationName;
@@ -67,8 +68,7 @@ use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
- * A TestRunner for the Command Line Interface (CLI)
- * PHP SAPI Module.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 class Command
 {
@@ -608,7 +608,7 @@ class Command
     private function handleExtensions(string $directory): void
     {
         foreach ((new FileIteratorFacade)->getFilesAsArray($directory, '.phar') as $file) {
-            if (!file_exists('phar://' . $file . '/manifest.xml')) {
+            if (!is_file('phar://' . $file . '/manifest.xml')) {
                 $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
 
                 continue;
@@ -652,6 +652,10 @@ class Command
         sort($groups);
 
         foreach ($groups as $group) {
+            if (strpos($group, '__phpunit_') === 0) {
+                continue;
+            }
+
             printf(
                 ' - %s' . PHP_EOL,
                 $group
@@ -747,6 +751,10 @@ class Command
 
         $src = trim(fgets(STDIN));
 
+        print 'Cache directory (relative to path shown above; default: .phpunit.cache): ';
+
+        $cacheDirectory = trim(fgets(STDIN));
+
         if ($bootstrapScript === '') {
             $bootstrapScript = 'vendor/autoload.php';
         }
@@ -759,6 +767,10 @@ class Command
             $src = 'src';
         }
 
+        if ($cacheDirectory === '') {
+            $cacheDirectory = '.phpunit.cache';
+        }
+
         $generator = new Generator;
 
         file_put_contents(
@@ -767,11 +779,13 @@ class Command
                 Version::series(),
                 $bootstrapScript,
                 $testsDirectory,
-                $src
+                $src,
+                $cacheDirectory
             )
         );
 
-        print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . PHP_EOL;
+        print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . '.' . PHP_EOL;
+        print 'Make sure to exclude the ' . $cacheDirectory . ' directory from version control.' . PHP_EOL;
 
         exit(TestRunner::SUCCESS_EXIT);
     }
@@ -834,7 +848,7 @@ class Command
         if (isset($this->arguments['coverageCacheDirectory'])) {
             $cacheDirectory = $this->arguments['coverageCacheDirectory'];
         } elseif ($configuration->codeCoverage()->hasCacheDirectory()) {
-            $cacheDirectory = $configuration->codeCoverage()->cacheDirectory();
+            $cacheDirectory = $configuration->codeCoverage()->cacheDirectory()->path();
         } else {
             print 'Cache for static analysis has not been configured' . PHP_EOL;
 
@@ -870,7 +884,7 @@ class Command
         print 'Warming cache for static analysis ... ';
 
         (new CacheWarmer)->warmCache(
-            $cacheDirectory->path(),
+            $cacheDirectory,
             !$configuration->codeCoverage()->disableCodeCoverageIgnore(),
             $configuration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $filter
@@ -889,7 +903,7 @@ class Command
         ];
 
         foreach ($candidates as $candidate) {
-            if (file_exists($candidate)) {
+            if (is_file($candidate)) {
                 return realpath($candidate);
             }
         }

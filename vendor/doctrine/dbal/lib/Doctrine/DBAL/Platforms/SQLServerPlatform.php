@@ -39,6 +39,8 @@ use function substr_count;
 /**
  * The SQLServerPlatform provides the behavior, features and SQL dialect of the
  * Microsoft SQL Server database platform.
+ *
+ * @deprecated Use SQL Server 2012 or newer
  */
 class SQLServerPlatform extends AbstractPlatform
 {
@@ -530,7 +532,7 @@ SQL
                     );
                 } elseif ($hasFromComment && ! $hasComment) {
                     $commentsSql[] = $this->getDropColumnCommentSQL($diff->name, $column->getQuotedName($this));
-                } elseif ($hasComment) {
+                } elseif (! $hasFromComment && $hasComment) {
                     $commentsSql[] = $this->getCreateColumnCommentSQL(
                         $diff->name,
                         $column->getQuotedName($this),
@@ -1187,6 +1189,20 @@ SQL
     public function getGuidTypeDeclarationSQL(array $column)
     {
         return 'UNIQUEIDENTIFIER';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAsciiStringTypeDeclarationSQL(array $column): string
+    {
+        $length = $column['length'] ?? null;
+
+        if (! isset($column['fixed'])) {
+            return sprintf('VARCHAR(%d)', $length ?? 255);
+        }
+
+        return sprintf('CHAR(%d)', $length ?? 255);
     }
 
     /**

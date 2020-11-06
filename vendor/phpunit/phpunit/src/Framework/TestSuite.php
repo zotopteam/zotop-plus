@@ -19,11 +19,11 @@ use function call_user_func;
 use function class_exists;
 use function count;
 use function dirname;
-use function file_exists;
 use function get_declared_classes;
 use function implode;
 use function is_bool;
 use function is_callable;
+use function is_file;
 use function is_object;
 use function is_string;
 use function method_exists;
@@ -228,6 +228,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 continue;
             }
 
+            if (!TestUtil::isTestMethod($method)) {
+                continue;
+            }
+
             $this->addTestMethod($theClass, $method);
         }
 
@@ -280,8 +284,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $groups = $test->getGroups();
             }
 
-            if (empty($groups)) {
-                $groups = ['default'];
+            if ($this->containsOnlyVirtualGroups($groups)) {
+                $groups[] = 'default';
             }
 
             foreach ($groups as $group) {
@@ -301,7 +305,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Adds the tests from the given class to the suite.
      *
-     * @param object|string $testClass
+     * @psalm-param object|class-string $testClass
      *
      * @throws Exception
      */
@@ -382,7 +386,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function addTestFile(string $filename): void
     {
-        if (file_exists($filename) && substr($filename, -5) === '.phpt') {
+        if (is_file($filename) && substr($filename, -5) === '.phpt') {
             $this->addTest(new PhptTestCase($filename));
 
             $this->declaredClasses = get_declared_classes();
@@ -866,25 +870,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
     {
-        if (!TestUtil::isTestMethod($method)) {
-            return;
-        }
-
         $methodName = $method->getName();
-
-        if (!$method->isPublic()) {
-            $this->addTest(
-                new WarningTestCase(
-                    sprintf(
-                        'Test method "%s" in test class "%s" is not public.',
-                        $methodName,
-                        $class->getName()
-                    )
-                )
-            );
-
-            return;
-        }
 
         $test = (new TestBuilder)->build($class, $methodName);
 
@@ -905,5 +891,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $this->numTests      = -1;
         $this->providedTests = null;
         $this->requiredTests = null;
+    }
+
+    private function containsOnlyVirtualGroups(array $groups): bool
+    {
+        foreach ($groups as $group) {
+            if (strpos($group, '__phpunit_') !== 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

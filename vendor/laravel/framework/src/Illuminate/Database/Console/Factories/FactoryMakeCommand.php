@@ -60,6 +60,8 @@ class FactoryMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
+        $factory = class_basename(Str::ucfirst(str_replace('Factory', '', $name)));
+
         $namespaceModel = $this->option('model')
                         ? $this->qualifyModel($this->option('model'))
                         : $this->qualifyModel($this->guessModelName($name));
@@ -80,6 +82,8 @@ class FactoryMakeCommand extends GeneratorCommand
             'DummyModel' => $model,
             '{{ model }}' => $model,
             '{{model}}' => $model,
+            '{{ factory }}' => $factory,
+            '{{factory}}' => $factory,
         ];
 
         return str_replace(
@@ -95,9 +99,7 @@ class FactoryMakeCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        $name = Str::replaceFirst('App\\', '', $name);
-
-        $name = Str::finish($this->argument('name'), 'Factory');
+        $name = (string) Str::of($name)->replaceFirst('App\\', '')->finish('Factory');
 
         return $this->laravel->databasePath().'/factories/'.str_replace('\\', '/', $name).'.php';
     }
@@ -114,7 +116,7 @@ class FactoryMakeCommand extends GeneratorCommand
             $name = substr($name, 0, -7);
         }
 
-        $modelName = $this->qualifyModel(class_basename($name));
+        $modelName = $this->qualifyModel(Str::after($name, 'App\\'));
 
         if (class_exists($modelName)) {
             return $modelName;
