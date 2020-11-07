@@ -20,11 +20,11 @@ class Filter extends Hook
      * @return mixed 总是返回对param的修改
      * @throws \Exception
      */
-    public function fire(string $hook, array $args)
+    public function fire(string $hook, $args)
     {
-        $args = func_get_args();
-
         $this->value = $args;
+
+        $args = func_get_args();
 
         $this->listeners($hook)->each(function ($listener) use ($args) {
             $args[1] = $this->value;

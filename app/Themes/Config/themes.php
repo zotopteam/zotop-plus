@@ -14,7 +14,7 @@ return [
         */
 
         'themes' => base_path('themes'),
-        
+
         /*
         |--------------------------------------------------------------------------
         | Themes assets path
@@ -33,11 +33,11 @@ return [
         |--------------------------------------------------------------------------
         | 
         */
-       
-        'dirs' => [
-            'assets'     => 'assets',
-            'lang'       => 'lang',
-            'views'      => 'views',
+
+        'dirs'  => [
+            'assets' => 'assets',
+            'lang'   => 'lang',
+            'views'  => 'views',
         ],
 
         /*
@@ -50,6 +50,6 @@ return [
             'theme' => 'theme.json',
             'start' => 'start.php',
         ],
-    ]
-    
+    ],
+
 ];

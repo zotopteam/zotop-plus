@@ -5,7 +5,6 @@ namespace App\Themes\Commands;
 use App\Themes\Exceptions\FileExistedException;
 use App\Themes\Exceptions\ThemeExistedException;
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
 class MakeCommand extends Command
@@ -42,22 +41,24 @@ class MakeCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
+     * @throws \App\Themes\Exceptions\ThemeExistedException
+     * @throws \Exception
      */
     public function handle()
     {
         // 覆盖模块
         if ($this->hasTheme()) {
-            
-            if (! $this->option('force')) {
+
+            if (!$this->option('force')) {
 
                 if ($this->laravel->runningInConsole()) {
-                    $this->error('Theme '.$this->getThemeStudlyName().' already exist!');
+                    $this->error('Theme ' . $this->getThemeStudlyName() . ' already exist!');
                     return;
                 }
 
-                throw new ThemeExistedException('Theme '.$this->getThemeStudlyName().' already exist!', 1);
-                
+                throw new ThemeExistedException('Theme ' . $this->getThemeStudlyName() . ' already exist!', 1);
+
             }
 
             $this->laravel['files']->deleteDirectory($this->getThemePath());
@@ -72,12 +73,14 @@ class MakeCommand extends Command
         // 复制文件夹
         $this->copyDirectories();
 
-        $this->info('Theme '.$this->getThemeStudlyName().' created successfully!');        
+        $this->info('Theme ' . $this->getThemeStudlyName() . ' created successfully!');
     }
 
     /**
      * 生成初始化文件
+     *
      * @return void
+     * @throws \Exception
      */
     public function generateFiles()
     {
@@ -90,7 +93,9 @@ class MakeCommand extends Command
 
     /**
      * 生成语言文件
+     *
      * @return void
+     * @throws \Exception
      */
     public function generateLangs()
     {
@@ -103,35 +108,42 @@ class MakeCommand extends Command
 
     /**
      * 复制缩略图
+     *
      * @return void
+     * @throws \Exception
      */
     public function copyFiles()
     {
-        $sourcePath      = $this->getStubPath('theme.jpg');
+        $sourcePath = $this->getStubPath('theme.jpg');
         $destinationPath = $this->getThemePath('theme.jpg');
 
         $this->laravel['files']->copy($sourcePath, $destinationPath);
-        $this->info('Copied: '.$destinationPath);        
+        $this->info('Copied: ' . $destinationPath);
     }
 
     /**
      * 复制views和assets
-     * @return [type] [description]
+     *
+     * @throws \Exception
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function copyDirectories()
     {
-        foreach (['assets','views'] as $dir) {
-            $sourcePath      = $this->getStubPath().DIRECTORY_SEPARATOR.$dir;
+        foreach (['assets', 'views'] as $dir) {
+            $sourcePath = $this->getStubPath() . DIRECTORY_SEPARATOR . $dir;
             $destinationPath = $this->getThemePath($dir, true);
 
             $this->laravel['files']->copyDirectory($sourcePath, $destinationPath);
-            $this->info('Copied: '.$destinationPath); 
+            $this->info('Copied: ' . $destinationPath);
         }
     }
 
     /**
      * 生成初始化目录
+     *
      * @return void
+     * @throws \Exception
      */
     public function generateDirs()
     {
@@ -140,9 +152,9 @@ class MakeCommand extends Command
         foreach ($dirs as $key => $path) {
             $path = $this->getThemePath($path);
 
-            if (! $this->laravel['files']->isDirectory($path)) {
+            if (!$this->laravel['files']->isDirectory($path)) {
                 $this->laravel['files']->makeDirectory($path, 0755, true);
-                $this->info('Created: '.$path);
+                $this->info('Created: ' . $path);
             }
 
             $this->generateGitKeep($path);
@@ -151,7 +163,9 @@ class MakeCommand extends Command
 
     /**
      * 检查主题是否存在
+     *
      * @return boolean [description]
+     * @throws \Exception
      */
     public function hasTheme()
     {
@@ -164,15 +178,17 @@ class MakeCommand extends Command
 
     /**
      * 获取模块小写名称
+     *
      * @return string
      */
-    public function getThemeLowerName($value='')
+    public function getThemeLowerName()
     {
         return strtolower($this->argument('theme'));
     }
 
     /**
      * 获取模块变种驼峰名称 foo_bar => FooBar
+     *
      * @return string
      */
     public function getThemeStudlyName()
@@ -182,39 +198,45 @@ class MakeCommand extends Command
 
     /**
      * 获取输入的主题类型
+     *
      * @return string
      */
     public function getTypeInput()
     {
-        return strtolower($this->option('type'));        
+        return strtolower($this->option('type'));
     }
 
     /**
      * 获取主题路径
-     * @param  string  $subpath 子路径，或者子路径key
-     * @param  boolean $isPath  是否为路径
+     *
+     * @param string|null $subpath 子路径，或者子路径key
+     * @param boolean $isPath 是否为路径
      * @return string
+     * @throws \Exception
      */
-    public function getThemePath($subpath=null, $isPath=true)
+    public function getThemePath($subpath = null, $isPath = true)
     {
-        $path = $this->getConfig('paths.themes').DIRECTORY_SEPARATOR.$this->getThemeStudlyName();
+        $path = $this->getConfig('paths.themes') . DIRECTORY_SEPARATOR . $this->getThemeStudlyName();
 
         if (empty($subpath)) {
             return $path;
         }
 
         if ($isPath) {
-            return $path.DIRECTORY_SEPARATOR.$subpath;;
+            return $path . DIRECTORY_SEPARATOR . $subpath;
         }
-        
-        return $path.DIRECTORY_SEPARATOR.$this->getConfig("paths.dirs.{$subpath}");
-    }    
+
+        return $path . DIRECTORY_SEPARATOR . $this->getConfig("paths.dirs.{$subpath}");
+    }
 
     /**
      * 获取主题全局配置
+     *
+     * @param string|null $key
      * @return array
+     * @throws \Exception
      */
-    public function getConfig($key=null)
+    public function getConfig($key = null)
     {
         if ($key) {
             $value = $this->laravel['config']->get("themes.{$key}");
@@ -231,21 +253,22 @@ class MakeCommand extends Command
 
     /**
      * 获取stub路径
-     * @param  string $stub      stub name
+     *
+     * @param string|null $stub stub name
      * @return string
      */
-    public function getStubPath($stub=null)
+    public function getStubPath($stub = null)
     {
-        $path = __DIR__ . DIRECTORY_SEPARATOR .'Stubs';
+        $path = __DIR__ . DIRECTORY_SEPARATOR . 'Stubs';
 
         if ($stub) {
 
             //如果不包含扩展名，则扩展名为stub
-            if (! Str::contains($stub, '.')) {
-                $stub = $stub.'.stub';
+            if (!Str::contains($stub, '.')) {
+                $stub = $stub . '.stub';
             }
 
-            return $path . DIRECTORY_SEPARATOR .$stub;
+            return $path . DIRECTORY_SEPARATOR . $stub;
         }
 
         return $path;
@@ -253,15 +276,17 @@ class MakeCommand extends Command
 
     /**
      * 获取模块内容
-     * @param  string $stub stub name
-     * @return string       
+     *
+     * @param string $stub stub name
+     * @return string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function getStubContent($stub)
+    public function getStubContent(string $stub)
     {
         $path = $this->getStubPath($stub);
 
-        if (! $this->laravel['files']->exists($path)) {
-            $this->warn('Unknown: '. $path);
+        if (!$this->laravel['files']->exists($path)) {
+            $this->warn('Unknown: ' . $path);
             return null;
         }
 
@@ -270,12 +295,14 @@ class MakeCommand extends Command
 
     /**
      * 渲染stub
-     * @param  string $stub 
-     * @return string       
+     *
+     * @param string $stub
+     * @return string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function renderStub($stub)
+    public function renderStub(string $stub)
     {
-        $content  = $this->getStubContent($stub);
+        $content = $this->getStubContent($stub);
 
         $replaces = [
             'theme_studly_name' => $this->getThemeStudlyName(),
@@ -285,35 +312,38 @@ class MakeCommand extends Command
 
         foreach ($replaces as $search => $replace) {
             $content = str_replace('$' . strtoupper($search) . '$', $replace, $content);
-        }        
+        }
 
         return $content;
     }
 
     /**
      * 生成文件
-     * @param  string $stub 不含文件后缀则自动补充.stub
-     * @param  string $path 相对模块的路径
-     * @return string       
+     *
+     * @param string $stub 不含文件后缀则自动补充.stub
+     * @param string $path 相对模块的路径
+     * @param bool $force
+     * @return string
+     * @throws \Exception
      */
-    public function generateStubFile($stub, $path, $force=false)
+    public function generateStubFile(string $stub, string $path, $force = false)
     {
         $path = $this->getThemePath($path);
 
-        if (! $force && $this->laravel['files']->exists($path)) {
+        if (!$force && $this->laravel['files']->exists($path)) {
 
             if ($this->laravel->runningInConsole()) {
-                $this->warn('Existed: '. $path);
+                $this->warn('Existed: ' . $path);
                 return false;
             }
 
-            throw new FileExistedException('Existed: '. $path, 1);
+            throw new FileExistedException('Existed: ' . $path, 1);
         }
 
         if ($content = $this->renderStub($stub)) {
 
             // 自动创建不存在的目录
-            if (! $this->laravel['files']->isDirectory($dir = dirname($path))) {
+            if (!$this->laravel['files']->isDirectory($dir = dirname($path))) {
                 $this->laravel['files']->makeDirectory($dir, 0775, true);
             }
 
@@ -324,7 +354,7 @@ class MakeCommand extends Command
 
             $this->laravel['files']->put($path, $content);
 
-            $this->info('Created: '.$path);
+            $this->info('Created: ' . $path);
             return true;
         }
 
@@ -336,8 +366,8 @@ class MakeCommand extends Command
      *
      * @param string $path
      */
-    public function generateGitKeep($path)
+    public function generateGitKeep(string $path)
     {
-        $this->laravel['files']->put($path . DIRECTORY_SEPARATOR .'.gitkeep', 'git keep');
-    }    
+        $this->laravel['files']->put($path . DIRECTORY_SEPARATOR . '.gitkeep', 'git keep');
+    }
 }

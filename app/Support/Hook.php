@@ -103,7 +103,7 @@ abstract class Hook
      * 触发动作或者滤器
      *
      * @param string $hook 滤器名称
-     * @param array $args 参数
+     * @param mixed $args 参数
      */
-    abstract function fire(string $hook, array $args);
+    abstract function fire(string $hook, $args);
 }

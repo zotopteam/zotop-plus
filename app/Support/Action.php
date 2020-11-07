@@ -13,7 +13,7 @@ class Action extends Hook
      * @return void
      * @throws \Exception
      */
-    public function fire(string $hook, array $args)
+    public function fire(string $hook, $args = null)
     {
         $args = func_get_args();
 
