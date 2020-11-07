@@ -18,34 +18,36 @@ class InstallController extends Controller
 {
     /**
      * app实例
-     * 
+     *
      * @var mixed|\Illuminate\Foundation\Application
      */
     protected $app;
 
     /**
      * 本地语言
-     * 
+     *
      * @var string
      */
     protected $locale;
 
     /**
      * view 实例
-     * 
+     *
      * @var object
      */
     protected $view;
 
     /**
      * view 数据
-     * 
+     *
      * @var array
      */
     protected $data = [];
 
     /**
      * __construct
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function __construct()
     {
@@ -53,19 +55,19 @@ class InstallController extends Controller
         $this->app = app();
 
         // view实例
-        $this->view    = $this->app->make('view');
+        $this->view = $this->app->make('view');
 
         // wizard
-        $this->wizard  = ['welcome', 'check', 'config', 'database', 'modules', 'finished'];
+        $this->wizard = ['welcome', 'check', 'config', 'database', 'modules', 'finished'];
 
         // 获取当前动作指针
         $this->current = array_search(Route::getCurrentRoute()->getActionMethod(), $this->wizard);
 
         // 获取前一个动作
-        $this->prev    = ($this->current > 0) ? $this->wizard[$this->current - 1] : null;
+        $this->prev = ($this->current > 0) ? $this->wizard[$this->current - 1] : null;
 
         // 获取下一个动作
-        $this->next    = ($this->current < (count($this->wizard) - 1)) ? $this->wizard[$this->current + 1] : null;
+        $this->next = ($this->current < (count($this->wizard) - 1)) ? $this->wizard[$this->current + 1] : null;
 
         // 获取当前动作
         $this->current = $this->wizard[$this->current];
@@ -74,7 +76,7 @@ class InstallController extends Controller
     /**
      * 模板变量赋值，魔术方法
      *
-     * @param mixed $name 要显示的模板变量
+     * @param mixed $key 要显示的模板变量
      * @param mixed $value 变量的值
      * @return void
      */
@@ -85,19 +87,22 @@ class InstallController extends Controller
 
     /**
      * 取得模板显示变量的值
-     * 
+     *
      * @access protected
-     * @param string $name 模板显示变量
+     * @param string $key 模板显示变量
      * @return mixed
      */
-    public function __get($key)
+    public function __get(string $key)
     {
         return $this->data[$key];
     }
 
     /**
      * 显示View
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     *
+     * @return \Illuminate\Contracts\View\View|mixed
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function view()
     {
@@ -105,10 +110,12 @@ class InstallController extends Controller
     }
 
     /**
-     * 消息提示
-     * 
-     * @param  array  $msg 消息内容
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * TODO: Undocumented function
+     *
+     * @param array $msg 消息内容
+     * @return \Illuminate\Http\JsonResponse
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function message(array $msg)
     {
@@ -117,11 +124,11 @@ class InstallController extends Controller
 
     /**
      * 消息提示：success
-     * 
-     * @param  mixed  $msg  消息内容
-     * @param  string  $url  跳转路径
-     * @param  integer $time 跳转或者消息提示时间
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     *
+     * @param mixed $msg 消息内容
+     * @param string $url 跳转路径
+     * @param integer $time 跳转或者消息提示时间
+     * @return \Illuminate\Http\JsonResponse
      */
     public function success($msg, $url = '', $time = 2)
     {
@@ -131,7 +138,7 @@ class InstallController extends Controller
             'state' => true,
             'type'  => 'success',
             'url'   => $url,
-            'time'  => $time
+            'time'  => $time,
         ]);
 
         return $this->message($msg);
@@ -140,10 +147,10 @@ class InstallController extends Controller
 
     /**
      * 消息提示：error
-     * 
-     * @param  mixed  $msg  消息内容
-     * @param  integer $time 跳转或者消息提示时间
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     *
+     * @param mixed $msg 消息内容
+     * @param integer $time 跳转或者消息提示时间
+     * @return \Illuminate\Http\JsonResponse
      */
     public function error($msg, $time = 5)
     {
@@ -152,7 +159,7 @@ class InstallController extends Controller
         $msg = array_merge($msg, [
             'state' => false,
             'type'  => 'error',
-            'time'  => $time
+            'time'  => $time,
         ]);
 
         return $this->message($msg);
@@ -161,6 +168,7 @@ class InstallController extends Controller
     /**
      * Display the installer welcome page.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function welcome(Request $request)
@@ -177,7 +185,7 @@ class InstallController extends Controller
         // 设置当前主域名
         Artisan::call('env:set', [
             'key'   => 'APP_URL',
-            'value' => $request->root()
+            'value' => $request->root(),
         ]);
 
         return $this->view();
@@ -186,6 +194,7 @@ class InstallController extends Controller
     /**
      * Display the installer check page.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function check(Request $request)
@@ -194,9 +203,9 @@ class InstallController extends Controller
         $error = [];
 
         // php version must > 7.0.0
-        if (version_compare(PHP_VERSION, config('install.php_version', '7.2.0'), '<')) {
+        if (version_compare(PHP_VERSION, config('install.php_version', '7.3.0'), '<')) {
             $check = false;
-            $error['php_version'] = [config('install.php_version', '7.2.0'), PHP_VERSION];
+            $error['php_version'] = [config('install.php_version', '7.3.0'), PHP_VERSION];
         }
 
         // php extensions
@@ -242,7 +251,10 @@ class InstallController extends Controller
     /**
      * Display the installer check page.
      *
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function config(ConfigRepository $config, Request $request)
     {
@@ -258,16 +270,16 @@ class InstallController extends Controller
             $request->session()->save();
 
             // 测试数据库是否能正常连接
-            $env    = $request->input('env');
+            $env = $request->input('env');
 
             // 数据库配置
-            $config['database.default']                                            = $env['DB_CONNECTION'];
-            $config['database.connections.' . $env['DB_CONNECTION'] . '.host']     = $env['DB_HOST'];
-            $config['database.connections.' . $env['DB_CONNECTION'] . '.port']     = $env['DB_PORT'];
+            $config['database.default'] = $env['DB_CONNECTION'];
+            $config['database.connections.' . $env['DB_CONNECTION'] . '.host'] = $env['DB_HOST'];
+            $config['database.connections.' . $env['DB_CONNECTION'] . '.port'] = $env['DB_PORT'];
             $config['database.connections.' . $env['DB_CONNECTION'] . '.database'] = $env['DB_DATABASE'];
             $config['database.connections.' . $env['DB_CONNECTION'] . '.username'] = $env['DB_USERNAME'];
             $config['database.connections.' . $env['DB_CONNECTION'] . '.password'] = $env['DB_PASSWORD'];
-            $config['database.connections.' . $env['DB_CONNECTION'] . '.prefix']   = $env['DB_PREFIX'];
+            $config['database.connections.' . $env['DB_CONNECTION'] . '.prefix'] = $env['DB_PREFIX'];
 
             app(DatabaseManager::class)->purge($env['DB_CONNECTION']);
             app(ConnectionFactory::class)->make($config['database.connections.' . $env['DB_CONNECTION']], $env['DB_CONNECTION']);
@@ -291,7 +303,8 @@ class InstallController extends Controller
     /**
      * Display the database check page.
      *
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function database(Request $request)
     {
@@ -333,13 +346,14 @@ class InstallController extends Controller
     /**
      * Display the installer check page.
      *
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function modules(Request $request)
     {
         if ($request->isMethod('POST')) {
             // 安装模块
-            if ($name  = $request->input('name')) {
+            if ($name = $request->input('name')) {
                 Module::findOrFail($name)->install();
                 return $this->success($name . ' install success');
             }
@@ -354,11 +368,12 @@ class InstallController extends Controller
     /**
      * Display the installer check page.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function finished(Request $request)
     {
-        $this->site  = $request->session()->get('install.site');
+        $this->site = $request->session()->get('install.site');
         $this->admin = $request->session()->get('install.admin');
 
         // 完成安装以前，写入网站设置
@@ -366,7 +381,7 @@ class InstallController extends Controller
 
             // 插入超级管理员
             User::updateOrCreate([
-                'username'       => $this->admin['username'],
+                'username' => $this->admin['username'],
             ], [
                 'password'       => \Hash::make($this->admin['password']),
                 'model_id'       => 'super',

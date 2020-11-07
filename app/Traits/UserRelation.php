@@ -25,16 +25,19 @@ trait UserRelation
             $model->user_id = Auth::User()->id ?? 0;
         });
     }
-
+    
     /**
      * 关联用户
-     * @return \Illuminate\Database\Eloquent\Relations\BelongTo
+     *
+     * @return mixed
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function user()
     {
-        $guard    = config('auth.defaults.guard');
+        $guard = config('auth.defaults.guard');
         $provider = config("auth.guards.{$guard}.provider");
-        $model    = config("auth.providers.{$provider}.model");
+        $model = config("auth.providers.{$provider}.model");
 
         return $this->belongsTo($model)->withDefault();
     }

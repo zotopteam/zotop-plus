@@ -10,9 +10,9 @@ return [
     | This is the default Laravel server requirements
     |
     */
-    'php_version' => '7.2.0',
+    'php_version' => '7.3.0',
 
-    'php_extensions'=> [
+    'php_extensions' => [
         'openssl',
         'pdo',
         'mbstring',
@@ -24,7 +24,7 @@ return [
         'zip',
     ],
 
-    'apache' => [
+    'apache'      => [
         'mod_rewrite',
     ],
 
@@ -58,5 +58,5 @@ return [
     | Boolean value
     |
     */
-    'updater' => 'true',
+    'updater'     => 'true',
 ];

@@ -37,6 +37,7 @@ class CoreServiceProvider extends ServiceProvider
      * Boot the application events.
      *
      * @return void
+     * @throws \Exception
      */
     public function boot()
     {
@@ -61,7 +62,6 @@ class CoreServiceProvider extends ServiceProvider
     /**
      * 注册中间件
      *
-     * @param Router $router
      * @return void
      */
     public function registerMiddleware()
@@ -74,6 +74,8 @@ class CoreServiceProvider extends ServiceProvider
 
     /**
      * 设置当前语言
+     *
+     * @throws \Exception
      */
     public function setLocale()
     {
@@ -100,7 +102,8 @@ class CoreServiceProvider extends ServiceProvider
     /**
      * 事件监听
      *
-     * @return null
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function eventsListen()
     {
