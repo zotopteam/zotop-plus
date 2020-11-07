@@ -22,11 +22,8 @@ class Form
      */
     protected $app;
 
-
     /**
-     * view
-     *
-     * @var View
+     * @var \Illuminate\View\Factory
      */
     protected $view;
 
@@ -87,7 +84,7 @@ class Form
     /**
      * 创建一个表单实例
      *
-     * @param  app
+     * @param \Illuminate\Contracts\Foundation\Application $app
      */
     public function __construct(Application $app)
     {
@@ -99,7 +96,7 @@ class Form
      * 生成 <form ……> 标签
      *
      * @param  array $options
-     * @return \Illuminate\Support\HtmlString
+     * @return string
      */
     public function open(array $options = [])
     {
@@ -136,6 +133,7 @@ class Form
 
     /**
      * 表单方法
+     *
      * @param  array $options
      * @return string
      */
@@ -219,11 +217,11 @@ class Form
 
     /**
      * 检查类型是否存在
-     * 
-     * @param  string  $type 类型名称
+     *
+     * @param string $type 类型名称
      * @return boolean
      */
-    protected function hasType($type)
+    protected function hasType(string $type)
     {
         return $this->hasMacro($type) || method_exists($this, $type) || in_array($type, Arr::flatten($this->types));
     }
@@ -245,7 +243,7 @@ class Form
     }
 
     /**
-     * 统一字段的调用方式 by hankx_chen
+     * 统一字段的调用方式
      * 
      * @param  array  $attributes 字段属性
      * @return html
@@ -301,7 +299,7 @@ class Form
      */
     public function textarea(array $attributes)
     {
-        $type  = Arr::pull($attributes, 'type');
+        Arr::pull($attributes, 'type');
 
         $id    = $this->getId($attributes);
         $value = $this->getValue($attributes);
@@ -460,8 +458,9 @@ class Form
 
     /**
      * checkbox 和 radio
-     * @param  array  $attributes [description]
-     * @return [type]             [description]
+     *
+     * @param array $attributes 属性数组
+     * @return string
      */
     protected function checkable(array $attributes)
     {
@@ -678,14 +677,12 @@ class Form
     /**
      * Dynamically handle calls to the class.
      *
-     * @param  string $method
-     * @param  array  $parameters
-     *
-     * @return \Illuminate\Contracts\View\View|mixed
-     *
+     * @param string $method
+     * @param array $parameters
+     * @return \Illuminate\Contracts\View\View|mixed|void
      * @throws \BadMethodCallException
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters)
     {
         if (static::hasMacro($method)) {
             return $this->macroCall($method, $parameters);

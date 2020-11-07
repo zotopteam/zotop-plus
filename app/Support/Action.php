@@ -2,24 +2,23 @@
 
 namespace App\Support;
 
-use App\Support\Hook;
-
 class Action extends Hook
 {
 
-	/**
-	 * 动作钩子触发
-	 * 
-	 * @param  string $hook  钩子名称
-	 * @param  mixed $param  值
-	 * @return void
-	 */
-	public function fire($hook, $param = null)
-	{
-		$args = func_get_args();
+    /**
+     * 动作钩子触发
+     *
+     * @param string $hook 钩子名称
+     * @param mixed $args 值
+     * @return void
+     * @throws \Exception
+     */
+    public function fire(string $hook, array $args)
+    {
+        $args = func_get_args();
 
-		$this->listeners($hook)->each(function ($listener) use ($args) {
-			call_user_func_array($this->callback($listener['callback']), array_slice($args, 1));
-		});
-	}
+        $this->listeners($hook)->each(function ($listener) use ($args) {
+            call_user_func_array($this->callback($listener['callback']), array_slice($args, 1));
+        });
+    }
 }
