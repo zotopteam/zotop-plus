@@ -2,6 +2,8 @@
 
 namespace App\Modules\Exceptions;
 
-class TableNotFoundException extends \Exception
+use Exception;
+
+class TableNotFoundException extends Exception
 {
 }

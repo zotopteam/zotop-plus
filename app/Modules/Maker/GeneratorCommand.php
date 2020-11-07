@@ -11,25 +11,27 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 后面追加的名称，比如名称后面追加 Request,ServiceProvider
-     * 
+     *
      */
     protected $appendName = null;
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = null;
 
     /**
      * 文件扩展名
+     *
      * @var string
      */
     protected $extension = 'php';
 
     /**
      * stub 用于从stubs中获取stub
-     * 
+     *
      * @var string
      */
     protected $stub = '';
@@ -37,7 +39,9 @@ abstract class GeneratorCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @throws \App\Modules\Exceptions\FileExistedException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {
@@ -62,6 +66,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 生成前的预备函数，可以用来设置替换数据和各项参数
+     *
      * @return boolean
      */
     public function prepare()
@@ -71,7 +76,9 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 生成文件
+     *
      * @return void
+     * @throws \App\Modules\Exceptions\FileExistedException
      */
     public function generate()
     {
@@ -82,6 +89,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 生成后扩展
+     *
      * @return boolean
      */
     public function generated()
@@ -91,15 +99,17 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 获取类的命名空间
+     *
      * @return string
      */
-    public function getClassNamespace($dirKey = null)
+    public function getClassNamespace()
     {
         return $this->getDirNamespace($this->dirKey);
     }
 
     /**
      * 获取输入的 name
+     *
      * @return string
      */
     public function getNameInput()
@@ -109,6 +119,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 获取输入的 name 的小写格式
+     *
      * @return string
      */
     public function getLowerNameInput()
@@ -118,6 +129,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 获取输入的 name 的变种驼峰命名 foo_bar => FooBar
+     *
      * @return string
      */
     public function getStudlyNameInput()
@@ -127,6 +139,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 获取类名称
+     *
      * @return string
      */
     public function getClassName()
@@ -143,6 +156,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 获取类的全名，带命名空间
+     *
      * @return string
      */
     public function getClassFullName()
@@ -152,6 +166,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 获取文件名称，默认文件名和类名一致 如：TestCommand.php
+     *
      * @return string
      */
     public function getFileName()
@@ -161,6 +176,7 @@ abstract class GeneratorCommand extends Command
 
     /**
      * 获取文件相对路径，不含模块路径，如：Http/Controllers/Controller.php
+     *
      * @return string
      */
     public function getFilePath()

@@ -2,59 +2,67 @@
 
 namespace App\Modules\Maker;
 
-use Illuminate\Support\Str;
 use App\Modules\Exceptions\ModuleNotFoundException;
+use Illuminate\Support\Str;
 
 
 class Lang
 {
     /**
      * 文件系统
-     * @var FileSystem
+     *
+     * @var \Illuminate\Contracts\Foundation\Application|\Illuminate\Filesystem\Filesystem|mixed
      */
     protected $filesystem;
 
     /**
      * 配置
-     * @var Config
+     *
+     * @var \Illuminate\Contracts\Foundation\Application|mixed
      */
     protected $config;
 
     /**
      * 模块名称
+     *
      * @var string
      */
     protected $module;
 
     /**
      * 语言
+     *
      * @var string
      */
     protected $lang;
 
     /**
      * 数据
+     *
      * @var array
      */
     protected $data = [];
 
     /**
      * php类型短键语言使用的名称
+     *
      * @var string
      */
     protected $name;
 
     /**
      * 初始化
-     * @param  string $module 模块名称
-     * @param  string $lang   语言名称
+     *
+     * @param string $module 模块名称
+     * @param string $lang 语言名称
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
      */
-    public function __construct($module, $lang)
+    public function __construct(string $module, string $lang)
     {
         $this->filesystem = app('files');
-        $this->config     = app('config');
-        $this->module     = Str::Studly($module);
-        $this->lang       = $lang;
+        $this->config = app('config');
+        $this->module = Str::Studly($module);
+        $this->lang = $lang;
 
         if (!$this->filesystem->exists($this->getModulePath('module.json'))) {
             throw new ModuleNotFoundException("Module {$this->module} does not exist！");
@@ -63,21 +71,29 @@ class Lang
 
     /**
      * 实例化
-     * @param  string $module 模块名称
-     * @param  string $lang   语言名称
-     * @return this
+     *
+     * @param string $module
+     * @param string $lang
+     * @return static
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
-    public static function instance($module, $lang)
+    public static function instance(string $module, string $lang)
     {
         return new static($module, $lang);
     }
 
+
     /**
      * 设置名称
-     * @param  string $data
-     * @return this
+     *
+     * @param string $name
+     * @return $this
+     * @author Chen Lei
+     * @date 2020-11-07
      */
-    public function name($name)
+    public function name(string $name)
     {
         $this->name = strtolower($this->filesystem->name($name));
         return $this;
@@ -85,9 +101,10 @@ class Lang
 
     /**
      * 设置数据
-     * @param  string|array $key
-     * @param  mixed $value
-     * @return this
+     *
+     * @param string|array $key
+     * @param mixed $value
+     * @return $this
      */
     public function data($key, $value = null)
     {
@@ -104,7 +121,8 @@ class Lang
 
     /**
      * 获取模块路径
-     * @param  string $subpath 
+     *
+     * @param string|null $subpath
      * @return string
      */
     protected function getModulePath($subpath = null)
@@ -116,6 +134,7 @@ class Lang
 
     /**
      * 获取语言文件地址
+     *
      * @return string
      */
     public function getPath()
@@ -133,6 +152,7 @@ class Lang
 
     /**
      * 获取语言文件内容
+     *
      * @return string
      */
     protected function convert()
@@ -146,6 +166,7 @@ class Lang
 
     /**
      * 转化数据为返回数组字符串 return [……]
+     *
      * @return string
      */
     protected function convertToArrayString()
@@ -168,6 +189,7 @@ class Lang
 
     /**
      * 转化数据为Json字符串 {……}
+     *
      * @return string
      */
     protected function convertToJsonString()
@@ -177,6 +199,7 @@ class Lang
 
     /**
      * 检查语言文件是否已经存在
+     *
      * @return bool
      */
     public function exists()
@@ -187,24 +210,26 @@ class Lang
 
     /**
      * 获取翻译数据
-     * @param  string $key     键名
-     * @param  string $default 默认值
+     *
+     * @param string|null $key 键名
+     * @param string|null $default 默认值
      * @return mixed
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function get($key = null, $default = null)
     {
         $path = $this->getPath();
+        $lang = [];
 
-        if (!$this->filesystem->isFile($path)) {
-            return [];
-        }
+        if ($this->filesystem->isFile($path)) {
 
-        if ($this->filesystem->extension($path) == 'php') {
-            $lang = $this->filesystem->getRequire($path);
-        }
+            if ($this->filesystem->extension($path) == 'php') {
+                $lang = $this->filesystem->getRequire($path);
+            }
 
-        if ($this->filesystem->extension($path) == 'json') {
-            $lang = json_decode($this->filesystem->get($path), true);
+            if ($this->filesystem->extension($path) == 'json') {
+                $lang = json_decode($this->filesystem->get($path), true);
+            }
         }
 
         $lang = is_array($lang) ? $lang : [];
@@ -218,19 +243,23 @@ class Lang
 
     /**
      * 检查是否拥有键名
-     * @param  string  $key 键名
+     *
+     * @param string $key 键名
      * @return boolean
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function has($key)
+    public function has(string $key)
     {
         return collect($this->get())->has($key);
     }
 
     /**
      * 添加项
-     * @param  mixed  $key 键名或者添加的数组
-     * @param  mixed  $value 键值 
+     *
+     * @param mixed $key 键名或者添加的数组
+     * @param mixed $value 键值
      * @return boolean
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function set($key, $value = '')
     {
@@ -249,8 +278,10 @@ class Lang
 
     /**
      * 添加项
-     * @param  mixed  $key 键名或者添加的数组
+     *
+     * @param mixed $key 键名或者添加的数组
      * @return boolean
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function forget($key)
     {
@@ -265,7 +296,8 @@ class Lang
 
     /**
      * 保存
-     * @param  boolean $force 是否覆盖已有文件
+     *
+     * @param boolean $force 是否覆盖已有文件
      * @return boolean
      */
     public function save($force = false)
@@ -286,6 +318,7 @@ class Lang
 
     /**
      * 删除语言文件
+     *
      * @return boolean
      */
     public function delete()

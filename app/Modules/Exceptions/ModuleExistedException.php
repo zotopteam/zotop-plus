@@ -2,6 +2,8 @@
 
 namespace App\Modules\Exceptions;
 
-class ModuleExistedException extends \Exception
+use Exception;
+
+class ModuleExistedException extends Exception
 {
 }

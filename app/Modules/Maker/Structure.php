@@ -4,27 +4,31 @@ namespace App\Modules\Maker;
 
 class Structure
 {
+
     /**
      * 字段
-     * @var collection
+     *
+     * @var \Illuminate\Support\Collection
      */
     public $columns;
 
     /**
      * 索引
-     * @var collection
+     *
+     * @var \Illuminate\Support\Collection
      */
     public $indexes;
 
     /**
      * 外键
-     * @var collection
+     *
+     * @var \Illuminate\Support\Collection
      */
     public $foreignKeys;
 
     /**
      * 字段默认格式
-     * 
+     *
      * @var array
      */
     protected $columnFormatDefault = [
@@ -41,6 +45,7 @@ class Structure
 
     /**
      * 数据库字段类型 对应的 laravel 迁移函数
+     *
      * @var array
      */
     protected $columnTypeMap = [
@@ -56,6 +61,7 @@ class Structure
 
     /**
      * 自增类型转换
+     *
      * @var array
      */
     protected $incrementsMap = [
@@ -68,9 +74,10 @@ class Structure
 
     /**
      * 初始化函数
-     * @param array|collection $columns 字段集合
-     * @param array|collection $indexes 索引集合
-     * @param array|collection $foreignKeys 外键集合
+     *
+     * @param array|\Illuminate\Support\Collection $columns 字段集合
+     * @param array|\Illuminate\Support\Collection $indexes 索引集合
+     * @param array|\Illuminate\Support\Collection $foreignKeys 外键集合
      */
     public function __construct($columns, $indexes = [], $foreignKeys = [])
     {
@@ -89,10 +96,11 @@ class Structure
 
     /**
      * 获取实例
-     * 
-     * @param array $columns 字段数组
-     * @param array $indexes 索引数组
-     * @return this
+     *
+     * @param array|\Illuminate\Support\Collection $columns 字段数组
+     * @param array|\Illuminate\Support\Collection $indexes 索引数组
+     * @param array|\Illuminate\Support\Collection $foreignKeys
+     * @return $this
      */
     public static function instance($columns, $indexes = [], $foreignKeys = [])
     {
@@ -101,7 +109,8 @@ class Structure
 
     /**
      * 获取字段集合
-     * @return collection
+     *
+     * @return \Illuminate\Support\Collection
      */
     public function columns()
     {
@@ -110,7 +119,8 @@ class Structure
 
     /**
      * 获取索引集合
-     * @return collection
+     *
+     * @return \Illuminate\Support\Collection
      */
     public function indexes()
     {
@@ -119,7 +129,8 @@ class Structure
 
     /**
      * 获取外键集合
-     * @return collection
+     *
+     * @return \Illuminate\Support\Collection
      */
     public function foreignKeys()
     {
@@ -128,6 +139,7 @@ class Structure
 
     /**
      * 获取自增的column名称
+     *
      * @return mixed
      */
     public function increments()
@@ -141,6 +153,7 @@ class Structure
 
     /**
      * 获取主键名称
+     *
      * @return array
      */
     public function primary()
@@ -154,7 +167,8 @@ class Structure
 
     /**
      * 格式化column
-     * @param  array $column
+     *
+     * @param array $column
      * @return array
      */
     public function formatColumn(array $column)
@@ -181,7 +195,8 @@ class Structure
 
     /**
      * 格式化index
-     * @param  array $index
+     *
+     * @param array $index
      * @return array
      */
     public function formatIndex(array $index)
@@ -197,7 +212,7 @@ class Structure
 
         // 复合索引字段排序键名重置
         $index['columns'] = array_sort(array_unique($index['columns']));
-        $index['name']    = implode('_', $index['columns']);
+        $index['name'] = implode('_', $index['columns']);
 
         // 主键处理
         if ($index['type'] == 'primary') {
@@ -214,10 +229,11 @@ class Structure
 
     /**
      * 通过名称找寻字段
-     * @param  string $name 字段名称
+     *
+     * @param string $name 字段名称
      * @return array
      */
-    public function getColumn($name)
+    public function getColumn(string $name)
     {
         if ($column = $this->columns->where('name', $name)->first()) {
             return $column;
@@ -228,8 +244,9 @@ class Structure
 
     /**
      * 添加字段
+     *
      * @param array $column 字段数组
-     * @return collection
+     * @return \Illuminate\Support\Collection
      */
     public function addColumn(array $column)
     {
@@ -240,10 +257,11 @@ class Structure
 
     /**
      * 删除字段
-     * @param  mixed $column 字段数组或者字段名称
-     * @return collection
+     *
+     * @param string $name 字段数组或者字段名称
+     * @return \Illuminate\Support\Collection
      */
-    public function dropColumn($name)
+    public function dropColumn(string $name)
     {
         return $this->columns->filter(function ($column) use ($name) {
             return $column['name'] != $name;
@@ -252,10 +270,11 @@ class Structure
 
     /**
      * 添加索引
+     *
      * @param array $index
-     * @return collection
+     * @return \Illuminate\Support\Collection
      */
-    public function addIndex($index)
+    public function addIndex(array $index)
     {
         $index = $this->formatIndex($index);
         return $this->indexes->push($index);
@@ -263,12 +282,15 @@ class Structure
 
     /**
      * 转化为创建语句
-     * @return [type] [description]
+     *
+     * @return string
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function getBluepoints()
     {
         // 分离单索引和复合索引
-        list($singeIndexes, $mutipleIndexes) = $this->indexes->partition(function ($index) {
+        [$singeIndexes, $multipleIndexes] = $this->indexes->partition(function ($index) {
             return count($index['columns']) == 1;
         });
 
@@ -284,7 +306,7 @@ class Structure
         })->values();
 
         // 复合索引转换
-        $indexes = $mutipleIndexes->map(function ($index) {
+        $indexes = $multipleIndexes->map(function ($index) {
             return $this->convertIndex($index);
         })->values();
 
@@ -304,13 +326,13 @@ class Structure
 
     /**
      * 将类型type转化为laravel支持的函数名称
-     * 
-     * @param  array $column
-     * @return
+     *
+     * @param array $column
+     * @return mixed|string
      */
-    public function getColumnMethod($column)
+    public function getColumnMethod(array $column)
     {
-        $type   = $column['type'];
+        $type = $column['type'];
         $method = $this->columnTypeMap[$type] ?? $type;
 
         if (in_array($method, array_keys($this->incrementsMap)) && $column['increments']) {
@@ -321,11 +343,12 @@ class Structure
     }
 
     /**
-     * 转换字段为 blurpoint 字符串
-     * @param  array $column
+     * 转换字段为 bluepoint 字符串
+     *
+     * @param array $column
      * @return string
      */
-    public function convertColumn($column)
+    public function convertColumn(array $column)
     {
         // 定义方法组，键名为方法名称，键值为方法参数
         $convert = [];
@@ -358,14 +381,14 @@ class Structure
 
             // 字符串类型如果设置了长度，加入长度参数
             if (in_array($method, ['string', 'char']) && intval($column['length'])) {
-                $convert[$method][]  = intval($column['length']);
+                $convert[$method][] = intval($column['length']);
             }
 
             // 浮点类型的参数返回数组  [10,2] 或者数字 10 (精度默认2) ，允许浮点
             if (in_array($method, ['decimal', 'float', 'double'])) {
 
                 if ($column['length']) {
-                    list($total, $places) = explode(',', $column['length'] . ',2');
+                    [$total, $places] = explode(',', $column['length'] . ',2');
                     $convert[$method][] = intval($total);
                     $convert[$method][] = intval($places);
                 }
@@ -391,17 +414,17 @@ class Structure
     }
 
     /**
-     * 转换索引为 blurpoint 字符串
-     * 
-     * @param  array $index 索引
+     * 转换索引为 bluepoint 字符串
+     *
+     * @param array $index 索引
      * @return string
      */
-    public function convertIndex($index)
+    public function convertIndex(array $index)
     {
         // Laravel方法的参数：primary, index, unique 函数的最多允许两个参数
         // 单一索引第一个参数为字段名称，符合索引第一个参数为字段名称数组
         $arguments = [
-            (count($index['columns']) == 1) ? reset($index['columns']) : $index['columns']
+            (count($index['columns']) == 1) ? reset($index['columns']) : $index['columns'],
         ];
 
         // 第二个参数为索引名称 primary 类型不能设置名称
@@ -417,27 +440,28 @@ class Structure
 
     /**
      * 转换外键
-     * @param  array $foreignKey
+     *
+     * @param array $foreignKey
      * @return string
      */
-    public function convertForeignKey($foreignKey)
+    public function convertForeignKey(array $foreignKey)
     {
         $convert = [];
 
-        $convert['foreign']    = [$foreignKey['column']];
+        $convert['foreign'] = [$foreignKey['column']];
         $convert['references'] = [$foreignKey['references']];
-        $convert['on']         = [$foreignKey['on']];
+        $convert['on'] = [$foreignKey['on']];
 
         if (!empty($foreignKey['name'])) {
             $convert['foreign'][] = $foreignKey['name'];
         }
 
         if ($foreignKey['onUpdate']) {
-            $convert['onUpdate']         = [$foreignKey['onUpdate']];
+            $convert['onUpdate'] = [$foreignKey['onUpdate']];
         }
 
         if ($foreignKey['onDelete']) {
-            $convert['onDelete']         = [$foreignKey['onDelete']];
+            $convert['onDelete'] = [$foreignKey['onDelete']];
         }
 
 
@@ -446,11 +470,11 @@ class Structure
 
     /**
      * 将方法组转换为 Blueprint 语句
-     * 
-     * @param  array $bluepoint
+     *
+     * @param array $convert
      * @return string
      */
-    public function convertToBluepoint($convert)
+    public function convertToBluepoint(array $convert)
     {
         if (empty($convert)) {
             return null;
@@ -470,8 +494,8 @@ class Structure
 
     /**
      * 参数转换
-     * 
-     * @param  mixed $argument
+     *
+     * @param mixed $argument
      * @return string
      */
     public function convertBluepointArgument($argument)
