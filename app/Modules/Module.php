@@ -11,6 +11,13 @@ use Illuminate\Support\Traits\ForwardsCalls;
 use Illuminate\Support\Traits\Macroable;
 
 
+/**
+ * @property string name
+ * @property string title
+ * @property string description
+ * @property string version
+ * @property mixed seed
+ */
 class Module
 {
     use Macroable, ForwardsCalls {
@@ -57,7 +64,7 @@ class Module
      * @param string $path 模块路径
      * @param array $attributes 模块属性
      */
-    public function __construct(Application $app, $path, $attributes)
+    public function __construct(Application $app, string $path, array $attributes)
     {
         $this->app = $app;
         $this->activator = $app['modules.activator'];
@@ -72,7 +79,7 @@ class Module
      * @param mixed $default 默认值
      * @return mixed
      */
-    public function attribute($key, $default = null)
+    public function attribute(string $key, $default = null)
     {
         return Arr::get($this->attributes, strtolower($key), $default);
     }
@@ -202,7 +209,7 @@ class Module
     /**
      * 获取模块路径
      *
-     * @param string $subpath 子路径或者路径键名
+     * @param string|null $subpath 子路径或者路径键名
      * @param boolean $isDirKey 是否为子路径键名
      * @return string
      */
@@ -264,7 +271,7 @@ class Module
      *
      * @param string $event
      */
-    protected function dispatch($event)
+    protected function dispatch(string $event)
     {
         $this->app['events']->dispatch(sprintf('modules.%s.' . $event, $this->getLowerName()), [$this]);
     }
@@ -404,7 +411,7 @@ class Module
      * @param mixed $default 默认值
      * @return mixed
      */
-    public function data($name, array $args = [], $default = null)
+    public function data(string $name, array $args = [], $default = null)
     {
         $file = $this->getPath('Data' . DIRECTORY_SEPARATOR . $name . '.php');
 
@@ -423,9 +430,9 @@ class Module
      *
      * @param string $asset 资源路径
      * @param boolean $version 是否附带版本号
-     * @return string
+     * @return string|void
      */
-    public function asset($asset, $version = true)
+    public function asset(string $asset, $version = true)
     {
         // 获取资源的完整路径 (publish之后在public目录下的路径)
         $path = $this->app['config']->get('modules.paths.assets') . DIRECTORY_SEPARATOR . $this->getLowerName() . DIRECTORY_SEPARATOR . $asset;
@@ -563,7 +570,7 @@ class Module
      *
      * @param $method
      * @param $parameters
-     * @return mixed
+     * @return mixed|void
      * @author Chen Lei
      * @date 2020-11-07
      */

@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Artisan;
 
 trait ModuleConfig
 {
+    /**
+     * boot
+     *
+     * @author Chen Lei
+     * @date 2020-11-07
+     */
     public static function bootModuleConfig()
     {
         debug('bootModuleConfig');
@@ -15,12 +21,12 @@ trait ModuleConfig
 
     /**
      * 写入config
-     * 
-     * @param  string $module 模块名称
-     * @param  array  $config 配置数组
+     *
+     * @param string $module 模块名称
+     * @param array $config 配置数组
      * @return boolean
      */
-    private function config($module, array $config)
+    private function config(string $module, array $config)
     {
         $module = Module::findOrFail($module);
         $module->setConfig($config);
@@ -30,10 +36,10 @@ trait ModuleConfig
 
     /**
      * 设置ENV
-     * 
-     * @param  string $key   键名，如：APP_ENV
-     * @param  string $value 键值，如：local，如果为null，则为删除
-     * @return bool
+     *
+     * @param mixed $key 键名，如：APP_ENV
+     * @param string $value 键值，如：local，如果为null，则为删除
+     * @return $this
      */
     private function env($key, $value = '')
     {
@@ -50,7 +56,7 @@ trait ModuleConfig
         foreach ($envs as $key => $value) {
             Artisan::call('env:set', [
                 'key'   => $key,
-                'value' => $value
+                'value' => $value,
             ]);
         }
 
