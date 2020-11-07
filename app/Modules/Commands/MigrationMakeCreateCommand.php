@@ -2,10 +2,10 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
-use App\Modules\Maker\GeneratorCommand;
 use App\Modules\Exceptions\ClassExistedException;
+use App\Modules\Maker\GeneratorCommand;
 use Facades\App\Modules\Maker\Table;
+use Illuminate\Support\Str;
 
 class MigrationMakeCreateCommand extends GeneratorCommand
 {
@@ -30,36 +30,41 @@ class MigrationMakeCreateCommand extends GeneratorCommand
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
-     * 
+     *
      */
     protected $appendName = '';
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = 'migration';
 
     /**
      * stub 用于从stubs中获取stub
+     *
      * @var string
      */
     protected $stub = 'migration/create';
 
     /**
      * 迁移的字段
+     *
      * @var string
      */
     protected $fields;
 
     /**
      * 迁移的表名称，不含前缀
+     *
      * @var string
      */
     protected $table;
 
     /**
      * 迁移名称前缀
+     *
      * @var string
      */
     protected $prefix;
@@ -67,19 +72,25 @@ class MigrationMakeCreateCommand extends GeneratorCommand
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return mixed|void
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {
-        $this->table  = $this->getTableName();
+        $this->table = $this->getTableName();
         $this->fields = $this->getFields();
         $this->prefix = date('Y_m_d_His');
 
         parent::handle();
     }
+
     /**
      * 重载prepare
+     *
      * @return boolean
+     * @throws \App\Modules\Exceptions\ClassExistedException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function prepare()
     {
@@ -88,7 +99,7 @@ class MigrationMakeCreateCommand extends GeneratorCommand
         }
 
         // 检查是否存在同类的迁移，比如同一个表的多个创建
-        if ($migrations = $this->mgirationCreated()) {
+        if ($migrations = $this->migrationCreated()) {
 
             if (!$this->option('force')) {
 
@@ -114,6 +125,7 @@ class MigrationMakeCreateCommand extends GeneratorCommand
 
     /**
      * 迁移后执行
+     *
      * @return void
      */
     public function generated()
@@ -131,6 +143,7 @@ class MigrationMakeCreateCommand extends GeneratorCommand
 
     /**
      * 获取表名称
+     *
      * @return string
      */
     public function getTableName()
@@ -140,6 +153,7 @@ class MigrationMakeCreateCommand extends GeneratorCommand
 
     /**
      * 获取输入的字段
+     *
      * @return string
      */
     public function getFields()
@@ -161,6 +175,7 @@ class MigrationMakeCreateCommand extends GeneratorCommand
 
     /**
      * 存在多个update, 类名随机
+     *
      * @return string
      */
     public function getClassName()
@@ -170,6 +185,7 @@ class MigrationMakeCreateCommand extends GeneratorCommand
 
     /**
      * 重载文件名称
+     *
      * @return string
      */
     public function getFileName()
@@ -179,19 +195,21 @@ class MigrationMakeCreateCommand extends GeneratorCommand
 
     /**
      * 获取已经创建的迁移
+     *
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function mgirationCreated()
+    public function migrationCreated()
     {
-        $path       = $this->laravel['config']->get("modules.paths.dirs.{$this->dirKey}");
-        $path       = $this->getModulePath($path);
-        $pattern    = $path . DIRECTORY_SEPARATOR . '*.' . $this->extension;
+        $path = $this->laravel['config']->get("modules.paths.dirs.{$this->dirKey}");
+        $path = $this->getModulePath($path);
+        $pattern = $path . DIRECTORY_SEPARATOR . '*.' . $this->extension;
         $migrations = $this->laravel['files']->glob($pattern);
 
         foreach ($migrations as $key => $file) {
             // 获取迁移文件内容
             $content = $this->laravel['files']->get($file);
-            // 检查迁移文件中是否有 Schema::XXX(’tablename‘ 内容，有则是该表的相关迁移文件
+            // 检查迁移文件中是否有 Schema::XXX(’table_name‘ 内容，有则是该表的相关迁移文件
             if (!preg_match('/Schema::(\w+)\(\'' . $this->table . '\'/i', $content, $matches)) {
                 unset($migrations[$key]);
             }

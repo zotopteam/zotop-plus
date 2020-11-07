@@ -10,6 +10,7 @@ class BootstrapServiceProvider extends ServiceProvider
      * Register the application services.
      *
      * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function register()
     {
@@ -44,6 +45,7 @@ class BootstrapServiceProvider extends ServiceProvider
      * Bootstrap the application services.
      *
      * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function boot()
     {

@@ -22,13 +22,13 @@ class ApiController extends Controller
 
     /**
      * 消息提示：success
-     * 
-     * @param  string  $message  消息内容
-     * @param  integer $code 消息代码 0-1000 为success
-     * @param  integer $time 跳转或者消息提示时间
+     *
+     * @param string $message 消息内容
+     * @param integer $code 消息代码 0-1000 为success
+     * @param integer $time 跳转或者消息提示时间
      * @return JsonMessageResponse
      */
-    public function success($message, $code = 0, $time = 1)
+    public function success(string $message, $code = 0, $time = 1)
     {
         return $this->message([
             'code'    => $code,

@@ -3,12 +3,12 @@
 namespace App\Modules;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Traits\Macroable;
-use Illuminate\Support\Traits\ForwardsCalls;
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
+use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Traits\Macroable;
 
 
 class Module
@@ -26,44 +26,50 @@ class Module
 
     /**
      * The module path
+     *
      * @var string
      */
     public $path;
 
     /**
      * The module attributes
+     *
      * @var array
      */
     public $attributes = [];
 
     /**
      * The module activator
+     *
      * @var \App\Modules\Activator
      */
     public $activator;
 
     /**
      * __construct
+     *
      * @param Application $app [description]
      */
     /**
      * 初始化
+     *
      * @param Application $app
-     * @param string      $path       模块路径
-     * @param array       $attributes 模块属性
+     * @param string $path 模块路径
+     * @param array $attributes 模块属性
      */
     public function __construct(Application $app, $path, $attributes)
     {
-        $this->app        = $app;
-        $this->activator  = $app['modules.activator'];
-        $this->path       = $path;
+        $this->app = $app;
+        $this->activator = $app['modules.activator'];
+        $this->path = $path;
         $this->attributes = $attributes;
     }
 
     /**
      * 获取模块属性
-     * @param  string $key     键名
-     * @param  mixed $default 默认值
+     *
+     * @param string $key 键名
+     * @param mixed $default 默认值
      * @return mixed
      */
     public function attribute($key, $default = null)
@@ -80,6 +86,7 @@ class Module
     {
         return strtolower($this->name);
     }
+
     /**
      * 获取模块驼峰名称
      *
@@ -89,6 +96,7 @@ class Module
     {
         return Str::studly($this->name);
     }
+
     /**
      * 获取模块蛇式名称
      *
@@ -101,6 +109,7 @@ class Module
 
     /**
      * 获取翻译过的标题
+     *
      * @return string
      */
     public function getTitle()
@@ -115,6 +124,7 @@ class Module
 
     /**
      * 获取描述
+     *
      * @return string
      */
     public function getDescription()
@@ -129,6 +139,7 @@ class Module
 
     /**
      * 获取module.json中的原始版本号
+     *
      * @return string
      */
     public function getOriginalVersion()
@@ -138,6 +149,7 @@ class Module
 
     /**
      * 获取安装的版本
+     *
      * @return string
      */
     public function getVersion()
@@ -147,6 +159,7 @@ class Module
 
     /**
      * 获取模块目录下的config.php值
+     *
      * @return array
      */
     public function getOriginalConfig()
@@ -167,6 +180,7 @@ class Module
 
     /**
      * 获取模块设置
+     *
      * @return array
      */
     public function getConfig()
@@ -176,8 +190,9 @@ class Module
 
     /**
      * 设置配置
+     *
      * @param array $config 配置数组
-     * @return void
+     * @return bool
      */
     public function setConfig(array $config = [])
     {
@@ -186,9 +201,10 @@ class Module
 
     /**
      * 获取模块路径
-     * @param  string  $subpath  子路径或者路径键名
-     * @param  boolean $isDirKey 是否为子路径键名
-     * @return sting
+     *
+     * @param string $subpath 子路径或者路径键名
+     * @param boolean $isDirKey 是否为子路径键名
+     * @return string
      */
     public function getPath($subpath = null, $isDirKey = false)
     {
@@ -204,7 +220,8 @@ class Module
 
     /**
      * 判断模块是否为某个模块
-     * @param  mixed $module
+     *
+     * @param mixed $module
      * @return boolean
      */
     public function is($module)
@@ -214,6 +231,7 @@ class Module
 
     /**
      * 模块是否安装
+     *
      * @return boolean
      */
     public function isInstalled()
@@ -223,6 +241,7 @@ class Module
 
     /**
      * 模块是否启用
+     *
      * @return boolean
      */
     public function isEnabled()
@@ -232,6 +251,7 @@ class Module
 
     /**
      * 模块是否禁用
+     *
      * @return boolean
      */
     public function isDisabled()
@@ -251,6 +271,7 @@ class Module
 
     /**
      * 启用
+     *
      * @return void
      */
     public function enable()
@@ -267,6 +288,7 @@ class Module
 
     /**
      * 禁用
+     *
      * @return void
      */
     public function disable()
@@ -278,6 +300,7 @@ class Module
 
     /**
      * 安装
+     *
      * @return void
      */
     public function install()
@@ -293,7 +316,7 @@ class Module
         Artisan::call('module:migrate', [
             'module'  => $this->name,
             '--force' => true,
-            '--seed'  => (bool) $this->seed,
+            '--seed'  => (bool)$this->seed,
         ]);
 
         // 发布资源
@@ -309,7 +332,6 @@ class Module
 
     /**
      * 升级
-     * @return [type] [description]
      */
     public function upgrade()
     {
@@ -319,7 +341,7 @@ class Module
         Artisan::call('module:migrate', [
             'module'  => $this->name,
             '--force' => true,
-            '--seed'  => (bool) $this->seed,
+            '--seed'  => (bool)$this->seed,
         ]);
 
         // 发布资源
@@ -334,6 +356,7 @@ class Module
 
     /**
      * 卸载
+     *
      * @return void
      */
     public function uninstall()
@@ -357,6 +380,7 @@ class Module
 
     /**
      * 删除
+     *
      * @return void
      */
     public function delete()
@@ -374,9 +398,10 @@ class Module
 
     /**
      * 获取模块Data目录下的数据
-     * @param  string $name    文件名
-     * @param  array  $args    参数
-     * @param  mixed $default 默认值
+     *
+     * @param string $name 文件名
+     * @param array $args 参数
+     * @param mixed $default 默认值
      * @return mixed
      */
     public function data($name, array $args = [], $default = null)
@@ -395,6 +420,7 @@ class Module
 
     /**
      * 获取资源url
+     *
      * @param string $asset 资源路径
      * @param boolean $version 是否附带版本号
      * @return string
@@ -423,6 +449,7 @@ class Module
 
     /**
      * 注册
+     *
      * @return void
      */
     public function register()
@@ -437,6 +464,7 @@ class Module
 
     /**
      * 注册别名
+     *
      * @return void
      */
     public function registerAlias()
@@ -449,6 +477,7 @@ class Module
 
     /**
      * 注册服务提供者
+     *
      * @return void
      */
     public function registerProviders()
@@ -460,6 +489,7 @@ class Module
 
     /**
      * 注册全局文件
+     *
      * @return void
      */
     public function registerFiles()
@@ -471,18 +501,19 @@ class Module
 
     /**
      * 启动
+     *
      * @return void
      */
     public function boot()
     {
         $this->registerTranslation();
-        $this->registerFactories();
 
         $this->dispatch('boot');
     }
 
     /**
      * 注册模块翻译文件
+     *
      * @return void
      */
     protected function registerTranslation()
@@ -495,24 +526,13 @@ class Module
 
     /**
      * 注册模块配置
+     *
      * @return void
      */
     protected function registerConfig()
     {
         //加载模块配置
         $this->app['config']->set($this->getLowerName(), $this->getConfig());
-    }
-
-    /**
-     * 注册Factories
-     * @return void
-     */
-    protected function registerFactories()
-    {
-        // 非产品环境下注册Factories TODO: laravel 8.x 不再支持该方法
-        if (!$this->app->environment('production')) {
-            //$this->app->make(Factory::class)->load($this->path . DIRECTORY_SEPARATOR . $this->app['config']->get('modules.paths.dirs.factory'));
-        }
     }
 
     /**
@@ -530,6 +550,7 @@ class Module
      * Handle call to __set method.
      *
      * @param $key
+     * @param $value
      * @return mixed
      */
     public function __set($key, $value)
@@ -540,9 +561,11 @@ class Module
     /**
      * Dynamically call the default driver instance.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param $method
+     * @param $parameters
      * @return mixed
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function __call($method, $parameters)
     {
@@ -560,6 +583,7 @@ class Module
 
     /**
      * Handle call __toString.
+     *
      * @return string
      */
     public function __toString()

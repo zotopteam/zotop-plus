@@ -4,7 +4,7 @@ namespace App\Modules\Commands;
 
 use Illuminate\Console\Command;
 
-class DisbaleCommand extends Command
+class DisableCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -34,7 +34,10 @@ class DisbaleCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {

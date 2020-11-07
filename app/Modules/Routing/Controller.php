@@ -2,13 +2,12 @@
 
 namespace App\Modules\Routing;
 
-use Illuminate\Support\Facades\Request;
 use Illuminate\Contracts\Support\Arrayable;
-use App\Modules\Routing\JsonMessageResponse;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Request;
 
 class Controller extends BaseController
 {
@@ -16,7 +15,7 @@ class Controller extends BaseController
 
     /**
      * app实例
-     * 
+     *
      * @var mixed|\Illuminate\Foundation\Application
      */
     protected $app;
@@ -24,14 +23,14 @@ class Controller extends BaseController
 
     /**
      * view 实例
-     * 
+     *
      * @var object
      */
     protected $view;
 
     /**
      * view 数据
-     * 
+     *
      * @var array
      */
     protected $data = [];
@@ -48,7 +47,7 @@ class Controller extends BaseController
             return;
         }
 
-        $this->view   = $this->app['view'];
+        $this->view = $this->app['view'];
 
         static::boot();
     }
@@ -70,9 +69,9 @@ class Controller extends BaseController
 
     /**
      * 传入参数, 支持链式
-     * 
-     * @param  string|array $key 参数名
-     * @param  mixed $value 参数值
+     *
+     * @param string|array $key 参数名
+     * @param mixed $value 参数值
      * @return $this
      */
     public function with($key, $value = null)
@@ -100,34 +99,34 @@ class Controller extends BaseController
 
     /**
      * 取得模板显示变量的值
-     * 
+     *
      * @access protected
      * @param string $key 模板显示变量
      * @return mixed
      */
-    public function __get($key)
+    public function __get(string $key)
     {
         return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 
     /**
      * 检测模板变量是否被设定
-     * 
+     *
      * @access protected
      * @param string $key 模板显示变量
      * @return bool
      */
-    public function __isset($key)
+    public function __isset(string $key)
     {
         return isset($this->data[$key]);
     }
 
     /**
      * 删除模板变量
-     * 
-     * @access protected
-     * @param string $key 模板显示变量
-     * @return bool
+     *
+     * @param $key
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function __unset($key)
     {
@@ -139,9 +138,9 @@ class Controller extends BaseController
     /**
      * 显示View
      *
-     * @param  string  $view
-     * @param  array   $data
-     * @param  array   $mergeData
+     * @param string|null $view
+     * @param array $data
+     * @param array $mergeData
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function view($view = null, $data = [], $mergeData = [])
@@ -166,9 +165,9 @@ class Controller extends BaseController
 
     /**
      * 消息提示
-     * 
-     * @param  array  $msg 消息内容
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     *
+     * @param array $msg 消息内容
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function message(array $msg)
     {
@@ -186,10 +185,10 @@ class Controller extends BaseController
 
     /**
      * 消息提示：success
-     * 
-     * @param  mixed  $content  消息内容 字符串或者数组
-     * @param  string  $url  跳转路径
-     * @param  integer $time 跳转或者消息提示时间
+     *
+     * @param mixed $content 消息内容 字符串或者数组
+     * @param string $url 跳转路径
+     * @param integer $time 跳转或者消息提示时间
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function success($content, $url = '', $time = 1)
@@ -198,16 +197,16 @@ class Controller extends BaseController
             'type'    => 'success',
             'content' => $content,
             'url'     => $url,
-            'time'    => $time
+            'time'    => $time,
         ]);
     }
 
 
     /**
      * 消息提示：error
-     * 
-     * @param  mixed  $content  消息内容 字符串或者数组
-     * @param  integer $time 跳转或者消息提示时间
+     *
+     * @param mixed $content 消息内容 字符串或者数组
+     * @param integer $time 跳转或者消息提示时间
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function error($content, $time = 5)
@@ -215,7 +214,7 @@ class Controller extends BaseController
         return $this->message([
             'type'    => 'error',
             'content' => $content,
-            'time'    => $time
+            'time'    => $time,
         ]);
     }
 }

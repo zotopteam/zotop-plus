@@ -2,6 +2,7 @@
 
 namespace App\Modules\Commands;
 
+use App\Modules\Module;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
@@ -33,7 +34,7 @@ class PublishCommand extends Command
     /**
      * Create a new command instance.
      *
-     * @return void
+     * @param \Illuminate\Filesystem\Filesystem $files
      */
     public function __construct(Filesystem $files)
     {
@@ -45,7 +46,10 @@ class PublishCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {
@@ -75,12 +79,13 @@ class PublishCommand extends Command
 
     /**
      * 发布
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return void
      */
-    private function publish($module)
+    private function publish(Module $module)
     {
-        $sourcePath      = $this->getSourcePath($module);
+        $sourcePath = $this->getSourcePath($module);
         $destinationPath = $this->getDestinationPath($module);
 
         // 删除目标目录
@@ -104,10 +109,11 @@ class PublishCommand extends Command
 
     /**
      * 取消发布
-     * @param  Module $module 模块名称
+     *
+     * @param Module $module 模块名称
      * @return void
      */
-    public function unpublish($module)
+    public function unpublish(Module $module)
     {
         $destinationPath = $this->getDestinationPath($module);
         $this->files->deleteDirectory($destinationPath);
@@ -116,10 +122,11 @@ class PublishCommand extends Command
 
     /**
      * 获取源路径
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return string
      */
-    private function getSourcePath($module)
+    private function getSourcePath(Module $module)
     {
         $path = $this->laravel['config']->get('modules.paths.dirs.assets');
 
@@ -128,10 +135,11 @@ class PublishCommand extends Command
 
     /**
      * 获取目标路径
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return string
      */
-    public function getDestinationPath($module)
+    public function getDestinationPath(Module $module)
     {
         $path = $this->laravel['config']->get('modules.paths.assets');
 

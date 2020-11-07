@@ -24,18 +24,21 @@ class Repository
 
     /**
      * 实例化的模块数组
+     *
      * @var array
      */
     protected $modules = [];
 
     /**
      * 加载的资源完整url列表
+     *
      * @var array
      */
     protected $loads = [];
 
     /**
      * 初始化
+     *
      * @param Application $app
      */
     public function __construct(Application $app)
@@ -45,19 +48,21 @@ class Repository
 
     /**
      * 扫描模块，获取模块原始数据
+     *
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function scan()
     {
         $modules = [];
 
         // 扫描模块目录，获取全部模块数据
-        $path      = $this->app['config']->get('modules.paths.modules');
+        $path = $this->app['config']->get('modules.paths.modules');
         $manifests = $this->app['files']->glob("{$path}/*/module.json");
 
         foreach ($manifests as $manifest) {
             if ($attributes = json_decode($this->app['files']->get($manifest), true)) {
-                $name  = strtolower($attributes['name']);
+                $name = strtolower($attributes['name']);
                 $order = floatval($attributes['order']);
                 $modules[$name] = [
                     'path'       => dirname($manifest),
@@ -80,7 +85,9 @@ class Repository
 
     /**
      * 获取实例化的全部模块
+     *
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function all()
     {
@@ -96,8 +103,10 @@ class Repository
 
     /**
      * 获取启用或者禁用的模块
-     * @param  boolean $enabled true=获取启用 false=获取禁用
+     *
+     * @param boolean $enabled true=获取启用 false=获取禁用
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function enabled($enabled = true)
     {
@@ -119,8 +128,10 @@ class Repository
 
     /**
      * 获取安装或者未安装的模块
-     * @param  boolean $enabled true=获取启用 false=获取禁用
+     *
+     * @param bool $installed
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function installed($installed = true)
     {
@@ -142,8 +153,10 @@ class Repository
 
     /**
      * 检查模块是否存在
-     * @param  string  $name 模块名称
+     *
+     * @param string $name 模块名称
      * @return boolean
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function has(string $name)
     {
@@ -152,8 +165,10 @@ class Repository
 
     /**
      * 按照名称获取模块
-     * @param  string $name 模块名称
+     *
+     * @param string $name 模块名称
      * @return module
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function find(string $name)
     {
@@ -165,7 +180,8 @@ class Repository
      *
      * @param $name
      * @return Module
-     * @throws NotFoundException
+     * @throws ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function findOrFail($name)
     {
@@ -178,16 +194,19 @@ class Repository
 
     /**
      * 获取模块Data目录下的数据
-     * @param  string $name    模块名称::文件名称 例如：core::mimetype
-     * @param  array  $args    参数
-     * @param  mixed $default 默认值
+     *
+     * @param string $name 模块名称::文件名称 例如：core::mimetype
+     * @param array $args 参数
+     * @param mixed $default 默认值
      * @return mixed
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function data($name, array $args = [], $default = null)
+    public function data(string $name, array $args = [], $default = null)
     {
-        $data   = $default;
+        $data = $default;
         $module = Str::before($name, ':');
-        $file   = Str::afterLast($name, ':');
+        $file = Str::afterLast($name, ':');
 
         if ($module = $this->findOrFail($module)) {
             $data = $module->data($file, $args, $default);
@@ -199,13 +218,16 @@ class Repository
 
     /**
      * 获取模块文件路径
-     * @param  string $path 模块名称:文件相对路径，例如：core:module.png
+     *
+     * @param string $path 模块名称:文件相对路径，例如：core:module.png
      * @return string
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function path($path)
+    public function path(string $path)
     {
         $module = Str::before($path, ':');
-        $path   = Str::afterLast($path, ':');
+        $path = Str::afterLast($path, ':');
 
         if ($module = $this->findOrFail($module)) {
             return $module->getPath($path);
@@ -216,14 +238,17 @@ class Repository
 
     /**
      * 获取资源url
-     * @param  string $asset 模块名称:文件相对路径，例如：core:css/global.css
+     *
+     * @param string $asset 模块名称:文件相对路径，例如：core:css/global.css
      * @param boolean $version 是否附带版本号
      * @return string
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function asset($asset, $version = true)
+    public function asset(string $asset, $version = true)
     {
         $module = Str::before($asset, ':');
-        $url    = Str::afterLast($asset, ':');
+        $url = Str::afterLast($asset, ':');
 
         if ($module = $this->findOrFail($module)) {
             return $module->asset($url, $version);
@@ -234,9 +259,12 @@ class Repository
 
     /**
      * 加载资源文件
-     * @param  mixed $asset 资源路径 core:aaa/bbb.js || core:bbb/aaa.css
-     * @param  string $type  类型，js || css，不指定类型时，根据资源的后缀自动判断
+     *
+     * @param mixed $asset 资源路径 core:aaa/bbb.js || core:bbb/aaa.css
+     * @param string|null $type 类型，js || css，不指定类型时，根据资源的后缀自动判断
      * @return string
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function load($asset, $type = null)
     {
@@ -248,7 +276,7 @@ class Repository
             $type = $type ? strtolower($type) : strtolower(Str::afterLast($asset, '.'));
 
             // 获取资源的完整url
-            $url  = $this->asset($asset, true);
+            $url = $this->asset($asset, true);
 
             // 如果已经加载，不再次加载和输出
             if ($url && !isset($this->loads[$url])) {
@@ -269,7 +297,9 @@ class Repository
 
     /**
      * 注册
+     *
      * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function register()
     {
@@ -280,7 +310,10 @@ class Repository
 
     /**
      * 启动
-     * @return void
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function boot()
     {

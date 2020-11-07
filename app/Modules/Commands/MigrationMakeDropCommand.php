@@ -29,48 +29,55 @@ class MigrationMakeDropCommand extends GeneratorCommand
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
-     * 
+     *
      */
     protected $appendName = '';
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = 'migration';
 
     /**
      * stub 用于从stubs中获取stub
+     *
      * @var string
      */
     protected $stub = 'migration/drop';
 
     /**
      * 迁移的表名称，不含前缀
+     *
      * @var string
      */
     protected $table;
 
     /**
      * 迁移的字段
+     *
      * @var string
      */
     protected $fields;
 
     /**
      * 迁移名称前缀
+     *
      * @var string
      */
     protected $prefix;
-
+    
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return mixed|void
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {
-        $this->table  = $this->getTableName();
+        $this->table = $this->getTableName();
         $this->fields = $this->getFields();
         $this->prefix = date('Y_m_d_His');
 
@@ -79,6 +86,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
 
     /**
      * 重载prepare
+     *
      * @return boolean
      */
     public function prepare()
@@ -98,6 +106,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
 
     /**
      * 迁移后执行
+     *
      * @return void
      */
     public function generated()
@@ -115,6 +124,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
 
     /**
      * 获取表名称
+     *
      * @return string
      */
     public function getTableName()
@@ -124,6 +134,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
 
     /**
      * 获取输入的字段
+     *
      * @return string
      */
     public function getFields()
@@ -142,6 +153,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
 
     /**
      * 存在多个update, 类名随机
+     *
      * @return string
      */
     public function getClassName()
@@ -151,6 +163,7 @@ class MigrationMakeDropCommand extends GeneratorCommand
 
     /**
      * 重载文件名称
+     *
      * @return string
      */
     public function getFileName()

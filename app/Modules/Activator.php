@@ -2,7 +2,6 @@
 
 namespace App\Modules;
 
-use App\Modules\Module;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Arr;
@@ -29,6 +28,7 @@ class Activator
 
     /**
      * 缓存键名
+     *
      * @var string
      */
     private $cacheKey;
@@ -36,14 +36,15 @@ class Activator
 
     public function __construct(Application $app)
     {
-        $this->app      = $app;
+        $this->app = $app;
         $this->cacheKey = $this->app['config']->get('modules.cache.key') . '-activator';
-        $this->modules  = $this->getModules();
+        $this->modules = $this->getModules();
     }
 
     /**
      * 从缓存中获取全部模块或者模块信息
-     * @param  string $key 键名
+     *
+     * @param string|null $key 键名
      * @return mixed
      */
     public function modules($key = null)
@@ -57,6 +58,7 @@ class Activator
 
     /**
      * 获取原始的模块数据
+     *
      * @return array
      */
     private function getModules()
@@ -64,9 +66,9 @@ class Activator
         try {
             return $this->app['cache']->rememberForever($this->cacheKey, function () {
                 return DB::table('modules')->get()->keyBy('module')->transform(function ($item) {
-                    $item->config   = json_decode($item->config, true);
-                    $item->disabled = (bool) $item->disabled;
-                    return (array) $item;
+                    $item->config = json_decode($item->config, true);
+                    $item->disabled = (bool)$item->disabled;
+                    return (array)$item;
                 })->toArray();
             });
         } catch (QueryException $e) {
@@ -77,7 +79,8 @@ class Activator
 
     /**
      * 模块是否安装
-     * @param  Module  $module
+     *
+     * @param Module $module
      * @return boolean
      */
     public function isInstalled(Module $module)
@@ -91,7 +94,8 @@ class Activator
 
     /**
      * 模块是否禁用
-     * @param  Module  $module
+     *
+     * @param Module $module
      * @return boolean
      */
     public function isDisabled(Module $module)
@@ -109,7 +113,8 @@ class Activator
 
     /**
      * 安装的模块版本号
-     * @param  Module  $module
+     *
+     * @param Module $module
      * @return boolean
      */
     public function getVersion(Module $module)
@@ -119,7 +124,8 @@ class Activator
 
     /**
      * 获取模块配置
-     * @param  Module  $module
+     *
+     * @param Module $module
      * @return array
      */
     public function getConfig(Module $module)
@@ -133,7 +139,8 @@ class Activator
 
     /**
      * 设置模块配置
-     * @param Module  $module
+     *
+     * @param Module $module
      * @param array $data
      * @return boolean
      */
@@ -143,7 +150,7 @@ class Activator
         $config = $module->getOriginalConfig();
 
         // 当前设置
-        $current  = $module->getConfig();
+        $current = $module->getConfig();
 
         // 深度合并 config, current 和 data
         foreach ([$current, $data] as $merge) {
@@ -153,13 +160,14 @@ class Activator
         }
 
         return $this->update($module, [
-            'config'     => json_encode($config),
+            'config' => json_encode($config),
         ]);
     }
 
     /**
      * 安装
-     * @param  Module  $module
+     *
+     * @param Module $module
      * @return boolean
      */
     public function install(Module $module)
@@ -178,7 +186,9 @@ class Activator
 
     /**
      * 更新信息
-     * @param  Module  $module
+     *
+     * @param Module $module
+     * @param array $data
      * @return boolean
      */
     public function update(Module $module, array $data)
@@ -193,32 +203,35 @@ class Activator
 
     /**
      * 启用
-     * @param  Module  $module
+     *
+     * @param Module $module
      * @return boolean
      */
     public function enable(Module $module)
     {
         return $this->update($module, [
-            'disabled'    => 0,
+            'disabled' => 0,
         ]);
     }
 
     /**
      * 禁用
-     * @param  Module  $module
+     *
+     * @param Module $module
      * @return boolean
      */
     public function disable(Module $module)
     {
         return $this->update($module, [
-            'disabled'    => 1,
+            'disabled' => 1,
         ]);
     }
 
 
     /**
      * 升级
-     * @param  Module  $module
+     *
+     * @param Module $module
      * @return boolean
      */
     public function upgrade(Module $module)
@@ -228,13 +241,14 @@ class Activator
 
         // 更新版本信息
         return $this->update($module, [
-            'version' => $module->getOriginalVersion()
+            'version' => $module->getOriginalVersion(),
         ]);
     }
 
     /**
      * 卸载
-     * @param  Module  $module
+     *
+     * @param Module $module
      * @return boolean
      */
     public function uninstall(Module $module)

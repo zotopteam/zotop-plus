@@ -2,6 +2,7 @@
 
 namespace App\Modules\Commands;
 
+use App\Modules\Module;
 use Illuminate\Console\Command;
 
 class MigrateStatusCommand extends Command
@@ -35,7 +36,10 @@ class MigrateStatusCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {
@@ -54,10 +58,11 @@ class MigrateStatusCommand extends Command
 
     /**
      * 迁移
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return void
      */
-    private function status($module)
+    private function status(Module $module)
     {
         $this->info(PHP_EOL . 'Show status of module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 
@@ -73,10 +78,11 @@ class MigrateStatusCommand extends Command
 
     /**
      * 获取源路径
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return string
      */
-    private function getMigrationPath($module)
+    private function getMigrationPath(Module $module)
     {
         $path = $this->laravel['config']->get('modules.paths.dirs.migration');
 

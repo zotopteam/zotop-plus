@@ -9,6 +9,7 @@
     "type": "project",
     "require": {
         "php": "^7.3",
+        "ext-json": "*",
         "barryvdh/laravel-debugbar": "^3.2.9",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.2",
