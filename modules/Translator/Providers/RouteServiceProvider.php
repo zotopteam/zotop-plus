@@ -16,9 +16,9 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * 模块名称
      *
-     * @var strings
+     * @var string
      */
-    protected $module = 'translator';   
+    protected $module = 'translator';
 
     /**
      * 前台路由，无前台路由返回false

@@ -3,7 +3,6 @@
 namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Request;
 use App\Traits\UserIp;
 use App\Traits\UserRelation;
 
@@ -41,13 +40,13 @@ class Log extends Model
      * @var array
      */
     protected $casts = [
-        'request'  => 'json',
+        'request' => 'json',
     ];
 
 
     /**
      * booted
-     * 
+     *
      * @return void
      */
     protected static function booted()

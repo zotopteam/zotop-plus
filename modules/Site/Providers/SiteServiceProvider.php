@@ -2,7 +2,6 @@
 
 namespace Modules\Site\Providers;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Facades\Agent;
 use Illuminate\Support\Facades\Request;
@@ -27,20 +26,20 @@ class SiteServiceProvider extends ServiceProvider
         $this->app['router']->aliasMiddleware('front', "Modules\\Site\\Http\\Middleware\\FrontMiddleware");
 
         // 禁止禁用
-        $this->app['events']->listen('modules.site.disabling', function($module) {
+        $this->app['events']->listen('modules.site.disabling', function ($module) {
             abort(403, trans('core::module.disable.forbidden', [$module->getTitle()]));
         });
 
         // 禁止卸载
-        $this->app['events']->listen('modules.site.uninstalling', function($module) {
+        $this->app['events']->listen('modules.site.uninstalling', function ($module) {
             abort(403, trans('core::module.uninstall.forbidden', [$module->getTitle()]));
         });
 
         // 禁止删除
-        $this->app['events']->listen('modules.site.deleting', function($module) {
+        $this->app['events']->listen('modules.site.deleting', function ($module) {
             abort(403, trans('core::module.delete.forbidden', [$module->getTitle()]));
-        });                         
-    }    
+        });
+    }
 
     /**
      * Register the service provider.
