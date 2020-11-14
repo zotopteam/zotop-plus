@@ -2,6 +2,6 @@
 
 namespace App\Modules\Routing;
 
-class AdminController extends Controller
+class AdminController extends WebController
 {
 }

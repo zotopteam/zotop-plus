@@ -3,7 +3,6 @@
 namespace Modules\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Modules\Routing\AdminController;
 use Modules\Core\Models\User;
 use Modules\Core\Http\Requests\AdministratorRequest;
@@ -13,20 +12,20 @@ class AdministratorController extends AdminController
     /**
      * 首页
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
     {
         $this->title = trans('core::administrator.title');
-        $this->users = User::with('roles')->whereIn('model_id',['super','admin'])->orderby('id','asc')->paginate(10);
+        $this->users = User::with('roles')->whereIn('model_id', ['super', 'admin'])->orderby('id', 'asc')->paginate(10);
 
         return $this->view();
     }
 
     /**
      * 新建
-     * 
-     * @return Response
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function create()
     {
@@ -39,8 +38,10 @@ class AdministratorController extends AdminController
     /**
      * 保存
      *
-     * @param  Request $request
-     * @return Response
+     * @param \Modules\Core\Http\Requests\AdministratorRequest $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @author Chen Lei
+     * @date 2020-11-15
      */
     public function store(AdministratorRequest $request)
     {
@@ -53,22 +54,26 @@ class AdministratorController extends AdminController
             $user->roles()->detach();
         } else {
             $user->roles()->attach($request->input('roles'));
-        }        
-        
+        }
+
         return $this->success(trans('master.created'), route('core.administrator.index'));
     }
 
     /**
      * 编辑
      *
-     * @return Response
+     * @param \Modules\Core\Http\Requests\AdministratorRequest $request
+     * @param int $id 编号
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @author Chen Lei
+     * @date 2020-11-15
      */
-    public function edit(AdministratorRequest $request, $id)
+    public function edit(AdministratorRequest $request, int $id)
     {
-        
+
         $this->title = trans('core::administrator.edit');
-        $this->id    = $id;
-        $this->user  = User::findOrFail($id);
+        $this->id = $id;
+        $this->user = User::findOrFail($id);
 
         $this->super_count = User::where('model_id', 'super')->count();
 
@@ -78,15 +83,18 @@ class AdministratorController extends AdminController
     /**
      * 更新
      *
-     * @param  Request $request
-     * @return Response
+     * @param \Modules\Core\Http\Requests\AdministratorRequest $request
+     * @param $id
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @author Chen Lei
+     * @date 2020-11-15
      */
     public function update(AdministratorRequest $request, $id)
     {
         $user = User::findOrFail($id);
 
-        if (User::where('model_id', 'super')->count() == 1 && $user->model_id == 'super' && $request->model_id != 'super' ) {
-            return $this->error(trans('core::administrator.model.super.required'));  
+        if (User::where('model_id', 'super')->count() == 1 && $user->model_id == 'super' && $request->model_id != 'super') {
+            return $this->error(trans('core::administrator.model.super.required'));
         }
 
         $user->fill($request->all());
@@ -95,7 +103,7 @@ class AdministratorController extends AdminController
         if ($password_new = $request->input('password_new')) {
             $user->password = \Hash::make($password_new);
         }
-        
+
         $user->save();
 
         if ($request->model_id == 'super') {
@@ -104,28 +112,32 @@ class AdministratorController extends AdminController
             $user->roles()->sync($request->input('roles'));
         }
 
-        return $this->success(trans('master.updated'), route('core.administrator.index'));  
+        return $this->success(trans('master.updated'), route('core.administrator.index'));
     }
 
     /**
      * 禁用和启用
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @param $id
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @author Chen Lei
+     * @date 2020-11-15
      */
     public function status(Request $request, $id)
     {
         $user = User::findOrFail($id);
 
         // 禁止禁用super
-        if ( $user->isSuper() ) {
+        if ($user->isSuper()) {
             return $this->error(trans('master.forbidden'));
         }
 
         // 如果已经禁用，启用
-        if ( $user->disabled ) {
+        if ($user->disabled) {
             $user->disabled = 0;
             $user->save();
-            return $this->success(trans('master.actived'), $request->referer());         
+            return $this->success(trans('master.actived'), $request->referer());
         }
 
         // 禁用
@@ -133,12 +145,16 @@ class AdministratorController extends AdminController
         $user->save();
 
         return $this->success(trans('master.disabled'), $request->referer());
-    }    
+    }
 
     /**
      * 删除
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @author Chen Lei
+     * @date 2020-11-15
      */
     public function destroy(Request $request, $id)
     {
