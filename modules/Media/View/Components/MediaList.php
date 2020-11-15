@@ -11,42 +11,42 @@ class MediaList extends Component
     /**
      * 媒体数据集合
      *
-     * @var 
+     * @var
      */
     public $list;
 
     /**
      * 媒体数据集合
      *
-     * @var 
+     * @var
      */
     public $class;
 
     /**
      * 可以多选的类型，默认或者true为全部类型，多个类型支持数组或者英文逗号分隔的字符串
      *
-     * @var 
+     * @var
      */
     public $checkable;
 
     /**
      * 是否可以多选
      *
-     * @var 
+     * @var
      */
     public $mutiple;
 
     /**
      * 是否允许嵌套访问模式（如：点击文件夹进入下级）
      *
-     * @var 
+     * @var
      */
     public $nestable;
 
     /**
      * 允许的操作
      *
-     * @var 
+     * @var
      */
     public $action;
 
@@ -57,12 +57,12 @@ class MediaList extends Component
      */
     public function __construct($list, $class = null, $checkable = true, $mutiple = true, $nestable = true, $action = true)
     {
-        $this->list      = $list;
-        $this->class     = $class;
+        $this->list = $list;
+        $this->class = $class;
         $this->checkable = $checkable;
-        $this->mutiple   = $mutiple;
-        $this->nestable  = $nestable;
-        $this->action    = $action;
+        $this->mutiple = $mutiple;
+        $this->nestable = $nestable;
+        $this->action = $action;
 
         // 多选时可以使用拖拽选择
         if ($this->checkable) {
@@ -71,7 +71,7 @@ class MediaList extends Component
                 $this->checkable = explode(',', $this->checkable);
             }
         }
-
+        
         // 字符串转为数组
         if ($this->action && is_string($this->action)) {
             $this->action = explode(',', $this->action);
@@ -82,7 +82,7 @@ class MediaList extends Component
     {
         $list = [];
         foreach ($this->list as $item) {
-            $item->link   = $this->getLink($item);
+            $item->link = $this->getLink($item);
             $item->action = $this->getAction($item);
             $list[] = $item;
         }
@@ -106,7 +106,7 @@ class MediaList extends Component
                 app('router')->current()->parameters(),
                 app('request')->except('page', 'keywords'),
                 [
-                    'folder_id' => $item->id
+                    'folder_id' => $item->id,
                 ]
             );
 
@@ -139,8 +139,8 @@ class MediaList extends Component
             'class' => 'js-open',
             'attrs' => [
                 'data-width'  => '90%',
-                'data-height' => '75%'
-            ]
+                'data-height' => '75%',
+            ],
         ];
 
         if ($item->type == 'image') {
@@ -158,9 +158,9 @@ class MediaList extends Component
 
         if ($item->disk && $item->path) {
             $action['download'] = [
-                'text'  => trans('master.download'),
-                'href'  => route('media.download', $item->id),
-                'icon'  => 'fa fa-download',
+                'text' => trans('master.download'),
+                'href' => route('media.download', $item->id),
+                'icon' => 'fa fa-download',
             ];
         }
 

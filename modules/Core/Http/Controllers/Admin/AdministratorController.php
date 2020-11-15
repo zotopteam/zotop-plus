@@ -12,7 +12,7 @@ class AdministratorController extends AdminController
     /**
      * 首页
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -25,7 +25,7 @@ class AdministratorController extends AdminController
     /**
      * 新建
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -39,7 +39,7 @@ class AdministratorController extends AdminController
      * 保存
      *
      * @param \Modules\Core\Http\Requests\AdministratorRequest $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-15
      */
@@ -64,13 +64,12 @@ class AdministratorController extends AdminController
      *
      * @param \Modules\Core\Http\Requests\AdministratorRequest $request
      * @param int $id 编号
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-15
      */
     public function edit(AdministratorRequest $request, int $id)
     {
-
         $this->title = trans('core::administrator.edit');
         $this->id = $id;
         $this->user = User::findOrFail($id);
@@ -85,7 +84,7 @@ class AdministratorController extends AdminController
      *
      * @param \Modules\Core\Http\Requests\AdministratorRequest $request
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-15
      */
@@ -120,7 +119,7 @@ class AdministratorController extends AdminController
      *
      * @param \Illuminate\Http\Request $request
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-15
      */
@@ -152,7 +151,7 @@ class AdministratorController extends AdminController
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-15
      */

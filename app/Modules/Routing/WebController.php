@@ -70,7 +70,7 @@ class WebController extends Controller
         // 将赋值数据填入消息中
         $msg['data'] = $this->data;
 
-        //如果请求为ajax，则输出json数据
+        // 如果请求为ajax，则输出json数据
         if (Request::expectsJson()) {
             return new JsonMessageResponse($msg);
         }
