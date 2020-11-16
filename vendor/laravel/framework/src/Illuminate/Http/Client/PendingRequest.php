@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\HandlerStack;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 
@@ -33,6 +34,13 @@ class PendingRequest
      * @var string
      */
     protected $bodyFormat;
+
+    /**
+     * The raw body for the request.
+     *
+     * @var string
+     */
+    protected $pendingBody;
 
     /**
      * The pending files for the request.
@@ -91,6 +99,13 @@ class PendingRequest
     protected $stubCallbacks;
 
     /**
+     * The middleware callables added by users that will handle requests.
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $middleware;
+
+    /**
      * Create a new HTTP Client instance.
      *
      * @param  \Illuminate\Http\Client\Factory|null  $factory
@@ -99,6 +114,7 @@ class PendingRequest
     public function __construct(Factory $factory = null)
     {
         $this->factory = $factory;
+        $this->middleware = new Collection;
 
         $this->asJson();
 
@@ -120,6 +136,24 @@ class PendingRequest
     public function baseUrl(string $url)
     {
         $this->baseUrl = $url;
+
+        return $this;
+    }
+
+    /**
+     * Attach a raw body to the request.
+     *
+     * @param  resource|string  $content
+     * @param  string  $contentType
+     * @return $this
+     */
+    public function withBody($content, $contentType)
+    {
+        $this->bodyFormat('body');
+
+        $this->pendingBody = $content;
+
+        $this->contentType($contentType);
 
         return $this;
     }
@@ -147,14 +181,22 @@ class PendingRequest
     /**
      * Attach a file to the request.
      *
-     * @param  string  $name
+     * @param  string|array  $name
      * @param  string  $contents
      * @param  string|null  $filename
      * @param  array  $headers
      * @return $this
      */
-    public function attach($name, $contents, $filename = null, array $headers = [])
+    public function attach($name, $contents = '', $filename = null, array $headers = [])
     {
+        if (is_array($name)) {
+            foreach ($name as $file) {
+                $this->attach(...$file);
+            }
+
+            return $this;
+        }
+
         $this->asMultipart();
 
         $this->pendingFiles[] = array_filter([
@@ -280,6 +322,17 @@ class PendingRequest
     }
 
     /**
+     * Specify the user agent for the request.
+     *
+     * @param  string  $userAgent
+     * @return $this
+     */
+    public function withUserAgent($userAgent)
+    {
+        return $this->withHeaders(['User-Agent' => $userAgent]);
+    }
+
+    /**
      * Specify the cookies that should be included with the request.
      *
      * @param  array  $cookies
@@ -316,6 +369,19 @@ class PendingRequest
     {
         return tap($this, function ($request) {
             return $this->options['verify'] = false;
+        });
+    }
+
+    /**
+     * Specify the path where the body of the response should be stored.
+     *
+     * @param  string|resource  $to
+     * @return $this
+     */
+    public function sink($to)
+    {
+        return tap($this, function ($request) use ($to) {
+            return $this->options['sink'] = $to;
         });
     }
 
@@ -358,6 +424,19 @@ class PendingRequest
         return tap($this, function ($request) use ($options) {
             return $this->options = array_merge_recursive($this->options, $options);
         });
+    }
+
+    /**
+     * Add new middleware the client handler stack.
+     *
+     * @param  callable  $middleware
+     * @return $this
+     */
+    public function withMiddleware(callable $middleware)
+    {
+        $this->middleware->push($middleware);
+
+        return $this;
     }
 
     /**
@@ -474,14 +553,18 @@ class PendingRequest
         if (isset($options[$this->bodyFormat])) {
             if ($this->bodyFormat === 'multipart') {
                 $options[$this->bodyFormat] = $this->parseMultipartBodyFormat($options[$this->bodyFormat]);
+            } elseif ($this->bodyFormat === 'body') {
+                $options[$this->bodyFormat] = $this->pendingBody;
             }
 
-            $options[$this->bodyFormat] = array_merge(
-                $options[$this->bodyFormat], $this->pendingFiles
-            );
+            if (is_array($options[$this->bodyFormat])) {
+                $options[$this->bodyFormat] = array_merge(
+                    $options[$this->bodyFormat], $this->pendingFiles
+                );
+            }
         }
 
-        $this->pendingFiles = [];
+        [$this->pendingBody, $this->pendingFiles] = [null, []];
 
         return retry($this->tries ?? 1, function () use ($method, $url, $options) {
             try {
@@ -570,6 +653,10 @@ class PendingRequest
             $stack->push($this->buildBeforeSendingHandler());
             $stack->push($this->buildRecorderHandler());
             $stack->push($this->buildStubHandler());
+
+            $this->middleware->each(function ($middleware) use ($stack) {
+                $stack->push($middleware);
+            });
         });
     }
 
@@ -627,12 +714,40 @@ class PendingRequest
 
                 if (is_null($response)) {
                     return $handler($request, $options);
-                } elseif (is_array($response)) {
-                    return Factory::response($response);
+                }
+
+                $response = is_array($response) ? Factory::response($response) : $response;
+
+                $sink = $options['sink'] ?? null;
+
+                if ($sink) {
+                    $response->then($this->sinkStubHandler($sink));
                 }
 
                 return $response;
             };
+        };
+    }
+
+    /**
+     * Get the sink stub handler callback.
+     *
+     * @param  string  $sink
+     * @return \Closure
+     */
+    protected function sinkStubHandler($sink)
+    {
+        return function ($response) use ($sink) {
+            $body = $response->getBody()->getContents();
+
+            if (is_string($sink)) {
+                file_put_contents($sink, $body);
+
+                return;
+            }
+
+            fwrite($sink, $body);
+            rewind($sink);
         };
     }
 

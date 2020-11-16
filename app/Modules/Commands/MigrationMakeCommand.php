@@ -2,8 +2,8 @@
 
 namespace App\Modules\Commands;
 
-use App\Modules\Maker\GeneratorCommand;
 use App\Modules\Exceptions\ClassExistedException;
+use App\Modules\Maker\GeneratorCommand;
 
 class MigrationMakeCommand extends GeneratorCommand
 {
@@ -27,20 +27,25 @@ class MigrationMakeCommand extends GeneratorCommand
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = 'migration';
 
     /**
      * stub 用于从stubs中获取stub
+     *
      * @var string
      */
     protected $stub = 'migration/blank';
 
-
     /**
      * 生成前准备
-     * @return boolean
+     *
+     * @return bool
+     * @throws \App\Modules\Exceptions\ClassExistedException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function prepare()
     {
@@ -61,10 +66,13 @@ class MigrationMakeCommand extends GeneratorCommand
 
         return true;
     }
-
+    
     /**
      * 获取类名
-     * @return [type] [description]
+     *
+     * @return string
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function getClassName()
     {
@@ -73,6 +81,7 @@ class MigrationMakeCommand extends GeneratorCommand
 
     /**
      * 定义迁移文件名称
+     *
      * @return string
      */
     public function getFileName()
@@ -82,13 +91,14 @@ class MigrationMakeCommand extends GeneratorCommand
 
     /**
      * 获取迁移目录已经存在的同名类文件
+     *
      * @return string
      */
     public function getMigrationCreatedAsThis()
     {
-        $path       = $this->laravel['config']->get("modules.paths.dirs.{$this->dirKey}");
-        $path       = $this->getModulePath($path);
-        $pattern    = $path . DIRECTORY_SEPARATOR . '*.' . $this->extension;
+        $path = $this->laravel['config']->get("modules.paths.dirs.{$this->dirKey}");
+        $path = $this->getModulePath($path);
+        $pattern = $path . DIRECTORY_SEPARATOR . '*.' . $this->extension;
         $migrations = $this->laravel['files']->glob($pattern);
 
         foreach ($migrations as $path) {

@@ -15,12 +15,14 @@ return [
     | Modules paths
     |--------------------------------------------------------------------------
     */
+
     'paths' => [
         /*
         |--------------------------------------------------------------------------
         | Modules path
         |--------------------------------------------------------------------------
         */
+
         'modules' => base_path('modules'),
 
         /*
@@ -28,6 +30,7 @@ return [
         | Modules assets path
         |--------------------------------------------------------------------------
         */
+
         'assets' => public_path('modules'),
 
         /*
@@ -38,31 +41,31 @@ return [
         */
 
         'dirs' => [
-            'data'             => 'Data',
-            'command'          => 'Console',
-            'migration'        => 'Database/Migrations',
-            'seeder'           => 'Database/Seeders',
-            'factory'          => 'Database/Factories',
-            'model'            => 'Models',
-            'controller'       => 'Http/Controllers',
-            'middleware'       => 'Http/Middleware',
-            'request'          => 'Http/Requests',
-            'provider'         => 'Providers',
-            'assets'           => 'Resources/assets',
-            'lang'             => 'Resources/lang',
-            'views'            => 'Resources/views',
-            'test'             => 'Tests',
-            'repository'       => 'Repositories',
-            'events'           => 'Events',
-            'hook'             => 'Hooks',
-            'listener'         => 'Listeners',
-            'policies'         => 'Policies',
-            'rules'            => 'Rules',
-            'jobs'             => 'Jobs',
-            'mails'            => 'Mails',
-            'notifications'    => 'Notifications',
-            'traits'           => 'Traits',
-            'components'       => 'View/Components',
+            'data'          => 'Data',
+            'command'       => 'Console',
+            'migration'     => 'Database/Migrations',
+            'seeder'        => 'Database/Seeders',
+            'factory'       => 'Database/Factories',
+            'model'         => 'Models',
+            'controller'    => 'Http/Controllers',
+            'middleware'    => 'Http/Middleware',
+            'request'       => 'Http/Requests',
+            'provider'      => 'Providers',
+            'assets'        => 'Resources/assets',
+            'lang'          => 'Resources/lang',
+            'views'         => 'Resources/views',
+            'test'          => 'Tests',
+            'repository'    => 'Repositories',
+            'events'        => 'Events',
+            'hook'          => 'Hooks',
+            'listener'      => 'Listeners',
+            'policies'      => 'Policies',
+            'rules'         => 'Rules',
+            'jobs'          => 'Jobs',
+            'mails'         => 'Mails',
+            'notifications' => 'Notifications',
+            'traits'        => 'Traits',
+            'components'    => 'View/Components',
         ],
 
         /*
@@ -71,6 +74,7 @@ return [
         |--------------------------------------------------------------------------
         | 
         */
+
         'files' => [
             'module'         => 'module.json',
             'composer'       => 'composer.json',
@@ -83,7 +87,7 @@ return [
             'routes/console' => 'Routes/console.php',
             'gitkeep/asset'  => 'Resources/assets/.gitkeep',
             'gitkeep/view'   => 'Resources/views/.gitkeep',
-        ]
+        ],
     ],
 
     /*
@@ -91,6 +95,7 @@ return [
     | 前端、后端和api端定义
     |--------------------------------------------------------------------------
     */
+
     'types' => [
         'frontend' => [
             'prefix'     => '',
@@ -101,23 +106,23 @@ return [
                 'view'       => 'front',
             ],
         ],
-        'backend' => [
+        'backend'  => [
             'prefix'     => 'admin',
             'middleware' => ['web', 'module', 'admin'],
             'theme'      => 'admin',
             'dirs'       => [
                 'controller' => 'Admin',
                 'view'       => 'admin',
-            ]
+            ],
         ],
-        'api' => [
+        'api'      => [
             'prefix'     => 'api',
             'middleware' => ['api', 'module'],
             'theme'      => 'api',
             'dirs'       => [
                 'controller' => 'Api',
                 'view'       => 'api',
-            ]
+            ],
         ],
     ],
 
@@ -141,7 +146,7 @@ return [
     | 缓存设置
     |--------------------------------------------------------------------------
     */
-    'cache' => [
+    'cache'    => [
         'enabled'  => true,
         'key'      => 'zotop-modules',
         'lifetime' => 60,

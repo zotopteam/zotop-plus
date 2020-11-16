@@ -2,18 +2,19 @@
 
 namespace Modules\Site\Hooks;
 
+use App\Modules\Module;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 class Hook
 {
     /**
      * Hook the start
-     * @param  array $start
+     *
+     * @param array $start
      * @return array
      */
-    public function start($start)
+    public function start(array $start)
     {
         $start = Arr::prepend($start, [
             'text' => trans('site::config.title'),
@@ -27,17 +28,18 @@ class Hook
 
     /**
      * Hook the navbar
-     * @param  array $navbar
+     *
+     * @param array $navbar
      * @return array
      */
-    public function navbar($navbar)
+    public function navbar(array $navbar)
     {
         // 在导航条最开始追加站点名称
         $navbar = Arr::prepend($navbar, [
             'text'   => config('site.name'),
             'href'   => route('site.config.base'),
-            'class'  => 'sitename',
-            'active' => Route::is('site.*')
+            'class'  => 'site-name',
+            'active' => Route::is('site.*'),
         ], 'site_name');
 
         return $navbar;
@@ -45,10 +47,11 @@ class Hook
 
     /**
      * Hook the tools
-     * @param  array $navbar
+     *
+     * @param array $tools
      * @return array
      */
-    public function tools($tools)
+    public function tools(array $tools)
     {
         // 在导航条最开始追加站点名称
         $tools = Arr::prepend($tools, [
@@ -64,23 +67,23 @@ class Hook
 
     /**
      * 站点模块禁止 禁用和卸载
-     * 
-     * @param  array $manage 按钮数组
-     * @param  module $module 模块对象
+     *
+     * @param array $manage 按钮数组
+     * @param \App\Modules\Module $module 模块对象
      * @return array
      */
-    public function moduleManageSite($manage, $module)
+    public function moduleManageSite(array $manage, Module $module)
     {
         // 核心模块禁止卸载和禁用
         if ($module->is('site') && $module->isInstalled()) {
-            Arr::forget($manage, ['disable','uninstall']);
+            Arr::forget($manage, ['disable', 'uninstall']);
             $manage = Arr::prepend($manage, [
-                'text'  => trans('site::config.title'),
-                'href'  => route('site.config.base'),
-                'icon'  => 'fa fa-cog',
+                'text' => trans('site::config.title'),
+                'href' => route('site.config.base'),
+                'icon' => 'fa fa-cog',
             ], 'site_config');
         }
 
         return $manage;
-    }       
+    }
 }

@@ -53,8 +53,8 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * 闭包命令行文件地址，没有返回false
-     * 
-     * @return mixed
+     *
+     * @return void
      */
     public function getConsoleRouteFile()
     {

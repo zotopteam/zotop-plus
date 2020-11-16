@@ -2,6 +2,6 @@
 
 namespace App\Modules\Routing;
 
-class FrontController extends Controller
+class FrontController extends WebController
 {
 }

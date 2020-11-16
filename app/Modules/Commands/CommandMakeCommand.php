@@ -2,8 +2,6 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class CommandMakeCommand extends GeneratorCommand
@@ -27,31 +25,34 @@ class CommandMakeCommand extends GeneratorCommand
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
-     * 
+     *
      */
     protected $appendName = 'Command';
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = 'command';
 
     /**
      * stub 用于从stubs中获取stub
+     *
      * @var string
      */
     protected $stub = 'command';
 
     /**
      * 重载prepare
+     *
      * @return boolean
      */
     public function prepare()
     {
         // 替换
         $this->replace([
-            'command_signature'     => $this->getSignature(),
+            'command_signature' => $this->getSignature(),
         ]);
 
         return true;
@@ -59,6 +60,7 @@ class CommandMakeCommand extends GeneratorCommand
 
     /**
      * 获取 signature
+     *
      * @return string
      */
     private function getSignature()

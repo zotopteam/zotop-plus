@@ -195,15 +195,19 @@ class Stringable
     }
 
     /**
-     * Split a string using a regular expression.
+     * Split a string using a regular expression or by length.
      *
-     * @param  string  $pattern
+     * @param  string|int  $pattern
      * @param  int  $limit
      * @param  int  $flags
      * @return \Illuminate\Support\Collection
      */
     public function split($pattern, $limit = -1, $flags = 0)
     {
+        if (filter_var($pattern, FILTER_VALIDATE_INT) !== false) {
+            return collect(mb_str_split($this->value, $pattern));
+        }
+
         $segments = preg_split($pattern, $this->value, $limit, $flags);
 
         return ! empty($segments) ? collect($segments) : collect();
@@ -336,6 +340,42 @@ class Stringable
         }
 
         return collect($matches[1] ?? $matches[0]);
+    }
+
+    /**
+     * Pad both sides of the string with another.
+     *
+     * @param  int  $length
+     * @param  string  $pad
+     * @return static
+     */
+    public function padBoth($length, $pad = ' ')
+    {
+        return new static(Str::padBoth($this->value, $length, $pad));
+    }
+
+    /**
+     * Pad the left side of the string with another.
+     *
+     * @param  int  $length
+     * @param  string  $pad
+     * @return static
+     */
+    public function padLeft($length, $pad = ' ')
+    {
+        return new static(Str::padLeft($this->value, $length, $pad));
+    }
+
+    /**
+     * Pad the right side of the string with another.
+     *
+     * @param  int  $length
+     * @param  string  $pad
+     * @return static
+     */
+    public function padRight($length, $pad = ' ')
+    {
+        return new static(Str::padRight($this->value, $length, $pad));
     }
 
     /**
@@ -601,6 +641,25 @@ class Stringable
     }
 
     /**
+     * Apply the callback's string changes if the given "value" is true.
+     *
+     * @param  mixed  $value
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return mixed|$this
+     */
+    public function when($value, $callback, $default = null)
+    {
+        if ($value) {
+            return $callback($this, $value) ?: $this;
+        } elseif ($default) {
+            return $default($this, $value) ?: $this;
+        }
+
+        return $this;
+    }
+
+    /**
      * Execute the given callback if the string is empty.
      *
      * @param  callable  $callback
@@ -650,7 +709,7 @@ class Stringable
     {
         $this->dump();
 
-        die(1);
+        exit(1);
     }
 
     /**

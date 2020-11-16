@@ -2,23 +2,25 @@
 
 namespace App\Support;
 
-use Intervention\Image\Image;
 use Intervention\Image\Filters\FilterInterface;
+use Intervention\Image\Image;
 
 abstract class ImageFilter implements FilterInterface
 {
     /**
      * image filters 容器
+     *
      * @var array
      */
     public static $filters = [];
 
     /**
-     *  设置filter
-     * @param mixed $name  滤器名称
+     * 设置filter
+     *
+     * @param mixed $name 滤器名称
      * @param string $class 类名
      */
-    public static function set($name, $class)
+    public static function set($name, string $class)
     {
         $name = strtolower($name);
 
@@ -30,11 +32,12 @@ abstract class ImageFilter implements FilterInterface
 
     /**
      * 获取filter实例
-     * @param  string $name      滤器名称
-     * @param  array $parameters 滤器参数
+     *
+     * @param string $name 滤器名称
+     * @param array|null $parameters 滤器参数
      * @return Filter
      */
-    public static function get($name, $parameters = null)
+    public static function get(string $name, $parameters = null)
     {
         $name = strtolower($name);
 
@@ -66,12 +69,13 @@ abstract class ImageFilter implements FilterInterface
 
     /**
      * 快速应用滤镜
-     * @param  mixed $image 
-     * @param  string $filter 注册的滤镜名称
-     * @param  mixed $parameter 滤镜参数，从滤镜__construct传入
+     *
+     * @param mixed $image
+     * @param string $filter 注册的滤镜名称
+     * @param mixed $parameter 滤镜参数，从滤镜__construct传入
      * @return mixed
      */
-    public static function apply($image, $filter, $parameter = null)
+    public static function apply($image, string $filter, $parameter = null)
     {
         // 获取滤器
         if ($filter = static::get($filter, $parameter)) {
@@ -84,7 +88,7 @@ abstract class ImageFilter implements FilterInterface
     /**
      * Applies filter effects to given image
      *
-     * @param  \Intervention\Image\Image $image
+     * @param \Intervention\Image\Image $image
      * @return \Intervention\Image\Image
      */
     public function applyFilter(Image $image)
@@ -95,13 +99,13 @@ abstract class ImageFilter implements FilterInterface
     /**
      * 动态方法
      *
-     * @param  string $name
-     * @param  array  $parameters
+     * @param string $method
+     * @param array $parameters
      * @return $this
      *
      * @throws \Exception
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters)
     {
         // 如果当前类存在属性，则直接用属性名方法赋值给属性
         if ($parameters && property_exists($this, $method)) {

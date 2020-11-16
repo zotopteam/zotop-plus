@@ -2,9 +2,9 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Schema;
 use App\Modules\Maker\GeneratorCommand;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 
 class ModelMakeCommand extends GeneratorCommand
@@ -30,12 +30,14 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = 'model';
 
     /**
      * stub 用于从stubs中获取stub
+     *
      * @var string
      */
     protected $stub = 'model';
@@ -43,6 +45,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * 生成前准备
+     *
      * @return boolean
      */
     public function prepare()
@@ -59,6 +62,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * 获取数据表名称
+     *
      * @return string
      */
     public function getTableName()
@@ -76,9 +80,10 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * 获取数据表全部字段
+     *
      * @return array
      */
-    public function getTableColums()
+    public function getTableColumns()
     {
         static $columns = [];
 
@@ -95,12 +100,13 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * 获取数据表可填充字段
+     *
      * @return string
      */
     public function getFillable()
     {
         // 从数据表中直接读取字段
-        if ($columns = $this->getTableColums()) {
+        if ($columns = $this->getTableColumns()) {
             return "['" . implode("','", $columns) . "']";
         }
 
@@ -109,6 +115,7 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * 不可批量赋值的属性，默认为全部可赋值
+     *
      * @return string
      */
     public function getGuarded()
@@ -118,11 +125,12 @@ class ModelMakeCommand extends GeneratorCommand
 
     /**
      * 时间戳，如果含有created_at 和 updated_at，则真，否则假
+     *
      * @return string
      */
     public function getTimestamps()
     {
-        $columns = $this->getTableColums();
+        $columns = $this->getTableColumns();
 
         if (in_array('created_at', $columns) && in_array('updated_at', $columns)) {
             return 'true';

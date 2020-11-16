@@ -25,6 +25,7 @@ class BootstrapServiceProvider extends ServiceProvider
      * Bootstrap the application services.
      *
      * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function boot()
     {   

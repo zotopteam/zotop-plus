@@ -3,7 +3,6 @@
 namespace App\Support;
 
 use Illuminate\Support\Str;
-use App\Support\ImageFilter;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -42,10 +41,10 @@ class ImagePreview
 
     /**
      * 初始化
-     * 
+     *
      * @param string $path 文件路径
      */
-    public function __construct($path)
+    public function __construct(string $path)
     {
         $this->path = $path;
 
@@ -58,11 +57,11 @@ class ImagePreview
 
     /**
      * 静态初始化
-     * 
-     * @param string $path  文件路径
+     *
+     * @param string $path 文件路径
      * @return $this
      */
-    public static function file($path)
+    public static function file(string $path)
     {
         return new static($path);
     }
@@ -128,7 +127,9 @@ class ImagePreview
 
     /**
      * 获取静态访问url
+     *
      * @return string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function static_url()
     {
@@ -196,7 +197,9 @@ class ImagePreview
 
     /**
      * 根据设置自动判断返回的url方式
+     *
      * @return string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function url()
     {
@@ -211,13 +214,13 @@ class ImagePreview
     /**
      * 动态方法
      *
-     * @param  string $name
-     * @param  array  $parameters
+     * @param string $method
+     * @param array $parameters
      * @return $this
      *
      * @throws \Exception
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters)
     {
         // 如果当前类存在属性，则直接赋值给属性
         if ($parameters && property_exists($this, $method)) {

@@ -3,7 +3,6 @@
 namespace App\Modules\Maker;
 
 use App\Modules\Exceptions\TableNotFoundException;
-use App\Modules\Maker\Structure;
 use Doctrine\DBAL\Types\Type;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -25,23 +24,25 @@ class Table
 
     /**
      * 表名称，不含前缀
+     *
      * @var string
      */
     protected $table;
 
     /**
      * Convert dbal types to Laravel Migration Types
+     *
      * @var array
      */
     protected $fieldTypeMap = [
-        'tinyint'   => 'tinyInteger',
-        'smallint'  => 'smallInteger',
-        'mediumint' => 'mediumInteger',
-        'bigint'    => 'bigInteger',
-        'longtext' => 'longText',
+        'tinyint'    => 'tinyInteger',
+        'smallint'   => 'smallInteger',
+        'mediumint'  => 'mediumInteger',
+        'bigint'     => 'bigInteger',
+        'longtext'   => 'longText',
         'mediumtext' => 'mediumText',
-        'datetime'  => 'dateTime',
-        'blob'      => 'binary',
+        'datetime'   => 'dateTime',
+        'blob'       => 'binary',
     ];
 
     /**
@@ -49,16 +50,16 @@ class Table
      */
     private $registerTypes = [
         // Mysql types
-        'json'      => 'text',
-        'jsonb'     => 'text',
-        'bit'       => 'boolean',
-        'enum'      => 'string',
+        'json'     => 'text',
+        'jsonb'    => 'text',
+        'bit'      => 'boolean',
+        'enum'     => 'string',
         // Postgres types
-        '_text'     => 'text',
-        '_int4'     => 'integer',
-        '_numeric'  => 'float',
-        'cidr'      => 'string',
-        'inet'      => 'string',
+        '_text'    => 'text',
+        '_int4'    => 'integer',
+        '_numeric' => 'float',
+        'cidr'     => 'string',
+        'inet'     => 'string',
     ];
 
     /**
@@ -76,6 +77,11 @@ class Table
         'mediumtext' => 'App\Modules\Maker\Types\MediumtextType',
     ];
 
+    /**
+     * Table constructor.
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function __construct()
     {
         $this->schema = Schema::getConnection()->getDoctrineSchemaManager();
@@ -103,12 +109,13 @@ class Table
 
     /**
      * 获取全部的数据表
-     * @param  boolean $prefix 是否包含前缀
+     *
+     * @param boolean $prefix 是否包含前缀
      * @return mixed
      */
     public static function all($prefix = false)
     {
-        $instance  = new static;
+        $instance = new static;
 
         $tables = $instance->schema->listTableNames();
 
@@ -125,10 +132,11 @@ class Table
 
     /**
      * 查找表
-     * @param  string $table 不含前缀
+     *
+     * @param string $table 不含前缀
      * @return object|false
      */
-    public static function find($table)
+    public static function find(string $table)
     {
         static $instance = null;
 
@@ -142,10 +150,12 @@ class Table
 
     /**
      * 查找表，如果不存在，跑出异常
-     * @param  string $table 不含前缀
+     *
+     * @param string $table 不含前缀
      * @return object|false
+     * @throws \App\Modules\Exceptions\TableNotFoundException
      */
-    public static function findOrFail($table)
+    public static function findOrFail(string $table)
     {
         $table = static::find($table);
 
@@ -158,7 +168,7 @@ class Table
 
     /**
      * 判断表是否存在
-     * @param  string $table 表名称，不含前缀
+     *
      * @return boolean
      */
     public function exists()
@@ -168,7 +178,8 @@ class Table
 
     /**
      * 获取表的全名
-     * @param  boolean $prefix 是否含前缀
+     *
+     * @param boolean $prefix 是否含前缀
      * @return string
      */
     public function name($prefix = false)
@@ -178,10 +189,11 @@ class Table
 
     /**
      * 重命名数据表
-     * 
+     *
+     * @param string $name 表名称
      * @return bool
      */
-    public function rename($name)
+    public function rename(string $name)
     {
         Schema::rename($this->table, $name);
 
@@ -194,9 +206,11 @@ class Table
     }
 
     /**
-     * 删除表是否存在
-     * 
-     * @return bool
+     * 删除存在的表
+     *
+     * @return \Illuminate\Database\Schema\Builder|void
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function drop()
     {
@@ -205,8 +219,10 @@ class Table
 
     /**
      * 获取表的字段集合
-     * 
-     * @return collection
+     *
+     * @return \Illuminate\Support\Collection
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function columns()
     {
@@ -228,8 +244,11 @@ class Table
 
     /**
      * 获取字段类型
-     * @param  Column $column 字段
+     *
+     * @param $column
      * @return string
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     protected function getColumnType($column)
     {
@@ -248,14 +267,15 @@ class Table
 
     /**
      * 获取字段长度
-     * @param  Column $column 字段
+     *
+     * @param mixed $column 字段
      * @return mixed
      */
     protected function getColumnLength($column)
     {
         $length = $column->getLength();
 
-        $type   = $this->getColumnType($column);
+        $type = $this->getColumnType($column);
 
         // 去除laravel中没有长度参数的类型
         if (!in_array($type, ['char', 'string', 'float', 'double', 'decimal', 'enum'])) {
@@ -272,8 +292,8 @@ class Table
 
     /**
      * 获取表的索引
-     * 
-     * @return array
+     *
+     * @return \Illuminate\Support\Collection
      */
     public function indexes()
     {
@@ -289,9 +309,12 @@ class Table
     }
 
     /**
-     * 获取字段类型
-     * @param  Column $column 字段
+     * 获取索引类型
+     *
+     * @param $index
      * @return string
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     protected function getIndexType($index)
     {
@@ -310,7 +333,8 @@ class Table
 
     /**
      * 获取表的外键集合
-     * @return [type] [description]
+     *
+     * @return \Illuminate\Support\Collection
      */
     public function foreignKeys()
     {
@@ -330,17 +354,18 @@ class Table
 
     /**
      * 获取外键名称
-     * @param  ForeignKey $foreignKey
+     *
+     * @param mixed $foreignKey
      * @return string|null
      */
     protected function getForeignKeyName($foreignKey)
     {
-        $name   = $foreignKey->getName();
+        $name = $foreignKey->getName();
 
         // laravel外键名称
         $column = $foreignKey->getLocalColumns()[0];
-        $index  = strtolower("{$this->table}_{$column}_foreign");
-        $index  = str_replace(array('-', '.'), '_', $index);
+        $index = strtolower("{$this->table}_{$column}_foreign");
+        $index = str_replace(['-', '.'], '_', $index);
 
         // 如果是默认外键，则无需返回名称
         if ($name === $index) {
@@ -352,7 +377,8 @@ class Table
 
     /**
      * 获取外键名称
-     * @param  ForeignKey $foreignKey
+     *
+     * @param mixed $foreignKey
      * @return string
      */
     protected function getForeignTableName($foreignKey)
@@ -365,6 +391,7 @@ class Table
 
     /**
      * 获取创建字段语句
+     *
      * @return string
      */
     public function getBlueprints()
@@ -374,6 +401,7 @@ class Table
 
     /**
      * Handle call __toString.
+     *
      * @return string
      */
     public function __toString()

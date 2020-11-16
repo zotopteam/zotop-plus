@@ -76,7 +76,7 @@ class RouteCollection implements \IteratorAggregate, \Countable
      */
     public function add(string $name, Route $route/*, int $priority = 0*/)
     {
-        if (\func_num_args() < 3 && __CLASS__ !== static::class && __CLASS__ !== (new \ReflectionMethod($this, __FUNCTION__))->getDeclaringClass()->getName() && !$this instanceof \PHPUnit\Framework\MockObject\MockObject && !$this instanceof \Prophecy\Prophecy\ProphecySubjectInterface) {
+        if (\func_num_args() < 3 && __CLASS__ !== static::class && __CLASS__ !== (new \ReflectionMethod($this, __FUNCTION__))->getDeclaringClass()->getName() && !$this instanceof \PHPUnit\Framework\MockObject\MockObject && !$this instanceof \Prophecy\Prophecy\ProphecySubjectInterface && !$this instanceof \Mockery\MockInterface) {
             trigger_deprecation('symfony/routing', '5.1', 'The "%s()" method will have a new "int $priority = 0" argument in version 6.0, not defining it is deprecated.', __METHOD__);
         }
 
@@ -179,8 +179,8 @@ class RouteCollection implements \IteratorAggregate, \Countable
 
         foreach ($this->routes as $name => $route) {
             $prefixedRoutes[$prefix.$name] = $route;
-            if (null !== $name = $route->getDefault('_canonical_route')) {
-                $route->setDefault('_canonical_route', $prefix.$name);
+            if (null !== $canonicalName = $route->getDefault('_canonical_route')) {
+                $route->setDefault('_canonical_route', $prefix.$canonicalName);
             }
             if (isset($this->priorities[$name])) {
                 $prefixedPriorities[$prefix.$name] = $this->priorities[$name];

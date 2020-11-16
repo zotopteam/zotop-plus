@@ -2,8 +2,8 @@
 
 namespace Modules\Core\Providers;
 
-use Illuminate\Support\Arr;
 use App\Support\ImageFilter;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -19,8 +19,8 @@ class CoreServiceProvider extends ServiceProvider
      * @var array
      */
     protected $middlewares = [
-        'admin'       => 'AdminMiddleware',
-        'allow'       => 'AllowMiddleware',
+        'admin' => 'AdminMiddleware',
+        'allow' => 'AllowMiddleware',
     ];
 
     /**
@@ -37,6 +37,7 @@ class CoreServiceProvider extends ServiceProvider
      * Boot the application events.
      *
      * @return void
+     * @throws \Exception
      */
     public function boot()
     {
@@ -49,6 +50,7 @@ class CoreServiceProvider extends ServiceProvider
 
     /**
      * 设置主题和后台后缀
+     *
      * @return void
      */
     public function setBackend()
@@ -60,7 +62,6 @@ class CoreServiceProvider extends ServiceProvider
     /**
      * 注册中间件
      *
-     * @param  Router $router
      * @return void
      */
     public function registerMiddleware()
@@ -73,6 +74,8 @@ class CoreServiceProvider extends ServiceProvider
 
     /**
      * 设置当前语言
+     *
+     * @throws \Exception
      */
     public function setLocale()
     {
@@ -81,7 +84,7 @@ class CoreServiceProvider extends ServiceProvider
         // Carbon 语言转换
         $carbon_locale = Arr::get($this->app['hook.filter']->fire('carbon.locale.transform', [
             'zh-Hans' => 'zh',
-            'zh-Hant' => 'zh_TW'
+            'zh-Hant' => 'zh_TW',
         ]), $locale, $locale);
 
         Carbon::setLocale($carbon_locale);
@@ -90,7 +93,7 @@ class CoreServiceProvider extends ServiceProvider
         $faker_locale = Arr::get($this->app['hook.filter']->fire('faker.locale.transform', [
             'en'      => 'en_US',
             'zh-Hans' => 'zh_CN',
-            'zh-Hant' => 'zh_TW'
+            'zh-Hant' => 'zh_TW',
         ]), $locale, $locale);
 
         $this->app['config']->set('app.faker_locale', $faker_locale);
@@ -98,7 +101,9 @@ class CoreServiceProvider extends ServiceProvider
 
     /**
      * 事件监听
-     * @return null
+     *
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function eventsListen()
     {

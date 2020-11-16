@@ -14,7 +14,6 @@ use Egulias\EmailValidator\Validation\SpoofCheckValidation;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Exists;
@@ -185,19 +184,9 @@ trait ValidatesAttributes
      */
     protected function getDateTimestamp($value)
     {
-        if ($value instanceof DateTimeInterface) {
-            return $value->getTimestamp();
-        }
+        $date = is_null($value) ? null : $this->getDateTime($value);
 
-        if ($this->isTestingRelativeDateTime($value)) {
-            $date = $this->getDateTime($value);
-
-            if (! is_null($date)) {
-                return $date->getTimestamp();
-            }
-        }
-
-        return strtotime($value);
+        return $date ? $date->getTimestamp() : null;
     }
 
     /**
@@ -245,27 +234,10 @@ trait ValidatesAttributes
     protected function getDateTime($value)
     {
         try {
-            if ($this->isTestingRelativeDateTime($value)) {
-                return Date::parse($value);
-            }
-
-            return date_create($value) ?: null;
+            return Date::parse($value);
         } catch (Exception $e) {
             //
         }
-    }
-
-    /**
-     * Check if the given value should be adjusted to Carbon::getTestNow().
-     *
-     * @param  mixed  $value
-     * @return bool
-     */
-    protected function isTestingRelativeDateTime($value)
-    {
-        return Carbon::hasTestNow() && is_string($value) && (
-            $value === 'now' || Carbon::hasRelativeKeywords($value)
-        );
     }
 
     /**
@@ -563,7 +535,7 @@ trait ValidatesAttributes
             [1, 1], array_filter(sscanf($parameters['ratio'], '%f/%d'))
         );
 
-        $precision = 1 / max($width, $height);
+        $precision = 1 / (max($width, $height) + 1);
 
         return abs($numerator / $denominator - $width / $height) > $precision;
     }
@@ -656,6 +628,8 @@ trait ValidatesAttributes
                     return new FilterEmailValidation();
                 } elseif ($validation === 'filter_unicode') {
                     return FilterEmailValidation::unicode();
+                } elseif (is_string($validation) && class_exists($validation)) {
+                    return $this->container->make($validation);
                 }
             })
             ->values()
@@ -731,17 +705,17 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(1, $parameters, 'unique');
 
-        [$connection, $table] = $this->parseTable($parameters[0]);
+        [$connection, $table, $idColumn] = $this->parseTable($parameters[0]);
 
         // The second parameter position holds the name of the column that needs to
         // be verified as unique. If this parameter isn't specified we will just
         // assume that this column to be verified shares the attribute's name.
         $column = $this->getQueryColumn($parameters, $attribute);
 
-        [$idColumn, $id] = [null, null];
+        $id = null;
 
         if (isset($parameters[2])) {
-            [$idColumn, $id] = $this->getUniqueIds($parameters);
+            [$idColumn, $id] = $this->getUniqueIds($idColumn, $parameters);
 
             if (! is_null($id)) {
                 $id = stripslashes($id);
@@ -767,12 +741,13 @@ trait ValidatesAttributes
     /**
      * Get the excluded ID column and value for the unique rule.
      *
+     * @param  string|null  $idColumn
      * @param  array  $parameters
      * @return array
      */
-    protected function getUniqueIds($parameters)
+    protected function getUniqueIds($idColumn, $parameters)
     {
-        $idColumn = $parameters[3] ?? 'id';
+        $idColumn = $idColumn ?? $parameters[3] ?? 'id';
 
         return [$idColumn, $this->prepareUniqueId($parameters[2])];
     }
@@ -829,11 +804,11 @@ trait ValidatesAttributes
             $model = new $table;
 
             $table = $model->getTable();
-
             $connection = $connection ?? $model->getConnectionName();
+            $idColumn = $model->getKeyName();
         }
 
-        return [$connection, $table];
+        return [$connection, $table, $idColumn ?? null];
     }
 
     /**
@@ -932,6 +907,10 @@ trait ValidatesAttributes
             return $this->getSize($attribute, $value) > $parameters[0];
         }
 
+        if (is_numeric($parameters[0])) {
+            return false;
+        }
+
         if ($this->hasRule($attribute, $this->numericRules) && is_numeric($value) && is_numeric($comparedToValue)) {
             return $value > $comparedToValue;
         }
@@ -961,6 +940,10 @@ trait ValidatesAttributes
 
         if (is_null($comparedToValue) && (is_numeric($value) && is_numeric($parameters[0]))) {
             return $this->getSize($attribute, $value) < $parameters[0];
+        }
+
+        if (is_numeric($parameters[0])) {
+            return false;
         }
 
         if ($this->hasRule($attribute, $this->numericRules) && is_numeric($value) && is_numeric($comparedToValue)) {
@@ -994,6 +977,10 @@ trait ValidatesAttributes
             return $this->getSize($attribute, $value) >= $parameters[0];
         }
 
+        if (is_numeric($parameters[0])) {
+            return false;
+        }
+
         if ($this->hasRule($attribute, $this->numericRules) && is_numeric($value) && is_numeric($comparedToValue)) {
             return $value >= $comparedToValue;
         }
@@ -1023,6 +1010,10 @@ trait ValidatesAttributes
 
         if (is_null($comparedToValue) && (is_numeric($value) && is_numeric($parameters[0]))) {
             return $this->getSize($attribute, $value) <= $parameters[0];
+        }
+
+        if (is_numeric($parameters[0])) {
+            return false;
         }
 
         if ($this->hasRule($attribute, $this->numericRules) && is_numeric($value) && is_numeric($comparedToValue)) {
@@ -1261,6 +1252,29 @@ trait ValidatesAttributes
     }
 
     /**
+     * Validate the value of an attribute is a multiple of a given value.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array  $parameters
+     * @return bool
+     */
+    public function validateMultipleOf($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(1, $parameters, 'multiple_of');
+
+        if (! $this->validateNumeric($attribute, $value) || ! $this->validateNumeric($attribute, $parameters[0])) {
+            return false;
+        }
+
+        if ((float) $parameters[0] === 0.0) {
+            return false;
+        }
+
+        return bcmod($value, $parameters[0], 16) === '0.0000000000000000';
+    }
+
+    /**
      * "Indicate" validation should pass if value is null.
      *
      * Always returns true, just lets us put "nullable" in rules.
@@ -1479,6 +1493,8 @@ trait ValidatesAttributes
 
         if (is_bool($other)) {
             $values = $this->convertValuesToBoolean($values);
+        } elseif (is_null($other)) {
+            $values = $this->convertValuesToNull($values);
         }
 
         return [$values, $other];
@@ -1504,6 +1520,19 @@ trait ValidatesAttributes
     }
 
     /**
+     * Convert the given values to null if they are string "null".
+     *
+     * @param  array  $values
+     * @return array
+     */
+    protected function convertValuesToNull($values)
+    {
+        return array_map(function ($value) {
+            return Str::lower($value) === 'null' ? null : $value;
+        }, $values);
+    }
+
+    /**
      * Validate that an attribute exists when another attribute does not have a given value.
      *
      * @param  string  $attribute
@@ -1515,11 +1544,9 @@ trait ValidatesAttributes
     {
         $this->requireParameterCount(2, $parameters, 'required_unless');
 
-        $data = Arr::get($this->data, $parameters[0]);
+        [$values, $other] = $this->prepareValuesAndOther($parameters);
 
-        $values = array_slice($parameters, 1);
-
-        if (! in_array($data, $values)) {
+        if (! in_array($other, $values)) {
             return $this->validateRequired($attribute, $value);
         }
 
@@ -1741,7 +1768,7 @@ trait ValidatesAttributes
          * (c) Fabien Potencier <fabien@symfony.com> http://symfony.com
          */
         $pattern = '~^
-            (aaa|aaas|about|acap|acct|acd|acr|adiumxtra|adt|afp|afs|aim|amss|android|appdata|apt|ark|attachment|aw|barion|beshare|bitcoin|bitcoincash|blob|bolo|browserext|calculator|callto|cap|cast|casts|chrome|chrome-extension|cid|coap|coap\+tcp|coap\+ws|coaps|coaps\+tcp|coaps\+ws|com-eventbrite-attendee|content|conti|crid|cvs|dab|data|dav|diaspora|dict|did|dis|dlna-playcontainer|dlna-playsingle|dns|dntp|dpp|drm|drop|dtn|dvb|ed2k|elsi|example|facetime|fax|feed|feedready|file|filesystem|finger|first-run-pen-experience|fish|fm|ftp|fuchsia-pkg|geo|gg|git|gizmoproject|go|gopher|graph|gtalk|h323|ham|hcap|hcp|http|https|hxxp|hxxps|hydrazone|iax|icap|icon|im|imap|info|iotdisco|ipn|ipp|ipps|irc|irc6|ircs|iris|iris\.beep|iris\.lwz|iris\.xpc|iris\.xpcs|isostore|itms|jabber|jar|jms|keyparc|lastfm|ldap|ldaps|leaptofrogans|lorawan|lvlt|magnet|mailserver|mailto|maps|market|message|mid|mms|modem|mongodb|moz|ms-access|ms-browser-extension|ms-calculator|ms-drive-to|ms-enrollment|ms-excel|ms-eyecontrolspeech|ms-gamebarservices|ms-gamingoverlay|ms-getoffice|ms-help|ms-infopath|ms-inputapp|ms-lockscreencomponent-config|ms-media-stream-id|ms-mixedrealitycapture|ms-mobileplans|ms-officeapp|ms-people|ms-project|ms-powerpoint|ms-publisher|ms-restoretabcompanion|ms-screenclip|ms-screensketch|ms-search|ms-search-repair|ms-secondary-screen-controller|ms-secondary-screen-setup|ms-settings|ms-settings-airplanemode|ms-settings-bluetooth|ms-settings-camera|ms-settings-cellular|ms-settings-cloudstorage|ms-settings-connectabledevices|ms-settings-displays-topology|ms-settings-emailandaccounts|ms-settings-language|ms-settings-location|ms-settings-lock|ms-settings-nfctransactions|ms-settings-notifications|ms-settings-power|ms-settings-privacy|ms-settings-proximity|ms-settings-screenrotation|ms-settings-wifi|ms-settings-workplace|ms-spd|ms-sttoverlay|ms-transit-to|ms-useractivityset|ms-virtualtouchpad|ms-visio|ms-walk-to|ms-whiteboard|ms-whiteboard-cmd|ms-word|msnim|msrp|msrps|mss|mtqp|mumble|mupdate|mvn|news|nfs|ni|nih|nntp|notes|ocf|oid|onenote|onenote-cmd|opaquelocktoken|openpgp4fpr|pack|palm|paparazzi|payto|pkcs11|platform|pop|pres|prospero|proxy|pwid|psyc|pttp|qb|query|redis|rediss|reload|res|resource|rmi|rsync|rtmfp|rtmp|rtsp|rtsps|rtspu|s3|secondlife|service|session|sftp|sgn|shttp|sieve|simpleledger|sip|sips|skype|smb|sms|smtp|snews|snmp|soap\.beep|soap\.beeps|soldat|spiffe|spotify|ssh|steam|stun|stuns|submit|svn|tag|teamspeak|tel|teliaeid|telnet|tftp|things|thismessage|tip|tn3270|tool|turn|turns|tv|udp|unreal|urn|ut2004|v-event|vemmi|ventrilo|videotex|vnc|view-source|wais|webcal|wpid|ws|wss|wtai|wyciwyg|xcon|xcon-userid|xfire|xmlrpc\.beep|xmlrpc\.beeps|xmpp|xri|ymsgr|z39\.50|z39\.50r|z39\.50s)://                                 # protocol
+            (aaa|aaas|about|acap|acct|acd|acr|adiumxtra|adt|afp|afs|aim|amss|android|appdata|apt|ark|attachment|aw|barion|beshare|bitcoin|bitcoincash|blob|bolo|browserext|calculator|callto|cap|cast|casts|chrome|chrome-extension|cid|coap|coap\+tcp|coap\+ws|coaps|coaps\+tcp|coaps\+ws|com-eventbrite-attendee|content|conti|crid|cvs|dab|data|dav|diaspora|dict|did|dis|dlna-playcontainer|dlna-playsingle|dns|dntp|dpp|drm|drop|dtn|dvb|ed2k|elsi|example|facetime|fax|feed|feedready|file|filesystem|finger|first-run-pen-experience|fish|fm|ftp|fuchsia-pkg|geo|gg|git|gizmoproject|go|gopher|graph|gtalk|h323|ham|hcap|hcp|http|https|hxxp|hxxps|hydrazone|iax|icap|icon|im|imap|info|iotdisco|ipn|ipp|ipps|irc|irc6|ircs|iris|iris\.beep|iris\.lwz|iris\.xpc|iris\.xpcs|isostore|itms|jabber|jar|jms|keyparc|lastfm|ldap|ldaps|leaptofrogans|lorawan|lvlt|magnet|mailserver|mailto|maps|market|message|mid|mms|modem|mongodb|moz|ms-access|ms-browser-extension|ms-calculator|ms-drive-to|ms-enrollment|ms-excel|ms-eyecontrolspeech|ms-gamebarservices|ms-gamingoverlay|ms-getoffice|ms-help|ms-infopath|ms-inputapp|ms-lockscreencomponent-config|ms-media-stream-id|ms-mixedrealitycapture|ms-mobileplans|ms-officeapp|ms-people|ms-project|ms-powerpoint|ms-publisher|ms-restoretabcompanion|ms-screenclip|ms-screensketch|ms-search|ms-search-repair|ms-secondary-screen-controller|ms-secondary-screen-setup|ms-settings|ms-settings-airplanemode|ms-settings-bluetooth|ms-settings-camera|ms-settings-cellular|ms-settings-cloudstorage|ms-settings-connectabledevices|ms-settings-displays-topology|ms-settings-emailandaccounts|ms-settings-language|ms-settings-location|ms-settings-lock|ms-settings-nfctransactions|ms-settings-notifications|ms-settings-power|ms-settings-privacy|ms-settings-proximity|ms-settings-screenrotation|ms-settings-wifi|ms-settings-workplace|ms-spd|ms-sttoverlay|ms-transit-to|ms-useractivityset|ms-virtualtouchpad|ms-visio|ms-walk-to|ms-whiteboard|ms-whiteboard-cmd|ms-word|msnim|msrp|msrps|mss|mtqp|mumble|mupdate|mvn|news|nfs|ni|nih|nntp|notes|ocf|oid|onenote|onenote-cmd|opaquelocktoken|openpgp4fpr|pack|palm|paparazzi|payto|pkcs11|platform|pop|pres|prospero|proxy|pwid|psyc|pttp|qb|query|redis|rediss|reload|res|resource|rmi|rsync|rtmfp|rtmp|rtsp|rtsps|rtspu|s3|secondlife|service|session|sftp|sgn|shttp|sieve|simpleledger|sip|sips|skype|smb|sms|smtp|snews|snmp|soap\.beep|soap\.beeps|soldat|spiffe|spotify|ssh|steam|stun|stuns|submit|svn|tag|teamspeak|tel|teliaeid|telnet|tftp|tg|things|thismessage|tip|tn3270|tool|turn|turns|tv|udp|unreal|urn|ut2004|v-event|vemmi|ventrilo|videotex|vnc|view-source|wais|webcal|wpid|ws|wss|wtai|wyciwyg|xcon|xcon-userid|xfire|xmlrpc\.beep|xmlrpc\.beeps|xmpp|xri|ymsgr|z39\.50|z39\.50r|z39\.50s)://                                 # protocol
             (((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+:)?((?:[\_\.\pL\pN-]|%[0-9A-Fa-f]{2})+)@)?  # basic auth
             (
                 ([\pL\pN\pS\-\_\.])+(\.?([\pL\pN]|xn\-\-[\pL\pN-]+)+\.?) # a domain name

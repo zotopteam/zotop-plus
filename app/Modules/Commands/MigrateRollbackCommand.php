@@ -2,6 +2,7 @@
 
 namespace App\Modules\Commands;
 
+use App\Modules\Module;
 use Illuminate\Console\Command;
 
 class MigrateRollbackCommand extends Command
@@ -38,7 +39,10 @@ class MigrateRollbackCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {
@@ -57,10 +61,11 @@ class MigrateRollbackCommand extends Command
 
     /**
      * 迁移
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return void
      */
-    private function rollback($module)
+    private function rollback(Module $module)
     {
         $this->info(PHP_EOL . 'Rollback the module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 
@@ -79,10 +84,11 @@ class MigrateRollbackCommand extends Command
 
     /**
      * 获取源路径
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return string
      */
-    private function getMigrationPath($module)
+    private function getMigrationPath(Module $module)
     {
         $path = $this->laravel['config']->get('modules.paths.dirs.migration');
 

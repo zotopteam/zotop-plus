@@ -2,6 +2,7 @@
 
 namespace App\Themes\Commands;
 
+use App\Themes\Theme;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
@@ -29,12 +30,12 @@ class PublishCommand extends Command
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
-    protected $files;    
+    protected $files;
 
     /**
      * Create a new command instance.
      *
-     * @return void
+     * @param \Illuminate\Filesystem\Filesystem $files
      */
     public function __construct(Filesystem $files)
     {
@@ -42,10 +43,12 @@ class PublishCommand extends Command
 
         $this->files = $files;
     }
+
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
+     * @throws \App\Themes\NotFoundException
      */
     public function handle()
     {
@@ -58,32 +61,34 @@ class PublishCommand extends Command
         }
 
         // 发布全部模块
-        foreach ($this->laravel['themes']->all() as $theme) {   
+        foreach ($this->laravel['themes']->all() as $theme) {
             $this->$action($theme);
         }
-        
+
     }
 
     /**
-     * 发布
-     * @param  Module $theme 模块
-     * @return void
+     * 发布主题
+     *
+     * @param \App\Themes\Theme $theme
+     * @author Chen Lei
+     * @date 2020-11-07
      */
-    private function publish($theme)
+    private function publish(Theme $theme)
     {
-        $sourcePath      = $this->getSourcePath($theme);
+        $sourcePath = $this->getSourcePath($theme);
         $destinationPath = $this->getDestinationPath($theme);
-        
+
         // 删除目标目录
         $this->files->deleteDirectory($destinationPath);
 
         // 复制资源到目标目录
-        if (! $this->files->isDirectory($sourcePath)) {
+        if (!$this->files->isDirectory($sourcePath)) {
             return;
         }
 
         // 创建目标文件夹
-        if (! $this->files->isDirectory($destinationPath)) {
+        if (!$this->files->isDirectory($destinationPath)) {
             $this->files->makeDirectory($destinationPath, 0775, true);
         }
 
@@ -95,11 +100,12 @@ class PublishCommand extends Command
 
     /**
      * 取消发布
-     * @param  Module $theme 模块名称
+     *
+     * @param \App\Themes\Theme $theme 模块名称
      * @return void
      */
-    public function unpublish($theme)
-    {        
+    public function unpublish(Theme $theme)
+    {
         $destinationPath = $this->getDestinationPath($theme);
         $this->files->deleteDirectory($destinationPath);
         $this->info("Unpublish {$theme} successfully!");
@@ -107,23 +113,25 @@ class PublishCommand extends Command
 
     /**
      * 获取源路径
-     * @param  Module $theme 模块
+     *
+     * @param \App\Themes\Theme $theme 模块
      * @return string
      */
-    private function getSourcePath($theme)
+    private function getSourcePath(Theme $theme)
     {
         return $theme->getPath('assets');
     }
 
     /**
      * 获取目标路径
-     * @param  Module $theme 模块
+     *
+     * @param \App\Themes\Theme $theme 模块
      * @return string
      */
-    public function getDestinationPath($theme)
+    public function getDestinationPath(Theme $theme)
     {
         $path = $this->laravel['config']->get('themes.paths.assets');
 
-        return $path.DIRECTORY_SEPARATOR.$theme->getLowerName();
+        return $path . DIRECTORY_SEPARATOR . $theme->getLowerName();
     }
 }

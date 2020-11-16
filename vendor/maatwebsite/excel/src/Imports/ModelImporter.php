@@ -5,8 +5,10 @@ namespace Maatwebsite\Excel\Imports;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
+use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Row;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -26,25 +28,40 @@ class ModelImporter
     }
 
     /**
-     * @param Worksheet $worksheet
-     * @param ToModel   $import
-     * @param int|null  $startRow
+     * @param Worksheet   $worksheet
+     * @param ToModel     $import
+     * @param int|null    $startRow
+     * @param string|null $endColumn
+     *
+     * @throws \Maatwebsite\Excel\Validators\ValidationException
      */
     public function import(Worksheet $worksheet, ToModel $import, int $startRow = 1)
     {
+        if ($startRow > $worksheet->getHighestRow()) {
+            return;
+        }
+
         $headingRow       = HeadingRowExtractor::extract($worksheet, $import);
         $batchSize        = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
-        $endRow           = EndRowFinder::find($import, $startRow);
+        $endRow           = EndRowFinder::find($import, $startRow, $worksheet->getHighestRow());
         $progessBar       = $import instanceof WithProgressBar;
         $withMapping      = $import instanceof WithMapping;
         $withCalcFormulas = $import instanceof WithCalculatedFormulas;
+        $withValidation   = $import instanceof WithValidation && method_exists($import, 'prepareForValidation');
+        $endColumn        = $import instanceof WithColumnLimit ? $import->endColumn() : null;
+
+        $this->manager->setRemembersRowNumber(method_exists($import, 'rememberRowNumber'));
 
         $i = 0;
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
             $i++;
 
             $row      = new Row($spreadSheetRow, $headingRow);
-            $rowArray = $row->toArray(null, $withCalcFormulas);
+            $rowArray = $row->toArray(null, $withCalcFormulas, true, $endColumn);
+
+            if ($withValidation) {
+                $rowArray = $import->prepareForValidation($rowArray, $row->getIndex());
+            }
 
             if ($withMapping) {
                 $rowArray = $import->map($rowArray);

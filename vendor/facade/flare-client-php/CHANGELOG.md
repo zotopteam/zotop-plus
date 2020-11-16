@@ -2,6 +2,27 @@
 
 All notable changes to `flare-client-php` will be documented in this file
 
+## 1.3.7 - 2020-10-21
+
+- allow PHP 8
+
+## 1.3.6 - 2020-09-18
+
+- remove `larapack/dd` (#15)
+
+## 1.3.5 - 2020-08-26
+
+- allow Laravel 8 (#13)
+
+## 1.3.4 - 2020-07-14
+
+- use directory separator constant
+
+## 1.3.3 - 2020-07-14
+
+- fix tests by requiring symfony/mime
+- display real exception class for view errors (see https://github.com/facade/ignition/discussions/237)
+
 ## 1.3.2 - 2020-03-02
 
 - allow L7

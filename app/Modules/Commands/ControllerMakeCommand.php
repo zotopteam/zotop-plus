@@ -29,24 +29,27 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
-     * 
+     *
      */
     protected $appendName = 'Controller';
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = 'controller';
 
     /**
      * stub 用于从stubs中获取stub
+     *
      * @var string
      */
     protected $stub = 'controller';
 
     /**
      * 重载prepare
+     *
      * @return boolean
      */
     public function prepare()
@@ -72,7 +75,9 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * 生成完成后执行
-     * @return boolean
+     *
+     * @return void
+     * @throws \App\Modules\Exceptions\FileExistedException
      */
     public function generated()
     {
@@ -108,11 +113,13 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * 获取输入的 name
+     *
+     * @param string|null $key
      * @return string
      */
     public function getTypeInput($key = null)
     {
-        $type  = strtolower($this->option('type'));
+        $type = strtolower($this->option('type'));
 
         $types = $this->getConfigTypes($type);
 
@@ -121,6 +128,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * 获取输入的 model
+     *
      * @return string
      */
     public function getModelInput()
@@ -130,6 +138,8 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * 获取类的命名空间
+     *
+     * @param string|null $dirKey
      * @return string
      */
     public function getClassNamespace($dirKey = null)
@@ -148,6 +158,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * 获取文件相对路径，不含模块路径，如：Http/Controllers/Admin/Controller.php
+     *
      * @return string
      */
     public function getFilePath()
@@ -161,11 +172,12 @@ class ControllerMakeCommand extends GeneratorCommand
             $path = $path . DIRECTORY_SEPARATOR . Str::studly($dir);
         }
 
-        return  $path . DIRECTORY_SEPARATOR . $this->getFileName();
+        return $path . DIRECTORY_SEPARATOR . $this->getFileName();
     }
 
     /**
      * 获取模型的基本类名
+     *
      * @return string
      */
     public function getModelBaseName()
@@ -175,6 +187,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * 获取模型的完整类名
+     *
      * @return string
      */
     public function getModelFullName()
@@ -184,6 +197,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * 获取模型的复数名词
+     *
      * @return string
      */
     public function getModelList()
@@ -193,6 +207,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * 获取控制器名称小写格式，不含Controller
+     *
      * @return string
      */
     public function getControllerLowerName()
@@ -202,10 +217,13 @@ class ControllerMakeCommand extends GeneratorCommand
 
     /**
      * 生成控制器对应动作的模板
-     * @param  string $action 控制器动作名称 index,create,edit,show
+     *
+     * @param string $action 控制器动作名称 index,create,edit,show
+     * @param bool $force
      * @return void
+     * @throws \App\Modules\Exceptions\FileExistedException
      */
-    public function generateView($action, $force = false)
+    public function generateView(string $action, $force = false)
     {
         $stub = $this->stub . '/' . $action;
         $path = $this->getConfigDirs('views') . DIRECTORY_SEPARATOR . $this->getTypeInput("dirs.view");

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Commands;
 
+use App\Modules\Module;
 use Illuminate\Console\Command;
 
 class MigrateCommand extends Command
@@ -39,7 +40,10 @@ class MigrateCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {
@@ -58,10 +62,11 @@ class MigrateCommand extends Command
 
     /**
      * 迁移
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return void
      */
-    private function migrate($module)
+    private function migrate(Module $module)
     {
         $this->info(PHP_EOL . 'Migrate the module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 
@@ -78,7 +83,7 @@ class MigrateCommand extends Command
 
         if ($this->option('seed')) {
             $this->call('module:seed', [
-                'module' => $module->getName()
+                'module' => $module->getName(),
             ]);
         }
     }
@@ -86,10 +91,11 @@ class MigrateCommand extends Command
 
     /**
      * 获取源路径
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return string
      */
-    private function getMigrationPath($module)
+    private function getMigrationPath(Module $module)
     {
         $path = $this->laravel['config']->get('modules.paths.dirs.migration');
 

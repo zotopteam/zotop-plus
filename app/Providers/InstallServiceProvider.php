@@ -36,8 +36,8 @@ class InstallServiceProvider extends ServiceProvider
 
     /**
      * 检查是否安装
-     * 
-     * @return [type] [description]
+     *
+     * @return void
      */
     public function install()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Commands;
 
+use App\Modules\Module;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 
@@ -37,7 +38,10 @@ class SeedCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {
@@ -56,10 +60,11 @@ class SeedCommand extends Command
 
     /**
      * seed module
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return void
      */
-    private function seed($module)
+    private function seed(Module $module)
     {
         $this->info(PHP_EOL . 'Seed the module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 
@@ -73,14 +78,14 @@ class SeedCommand extends Command
         foreach ($seeders as $seeder) {
 
             if (!class_exists($seeder)) {
-                $this->error('Class does not exiests: ' . $seeder);
+                $this->error('Class does not exist: ' . $seeder);
                 continue;
             }
 
             $this->info('Seeding:' . $seeder);
 
             $this->call('db:seed', [
-                '--class' => $seeder,
+                '--class'    => $seeder,
                 '--database' => $this->option('database'),
                 '--force'    => $this->option('force'),
             ]);

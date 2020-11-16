@@ -2,8 +2,6 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use App\Modules\Maker\GeneratorCommand;
 
 class ComponentsMakeCommand extends GeneratorCommand
@@ -28,24 +26,27 @@ class ComponentsMakeCommand extends GeneratorCommand
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
-     * 
+     *
      */
     protected $appendName = '';
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = 'components';
 
     /**
      * stub 用于从stubs中获取stub
+     *
      * @var string
      */
     protected $stubDir = 'component';
 
     /**
      * 重载prepare
+     *
      * @return boolean
      */
     public function prepare()
@@ -63,7 +64,8 @@ class ComponentsMakeCommand extends GeneratorCommand
 
     /**
      * 如果有视图参数，生成完成后创建视图
-     * @return boolean
+     *
+     * @throws \App\Modules\Exceptions\FileExistedException
      */
     public function generated()
     {
@@ -74,11 +76,13 @@ class ComponentsMakeCommand extends GeneratorCommand
 
     /**
      * 创建模板
-     * @param  string  $type  类型：backend,fronted,api
-     * @param  boolean $force 强制生成
+     *
+     * @param string $type 类型：backend,fronted,api
+     * @param boolean $force 强制生成
      * @return void
+     * @throws \App\Modules\Exceptions\FileExistedException
      */
-    public function generateView($type, $force = false)
+    public function generateView(string $type, $force = false)
     {
         $stub = $this->stubDir . '/view_blade';
         $path = $this->getConfigDirs('views') . DIRECTORY_SEPARATOR . $this->getConfigTypes("{$type}.dirs.view");
@@ -89,14 +93,15 @@ class ComponentsMakeCommand extends GeneratorCommand
 
     /**
      * 获取输入的 view
+     *
      * @return array
      */
     public function getViewInput()
     {
-        $view  = $this->option('view');
+        $view = $this->option('view');
 
         // 过滤掉不允许的值
-        return array_filter((array) $view, function ($item) {
+        return array_filter((array)$view, function ($item) {
             return in_array($item, ['backend', 'frontend', 'api']);
         });
     }

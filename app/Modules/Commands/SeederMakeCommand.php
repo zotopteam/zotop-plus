@@ -27,21 +27,25 @@ class SeederMakeCommand extends GeneratorCommand
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = 'seeder';
 
     /**
      * stub 用于从stubs中获取stub
+     *
      * @var string
      */
     protected $stub = 'seeder';
 
-
+    
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return mixed|void
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {

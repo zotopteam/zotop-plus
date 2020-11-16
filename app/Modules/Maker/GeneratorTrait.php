@@ -2,18 +2,25 @@
 
 namespace App\Modules\Maker;
 
-use App\Modules\Maker\Lang;
+use App\Modules\Exceptions\FileExistedException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use App\Modules\Exceptions\FileExistedException;
 
 trait GeneratorTrait
 {
+    /**
+     * 替换数组
+     *
+     * @var array
+     */
     protected $replaces = [];
 
     /**
      * 获取模块全局配置
+     *
+     * @param string|null $key
      * @return array
+     * @throws \Exception
      */
     public function getConfig($key = null)
     {
@@ -32,8 +39,10 @@ trait GeneratorTrait
 
     /**
      * 获取模块全局路径配置
-     * @param  string $key
+     *
+     * @param string|null $key
      * @return array
+     * @throws \Exception
      */
     public function getConfigPaths($key = null)
     {
@@ -42,8 +51,10 @@ trait GeneratorTrait
 
     /**
      * 获取模块全局目录配置
-     * @param  string $key
+     *
+     * @param string|null $key
      * @return array
+     * @throws \Exception
      */
     public function getConfigDirs($key = null)
     {
@@ -52,8 +63,10 @@ trait GeneratorTrait
 
     /**
      * 获取模块全局目录配置
-     * @param  string $key
+     *
+     * @param string|null $key
      * @return array
+     * @throws \Exception
      */
     public function getConfigFiles($key = null)
     {
@@ -62,8 +75,10 @@ trait GeneratorTrait
 
     /**
      * 获取模块全局类型配置
-     * @param  string $key
+     *
+     * @param string|null $key
      * @return array
+     * @throws \Exception
      */
     public function getConfigTypes($key = null)
     {
@@ -72,6 +87,7 @@ trait GeneratorTrait
 
     /**
      * 获取模块全局的命名空间
+     *
      * @return string
      */
     public function getNamespace()
@@ -82,7 +98,9 @@ trait GeneratorTrait
 
     /**
      * 检查模块是否存在
+     *
      * @return boolean
+     * @throws \Exception
      */
     public function hasModule()
     {
@@ -95,6 +113,7 @@ trait GeneratorTrait
 
     /**
      * 获取模块名称
+     *
      * @return string
      */
     public function getModuleName()
@@ -104,15 +123,17 @@ trait GeneratorTrait
 
     /**
      * 获取模块小写名称
+     *
      * @return string
      */
-    public function getModuleLowerName($value = '')
+    public function getModuleLowerName()
     {
         return strtolower($this->getModuleName());
     }
 
     /**
      * 获取模块变种驼峰名称 foo_bar => FooBar
+     *
      * @return string
      */
     public function getModuleStudlyName()
@@ -122,6 +143,7 @@ trait GeneratorTrait
 
     /**
      * 获取模块蛇式名称  FooBar => foo_bar
+     *
      * @return string
      */
     public function getModuleSnakeName()
@@ -131,6 +153,7 @@ trait GeneratorTrait
 
     /**
      * 获取模块命名空间
+     *
      * @return string
      */
     public function getModuleNamespace()
@@ -140,9 +163,11 @@ trait GeneratorTrait
 
     /**
      * 获取模块路径
-     * @param  string  $subpath 子路径，或者子路径key
-     * @param  boolean $isPath  是否为路径
+     *
+     * @param string|null $subpath 子路径，或者子路径key
+     * @param boolean $isPath 是否为路径
      * @return string
+     * @throws \Exception
      */
     public function getModulePath($subpath = null, $isPath = true)
     {
@@ -153,7 +178,7 @@ trait GeneratorTrait
         }
 
         if ($isPath) {
-            return $path . DIRECTORY_SEPARATOR . $subpath;;
+            return $path . DIRECTORY_SEPARATOR . $subpath;
         }
 
         return $path . DIRECTORY_SEPARATOR . $this->getConfigPaths($subpath);
@@ -161,17 +186,20 @@ trait GeneratorTrait
 
     /**
      * 获取目录的命名空间
-     * @param  string $dirKey
+     *
+     * @param string $dirKey
      * @return string
+     * @throws \Exception
      */
-    public function getDirNamespace($dirKey)
+    public function getDirNamespace(string $dirKey)
     {
         return $this->getModuleNamespace() . '\\' . str_replace('/', '\\', $this->getConfigDirs($dirKey));
     }
 
     /**
      * 获取stub路径
-     * @param  string $stub      stub name
+     *
+     * @param string|null $stub stub name
      * @return string
      */
     public function getStubPath($stub = null)
@@ -193,10 +221,11 @@ trait GeneratorTrait
 
     /**
      * 获取模块内容
-     * @param  string $stub stub name
-     * @return string       
+     *
+     * @param string|null $stub stub name
+     * @return string
      */
-    public function getStubContent($stub)
+    public function getStubContent(?string $stub)
     {
         $path = $this->getStubPath($stub);
 
@@ -210,10 +239,11 @@ trait GeneratorTrait
 
     /**
      * stub 替换
-     * 
-     * @param  string|array|null $key  为空时返回替换数组，其余为设置值
-     * @param  string|null $value 
-     * @return mixed        
+     *
+     * @param string|array|null $key 为空时返回替换数组，其余为设置值
+     * @param string|null $value
+     * @return mixed
+     * @throws \Exception
      */
     public function replace($key = null, $value = null)
     {
@@ -255,12 +285,14 @@ trait GeneratorTrait
 
     /**
      * 渲染stub
-     * @param  string $stub 
-     * @return string       
+     *
+     * @param string $stub
+     * @return string
+     * @throws \Exception
      */
-    public function renderStub($stub)
+    public function renderStub(string $stub)
     {
-        $content  = $this->getStubContent($stub);
+        $content = $this->getStubContent($stub);
 
         foreach ($this->replace() as $search => $replace) {
             $content = str_replace('$' . strtoupper($search) . '$', $replace, $content);
@@ -271,11 +303,14 @@ trait GeneratorTrait
 
     /**
      * 生成文件
-     * @param  string $stub 不含文件后缀则自动补充.stub
-     * @param  string $path 相对模块的路径
-     * @return string       
+     *
+     * @param string $stub 不含文件后缀则自动补充.stub
+     * @param string $path 相对模块的路径
+     * @param bool $force
+     * @return string
+     * @throws \Exception
      */
-    public function generateStubFile($stub, $path, $force = false)
+    public function generateStubFile(string $stub, string $path, $force = false)
     {
         $path = $this->getModulePath($path);
 
@@ -315,19 +350,20 @@ trait GeneratorTrait
      *
      * @param string $path
      */
-    public function generateGitKeep($path)
+    public function generateGitKeep(string $path)
     {
         $this->laravel['files']->put($path . DIRECTORY_SEPARATOR . '.gitkeep', 'git keep');
     }
 
     /**
      * 创建短键语言文件
-     * @param  string $name 文件名称
-     * @param  array  $data 数据
-     * @param  bollean $force 是否覆盖
+     *
+     * @param string $name 文件名称
+     * @param array $data 数据
+     * @param bool $force 是否覆盖
      * @return void
      */
-    public function generateArrayLang($name, $data = [], $force = false)
+    public function generateArrayLang(string $name, $data = [], $force = false)
     {
         $lang = $this->laravel['config']->get('app.locale');
         $lang = Lang::instance($this->getModuleStudlyName(), $lang);
@@ -342,10 +378,9 @@ trait GeneratorTrait
 
     /**
      * 创建文本翻译文件
-     * @param  string $lang 语言
-     * @param  string $name 文件名称
-     * @param  array  $data 数据
-     * @param  bollean $force 是否覆盖
+     *
+     * @param array $data 数据
+     * @param bool $force 是否覆盖
      * @return void
      */
     public function generateJsonLang($data = [], $force = false)
@@ -364,10 +399,10 @@ trait GeneratorTrait
     /**
      * 创建目录
      *
-     * @param  string  $path
+     * @param string $path
      * @return string
      */
-    protected function makeDirectory($path)
+    protected function makeDirectory(string $path)
     {
         if (!$this->laravel['files']->isDirectory(dirname($path))) {
             $this->laravel['files']->makeDirectory(dirname($path), 0777, true, true);
@@ -379,7 +414,8 @@ trait GeneratorTrait
 
     /**
      * 删除文件
-     * @param  array|string $files
+     *
+     * @param array|string $files
      * @return void
      */
     protected function deleteFiles($files)

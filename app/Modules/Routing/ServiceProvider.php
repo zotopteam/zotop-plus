@@ -86,6 +86,7 @@ abstract class ServiceProvider extends RouteServiceProvider
     /**
      * 定义路由
      *
+     * @param \Illuminate\Routing\Router $router
      * @return void
      */
     public function map(Router $router)
@@ -98,6 +99,7 @@ abstract class ServiceProvider extends RouteServiceProvider
     /**
      * 定义api路由
      *
+     * @param \Illuminate\Routing\Router $router
      * @return void
      */
     private function mapApiRoutes(Router $router)
@@ -117,6 +119,7 @@ abstract class ServiceProvider extends RouteServiceProvider
     /**
      * 定义前端路由
      *
+     * @param \Illuminate\Routing\Router $router
      * @return void
      */
     private function mapFrontRoutes(Router $router)
@@ -136,6 +139,7 @@ abstract class ServiceProvider extends RouteServiceProvider
     /**
      * 定义后端路由
      *
+     * @param \Illuminate\Routing\Router $router
      * @return void
      */
     private function mapAdminRoutes(Router $router)

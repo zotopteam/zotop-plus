@@ -2,6 +2,7 @@
 
 namespace App\Modules\Commands;
 
+use App\Modules\Module;
 use Illuminate\Console\Command;
 
 class MigrateRefreshCommand extends Command
@@ -38,7 +39,10 @@ class MigrateRefreshCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {
@@ -57,10 +61,11 @@ class MigrateRefreshCommand extends Command
 
     /**
      * 回滚并迁移
-     * @param  Module $module 模块
+     *
+     * @param Module $module 模块
      * @return void
      */
-    private function refresh($module)
+    private function refresh(Module $module)
     {
         $this->info(PHP_EOL . 'Refresh the module:' . $module->getName() . '(' . $module->getTitle() . ')' . PHP_EOL);
 

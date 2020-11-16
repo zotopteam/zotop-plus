@@ -14,7 +14,7 @@ class Format
      * @param string $path 路径字符串
      * @return string
      */
-    public function path($path)
+    public function path(string $path)
     {
         $path = preg_replace('#[/\\\\]+#', DIRECTORY_SEPARATOR, $path); //清理并转化
         $path = rtrim($path, DIRECTORY_SEPARATOR); //去掉结尾的分隔符号
@@ -29,7 +29,7 @@ class Format
      * @param string $url
      * @return string
      */
-    public static function url($url)
+    public static function url(string $url)
     {
         $url = str_replace("\\", "/", $url);
         $url = preg_replace("#(^|[^:])//+#", "\\1/", $url); //替换多余的斜线

@@ -67,20 +67,21 @@ class TinkerCommand extends Command
         );
 
         if ($code = $this->option('execute')) {
-            $shell->execute($code);
-
-            $loader->unregister();
+            try {
+                $shell->setOutput($this->output);
+                $shell->execute($code);
+            } finally {
+                $loader->unregister();
+            }
 
             return 0;
         }
 
         try {
-            $shell->run();
+            return $shell->run();
         } finally {
             $loader->unregister();
         }
-
-        return 0;
     }
 
     /**

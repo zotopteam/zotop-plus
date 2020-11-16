@@ -2,8 +2,8 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
 use App\Modules\Maker\GeneratorCommand;
+use Illuminate\Support\Str;
 
 class MigrationMakeUpdateCommand extends GeneratorCommand
 {
@@ -26,39 +26,45 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
      * @var string
      */
     protected $description = 'Create a new update migration file for the specified module.';
-
+    
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
-     * 
+     *
+     * @var string
      */
     protected $appendName = '';
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = 'migration';
 
     /**
      * stub 用于从stubs中获取stub
+     *
      * @var string
      */
     protected $stub = 'migration/update';
 
     /**
      * 迁移的表名称，不含前缀
+     *
      * @var string
      */
     protected $table;
 
     /**
      * 迁移名称前缀
+     *
      * @var string
      */
     protected $prefix;
 
     /**
      * 迁移名称后缀，更新表可以存在多个，增加一个随机字符串
+     *
      * @var string
      */
     protected $append;
@@ -66,11 +72,13 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return mixed|void
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function handle()
     {
-        $this->table  = $this->getTableName();
+        $this->table = $this->getTableName();
         $this->prefix = date('Y_m_d_His');
         $this->append = date('YmdHis');
 
@@ -79,6 +87,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
 
     /**
      * 重载prepare
+     *
      * @return boolean
      */
     public function prepare()
@@ -95,6 +104,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
 
     /**
      * 迁移后执行
+     *
      * @return void
      */
     public function generated()
@@ -112,6 +122,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
 
     /**
      * 获取表名称
+     *
      * @return string
      */
     public function getTableName()
@@ -121,6 +132,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
 
     /**
      * 获取迁移的字段
+     *
      * @return string
      */
     public function getFieldsUp()
@@ -130,6 +142,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
 
     /**
      * 获取回滚的字段
+     *
      * @return string
      */
     public function getFieldsDown()
@@ -139,6 +152,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
 
     /**
      * 存在多个update, 类名随机
+     *
      * @return string
      */
     public function getClassName()
@@ -148,6 +162,7 @@ class MigrationMakeUpdateCommand extends GeneratorCommand
 
     /**
      * 重载文件名称
+     *
      * @return string
      */
     public function getFileName()

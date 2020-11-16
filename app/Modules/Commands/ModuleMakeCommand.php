@@ -39,7 +39,9 @@ class ModuleMakeCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
+     * @throws \App\Modules\Exceptions\ModuleExistedException
+     * @throws \App\Modules\Exceptions\FileExistedException
      */
     public function handle()
     {
@@ -76,7 +78,9 @@ class ModuleMakeCommand extends Command
 
     /**
      * 生成初始化文件
+     *
      * @return void
+     * @throws \App\Modules\Exceptions\FileExistedException
      */
     public function generateFiles()
     {
@@ -89,11 +93,12 @@ class ModuleMakeCommand extends Command
 
     /**
      * 生成图标
+     *
      * @return void
      */
     public function generateIcon()
     {
-        $sourcePath      = $this->getStubPath('module.png');
+        $sourcePath = $this->getStubPath('module.png');
         $destinationPath = $this->getModulePath('module.png');
 
         $this->laravel['files']->copy($sourcePath, $destinationPath);
@@ -102,6 +107,7 @@ class ModuleMakeCommand extends Command
 
     /**
      * 生成初始化目录
+     *
      * @return void
      */
     public function generateDirs()
@@ -120,7 +126,9 @@ class ModuleMakeCommand extends Command
 
     /**
      * 创建资源
-     * @return [type] [description]
+     *
+     * @author Chen Lei
+     * @date 2020-11-07
      */
     public function generateResource()
     {
@@ -136,6 +144,7 @@ class ModuleMakeCommand extends Command
 
     /**
      * 创建语言，默认创建可翻译语言包
+     *
      * @return void
      */
     public function generateLang()

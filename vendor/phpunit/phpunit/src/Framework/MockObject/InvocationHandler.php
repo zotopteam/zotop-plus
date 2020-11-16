@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function sprintf;
+use function strtolower;
 use Exception;
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
+use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -40,7 +42,7 @@ final class InvocationHandler
     private $returnValueGeneration;
 
     /**
-     * @var \Throwable
+     * @var Throwable
      */
     private $deferredError;
 
@@ -108,9 +110,8 @@ final class InvocationHandler
     }
 
     /**
+     * @throws RuntimeException
      * @throws Exception
-     *
-     * @return mixed|void
      */
     public function invoke(Invocation $invocation)
     {
@@ -142,15 +143,15 @@ final class InvocationHandler
         }
 
         if (!$this->returnValueGeneration) {
-            $exception = new ExpectationFailedException(
-                \sprintf(
+            $exception = new RuntimeException(
+                sprintf(
                     'Return value inference disabled and no expectation set up for %s::%s()',
                     $invocation->getClassName(),
                     $invocation->getMethodName()
                 )
             );
 
-            if (\strtolower($invocation->getMethodName()) === '__tostring') {
+            if (strtolower($invocation->getMethodName()) === '__tostring') {
                 $this->deferredError = $exception;
 
                 return '';
@@ -174,7 +175,7 @@ final class InvocationHandler
     }
 
     /**
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws Throwable
      */
     public function verify(): void
     {

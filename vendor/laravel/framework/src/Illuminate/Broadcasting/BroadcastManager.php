@@ -95,7 +95,7 @@ class BroadcastManager implements FactoryContract
      * Begin broadcasting an event.
      *
      * @param  mixed|null  $event
-     * @return \Illuminate\Broadcasting\PendingBroadcast|void
+     * @return \Illuminate\Broadcasting\PendingBroadcast
      */
     public function event($event = null)
     {
@@ -292,6 +292,19 @@ class BroadcastManager implements FactoryContract
     public function setDefaultDriver($name)
     {
         $this->app['config']['broadcasting.default'] = $name;
+    }
+
+    /**
+     * Disconnect the given disk and remove from local cache.
+     *
+     * @param  string|null  $name
+     * @return void
+     */
+    public function purge($name = null)
+    {
+        $name = $name ?? $this->getDefaultDriver();
+
+        unset($this->drivers[$name]);
     }
 
     /**
