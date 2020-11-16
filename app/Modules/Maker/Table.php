@@ -152,7 +152,7 @@ class Table
      * 查找表，如果不存在，跑出异常
      *
      * @param string $table 不含前缀
-     * @return object|false
+     * @return mixed
      * @throws \App\Modules\Exceptions\TableNotFoundException
      */
     public static function findOrFail(string $table)

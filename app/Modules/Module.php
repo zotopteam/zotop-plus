@@ -53,11 +53,6 @@ class Module
     public $activator;
 
     /**
-     * __construct
-     *
-     * @param Application $app [description]
-     */
-    /**
      * 初始化
      *
      * @param Application $app
@@ -209,17 +204,17 @@ class Module
     /**
      * 获取模块路径
      *
-     * @param string|null $subpath 子路径或者路径键名
+     * @param string|null $subPath 子路径或者路径键名
      * @param boolean $isDirKey 是否为子路径键名
      * @return string
      */
-    public function getPath($subpath = null, $isDirKey = false)
+    public function getPath($subPath = null, $isDirKey = false)
     {
-        if ($subpath) {
+        if ($subPath) {
             if ($isDirKey) {
-                $subpath = $this->app['config']->get("modules.paths.dirs.{$subpath}");
+                $subPath = $this->app['config']->get("modules.paths.dirs.{$subPath}");
             }
-            return $this->path . DIRECTORY_SEPARATOR . ltrim($subpath, DIRECTORY_SEPARATOR);
+            return $this->path . DIRECTORY_SEPARATOR . ltrim($subPath, DIRECTORY_SEPARATOR);
         }
 
         return $this->path;
@@ -375,6 +370,7 @@ class Module
             'module'  => $this->name,
             '--force' => true,
         ]);
+
         // 删除资源
         Artisan::call('module:publish', [
             'module'   => $this->name,

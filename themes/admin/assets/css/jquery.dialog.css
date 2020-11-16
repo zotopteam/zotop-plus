@@ -6,607 +6,607 @@
  * This is licensed under the GNU LGPL, version 2.1 or later.
  * For details, see:http://www.gnu.org/licenses/lgpl-2.1.html
  */
-body.blur>*:not(.ui-popup):not(.ui-popup-backdrop) {
-  filter: blur(1.5px);
-  overflow: hidden;
-  transition: all 0.1s;
+body.blur > *:not(.ui-popup):not(.ui-popup-backdrop) {
+    filter: blur(1.5px);
+    overflow: hidden;
+    transition: all 0.1s;
 }
 
 .ui-dialog {
-  *zoom: 1;
-  _float: left;
-  position: relative;
-  border: 0px solid #d0d0d0;
-  border-radius: 0.25rem;
-  overflow: hidden;
-  outline: 0;
-  background-clip: padding-box;
-  font-size: 0.875rem;
-  line-height: 1.428571429;
-  color: #333;
-  opacity: 0;
-  transition: all 0.1s ease-in-out;
-  transform: scale(0, 0);
-  /*transition:transform .15s ease-in-out, opacity .15s ease-in-out;*/
+    *zoom: 1;
+    _float: left;
+    position: relative;
+    border: 0px solid #d0d0d0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    outline: 0;
+    background-clip: padding-box;
+    font-size: 0.875rem;
+    line-height: 1.428571429;
+    color: #333;
+    opacity: 0;
+    transition: all 0.1s ease-in-out;
+    transform: scale(0, 0);
+    /*transition:transform .15s ease-in-out, opacity .15s ease-in-out;*/
 }
 
 .ui-popup-show .ui-dialog {
-  opacity: 1;
-  transform: scale(1, 1);
+    opacity: 1;
+    transform: scale(1, 1);
 }
 
 .ui-popup-focus .ui-dialog {
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
 }
 
 .ui-popup-modal .ui-dialog {
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1), 0 0 250.5rem rgba(255, 255, 255, .3);
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1), 0 0 250.5rem rgba(255, 255, 255, .3);
 }
 
 .ui-popup-follow .ui-dialog {
-  border: 1px solid #D0D0D0;
+    border: 1px solid #D0D0D0;
 }
 
 .ui-dialog-grid {
-  width: auto;
-  margin: 0;
-  border: 0 none;
-  border-spacing: 0;
-  background: transparent;
+    width: auto;
+    margin: 0;
+    border: 0 none;
+    border-spacing: 0;
+    background: transparent;
 }
 
 .ui-dialog-header,
 .ui-dialog-body,
 .ui-dialog-footer {
-  padding: 0;
-  border: 0 none;
-  text-align: left;
-  background-color: #f7f7f7;
-  background-color: rgba(255, 255, 255, .9);
+    padding: 0;
+    border: 0 none;
+    text-align: left;
+    background-color: #f7f7f7;
+    background-color: rgba(255, 255, 255, .9);
 }
 
 .ui-dialog-header {
-  white-space: nowrap;
+    white-space: nowrap;
 }
 
 .ui-dialog-close {
-  position: relative;
-  float: right;
-  top: 0.75rem;
-  right: 0.75rem;
-  padding: 0 0.25rem;
-  font-size: 1.5rem;
-  line-height: 1;
-  color: inherit;
-  cursor: pointer;
-  background: transparent;
-  border: 0;
-  -webkit-appearance: none;
+    position: relative;
+    float: right;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0 0.25rem;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: inherit;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
 }
 
 .ui-dialog-close:hover,
 .ui-dialog-close:focus {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
 .ui-dialog-title {
-  margin: 0;
-  line-height: 1.5;
-  min-height: 1rem;
-  padding: 0.75rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-size: 1rem;
-  cursor: default;
+    margin: 0;
+    line-height: 1.5;
+    min-height: 1rem;
+    padding: 0.75rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1rem;
+    cursor: default;
 }
 
 .ui-dialog-body {
-  padding: 1.25rem;
-  text-align: center;
-  /*background-color:#fff;*/
+    padding: 1.25rem;
+    text-align: center;
+    /*background-color:#fff;*/
 }
 
 .ui-dialog-content {
-  display: inline-block;
-  position: relative;
-  vertical-align: middle;
-  *zoom: 1;
-  *display: inline;
-  text-align: left;
-  width: 100%;
-  height: 100%;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    *zoom: 1;
+    *display: inline;
+    text-align: left;
+    width: 100%;
+    height: 100%;
 }
 
 .ui-dialog-content iframe {
-  /*display: none;*/
+    /*display: none;*/
 }
 
 .ui-dialog-footer {
-  padding: 0.75rem;
+    padding: 0.75rem;
 }
 
 .ui-dialog-statusbar {
-  float: left;
-  margin-right: 1.25rem;
-  padding: 0.25rem 0;
-  line-height: 1.5;
-  font-size: 0.875rem;
-  color: #888;
-  white-space: nowrap;
+    float: left;
+    margin-right: 1.25rem;
+    padding: 0.25rem 0;
+    line-height: 1.5;
+    font-size: 0.875rem;
+    color: #888;
+    white-space: nowrap;
 }
 
 .ui-dialog-statusbar label:hover {
-  color: #333;
+    color: #333;
 }
 
 .ui-dialog-statusbar input,
 .ui-dialog-statusbar .label {
-  vertical-align: middle;
+    vertical-align: middle;
 }
 
 .ui-dialog-button {
-  float: right;
-  white-space: nowrap;
+    float: right;
+    white-space: nowrap;
 }
 
 /*2014-5-30*/
 .ui-dialog-button .btn {
-  margin-left: 0.5rem;
-  padding: 0.25rem 1.25rem;
-  font-size: .875rem;
+    margin-left: 0.5rem;
+    padding: 0.25rem 1.25rem;
+    font-size: .875rem;
 }
 
 .ui-popup-top-left .ui-dialog,
 .ui-popup-top .ui-dialog,
 .ui-popup-top-right .ui-dialog {
-  top: -0.5rem;
+    top: -0.5rem;
 }
 
 .ui-popup-bottom-left .ui-dialog,
 .ui-popup-bottom .ui-dialog,
 .ui-popup-bottom-right .ui-dialog {
-  top: 0.5rem;
+    top: 0.5rem;
 }
 
 .ui-popup-left-top .ui-dialog,
 .ui-popup-left .ui-dialog,
 .ui-popup-left-bottom .ui-dialog {
-  left: -0.5rem;
+    left: -0.5rem;
 }
 
 .ui-popup-right-top .ui-dialog,
 .ui-popup-right .ui-dialog,
 .ui-popup-right-bottom .ui-dialog {
-  left: 0.5rem;
+    left: 0.5rem;
 }
 
 .ui-dialog-arrow-a,
 .ui-dialog-arrow-b {
-  position: absolute;
-  display: block;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  line-height: 0;
-  font-size: 0;
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 0;
 }
 
 .ui-popup-top-left .ui-dialog-arrow-a,
 .ui-popup-top .ui-dialog-arrow-a,
 .ui-popup-top-right .ui-dialog-arrow-a {
-  bottom: -0.5rem;
-  border-top: 0.5rem solid #7C7C7C;
-  border-bottom: 0 none;
-  border-left: 0.5rem solid transparent;
-  border-right: 0.5rem solid transparent;
+    bottom: -0.5rem;
+    border-top: 0.5rem solid #7C7C7C;
+    border-bottom: 0 none;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
 }
 
 .ui-popup-top-left .ui-dialog-arrow-b,
 .ui-popup-top .ui-dialog-arrow-b,
 .ui-popup-top-right .ui-dialog-arrow-b {
-  bottom: -0.5rem;
-  border-top: 0.5rem solid #fff;
-  border-bottom: 0 none;
-  border-left: 0.5rem solid transparent;
-  border-right: 0.5rem solid transparent;
+    bottom: -0.5rem;
+    border-top: 0.5rem solid #fff;
+    border-bottom: 0 none;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
 }
 
 .ui-popup-top-left .ui-dialog-arrow-a,
 .ui-popup-top-left .ui-dialog-arrow-b {
-  left: 1rem;
+    left: 1rem;
 }
 
 .ui-popup-top .ui-dialog-arrow-a,
 .ui-popup-top .ui-dialog-arrow-b {
-  left: 50%;
-  margin-left: -0.5rem;
+    left: 50%;
+    margin-left: -0.5rem;
 }
 
 .ui-popup-top-right .ui-dialog-arrow-a,
 .ui-popup-top-right .ui-dialog-arrow-b {
-  right: 1rem;
+    right: 1rem;
 }
 
 .ui-popup-bottom-left .ui-dialog-arrow-a,
 .ui-popup-bottom .ui-dialog-arrow-a,
 .ui-popup-bottom-right .ui-dialog-arrow-a {
-  top: -0.5rem;
-  border-bottom: 0.5rem solid #7C7C7C;
-  border-top: 0 none;
-  border-left: 0.5rem solid transparent;
-  border-right: 0.5rem solid transparent;
+    top: -0.5rem;
+    border-bottom: 0.5rem solid #7C7C7C;
+    border-top: 0 none;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
 }
 
 .ui-popup-bottom-left .ui-dialog-arrow-b,
 .ui-popup-bottom .ui-dialog-arrow-b,
 .ui-popup-bottom-right .ui-dialog-arrow-b {
-  top: -0.5rem;
-  border-bottom: 0.5rem solid #fff;
-  border-top: 0 none;
-  border-left: 0.5rem solid transparent;
-  border-right: 0.5rem solid transparent;
+    top: -0.5rem;
+    border-bottom: 0.5rem solid #fff;
+    border-top: 0 none;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
 }
 
 .ui-popup-bottom-left .ui-dialog-arrow-a,
 .ui-popup-bottom-left .ui-dialog-arrow-b {
-  left: 1rem;
+    left: 1rem;
 }
 
 .ui-popup-bottom .ui-dialog-arrow-a,
 .ui-popup-bottom .ui-dialog-arrow-b {
-  margin-left: -0.5rem;
-  left: 50%;
+    margin-left: -0.5rem;
+    left: 50%;
 }
 
 .ui-popup-bottom-right .ui-dialog-arrow-a,
 .ui-popup-bottom-right .ui-dialog-arrow-b {
-  right: 1rem;
+    right: 1rem;
 }
 
 .ui-popup-left-top .ui-dialog-arrow-a,
 .ui-popup-left .ui-dialog-arrow-a,
 .ui-popup-left-bottom .ui-dialog-arrow-a {
-  right: -0.5rem;
-  border-left: 0.5rem solid #7C7C7C;
-  border-right: 0 none;
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
+    right: -0.5rem;
+    border-left: 0.5rem solid #7C7C7C;
+    border-right: 0 none;
+    border-top: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid transparent;
 }
 
 .ui-popup-left-top .ui-dialog-arrow-b,
 .ui-popup-left .ui-dialog-arrow-b,
 .ui-popup-left-bottom .ui-dialog-arrow-b {
-  right: -0.5rem;
-  border-left: 0.5rem solid #fff;
-  border-right: 0 none;
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
+    right: -0.5rem;
+    border-left: 0.5rem solid #fff;
+    border-right: 0 none;
+    border-top: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid transparent;
 }
 
 .ui-popup-left-top .ui-dialog-arrow-a,
 .ui-popup-left-top .ui-dialog-arrow-b {
-  top: 1rem;
+    top: 1rem;
 }
 
 .ui-popup-left .ui-dialog-arrow-a,
 .ui-popup-left .ui-dialog-arrow-b {
-  margin-top: -0.5rem;
-  top: 50%;
+    margin-top: -0.5rem;
+    top: 50%;
 }
 
 .ui-popup-left-bottom .ui-dialog-arrow-a,
 .ui-popup-left-bottom .ui-dialog-arrow-b {
-  bottom: 1rem;
+    bottom: 1rem;
 }
 
 .ui-popup-right-top .ui-dialog-arrow-a,
 .ui-popup-right .ui-dialog-arrow-a,
 .ui-popup-right-bottom .ui-dialog-arrow-a {
-  left: -0.5rem;
-  border-right: 0.5rem solid #7C7C7C;
-  border-left: 0 none;
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
+    left: -0.5rem;
+    border-right: 0.5rem solid #7C7C7C;
+    border-left: 0 none;
+    border-top: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid transparent;
 }
 
 .ui-popup-right-top .ui-dialog-arrow-b,
 .ui-popup-right .ui-dialog-arrow-b,
 .ui-popup-right-bottom .ui-dialog-arrow-b {
-  left: -0.5rem;
-  border-right: 0.5rem solid #fff;
-  border-left: 0 none;
-  border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
+    left: -0.5rem;
+    border-right: 0.5rem solid #fff;
+    border-left: 0 none;
+    border-top: 0.5rem solid transparent;
+    border-bottom: 0.5rem solid transparent;
 }
 
 .ui-popup-right-top .ui-dialog-arrow-a,
 .ui-popup-right-top .ui-dialog-arrow-b {
-  top: 1rem;
+    top: 1rem;
 }
 
 .ui-popup-right .ui-dialog-arrow-a,
 .ui-popup-right .ui-dialog-arrow-b {
-  margin-top: -0.5rem;
-  top: 50%;
+    margin-top: -0.5rem;
+    top: 50%;
 }
 
 .ui-popup-right-bottom .ui-dialog-arrow-a,
 .ui-popup-right-bottom .ui-dialog-arrow-b {
-  bottom: 1rem;
+    bottom: 1rem;
 }
 
 /*ui-dialog-loader && ui-dialog-loading*/
 .ui-dialog-loader {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background-color: #fff;
-  background-color: rgba(255, 255, 255, .90);
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, .90);
 }
 
 .ui-dialog-loading,
 .ui-dialog-loading:after {
-  border-radius: 50%;
-  width: 6rem;
-  height: 6rem;
+    border-radius: 50%;
+    width: 6rem;
+    height: 6rem;
 }
 
 .ui-dialog-loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -3rem;
-  margin-left: -3rem;
-  font-size: 0.75rem;
-  position: relative;
-  text-indent: -9999em;
-  border-top: 0.30rem solid rgba(0, 0, 0, 0.15);
-  border-right: 0.30rem solid rgba(0, 0, 0, 0.15);
-  border-bottom: 0.30rem solid rgba(0, 0, 0, 0.15);
-  border-left: 0.30rem solid #0072c6;
-  -webkit-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-animation: ui-dialog-loading 0.8s infinite linear;
-  animation: ui-dialog-loading 0.8s infinite linear;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -3rem;
+    margin-left: -3rem;
+    font-size: 0.75rem;
+    position: relative;
+    text-indent: -9999em;
+    border-top: 0.30rem solid rgba(0, 0, 0, 0.15);
+    border-right: 0.30rem solid rgba(0, 0, 0, 0.15);
+    border-bottom: 0.30rem solid rgba(0, 0, 0, 0.15);
+    border-left: 0.30rem solid #0072c6;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: ui-dialog-loading 0.8s infinite linear;
+    animation: ui-dialog-loading 0.8s infinite linear;
 }
 
 @-webkit-keyframes ui-dialog-loading {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
 
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes ui-dialog-loading {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
 
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 
 /*ui-alert && ui-confirm*/
 .ui-alert .msg-icon,
 .ui-confirm .msg-icon {
-  font-size: 5rem;
-  display: block;
-  text-align: center;
+    font-size: 5rem;
+    display: block;
+    text-align: center;
 }
 
 .ui-alert .msg-content,
 .ui-confirm .msg-content {
-  padding: 1rem 3rem;
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: bold;
-  line-height: 2;
-  min-width: 500px;
-  max-width: 800px;
-  max-height: 400px;
-  overflow: auto;
-  word-wrap: break-word;
+    padding: 1rem 3rem;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 2;
+    min-width: 500px;
+    max-width: 800px;
+    max-height: 400px;
+    overflow: auto;
+    word-wrap: break-word;
 }
 
 .ui-alert .msg-content b,
 .ui-confirm .msg-content b {
-  color: #ff0000;
-  margin: 0 0.5rem;
+    color: #ff0000;
+    margin: 0 0.5rem;
 }
 
 .ui-alert .msg-content {
-  font-weight: normal;
-  line-height: 1.8;
-  min-width: 500px;
-  max-width: 800px;
-  max-height: 300px;
+    font-weight: normal;
+    line-height: 1.8;
+    min-width: 500px;
+    max-width: 800px;
+    max-height: 300px;
 }
 
-.ui-alert .msg-content>span {
-  display: inline-block;
-  text-align: left;
-  word-break: break-all;
+.ui-alert .msg-content > span {
+    display: inline-block;
+    text-align: left;
+    word-break: break-all;
 }
 
 .ui-alert .ui-dialog-content {
-  color: #0072c6;
+    color: #0072c6;
 }
 
 .ui-confirm .ui-dialog-content {
-  color: #ff6600;
+    color: #ff6600;
 }
 
 
 /*ui-prompt*/
 .ui-prompt .prompt-content {
-  min-width: 500px;
-  padding: 2rem 2.5rem;
+    min-width: 500px;
+    padding: 2rem 2.5rem;
 }
 
 .ui-prompt .prompt-text {
-  font-size: 1rem;
-  margin-bottom: .75rem;
+    font-size: 1rem;
+    margin-bottom: .75rem;
 }
 
 /*ui-message*/
 .ui-message {
-  border: solid 3px #0072C6;
-  color: #0072C6;
+    border: solid 3px #0072C6;
+    color: #0072C6;
 }
 
 .ui-message .ui-dialog-content {
-  padding: .75rem 1rem;
-  display: block;
-  display: flex;
-  align-items: center;
+    padding: .75rem 1rem;
+    display: block;
+    display: flex;
+    align-items: center;
 }
 
 .ui-message .msg-icon {
-  font-size: 2rem;
-  line-height: 1;
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
+    font-size: 2rem;
+    line-height: 1;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
 }
 
 .ui-message .msg-icon:before {
-  content: "\f05a";
+    content: "\f05a";
 }
 
 .ui-message .msg-content {
-  font-size: 1.25rem;
-  font-weight: bold;
-  line-height: 1;
-  padding: 0 1rem;
-  max-width: 800px;
-  max-height: 400px;
-  word-wrap: break-word;
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1;
+    padding: 0 1rem;
+    max-width: 800px;
+    max-height: 400px;
+    word-wrap: break-word;
 }
 
 .ui-message .msg-content b {
-  color: red;
+    color: red;
 }
 
 .ui-message .msg-content ul {
-  padding: 0 .5rem;
-  margin: 0;
-  list-style: none;
-  line-height: 1.5;
-  font-size: 1rem;
+    padding: 0 .5rem;
+    margin: 0;
+    list-style: none;
+    line-height: 1.5;
+    font-size: 1rem;
 }
 
 .ui-message .close {
-  color: #666;
-  font-size: 1.25rem;
+    color: #666;
+    font-size: 1.25rem;
 }
 
 .ui-message-success {
-  color: #66bb00;
-  border-color: #66bb00;
+    color: #66bb00;
+    border-color: #66bb00;
 }
 
 .ui-message-success .msg-icon:before {
-  content: "\f058";
+    content: "\f058";
 }
 
 .ui-message-error {
-  color: #ff0000;
-  border-color: #ff0000;
+    color: #ff0000;
+    border-color: #ff0000;
 }
 
 .ui-message-error .msg-icon:before {
-  content: "\f057";
+    content: "\f057";
 }
 
 .ui-message-loading .msg-icon {
-  animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
 }
 
 .ui-message-loading .msg-icon:before {
-  content: "\f110";
+    content: "\f110";
 }
 
 .ui-image .image {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  text-align: center;
-  padding: 1.5rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    text-align: center;
+    padding: 1.5rem;
 }
 
 .ui-image .image img {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  align-self: center;
-  margin: 0 auto;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    align-self: center;
+    margin: 0 auto;
 }
 
 .ui-progress {
-  box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 .ui-progress .ui-dialog-body {
-  background: transparent;
+    background: transparent;
 }
 
 .ui-progress .progress-icon {
-  font-size: 10rem;
-  margin: 5rem;
-  color: rgba(255, 255, 255, .8);
-  animation: fadeOutRightBig 2s infinite ease both;
-  margin-left: -20rem;
+    font-size: 10rem;
+    margin: 5rem;
+    color: rgba(255, 255, 255, .8);
+    animation: fadeOutRightBig 2s infinite ease both;
+    margin-left: -20rem;
 }
 
 .ui-progress .progress {
-  margin: 0;
-  width: 60%
+    margin: 0;
+    width: 60%
 }
 
 .ui-progress .progress .close {
-  position: absolute;
-  top: 0px;
-  right: 0.5rem;
+    position: absolute;
+    top: 0px;
+    right: 0.5rem;
 }
 
 .ui-cmd .ui-dialog-header,
 .ui-cmd .ui-dialog-body,
 .ui-cmd .ui-dialog-footer {
-  color: #fff;
-  color: rgba(255, 255, 255, .8);
-  background-color: #000;
-  background-color: rgba(0, 0, 0, .9);
+    color: #fff;
+    color: rgba(255, 255, 255, .8);
+    background-color: #000;
+    background-color: rgba(0, 0, 0, .9);
 }
 
 .ui-cmd .ui-dialog-content {
-  padding: 20px;
-  overflow: auto;
-  white-space: pre-wrap;
-  color: #00fa4a;
-  background-color: #000;
-  background-color: rgba(0, 0, 0, .5);
-  border-radius: 0;
+    padding: 20px;
+    overflow: auto;
+    white-space: pre-wrap;
+    color: #00fa4a;
+    background-color: #000;
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 0;
 }
 
 @keyframes fadeOutRightBig {
-  from {
-    opacity: 1;
-  }
+    from {
+        opacity: 1;
+    }
 
-  to {
-    opacity: 0;
-    transform: translate3d(2000px, 0, 0);
-  }
+    to {
+        opacity: 0;
+        transform: translate3d(2000px, 0, 0);
+    }
 }

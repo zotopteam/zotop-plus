@@ -517,6 +517,10 @@ a[disabled] {
     clear: both;
 }
 
+.rounded {
+    border-radius: .5rem !important;
+}
+
 .scrollable {
     overflow: auto;
     outline: none;
@@ -599,6 +603,7 @@ a[disabled] {
 }
 
 .card {
+    border-radius: .5rem;
 }
 
 .card.disabled {
