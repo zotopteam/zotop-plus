@@ -324,17 +324,17 @@
     },
     {
         "name": "doctrine/dbal",
-        "version": "2.12.0",
-        "version_normalized": "2.12.0.0",
+        "version": "2.12.1",
+        "version_normalized": "2.12.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/dbal.git",
-            "reference": "c6d37b4c42aaa3c3ee175f05eca68056f4185646"
+            "reference": "adce7a954a1c2f14f85e94aed90c8489af204086"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/dbal/zipball/c6d37b4c42aaa3c3ee175f05eca68056f4185646",
-            "reference": "c6d37b4c42aaa3c3ee175f05eca68056f4185646",
+            "url": "https://api.github.com/repos/doctrine/dbal/zipball/adce7a954a1c2f14f85e94aed90c8489af204086",
+            "reference": "adce7a954a1c2f14f85e94aed90c8489af204086",
             "shasum": "",
             "mirrors": [
                 {
@@ -361,7 +361,7 @@
         "suggest": {
             "symfony/console": "For helpful console commands such as SQL execution and import of files."
         },
-        "time": "2020-10-22T17:26:24+00:00",
+        "time": "2020-11-14T20:26:58+00:00",
         "bin": [
             "bin/doctrine-dbal"
         ],
@@ -594,17 +594,17 @@
     },
     {
         "name": "doctrine/instantiator",
-        "version": "1.3.1",
-        "version_normalized": "1.3.1.0",
+        "version": "1.4.0",
+        "version_normalized": "1.4.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/instantiator.git",
-            "reference": "f350df0268e904597e3bd9c4685c53e0e333feea"
+            "reference": "d56bf6102915de5702778fe20f2de3b2fe570b5b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/instantiator/zipball/f350df0268e904597e3bd9c4685c53e0e333feea",
-            "reference": "f350df0268e904597e3bd9c4685c53e0e333feea",
+            "url": "https://api.github.com/repos/doctrine/instantiator/zipball/d56bf6102915de5702778fe20f2de3b2fe570b5b",
+            "reference": "d56bf6102915de5702778fe20f2de3b2fe570b5b",
             "shasum": "",
             "mirrors": [
                 {
@@ -617,21 +617,16 @@
             "php": "^7.1 || ^8.0"
         },
         "require-dev": {
-            "doctrine/coding-standard": "^6.0",
+            "doctrine/coding-standard": "^8.0",
             "ext-pdo": "*",
             "ext-phar": "*",
-            "phpbench/phpbench": "^0.13",
-            "phpstan/phpstan-phpunit": "^0.11",
-            "phpstan/phpstan-shim": "^0.11",
-            "phpunit/phpunit": "^7.0"
+            "phpbench/phpbench": "^0.13 || 1.0.0-alpha2",
+            "phpstan/phpstan": "^0.12",
+            "phpstan/phpstan-phpunit": "^0.12",
+            "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0"
         },
-        "time": "2020-05-29T17:27:14+00:00",
+        "time": "2020-11-10T18:47:58+00:00",
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.2.x-dev"
-            }
-        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
@@ -646,7 +641,7 @@
             {
                 "name": "Marco Pivetta",
                 "email": "ocramius@gmail.com",
-                "homepage": "http://ocramius.github.com/"
+                "homepage": "https://ocramius.github.io/"
             }
         ],
         "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
@@ -784,17 +779,17 @@
     },
     {
         "name": "egulias/email-validator",
-        "version": "2.1.23",
-        "version_normalized": "2.1.23.0",
+        "version": "2.1.24",
+        "version_normalized": "2.1.24.0",
         "source": {
             "type": "git",
             "url": "https://github.com/egulias/EmailValidator.git",
-            "reference": "5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df"
+            "reference": "ca90a3291eee1538cd48ff25163240695bd95448"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df",
-            "reference": "5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df",
+            "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/ca90a3291eee1538cd48ff25163240695bd95448",
+            "reference": "ca90a3291eee1538cd48ff25163240695bd95448",
             "shasum": "",
             "mirrors": [
                 {
@@ -816,7 +811,7 @@
         "suggest": {
             "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
         },
-        "time": "2020-10-31T20:37:35+00:00",
+        "time": "2020-11-14T15:56:27+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -913,17 +908,17 @@
     },
     {
         "name": "facade/ignition",
-        "version": "2.5.0",
-        "version_normalized": "2.5.0.0",
+        "version": "2.5.1",
+        "version_normalized": "2.5.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/facade/ignition.git",
-            "reference": "81698c5e32837c74abf9bb764ff0c1b3e001afb3"
+            "reference": "3b3403f18bbdc0aeadf1ffaddf11a1588b12ec7a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/facade/ignition/zipball/81698c5e32837c74abf9bb764ff0c1b3e001afb3",
-            "reference": "81698c5e32837c74abf9bb764ff0c1b3e001afb3",
+            "url": "https://api.github.com/repos/facade/ignition/zipball/3b3403f18bbdc0aeadf1ffaddf11a1588b12ec7a",
+            "reference": "3b3403f18bbdc0aeadf1ffaddf11a1588b12ec7a",
             "shasum": "",
             "mirrors": [
                 {
@@ -953,7 +948,7 @@
         "suggest": {
             "laravel/telescope": "^3.1"
         },
-        "time": "2020-10-27T13:02:22+00:00",
+        "time": "2020-11-13T13:36:24+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1927,17 +1922,17 @@
     },
     {
         "name": "laravel/framework",
-        "version": "v8.13.0",
-        "version_normalized": "8.13.0.0",
+        "version": "v8.14.0",
+        "version_normalized": "8.14.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/laravel/framework.git",
-            "reference": "37a0abd4f3dbc51e2256296b45f8be72c8fe2196"
+            "reference": "b60139c9d3b475d5b5dc261c5dcafe8ca49b4a13"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravel/framework/zipball/37a0abd4f3dbc51e2256296b45f8be72c8fe2196",
-            "reference": "37a0abd4f3dbc51e2256296b45f8be72c8fe2196",
+            "url": "https://api.github.com/repos/laravel/framework/zipball/b60139c9d3b475d5b5dc261c5dcafe8ca49b4a13",
+            "reference": "b60139c9d3b475d5b5dc261c5dcafe8ca49b4a13",
             "shasum": "",
             "mirrors": [
                 {
@@ -2056,7 +2051,7 @@
             "symfony/psr-http-message-bridge": "Required to use PSR-7 bridging features (^2.0).",
             "wildbit/swiftmailer-postmark": "Required to use Postmark mail driver (^3.0)."
         },
-        "time": "2020-11-03T14:13:19+00:00",
+        "time": "2020-11-10T14:47:10+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2450,17 +2445,17 @@
     },
     {
         "name": "maatwebsite/excel",
-        "version": "3.1.24",
-        "version_normalized": "3.1.24.0",
+        "version": "3.1.25",
+        "version_normalized": "3.1.25.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-            "reference": "8b267b4a940634195eb6ea60c2da62f178a15940"
+            "reference": "a3e56f1a60e49f21798fd242a3b3d2f4051eeda7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/8b267b4a940634195eb6ea60c2da62f178a15940",
-            "reference": "8b267b4a940634195eb6ea60c2da62f178a15940",
+            "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/a3e56f1a60e49f21798fd242a3b3d2f4051eeda7",
+            "reference": "a3e56f1a60e49f21798fd242a3b3d2f4051eeda7",
             "shasum": "",
             "mirrors": [
                 {
@@ -2479,7 +2474,7 @@
             "orchestra/testbench": "^6.0",
             "predis/predis": "^1.1"
         },
-        "time": "2020-10-28T09:10:05+00:00",
+        "time": "2020-11-13T10:37:36+00:00",
         "type": "library",
         "extra": {
             "laravel": {
@@ -3066,17 +3061,17 @@
     },
     {
         "name": "myclabs/deep-copy",
-        "version": "1.10.1",
-        "version_normalized": "1.10.1.0",
+        "version": "1.10.2",
+        "version_normalized": "1.10.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/myclabs/DeepCopy.git",
-            "reference": "969b211f9a51aa1f6c01d1d2aef56d3bd91598e5"
+            "reference": "776f831124e9c62e1a2c601ecc52e776d8bb7220"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/969b211f9a51aa1f6c01d1d2aef56d3bd91598e5",
-            "reference": "969b211f9a51aa1f6c01d1d2aef56d3bd91598e5",
+            "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/776f831124e9c62e1a2c601ecc52e776d8bb7220",
+            "reference": "776f831124e9c62e1a2c601ecc52e776d8bb7220",
             "shasum": "",
             "mirrors": [
                 {
@@ -3096,7 +3091,7 @@
             "doctrine/common": "^2.6",
             "phpunit/phpunit": "^7.1"
         },
-        "time": "2020-06-29T13:22:24+00:00",
+        "time": "2020-11-13T09:40:50+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -3122,17 +3117,17 @@
     },
     {
         "name": "myclabs/php-enum",
-        "version": "1.7.6",
-        "version_normalized": "1.7.6.0",
+        "version": "1.7.7",
+        "version_normalized": "1.7.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/myclabs/php-enum.git",
-            "reference": "5f36467c7a87e20fbdc51e524fd8f9d1de80187c"
+            "reference": "d178027d1e679832db9f38248fcc7200647dc2b7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/myclabs/php-enum/zipball/5f36467c7a87e20fbdc51e524fd8f9d1de80187c",
-            "reference": "5f36467c7a87e20fbdc51e524fd8f9d1de80187c",
+            "url": "https://api.github.com/repos/myclabs/php-enum/zipball/d178027d1e679832db9f38248fcc7200647dc2b7",
+            "reference": "d178027d1e679832db9f38248fcc7200647dc2b7",
             "shasum": "",
             "mirrors": [
                 {
@@ -3150,7 +3145,7 @@
             "squizlabs/php_codesniffer": "1.*",
             "vimeo/psalm": "^3.8"
         },
-        "time": "2020-02-14T08:15:52+00:00",
+        "time": "2020-11-14T18:14:52+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -3401,17 +3396,17 @@
     },
     {
         "name": "opis/closure",
-        "version": "3.6.0",
-        "version_normalized": "3.6.0.0",
+        "version": "3.6.1",
+        "version_normalized": "3.6.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/opis/closure.git",
-            "reference": "c547f8262a5fa9ff507bd06cc394067b83a75085"
+            "reference": "943b5d70cc5ae7483f6aff6ff43d7e34592ca0f5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/opis/closure/zipball/c547f8262a5fa9ff507bd06cc394067b83a75085",
-            "reference": "c547f8262a5fa9ff507bd06cc394067b83a75085",
+            "url": "https://api.github.com/repos/opis/closure/zipball/943b5d70cc5ae7483f6aff6ff43d7e34592ca0f5",
+            "reference": "943b5d70cc5ae7483f6aff6ff43d7e34592ca0f5",
             "shasum": "",
             "mirrors": [
                 {
@@ -3427,7 +3422,7 @@
             "jeremeamia/superclosure": "^2.0",
             "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
         },
-        "time": "2020-10-11T21:42:15+00:00",
+        "time": "2020-11-07T02:01:34+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4305,17 +4300,17 @@
     },
     {
         "name": "phpunit/phpunit",
-        "version": "9.4.2",
-        "version_normalized": "9.4.2.0",
+        "version": "9.4.3",
+        "version_normalized": "9.4.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/phpunit.git",
-            "reference": "3866b2eeeed21b1b099c4bc0b7a1690ac6fd5baa"
+            "reference": "9fa359ff5ddaa5eb2be2bedb08a6a5787a5807ab"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3866b2eeeed21b1b099c4bc0b7a1690ac6fd5baa",
-            "reference": "3866b2eeeed21b1b099c4bc0b7a1690ac6fd5baa",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9fa359ff5ddaa5eb2be2bedb08a6a5787a5807ab",
+            "reference": "9fa359ff5ddaa5eb2be2bedb08a6a5787a5807ab",
             "shasum": "",
             "mirrors": [
                 {
@@ -4362,7 +4357,7 @@
             "ext-soap": "*",
             "ext-xdebug": "*"
         },
-        "time": "2020-10-19T09:23:29+00:00",
+        "time": "2020-11-10T12:53:30+00:00",
         "bin": [
             "phpunit"
         ],
@@ -8317,17 +8312,17 @@
     },
     {
         "name": "voku/portable-ascii",
-        "version": "1.5.3",
-        "version_normalized": "1.5.3.0",
+        "version": "1.5.6",
+        "version_normalized": "1.5.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/voku/portable-ascii.git",
-            "reference": "25bcbf01678930251fd572891447d9e318a6e2b8"
+            "reference": "80953678b19901e5165c56752d087fc11526017c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/voku/portable-ascii/zipball/25bcbf01678930251fd572891447d9e318a6e2b8",
-            "reference": "25bcbf01678930251fd572891447d9e318a6e2b8",
+            "url": "https://api.github.com/repos/voku/portable-ascii/zipball/80953678b19901e5165c56752d087fc11526017c",
+            "reference": "80953678b19901e5165c56752d087fc11526017c",
             "shasum": "",
             "mirrors": [
                 {
@@ -8340,12 +8335,12 @@
             "php": ">=7.0.0"
         },
         "require-dev": {
-            "phpunit/phpunit": "~6.0 || ~7.0"
+            "phpunit/phpunit": "~6.0 || ~7.0 || ~9.0"
         },
         "suggest": {
             "ext-intl": "Use Intl for transliterator_transliterate() support"
         },
-        "time": "2020-07-22T23:32:04+00:00",
+        "time": "2020-11-12T00:07:28+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
