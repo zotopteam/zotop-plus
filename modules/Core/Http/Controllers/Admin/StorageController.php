@@ -193,7 +193,7 @@ class StorageController extends Controller
 
             // 删除目录
             if (Storage::disk($disk)->delete($path)) {
-                ImagePreview::file($disk . ':' . $path)->static_delete();
+                ImagePreview::file($disk . ':' . $path)->staticDelete();
                 return $this->success(trans('master.operated'), $request->referer());
             }
 

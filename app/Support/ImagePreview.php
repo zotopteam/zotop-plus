@@ -11,30 +11,35 @@ class ImagePreview
 {
     /**
      * 存储磁盘
+     *
      * @var string
      */
     public $disk;
 
     /**
      * 文件路径，当disk=null为绝对路径模式，否则为存储模式：public:uploads/2020/05/1.jpg
+     *
      * @var string
      */
     public $path;
 
     /**
      * 图片最大宽度
+     *
      * @var integer
      */
     public $width;
 
     /**
      * 图片最大高度
+     *
      * @var integer
      */
     public $height;
 
     /**
      * 滤镜
+     *
      * @var string
      */
     public $filter = 'original';
@@ -68,13 +73,13 @@ class ImagePreview
 
     /**
      * 文件路径md5 hash值
-     * 
+     *
      * 1，存储盘路径将使用 disk:path 模式
      * 2，绝对路径将转化为站点根目录起始的相对路径
      *
      * @return string
      */
-    private function path_hash()
+    private function pathHash()
     {
         if ($this->disk) {
             return md5($this->disk . ':' . $this->path);
@@ -86,12 +91,12 @@ class ImagePreview
     /**
      * 静态预览图存储相对路径
      * 在预览图目录中，按照文件路径的hash值建立文件夹，存储该图片的全部预览图文件
-     * 
+     *
      * @return string
      */
-    private function static_path()
+    private function staticPath()
     {
-        $hash = $this->path_hash();
+        $hash = $this->pathHash();
 
         $path = config('image.preview.static.directory', 'previews/images');
         $path = $path . '/' . substr($hash, 0, 2) . '/' . substr($hash, 2, 2) . '/' . $hash;
@@ -102,12 +107,13 @@ class ImagePreview
 
     /**
      * 删除静态预览图
+     *
      * @return mixed
      */
-    public function static_delete()
+    public function staticDelete()
     {
         // 预览图存储相对路径的存储目录
-        $path = dirname($this->static_path());
+        $path = dirname($this->staticPath());
 
         // 删除图片的所有存储的静态预览图
         File::deleteDirectory(public_path($path));
@@ -131,10 +137,10 @@ class ImagePreview
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function static_url()
+    public function staticUrl()
     {
         // 预览图存储相对路径
-        $path = $this->static_path();
+        $path = $this->staticPath();
 
         // 预览文件绝对路径
         $file = public_path($path);
@@ -172,9 +178,10 @@ class ImagePreview
 
     /**
      * 获取动态访问url
+     *
      * @return string
      */
-    public function dynamic_url()
+    public function dynamicUrl()
     {
         // 组装滤镜 resize:300-300 fit:300-200
         if ($this->width = intval($this->width)) {
@@ -205,10 +212,10 @@ class ImagePreview
     {
         // TODO 如果存储盘为远程盘，直接全部使用动态模式
         if (config('image.preview.mode') == 'static') {
-            return $this->static_url();
+            return $this->staticUrl();
         }
 
-        return $this->dynamic_url();
+        return $this->dynamicUrl();
     }
 
     /**

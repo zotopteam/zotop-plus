@@ -2,39 +2,39 @@
 
 namespace Modules\Content\Http\Controllers\Admin;
 
+use App\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
-use Modules\Content\Models\Model;
-use Modules\Content\Models\Field;
-use Modules\Content\Support\ModelHelper;
 use Modules\Content\Http\Requests\FieldRequest;
-use Module;
+use Modules\Content\Models\Field;
+use Modules\Content\Models\Model;
 
 class FieldController extends AdminController
 {
     /**
-     * 首页
+     * 字段列表
      *
-     * @return Response
+     * @param string $model_id
+     * @return \Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    public function index($model_id)
+    public function index(string $model_id)
     {
-        //Field::sync($model_id);
+        $this->title = trans('content::field.title');
 
         $this->model = Model::findOrFail($model_id);
-        $this->title = trans('content::field.title');
-        $this->fields = Field::where('model_id',$model_id)->orderby('sort','asc')->get();        
+        $this->fields = Field::where('model_id', $model_id)->orderby('sort', 'asc')->get();
 
         // 左边允许一行多个
-        $this->main = $this->fields->filter(function($item){
+        $this->main = $this->fields->filter(function ($item) {
             return $item['position'] == 'main';
         })->values();
 
         // 右边只允许一行一个
-        $this->side = $this->fields->filter(function($item){
+        $this->side = $this->fields->filter(function ($item) {
             return $item['position'] == 'side';
-        })->values();  
+        })->values();
 
         return $this->view();
     }
@@ -42,23 +42,30 @@ class FieldController extends AdminController
     /**
      * 排序
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @param string $model_id
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    public function sort(Request $request, $model_id)
+    public function sort(Request $request, string $model_id)
     {
-        foreach ($request->ids as $sort=>$id) {
+        foreach ($request->ids as $sort => $id) {
             Field::where('id', $id)->update(['position' => $request->position, 'sort' => $sort]);
         }
 
-        return $this->success(trans('master.operated'));        
-    }     
+        return $this->success(trans('master.operated'));
+    }
 
     /**
-     * 新建
-     * 
-     * @return Response
+     * 新增字段
+     *
+     * @param $model_id
+     * @return \Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    public function create($model_id)
+    public function create(string $model_id)
     {
         $this->title = trans('content::field.create');
 
@@ -66,10 +73,9 @@ class FieldController extends AdminController
         $this->model = Model::findOrFail($model_id);
 
         $this->field->model_id = $model_id;
-        $this->field->type     = 'text'; // 新建字段默认为text类型
-        $this->field->system   = 0; // 新建字段为自定义字段
-        $this->field->col      = 0; // 默认在主区域显示
-
+        $this->field->type = 'text'; // 新建字段默认为text类型
+        $this->field->system = 0; // 新建字段为自定义字段
+        $this->field->col = 0; // 默认在主区域显示
 
         return $this->view();
     }
@@ -77,8 +83,10 @@ class FieldController extends AdminController
     /**
      * 保存
      *
-     * @param  Request $request
-     * @return Response
+     * @param \Modules\Content\Http\Requests\FieldRequest $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-17
      */
     public function store(FieldRequest $request)
     {
@@ -87,18 +95,22 @@ class FieldController extends AdminController
         $field->save();
 
         return $this->success(trans('master.created'), route('content.field.index', $request->model_id));
-    } 
+    }
 
     /**
      * 编辑
      *
-     * @return Response
+     * @param string $model_id
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    public function edit($model_id, $id)
+    public function edit(string $model_id, int $id)
     {
         $this->title = trans('content::field.edit');
 
-        $this->id    = $id;
+        $this->id = $id;
         $this->field = Field::findOrFail($id);
         $this->model = Model::findOrFail($this->field->model_id);
 
@@ -108,13 +120,16 @@ class FieldController extends AdminController
     /**
      * 更新
      *
-     * @param  Request $request
-     * @return Response
+     * @param \Modules\Content\Http\Requests\FieldRequest $request
+     * @param int $id
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    public function update(FieldRequest $request, $id)
+    public function update(FieldRequest $request, int $id)
     {
         $field = Field::findOrFail($id);
-        $field->fill($request->all());    
+        $field->fill($request->all());
         $field->save();
 
         return $this->success(trans('master.updated'), route('content.field.index', $field->model_id));
@@ -123,24 +138,31 @@ class FieldController extends AdminController
     /**
      * 修改
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    public function change(Request $request, $id)
+    public function change(Request $request, int $id)
     {
         $field = Field::findOrFail($id);
-        $field->fill($request->all());      
+        $field->fill($request->all());
         $field->save();
 
-        return $this->success(trans('master.operated'), route('content.field.index', $field->model_id));        
-    }      
+        return $this->success(trans('master.operated'), route('content.field.index', $field->model_id));
+    }
 
     /**
      * 删除
      *
-     * @return Response
+     * @param string $model_id
+     * @param int $id
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    public function destroy($model_id, $id)
+    public function destroy(string $model_id, int $id)
     {
         $field = Field::findOrFail($id);
 
@@ -150,16 +172,19 @@ class FieldController extends AdminController
 
         $field->delete();
 
-        return $this->success(trans('master.deleted'), route('content.field.index', $model_id));        
+        return $this->success(trans('master.deleted'), route('content.field.index', $model_id));
     }
 
     /**
      * 启用和禁用
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param string $model_id
+     * @param int $id
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    public function status($model_id, $id)
+    public function status(string $model_id, int $id)
     {
         $field = Field::findOrFail($id);
         $field->disabled = $field->disabled ? 0 : 1;
@@ -171,15 +196,18 @@ class FieldController extends AdminController
     /**
      * 字段属性
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param string $model_id
+     * @return \Illuminate\Contracts\View\View|null
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    public function settings(Request $request, $model_id)
+    public function settings(Request $request, string $model_id)
     {
         $types = Field::types($request->field['model_id']);
 
         $this->field = array_object($request->field);
-        $this->type  = array_object(array_get($types, $this->field->type));
+        $this->type = array_object(array_get($types, $this->field->type));
 
         // 如果有定义属性视图
         if ($this->type->view ?? false) {
@@ -198,5 +226,5 @@ class FieldController extends AdminController
         }
 
         return null;
-    }      
+    }
 }

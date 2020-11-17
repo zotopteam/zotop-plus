@@ -16,17 +16,17 @@ class MigrationController extends AdminController
 {
     /**
      * 命令列表
-     * 
-     * @param  Request $request
-     * @param  string $module 模块名称
+     *
+     * @param Request $request
+     * @param string $module 模块名称
      * @return mixed
      */
-    public function index(Request $request, $module)
+    public function index(Request $request, string $module)
     {
-        $this->title      = trans('developer::migration.title');
-        $this->module     = Module::findorFail($module);
-        $this->path       = $this->module->getPath('migration', true);
-        $this->files      = File::isDirectory($this->path) ? File::allFiles($this->path) : [];
+        $this->title = trans('developer::migration.title');
+        $this->module = Module::findorFail($module);
+        $this->path = $this->module->getPath('migration', true);
+        $this->files = File::isDirectory($this->path) ? File::allFiles($this->path) : [];
         $this->migrations = \DB::table('migrations')->get()->pluck('migration')->toArray();
 
         return $this->view();
@@ -34,27 +34,27 @@ class MigrationController extends AdminController
 
     /**
      * 创建命令
-     * 
-     * @param  Request $request
-     * @param  string $module 模型名称
+     *
+     * @param Request $request
+     * @param string $module 模型名称
      * @return mixed
      */
     public function create(Request $request, $module)
     {
         // 表单提交时
         if ($request->isMethod('POST')) {
-            
-            $name    = $request->input('name');
+
+            $name = $request->input('name');
             $command = $request->input('command');
 
             try {
-                
+
                 Artisan::call($command, [
-                    'module'  => $module,
-                    'name'    => $name,
+                    'module' => $module,
+                    'name'   => $name,
                 ]);
 
-                return $this->success(trans('master.created'), route('developer.migration.index',[$module]));            
+                return $this->success(trans('master.created'), route('developer.migration.index', [$module]));
             } catch (ClassExistedException $e) {
                 return $this->error(trans('master.existed', [$name]));
             }
@@ -68,9 +68,9 @@ class MigrationController extends AdminController
 
     /**
      * 执行命令
-     * 
-     * @param  Request $request
-     * @param  string $module 模型名称
+     *
+     * @param Request $request
+     * @param string $module 模型名称
      * @return mixed
      */
     public function execute(Request $request, $module, $action)
@@ -87,10 +87,10 @@ class MigrationController extends AdminController
 
         Artisan::call($command, [
             'module'  => $module,
-            '--force' => true
+            '--force' => true,
         ]);
 
-        return $this->success(trans('master.operated'),route('developer.migration.index',[$module]));
+        return $this->success(trans('master.operated'), route('developer.migration.index', [$module]));
     }
 
     public function migrateFile(Request $request, $module, $action)
@@ -98,9 +98,9 @@ class MigrationController extends AdminController
         Artisan::call('migrate:files', [
             'files'   => $request->input('file'),
             '--mode'  => $action,
-            '--force' => true
+            '--force' => true,
         ]);
 
-        return $this->success(trans('master.operated'),route('developer.migration.index',[$module]));
-    }     
+        return $this->success(trans('master.operated'), route('developer.migration.index', [$module]));
+    }
 }

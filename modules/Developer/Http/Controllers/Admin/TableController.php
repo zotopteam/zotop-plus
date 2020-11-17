@@ -17,17 +17,20 @@ use Modules\Developer\Rules\TableName;
 class TableController extends AdminController
 {
     /**
-     * 首页
+     * 数据表列表
      *
      * @param string $module
      * @return \Illuminate\Contracts\View\View
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function index(string $module)
     {
-        $this->module = Module::findOrFail($module);
-        $this->tables = Table::all();
         $this->title = trans('developer::table.title');
 
+        $this->module = Module::findOrFail($module);
+        $this->tables = Table::all();
+
+        // 只显示当前模块的数据表
         $this->tables = array_filter($this->tables, function ($table) {
             return $table == $this->module->getLowerName() || Str::startsWith($table, $this->module->getLowerName() . '_');
         });
@@ -36,11 +39,12 @@ class TableController extends AdminController
     }
 
     /**
-     * 新建
+     * 新建数据表
      *
      * @param \Illuminate\Http\Request $request
      * @param string $module
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function create(Request $request, string $module)
     {
@@ -98,6 +102,8 @@ class TableController extends AdminController
      * @param string $module module name
      * @param string $table table name
      * @return \Illuminate\Contracts\View\View
+     * @throws \App\Modules\Exceptions\TableNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function manage(Request $request, $module, $table)
     {
@@ -125,6 +131,7 @@ class TableController extends AdminController
      * @param string $table
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      * @throws \App\Modules\Exceptions\TableNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function edit(Request $request, string $module, string $table)
     {
@@ -166,6 +173,7 @@ class TableController extends AdminController
      * @param string $table
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      * @throws \App\Modules\Exceptions\TableNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function drop(Request $request, string $module, string $table)
     {
@@ -190,6 +198,7 @@ class TableController extends AdminController
      * @param string $action
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      * @throws \App\Modules\Exceptions\TableNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function migration(string $module, string $table, $action = 'create')
     {
@@ -212,15 +221,16 @@ class TableController extends AdminController
     /**
      * 从已有表生成为model文件
      *
-     * @param $module
-     * @param $table
+     * @param string $module
+     * @param string $table
      * @param null $force
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @throws \App\Modules\Exceptions\TableNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @author Chen Lei
      * @date 2020-11-16
      */
-    public function model($module, $table, $force = null)
+    public function model(string $module, string $table, $force = null)
     {
         $module = Module::findOrFail($module);
         $table = Table::findOrFail($table);
@@ -291,10 +301,13 @@ class TableController extends AdminController
     /**
      * 获取表的模型名称，去掉表名称开始的模块名称+下划线，转换为变种驼峰
      *
-     * @param Table $table
+     * @param \App\Modules\Module $module
+     * @param \App\Modules\Maker\Table $table
      * @return string
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    private function getModelName($module, $table)
+    private function getModelName(\App\Modules\Module $module, Table $table)
     {
         $name = Str::after($table->name(), $module->getLowerName() . '_');
 
@@ -304,11 +317,11 @@ class TableController extends AdminController
     /**
      * 检查表当前模块下对应的模型是否存在
      *
-     * @param Module $module
-     * @param Table $table
+     * @param \App\Modules\Module $module
+     * @param \App\Modules\Maker\Table $table
      * @return boolean
      */
-    private function isModelFile($module, $table)
+    private function isModelFile(\App\Modules\Module $module, $table)
     {
         $path = $module->getPath('model', true) . DIRECTORY_SEPARATOR . $this->getModelName($module, $table) . '.php';
 
@@ -318,8 +331,8 @@ class TableController extends AdminController
     /**
      * 获取当前模块下和表相关的迁移文件
      *
-     * @param Module $module
-     * @param Table $table
+     * @param \App\Modules\Module $module
+     * @param \App\Modules\Maker\Table $table
      * @return array
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */

@@ -1,4 +1,5 @@
 <?php
+
 namespace Modules\Content\Support;
 
 use Illuminate\Support\Facades\Schema;
@@ -6,30 +7,30 @@ use Modules\Content\Models\Model;
 use Modules\Content\Models\Field;
 
 trait Modelable
-{   
+{
 
     /**
      * 获取扩展模型的编号
-     * 
-     * @param  string $model_id 模型编号
+     *
+     * @param string $model_id 模型编号
      * @return model | null
-     */        
-    public function getExtendModelId($model_id=null)
+     */
+    public function getExtendModelId($model_id = null)
     {
         return $model_id = $model_id ?? parent::getAttribute('model_id');
     }
 
     /**
      * 获取扩展模型的类名
-     * 
-     * @param  string $model_id 模型编号
+     *
+     * @param string $model_id 模型编号
      * @return model | null
-     */    
-    public function getExtendModelClass($model_id=null)
+     */
+    public function getExtendModelClass($model_id = null)
     {
         $model_id = $this->getExtendModelId($model_id);
 
-        $class = 'Modules\\Content\\Extend\\'.studly_case($model_id).'Model';
+        $class = 'Modules\\Content\\Extend\\' . studly_case($model_id) . 'Model';
 
         if (class_exists($class)) {
             return $class;
@@ -40,41 +41,41 @@ trait Modelable
 
     /**
      * 获取扩展模型的实例
-     * 
-     * @param  string $model_id 模型编号
+     *
+     * @param string $model_id 模型编号
      * @return model | null
      */
-    public function getExtendModel($model_id=null)
+    public function getExtendModel($model_id = null)
     {
         static $extends = [];
 
         $model_id = $this->getExtendModelId($model_id);
 
-        if (! array_key_exists($model_id, $extends)) {
+        if (!array_key_exists($model_id, $extends)) {
 
             if ($class = $this->getExtendModelClass($model_id)) {
                 $model = $class::findOrNew($this->getKey());
-            }  else {
+            } else {
                 $model = null;
             }
 
-            $extends[$model_id] = $model;           
+            $extends[$model_id] = $model;
         }
-        
+
         return $extends[$model_id];
     }
 
     /**
      * 获取扩展模型的关联函数名称
-     * 
-     * @param  string $model_id 模型编号
+     *
+     * @param string $model_id 模型编号
      * @return string
      */
-    public function getExtendRelation($model_id=null)
+    public function getExtendRelation($model_id = null)
     {
         $model_id = $this->getExtendModelId($model_id);
 
-        $relation = studly_case($model_id).'Relation';
+        $relation = studly_case($model_id) . 'Relation';
 
         if ($model_id && method_exists($this, $relation)) {
             return $relation;
@@ -85,14 +86,14 @@ trait Modelable
 
     /**
      * 模型筛选
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeModel($query, $model_id=null, $relationship=true)
+    public function scopeModel($query, $model_id = null, $relationship = true)
     {
-        if($model_id) {
-            $models =  str_array($model_id, ',');
+        if ($model_id) {
+            $models = explode(',', $model_id);
 
             if ($relationship) {
                 foreach ($models as $model) {
@@ -101,21 +102,21 @@ trait Modelable
                     }
                 }
             }
-            
-            return $query->whereSmart('model_id', $models);         
+
+            return $query->whereSmart('model_id', $models);
         }
 
         return $query;
-    } 
-    
+    }
+
 
     /**
      * 扩展填充，允许填充扩展模型字段
-     * 
+     *
      * @param array $attributes
      *
-     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      * @return $this
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      */
     public function fill(array $attributes)
     {
@@ -130,7 +131,7 @@ trait Modelable
 
     /**
      * 扩展保存，自动保存扩展类数据
-     * 
+     *
      * @param array $options
      *
      * @return bool
@@ -147,7 +148,8 @@ trait Modelable
 
     /**
      * 当前模型是否含有属性
-     * @param  string  $key
+     *
+     * @param string $key
      * @return boolean
      */
     public function hasAttribute($key)
@@ -165,8 +167,8 @@ trait Modelable
 
     /**
      * 获取属性，自动获取扩展模型属性
-     * 
-     * @param  string $key 属性名称
+     *
+     * @param string $key 属性名称
      * @return mixed
      */
     public function getAttribute($key)
@@ -184,7 +186,7 @@ trait Modelable
 
     /**
      * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return $this
      */

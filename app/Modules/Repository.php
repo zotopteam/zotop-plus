@@ -162,13 +162,15 @@ class Repository
     {
         return array_key_exists(strtolower($name), $this->all());
     }
-
+    
     /**
      * 按照名称获取模块
      *
-     * @param string $name 模块名称
-     * @return module
+     * @param string $name
+     * @return \App\Modules\Module|null
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-17
      */
     public function find(string $name)
     {
@@ -179,11 +181,13 @@ class Repository
      * Find a specific module, if there return that, otherwise throw exception.
      *
      * @param $name
-     * @return Module
-     * @throws ModuleNotFoundException
+     * @return \App\Modules\Module
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-11-17
      */
-    public function findOrFail($name)
+    public function findOrFail(string $name)
     {
         if ($module = $this->find($name)) {
             return $module;
