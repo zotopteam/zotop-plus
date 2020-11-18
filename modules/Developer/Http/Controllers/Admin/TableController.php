@@ -28,12 +28,14 @@ class TableController extends AdminController
         $this->title = trans('developer::table.title');
 
         $this->module = Module::findOrFail($module);
-        $this->tables = Table::all();
-
-        // 只显示当前模块的数据表
-        $this->tables = array_filter($this->tables, function ($table) {
+        $this->tables = Table::all()->filter(function ($table) {
+            // 只显示当前模块的数据表
             return $table == $this->module->getLowerName() || Str::startsWith($table, $this->module->getLowerName() . '_');
+        })->mapWithKeys(function ($table) {
+            // 转换并增加数据表注释
+            return [$table => Table::find($table)->info()];
         });
+        
 
         return $this->view();
     }

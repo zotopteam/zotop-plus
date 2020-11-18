@@ -1,7 +1,7 @@
 <?php
 return [
     'title'                       => 'Table 数据表',
-    'description'                 => '模块数据表管理，数据表前缀需要为模块名',
+    'description'                 => '管理模块数据表（数据表名称为模块名或者以模块名为前缀）',
     'index'                       => '数据表列表',
     'create'                      => '创建',
     'edit'                        => '修改',
@@ -12,6 +12,10 @@ return [
     'name'                        => '数据表名称',
     'name.help'                   => '如果模块名称为test，则数据表名称需要为 test 或者 test_***，不含数据表前缀',
     'name.error'                  => '数据表名称必须等于 :0 或者以 :0_ 开头，不能包含特殊字符或者以下划线结尾',
+    'rows'                        => '行数',
+    'comment'                     => '注释',
+    'created_at'                  => '创建时间',
+    'updated_at'                  => '更新时间',
     'columns'                     => '数据表字段',
     'columns.count'               => '字段数量：:0',
     'indexes'                     => '数据表索引',

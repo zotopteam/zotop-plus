@@ -4,6 +4,8 @@ namespace App\Modules\Maker;
 
 use App\Modules\Exceptions\TableNotFoundException;
 use Doctrine\DBAL\Types\Type;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -108,10 +110,10 @@ class Table
     }
 
     /**
-     * 获取全部的数据表
+     * 获取全部的数据表集合
      *
      * @param boolean $prefix 是否包含前缀
-     * @return mixed
+     * @return \Illuminate\Support\Collection
      */
     public static function all($prefix = false)
     {
@@ -119,15 +121,11 @@ class Table
 
         $tables = $instance->schema->listTableNames();
 
-        if ($prefix == false) {
-            $tables = array_map(function ($table) use ($instance) {
-                return Str::after($table, $instance->prefix);
-            }, $tables);
-        }
-
-        $tables = array_map('strtolower', $tables);
-
-        return $tables;
+        return collect($tables)->transform(function ($table) {
+            return strtolower($table);
+        })->transform(function ($table) use ($instance, $prefix) {
+            return $prefix ? $table : Str::after($table, $instance->prefix);
+        })->sort();
     }
 
     /**
@@ -138,12 +136,8 @@ class Table
      */
     public static function find(string $table)
     {
-        static $instance = null;
-
-        if (empty($instance)) {
-            $instance = new static;
-            $instance->table = Str::after(strtolower($table), $instance->prefix);
-        }
+        $instance = new static;
+        $instance->table = Str::after(strtolower($table), $instance->prefix);
 
         return $instance;
     }
@@ -215,6 +209,60 @@ class Table
     public function drop()
     {
         return Schema::dropIfExists($this->table);
+    }
+
+    /**
+     * 获取表的信息
+     *
+     * @param string|null $key name:表名称(全名) comment:表注释 rows:表行数，created_at：创建时间，updated_at：修改时间
+     * @return string|array
+     * @author Chen Lei
+     * @date 2020-11-19
+     */
+    public function info($key = null)
+    {
+        $driver = DB::connection()->getConfig('driver');
+        $database = DB::connection()->getConfig('database');
+        $table = $this->name(true);
+
+        // 表信息
+        $info = [
+            'name' => $table,
+        ];
+
+        if ($driver == 'mysql') {
+            $sql = 'SELECT * FROM information_schema.TABLES WHERE table_schema=? AND TABLE_NAME=?';
+            $result = DB::selectOne($sql, [$database, $table]);
+            $info['comment'] = data_get($result, 'TABLE_COMMENT');
+            $info['rows'] = data_get($result, 'TABLE_ROWS');
+            $info['created_at'] = data_get($result, 'CREATE_TIME');
+            $info['updated_at'] = data_get($result, 'UPDATE_TIME');
+        }
+
+        return $key ? Arr::get($info, $key) : $info;
+    }
+
+    /**
+     * 设置表的注释信息
+     *
+     * @param string $comment
+     * @return bool|void
+     * @author Chen Lei
+     * @date 2020-11-18
+     */
+    public function comment($comment)
+    {
+        $driver = DB::connection()->getConfig('driver');
+        $table = $this->name(true);
+
+        // mysql
+        if ($driver == 'mysql') {
+            // 修改注释
+            DB::statement('ALTER TABLE ? COMMENT ?', [$table, $comment]);
+            return true;
+        }
+
+        return null;
     }
 
     /**
