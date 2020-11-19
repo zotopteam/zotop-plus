@@ -10,6 +10,82 @@ abstract class GeneratorCommand extends Command
     use GeneratorTrait;
 
     /**
+     * Reserved names that cannot be used for generation.
+     *
+     * @var string[]
+     */
+    protected $reservedNames = [
+        '__halt_compiler',
+        'abstract',
+        'and',
+        'array',
+        'as',
+        'break',
+        'callable',
+        'case',
+        'catch',
+        'class',
+        'clone',
+        'const',
+        'continue',
+        'declare',
+        'default',
+        'die',
+        'do',
+        'echo',
+        'else',
+        'elseif',
+        'empty',
+        'enddeclare',
+        'endfor',
+        'endforeach',
+        'endif',
+        'endswitch',
+        'endwhile',
+        'eval',
+        'exit',
+        'extends',
+        'final',
+        'finally',
+        'fn',
+        'for',
+        'foreach',
+        'function',
+        'global',
+        'goto',
+        'if',
+        'implements',
+        'include',
+        'include_once',
+        'instanceof',
+        'insteadof',
+        'interface',
+        'isset',
+        'list',
+        'namespace',
+        'new',
+        'or',
+        'print',
+        'private',
+        'protected',
+        'public',
+        'require',
+        'require_once',
+        'return',
+        'static',
+        'switch',
+        'throw',
+        'trait',
+        'try',
+        'unset',
+        'use',
+        'var',
+        'while',
+        'xor',
+        'yield',
+    ];
+
+    /**
      * 后面追加的名称，比如名称后面追加 Request,ServiceProvider
      *
      */
@@ -36,9 +112,11 @@ abstract class GeneratorCommand extends Command
      */
     protected $stub = '';
 
+
     /**
      * Execute the console command.
      *
+     * @return bool|null
      * @throws \App\Modules\Exceptions\FileExistedException
      * @author Chen Lei
      * @date 2020-11-07
@@ -48,7 +126,13 @@ abstract class GeneratorCommand extends Command
         // 检查模块是否存在
         if (!$this->hasModule()) {
             $this->error('Module ' . $this->getModuleStudlyName() . ' does not exist!');
-            return;
+            return false;
+        }
+
+        // 验证名称是否为保留
+        if ($this->hasArgument('name') && $this->isReservedName($this->getNameInput())) {
+            $this->error('The name "' . $this->getNameInput() . '" is reserved by PHP.');
+            return false;
         }
 
         // 全局替换
@@ -80,7 +164,7 @@ abstract class GeneratorCommand extends Command
      * @return void
      * @throws \App\Modules\Exceptions\FileExistedException
      */
-    public function generate()
+    protected function generate()
     {
         if ($this->generateStubFile($this->stub, $this->getFilePath(), $this->option('force'))) {
             $this->generated();
@@ -92,7 +176,7 @@ abstract class GeneratorCommand extends Command
      *
      * @return boolean
      */
-    public function generated()
+    protected function generated()
     {
         return true;
     }
@@ -102,7 +186,7 @@ abstract class GeneratorCommand extends Command
      *
      * @return string
      */
-    public function getClassNamespace()
+    protected function getClassNamespace()
     {
         return $this->getDirNamespace($this->dirKey);
     }
@@ -112,9 +196,9 @@ abstract class GeneratorCommand extends Command
      *
      * @return string
      */
-    public function getNameInput()
+    protected function getNameInput()
     {
-        return $this->argument('name');
+        return trim($this->argument('name'));
     }
 
     /**
@@ -122,7 +206,7 @@ abstract class GeneratorCommand extends Command
      *
      * @return string
      */
-    public function getLowerNameInput()
+    protected function getLowerNameInput()
     {
         return strtolower($this->getNameInput());
     }
@@ -132,7 +216,7 @@ abstract class GeneratorCommand extends Command
      *
      * @return string
      */
-    public function getStudlyNameInput()
+    protected function getStudlyNameInput()
     {
         return Str::studly($this->getNameInput());
     }
@@ -142,7 +226,7 @@ abstract class GeneratorCommand extends Command
      *
      * @return string
      */
-    public function getClassName()
+    protected function getClassName()
     {
         $className = $this->getStudlyNameInput();
 
@@ -159,7 +243,7 @@ abstract class GeneratorCommand extends Command
      *
      * @return string
      */
-    public function getClassFullName()
+    protected function getClassFullName()
     {
         return $this->getClassNamespace() . '\\' . $this->getClassName();
     }
@@ -169,7 +253,7 @@ abstract class GeneratorCommand extends Command
      *
      * @return string
      */
-    public function getFileName()
+    protected function getFileName()
     {
         return $this->getClassName() . '.' . $this->extension;
     }
@@ -179,8 +263,19 @@ abstract class GeneratorCommand extends Command
      *
      * @return string
      */
-    public function getFilePath()
+    protected function getFilePath()
     {
         return $this->getConfigDirs($this->dirKey) . DIRECTORY_SEPARATOR . $this->getFileName();
+    }
+
+    /**
+     * 检查给定名称是否保留
+     *
+     * @param string $name
+     * @return bool
+     */
+    protected function isReservedName($name)
+    {
+        return in_array(strtolower($name), $this->reservedNames);
     }
 }
