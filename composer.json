@@ -1,12 +1,12 @@
 {
     "name": "laravel/laravel",
+    "type": "project",
     "description": "The Laravel Framework.",
     "keywords": [
         "framework",
         "laravel"
     ],
     "license": "MIT",
-    "type": "project",
     "require": {
         "php": "^7.3",
         "ext-json": "*",
@@ -42,12 +42,9 @@
         }
     },
     "autoload": {
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ],
         "files": [
-            "app/helpers.php"
+            "app/helpers.php",
+            "app/macros.php"
         ],
         "psr-4": {
             "App\\": "app/",
