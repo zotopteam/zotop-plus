@@ -16,9 +16,9 @@ class ModelMakeCommand extends GeneratorCommand
      */
     protected $signature = 'module:make-model
                 {module : The module to use}
-                {name : The name to use}
-                {--table= : The table name to use.}
-                {--force : Force the operation to run when it already exists.}';
+                {name : The name of the class}
+                {--table= : The table name of the model}
+                {--force : Create the class even if the model already exists}';
 
     /**
      * The console command description.
@@ -31,25 +31,27 @@ class ModelMakeCommand extends GeneratorCommand
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
      *
-     * @var null
+     * @var string
      */
     protected $dirKey = 'model';
 
     /**
-     * stub 用于从stubs中获取stub
-     *
-     * @var string
-     */
-    protected $stub = 'model';
-
-
-    /**
      * 生成前准备
      *
-     * @return boolean
+     * @return bool
+     * @throws \Exception
+     * @author Chen Lei
+     * @date 2020-11-19
      */
-    public function prepare()
+    protected function prepare()
     {
+        $this->stub = 'model/plain';
+
+        // 如果含有软删除，则创建软删除模型
+        if ($this->hasSoftDeletes()) {
+            $this->stub = 'model/soft-deletes';
+        }
+
         $this->replace([
             'table'      => $this->getTableName(),
             'fillable'   => $this->getFillable(),
@@ -65,13 +67,14 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getTableName()
+    protected function getTableName()
     {
-        // 如果有table，则直接使用table, 否则使用name的复数
+        // 如果有table，则直接使用table值
         if ($table = $this->option('table')) {
             return strtolower($table);
         }
 
+        // 没有传入table，使用name的小写的复数格式作为表名称
         $table = $this->getLowerNameInput();
         $table = Str::plural($table);
 
@@ -83,7 +86,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return array
      */
-    public function getTableColumns()
+    protected function getTableColumns()
     {
         static $columns = [];
 
@@ -103,11 +106,11 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getFillable()
+    protected function getFillable()
     {
         // 从数据表中直接读取字段
         if ($columns = $this->getTableColumns()) {
-            return "['" . implode("','", $columns) . "']";
+            return "['" . implode("', '", $columns) . "']";
         }
 
         return '[]';
@@ -118,7 +121,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getGuarded()
+    protected function getGuarded()
     {
         return '[]';
     }
@@ -128,7 +131,7 @@ class ModelMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getTimestamps()
+    protected function getTimestamps()
     {
         $columns = $this->getTableColumns();
 
@@ -137,5 +140,23 @@ class ModelMakeCommand extends GeneratorCommand
         }
 
         return 'false';
+    }
+
+    /**
+     * 是否含有软删除
+     *
+     * @return bool
+     * @author Chen Lei
+     * @date 2020-11-19
+     */
+    protected function hasSoftDeletes()
+    {
+        $columns = $this->getTableColumns();
+
+        if (in_array('deleted_at', $columns)) {
+            return true;
+        }
+
+        return false;
     }
 }

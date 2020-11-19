@@ -38,7 +38,7 @@ class ComponentsMakeCommand extends GeneratorCommand
     protected $dirKey = 'components';
 
     /**
-     * stub 用于从stubs中获取stub
+     * stub子目录
      *
      * @var string
      */

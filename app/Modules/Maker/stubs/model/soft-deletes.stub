@@ -2,40 +2,56 @@
 
 namespace $CLASS_NAMESPACE$;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class $CLASS_NAME$ extends Model
 {
+    use HasFactory, SoftDeletes;
+
     /**
-     * 与模型关联的数据表。
+     * 与模型关联的数据表
      *
      * @var string
      */
     protected $table = '$TABLE$';
     
     /**
-     * 可以被批量赋值的属性。
+     * 可以被批量赋值的属性
+     *
      * @var array
      */
     protected $fillable = $FILLABLE$;
     
     /**
-     * 不可被批量赋值的属性。
+     * 不可被批量赋值的属性
+     *
      * @var array
      */
     protected $guarded = $GUARDED$;
-    
+
+    /**
+     * 日期转换
+     *
+     * @var array
+     */
+    protected $dates = [
+        'deleted_at',
+    ];
+
     /**
      * 属性转换
+     *
      * @var array
      */
     protected $casts = [];
     
     /**
-     * 执行模型是否自动维护时间戳.
+     * 执行模型是否自动维护时间戳
+     *
      * @var bool
      */
     public $timestamps = $TIMESTAMPS$;
 
-      
 }

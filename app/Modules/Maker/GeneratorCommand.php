@@ -69,7 +69,7 @@ abstract class GeneratorCommand extends Command
      *
      * @return boolean
      */
-    public function prepare()
+    protected function prepare()
     {
         return true;
     }
