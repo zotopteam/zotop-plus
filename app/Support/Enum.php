@@ -12,7 +12,7 @@ abstract class Enum
      * @author Chen Lei
      * @date 2020-11-21
      */
-    protected function all()
+    public static function all()
     {
         $reflect = new \ReflectionClass(static::class);
         $enums = $reflect->getConstants();
@@ -27,7 +27,7 @@ abstract class Enum
      * @author Chen Lei
      * @date 2020-11-21
      */
-    protected function toArray()
+    public static function toArray()
     {
         return static::all();
     }
@@ -40,7 +40,7 @@ abstract class Enum
      * @author Chen Lei
      * @date 2020-11-21
      */
-    protected function toString($delimiter = ',')
+    public static function toString($delimiter = ',')
     {
         return implode($delimiter, static::all());
     }
@@ -52,7 +52,7 @@ abstract class Enum
      * @author Chen Lei
      * @date 2020-11-21
      */
-    protected function toCollection()
+    public static function toCollection()
     {
         return collect(static::all());
     }
@@ -65,7 +65,7 @@ abstract class Enum
      * @author Chen Lei
      * @date 2020-11-21
      */
-    protected function has($enum)
+    public static function has($enum)
     {
         return in_array($enum, static::all());
     }
@@ -78,7 +78,7 @@ abstract class Enum
      * @author Chen Lei
      * @date 2020-11-21
      */
-    protected function keys($case = null)
+    public static function keys($case = null)
     {
         if (isset($case)) {
             return array_keys(array_change_key_case(static::all(), $case));
@@ -94,20 +94,8 @@ abstract class Enum
      * @author Chen Lei
      * @date 2020-11-21
      */
-    protected function values()
+    public static function values()
     {
         return array_values(static::all());
-    }
-
-    /**
-     * Handle dynamic static method calls into the model.
-     *
-     * @param string $method
-     * @param array $parameters
-     * @return mixed
-     */
-    public static function __callStatic($method, $parameters)
-    {
-        return (new static)->$method(...$parameters);
     }
 }

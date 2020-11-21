@@ -66,6 +66,7 @@ return [
             'notifications' => 'Notifications',
             'traits'        => 'Traits',
             'components'    => 'View/Components',
+            'enums'         => 'Enums',
         ],
 
         /*

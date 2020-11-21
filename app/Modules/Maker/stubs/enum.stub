@@ -1,0 +1,13 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use App\Support\Enum;
+
+class $CLASS_NAME$ extends Enum
+{
+    /**
+     * Example
+     */
+    const EXAMPLE = 1;
+}
