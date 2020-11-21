@@ -52,11 +52,12 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @return boolean
      */
-    public function prepare()
+    protected function prepare()
     {
         $this->stub = $this->stub . '/' . $this->getTypeInput();
 
         if ($this->getModelInput()) {
+
             $this->stub = $this->stub . '/model';
 
             $this->replace([
@@ -79,7 +80,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * @return void
      * @throws \App\Modules\Exceptions\FileExistedException
      */
-    public function generated()
+    protected function generated()
     {
         $name = $this->getStudlyNameInput();
 
@@ -117,7 +118,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * @param string|null $key
      * @return string
      */
-    public function getTypeInput($key = null)
+    protected function getTypeInput($key = null)
     {
         $type = strtolower($this->option('type'));
 
@@ -131,7 +132,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getModelInput()
+    protected function getModelInput()
     {
         return strtolower($this->option('model'));
     }
@@ -142,7 +143,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * @param string|null $dirKey
      * @return string
      */
-    public function getClassNamespace($dirKey = null)
+    protected function getClassNamespace($dirKey = null)
     {
         $namespace = $this->getDirNamespace($this->dirKey);
 
@@ -161,7 +162,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getFilePath()
+    protected function getFilePath()
     {
         $path = $this->getConfigDirs($this->dirKey);
 
@@ -180,7 +181,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getModelBaseName()
+    protected function getModelBaseName()
     {
         return Str::studly($this->getModelInput());
     }
@@ -190,7 +191,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getModelFullName()
+    protected function getModelFullName()
     {
         return $this->getDirNamespace('model') . '\\' . $this->getModelBaseName();
     }
@@ -200,7 +201,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getModelList()
+    protected function getModelList()
     {
         return Str::plural($this->getModelInput());
     }
@@ -210,7 +211,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getControllerLowerName()
+    protected function getControllerLowerName()
     {
         return Str::replaceLast(strtolower($this->appendName), '', strtolower($this->getClassName()));
     }
@@ -223,7 +224,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * @return void
      * @throws \App\Modules\Exceptions\FileExistedException
      */
-    public function generateView(string $action, $force = false)
+    protected function generateView(string $action, $force = false)
     {
         $stub = $this->stub . '/' . $action;
         $path = $this->getConfigDirs('views') . DIRECTORY_SEPARATOR . $this->getTypeInput("dirs.view");
