@@ -35,7 +35,7 @@ class TableController extends AdminController
             // 转换并增加数据表注释
             return [$table => Table::find($table)->info()];
         });
-        
+
 
         return $this->view();
     }

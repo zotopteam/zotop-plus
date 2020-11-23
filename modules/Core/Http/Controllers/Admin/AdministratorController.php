@@ -4,6 +4,7 @@ namespace Modules\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Modules\Routing\AdminController;
+use Modules\Core\Models\QueryFilters\AdministratorFilter;
 use Modules\Core\Models\User;
 use Modules\Core\Http\Requests\AdministratorRequest;
 
@@ -14,10 +15,10 @@ class AdministratorController extends AdminController
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(AdministratorFilter $filter)
     {
         $this->title = trans('core::administrator.title');
-        $this->users = User::with('roles')->whereIn('model_id', ['super', 'admin'])->orderby('id', 'asc')->paginate(10);
+        $this->users = User::with('roles')->filter($filter)->orderby('id', 'asc')->paginate(10);
 
         return $this->view();
     }

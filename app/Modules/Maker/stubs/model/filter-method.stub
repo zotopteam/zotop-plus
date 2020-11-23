@@ -1,0 +1,10 @@
+
+    /**
+     * 搜索$COMMENT$
+     *
+     * @param $TYPE$ $$NAME$
+     */
+    public function $NAME$($TYPE$ $$NAME$)
+    {
+        $this->query->$METHOD$('$COLUMN$', $$NAME$);
+    }

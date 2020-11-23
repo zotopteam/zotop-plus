@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 use App\Traits\UserIp;
 use App\Traits\UserRelation;
 

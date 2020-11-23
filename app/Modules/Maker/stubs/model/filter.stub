@@ -1,0 +1,10 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use App\Support\Eloquent\QueryFilter;
+
+class $CLASS_NAME$ extends QueryFilter
+{
+$FILTERS$
+}

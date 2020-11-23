@@ -47,6 +47,7 @@ return [
             'seeder'        => 'Database/Seeders',
             'factory'       => 'Database/Factories',
             'model'         => 'Models',
+            'filter'        => 'Models/QueryFilters',
             'controller'    => 'Http/Controllers',
             'middleware'    => 'Http/Middleware',
             'request'       => 'Http/Requests',

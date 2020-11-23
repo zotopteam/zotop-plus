@@ -70,7 +70,6 @@ class SupportServiceProvider extends ServiceProvider
             return "<?php echo Filter::fire($expression); ?>";
         });
 
-
         // 定义滤器
         ImageFilter::set('fit', \App\Support\ImageFilters\Fit::class);
         ImageFilter::set('resize', \App\Support\ImageFilters\Resize::class);
