@@ -1189,6 +1189,10 @@ a[disabled] {
     table-layout: fixed;
 }
 
+.table-nowrap {
+    word-break: break-all;
+}
+
 .table-nowrap > thead > tr > th,
 .table-nowrap > tbody > tr > th,
 .table-nowrap > tfoot > tr > th,

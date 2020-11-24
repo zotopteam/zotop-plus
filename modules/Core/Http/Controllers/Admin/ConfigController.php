@@ -6,7 +6,6 @@ use App\Modules\Routing\AdminController;
 use App\Modules\Traits\ModuleConfig;
 use App\Support\ImageFilter;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Intervention\Image\Facades\Image;
 
 class ConfigController extends AdminController
@@ -16,18 +15,23 @@ class ConfigController extends AdminController
     /**
      * 配置首页
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @author Chen Lei
+     * @date 2020-11-25
      */
     public function index(Request $request)
     {
         return redirect()->route('core.config.upload');
     }
 
-
     /**
      * 文件上传
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-25
      */
     public function upload(Request $request)
     {
@@ -43,7 +47,7 @@ class ConfigController extends AdminController
             return $this->success(trans('master.saved'));
         }
 
-        $this->title  = trans('core::config.upload');
+        $this->title = trans('core::config.upload');
         $this->config = config('core');
 
         return $this->view();
@@ -51,9 +55,11 @@ class ConfigController extends AdminController
 
     /**
      * 水印测试
-     * 
-     * @param  Request $request
-     * @return json
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return string
+     * @author Chen Lei
+     * @date 2020-11-25
      */
     public function watermarktest(Request $request)
     {
@@ -73,9 +79,12 @@ class ConfigController extends AdminController
     }
 
     /**
-     * 邮件
+     * 邮件发送配置
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-25
      */
     public function mail(Request $request)
     {
@@ -103,10 +112,13 @@ class ConfigController extends AdminController
     }
 
     /**
-     * 发送测试邮件
-     * 
-     * @param  Request $request
-     * @return mixed
+     * 邮件发送测试
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Modules\Core\Emails\TestMail
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @author Chen Lei
+     * @date 2020-11-25
      */
     public function mailtest(Request $request)
     {
@@ -134,7 +146,10 @@ class ConfigController extends AdminController
     /**
      * 本地时区和时间设置
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-25
      */
     public function locale(Request $request)
     {
@@ -160,7 +175,10 @@ class ConfigController extends AdminController
     /**
      * 系统安全
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-11-25
      */
     public function safe(Request $request)
     {
@@ -172,8 +190,9 @@ class ConfigController extends AdminController
 
             // 写入ENV配置
             $this->env([
-                'APP_DEBUG'        => $request->input('debug') ? 'true' : 'false',
-                'APP_ENV'          => $request->input('env', 'production'),
+                'APP_DEBUG'   => $request->input('debug') ? 'true' : 'false',
+                'APP_LOG_SQL' => $request->input('log_sql') ? 'true' : 'false',
+                'APP_ENV'     => $request->input('env', 'production'),
             ]);
 
             // 更改后台地址，本地或者测试环境下，route 已经加载，无法重新载入, 改用url生成
@@ -182,7 +201,7 @@ class ConfigController extends AdminController
             return $this->success(trans('master.saved'), $redirectTo);
         }
 
-        $this->title  = trans('core::config.safe');
+        $this->title = trans('core::config.safe');
         $this->config = config('app') + config('core');
 
         return $this->view();

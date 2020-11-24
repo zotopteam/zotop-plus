@@ -2,15 +2,14 @@
 
 namespace Modules\Developer\Hooks;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 class Hook
 {
     /**
      * Hook the start
-     * @param  array $start
+     *
+     * @param array $start
      * @return array
      */
     public function start($start)
@@ -34,7 +33,7 @@ class Hook
                 'href' => route('developer.route.index'),
                 'icon' => 'fa fa-link bg-warning text-white',
                 'tips' => trans('developer::route.description'),
-            ];                        
+            ];
         }
 
         return $start;
@@ -42,7 +41,8 @@ class Hook
 
     /**
      * Hook the navbar
-     * @param  array $navbar
+     *
+     * @param array $navbar
      * @return array
      */
     public function navbar($navbar)
@@ -52,16 +52,17 @@ class Hook
             $navbar['developer'] = [
                 'text'   => trans('developer::developer.title'),
                 'href'   => route('developer.index'),
-                'active' => Route::is('developer.*')
+                'active' => Route::is('developer.*'),
             ];
         }
-               
+
         return $navbar;
     }
 
     /**
      * Hook the tools
-     * @param  array $navbar
+     *
+     * @param array $navbar
      * @return array
      */
     public function tools($tools)
@@ -69,13 +70,13 @@ class Hook
         // 只在本地模式下不显示
         if (allow('developer.index') && app()->environment('local')) {
             $tools['developer'] = [
-                'title'   => trans('developer::developer.title'),
-                'href'   => route('developer.index'),
-                'icon'   => 'fa fa-tools',
+                'title' => trans('developer::developer.title'),
+                'href'  => route('developer.index'),
+                'icon'  => 'fa fa-tools',
                 'class' => 'text-warning',
             ];
         }
-               
+
         return $tools;
-    }    
+    }
 }

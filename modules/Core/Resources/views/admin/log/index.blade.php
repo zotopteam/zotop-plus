@@ -36,8 +36,9 @@
                         <td>{{trans('core::log.user_name.label')}}</td>
                         <td>{{trans('core::log.url.label')}}</td>
                         <td>{{trans('core::log.content.label')}}</td>
-                        <td width="5%">{{trans('core::log.user_ip.label')}}</td>
-                        <td width="5%">{{trans('core::log.created_at.label')}}</td>
+                        <td width="10%">
+                            {{trans('core::log.user_ip.label')}}/{{trans('core::log.created_at.label')}}
+                        </td>
                         <td width="5%"></td>
                     </tr>
                     </thead>
@@ -64,11 +65,13 @@
                             </td>
                             <td>
                                 <div class="text-{{$log->type}} text-wrap">
-                                    {!! $log->content !!}
+                                    {!! nl2br($log->content) !!}
                                 </div>
                             </td>
-                            <td>{{$log->user_ip}}</td>
-                            <td>{{$log->created_at}}</td>
+                            <td>
+                                {{$log->user_ip}}
+                                <div class="text-xs">{{$log->created_at}}</div>
+                            </td>
                             <td class="manage">
                                 @if ($request = $log->request)
                                     <a href="javascript:;" class="manage-item js-alert-inner">

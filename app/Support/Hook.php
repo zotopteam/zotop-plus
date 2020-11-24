@@ -10,6 +10,13 @@ abstract class Hook
     use Macroable;
 
     /**
+     * The application instance.
+     *
+     * @var \Illuminate\Contracts\Foundation\Application
+     */
+    protected $app;
+
+    /**
      * 存储hook
      *
      * @var \Illuminate\Support\Collection
@@ -19,8 +26,9 @@ abstract class Hook
     /**
      * 初始化 listeners
      */
-    public function __construct()
+    public function __construct($app)
     {
+        $this->app = $app;
         $this->listeners = collect([]);
     }
 

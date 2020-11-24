@@ -1,4 +1,5 @@
 <?php
+
 use App\Support\Facades\Action;
 use App\Support\Facades\Filter;
 
@@ -17,7 +18,9 @@ Filter::listen('global.start', 'Modules\Developer\Hooks\Hook@start', 10000);
  */
 Filter::listen('global.tools', 'Modules\Developer\Hooks\Hook@tools', 10000);
 
-
+/**
+ * 扩展模块创建
+ */
 Action::listen('module.make.full', 'Modules\Developer\Hooks\ModuleMake@full');
 
 

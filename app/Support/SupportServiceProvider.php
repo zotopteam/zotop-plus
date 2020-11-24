@@ -2,15 +2,12 @@
 
 namespace App\Support;
 
-use App\Support\Form;
-use App\Support\Html;
-use App\Support\Action;
-use App\Support\Filter;
-use App\Support\ImageFilter;
+use App\Support\Compilers\DotArrayCompiler;
+use App\Support\Compilers\ZFormCompiler;
+use App\Support\ImageFilters\Fit;
+use App\Support\ImageFilters\Resize;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use App\Support\Compilers\ZFormCompiler;
-use App\Support\Compilers\DotArrayCompiler;
 
 class SupportServiceProvider extends ServiceProvider
 {
@@ -45,6 +42,18 @@ class SupportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->bladeExtend();
+        $this->imageFilter();
+    }
+
+    /**
+     * 模板扩展
+     *
+     * @author Chen Lei
+     * @date 2020-11-25
+     */
+    private function bladeExtend()
+    {
         // 模板编译扩展，解析点格式的数组 $a.b.c => $a['b']['c'], @$a.b.c => $a.b.c
         $this->app['blade.compiler']->extend(function ($view) {
             return $this->app[DotArrayCompiler::class]->compile($view);
@@ -69,9 +78,19 @@ class SupportServiceProvider extends ServiceProvider
         Blade::directive('filter', function ($expression) {
             return "<?php echo Filter::fire($expression); ?>";
         });
-
-        // 定义滤器
-        ImageFilter::set('fit', \App\Support\ImageFilters\Fit::class);
-        ImageFilter::set('resize', \App\Support\ImageFilters\Resize::class);
     }
+
+    /**
+     * 图片滤器
+     *
+     * @author Chen Lei
+     * @date 2020-11-25
+     */
+    private function imageFilter()
+    {
+        // 定义图片滤器
+        ImageFilter::set('fit', Fit::class);
+        ImageFilter::set('resize', Resize::class);
+    }
+
 }

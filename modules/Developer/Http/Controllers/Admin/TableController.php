@@ -213,9 +213,8 @@ class TableController extends AdminController
             '--migrate' => false,
             '--force'   => true,
         ]);
-
         return $this->success(
-            trans('developer::table.migration.created') . "\r\n" . Artisan::output(),
+            trans('developer::table.migration.created') . "\n" . Artisan::output(),
             route('developer.migration.index', [$module])
         );
     }
