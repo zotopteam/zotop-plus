@@ -2,7 +2,7 @@
 
 namespace Modules\Block\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class Category extends Model

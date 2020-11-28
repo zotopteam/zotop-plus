@@ -3,7 +3,7 @@
 namespace Modules\Region\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 
 class RegionDatabaseSeeder extends Seeder
 {

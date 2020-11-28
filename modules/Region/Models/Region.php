@@ -3,7 +3,7 @@
 namespace Modules\Region\Models;
 
 use App\Traits\Nestable;
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 
 class Region extends Model
 {

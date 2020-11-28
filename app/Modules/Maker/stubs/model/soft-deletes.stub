@@ -2,13 +2,12 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class $CLASS_NAME$ extends Model
 {
-    use HasFactory, SoftDeletes;
+    use SoftDeletes;
 
     /**
      * 与模型关联的数据表

@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 use App\Traits\UserRelation;
 use Modules\Content\Extend\Extendable;
 use Modules\Content\Support\Modelable;
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 
 class Content extends Model
 {

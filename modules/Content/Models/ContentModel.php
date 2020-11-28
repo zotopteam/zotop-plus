@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Content\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 
 /**

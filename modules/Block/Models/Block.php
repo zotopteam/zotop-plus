@@ -2,11 +2,10 @@
 
 namespace Modules\Block\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
+use Action;
+use App\Support\Eloquent\Model;
 use App\Traits\UserRelation;
 use Module;
-use Action;
 
 class Block extends Model
 {
@@ -38,7 +37,7 @@ class Block extends Model
 
     /**
      * booted
-     * 
+     *
      * @return void
      */
     protected static function booted()
@@ -56,10 +55,10 @@ class Block extends Model
 
     /**
      * 区块类型
-     * 
-     * @param  string $type    类型
-     * @param  string $field   字段键名
-     * @param  mixed $default 默认值
+     *
+     * @param string $type 类型
+     * @param string $field 字段键名
+     * @param mixed $default 默认值
      * @return mixed
      */
     public static function type($type = null, $field = null, $default = null)
@@ -79,7 +78,7 @@ class Block extends Model
 
     /**
      * 排序
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -91,7 +90,7 @@ class Block extends Model
     /**
      * 区块类型名称
      *
-     * @param  string  $value
+     * @param string $value
      * @return string
      */
     public function getTypeNameAttribute($value)
@@ -102,7 +101,7 @@ class Block extends Model
     /**
      * 模板代码
      *
-     * @param  string  $value
+     * @param string $value
      * @return string
      */
     public function getSlugIncludeAttribute($value)
@@ -113,7 +112,7 @@ class Block extends Model
     /**
      * 数据编号
      *
-     * @param  string  $value
+     * @param string $value
      * @return string
      */
     public function getSourceIdAttribute($value)
@@ -124,7 +123,7 @@ class Block extends Model
     /**
      * 获取字段，为了排序需要去掉key名
      *
-     * @param  string  $value
+     * @param string $value
      * @return void
      */
     public function getFieldsAttribute($value)

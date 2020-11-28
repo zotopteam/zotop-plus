@@ -2,7 +2,7 @@
 
 namespace Modules\Block\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Traits\UserRelation;
 use Modules\Block\Models\Block;

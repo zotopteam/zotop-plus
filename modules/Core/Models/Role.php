@@ -2,8 +2,7 @@
 
 namespace Modules\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Modules\Core\Models\User;
+use App\Support\Eloquent\Model;
 
 class Role extends Model
 {

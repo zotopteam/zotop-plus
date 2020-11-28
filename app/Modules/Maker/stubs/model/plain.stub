@@ -2,13 +2,10 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 
 class $CLASS_NAME$ extends Model
 {
-    use HasFactory;
-
     /**
      * 与模型关联的数据表
      *

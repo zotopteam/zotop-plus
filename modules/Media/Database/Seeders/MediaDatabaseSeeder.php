@@ -3,7 +3,7 @@
 namespace Modules\Media\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 
 class MediaDatabaseSeeder extends Seeder
 {

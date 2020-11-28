@@ -2,7 +2,7 @@
 
 namespace Modules\Media\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Support\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\Nestable;
 use App\Traits\UserRelation;
