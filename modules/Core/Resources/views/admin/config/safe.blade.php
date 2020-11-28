@@ -48,6 +48,20 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                        <label for="log_sql"
+                               class="col-2 col-form-label">{{trans('core::config.log_sql.label')}}</label>
+                        <div class="col-8">
+                            <z-field type="toggle" name="log_sql"/>
+
+                            @if ($errors->has('log_sql'))
+                                <span class="form-help text-error">{{ $errors->first('log_sql') }}</span>
+                            @else
+                                <span class="form-help">{{trans('core::config.log_sql.help')}}</span>
+                            @endif
+                        </div>
+                    </div>
+
                     <div class="form-title row">{{trans('core::config.safe.admin')}}</div>
 
                     <div class="form-group row">
@@ -63,8 +77,6 @@
                             @endif
                         </div>
                     </div>
-
-                    <div class="form-title row">{{trans('core::config.safe.log')}}</div>
 
                     <div class="form-group row">
                         <label for="debug" class="col-2 col-form-label">{{trans('core::config.log.label')}}</label>
@@ -88,20 +100,6 @@
                             </div>
 
                             <span class="form-help">{{trans('core::config.log.help')}}</span>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="log_sql"
-                               class="col-2 col-form-label">{{trans('core::config.log_sql.label')}}</label>
-                        <div class="col-8">
-                            <z-field type="toggle" name="log_sql"/>
-
-                            @if ($errors->has('log_sql'))
-                                <span class="form-help text-error">{{ $errors->first('log_sql') }}</span>
-                            @else
-                                <span class="form-help">{{trans('core::config.log_sql.help')}}</span>
-                            @endif
                         </div>
                     </div>
 

@@ -70,7 +70,7 @@ return [
     'time_format.label'   => '时间格式',
     'time_format.help'    => '',
 
-    'safe.base'                   => '运行环境',
+    'safe.base'                   => '运行模式',
     'env.label'                   => '应用环境',
     'env.help'                    => '',
     'envs.production'             => '生产环境',
@@ -89,7 +89,6 @@ return [
     'admin_prefix.label' => '后台前缀',
     'admin_prefix.help'  => '更改后将改变系统后台的URL地址前缀，默认为：admin',
 
-    'safe.log'      => '日志设置',
     'log.label'     => '操作日志',
     'log.expire'    => '有效期',
     'log.unit'      => '天',
