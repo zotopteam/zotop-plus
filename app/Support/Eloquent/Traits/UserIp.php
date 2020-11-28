@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Support\Eloquent\Traits;
 
 use Illuminate\Support\Facades\Request;
 

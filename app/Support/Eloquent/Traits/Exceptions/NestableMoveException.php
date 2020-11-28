@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Exceptions;
+namespace App\Support\Eloquent\Traits\Exceptions;
 
 use Exception;
 

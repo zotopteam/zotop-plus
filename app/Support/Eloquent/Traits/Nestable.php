@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Traits;
+namespace App\Support\Eloquent\Traits;
 
-use App\Traits\Exceptions\NestableMoveException;
-use App\Traits\Exceptions\NestableDeleteException;
+use App\Support\Eloquent\Traits\Exceptions\NestableDeleteException;
+use App\Support\Eloquent\Traits\Exceptions\NestableMoveException;
 
 /**
  * 含有 id 和 parent_id 结构的表嵌套查询
- * 
+ *
  */
 trait Nestable
 {
@@ -38,6 +38,7 @@ trait Nestable
 
     /**
      * 关联子级别
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function child()
@@ -47,6 +48,7 @@ trait Nestable
 
     /**
      * 关联递归子级别
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function children()
@@ -56,6 +58,7 @@ trait Nestable
 
     /**
      * 关联父级别
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function parent()
@@ -65,6 +68,7 @@ trait Nestable
 
     /**
      * 关联递归父级别
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function parents()
@@ -73,7 +77,7 @@ trait Nestable
     }
 
     /**
-     * 获取全部父级数组 
+     * 获取全部父级数组
      * $parents = $model->parents
      *
      * @return array
@@ -82,7 +86,7 @@ trait Nestable
     {
         // parents 包括自身
         $parents = [
-            $this->id => $this
+            $this->id => $this,
         ];
 
         $parent_id = $this->parent_id;
@@ -102,7 +106,7 @@ trait Nestable
     }
 
     /**
-     * 获取全部父级编号数组 
+     * 获取全部父级编号数组
      * $parents = $model->parent_ids
      *
      * @return array

@@ -2,14 +2,12 @@
 
 namespace Modules\Content\Models;
 
-use Illuminate\Database\Eloquent\Model as LaravelModel;
-use App\Traits\UserRelation;
-use Modules\Content\Models\Field;
-use Modules\Content\Models\Content;
-use Modules\Content\Support\ModelTable;
+use App\Support\Eloquent\Model as BaseModel;
+use App\Support\Eloquent\Traits\UserRelation;
 use Modules\Content\Support\ModelHelper;
+use Modules\Content\Support\ModelTable;
 
-class Model extends LaravelModel
+class Model extends BaseModel
 {
     use UserRelation;
 
@@ -60,7 +58,7 @@ class Model extends LaravelModel
 
     /**
      * booted
-     * 
+     *
      * @return void
      */
     protected static function booted()
@@ -77,12 +75,12 @@ class Model extends LaravelModel
 
                 // 修改字段关联
                 Field::where('model_id', $model->getOriginal('id'))->update([
-                    'model_id' => $model->id
+                    'model_id' => $model->id,
                 ]);
 
                 // 修改数据关联
                 Content::where('model_id', $model->getOriginal('id'))->update([
-                    'model_id' => $model->id
+                    'model_id' => $model->id,
                 ]);
 
                 // 修改表名称
@@ -142,7 +140,7 @@ class Model extends LaravelModel
 
     /**
      * 获取可以使用的模型
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */

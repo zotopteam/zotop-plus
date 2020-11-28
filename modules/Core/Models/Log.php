@@ -3,8 +3,8 @@
 namespace Modules\Core\Models;
 
 use App\Support\Eloquent\Model;
-use App\Traits\UserIp;
-use App\Traits\UserRelation;
+use App\Support\Eloquent\Traits\UserIp;
+use App\Support\Eloquent\Traits\UserRelation;
 
 class Log extends Model
 {

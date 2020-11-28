@@ -2,13 +2,13 @@
 
 namespace Modules\Content\Models;
 
-use Module;
-use App\Traits\Nestable;
+use App\Support\Eloquent\Model;
+use App\Support\Eloquent\Traits\Nestable;
+use App\Support\Eloquent\Traits\UserRelation;
 use Illuminate\Support\Arr;
-use App\Traits\UserRelation;
+use Module;
 use Modules\Content\Extend\Extendable;
 use Modules\Content\Support\Modelable;
-use App\Support\Eloquent\Model;
 
 class Content extends Model
 {
@@ -47,7 +47,7 @@ class Content extends Model
 
     /**
      * booted
-     * 
+     *
      * @return void
      */
     protected static function booted()
@@ -55,8 +55,8 @@ class Content extends Model
         // 保存前数据处理
         static::saving(function ($content) {
 
-            $content->slug       = $content->slug ?: null;
-            $content->sort       = $content->sort ?: time();
+            $content->slug = $content->slug ?: null;
+            $content->sort = $content->sort ?: time();
 
             // 如果发布时，发布时间大于当前时间，则为定时发布
             if ($content->status == 'publish') {
@@ -95,8 +95,8 @@ class Content extends Model
 
     /**
      * 获取内容的状态
-     * 
-     * @param  string $model_id 模型编号
+     *
+     * @param string $model_id 模型编号
      * @return array
      */
     public static function status()
@@ -113,7 +113,8 @@ class Content extends Model
 
     /**
      * 获取内容状态名称
-     * @param  mixed $value
+     *
+     * @param mixed $value
      * @return string
      */
     public function getStatusNameAttribute($value)
@@ -123,7 +124,8 @@ class Content extends Model
 
     /**
      * 获取内容状态图标
-     * @param  mixed $value
+     *
+     * @param mixed $value
      * @return string
      */
     public function getStatusIconAttribute($value)
@@ -133,7 +135,8 @@ class Content extends Model
 
     /**
      * 获取内容状态颜色
-     * @param  mixed $value
+     *
+     * @param mixed $value
      * @return string
      */
     public function getStatusColorAttribute($value)
@@ -143,7 +146,8 @@ class Content extends Model
 
     /**
      * 获取内容的视图文件
-     * @param  mixed $value
+     *
+     * @param mixed $value
      * @return string
      */
     public function getViewAttribute($value)
@@ -161,7 +165,8 @@ class Content extends Model
 
     /**
      * 获取内容url地址
-     * @param  mixed $value
+     *
+     * @param mixed $value
      * @return string
      */
     public function getUrlAttribute($value)
@@ -179,7 +184,7 @@ class Content extends Model
 
     /**
      * 排序 ，查询结果按照stick(置顶)、sort(排序)和id(编号)倒序
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param string|array sort 例如：stick desc,id desc
      * @return \Illuminate\Database\Eloquent\Builder
@@ -191,7 +196,7 @@ class Content extends Model
 
     /**
      * 获取发布的信息
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -202,6 +207,7 @@ class Content extends Model
 
     /**
      * 不更新时间戳
+     *
      * @return this
      */
     public function scopeWithoutTimestamps()
@@ -213,8 +219,8 @@ class Content extends Model
     /**
      * Handle dynamic static method calls into the method.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array $parameters
      * @return mixed
      */
     public static function __callStatic($method, $parameters)

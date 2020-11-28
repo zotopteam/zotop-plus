@@ -2,7 +2,7 @@
 
 namespace Modules\Region\Models;
 
-use App\Traits\Nestable;
+use App\Support\Eloquent\Traits\Nestable;
 use App\Support\Eloquent\Model;
 
 class Region extends Model

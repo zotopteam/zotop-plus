@@ -2,12 +2,11 @@
 
 namespace Modules\Content\Models;
 
-use Illuminate\Database\Eloquent\Model as LaravelModel;
-use Modules\Content\Support\ModelTable;
-use Modules\Content\Models\Model;
+use App\Support\Eloquent\Model as BaseModel;
 use Module;
+use Modules\Content\Support\ModelTable;
 
-class Field extends LaravelModel
+class Field extends BaseModel
 {
 
     /**
@@ -40,7 +39,7 @@ class Field extends LaravelModel
      * @var array
      */
     protected $casts = [
-        'settings' => 'json'
+        'settings' => 'json',
     ];
 
 
@@ -53,7 +52,7 @@ class Field extends LaravelModel
 
     /**
      * booted
-     * 
+     *
      * @return void
      */
     protected static function booted()
@@ -123,7 +122,8 @@ class Field extends LaravelModel
 
     /**
      * 预处理字段，完善字段数据
-     * @param  object $field 字段对象
+     *
+     * @param object $field 字段对象
      * @return object
      */
     public static function preproccess($field)
@@ -146,8 +146,8 @@ class Field extends LaravelModel
 
     /**
      * 获取模型支持的字段类型
-     * 
-     * @param  string $model_id 模型编号
+     *
+     * @param string $model_id 模型编号
      * @return array
      */
     public static function types($model_id)
@@ -163,8 +163,8 @@ class Field extends LaravelModel
 
     /**
      * 更新模型fillable 和 casts
-     * 
-     * @param  string $model_id 模型编号
+     *
+     * @param string $model_id 模型编号
      * @return array
      */
     public static function sync($model_id)
@@ -173,9 +173,9 @@ class Field extends LaravelModel
         $table = ModelTable::find($model_id);
 
         if ($table->exists()) {
-            $types    = static::types($model_id);
+            $types = static::types($model_id);
             $fillable = $table->columns();
-            $casts    = static::where('model_id', $model_id)->whereIn('name', $fillable)->get()->filter(function ($item) use ($types) {
+            $casts = static::where('model_id', $model_id)->whereIn('name', $fillable)->get()->filter(function ($item) use ($types) {
                 if ($cast = array_get($types, $item->type . '.cast')) {
                     $item['cast'] = $cast;
                     return true;
@@ -186,13 +186,13 @@ class Field extends LaravelModel
             $modelclass = $model->model ?? 'Modules\Content\Models\ContentModel';
         } else {
             $fillable = $casts = [];
-            $tablename = $modelclass  = null;
+            $tablename = $modelclass = null;
         }
 
-        $model->table    = $tablename;
-        $model->model    = $modelclass;
+        $model->table = $tablename;
+        $model->model = $modelclass;
         $model->fillable = $fillable;
-        $model->casts    = $casts;
+        $model->casts = $casts;
         $model->save();
 
         return true;
@@ -212,6 +212,7 @@ class Field extends LaravelModel
 
     /**
      * 获取字段类型名称
+     *
      * @return string
      */
     public function getTypeNameAttribute($value)

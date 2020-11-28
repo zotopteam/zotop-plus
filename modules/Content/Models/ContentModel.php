@@ -1,8 +1,8 @@
 <?php
+
 namespace Modules\Content\Models;
 
 use App\Support\Eloquent\Model;
-use Illuminate\Support\Facades\Schema;
 
 /**
  * 内容扩展模型基类，所有的扩展模型类均继承于此类
@@ -20,7 +20,7 @@ abstract class ContentModel extends Model
      * id 字符串格式，关闭自动增长
      *
      * @var bool
-     */    
+     */
     public $incrementing = false;
 
     /**

@@ -3,7 +3,6 @@
 namespace Modules\Block\Models;
 
 use App\Support\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class Category extends Model
 {
@@ -23,24 +22,26 @@ class Category extends Model
 
     /**
      * booted
-     * 
+     *
      * @return void
      */
     protected static function booted()
     {
         // 为安全考虑，禁止删除非空的模型
         static::deleting(function ($category) {
-
             // 如果已经有数据，不能删除
             if ($category->block()->count()) {
                 abort(403, trans('block::category.delete.hasblock'));
             }
         });
     }
-
+    
     /**
      * 和block的关联
-     * @return hasMany
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @author Chen Lei
+     * @date 2020-11-28
      */
     public function block()
     {
@@ -49,7 +50,7 @@ class Category extends Model
 
     /**
      * 排序
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */

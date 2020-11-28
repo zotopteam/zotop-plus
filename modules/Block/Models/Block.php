@@ -4,7 +4,7 @@ namespace Modules\Block\Models;
 
 use Action;
 use App\Support\Eloquent\Model;
-use App\Traits\UserRelation;
+use App\Support\Eloquent\Traits\UserRelation;
 use Module;
 
 class Block extends Model

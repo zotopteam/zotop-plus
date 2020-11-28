@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Support\Eloquent\Traits;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +25,7 @@ trait UserRelation
             $model->user_id = Auth::User()->id ?? 0;
         });
     }
-    
+
     /**
      * 关联用户
      *

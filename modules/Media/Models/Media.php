@@ -4,8 +4,8 @@ namespace Modules\Media\Models;
 
 use App\Support\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use App\Traits\Nestable;
-use App\Traits\UserRelation;
+use App\Support\Eloquent\Traits\Nestable;
+use App\Support\Eloquent\Traits\UserRelation;
 
 
 class Media extends Model

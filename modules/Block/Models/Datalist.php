@@ -3,9 +3,8 @@
 namespace Modules\Block\Models;
 
 use App\Support\Eloquent\Model;
+use App\Support\Eloquent\Traits\UserRelation;
 use Illuminate\Database\Eloquent\Builder;
-use App\Traits\UserRelation;
-use Modules\Block\Models\Block;
 
 class Datalist extends Model
 {
@@ -31,12 +30,12 @@ class Datalist extends Model
      * @var array
      */
     protected $casts = [
-        'data'   => 'json'
+        'data' => 'json',
     ];
 
     /**
      * booted
-     * 
+     *
      * @return void
      */
     protected static function booted()
@@ -49,7 +48,7 @@ class Datalist extends Model
         // 保存前
         static::creating(function ($model) {
             $model->status = 'publish';
-            $model->sort   = time();
+            $model->sort = time();
         });
 
         // 保存后
@@ -60,9 +59,9 @@ class Datalist extends Model
 
     /**
      * 获取字段信息
-     * 
-     * @param  array $block_fields 区块字段设置
-     * @param  array  $data        区块数据
+     *
+     * @param array $block_fields 区块字段设置
+     * @param array $data 区块数据
      * @return array
      */
     public static function fields($block_fields, $data = [])
@@ -72,12 +71,12 @@ class Datalist extends Model
         foreach ($block_fields as $key => $field) {
 
             // 取出非字段标签
-            $show  = array_pull($field, 'show');
+            $show = array_pull($field, 'show');
             $label = array_pull($field, 'label');
-            $help  = array_pull($field, 'help');
+            $help = array_pull($field, 'help');
 
             // 重组字段数据
-            $field['id']   = 'data_' . $field['name'];
+            $field['id'] = 'data_' . $field['name'];
             $field['name'] = 'data[' . $field['name'] . ']';
 
             // 如果是上传字段
@@ -90,11 +89,11 @@ class Datalist extends Model
                 $resize = array_pull($field, 'resize');
                 if ($resize['type'] == 'origin') {
                     $field['resize'] = false;
-                } elseif ($resize['type'] == 'system') {
+                } else if ($resize['type'] == 'system') {
                     $field['resize'] = true;
-                } elseif ($resize['type'] == 'thumb') {
+                } else if ($resize['type'] == 'thumb') {
                     $field['resize'] = ['width' => $resize['width'], 'height' => $resize['height']];
-                } elseif ($resize['type'] == 'crop') {
+                } else if ($resize['type'] == 'crop') {
                     $field['resize'] = ['width' => $resize['width'], 'height' => $resize['height'], 'crop' => true];
                 }
             }
@@ -112,9 +111,11 @@ class Datalist extends Model
 
     /**
      * 获取已经发布的数据
-     * 
-     * @param  int $block_id 区块编号
-     * @return collection
+     *
+     * @param $block_id
+     * @return \Illuminate\Support\Collection
+     * @author Chen Lei
+     * @date 2020-11-28
      */
     public static function history($block_id)
     {
@@ -125,9 +126,9 @@ class Datalist extends Model
 
     /**
      * 获取已经发布的数据
-     * 
-     * @param  int $block_id 区块编号
-     * @return collection
+     *
+     * @param int $block_id 区块编号
+     * @return \Illuminate\Support\Collection
      */
     public static function publish($block_id)
     {
@@ -138,8 +139,8 @@ class Datalist extends Model
 
     /**
      * 更新区块数据
-     * 
-     * @param  int $block_id 区块编号
+     *
+     * @param int $block_id 区块编号
      * @return bool
      */
     public static function updateBlockData($block_id)
@@ -161,7 +162,7 @@ class Datalist extends Model
 
         // 更新block的data数据
         Block::where('id', $block_id)->update([
-            'data' => $publish->pluck('data')
+            'data' => $publish->pluck('data'),
         ]);
 
         return true;
@@ -170,7 +171,7 @@ class Datalist extends Model
     /**
      * 区块数据标题
      *
-     * @param  string  $value
+     * @param string $value
      * @return string
      */
     public function getTitleAttribute($value)
@@ -181,7 +182,7 @@ class Datalist extends Model
     /**
      * 区块数据图片预览
      *
-     * @param  string  $value
+     * @param string $value
      * @return string
      */
     public function getImageAttribute($value)
@@ -191,7 +192,8 @@ class Datalist extends Model
 
     /**
      * 不更新时间戳
-     * @return this
+     *
+     * @return $this
      */
     public function scopeWithoutTimestamps()
     {
