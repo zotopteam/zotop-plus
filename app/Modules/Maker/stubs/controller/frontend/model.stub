@@ -12,7 +12,7 @@ class $CLASS_NAME$ extends Controller
     /**
      * 首页
      *
-     * @return Response
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -32,7 +32,7 @@ class $CLASS_NAME$ extends Controller
     /**
      * 新建
      * 
-     * @return Response
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -47,7 +47,7 @@ class $CLASS_NAME$ extends Controller
      * 保存
      *
      * @param  Request $request
-     * @return Response
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function store(Request $request)
     {
@@ -62,7 +62,7 @@ class $CLASS_NAME$ extends Controller
      * 显示
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
@@ -76,7 +76,7 @@ class $CLASS_NAME$ extends Controller
     /**
      * 编辑
      *
-     * @return Response
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
@@ -90,7 +90,7 @@ class $CLASS_NAME$ extends Controller
      * 更新
      *
      * @param  Request $request
-     * @return Response
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function update(Request $request, $id)
     {
@@ -104,7 +104,7 @@ class $CLASS_NAME$ extends Controller
     /**
      * 删除
      *
-     * @return Response
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function destroy($id)
     {

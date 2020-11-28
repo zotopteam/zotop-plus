@@ -11,7 +11,7 @@ class $CLASS_NAME$ extends Controller
     /**
      * 首页
      *
-     * @return Response
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function index()
     {
