@@ -2,7 +2,7 @@
 
 namespace Modules\Tinymce\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Modules\Support\ServiceProvider;
 
 class TinymceServiceProvider extends ServiceProvider
 {

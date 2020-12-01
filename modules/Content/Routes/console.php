@@ -9,16 +9,4 @@
 | simple approach to interacting with each command's IO methods.
 |
 */
-/**
- * 定时发布
- */
-Artisan::command('content:publish-future', function () {
-
-    \Modules\Content\Models\Content::where('status','future')->where('publish_at', '<', now())->update([
-        'status' => 'publish'
-    ]);
-
-    $this->info('Publish the future content success!');
-
-})->describe('Publish the future content!');
 

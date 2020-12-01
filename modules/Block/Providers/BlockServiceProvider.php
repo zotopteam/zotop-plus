@@ -3,7 +3,7 @@
 namespace Modules\Block\Providers;
 
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\ServiceProvider;
+use App\Modules\Support\ServiceProvider;
 use Modules\Block\Models\Block;
 use Modules\Block\View\Components\BlockComponent;
 

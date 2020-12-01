@@ -2,14 +2,14 @@
 
 namespace Modules\Content\Providers;
 
-use Modules\Content\Models\Model;
-use Modules\Content\Models\Content;
+use App\Modules\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\ServiceProvider;
-use Modules\Content\View\Components\ContentList;
-use Modules\Content\View\Components\ContentAdminList;
+use Modules\Content\Models\Content;
+use Modules\Content\Models\Model;
 use Modules\Content\View\Components\ContentAdminBreadcrumb;
+use Modules\Content\View\Components\ContentAdminList;
+use Modules\Content\View\Components\ContentList;
 
 
 class ContentServiceProvider extends ServiceProvider
@@ -22,6 +22,22 @@ class ContentServiceProvider extends ServiceProvider
     protected $defer = false;
 
     /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        // Load all commands in the directory
+        $this->loadCommands(realpath(__DIR__ . '/../Console'));
+
+        // 模板扩展
+        Blade::component(ContentAdminList::class, 'content-admin-list');
+        Blade::component(ContentAdminBreadcrumb::class, 'content-admin-breadcrumb');
+        Blade::component(ContentList::class, 'content-list');
+    }
+
+    /**
      * Boot the application events.
      *
      * @return void
@@ -29,8 +45,7 @@ class ContentServiceProvider extends ServiceProvider
     public function boot()
     {
         // 定时任务
-        $this->app->booted(function () {
-            $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
+        $this->schedules(function ($schedule) {
             $schedule->command('content:publish-future')->name('content-publish-future')->withoutOverlapping()->everyMinute();
         });
 
@@ -53,19 +68,6 @@ class ContentServiceProvider extends ServiceProvider
                 $model->table && Schema::dropIfExists($model->table);
             });
         });
-    }
-
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        // 模板扩展
-        Blade::component(ContentAdminList::class, 'content-admin-list');
-        Blade::component(ContentAdminBreadcrumb::class, 'content-admin-breadcrumb');
-        Blade::component(ContentList::class, 'content-list');
     }
 
     /**

@@ -6,7 +6,7 @@ use App\Support\ImageFilter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\ServiceProvider;
+use App\Modules\Support\ServiceProvider;
 use Modules\Core\View\Components\Search;
 use Modules\Core\View\Components\SideBar;
 use Modules\Core\View\Components\UploadChunk;

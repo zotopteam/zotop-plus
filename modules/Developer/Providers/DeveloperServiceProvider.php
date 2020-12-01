@@ -2,7 +2,7 @@
 
 namespace Modules\Developer\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Modules\Support\ServiceProvider;
 
 class DeveloperServiceProvider extends ServiceProvider
 {

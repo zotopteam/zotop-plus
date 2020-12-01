@@ -2,7 +2,7 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use Illuminate\Support\ServiceProvider;
+use App\Modules\Support\ServiceProvider;
 
 class $CLASS_NAME$ extends ServiceProvider
 {
@@ -13,7 +13,8 @@ class $CLASS_NAME$ extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Load all commands in the directory
+        // $this->loadCommands(realpath(__DIR__ . '/../Console'));
     }
 
     /**
@@ -23,7 +24,10 @@ class $CLASS_NAME$ extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Define scheduling tasks
+        // $this->schedules(function ($schedule) {
+        //     $schedule->command('test:test-ccc')->everyMinute();
+        // });
     }
     
 }

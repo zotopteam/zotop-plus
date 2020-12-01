@@ -2,7 +2,7 @@
 
 namespace Modules\Translator\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Modules\Support\ServiceProvider;
 
 class TranslatorServiceProvider extends ServiceProvider
 {

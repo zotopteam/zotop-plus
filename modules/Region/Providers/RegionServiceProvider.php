@@ -2,7 +2,7 @@
 
 namespace Modules\Region\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Modules\Support\ServiceProvider;
 
 class RegionServiceProvider extends ServiceProvider
 {
