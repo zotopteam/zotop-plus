@@ -26,7 +26,7 @@ class $CLASS_NAME$ extends ServiceProvider
     {
         // Define scheduling tasks
         // $this->schedules(function ($schedule) {
-        //     $schedule->command('test:test-ccc')->everyMinute();
+        //     $schedule->command('$MODULE_LOWER_NAME$:command-name')->everyMinute();
         // });
     }
     
