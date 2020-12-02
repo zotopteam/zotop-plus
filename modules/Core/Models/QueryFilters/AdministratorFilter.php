@@ -7,9 +7,7 @@ use App\Support\Eloquent\QueryFilter;
 class AdministratorFilter extends QueryFilter
 {
     /**
-     * 搜索密码
-     *
-     * @param string $password
+     * 全局滤器
      */
     public function boot()
     {
@@ -35,7 +33,7 @@ class AdministratorFilter extends QueryFilter
     {
         $this->query->where('username', $username);
     }
-    
+
     /**
      * 搜索邮箱
      *
