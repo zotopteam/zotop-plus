@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Support\Form\Traits\FormControlable;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
@@ -11,7 +12,7 @@ use Illuminate\Support\Traits\Macroable;
 
 class Form
 {
-    use Macroable, ForwardsCalls {
+    use Macroable, FormControlable, ForwardsCalls {
         Macroable::__call as macroCall;
     }
 
@@ -36,6 +37,7 @@ class Form
 
     /**
      * 字段类型
+     *
      * @var array
      */
     protected $types = [
@@ -45,24 +47,28 @@ class Form
 
     /**
      * 表单追加项
+     *
      * @var array
      */
     protected $append = [];
 
     /**
      * 表单默认的类名
+     *
      * @var string
      */
     protected $formDefaultClass = 'form';
 
     /**
      * 字段默认的类名
+     *
      * @var string
      */
     protected $fieldDefaultClass = 'form-control';
 
     /**
      * 按钮字段
+     *
      * @var string
      */
     protected $fieldButtonClass = [
@@ -73,6 +79,7 @@ class Form
 
     /**
      * 按钮字段
+     *
      * @var string
      */
     protected $fieldButtonIcon = [
@@ -88,14 +95,16 @@ class Form
      */
     public function __construct(Application $app)
     {
-        $this->app  = $app;
+        $this->app = $app;
         $this->view = $app['view'];
     }
+
+
 
     /**
      * 生成 <form ……> 标签
      *
-     * @param  array $options
+     * @param array $options
      * @return string
      */
     public function open(array $options = [])
@@ -134,7 +143,7 @@ class Form
     /**
      * 表单方法
      *
-     * @param  array $options
+     * @param array $options
      * @return string
      */
     protected function formMethod(&$options)
@@ -145,19 +154,6 @@ class Form
         // 如果是['DELETE', 'PATCH', 'PUT']方法之一，附加为表单隐藏域
         if (in_array($method, ['DELETE', 'PATCH', 'PUT'])) {
             $this->append[] = $this->hidden(['name' => '_method', 'value' => $method]);
-        }
-
-        // 传递表单来源
-        if ($referer = Arr::pull($options, 'referer')) {
-            // 如果为真
-            if ($referer === true || $referer === 'referer') {
-                $referer = $this->app['request']->referer();
-            }
-            // 如果为当前页
-            if ($referer == 'current') {
-                $referer = $this->app['request']->fullUrl();
-            }
-            $this->append[] = $this->hidden(['name' => '_referer', 'value' => $referer]);
         }
 
         // 追加token
@@ -171,7 +167,8 @@ class Form
 
     /**
      * 表单方法
-     * @param  array $options
+     *
+     * @param array $options
      * @return string
      */
     protected function formAction(&$options)
@@ -200,7 +197,8 @@ class Form
 
     /**
      * 表单方法
-     * @param  array $options
+     *
+     * @param array $options
      * @return string
      */
     protected function formEnctype(&$options)
@@ -223,12 +221,13 @@ class Form
      */
     protected function hasType(string $type)
     {
-        return $this->hasMacro($type) || method_exists($this, $type) || in_array($type, Arr::flatten($this->types));
+        return $this->hasMacro($type) || $this->hasControl($type) || method_exists($this, $type) || in_array($type, Arr::flatten($this->types));
     }
 
     /**
      * 依次查找类型，直到找到，找不到返回text
-     * @param  array $types 类型
+     *
+     * @param array $types 类型
      * @return string
      */
     protected function findType(...$types)
@@ -244,8 +243,8 @@ class Form
 
     /**
      * 统一字段的调用方式
-     * 
-     * @param  array  $attributes 字段属性
+     *
+     * @param array $attributes 字段属性
      * @return html
      */
     public function field(array $attributes = [])
@@ -263,16 +262,17 @@ class Form
 
     /**
      * input 类型，<input type="……">
-     * @param  array  $attributes 属性
+     *
+     * @param array $attributes 属性
      * @return string
      */
     protected function input(array $attributes)
     {
-        $type  = Arr::pull($attributes, 'type', 'text');
+        $type = Arr::pull($attributes, 'type', 'text');
         $class = Arr::pull($attributes, 'class', null);
         $class = $class ? $this->fieldDefaultClass . " {$class}" : $this->fieldDefaultClass;
 
-        $id    = $this->getId($attributes);
+        $id = $this->getId($attributes);
         $value = $this->getValue($attributes);
 
         $attributes = array_merge($attributes, compact('type', 'id', 'value', 'class'));
@@ -282,6 +282,7 @@ class Form
 
     /**
      * token 字段
+     *
      * @return string
      */
     public function token()
@@ -294,17 +295,18 @@ class Form
 
     /**
      * textarea 类型，<textarea></textarea>
-     * @param  array  $attributes 属性
+     *
+     * @param array $attributes 属性
      * @return string
      */
     public function textarea(array $attributes)
     {
         Arr::pull($attributes, 'type');
 
-        $id    = $this->getId($attributes);
+        $id = $this->getId($attributes);
         $value = $this->getValue($attributes);
-        $cols  = Arr::pull($attributes, 'cols', 50);
-        $rows  = Arr::pull($attributes, 'rows', 10);
+        $cols = Arr::pull($attributes, 'cols', 50);
+        $rows = Arr::pull($attributes, 'rows', 10);
         $class = Arr::pull($attributes, 'class', null);
         $class = $class ? $this->fieldDefaultClass . " {$class}" : $this->fieldDefaultClass;
 
@@ -315,12 +317,13 @@ class Form
 
     /**
      * input 类型，<button type="……"></button>
-     * @param  array  $attributes 属性
+     *
+     * @param array $attributes 属性
      * @return string
      */
     public function button(array $attributes)
     {
-        $type  = Arr::pull($attributes, 'type', 'button');
+        $type = Arr::pull($attributes, 'type', 'button');
         $class = Arr::pull($attributes, 'class', null);
         $class = $class ? $this->fieldButtonClass[$type] . " {$class}" : $this->fieldButtonClass[$type];
 
@@ -339,14 +342,15 @@ class Form
 
     /**
      * select 类型，<select></select>
-     * @param  array  $attributes 属性
+     *
+     * @param array $attributes 属性
      * @return string
      */
     public function select(array $attributes)
     {
         // 样式
-        $class    = Arr::pull($attributes, 'class', null);
-        $class    = $class ? $this->fieldDefaultClass . " {$class}" : $this->fieldDefaultClass;
+        $class = Arr::pull($attributes, 'class', null);
+        $class = $class ? $this->fieldDefaultClass . " {$class}" : $this->fieldDefaultClass;
 
         // 是否为多选
         $multiple = Arr::pull($attributes, 'multiple') ? true : false;
@@ -381,10 +385,11 @@ class Form
 
     /**
      * 转换select的optgroup
-     * @param  mixed $label    选项标签
-     * @param  array $options 选项组
-     * @param  mixed $selected 选择的项
-     * @param  bool $multiple 是否多选
+     *
+     * @param mixed $label 选项标签
+     * @param array $options 选项组
+     * @param mixed $selected 选择的项
+     * @param bool $multiple 是否多选
      * @return string
      */
     protected function convertSelectOptionGroup($label, $options, $selected, $multiple, $level = 0)
@@ -392,7 +397,7 @@ class Form
         $space = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $level);
 
         $attributes = [
-            'label' => $space . $label
+            'label' => $space . $label,
         ];
 
         $html = [];
@@ -410,10 +415,11 @@ class Form
 
     /**
      * 转换select的option
-     * @param  mixed $value    选项值
-     * @param  string $display 选项显示内容
-     * @param  mixed $selected 选择的项
-     * @param  bool $multiple 是否多选
+     *
+     * @param mixed $value 选项值
+     * @param string $display 选项显示内容
+     * @param mixed $selected 选择的项
+     * @param bool $multiple 是否多选
      * @return string
      */
     protected function convertSelectOption($value, $display, $selected, $multiple)
@@ -421,9 +427,9 @@ class Form
         if ($multiple) {
             $isSelected = in_array($value, Arr::wrap($selected));
         } else if (is_int($value) && is_bool($selected)) {
-            $isSelected = (bool) $value === $selected;
+            $isSelected = (bool)$value === $selected;
         } else {
-            $isSelected = (string) $value === (string) $selected;
+            $isSelected = (string)$value === (string)$selected;
         }
 
         $attributes = [
@@ -436,7 +442,8 @@ class Form
 
     /**
      * checkbox 类型，<input type="checkbox">
-     * @param  array  $attributes 属性
+     *
+     * @param array $attributes 属性
      * @return string
      */
     public function checkbox(array $attributes)
@@ -447,7 +454,8 @@ class Form
 
     /**
      * radio 类型，<input type="radio">
-     * @param  array  $attributes 属性
+     *
+     * @param array $attributes 属性
      * @return string
      */
     public function radio(array $attributes)
@@ -497,9 +505,10 @@ class Form
 
     /**
      * 添加class
-     * @param  array   $attributes 属性
-     * @param  mixed   $add 添加的class
-     * @param  boolean $prepend 是否前置
+     *
+     * @param array $attributes 属性
+     * @param mixed $add 添加的class
+     * @param boolean $prepend 是否前置
      * @return array
      */
     protected function addClass(&$attributes, $add, $prepend = false)
@@ -521,7 +530,8 @@ class Form
 
     /**
      * 删除 class
-     * @param  array $attributes 属性
+     *
+     * @param array $attributes 属性
      * @return null
      */
     protected function removeClass(&$attributes)
@@ -532,10 +542,11 @@ class Form
 
     /**
      * 从属性中取出标签项
-     * @param  array  &$attributes 属性数组
-     * @param  array|string  $key  属性键名或者键名数组
-     * @param  mixed  $default     默认值
-     * @param  boolean $pull       是否从属性数组中删除
+     *
+     * @param array  &$attributes 属性数组
+     * @param array|string $key 属性键名或者键名数组
+     * @param mixed $default 默认值
+     * @param boolean $pull 是否从属性数组中删除
      * @return mixed
      */
     protected function getAttribute(&$attributes, $key, $default = null, $pull = true)
@@ -571,7 +582,7 @@ class Form
 
             // 默认值是boolean，转换value为boolean
             if (is_bool($default)) {
-                $value = (bool) $value;
+                $value = (bool)$value;
             }
 
             return $value;
@@ -582,9 +593,10 @@ class Form
 
     /**
      * 从属性中取出name
-     * @param  array $attributes 属性数组
-     * @param  string $default 默认值
-     * @param  boolean $pull 是否从属性数组中删除，默认不删除
+     *
+     * @param array $attributes 属性数组
+     * @param string $default 默认值
+     * @param boolean $pull 是否从属性数组中删除，默认不删除
      * @return string
      */
     protected function getName(&$attributes, $default = null, $pull = false)
@@ -594,9 +606,10 @@ class Form
 
     /**
      * 从属性中获取id
-     * @param  array $attributes 属性数组
-     * @param  string $default 默认值
-     * @param  boolean $pull 是否从属性数组中删除，默认不删除
+     *
+     * @param array $attributes 属性数组
+     * @param string $default 默认值
+     * @param boolean $pull 是否从属性数组中删除，默认不删除
      * @return string
      */
     protected function getId(&$attributes, $default = null, $pull = false)
@@ -610,9 +623,10 @@ class Form
 
     /**
      * 从属性或者绑定的数组中获取值
-     * @param  array $attributes 属性数组
-     * @param  string $default 默认值
-     * @param  boolean $pull 是否从属性数组中删除，默认不删除
+     *
+     * @param array $attributes 属性数组
+     * @param string $default 默认值
+     * @param boolean $pull 是否从属性数组中删除，默认不删除
      * @return mixed
      */
     protected function getValue(&$attributes, $default = null, $pull = false)
@@ -642,8 +656,9 @@ class Form
     }
 
     /**
-     * 将数组名称转为点语法 test[aaa] 转为 test.aaa 
-     * @param  string $name 字段名
+     * 将数组名称转为点语法 test[aaa] 转为 test.aaa
+     *
+     * @param string $name 字段名
      * @return string
      */
     protected function transformNameDot($name)
@@ -686,6 +701,10 @@ class Form
     {
         if (static::hasMacro($method)) {
             return $this->macroCall($method, $parameters);
+        }
+
+        if (static::hasControl($method)) {
+            return $this->callControl($method, $parameters);
         }
 
         // 调用input字段

@@ -447,8 +447,8 @@ Form::macro('radiocards', function ($attrs) {
 /**
  * 是/否 开关
  */
-Form::macro('toggle', function ($attrs) {
-    $value = $this->getValue($attrs);
+Form::control('toggle', function ($attrs) {
+    $value = $this->getValue($attrs);debug($value);
     $id = $this->getId($attrs);
     $name = $this->getName($attrs);
 
