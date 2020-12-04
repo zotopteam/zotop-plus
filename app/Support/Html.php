@@ -37,54 +37,9 @@ class Html
      */
     public function attributes(array $attributes)
     {
-        $html = [];
-
-        foreach ($attributes as $key => $value) {
-
-            $convert = $this->convertAttribute($key, $value);
-
-            if (!is_null($convert)) {
-                $html[] = $convert;
-            }
-        }
-
-        return count($html) > 0 ? implode(' ', $html) : '';
+        return new Attribute($attributes);
     }
-
-    /**
-     * 转换属性键/值为字符串
-     *
-     * @param string|int $key 键名
-     * @param mixed $value 键值
-     * @return string|null
-     */
-    public function convertAttribute($key, $value)
-    {
-        $key = strtolower($key);
-
-        // [0=>'required'] 转换为 required
-        if (is_numeric($key)) {
-            return $value;
-        }
-
-        // ['required'=>true] 转换为 required，但是不转换 ['value'=>true]
-        if (is_bool($value) && $key !== 'value') {
-            return $value ? $key : null;
-        }
-
-        // ['class'=>['aaa','bbb']] 转换为 class="aaa bbb"
-        if (is_array($value) && $key === 'class') {
-            return $key . '="' . implode(' ', $value) . '"';
-        }
-
-        // ['name'=>’aaa‘] 转化为 name='aaa'
-        if (!is_null($value)) {
-            return $key . '="' . e($value, false) . '"';
-        }
-
-        return null;
-    }
-
+    
     /**
      * 文本转html，一般用于格式化textarea的显示值
      *

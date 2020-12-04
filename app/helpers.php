@@ -238,6 +238,22 @@ if (!function_exists('module')) {
     }
 }
 
+if (!function_exists('attribute')) {
+
+    /**
+     * make a attribute
+     *
+     * @param array $attribute
+     * @return \App\Support\Attribute
+     * @author Chen Lei
+     * @date 2020-12-05
+     */
+    function attribute($attribute = [])
+    {
+        return new \App\Support\Attribute($attribute);
+    }
+}
+
 if (!function_exists('preview')) {
 
     /**

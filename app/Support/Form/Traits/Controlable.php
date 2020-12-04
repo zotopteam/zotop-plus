@@ -2,12 +2,14 @@
 
 namespace App\Support\Form\Traits;
 
-use App\Support\Form\FormControl;
+use App\Support\Attribute;
+use App\Support\Form\Control;
 use Closure;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use ReflectionClass;
 
-trait FormControlable
+trait Controlable
 {
     /**
      * 字段容器
@@ -51,11 +53,11 @@ trait FormControlable
      * @author Chen Lei
      * @date 2020-12-02
      */
-    public function callControl(string $name, array $parameters)
+    public function callControl(string $name, array $attributes)
     {
         $callback = $this->controls[strtolower($name)];
 
-        $attributes = $parameters[0] ?? [];
+        Arr::forget($attributes, 'type');
 
         // 闭包方式
         if ($callback instanceof Closure) {
@@ -63,17 +65,15 @@ trait FormControlable
             return $callback($attributes);
         }
 
-        //dd($callback, class_exists($callback), $callback instanceof FormControl);
-
         // 类方式
-        if (class_exists($callback) && is_subclass_of($callback, FormControl::class) && !(new ReflectionClass($callback))->isAbstract()) {
+        if (class_exists($callback) && is_subclass_of($callback, Control::class) && !(new ReflectionClass($callback))->isAbstract()) {
 
             // 分解为控件的
             [$data, $attributes] = $this->partitionDataAndAttributes($callback, $attributes);
 
             return app($callback, $data)
-                ->withName($name)
-                ->withAttributes($attributes)
+                ->with('controlName', $name)
+                ->with('attributes', new Attribute($attributes))
                 ->render();
         }
 

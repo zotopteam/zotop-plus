@@ -2,7 +2,7 @@
 
 namespace App\Support;
 
-use App\Support\Form\Traits\FormControlable;
+use App\Support\Form\Traits\Controlable;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
@@ -12,7 +12,7 @@ use Illuminate\Support\Traits\Macroable;
 
 class Form
 {
-    use Macroable, FormControlable, ForwardsCalls {
+    use Macroable, Controlable, ForwardsCalls {
         Macroable::__call as macroCall;
     }
 
@@ -98,7 +98,6 @@ class Form
         $this->app = $app;
         $this->view = $app['view'];
     }
-
 
 
     /**
@@ -704,7 +703,7 @@ class Form
         }
 
         if (static::hasControl($method)) {
-            return $this->callControl($method, $parameters);
+            return $this->callControl($method, ...$parameters);
         }
 
         // 调用input字段
