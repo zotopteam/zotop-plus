@@ -1386,6 +1386,20 @@ div.form-control {
     overflow: hidden;
 }
 
+.form-control-date,
+.form-control-datetime,
+.form-control-year,
+.form-control-month,
+.form-control-time {
+    background-image: url("../img/calendar.svg?4");
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: .875rem;
+}
+
+.form-control-time {
+    background-image: url("../img/time.svg?4");
+}
 
 .form-control-plaintext {
     background-color: transparent !important;
@@ -1395,6 +1409,10 @@ div.form-control {
 
 .form-control-plaintext:focus {
     box-shadow: none !important;
+}
+
+.form-control-file {
+    padding: 0.185rem 0.375rem;
 }
 
 

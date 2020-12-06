@@ -4,9 +4,24 @@ namespace App\Support\Form;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Traits\Macroable;
 
 abstract class Control
 {
+    use Macroable;
+
+    /**
+     * @var string
+     */
+    public static $defaultClass = 'form-control';
+
+    /**
+     * 表单
+     *
+     * @var \App\Support\Form
+     */
+    protected $form;
+
     /**
      * 数据
      *
@@ -65,6 +80,34 @@ abstract class Control
     }
 
     /**
+     * Dynamically handle calls to the class.
+     *
+     * @param string $method
+     * @param array $parameters
+     * @return void
+     *
+     * @throws \BadMethodCallException
+     */
+    public static function __callStatic($method, $parameters)
+    {
+        if (property_exists(static::class, $method)) {
+            static::$$method = $parameters[0] ?? null;
+        }
+    }
+
+    /**
+     * 默认样式
+     *
+     * @return string
+     * @author Chen Lei
+     * @date 2020-12-06
+     */
+    public function getDefaultClass()
+    {
+        return static::$defaultClass . ' ' . static::$defaultClass . '-' . $this->type;
+    }
+
+    /**
      * 传入参数, 支持链式
      *
      * @param string|array $key 参数名
@@ -108,7 +151,8 @@ abstract class Control
         $data = array_merge($this->data, $data);
 
         // 生成 view
-        return view($view, $data, $mergeData);
+        return view($view, $data, $mergeData)
+            ->with('control', $this); // 允许在模板中使用 control 中定义的public方法
     }
 
     /**
@@ -121,6 +165,33 @@ abstract class Control
     protected function toHtmlString(string $html)
     {
         return new HtmlString($html);
+    }
+
+    /**
+     * 启动
+     *
+     * @author Chen Lei
+     * @date 2020-12-07
+     */
+    public function boot()
+    {
+        $this->attributes->addClass($this->getDefaultClass(), true);
+
+
+    }
+
+    /**
+     * 渲染前置函数
+     *
+     * @return $this
+     * @author Chen Lei
+     * @date 2020-12-07
+     */
+    public function beforeRender()
+    {
+        $this->boot();
+
+        return $this;
     }
 
     /**

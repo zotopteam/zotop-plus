@@ -2,14 +2,25 @@
 
 namespace Modules\Core\Providers;
 
+use App\Modules\Support\ServiceProvider;
+use App\Support\Facades\Form;
 use App\Support\ImageFilter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Blade;
-use App\Modules\Support\ServiceProvider;
+use Modules\Core\Support\ImageFilters\Resize;
+use Modules\Core\Support\ImageFilters\Watermark;
 use Modules\Core\View\Components\Search;
 use Modules\Core\View\Components\SideBar;
 use Modules\Core\View\Components\UploadChunk;
+use Modules\Core\View\Controls\BoolControl;
+use Modules\Core\View\Controls\CheckboxGroup;
+use Modules\Core\View\Controls\Date;
+use Modules\Core\View\Controls\Editor;
+use Modules\Core\View\Controls\RadioCards;
+use Modules\Core\View\Controls\RadioGroup;
+use Modules\Core\View\Controls\Toggle;
+use Modules\Core\View\Controls\Upload;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -46,6 +57,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->eventsListen();
         $this->bladeExtend();
         $this->imageFilter();
+        $this->controlExtend();
     }
 
     /**
@@ -137,11 +149,30 @@ class CoreServiceProvider extends ServiceProvider
         Blade::component(Search::class, 'search');
     }
 
+    /**
+     * 表单扩展
+     *
+     * @author Chen Lei
+     * @date 2020-12-06
+     */
+    protected function controlExtend()
+    {
+        Form::control(RadioCards::class, ['radiocards', 'radio-cards']);
+        Form::control(RadioGroup::class, ['radiogroup', 'radio-group', 'radios']);
+        Form::control(BoolControl::class, ['bool', 'enable']);
+        Form::control(CheckboxGroup::class, ['checkboxgroup', 'checkbox-group', 'checkboxes']);
+        Form::control(Date::class, ['date', 'datetime', 'time', 'month', 'year']);
+
+        Form::control('toggle', Toggle::class);
+        Form::control('editor', Editor::class);
+        Form::control('upload', Upload::class);
+    }
+
     // 图片滤器
     public function imageFilter()
     {
-        ImageFilter::set('core-resize', \Modules\Core\Support\ImageFilters\Resize::class);
-        ImageFilter::set('core-watermark', \Modules\Core\Support\ImageFilters\Watermark::class);
+        ImageFilter::set('core-resize', Resize::class);
+        ImageFilter::set('core-watermark', Watermark::class);
     }
 
     /**

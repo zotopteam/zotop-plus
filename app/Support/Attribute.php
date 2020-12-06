@@ -23,12 +23,12 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
     /**
      * Create a new component attribute bag instance.
      *
-     * @param array $attributes
+     * @param mixed $attributes
      * @return void
      */
-    public function __construct(array $attributes = [])
+    public function __construct($attributes)
     {
-        $this->attributes = $attributes;
+        $this->attributes = Arr::wrap($attributes);
     }
 
     /**
@@ -43,28 +43,118 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
     }
 
     /**
+     * check attribute array has key.
+     *
+     * @param string|string[] $key
+     * @return mixed
+     */
+    public function has($key)
+    {
+        return Arr::has($this->attributes, $key);
+    }
+
+    /**
+     * 判断数组中是否存在给定集合中的任一值作为键
+     *
+     * @param mixed ...$keys
+     * @author Chen Lei
+     * @date 2020-12-06
+     */
+    public function hasAny(...$keys)
+    {
+        foreach ($keys as $key) {
+            if (static::has($key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 判断数组中是否存在给定集合中的所有键
+     *
+     * @param mixed ...$keys
+     * @author Chen Lei
+     * @date 2020-12-06
+     */
+    public function hasMany(...$keys)
+    {
+        foreach ($keys as $key) {
+            if (!static::has($key)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Get a given attribute from the attribute array.
      *
      * @param string $key
      * @param mixed $default
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get(string $key, $default = null)
     {
-        return $this->attributes[$key] ?? value($default);
+        return Arr::get($this->attributes, $key, $default);
+    }
+
+    /**
+     * set key/value to attributes.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param bool $overwrite
+     * @return static
+     */
+    public function set(string $key, $value, $overwrite = true)
+    {
+        // 如果覆盖 或者 键名不存在，则设置值
+        if ($overwrite == true || !$this->has($key)) {
+            Arr::set($this->attributes, $key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * 从$keys中依次检索key是否存在，存在就推出该值
+     *
+     * @param array $keys
+     * @param mixed $default
+     * @return \Illuminate\Support\HigherOrderTapProxy|mixed
+     * @author Chen Lei
+     * @date 2020-12-05
+     */
+    public function find(array $keys, $default = null)
+    {
+        foreach ($keys as $key) {
+            if (isset($this->attributes[$key])) {
+                return $this->attributes[$key];
+            }
+        }
+
+        return value($default);
     }
 
     /**
      * Get a value from the array, and remove it.
      *
-     * @param array $array
-     * @param string $key
+     * @param string|array $key
      * @param mixed $default
-     * @return mixed
+     * @return string|array
      */
     public function pull($key, $default = null)
     {
-        $value = $this->get($key, $default);
+        if (is_string($key)) {
+            $value = $this->get($key, $default);
+        }
+
+        if (is_array($key)) {
+            $value = $this->only($key, $default ?? []);
+        }
 
         $this->forget($key);
 
@@ -72,9 +162,30 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
     }
 
     /**
+     * 从$keys中依次检索key是否存在，存在就推出该值
+     *
+     * @param array $keys
+     * @param mixed $default
+     * @return \Illuminate\Support\HigherOrderTapProxy|mixed
+     * @author Chen Lei
+     * @date 2020-12-05
+     */
+    public function pullFirst(array $keys, $default = null)
+    {
+        foreach ($keys as $key) {
+            if (isset($this->attributes[$key])) {
+                return tap($this->attributes[$key], function ($value) use ($key) {
+                    unset($this->attributes[$key]);
+                });
+            }
+        }
+
+        return value($default);
+    }
+
+    /**
      * Remove one or many array items from attributes.
      *
-     * @param array $array
      * @param array|string $keys
      * @return $this
      */
@@ -92,18 +203,21 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
     /**
      * Only include the given attribute from the attribute array.
      *
-     * @param mixed|array $keys
+     * @param string|array $keys
+     * @param array $default
      * @return static
      */
-    public function only($keys)
+    public function only($keys, $default = [])
     {
         if (is_null($keys)) {
             return $this;
         }
 
-        $keys = Arr::wrap($keys);
+        $values = Arr::only($this->attributes, Arr::wrap($keys));
 
-        $values = Arr::only($this->attributes, $keys);
+        if (empty($values)) {
+            $values = Arr::wrap(value($default));
+        }
 
         return new static($values);
     }
@@ -111,18 +225,21 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
     /**
      * Exclude the given attribute from the attribute array.
      *
-     * @param mixed|array $keys
+     * @param string|array $keys
+     * @param array $default
      * @return static
      */
-    public function except($keys)
+    public function except($keys, $default = [])
     {
         if (is_null($keys)) {
             return $this;
         }
 
-        $keys = Arr::wrap($keys);
+        $values = Arr::except($this->attributes, Arr::wrap($keys));
 
-        $values = Arr::except($this->attributes, $keys);
+        if (empty($values)) {
+            $values = Arr::wrap(value($default));
+        }
 
         return new static($values);
     }
@@ -146,9 +263,12 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
      * @author Chen Lei
      * @date 2020-12-05
      */
-    public function merge(array $attributes)
+    public function merge(array $attributes, $overwrite = true)
     {
-        $this->attributes = array_merge($this->attributes, $attributes);
+        foreach ($attributes as $key => $value) {
+            $this->set($key, $value, $overwrite);
+        }
+
         return $this;
     }
 
@@ -156,6 +276,7 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
      * 转换class为数组
      *
      * @param array|string $class
+     * @return array|false|string|string[]
      * @author Chen Lei
      * @date 2020-12-05
      */
@@ -175,7 +296,6 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
     /**
      * 添加 class
      *
-     * @param array $attributes 属性
      * @param mixed $addClass 添加的class
      * @param boolean $prepend 是否前置
      * @return $this
@@ -228,9 +348,9 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
 
 
     /**
-     * add data to attributes
+     * add data-x to attributes
      *
-     * @param string|array $key
+     * @param string|array $key name part of data-name, Exclude data-
      * @param string|null $value
      * @return $this
      * @author Chen Lei
@@ -248,9 +368,9 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
     }
 
     /**
-     * remove data from attributes
+     * remove data-x from attributes
      *
-     * @param string|array $keys
+     * @param string|array $keys name part of data-name, Exclude data-
      * @return $this
      * @author Chen Lei
      * @date 2020-12-05
@@ -299,15 +419,22 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
         $string = '';
 
         foreach ($this->attributes as $key => $value) {
-            if ($value === false || is_null($value)) {
+
+            try {
+                if ($value === false || is_null($value)) {
+                    continue;
+                }
+
+                if ($value === true) {
+                    $value = $key;
+                }
+
+                $string .= ' ' . $key . '="' . str_replace('"', '\\"', trim($value)) . '"';
+            } catch (\Throwable $th) {
+                debug($th->getMessage() . ' | ' . $th->getFile() . ' | ' . $th->getLine(), $this->attributes, $value);
                 continue;
             }
 
-            if ($value === true) {
-                $value = $key;
-            }
-
-            $string .= ' ' . $key . '="' . str_replace('"', '\\"', trim($value)) . '"';
         }
 
         return trim($string);

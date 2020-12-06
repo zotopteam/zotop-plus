@@ -6,6 +6,7 @@ use App\Modules\Routing\AdminController;
 use App\Modules\Traits\ModuleConfig;
 use App\Support\ImageFilter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
 class ConfigController extends AdminController
@@ -20,7 +21,7 @@ class ConfigController extends AdminController
      * @author Chen Lei
      * @date 2020-11-25
      */
-    public function index(Request $request)
+    public function index()
     {
         return redirect()->route('core.config.upload');
     }
@@ -61,21 +62,25 @@ class ConfigController extends AdminController
      * @author Chen Lei
      * @date 2020-11-25
      */
-    public function watermarktest(Request $request)
+    public function watermarkTest(Request $request)
     {
         // 生成加水印后图片预览
-        if ($request->isMethod('POST')) {
-            $config = $request->input('image.watermark');
-            $target = 'previews/watermarks/test.jpg';
-            $source = resource_path('watermark/test.jpg');
+        $config = $request->input('image.watermark');
+        $target = 'previews/watermarks/test.jpg';
+        $sourcePath = resource_path('watermark/test.jpg');
+        $targetPath = public_path($target);
 
-            // 生成水印图片
-            $source = Image::make($source);
-            $source = ImageFilter::apply($source, 'core-watermark', $config);
-            $source->save(public_path($target));
-
-            return url($target) . '?token=' . str_random(20);
+        // 生成目录
+        if (!File::isDirectory($dir = dirname($targetPath))) {
+            File::makeDirectory($dir, 0775, true);
         }
+
+        // 生成水印图片
+        $image = Image::make($sourcePath);
+        $image = ImageFilter::apply($image, 'core-watermark', $config);
+        $image->save($targetPath);
+
+        return url($target) . '?token=' . str_random(20);
     }
 
     /**
@@ -115,12 +120,12 @@ class ConfigController extends AdminController
      * 邮件发送测试
      *
      * @param \Illuminate\Http\Request $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Modules\Core\Emails\TestMail
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Modules\Core\Mails\TestMail
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @author Chen Lei
-     * @date 2020-11-25
+     * @date 2020-12-06
      */
-    public function mailtest(Request $request)
+    public function mailTest(Request $request)
     {
         // 保存数据
         if ($request->isMethod('POST')) {
@@ -135,12 +140,12 @@ class ConfigController extends AdminController
             (new \Illuminate\Mail\MailServiceProvider($this->app))->register();
 
             // 发送邮件
-            $this->app->make('mailer')->to($to)->send(new \Modules\Core\Emails\TestMail());
+            $this->app->make('mailer')->to($to)->send(new \Modules\Core\Mails\TestMail());
 
             return $this->success(trans('master.operated'));
         }
 
-        return new \Modules\Core\Emails\TestMail();
+        return new \Modules\Core\Mails\TestMail();
     }
 
     /**

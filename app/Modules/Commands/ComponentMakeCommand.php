@@ -4,7 +4,7 @@ namespace App\Modules\Commands;
 
 use App\Modules\Maker\GeneratorCommand;
 
-class ComponentsMakeCommand extends GeneratorCommand
+class ComponentMakeCommand extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.

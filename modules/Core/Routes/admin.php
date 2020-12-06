@@ -54,9 +54,9 @@ $router->group(['prefix' => 'core'], function (Router $router) {
     $router->group(['prefix' => 'config'], function (Router $router) {
         $router->any('index', 'ConfigController@index')->name('core.config.index');
         $router->any('upload', 'ConfigController@upload')->name('core.config.upload')->middleware('allow:core.config.upload');
-        $router->any('watermark/test', 'ConfigController@watermarktest')->name('core.config.watermarktest');
+        $router->post('watermark/test', 'ConfigController@watermarkTest')->name('core.config.watermarktest');
         $router->any('mail', 'ConfigController@mail')->name('core.config.mail')->middleware('allow:core.config.mail');
-        $router->any('mail/test', 'ConfigController@mailtest')->name('core.config.mailtest')->middleware('allow:core.config.mail');
+        $router->any('mail/test', 'ConfigController@mailTest')->name('core.config.mailtest')->middleware('allow:core.config.mail');
         $router->any('safe', 'ConfigController@safe')->name('core.config.safe')->middleware('allow:core.config.safe');
         $router->any('locale', 'ConfigController@locale')->name('core.config.locale')->middleware('allow:core.config.locale');
     });
