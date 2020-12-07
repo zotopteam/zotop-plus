@@ -4,6 +4,7 @@ namespace App\Support\Form;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 
 abstract class Control
@@ -168,6 +169,35 @@ abstract class Control
     }
 
     /**
+     * 初始化
+     *
+     * @return $this
+     * @author Chen Lei
+     * @date 2020-12-07
+     */
+    public function initialize()
+    {
+        $this->boot();
+
+        $class = static::class;
+
+        // 启动子类
+        $bootSelf = 'boot' . class_basename($class);
+
+        // 启动类型
+        $bootType = 'boot' . Str::studly($this->type);
+
+        // 检查方法是否存在，存在则调用
+        foreach (array_unique([$bootSelf, $bootType]) as $method) {
+            if (method_exists($class, $method)) {
+                $this->$method();
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * 启动
      *
      * @author Chen Lei
@@ -176,22 +206,6 @@ abstract class Control
     public function boot()
     {
         $this->attributes->addClass($this->getDefaultClass(), true);
-
-
-    }
-
-    /**
-     * 渲染前置函数
-     *
-     * @return $this
-     * @author Chen Lei
-     * @date 2020-12-07
-     */
-    public function beforeRender()
-    {
-        $this->boot();
-
-        return $this;
     }
 
     /**

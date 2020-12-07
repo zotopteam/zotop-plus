@@ -143,7 +143,7 @@ trait Controlable
                 ->with('originalAttributes', new Attribute($originalAttributes))
                 ->with('bind', $this->bind)
                 ->with('bindValue', $this->getBindValue($attributes))
-                ->beforeRender()
+                ->initialize()
                 ->render();
         }
 

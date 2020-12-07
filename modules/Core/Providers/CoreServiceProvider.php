@@ -165,7 +165,7 @@ class CoreServiceProvider extends ServiceProvider
 
         Form::control('toggle', Toggle::class);
         Form::control('editor', Editor::class);
-        Form::control('upload', Upload::class);
+        Form::control(Upload::class, ['upload', 'upload_image', 'upload-image']);
     }
 
     // 图片滤器
