@@ -133,10 +133,15 @@ trait Controlable
         // 类方式
         if (class_exists($callback) && is_subclass_of($callback, Control::class) && !(new ReflectionClass($callback))->isAbstract()) {
 
-            // 分解为控件的
+            // 分解为控件初始化参数和标签参数
             [$data, $attributes] = $this->partitionDataAndAttributes($callback, $attributes);
 
-            return app($callback, $data)
+            // 键名转换小驼峰格式
+            $data = collect($data)->mapWithKeys(function ($value, $key) {
+                return [Str::camel($key) => $value];
+            });
+
+            return app($callback, $data->all())
                 ->with('form', $this)
                 ->with('type', $type)
                 ->with('attributes', new Attribute($attributes))

@@ -19,12 +19,14 @@ class Upload extends Control
     public function __construct(
         $id = null,
         $sourceId = null,
+        $enable = null,
         $mutiple = false,
         $class = null,
         $view = null,
         $url = null,
         $params = [],
         $fileType = null,
+        $fileTypeName = null,
         $maxSize = null,
         $chunkSize = null,
         $allow = null,
@@ -39,21 +41,23 @@ class Upload extends Control
     {
         $this->id = $id;
         $this->sourceId = $sourceId;
+        $this->enable = $enable;
         $this->mutiple = $mutiple;
         $this->class = $class;
-        $this->view = $view ?? 'core::controls.upload';
+        $this->view = $view;
         $this->url = $url ?? route('core.file.upload_chunk');
         $this->params = Arr::wrap($params);
         $this->chunkSize = $chunkSize ?? config('core.upload.chunk_size', '2mb');
-        $this->maxSize = $maxSize ?? '1024mb';
+        $this->maxSize = $maxSize;
         $this->fileType = $fileType;
+        $this->fileTypeName = $fileTypeName;
         $this->allow = $allow;
         $this->buttonIcon = $buttonIcon ?? 'fa fa-upload';
-        $this->buttonText = $buttonText ?? trans('core::control.upload');
-        $this->selectText = $selectText ?? trans('core::control.select');
+        $this->buttonText = $buttonText;
+        $this->selectText = $selectText;
         $this->preview = $preview;
         $this->input = $input ?? true;
-        $this->tools = $tools ? Arr::wrap($tools) : [];
+        $this->tools = $tools ?? true;
         $this->options = Arr::wrap($options);
     }
 
@@ -72,9 +76,19 @@ class Upload extends Control
             $this->fileType = $this->type = Str::substr($this->type, 7);
             // 允许后缀名
             $this->allow = $this->allow ?? config("core.upload.types.{$this->fileType}.extensions");
+            $this->maxSize = $this->maxSize ?? config("core.upload.types.{$this->fileType}.maxsize") . 'mb';
+            $this->fileTypeName = $this->fileTypeName ?? trans("core::file.type.{$this->fileType}");
+            $this->buttonText = $this->buttonText ?? trans('core::control.upload.type', [$this->fileTypeName]);
+            $this->selectText = $this->selectText ?? trans('core::control.select.type', [$this->fileTypeName]);
+            $this->enable = $this->enable ?? config("core.upload.types.{$this->fileType}.enabled");
         }
 
         $this->allow = $this->allow ?? $types->implode('extensions', ',');
+        $this->enable = $this->enable ?? true;
+        $this->maxSize = $this->maxSize ?? '1024mb';
+        $this->fileTypeName = $this->fileTypeName ?? trans('core::file.type.files');
+        $this->buttonText = $this->buttonText ?? trans('core::control.upload');
+        $this->selectText = $this->selectText ?? trans('core::control.select');
     }
 
     /**
@@ -147,17 +161,26 @@ class Upload extends Control
     /**
      * 上传工具
      *
-     * @param array $tools
-     * @return mixed
+     * @param bool|string|array $tools
+     * @return array
      * @author Chen Lei
      * @date 2020-12-07
      */
-    protected function tools(array $tools)
+    protected function tools($tools)
     {
-        return array_merge(
-            Module::data('core::field.upload.tools', $this->params()),
-            $tools
-        );
+        if ($tools === false || (is_string($tools) && empty($tools))) {
+            return [];
+        }
+
+        // 默认工具
+        $defaultTools = Module::data('core::field.upload.tools', $this->params());
+
+        // 如果是数组，合并到默认工具中
+        if (is_array($tools)) {
+            return array_merge($defaultTools, $tools);
+        }
+
+        return $defaultTools;
     }
 
     /**
@@ -170,8 +193,9 @@ class Upload extends Control
         $this->options = $this->options($this->options);
         $this->tools = $this->tools($this->tools);
 
+        // 添加 preview 和 data-type 标签
         $this->attributes->set('preview', $this->preview)->addData('type', $this->type);
 
-        return $this->view($this->view);
+        return $this->view($this->view ?? 'core::controls.upload');
     }
 }
