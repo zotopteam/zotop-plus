@@ -162,10 +162,15 @@ class CoreServiceProvider extends ServiceProvider
         Form::control(BoolControl::class, ['bool', 'enable']);
         Form::control(CheckboxGroup::class, ['checkboxgroup', 'checkbox-group', 'checkboxes']);
         Form::control(Date::class, ['date', 'datetime', 'time', 'month', 'year']);
-
         Form::control('toggle', Toggle::class);
         Form::control('editor', Editor::class);
-        Form::control(Upload::class, ['upload', 'upload_image', 'upload-image']);
+
+        // 定义系统运行的上传组件
+        $uploadTypes = collect(config('core.upload.types'))->keys()->transform(function ($type) {
+            return "upload-{$type}";
+        })->push('upload')->all();
+
+        Form::control(Upload::class, $uploadTypes);
     }
 
     // 图片滤器

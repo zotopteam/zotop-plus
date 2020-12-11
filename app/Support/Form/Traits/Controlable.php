@@ -52,6 +52,20 @@ trait Controlable
     ];
 
     /**
+     * 格式化控件名称，统一为小写，中线分隔
+     *
+     * @param string $type
+     * @return string
+     * @author Chen Lei
+     * @date 2020-12-11
+     */
+    public function typeNameFormat(string $type)
+    {
+        // 控件名称转换为小写，替换中控件名称中的 _ . : / 为 -
+        return str_replace(['_', '.', ':', '/'], ['-', '-', '-', '-'], strtolower($type));
+    }
+
+    /**
      * 定义一个字段
      *
      * @param string|array $type
@@ -66,7 +80,7 @@ trait Controlable
         }
 
         foreach ((array)$type as $key) {
-            $this->controls[strtolower($key)] = $callback;
+            $this->controls[$this->typeNameFormat($key)] = $callback;
         }
     }
 
@@ -80,7 +94,7 @@ trait Controlable
      */
     public function hasControl(string $type)
     {
-        return isset($this->controls[strtolower($type)]);
+        return isset($this->controls[$this->typeNameFormat($type)]);
     }
 
     /**
@@ -112,8 +126,11 @@ trait Controlable
      */
     public function callControl(string $type, array $attributes)
     {
+        // 格式化控件类型
+        $type = $this->typeNameFormat($type);
+
         // 获取回调
-        $callback = $this->controls[strtolower($type)];
+        $callback = $this->controls[$type];
 
         // 原始标签
         $originalAttributes = $attributes;

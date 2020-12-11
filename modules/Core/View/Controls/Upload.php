@@ -71,7 +71,7 @@ class Upload extends Control
     {
         $types = collect(config('core.upload.types'));
 
-        if (Str::startsWith($this->type, ['upload_', 'upload-', 'upload:'])) {
+        if (Str::startsWith($this->type, 'upload-')) {
             // 文件类型
             $this->fileType = $this->type = Str::substr($this->type, 7);
             // 允许后缀名
@@ -195,6 +195,8 @@ class Upload extends Control
 
         // 添加 preview 和 data-type 标签
         $this->attributes->set('preview', $this->preview)->addData('type', $this->type);
+
+        debug($this->attributes);
 
         return $this->view($this->view ?? 'core::controls.upload');
     }
