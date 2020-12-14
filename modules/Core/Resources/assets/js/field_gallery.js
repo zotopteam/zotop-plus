@@ -98,7 +98,7 @@ function gallery_field($this, name, value, params) {
 			});
 
 			item.find('.js-upload-this').plupload(item_upload_options);
-			empty.hide();
+			empty.addClass('d-none');
 
 			n++;
 		},
@@ -111,9 +111,9 @@ function gallery_field($this, name, value, params) {
 			});
 
 			if (list.find('.gallery-field-list-item').length > 0) {
-				empty.hide();
+				empty.addClass('d-none');
 			} else {
-				empty.show();
+				empty.removeClass('d-none');
 				n = 0;
 			}
 		}

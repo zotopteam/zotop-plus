@@ -1436,6 +1436,11 @@ div.form-control {
     max-height: 100%;
 }
 
+.upload-dragover {
+    background-color: #FFFFDB !important;
+    background-image: none;
+}
+
 /*checkbox radio*/
 
 [type=checkbox],

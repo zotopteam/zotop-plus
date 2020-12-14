@@ -17,6 +17,7 @@ use Modules\Core\View\Controls\BoolControl;
 use Modules\Core\View\Controls\CheckboxGroup;
 use Modules\Core\View\Controls\Date;
 use Modules\Core\View\Controls\Editor;
+use Modules\Core\View\Controls\Gallery;
 use Modules\Core\View\Controls\RadioCards;
 use Modules\Core\View\Controls\RadioGroup;
 use Modules\Core\View\Controls\Toggle;
@@ -171,6 +172,7 @@ class CoreServiceProvider extends ServiceProvider
         })->push('upload')->all();
 
         Form::control(Upload::class, $uploadTypes);
+        Form::control(Gallery::class, 'gallery');
     }
 
     // 图片滤器

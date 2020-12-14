@@ -1,6 +1,6 @@
 <div class="upload-field {{$class}}" id="upload-field-{{$id}}">
     @if($preview)
-        <div class="form-control form-control-preview">
+        <div class="form-control form-control-preview" id="upload-{{$id}}-dragdrop">
             @if($type == 'image')
                 <img src="{{$attributes->get('value')}}"/>
             @endif
@@ -15,7 +15,8 @@
         <input {{$attributes}} />
         <div class="input-group-append">
             @if($enable)
-                <button type="button" tabindex="-1" class="btn btn-primary btn-icon-text btn-upload">
+                <button type="button" tabindex="-1" class="btn btn-primary btn-icon-text btn-upload"
+                        id="upload-{{$id}}">
                     <i class="btn-icon fa-fw {{$buttonIcon}}"></i>
                     <b class="btn-text">{{$buttonText}}</b>
                 </button>

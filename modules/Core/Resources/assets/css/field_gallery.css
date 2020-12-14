@@ -1,38 +1,73 @@
-.gallery-field-list{
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(10rem,1fr));
-    grid-row-gap: .5rem;
-    grid-column-gap: .5rem;
-    padding: .5rem;        
-}
-.gallery-field-list-item{
-    border:solid 1px #ccc;
-    padding:0.25rem;
-    background: #fafafa;
-    border-radius:.25rem;
-    cursor: move;
-}
-.gallery-field-list-item.sortable-placeholder{
+.gallery-field {
+
 }
 
-.gallery-field-list-item-image{
-    overflow:hidden;
-    height:6rem;
-    align-items:center;
-    justify-content: center!important;
-    display:flex;  
+.gallery-field-toolbar {
+    position: relative;
 }
-.gallery-field-list-item-image img{
-    max-width:100%;
-    max-height:100%;
+
+.gallery-field-progress {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    right: 0;
+    left: 0;
+    min-height: 100%;
 }
-.gallery-field-list-item-description{
-    padding:0.25rem 0;
+
+.gallery-field-empty {
+    min-height: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.gallery-field-list-item-description textarea{
+
+.gallery-field-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-row-gap: .5rem;
+    grid-column-gap: .5rem;
+    padding: .5rem;
+}
+
+.gallery-field-list-item {
+    border: solid 1px #ccc;
+    padding: 0.25rem;
+    background: #fafafa;
+    border-radius: .25rem;
+    cursor: move;
+}
+
+.gallery-field-list-item.sortable-placeholder {
+}
+
+.gallery-field-list-item-image {
+    overflow: hidden;
+    height: 6rem;
+    align-items: center;
+    justify-content: center !important;
+    display: flex;
+}
+
+.gallery-field-list-item-image img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.gallery-field-list-item-description {
+    padding: 0.25rem 0;
+}
+
+.gallery-field-list-item-description textarea {
     height: 2.5rem;
     font-size: 0.75rem;
-    padding:.0.25rem;
+    padding: .0 .25rem;
 }
-.gallery-field-list-item-manage{font-size:0.75rem;}
-.gallery-field-list-item-manage a{margin:0 5px;}
+
+.gallery-field-list-item-manage {
+    font-size: 0.75rem;
+}
+
+.gallery-field-list-item-manage a {
+    margin: 0 5px;
+}

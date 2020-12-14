@@ -6,9 +6,8 @@ use App\Modules\Facades\Module;
 use App\Support\Form\Control;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
-class Upload extends Control
+class Gallery extends Control
 {
 
     /**
@@ -18,13 +17,15 @@ class Upload extends Control
      */
     public function __construct(
         $id = null,
+        $name = null,
+        $value = [],
+        $placeholder = null,
         $sourceId = null,
         $enable = null,
         $class = null,
         $view = null,
         $url = null,
         $params = [],
-        $fileType = null,
         $fileTypeName = null,
         $maxSize = null,
         $chunkSize = null,
@@ -32,73 +33,31 @@ class Upload extends Control
         $buttonIcon = null,
         $buttonText = null,
         $selectText = null,
-        $preview = null,
-        $input = null,
         $tools = [],
         $options = []
     )
     {
         $this->id = $id;
+        $this->name = $name;
+        $this->value = Arr::wrap($value);
+        $this->placeholder = $placeholder ?? trans('core::control.gallery.placeholder');
         $this->sourceId = $sourceId;
-        $this->enable = $enable;
+        $this->enable = $enable ?? config("core.upload.types.image.enabled");
         $this->class = $class;
         $this->view = $view;
         $this->url = $url ?? route('core.file.upload_chunk');
         $this->params = Arr::wrap($params);
         $this->chunkSize = $chunkSize ?? config('core.upload.chunk_size', '2mb');
-        $this->maxSize = $maxSize;
-        $this->fileType = $fileType;
-        $this->fileTypeName = $fileTypeName;
-        $this->allow = $allow;
+        $this->maxSize = $maxSize ?? config("core.upload.types.image.maxsize") . 'mb';
+        $this->fileType = 'image';
+        $this->fileTypeName = $fileTypeName ?? trans("core::file.type.image");
+        $this->allow = $allow ?? config("core.upload.types.image.extensions");
         $this->buttonIcon = $buttonIcon ?? 'fa fa-upload';
-        $this->buttonText = $buttonText;
-        $this->selectText = $selectText;
-        $this->preview = $preview;
-        $this->input = $input ?? true;
+        $this->buttonText = $buttonText ?? trans('core::control.upload.multiple');
+        $this->selectText = $selectText ?? trans('core::control.select');;
         $this->tools = $tools ?? true;
         $this->options = Arr::wrap($options);
-    }
 
-    /**
-     * 初始化控件
-     *
-     * @author Chen Lei
-     * @date 2020-12-07
-     */
-    public function bootUpload()
-    {
-        $types = collect(config('core.upload.types'));
-
-        if (Str::startsWith($this->type, 'upload-')) {
-            // 文件类型
-            $this->fileType = $this->type = Str::substr($this->type, 7);
-            // 允许后缀名
-            $this->allow = $this->allow ?? config("core.upload.types.{$this->fileType}.extensions");
-            $this->maxSize = $this->maxSize ?? config("core.upload.types.{$this->fileType}.maxsize") . 'mb';
-            $this->fileTypeName = $this->fileTypeName ?? trans("core::file.type.{$this->fileType}");
-            $this->buttonText = $this->buttonText ?? trans('core::control.upload.type', [$this->fileTypeName]);
-            $this->selectText = $this->selectText ?? trans('core::control.select.type', [$this->fileTypeName]);
-            $this->enable = $this->enable ?? config("core.upload.types.{$this->fileType}.enabled");
-        }
-
-        $this->allow = $this->allow ?? $types->implode('extensions', ',');
-        $this->enable = $this->enable ?? true;
-        $this->maxSize = $this->maxSize ?? '1024mb';
-        $this->fileTypeName = $this->fileTypeName ?? trans('core::file.type.files');
-        $this->buttonText = $this->buttonText ?? trans('core::control.upload');
-        $this->selectText = $this->selectText ?? trans('core::control.select');
-    }
-
-    /**
-     * 初始化类型
-     *
-     * @author Chen Lei
-     * @date 2020-12-07
-     */
-    public function bootUploadImage()
-    {
-        // 图片类型默认开启预览
-        $this->preview = $this->preview ?? true;
     }
 
     /**
@@ -111,7 +70,7 @@ class Upload extends Control
     protected function params()
     {
         return array_merge([
-            'mutiple'    => false,
+            'mutiple'    => true,
             'type'       => $this->fileType,
             'module'     => app('current.module'),
             'controller' => app('current.controller'),
@@ -191,9 +150,6 @@ class Upload extends Control
         $this->options = $this->options($this->options);
         $this->tools = $this->tools($this->tools);
 
-        // 添加 preview 和 data-type 标签
-        $this->attributes->set('preview', $this->preview)->addData('type', $this->type);
-
-        return $this->view($this->view ?? 'core::controls.upload');
+        return $this->view($this->view ?? 'core::controls.gallery');
     }
 }
