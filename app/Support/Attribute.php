@@ -57,6 +57,7 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
      * 判断数组中是否存在给定集合中的任一值作为键
      *
      * @param mixed ...$keys
+     * @return bool
      * @author Chen Lei
      * @date 2020-12-06
      */
@@ -75,6 +76,7 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
      * 判断数组中是否存在给定集合中的所有键
      *
      * @param mixed ...$keys
+     * @return bool
      * @author Chen Lei
      * @date 2020-12-06
      */
@@ -259,6 +261,7 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
      * Merge attributes
      *
      * @param array $attributes
+     * @param bool $overwrite 是否允许覆盖
      * @return $this
      * @author Chen Lei
      * @date 2020-12-05

@@ -13,7 +13,25 @@ class Gallery extends Control
     /**
      * Create a new control instance.
      *
-     * @return void
+     * @param string|null $id
+     * @param string|null $name
+     * @param array $value
+     * @param string|null $placeholder
+     * @param string|null $sourceId
+     * @param string|null $enable
+     * @param string|null $class
+     * @param string|null $view
+     * @param string|null $url
+     * @param array $params
+     * @param string|null $fileTypeName
+     * @param string|null $maxSize
+     * @param string|null $chunkSize
+     * @param string|null $allow
+     * @param string|null $buttonIcon
+     * @param string|null $buttonText
+     * @param string|null $selectText
+     * @param array $tools
+     * @param array $options
      */
     public function __construct(
         $id = null,
@@ -54,7 +72,7 @@ class Gallery extends Control
         $this->allow = $allow ?? config("core.upload.types.image.extensions");
         $this->buttonIcon = $buttonIcon ?? 'fa fa-upload';
         $this->buttonText = $buttonText ?? trans('core::control.upload.multiple');
-        $this->selectText = $selectText ?? trans('core::control.select');;
+        $this->selectText = $selectText ?? trans('core::control.select');
         $this->tools = $tools ?? true;
         $this->options = Arr::wrap($options);
 

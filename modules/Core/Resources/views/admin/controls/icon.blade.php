@@ -8,10 +8,10 @@
 @push('js')
     {!! Module::load('core:iconpicker/bootstrap-iconpicker.bundle.min.js') !!}
     <script type="text/javascript">
-    $(function(){
-        $("#{{$id}}-iconpicker").iconpicker({!!json_encode($options)!!}).on('change', function(e) {
-            $("#{{$id}}").val(e.icon);
+        $(function () {
+            $("#{{$id}}-iconpicker").iconpicker({!!json_encode($options)!!}).on('change', function (e) {
+                $("#{{$id}}").val(e.icon);
+            });
         });
-    });
     </script>
 @endpush

@@ -15,9 +15,12 @@ use Modules\Core\View\Components\SideBar;
 use Modules\Core\View\Components\UploadChunk;
 use Modules\Core\View\Controls\BoolControl;
 use Modules\Core\View\Controls\CheckboxGroup;
+use Modules\Core\View\Controls\Code;
 use Modules\Core\View\Controls\Date;
 use Modules\Core\View\Controls\Editor;
 use Modules\Core\View\Controls\Gallery;
+use Modules\Core\View\Controls\Icon;
+use Modules\Core\View\Controls\Markdown;
 use Modules\Core\View\Controls\RadioCards;
 use Modules\Core\View\Controls\RadioGroup;
 use Modules\Core\View\Controls\Toggle;
@@ -165,6 +168,9 @@ class CoreServiceProvider extends ServiceProvider
         Form::control(Date::class, ['date', 'datetime', 'time', 'month', 'year']);
         Form::control('toggle', Toggle::class);
         Form::control('editor', Editor::class);
+        Form::control('code', Code::class);
+        Form::control('markdown', Markdown::class);
+        Form::control('icon', Icon::class);
 
         // 定义系统运行的上传组件
         $uploadTypes = collect(config('core.upload.types'))->keys()->transform(function ($type) {

@@ -2,7 +2,6 @@
 
 use App\Modules\Facades\Module;
 use App\Support\Facades\Filter;
-use App\Support\Facades\Form;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -204,88 +203,3 @@ Builder::macro('searchIn', function ($column, $param, $separator = ',') {
     });
 });
 
-
-/**
- * 代码编辑器
- */
-Form::macro('code', function ($attrs) {
-    $value = $this->getValue($attrs);
-    $name = $this->getName($attrs);
-
-    // 支持rows高度模式
-    if ($rows = $this->getAttribute($attrs, 'rows', 0)) {
-        $attrs['height'] = $rows * 25;
-    }
-
-    $options = $this->getAttribute($attrs, 'options', [
-        'width'         => $this->getAttribute($attrs, 'width', '100%'),
-        'height'        => $this->getAttribute($attrs, 'height', '500'),
-        'placeholder'   => $this->getAttribute($attrs, 'placeholder', 'coding……'),
-        'mode'          => $this->getAttribute($attrs, 'mode', 'text/html'),
-        'watch'         => $this->getAttribute($attrs, 'watch', false),
-        'toolbar'       => $this->getAttribute($attrs, 'toolbar', false),
-        'codeFold'      => $this->getAttribute($attrs, 'codeFold', true),
-        'searchReplace' => $this->getAttribute($attrs, 'searchReplace', true),
-        'theme'         => $this->getAttribute($attrs, 'theme', 'default'),
-        'path'          => \Module::asset('core:editormd/lib', false) . '/',
-    ]);
-
-    if ($options['height'] == 'auto') {
-        $options['autoHeight'] = true;
-    }
-
-    return $this->toHtmlString(
-        $this->view->make('core::field.code')->with(compact('name', 'value', 'options'))->render()
-    );
-});
-
-/**
- * markdown编辑器
- */
-Form::macro('markdown', function ($attrs) {
-    $value = $this->getValue($attrs);
-    $name = $this->getName($attrs);
-
-    $options = $this->getAttribute($attrs, 'options', [
-        'width'              => $this->getAttribute($attrs, 'width', '100%'),
-        'height'             => $this->getAttribute($attrs, 'height', '500'),
-        'placeholder'        => $this->getAttribute($attrs, 'placeholder', 'content……'),
-        'toolbar'            => $this->getAttribute($attrs, 'toolbar', true),
-        'codeFold'           => $this->getAttribute($attrs, 'codeFold', true),
-        'saveHTMLToTextarea' => $this->getAttribute($attrs, 'saveHTMLToTextarea', true),
-        'htmlDecode'         => $this->getAttribute($attrs, 'htmlDecode', 'style,script,iframe|on*'),
-        'theme'              => $this->getAttribute($attrs, 'theme', 'default'),
-        'path'               => \Module::asset('core:editormd/lib', false) . '/',
-    ]);
-
-    if ($options['height'] == 'auto') {
-        $options['autoHeight'] = true;
-    }
-
-    return $this->toHtmlString(
-        $this->view->make('core::field.markdown')->with(compact('name', 'value', 'options'))->render()
-    );
-});
-
-
-/**
- * icon 选择器
- */
-Form::macro('icon', function ($attrs) {
-
-    $value = $this->getValue($attrs);
-    $id = $this->getId($attrs);
-    $name = $this->getName($attrs);
-
-    $options = $this->getAttribute($attrs, 'options', [
-        'icon'          => $value,
-        'cols'          => $this->getAttribute($attrs, 'cols', 10),
-        'rows'          => $this->getAttribute($attrs, 'rows', 5),
-        'iconset'       => $this->getAttribute($attrs, 'iconset', 'fontawesome5'),
-        'selectedClass' => $this->getAttribute($attrs, 'selectedClass', 'btn-success'),
-    ]);
-
-    return $this->toHtmlString(
-        $this->view->make('core::field.icon')->with(compact('name', 'value', 'id', 'attrs', 'options'))->render()
-    );
-});

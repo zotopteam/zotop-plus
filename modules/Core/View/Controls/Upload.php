@@ -14,7 +14,25 @@ class Upload extends Control
     /**
      * Create a new control instance.
      *
-     * @return void
+     * @param string|null $id
+     * @param string|null $sourceId
+     * @param string|null $enable
+     * @param string|null $class
+     * @param string|null $view
+     * @param string|null $url
+     * @param array $params
+     * @param string|null $fileType
+     * @param string|null $fileTypeName
+     * @param string|null $maxSize
+     * @param string|null $chunkSize
+     * @param string|null $allow
+     * @param string|null $buttonIcon
+     * @param string|null $buttonText
+     * @param string|null $selectText
+     * @param string|null $preview
+     * @param string|null $input
+     * @param array $tools
+     * @param array $options
      */
     public function __construct(
         $id = null,
