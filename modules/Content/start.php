@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Arr;
-use App\Support\Facades\Form;
 use App\Support\Facades\Filter;
+use App\Support\Facades\Form;
+use Illuminate\Support\Arr;
 
 /**
  * 开始菜单
@@ -29,29 +29,13 @@ Filter::listen('content.manage', 'Modules\Content\Hook\Listener@contentManage', 
  */
 Filter::listen('content.show', 'Modules\Content\Hook\Content@hit', 100);
 
-/**
- * 标题控件
- */
-Form::macro('content_title', function ($attrs) {
-
-    $value = $this->getValue($attrs);
-    $id    = $this->getId($attrs);
-    $name  = $this->getName($attrs);
-
-    // 选项
-    $options = $this->getAttribute($attrs, 'options',  []);
-
-    return $this->toHtmlString(
-        $this->view->make('content::field.types.content_title')->with(compact('name', 'value', 'id', 'attrs', 'options'))->render()
-    );
-});
 
 /**
  * 别名控件
  */
 Form::macro('content_slug', function ($attrs) {
 
-    $attrs['type']   = 'translate';
+    $attrs['type'] = 'translate';
     $attrs['source'] = 'title';
     $attrs['format'] = 'slug';
 
@@ -83,13 +67,13 @@ Form::macro('content_summary', function ($attrs) {
 Form::macro('content_models', function ($attrs) {
 
     $value = $this->getValue($attrs, []);
-    $id    = $this->getId($attrs);
-    $name  = $this->getName($attrs);
+    $id = $this->getId($attrs);
+    $name = $this->getName($attrs);
 
     // 读取可用的模型，并合并当前设置值
     $models = \Modules\Content\Models\Model::where('disabled', '0')->orderBy('sort', 'asc')->get();
     $models = $models->transform(function ($item) use ($name, $value) {
-        $item->view    = Arr::get($value, $item->id . '.view', $item->view);
+        $item->view = Arr::get($value, $item->id . '.view', $item->view);
         $item->enabled = Arr::get($value, $item->id . '.enabled', $value ? 0 : 1);
         return $item;
     })->keyBy('id');

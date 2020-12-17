@@ -56,6 +56,18 @@ return [
         'help'    => trans('developer::command.component.help'),
     ],
 
+    // component
+
+    'control' => [
+        'title'   => trans('developer::command.control.title'),
+        'icon'    => 'fa fa-cube',
+        'command' => 'module:make-control',
+        'name'    => ['label' => trans('developer::command.control.name.label'), 'help' => trans('developer::command.control.name.help')],
+        'options' => ['--view' => 'developer::command.options.control_view'],
+        'dir'     => config('modules.paths.dirs.controls'),
+        'help'    => trans('developer::command.control.help'),
+    ],
+
     // middleware
 
     'middleware' => [

@@ -14,13 +14,25 @@ class Textarea extends Control
      */
     public function __construct(
         $value = '',
-        $cols = 80,
-        $rows = 8
+        $cols = null,
+        $rows = null
     )
     {
         $this->value = $value;
-        $this->cols = is_int($cols) ? max($cols, 1) : 80;
-        $this->rows = is_int($rows) ? max($rows, 1) : 10;
+        $this->cols = $cols;
+        $this->rows = $rows;
+    }
+
+    /**
+     * 启动控件
+     *
+     * @author Chen Lei
+     * @date 2020-12-18
+     */
+    public function bootTextArea()
+    {
+        $this->cols = is_int($this->cols) ? max($this->cols, 1) : 80;
+        $this->rows = is_int($this->rows) ? max($this->rows, 1) : 10;
     }
 
     /**

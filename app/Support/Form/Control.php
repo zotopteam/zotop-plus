@@ -15,14 +15,7 @@ abstract class Control
      * @var string
      */
     public static $defaultClass = 'form-control';
-
-    /**
-     * 表单
-     *
-     * @var \App\Support\Form
-     */
-    protected $form;
-
+    
     /**
      * 数据
      *

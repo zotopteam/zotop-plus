@@ -3,6 +3,7 @@
 namespace Modules\Content\Providers;
 
 use App\Modules\Support\ServiceProvider;
+use App\Support\Facades\Form;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Modules\Content\Models\Content;
@@ -10,6 +11,8 @@ use Modules\Content\Models\Model;
 use Modules\Content\View\Components\ContentAdminBreadcrumb;
 use Modules\Content\View\Components\ContentAdminList;
 use Modules\Content\View\Components\ContentList;
+use Modules\Content\View\Controls\ContentSummary;
+use Modules\Content\View\Controls\ContentTitle;
 
 
 class ContentServiceProvider extends ServiceProvider
@@ -35,6 +38,9 @@ class ContentServiceProvider extends ServiceProvider
         Blade::component(ContentAdminList::class, 'content-admin-list');
         Blade::component(ContentAdminBreadcrumb::class, 'content-admin-breadcrumb');
         Blade::component(ContentList::class, 'content-list');
+
+        Form::control(ContentTitle::class, 'content-title');
+        Form::control(ContentSummary::class, 'content-summary');
     }
 
     /**

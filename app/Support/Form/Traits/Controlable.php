@@ -164,7 +164,7 @@ trait Controlable
                 ->with('attributes', new Attribute($attributes))
                 ->with('originalAttributes', new Attribute($originalAttributes))
                 ->with('bind', $this->bind)
-                ->with('bindValue', $this->getBindValue($attributes))
+                ->with('bindValue', $this->getBind($attributes['name'] ?? null))
                 ->initialize()
                 ->render();
         }
@@ -206,7 +206,7 @@ trait Controlable
     protected function completeAttributes(array $attributes)
     {
         $attributes['id'] = $attributes['id'] ?? $this->convertNameToId($attributes);
-        $attributes['value'] = $attributes['value'] ?? $this->getBindValue($attributes);
+        $attributes['value'] = $attributes['value'] ?? $this->getBind($attributes['name'] ?? null);
 
         return $attributes;
     }
@@ -226,17 +226,16 @@ trait Controlable
     }
 
     /**
-     * 从bind数据中获取value
+     * 获取绑定值
      *
-     * @param array $attributes
-     * @return mixed
+     * @param string|null $name
+     * @return array|mixed
      * @author Chen Lei
-     * @date 2020-12-05
+     * @date 2020-12-18
      */
-    protected function getBindValue(array $attributes)
+    public function getBind($name, $default = null)
     {
-        // 从绑定值中获取value
-        if ($name = Arr::get($attributes, 'name')) {
+        if ($name) {
 
             // 将数组名称转为点语法 test[aaa] 转为 test.aaa
             $key = str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $name);
@@ -252,6 +251,6 @@ trait Controlable
             return data_get($this->bind, $key);
         }
 
-        return null;
+        return $default;
     }
 }
