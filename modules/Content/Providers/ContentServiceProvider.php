@@ -4,6 +4,7 @@ namespace Modules\Content\Providers;
 
 use App\Modules\Support\ServiceProvider;
 use App\Support\Facades\Form;
+use App\Support\Form\Controls\Input;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Modules\Content\Models\Content;
@@ -11,6 +12,7 @@ use Modules\Content\Models\Model;
 use Modules\Content\View\Components\ContentAdminBreadcrumb;
 use Modules\Content\View\Components\ContentAdminList;
 use Modules\Content\View\Components\ContentList;
+use Modules\Content\View\Controls\ContentModels;
 use Modules\Content\View\Controls\ContentSummary;
 use Modules\Content\View\Controls\ContentTitle;
 
@@ -41,6 +43,9 @@ class ContentServiceProvider extends ServiceProvider
 
         Form::control(ContentTitle::class, 'content-title');
         Form::control(ContentSummary::class, 'content-summary');
+        Form::control(ContentModels::class, 'content-models');
+        Form::control(Input::class, ['content-slug', 'content-keywords', 'content-source', 'content-author']);
+
     }
 
     /**
