@@ -3,9 +3,11 @@
 namespace Modules\Site\Providers;
 
 use App\Modules\Support\ServiceProvider;
+use App\Support\Facades\Form;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Facades\Agent;
+use Modules\Site\View\Controls\View;
 
 class SiteServiceProvider extends ServiceProvider
 {
@@ -51,12 +53,16 @@ class SiteServiceProvider extends ServiceProvider
         // 前端主题
         $theme = $this->app['config']->get('site.theme');
 
-        //移动端主题：通过移动端网址或者设备匹配
+        // 移动端主题：通过移动端网址或者设备匹配
         if (Str::startsWith(Request::url(), $this->app['config']->get('site.wap.url')) || Agent::isMobile()) {
             $theme = $this->app['config']->get('site.wap.theme');
         }
 
+        // 注册前端主题
         $this->app['config']->set('modules.types.frontend.theme', $theme);
+
+        // 注册控件
+        Form::control(View::class, 'view');
     }
 
 

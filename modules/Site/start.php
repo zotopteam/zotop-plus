@@ -1,7 +1,6 @@
 <?php
 
 use App\Support\Facades\Filter;
-use App\Support\Facades\Form;
 
 
 /**
@@ -24,23 +23,4 @@ Filter::listen('global.tools', 'Modules\Site\Hooks\Hook@tools', 1);
  * 模块管理
  */
 Filter::listen('module.manage', 'Modules\Site\Hooks\Hook@moduleManageSite');
-
-
-/**
- * 模板选择器
- */
-Form::macro('view', function($attrs) {
-    $value  = $this->getValue($attrs);
-    $name   = $this->getName($attrs);
-    $id     = $this->getId($attrs);
-    $button = $this->getAttribute($attrs, 'button', trans('site::field.view.select'));
-    $select = route('site.view.select', [
-        'theme'  => config('site.theme'),
-        'module' => $this->getAttribute($attrs, 'module', app('current.module')),
-    ]);
-
-    return $this->toHtmlString(
-        $this->view->make('site::field.view')->with(compact('id', 'name', 'value', 'button', 'select', 'attrs'))->render()
-    );
-});
 

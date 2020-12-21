@@ -28,19 +28,6 @@ Filter::listen('content.manage', 'Modules\Content\Hook\Listener@contentManage', 
 Filter::listen('content.show', 'Modules\Content\Hook\Content@hit', 100);
 
 
-/**
- * 别名控件
- */
-// Form::macro('content_slug', function ($attrs) {
-//
-//     $attrs['type'] = 'translate';
-//     $attrs['source'] = 'title';
-//     $attrs['format'] = 'slug';
-//
-//     return $this->field($attrs);
-// });
-
-
 
 
 

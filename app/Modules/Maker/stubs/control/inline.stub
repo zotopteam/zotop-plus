@@ -21,6 +21,8 @@ class $CLASS_NAME$ extends Control
 
     /**
      * Boot the control
+     *
+     * @return void
      */
     public function boot$CLASS_NAME$()
     {
@@ -34,6 +36,6 @@ class $CLASS_NAME$ extends Control
      */
     public function render()
     {
-        return $this->toHtmlString('<input />');
+        return $this->toHtmlString('<input ' . $this->attributes . '/>');
     }
 }
