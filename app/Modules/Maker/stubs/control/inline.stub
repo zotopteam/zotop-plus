@@ -20,7 +20,15 @@ class $CLASS_NAME$ extends Control
     }
 
     /**
-     * 渲染控件
+     * Boot the control
+     */
+    public function boot$CLASS_NAME$()
+    {
+        // $this->id = $this->attributes->get('id');
+    }
+
+    /**
+     * Render the control
      *
      * @return \Closure|\Illuminate\Contracts\Support\Htmlable|\Illuminate\Contracts\View\View|\Illuminate\Support\HtmlString|string
      */

@@ -4,7 +4,6 @@ namespace Modules\Content\Providers;
 
 use App\Modules\Support\ServiceProvider;
 use App\Support\Facades\Form;
-use App\Support\Form\Controls\Input;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Modules\Content\Models\Content;
@@ -41,11 +40,11 @@ class ContentServiceProvider extends ServiceProvider
         Blade::component(ContentAdminBreadcrumb::class, 'content-admin-breadcrumb');
         Blade::component(ContentList::class, 'content-list');
 
+        // 控件扩展
         Form::control(ContentTitle::class, 'content-title');
         Form::control(ContentSummary::class, 'content-summary');
         Form::control(ContentModels::class, 'content-models');
-        Form::control(Input::class, ['content-slug', 'content-keywords', 'content-source', 'content-author']);
-
+        //Form::control(Input::class, ['content-slug', 'content-keywords', 'content-source', 'content-author']);
     }
 
     /**

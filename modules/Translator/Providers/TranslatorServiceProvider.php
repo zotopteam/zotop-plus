@@ -3,6 +3,9 @@
 namespace Modules\Translator\Providers;
 
 use App\Modules\Support\ServiceProvider;
+use App\Support\Facades\Form;
+use Modules\Translator\View\Controls\Slug;
+use Modules\Translator\View\Controls\Translate;
 
 class TranslatorServiceProvider extends ServiceProvider
 {
@@ -30,7 +33,9 @@ class TranslatorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Form::control(Translate::class, 'translate');
+        Form::control(Slug::class, 'slug');
+        Form::control(Slug::class, 'content-slug');
     }
 
     /**

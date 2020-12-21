@@ -13,19 +13,27 @@ class $CLASS_NAME$ extends Control
      * @return void
      */
     public function __construct(
-        $value = null
+        $view = null
     )
     {
-        $this->value = $value;
+        $this->view = $view;
     }
 
     /**
-     * 渲染控件
+     * Boot the control
+     */
+    public function boot$CLASS_NAME$()
+    {
+        // $this->id = $this->attributes->get('id');
+    }
+
+    /**
+     * Render the control
      *
      * @return \Closure|\Illuminate\Contracts\Support\Htmlable|\Illuminate\Contracts\View\View|\Illuminate\Support\HtmlString|string
      */
     public function render()
     {
-        return $this->view('$MODULE_LOWER_NAME$::controls.$LOWER_NAME$');
+        return $this->view($this-view ?? '$MODULE_LOWER_NAME$::controls.$LOWER_NAME$');
     }
 }
