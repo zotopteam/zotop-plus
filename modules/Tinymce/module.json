@@ -7,11 +7,12 @@
     "version": "1.1.0",
     "active": 1,
     "installed": 1,
-    "order": 10,
+    "order": 9999,
     "author": "zotop",
     "email": "it@zotop.com",
     "homepage": "http:\/\/www.zotop.com",
     "providers": [
+        "Modules\\Tinymce\\Providers\\TinymceServiceProvider",
         "Modules\\Tinymce\\Providers\\RouteServiceProvider"
     ],
     "aliases": [],

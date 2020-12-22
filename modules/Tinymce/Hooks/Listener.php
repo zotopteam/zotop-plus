@@ -1,30 +1,30 @@
 <?php
+
 namespace Modules\Tinymce\Hooks;
 
 use Module;
-use Filter;
 
 
 class Listener
 {
     /**
      * 编辑器属性
-     * 
-     * @param  array $options 属性数组
-     * @param  string $mode 编辑器模式
+     *
+     * @param string|array $options 属性数组
+     * @param string $mode 编辑器模式
      * @return array
-     */    
+     */
     public function options($options, $attrs)
     {
         // 获取'full','standard','simple' 三种类型编辑器的属性数据
         if (is_string($options)) {
-            $options = Module::data('tinymce::options.'.$options, $attrs);
+            $options = Module::data('tinymce::options.' . $options, $attrs);
         }
 
         // 加载默认属性，补全编辑器属性
         $options = array_merge(
             Module::data('tinymce::options.default', $attrs),
-            $options
+            (array)$options
         );
 
         return $options;
@@ -32,8 +32,9 @@ class Listener
 
     /**
      * 最佳自定义工具条
-     * @param  array $options 扩展属性
-     * @param  array $attrs 标签属性
+     *
+     * @param array $options 扩展属性
+     * @param array $attrs 标签属性
      * @return array
      */
     public function tools($options, $attrs)
@@ -58,13 +59,13 @@ class Listener
             // 加载tools，如果单个模块或者部分功能只允许加载部分tool，则通过hook实现
             $options['tools'] = $tools;
             // 加载tools插件
-            $options['plugins'] = $options['plugins'].' tools';
+            $options['plugins'] = $options['plugins'] . ' tools';
             // 追加tools按钮
-            if (stripos(' '.$options['toolbar'].' ', ' tools ') === false) {
-                $options['toolbar'] = $options['toolbar'].' tools';
+            if (stripos(' ' . $options['toolbar'] . ' ', ' tools ') === false) {
+                $options['toolbar'] = $options['toolbar'] . ' tools';
             }
         } else {
-            $options['toolbar'] = str_replace(' tools ', '', ' '.$options['toolbar'].' ');
+            $options['toolbar'] = str_replace(' tools ', '', ' ' . $options['toolbar'] . ' ');
         }
 
         return $options;

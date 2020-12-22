@@ -3,15 +3,20 @@
 namespace Modules\Tinymce\Providers;
 
 use App\Modules\Support\ServiceProvider;
+use App\Support\Facades\Form;
+use Modules\Tinymce\View\Controls\Editor;
 
 class TinymceServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
+     * Register the service provider.
      *
-     * @var bool
+     * @return void
      */
-    protected $defer = false;
+    public function register()
+    {
+
+    }
 
     /**
      * Boot the application events.
@@ -20,26 +25,7 @@ class TinymceServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-    }    
-
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
+        Form::control(['editor', 'tinymce'], Editor::class);
     }
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [];
-    }
 }

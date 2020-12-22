@@ -75,7 +75,7 @@ trait Controlable
      */
     public function control($type, $callback)
     {
-        if (!is_null($type) && Str::contains($type, '\\')) {
+        if (is_string($type) && Str::contains($type, '\\')) {
             [$callback, $type] = [$type, $callback];
         }
 
@@ -112,6 +112,18 @@ trait Controlable
         }
 
         return 'text';
+    }
+
+    /**
+     * 全部控件
+     *
+     * @return array|string[]
+     * @author Chen Lei
+     * @date 2020-12-22
+     */
+    public function controls()
+    {
+        return $this->controls;
     }
 
     /**
