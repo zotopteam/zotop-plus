@@ -2,21 +2,24 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Modules\Routing\AdminController;
+use Illuminate\Http\Request;
 
 
 class IndexController extends AdminController
 {
+
     /**
-     * 首页
+     * 开发助手首页
      *
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2020-12-23
      */
     public function index(Request $request)
     {
-        $this->title  = trans('developer::developer.title');
+        $this->title = trans('developer::developer.title');
 
         return $this->view();
     }

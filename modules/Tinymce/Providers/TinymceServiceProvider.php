@@ -15,7 +15,7 @@ class TinymceServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        Form::control('tinymce', Editor::class);
     }
 
     /**
@@ -25,7 +25,7 @@ class TinymceServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Form::control(['editor', 'tinymce'], Editor::class);
+        Form::control('editor', Editor::class);
     }
 
 }

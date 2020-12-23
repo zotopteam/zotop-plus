@@ -82,10 +82,16 @@ $router->group(['prefix' => 'developer'], function (Router $router) {
     });
 
     // theme group
-    $router->group(['prefix' => 'theme', 'middleware' => 'allow:developer.permission'], function (Router $router) {
+    $router->group(['prefix' => 'theme', 'middleware' => 'allow:developer.theme'], function (Router $router) {
         $router->get('index', 'ThemeController@index')->name('developer.theme.index');
         $router->get('files/{theme?}', 'ThemeController@files')->name('developer.theme.files');
         $router->get('create', 'ThemeController@create')->name('developer.theme.create');
         $router->post('store', 'ThemeController@store')->name('developer.theme.store');
+    });
+
+    // form
+    $router->group(['prefix' => 'form', 'middleware' => 'allow:developer.form'], function (Router $router) {
+        $router->get('index', 'FormController@index')->name('developer.form.index');
+        $router->any('group/{group}', 'FormController@group')->name('developer.form.group');
     });
 });

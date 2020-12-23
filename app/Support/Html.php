@@ -30,6 +30,47 @@ class Html
     }
 
     /**
+     * html标签 (单标签)
+     *
+     * @param string $tag
+     * @param array $attributes
+     * @author Chen Lei
+     * @date 2020-12-24
+     */
+    public function tag(string $tag, array $attributes = [])
+    {
+        return '<' . $tag . ' ' . $this->attributes($attributes) . ' />';
+    }
+
+    /**
+     * HTML标签(打开)
+     *
+     * @param string $tag
+     * @param array $attributes
+     * @return string
+     * @author Chen Lei
+     * @date 2020-12-24
+     */
+    public function openTag(string $tag, array $attributes = [])
+    {
+        return '<' . $tag . ' ' . $this->attributes($attributes) . ' >';
+    }
+
+    /**
+     * HTML标签(结束)
+     *
+     * @param string $tag
+     * @param array $attributes
+     * @return string
+     * @author Chen Lei
+     * @date 2020-12-24
+     */
+    public function closeTag(string $tag)
+    {
+        return '</' . $tag . '>';
+    }
+
+    /**
      * 属性数组转化为属性字符串
      *
      * @param array $attributes
@@ -39,7 +80,7 @@ class Html
     {
         return new Attribute($attributes);
     }
-    
+
     /**
      * 文本转html，一般用于格式化textarea的显示值
      *
