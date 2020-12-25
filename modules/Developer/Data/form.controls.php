@@ -1,0 +1,140 @@
+<?php
+
+return [
+
+    'hidden' => [
+        'text'       => trans('developer::form.control.hidden'),
+        'href'       => route('developer.form.control', ['control' => 'hidden']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'text' => [
+        'text'       => trans('developer::form.control.text'),
+        'href'       => route('developer.form.control', ['control' => 'text']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'number' => [
+        'text'       => trans('developer::form.control.number'),
+        'href'       => route('developer.form.control', ['control' => 'number']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'password' => [
+        'text'       => trans('developer::form.control.password'),
+        'href'       => route('developer.form.control', ['control' => 'password']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'email' => [
+        'text'       => trans('developer::form.control.email'),
+        'href'       => route('developer.form.control', ['control' => 'email']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'url' => [
+        'text'       => trans('developer::form.control.url'),
+        'href'       => route('developer.form.control', ['control' => 'url']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'tel' => [
+        'text'       => trans('developer::form.control.tel'),
+        'href'       => route('developer.form.control', ['control' => 'tel']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'range' => [
+        'text'       => trans('developer::form.control.range'),
+        'href'       => route('developer.form.control', ['control' => 'range']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'file' => [
+        'text'       => trans('developer::form.control.file'),
+        'href'       => route('developer.form.control', ['control' => 'file']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'color' => [
+        'text'       => trans('developer::form.control.color'),
+        'href'       => route('developer.form.control', ['control' => 'color']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'search' => [
+        'text'       => trans('developer::form.control.search'),
+        'href'       => route('developer.form.control', ['control' => 'search']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'textarea' => [
+        'text'       => trans('developer::form.control.textarea'),
+        'href'       => route('developer.form.control', ['control' => 'textarea']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'date' => [
+        'text'       => trans('developer::form.control.date'),
+        'href'       => route('developer.form.control', ['control' => 'date']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'datetime' => [
+        'text'       => trans('developer::form.control.datetime'),
+        'href'       => route('developer.form.control', ['control' => 'datetime']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'time' => [
+        'text'       => trans('developer::form.control.time'),
+        'href'       => route('developer.form.control', ['control' => 'time']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'month' => [
+        'text'       => trans('developer::form.control.month'),
+        'href'       => route('developer.form.control', ['control' => 'month']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+
+    'week' => [
+        'text'       => trans('developer::form.control.week'),
+        'href'       => route('developer.form.control', ['control' => 'week']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => 'developer::form.control.attributes.standard',
+    ],
+];

@@ -50,7 +50,50 @@ class FormController extends Controller
                 'name' => $control,
             ], $attributes);
         });
+
+        return $this->view();
+    }
+
+    /**
+     * 控件示例
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $control
+     * @return \Illuminate\Contracts\View\View
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @author Chen Lei
+     * @date 2020-12-26
+     */
+    public function control(Request $request, $control = 'text')
+    {
+        $this->control = $control;
+        $this->controls = Module::data('developer::form.controls');
+        $this->title = Arr::get($this->controls, "{$control}.text");
         
+        // 示例
+        $this->examples = Arr::get($this->controls, "{$control}.examples");
+        $this->examples = Arr::wrap($this->examples);
+
+        // 示例
+        $this->attributes = Arr::get($this->controls, "{$control}.attributes");
+        $this->attributes = is_array($this->attributes) ? $this->attributes : Module::data($this->attributes);
+
+        // 示例属性
+        $this->attribute = collect($this->attributes)->reject(function ($item, $key) {
+            return in_array($key, ['type', 'name']);
+        })->filter(function ($item) {
+            return Arr::get($item, "required");
+        })->transform(function ($item) {
+            return Arr::get($item, "example");
+        })->toArray();
+
+        $this->attribute = attribute(array_merge([
+            'type' => $control,
+            'name' => $control,
+        ], $this->attribute));
+
+
         return $this->view();
     }
 }
