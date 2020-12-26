@@ -8,8 +8,14 @@
     {{trans('developer::form.code')}}
 </span>
 <div class="input-group">
-    <input class="form-control bg-light" id="code-{{$control}}"
-           value="{{Html::tag('z-field', $attribute->toArray())}}"/>
+    @if($attribute->has('options') && is_array($attribute->get('options')))
+        <textarea class="form-control bg-light" id="code-{{$control}}" rows="4">
+{{Html::tag('z-field', $attribute->toArray())}}
+        </textarea>
+    @else
+        <input class="form-control bg-light" id="code-{{$control}}"
+               value="{{Html::tag('z-field', $attribute->toArray())}}"/>
+    @endif
     <div class="input-group-append">
         <button class="btn btn-light btn-copy" type="button"
                 data-clipboard-target="#code-{{$control}}"

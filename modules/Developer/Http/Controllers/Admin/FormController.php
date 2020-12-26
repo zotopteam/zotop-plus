@@ -70,14 +70,25 @@ class FormController extends Controller
         $this->control = $control;
         $this->controls = Module::data('developer::form.controls');
         $this->title = Arr::get($this->controls, "{$control}.text");
-        
+
         // 示例
         $this->examples = Arr::get($this->controls, "{$control}.examples");
         $this->examples = Arr::wrap($this->examples);
 
         // 示例
         $this->attributes = Arr::get($this->controls, "{$control}.attributes");
-        $this->attributes = is_array($this->attributes) ? $this->attributes : Module::data($this->attributes);
+        $this->attributes = collect($this->attributes)->transform(function ($item) {
+            return is_array($item) ? $item : Module::data($item);
+        })->mapWithKeys(function ($item) {
+            return $item;
+        })->transform(function ($item, $key) {
+
+            if ($key == 'type' && !isset($item['value'])) {
+                $item['value'] = $this->control;
+            }
+
+            return $item;
+        })->filter()->toArray();
 
         // 示例属性
         $this->attribute = collect($this->attributes)->reject(function ($item, $key) {
@@ -92,7 +103,6 @@ class FormController extends Controller
             'type' => $control,
             'name' => $control,
         ], $this->attribute));
-
 
         return $this->view();
     }

@@ -2,6 +2,12 @@
 
 return [
 
+    'type' => [
+        'text'     => trans('developer::form.control.attribute.type'),
+        'type'     => 'string',
+        'required' => true,
+    ],
+
     'id' => [
         'text'     => trans('developer::form.control.attribute.id'),
         'type'     => 'string',
@@ -15,6 +21,8 @@ return [
         'required' => true,
         'example'  => 'test',
     ],
+
+    'options' => null,
 
     'value' => [
         'text'     => trans('developer::form.control.attribute.value'),
@@ -64,4 +72,13 @@ return [
         'required' => false,
         'example'  => 'data-show="true"',
     ],
+
+    'autocomplete' => [
+        'text'     => trans('developer::form.control.attribute.autocomplete'),
+        'type'     => 'string',
+        'required' => false,
+        'value'    => ['on', 'off'],
+    ],
+
+
 ];

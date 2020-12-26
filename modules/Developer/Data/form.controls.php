@@ -23,7 +23,10 @@ return [
         'href'       => route('developer.form.control', ['control' => 'number']),
         'icon'       => 'fa fa-list-alt',
         'examples'   => 'developer::form.control.common',
-        'attributes' => 'developer::form.control.attributes.standard',
+        'attributes' => [
+            'developer::form.control.attributes.standard',
+            'developer::form.number.attributes',
+        ],
     ],
 
     'password' => [
@@ -90,12 +93,26 @@ return [
         'attributes' => 'developer::form.control.attributes.standard',
     ],
 
+    'select' => [
+        'text'       => trans('developer::form.control.select'),
+        'href'       => route('developer.form.control', ['control' => 'select']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => 'developer::form.control.common',
+        'attributes' => [
+            'developer::form.control.attributes.standard',
+            'developer::form.select.attributes',
+        ],
+    ],
+
     'textarea' => [
         'text'       => trans('developer::form.control.textarea'),
         'href'       => route('developer.form.control', ['control' => 'textarea']),
         'icon'       => 'fa fa-list-alt',
         'examples'   => 'developer::form.control.common',
-        'attributes' => 'developer::form.control.attributes.standard',
+        'attributes' => [
+            'developer::form.control.attributes.standard',
+            'developer::form.textarea.attributes',
+        ],
     ],
 
     'date' => [

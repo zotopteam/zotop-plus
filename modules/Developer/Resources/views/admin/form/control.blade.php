@@ -50,7 +50,19 @@
                                     <i class="fa fa-check-circle text-success"></i>
                                 @endif
                             </td>
-                            <td>{{$attribute['example'] ?? ''}}</td>
+                            <td>
+                                @if($value = Arr::get($attribute, 'value'))
+                                    @foreach((array)$value as $val)
+                                        {{$val}} <br>
+                                    @endforeach
+                                @elseif($example = Arr::get($attribute, 'example'))
+                                    @if(is_array($example))
+                                        <pre>{{var_export_pretty($example, true)}}</pre>
+                                    @else
+                                        {{$example}}
+                                    @endif
+                                @endif
+                            </td>
                             <td>{{$attribute['text'] ?? ''}}</td>
                         </tr>
                     @endforeach

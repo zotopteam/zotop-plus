@@ -254,6 +254,27 @@ if (!function_exists('attribute')) {
     }
 }
 
+if (!function_exists('var_export_pretty')) {
+
+    /**
+     * var_export() with square brackets and indented 4 spaces.
+     *
+     * @param $expression
+     * @param false $return
+     * @return string|void
+     * @author https://www.php.net/manual/zh/function.var-export.php#122853
+     */
+    function var_export_pretty($expression, $return = true)
+    {
+        $export = var_export($expression, true);
+        $export = preg_replace("/^([ ]*)(.*)/m", '$1$1$2', $export);
+        $array = preg_split("/\r\n|\n|\r/", $export);
+        $array = preg_replace(["/\s*array\s\($/", "/\)(,)?$/", "/\s=>\s$/"], [null, ']$1', ' => ['], $array);
+        $export = join(PHP_EOL, array_filter(["["] + $array));
+        if ((bool)$return) return $export; else echo $export;
+    }
+}
+
 if (!function_exists('preview')) {
 
     /**
