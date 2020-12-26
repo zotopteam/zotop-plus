@@ -14,16 +14,20 @@
         </div>
         <div class="main-body scrollable">
 
-            @foreach($examples as $index => $include)
+            @foreach($examples as $index => $attribute)
                 <div class="card m-3">
                     <div class="card-header">
-                        {{trans('developer::form.example')}} {{$index + 1}}
+                        {{trans('developer::form.example')}}
+                        @if(count($examples) > 1)
+                            {{$index + 1}}
+                        @endif
                     </div>
                     <div class="card-body">
-                        @include($include, ['control' => $control, 'attribute' => $attribute])
+                        @include('developer::form.control.common', ['control' => $control, 'attribute' => $attribute])
                     </div>
                 </div>
             @endforeach
+
 
             <div class="card m-3">
                 <div class="card-header">
@@ -53,7 +57,7 @@
                             <td>
                                 @if($value = Arr::get($attribute, 'value'))
                                     @foreach((array)$value as $val)
-                                        {{$val}} <br>
+                                        <div class="text-primary">{{$val}}</div>
                                     @endforeach
                                 @elseif($example = Arr::get($attribute, 'example'))
                                     @if(is_array($example))

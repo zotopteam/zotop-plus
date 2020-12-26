@@ -423,8 +423,6 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
 
         foreach ($this->attributes as $key => $value) {
 
-            $variable = false;
-
             try {
                 if ($value === false || is_null($value)) {
                     continue;
@@ -432,16 +430,10 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
 
                 if ($value === true) {
                     $value = $key;
-                    $variable = true;
                 }
 
                 if (is_array($value)) {
                     $value = var_export_pretty($value, true);
-                    $variable = true;
-                }
-
-                if ($variable) {
-                    $key = ":{$key}";
                 }
 
                 $string .= ' ' . $key . '="' . str_replace('"', '\\"', trim($value)) . '"';

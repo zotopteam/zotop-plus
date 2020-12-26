@@ -5,9 +5,9 @@
     </div>
     <div class="side-body scrollable">
         <ul class="nav nav-pills nav-side">
-            @foreach(Module::data('developer::form.controls') as $g)
+            @foreach(Module::data('developer::form.controls') as $k=>$g)
                 <li class="nav-item">
-                    <a class="nav-link" href="{{$g['href']}}">
+                    <a class="nav-link {{request('control') == $k ? 'active' : ''}}" href="{{$g['href']}}">
                         <i class="nav-icon {{$g['icon'] ?? ''}}"></i> <span class="nav-text">{{$g['text']}}</span>
                     </a>
                 </li>
