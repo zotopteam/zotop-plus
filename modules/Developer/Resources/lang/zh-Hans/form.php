@@ -81,5 +81,8 @@ return [
     'textarea.attributes.rows' => '规定文本区内的可见行数',
 
     'date.attributes.range' => '规定范围选择的分隔符',
+    'date.attributes.min'   => '规定选择范围的最小值',
+    'date.attributes.max'   => '规定选择范围的最大值',
+    'date.attributes.theme' => '设置控件的主题颜色',
 
 ];

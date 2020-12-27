@@ -180,6 +180,20 @@ return [
         ],
     ],
 
+    'year' => [
+        'text'       => trans('developer::form.control.year'),
+        'href'       => route('developer.form.control', ['control' => 'year']),
+        'icon'       => 'fa fa-list-alt',
+        'examples'   => [
+            'developer::form.control.examples.standard',
+            'developer::form.control.examples.date',
+        ],
+        'attributes' => [
+            'developer::form.control.attributes.standard',
+            'developer::form.date.attributes',
+        ],
+    ],
+
     'week' => [
         'text'       => trans('developer::form.control.week'),
         'href'       => route('developer.form.control', ['control' => 'week']),

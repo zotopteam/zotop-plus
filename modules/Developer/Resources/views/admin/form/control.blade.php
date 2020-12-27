@@ -23,7 +23,7 @@
                         @endif
                     </div>
                     <div class="card-body">
-                        @include('developer::form.control.common', ['control' => $control, 'attribute' => $attribute])
+                        @include('developer::form.control.common', ['index'=>$index, 'control' => $control, 'attribute' => $attribute])
                     </div>
                 </div>
             @endforeach
@@ -48,7 +48,13 @@
                     @foreach($attributes as $key=>$attribute)
                         <tr>
                             <td>{{$key}}</td>
-                            <td>{{$attribute['type'] ?? ''}}</td>
+                            <td>
+                                @if($type = Arr::get($attribute, 'type'))
+                                    @foreach((array)$type as $val)
+                                        <div>{{$val}}</div>
+                                    @endforeach
+                                @endif
+                            </td>
                             <td class="text-center">
                                 @if(Arr::get($attribute, 'required'))
                                     <i class="fa fa-check-circle text-success"></i>

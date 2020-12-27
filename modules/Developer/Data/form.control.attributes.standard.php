@@ -56,7 +56,7 @@ return [
         'text'     => trans('developer::form.control.attribute.placeholder'),
         'type'     => 'string',
         'required' => false,
-        'example'  => 'please input……',
+        'example'  => 'Please input……',
     ],
 
     'pattern' => [
@@ -79,6 +79,5 @@ return [
         'required' => false,
         'value'    => ['on', 'off'],
     ],
-
-
+    
 ];
