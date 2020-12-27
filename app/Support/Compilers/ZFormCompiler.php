@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 /**
  * 模板扩展，解析表单标签
  * 如：<z-form></z-form> <z-field/> <z-text/> <z-textarea/>
- * 
+ *
  * @package App\Support
  */
 class ZFormCompiler
@@ -15,7 +15,7 @@ class ZFormCompiler
     /**
      * 解析 {xxx name='aaa'} 标签
      *
-     * @param  string  $value
+     * @param string $value
      * @return string
      */
     public function compile($value)
@@ -60,7 +60,7 @@ class ZFormCompiler
             >
         /x";
 
-        $value   = preg_replace_callback($pattern, function ($matches) {
+        $value = preg_replace_callback($pattern, function ($matches) {
 
             // 如果@开头，直接返回去掉@后的字符串
             if ($matches[1]) {
@@ -88,7 +88,7 @@ class ZFormCompiler
     {
         // 解析 {/form}
         $pattern = '/(@)?(<\/\s*z-form\s*>)/x';
-        $value   = preg_replace_callback($pattern, function ($matches) {
+        $value = preg_replace_callback($pattern, function ($matches) {
             return $matches[1] ? substr($matches[0], 1) : "<?php echo Form::close(); ?>\r\n";
         }, $value);
 
@@ -97,12 +97,12 @@ class ZFormCompiler
 
     /**
      * 解析字段标签
-     *  
-     * <z-field type="editor" options="Module::data(……)" /> 
+     *
+     * <z-field type="editor" options="Module::data(……)" />
      * <z-field type="text" name="title"/>
-     * <z-text name="title"/> 
-     * <z-textarea name="summary"/> 
-     * 
+     * <z-text name="title"/>
+     * <z-textarea name="summary"/>
+     *
      * @param string $value
      * @return string
      */
@@ -134,7 +134,7 @@ class ZFormCompiler
             (\/)?>
         /x";
 
-        $value   = preg_replace_callback($pattern, function ($matches) {
+        $value = preg_replace_callback($pattern, function ($matches) {
 
             // 如果@开头，直接返回去掉@后的字符串
             if ($matches[1]) {
@@ -158,7 +158,8 @@ class ZFormCompiler
      * 从标签字符串中解析出标签数组
      * 转换前 type="submit" form="config" value="trans('master.save')" class="btn btn-primary"
      * 转换后 'type' => 'submit', 'form' => 'config', 'value' => trans('master.save'), 'class' => 'btn btn-primary'
-     * @param  string  $attributeString
+     *
+     * @param string $attributeString
      * @return string
      */
     protected function convertAttributes(string $attributeString)
@@ -211,8 +212,8 @@ class ZFormCompiler
      * 转换参数值为数组真实类型
      * null, bool、 $a 、function()函数 和 A::method() 静态方法 直接返回
      * 字符串加上单引号
-     * 
-     * @param  mixed  $value 标签值
+     *
+     * @param mixed $value 标签值
      * @return boolean
      */
     protected function convertValue($value)

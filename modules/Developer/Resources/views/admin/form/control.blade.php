@@ -33,7 +33,9 @@
                 <div class="card-header">
                     {{trans('developer::form.control.attributes')}}
                 </div>
-
+                <div class="card-body text-primary">
+                    {{trans('developer::form.attribute.value.help')}}
+                </div>
                 <table class="table table-hover">
                     <thead>
                     <tr>

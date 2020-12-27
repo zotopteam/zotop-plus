@@ -10,7 +10,7 @@
 
     <script type="text/javascript">
         $(function () {
-            window.code_editor_{{$name}} = editormd("code-editor-{{$name}}", {!! json_encode($options) !!});
+            window.{{Str::camel('code-editor-'.$name)}} = editormd("code-editor-{{$name}}", {!! json_encode($options) !!});
         });
     </script>
 @endpush

@@ -4,9 +4,9 @@ return [
 
     // 简单选择
     [
-        'type'    => $type,
-        'name'    => 'test1',
-        'options' => [
+        'type'     => $type,
+        'name'     => 'test1',
+        ':options' => [
             'red',
             'blue',
             'black',
@@ -17,7 +17,7 @@ return [
     [
         'type'     => $type,
         'name'     => 'test1',
-        'options'  => [
+        ':options' => [
             'red',
             'blue',
             'black',
@@ -29,7 +29,7 @@ return [
     [
         'type'        => $type,
         'name'        => 'test2',
-        'options'     => [
+        ':options'    => [
             'China'   => [
                 '1' => 'Bei Jing',
                 '2' => 'Shang Hai',

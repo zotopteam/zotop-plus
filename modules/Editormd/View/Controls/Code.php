@@ -27,14 +27,13 @@ class Code extends Control
     }
 
     /**
-     * options
+     * 从属性中获取选项值，属性设置的选项值会覆盖选项中已经存在的项
      *
-     * @param array $options
      * @return array
      * @author Chen Lei
      * @date 2020-12-06
      */
-    protected function options(array $options)
+    protected function options()
     {
         $default = [
             'width'         => '100%',
@@ -45,17 +44,19 @@ class Code extends Control
             'toolbar'       => false,
             'codeFold'      => true,
             'searchReplace' => true,
+            'autoHeight'    => false,
             'theme'         => 'default',
             'path'          => Module::asset('editormd:editormd/lib', false) . '/',
         ];
 
         // 标签上取出的属性
-        $attributes = $this->attributes->pull(array_keys($default));
-
-        // 设置属性
-        $options = attribute($options)->merge($default, false)->merge($attributes->toArray());
-
-        return $options->toArray();
+        $options = $this->attributes->pull(array_keys($default))->toArray();
+        debug($this->attributes->toArray(), $options);
+        // 合并标签属性和默认属性
+        return attribute($this->options)
+            ->merge($default, false)
+            ->merge($options, true)
+            ->toArray();
     }
 
     /**
@@ -66,7 +67,7 @@ class Code extends Control
      */
     public function bootCode()
     {
-        $this->options = $this->options($this->options);
+        $this->options = $this->options();
     }
 
     /**

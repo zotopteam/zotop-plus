@@ -43,11 +43,11 @@ class Listener
             'icon'       => 'fa fa-code',
             'examples'   => [
                 'developer::form.control.examples.standard',
-                //'editormd::form.control.examples.code',
+                'editormd::form.control.examples.code',
             ],
             'attributes' => [
                 'developer::form.control.attributes.standard',
-                //'editormd::form.code.attributes',
+                'editormd::form.code.attributes',
             ],
         ];
 
@@ -55,13 +55,10 @@ class Listener
             'text'       => trans('editormd::form.control.markdown'),
             'href'       => route('developer.form.control', ['control' => 'markdown']),
             'icon'       => 'fab fa-markdown',
-            'examples'   => [
-                'developer::form.control.examples.standard',
-                //'editormd::form.control.examples.markdown',
-            ],
+            'examples'   => 'editormd::form.control.examples.markdown',
             'attributes' => [
                 'developer::form.control.attributes.standard',
-                //'editormd::form.markdown.attributes',
+                'editormd::form.markdown.attributes',
             ],
         ];
 

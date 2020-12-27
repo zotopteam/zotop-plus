@@ -10,7 +10,7 @@
 
     <script type="text/javascript">
         $(function () {
-            window.md_editor_{{$name}} = editormd("md-editor-{{$name}}", {!! json_encode($options) !!});
+            window.{{Str::camel('markdown-editor-'.$name)}} = editormd("md-editor-{{$name}}", {!! json_encode($options) !!});
         });
     </script>
 @endpush

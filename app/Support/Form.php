@@ -63,9 +63,6 @@ class Form
      */
     public function open(array $options = [])
     {
-        // 键名小写
-        $options = array_change_key_case($options);
-
         // 绑定模型的数组或者实例
         $this->bind = Arr::pull($options, 'bind', null);
 
@@ -195,9 +192,6 @@ class Form
      */
     public function field(array $attributes = [])
     {
-        // 键名小写
-        $attributes = array_change_key_case($attributes);
-
         // 获取类型
         $type = $this->findControl(Arr::pull($attributes, 'type'));
 

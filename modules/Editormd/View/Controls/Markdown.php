@@ -44,6 +44,8 @@ class Markdown extends Control
             'saveHTMLToTextarea' => true,
             'htmlDecode'         => 'style,script,iframe|on*',
             'theme'              => 'default',
+            'previewTheme'       => 'default',
+            'editorTheme'        => 'default',
             'path'               => Module::asset('editormd:editormd/lib', false) . '/',
         ];
 

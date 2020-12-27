@@ -201,7 +201,11 @@ return [
         'title'   => trans('developer::command.data.title'),
         'icon'    => 'fa fa-save',
         'command' => 'module:make-data',
-        'name'    => ['label' => trans('developer::command.data.name.label'), 'help' => trans('developer::command.data.name.help')],
+        'name'    => [
+            'label'   => trans('developer::command.data.name.label'),
+            'help'    => trans('developer::command.data.name.help'),
+            'pattern' => '^[a-z][a-z0-9._-]+[a-z0-9]$',
+        ],
         'dir'     => config('modules.paths.dirs.data'),
     ],
 

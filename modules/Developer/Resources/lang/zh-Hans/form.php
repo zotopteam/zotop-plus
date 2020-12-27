@@ -7,6 +7,8 @@ return [
     'group.common' => '常规控件',
     'group.dates'  => '日期时间',
 
+    'attribute.value.help' => '普通的值可以通过简单的 HTML 属性来传递给组件。PHP 表达式和变量应该通过以 : 字符作为前缀的变量来进行传递，如：:option="[1,2]',
+
     'control.hidden'          => '隐藏 hidden',
     'control.text'            => '单行文本 text',
     'control.number'          => '数字 number',

@@ -13,7 +13,7 @@ return [
     'text' => [
         'text'       => trans('developer::form.control.text'),
         'href'       => route('developer.form.control', ['control' => 'text']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-ellipsis-h',
         'attributes' => 'developer::form.control.attributes.standard',
         'examples'   => [
             'developer::form.control.examples.standard',
@@ -24,7 +24,7 @@ return [
     'number' => [
         'text'       => trans('developer::form.control.number'),
         'href'       => route('developer.form.control', ['control' => 'number']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-dice-four',
         'attributes' => [
             'developer::form.control.attributes.standard',
             'developer::form.number.attributes',
@@ -70,7 +70,7 @@ return [
     'range' => [
         'text'       => trans('developer::form.control.range'),
         'href'       => route('developer.form.control', ['control' => 'range']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-ruler-horizontal',
         'attributes' => 'developer::form.control.attributes.standard',
         'examples'   => 'developer::form.control.examples.standard',
     ],
@@ -102,7 +102,7 @@ return [
     'select' => [
         'text'       => trans('developer::form.control.select'),
         'href'       => route('developer.form.control', ['control' => 'select']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-caret-square-down',
         'examples'   => 'developer::form.control.examples.select',
         'attributes' => [
             'developer::form.control.attributes.standard',
@@ -113,7 +113,7 @@ return [
     'textarea' => [
         'text'       => trans('developer::form.control.textarea'),
         'href'       => route('developer.form.control', ['control' => 'textarea']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-align-left',
         'examples'   => [
             'developer::form.control.examples.standard',
             'developer::form.control.examples.textarea',
@@ -127,7 +127,7 @@ return [
     'date' => [
         'text'       => trans('developer::form.control.date'),
         'href'       => route('developer.form.control', ['control' => 'date']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-calendar-alt',
         'examples'   => [
             'developer::form.control.examples.standard',
             'developer::form.control.examples.date',
@@ -141,7 +141,7 @@ return [
     'datetime' => [
         'text'       => trans('developer::form.control.datetime'),
         'href'       => route('developer.form.control', ['control' => 'datetime']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-calendar-alt',
         'examples'   => [
             'developer::form.control.examples.standard',
             'developer::form.control.examples.date',
@@ -155,7 +155,7 @@ return [
     'time' => [
         'text'       => trans('developer::form.control.time'),
         'href'       => route('developer.form.control', ['control' => 'time']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-calendar-alt',
         'examples'   => [
             'developer::form.control.examples.standard',
             'developer::form.control.examples.date',
@@ -169,7 +169,7 @@ return [
     'month' => [
         'text'       => trans('developer::form.control.month'),
         'href'       => route('developer.form.control', ['control' => 'month']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-calendar-alt',
         'examples'   => [
             'developer::form.control.examples.standard',
             'developer::form.control.examples.date',
@@ -183,7 +183,7 @@ return [
     'year' => [
         'text'       => trans('developer::form.control.year'),
         'href'       => route('developer.form.control', ['control' => 'year']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-calendar-alt',
         'examples'   => [
             'developer::form.control.examples.standard',
             'developer::form.control.examples.date',
@@ -197,7 +197,7 @@ return [
     'week' => [
         'text'       => trans('developer::form.control.week'),
         'href'       => route('developer.form.control', ['control' => 'week']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-calendar-alt',
         'examples'   => 'developer::form.control.examples.standard',
         'attributes' => 'developer::form.control.attributes.standard',
     ],
