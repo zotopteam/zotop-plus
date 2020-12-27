@@ -1,0 +1,25 @@
+{
+    "name": "zotop/editormd",
+    "description": "",
+    "authors": [
+        {
+            "name": "ZotopTeam",
+            "email": "cms@zotop.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Editormd\\Providers\\EditormdServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Editormd\\": ""
+        }
+    }
+}

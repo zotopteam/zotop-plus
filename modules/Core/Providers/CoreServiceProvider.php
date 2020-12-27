@@ -167,10 +167,8 @@ class CoreServiceProvider extends ServiceProvider
         Form::control(CheckboxGroup::class, ['checkboxgroup', 'checkbox-group', 'checkboxes']);
         Form::control(Date::class, ['date', 'datetime', 'time', 'month', 'year']);
         Form::control('toggle', Toggle::class);
-        Form::control('editor', Editor::class);
-        Form::control('code', Code::class);
-        Form::control('markdown', Markdown::class);
         Form::control('icon', Icon::class);
+        Form::control(['editor', 'code', 'markdown'], Editor::class);
 
         // 定义系统运行的上传组件
         $uploadTypes = collect(config('core.upload.types'))->keys()->transform(function ($type) {

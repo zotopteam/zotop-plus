@@ -5,7 +5,7 @@ return [
     'hidden' => [
         'text'       => trans('developer::form.control.hidden'),
         'href'       => route('developer.form.control', ['control' => 'hidden']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-eye-slash',
         'attributes' => 'developer::form.control.attributes.standard',
         'examples'   => 'developer::form.control.examples.standard',
     ],
@@ -38,7 +38,7 @@ return [
     'password' => [
         'text'       => trans('developer::form.control.password'),
         'href'       => route('developer.form.control', ['control' => 'password']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-key',
         'attributes' => 'developer::form.control.attributes.standard',
         'examples'   => 'developer::form.control.examples.standard',
     ],
@@ -46,7 +46,7 @@ return [
     'email' => [
         'text'       => trans('developer::form.control.email'),
         'href'       => route('developer.form.control', ['control' => 'email']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-envelope',
         'attributes' => 'developer::form.control.attributes.standard',
         'examples'   => 'developer::form.control.examples.standard',
     ],
@@ -54,7 +54,7 @@ return [
     'url' => [
         'text'       => trans('developer::form.control.url'),
         'href'       => route('developer.form.control', ['control' => 'url']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-link',
         'attributes' => 'developer::form.control.attributes.standard',
         'examples'   => 'developer::form.control.examples.standard',
     ],
@@ -62,7 +62,7 @@ return [
     'tel' => [
         'text'       => trans('developer::form.control.tel'),
         'href'       => route('developer.form.control', ['control' => 'tel']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fas fa-phone-square-alt',
         'attributes' => 'developer::form.control.attributes.standard',
         'examples'   => 'developer::form.control.examples.standard',
     ],
@@ -78,7 +78,7 @@ return [
     'file' => [
         'text'       => trans('developer::form.control.file'),
         'href'       => route('developer.form.control', ['control' => 'file']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-file',
         'examples'   => 'developer::form.control.examples.standard',
         'attributes' => 'developer::form.control.attributes.standard',
     ],
@@ -86,7 +86,7 @@ return [
     'color' => [
         'text'       => trans('developer::form.control.color'),
         'href'       => route('developer.form.control', ['control' => 'color']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fas fa-palette',
         'examples'   => 'developer::form.control.examples.standard',
         'attributes' => 'developer::form.control.attributes.standard',
     ],
@@ -94,7 +94,7 @@ return [
     'search' => [
         'text'       => trans('developer::form.control.search'),
         'href'       => route('developer.form.control', ['control' => 'search']),
-        'icon'       => 'fa fa-list-alt',
+        'icon'       => 'fa fa-search',
         'examples'   => 'developer::form.control.examples.standard',
         'attributes' => 'developer::form.control.attributes.standard',
     ],

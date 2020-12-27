@@ -1,0 +1,20 @@
+{
+    "name": "Editormd",
+    "title": "editormd::editormd.title",
+    "description": "editormd::editormd.description",
+    "keywords": [],
+    "version": "1.0.0",
+    "order": 100,
+    "author": "ZotopTeam",
+    "email": "cms@zotop.com",
+    "homepage": "http://www.zotop.com",
+    "seeders": [],
+    "providers": [
+        "Modules\\Editormd\\Providers\\EditormdServiceProvider",
+        "Modules\\Editormd\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ]
+}

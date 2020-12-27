@@ -1,17 +1,19 @@
 <?php
 
-namespace Modules\Core\View\Controls;
+namespace Modules\Editormd\View\Controls;
 
 use App\Modules\Facades\Module;
 use App\Support\Form\Control;
 use Illuminate\Support\Arr;
 
-class Markdown extends Control
+class Code extends Control
 {
     /**
      * Create a new control instance.
      *
-     * @return void
+     * @param string|null $name
+     * @param string|null $value
+     * @param array $options
      */
     public function __construct(
         $name = null,
@@ -35,16 +37,16 @@ class Markdown extends Control
     protected function options(array $options)
     {
         $default = [
-            'width'              => '100%',
-            'height'             => '500',
-            'placeholder'        => 'content……',
-            'autoHeight'         => false,
-            'toolbar'            => true,
-            'codeFold'           => true,
-            'saveHTMLToTextarea' => true,
-            'htmlDecode'         => 'style,script,iframe|on*',
-            'theme'              => 'default',
-            'path'               => Module::asset('core:editormd/lib', false) . '/',
+            'width'         => '100%',
+            'height'        => 500,
+            'placeholder'   => 'coding……',
+            'mode'          => 'text/html',
+            'watch'         => false,
+            'toolbar'       => false,
+            'codeFold'      => true,
+            'searchReplace' => true,
+            'theme'         => 'default',
+            'path'          => Module::asset('editormd:editormd/lib', false) . '/',
         ];
 
         // 标签上取出的属性
@@ -57,12 +59,12 @@ class Markdown extends Control
     }
 
     /**
-     * 启动 Markdown
+     * 启动 Code
      *
      * @author Chen Lei
      * @date 2020-12-15
      */
-    public function bootMarkdown()
+    public function bootCode()
     {
         $this->options = $this->options($this->options);
     }
@@ -74,6 +76,6 @@ class Markdown extends Control
      */
     public function render()
     {
-        return $this->view('core::controls.markdown');
+        return $this->view('editormd::controls.code');
     }
 }

@@ -37,30 +37,30 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <td>{{trans('developer::form.control.attributes.key')}}</td>
-                        <td>{{trans('developer::form.control.attributes.type')}}</td>
-                        <td>{{trans('developer::form.control.attributes.required')}}</td>
-                        <td>{{trans('developer::form.control.attributes.example')}}</td>
-                        <td>{{trans('developer::form.control.attributes.text')}}</td>
+                        <td class="text-sm">{{trans('developer::form.control.attributes.key')}}</td>
+                        <td class="text-sm">{{trans('developer::form.control.attributes.type')}}</td>
+                        <td class="text-sm text-center">{{trans('developer::form.control.attributes.required')}}</td>
+                        <td class="text-sm">{{trans('developer::form.control.attributes.example')}}</td>
+                        <td class="text-sm">{{trans('developer::form.control.attributes.text')}}</td>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($attributes as $key=>$attribute)
                         <tr>
-                            <td>{{$key}}</td>
-                            <td>
+                            <td class="text-sm">{{$key}}</td>
+                            <td class="text-sm">
                                 @if($type = Arr::get($attribute, 'type'))
                                     @foreach((array)$type as $val)
                                         <div>{{$val}}</div>
                                     @endforeach
                                 @endif
                             </td>
-                            <td class="text-center">
+                            <td class="text-sm text-center">
                                 @if(Arr::get($attribute, 'required'))
                                     <i class="fa fa-check-circle text-success"></i>
                                 @endif
                             </td>
-                            <td>
+                            <td class="text-sm">
                                 @if($value = Arr::get($attribute, 'value'))
                                     @foreach((array)$value as $val)
                                         <div class="text-primary">{{$val}}</div>
@@ -73,7 +73,7 @@
                                     @endif
                                 @endif
                             </td>
-                            <td>{{$attribute['text'] ?? ''}}</td>
+                            <td class="text-sm">{{$attribute['text'] ?? ''}}</td>
                         </tr>
                     @endforeach
                     </tbody>
