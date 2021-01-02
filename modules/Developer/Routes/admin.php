@@ -91,7 +91,7 @@ $router->group(['prefix' => 'developer'], function (Router $router) {
 
     // form
     $router->group(['prefix' => 'form', 'middleware' => 'allow:developer.form'], function (Router $router) {
-        $router->get('index', 'FormController@index')->name('developer.form.index');
+        $router->any('index', 'FormController@index')->name('developer.form.index');
         $router->any('control/{control}', 'FormController@control')->name('developer.form.control');
     });
 });

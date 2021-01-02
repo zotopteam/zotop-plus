@@ -3,11 +3,9 @@
 return [
 
     'step' => [
-        'text'     => trans('developer::form.number.attributes.step'),
+        'text'     => trans('developer::form.control.attribute.step'),
         'type'     => 'number',
         'required' => false,
         'example'  => 1,
     ],
-
-    'pattern' => null,
 ];

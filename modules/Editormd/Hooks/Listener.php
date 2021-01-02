@@ -47,7 +47,8 @@ class Listener
             ],
             'attributes' => [
                 'developer::form.control.attributes.standard',
-                'editormd::form.code.attributes',
+                'developer::form.control.attributes.placeholder',
+                'editormd::form.control.attributes.code',
             ],
         ];
 
@@ -58,7 +59,8 @@ class Listener
             'examples'   => 'editormd::form.control.examples.markdown',
             'attributes' => [
                 'developer::form.control.attributes.standard',
-                'editormd::form.markdown.attributes',
+                'developer::form.control.attributes.placeholder',
+                'editormd::form.control.attributes.markdown',
             ],
         ];
 

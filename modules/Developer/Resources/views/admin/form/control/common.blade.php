@@ -2,6 +2,7 @@
     {{trans('developer::form.example')}}
 </span>
 <div>
+
     {{Form::field($attribute->toArray())}}
 </div>
 <span class="badge badge-warning mt-4 mb-2">

@@ -14,9 +14,20 @@ class FormController extends Controller
      *
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $this->title = trans('developer::form.title');
+        if ($request->isMethod('post')) {
+            return $this->success(trans('master.saved'));
+        }
+
+        $this->title = trans('developer::form.form');
+
+        $this->attributes = Module::data('developer::form.attributes');
+
+        $this->bind = [
+            'title'   => 'title',
+            'content' => 'content',
+        ];
 
         return $this->view();
     }
@@ -58,7 +69,7 @@ class FormController extends Controller
         })->flatten(1)->transform(function ($item) {
             return attribute($item);
         })->toArray();
-        
+
         return $this->view();
     }
 }

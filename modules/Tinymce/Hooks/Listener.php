@@ -70,4 +70,33 @@ class Listener
 
         return $options;
     }
+
+    /**
+     * 扩展表单助手
+     *
+     * @param array $data
+     * @param array $args
+     * @return mixed
+     * @author Chen Lei
+     * @date 2020-12-27
+     */
+    public function controls(array $controls, array $args)
+    {
+        $controls['editor'] = [
+            'text'       => trans('developer::form.control.editor'),
+            'href'       => route('developer.form.control', ['control' => 'editor']),
+            'icon'       => 'fa fa-code',
+            'examples'   => [
+                'tinymce::form.control.examples.editor',
+            ],
+            'attributes' => [
+                'developer::form.control.attributes.standard',
+                'developer::form.control.attributes.placeholder',
+                'tinymce::form.control.attributes.editor',
+            ],
+        ];
+
+
+        return $controls;
+    }
 }

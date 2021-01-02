@@ -1,5 +1,4 @@
 <?php
-
 return [
 
     'type' => [
@@ -26,7 +25,7 @@ return [
 
     'value' => [
         'text'     => trans('developer::form.control.attribute.value'),
-        'type'     => 'string',
+        'type'     => ['string', 'number'],
         'required' => false,
         'example'  => 'test',
     ],
@@ -52,19 +51,7 @@ return [
         'example'  => '-1',
     ],
 
-    'placeholder' => [
-        'text'     => trans('developer::form.control.attribute.placeholder'),
-        'type'     => 'string',
-        'required' => false,
-        'example'  => 'Please input……',
-    ],
 
-    'pattern' => [
-        'text'     => trans('developer::form.control.attribute.pattern'),
-        'type'     => 'string',
-        'required' => false,
-        'example'  => '[0-9]',
-    ],
 
     'data-*' => [
         'text'     => trans('developer::form.control.attribute.data-*'),
@@ -73,11 +60,7 @@ return [
         'example'  => 'data-show="true"',
     ],
 
-    'autocomplete' => [
-        'text'     => trans('developer::form.control.attribute.autocomplete'),
-        'type'     => 'string',
-        'required' => false,
-        'value'    => ['on', 'off'],
-    ],
-    
+
+
 ];
+

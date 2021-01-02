@@ -3,7 +3,7 @@
 return [
 
     'options' => [
-        'text'     => trans('developer::form.select.attributes.options'),
+        'text'     => trans('developer::form.select.attribute.options'),
         'type'     => 'array',
         'required' => true,
         'example'  => [
@@ -13,11 +13,9 @@ return [
     ],
 
     'multiple' => [
-        'text'     => trans('developer::form.select.attributes.multiple'),
+        'text'     => trans('developer::form.select.attribute.multiple'),
         'type'     => 'boolean',
         'required' => false,
         'example'  => true,
     ],
-
-    'pattern' => null,
 ];

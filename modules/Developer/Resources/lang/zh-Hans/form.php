@@ -1,11 +1,16 @@
 <?php
 return [
-    'title'        => '表单助手',
-    'description'  => '表单设计和表单控件',
-    'example'      => '示例',
-    'code'         => '代码',
-    'group.common' => '常规控件',
-    'group.dates'  => '日期时间',
+    'title'       => '表单和控件',
+    'description' => '表单和可用的表单控件使用及示例',
+    'form'        => '表单',
+    'example'     => '示例',
+    'code'        => '代码',
+
+    'attribute.class'  => '规定表单的一个或多个类名（引用样式表中的类），设置后将替换默认类名，如果未设置默认类名为 form',
+    'attribute.style'  => '规定控件的行内 CSS 样式',
+    'attribute.bind'   => '绑定数据，可以是数组、集合、模型等，控件通过data_get控件name取值',
+    'attribute.method' => '表单方法',
+    'attribute.route'  => '路由名称，或者是带参数的数组格式路由',
 
     'attribute.value.help' => '普通的值可以通过简单的 HTML 属性来传递给组件。PHP 表达式和变量应该通过以 : 字符作为前缀的变量来进行传递，如：:option="[1,2]',
 
@@ -55,7 +60,7 @@ return [
     'control.upload'          => '上传 upload',
     'control.gallery'         => '图集 gallery',
 
-    'control.attributes'          => '控件标签',
+    'control.attributes'          => '常用标签',
     'control.attributes.key'      => '属性',
     'control.attributes.type'     => '值类型',
     'control.attributes.required' => '必选',
@@ -70,21 +75,26 @@ return [
     'control.attribute.style'        => '规定控件的行内 CSS 样式',
     'control.attribute.tabindex'     => '规定控件的 tab 键次序',
     'control.attribute.placeholder'  => '规定帮助用户填写输入字段的提示',
-    'control.attribute.pattern'      => '规定输入字段的值的模式或格式',
     'control.attribute.data-*'       => '用于存储页面或应用程序的私有定制数据',
     'control.attribute.autocomplete' => '规定是否使用输入字段的自动完成功能',
+    'control.attribute.pattern'      => '规定输入字段的值的模式或格式',
+    'control.attribute.required'     => '是否必填或者必选',
+    'control.attribute.maxlength'    => '规定输入的最大长度',
+    'control.attribute.minlength'    => '规定输入的最小长度',
+    'control.attribute.max'          => '规定输入的最大值',
+    'control.attribute.min'          => '规定输入的最小长度',
+    'control.attribute.step'         => '步数',
+    'control.attribute.cols'         => '规定可见列数',
+    'control.attribute.rows'         => '规定可见行数',
+    'control.attribute.checked'      => '规定当页面加载时是否预先选择该 input 元素',
+    'control.attribute.column'       => '规定可见列数',
 
-    'select.attributes.options'  => '选项，支持一维数组和二维数组，二维数组的key为optgroup标签',
-    'select.attributes.multiple' => '规定可选择多个选项',
+    'select.attribute.options'  => '选项，支持一维数组和二维数组，二维数组的key为optgroup标签',
+    'select.attribute.multiple' => '规定可选择多个选项',
 
-    'number.attributes.step' => '选项，支持一维数组和二维数组，二维数组的key为optgroup标签',
-
-    'textarea.attributes.cols' => '规定文本区内的可见宽度',
-    'textarea.attributes.rows' => '规定文本区内的可见行数',
-
-    'date.attributes.range' => '规定范围选择的分隔符',
-    'date.attributes.min'   => '规定选择范围的最小值',
-    'date.attributes.max'   => '规定选择范围的最大值',
-    'date.attributes.theme' => '设置控件的主题颜色',
+    'date.attribute.range' => '规定范围选择的分隔符',
+    'date.attribute.min'   => '规定选择范围的最小值',
+    'date.attribute.max'   => '规定选择范围的最大值',
+    'date.attribute.theme' => '设置控件的主题颜色',
 
 ];

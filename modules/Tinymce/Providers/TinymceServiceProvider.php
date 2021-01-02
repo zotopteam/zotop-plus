@@ -3,6 +3,7 @@
 namespace Modules\Tinymce\Providers;
 
 use App\Modules\Support\ServiceProvider;
+use App\Support\Facades\Filter;
 use App\Support\Facades\Form;
 use Modules\Tinymce\View\Controls\Editor;
 
@@ -15,6 +16,8 @@ class TinymceServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Filter::listen('developer::form.controls', 'Modules\Tinymce\Hooks\Listener@controls');
+
         Form::control('tinymce', Editor::class);
     }
 

@@ -65,7 +65,7 @@ class Checkable extends Control
         }
 
         if ($this->type == 'radio') {
-            return ($this->bindValue == $value) ? true : null;
+            return ($this->bindValue === $value) ? true : null;
         }
 
         return null;

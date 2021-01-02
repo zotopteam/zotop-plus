@@ -4,12 +4,12 @@ return [
 
     // 简单选择
     [
-        'type'     => $type,
-        'name'     => 'test1',
-        ':options' => [
-            'red',
-            'blue',
-            'black',
+        'type'    => $type,
+        'name'    => 'test1',
+        'options' => [
+            0 => 'red',
+            1 => 'blue',
+            2 => 'black',
         ],
     ],
 
@@ -17,10 +17,10 @@ return [
     [
         'type'     => $type,
         'name'     => 'test1',
-        ':options' => [
-            'red',
-            'blue',
-            'black',
+        'options'  => [
+            0 => 'red',
+            1 => 'blue',
+            2 => 'black',
         ],
         'multiple' => true,
     ],
@@ -29,7 +29,7 @@ return [
     [
         'type'        => $type,
         'name'        => 'test2',
-        ':options'    => [
+        'options'     => [
             'China'   => [
                 '1' => 'Bei Jing',
                 '2' => 'Shang Hai',

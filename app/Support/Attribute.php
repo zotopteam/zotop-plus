@@ -434,6 +434,7 @@ class Attribute implements ArrayAccess, Htmlable, IteratorAggregate
 
                 if (is_array($value)) {
                     $value = var_export_pretty($value, true);
+                    $key = ':'.$key;
                 }
 
                 $string .= ' ' . $key . '="' . str_replace('"', '\\"', trim($value)) . '"';

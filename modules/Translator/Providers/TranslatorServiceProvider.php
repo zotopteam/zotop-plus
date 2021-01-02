@@ -3,28 +3,13 @@
 namespace Modules\Translator\Providers;
 
 use App\Modules\Support\ServiceProvider;
+use App\Support\Facades\Filter;
 use App\Support\Facades\Form;
 use Modules\Translator\View\Controls\Slug;
 use Modules\Translator\View\Controls\Translate;
 
 class TranslatorServiceProvider extends ServiceProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
-     * Boot the application events.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
 
     /**
      * Register the service provider.
@@ -35,16 +20,18 @@ class TranslatorServiceProvider extends ServiceProvider
     {
         Form::control(Translate::class, 'translate');
         Form::control(Slug::class, 'slug');
-        Form::control(Slug::class, 'content-slug');
     }
 
     /**
-     * Get the services provided by the provider.
+     * Boot the application events.
      *
-     * @return array
+     * @return void
      */
-    public function provides()
+    public function boot()
     {
-        return [];
+        Form::control(Slug::class, 'content-slug');
+
+        Filter::listen('developer::form.controls', 'Modules\Translator\Hooks\Listener@controls');
     }
+
 }
