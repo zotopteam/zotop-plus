@@ -61,7 +61,7 @@ class AdministratorFilter extends QueryFilter
      */
     public function modelId(string $modelId)
     {
-        $this->query->where('modelId', $modelId);
+        $this->query->where('model_id', $modelId);
     }
 
     /**
@@ -92,7 +92,7 @@ class AdministratorFilter extends QueryFilter
      */
     public function loginTimes(int $loginTimes)
     {
-        $this->query->where('loginTimes', $loginTimes);
+        $this->query->where('login_times', $loginTimes);
     }
 
     /**
@@ -102,7 +102,7 @@ class AdministratorFilter extends QueryFilter
      */
     public function loginAt(string $loginAt)
     {
-        $this->query->where('loginAt', $loginAt);
+        $this->query->where('login_at', $loginAt);
     }
 
     /**
@@ -112,7 +112,7 @@ class AdministratorFilter extends QueryFilter
      */
     public function loginIp(string $loginIp)
     {
-        $this->query->where('loginIp', $loginIp);
+        $this->query->where('login_ip', $loginIp);
     }
 
     /**
@@ -132,7 +132,7 @@ class AdministratorFilter extends QueryFilter
      */
     public function notificationCount(int $notificationCount)
     {
-        $this->query->where('notificationCount', $notificationCount);
+        $this->query->where('notification_count', $notificationCount);
     }
 
     /**
@@ -142,7 +142,7 @@ class AdministratorFilter extends QueryFilter
      */
     public function createdAt(string $createdAt)
     {
-        $this->query->where('createdAt', $createdAt);
+        $this->query->where('created_at', $createdAt);
     }
 
     /**
@@ -152,7 +152,7 @@ class AdministratorFilter extends QueryFilter
      */
     public function updatedAt(string $updatedAt)
     {
-        $this->query->where('updatedAt', $updatedAt);
+        $this->query->where('updated_at', $updatedAt);
     }
 
 }
