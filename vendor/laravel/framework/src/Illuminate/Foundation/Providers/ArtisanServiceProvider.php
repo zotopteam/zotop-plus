@@ -7,9 +7,12 @@ use Illuminate\Cache\Console\CacheTableCommand;
 use Illuminate\Cache\Console\ClearCommand as CacheClearCommand;
 use Illuminate\Cache\Console\ForgetCommand as CacheForgetCommand;
 use Illuminate\Console\Scheduling\ScheduleFinishCommand;
+use Illuminate\Console\Scheduling\ScheduleListCommand;
 use Illuminate\Console\Scheduling\ScheduleRunCommand;
+use Illuminate\Console\Scheduling\ScheduleTestCommand;
 use Illuminate\Console\Scheduling\ScheduleWorkCommand;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Database\Console\DbCommand;
 use Illuminate\Database\Console\DumpCommand;
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
 use Illuminate\Database\Console\Seeds\SeedCommand;
@@ -88,6 +91,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'ClearResets' => 'command.auth.resets.clear',
         'ConfigCache' => 'command.config.cache',
         'ConfigClear' => 'command.config.clear',
+        'Db' => DbCommand::class,
         'DbWipe' => 'command.db.wipe',
         'Down' => 'command.down',
         'Environment' => 'command.environment',
@@ -113,7 +117,9 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'SchemaDump' => 'command.schema.dump',
         'Seed' => 'command.seed',
         'ScheduleFinish' => ScheduleFinishCommand::class,
+        'ScheduleList' => ScheduleListCommand::class,
         'ScheduleRun' => ScheduleRunCommand::class,
+        'ScheduleTest' => ScheduleTestCommand::class,
         'ScheduleWork' => ScheduleWorkCommand::class,
         'StorageLink' => 'command.storage.link',
         'Up' => 'command.up',
@@ -330,6 +336,16 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         $this->app->singleton('command.controller.make', function ($app) {
             return new ControllerMakeCommand($app['files']);
         });
+    }
+
+    /**
+     * Register the command.
+     *
+     * @return void
+     */
+    protected function registerDbCommand()
+    {
+        $this->app->singleton(DbCommand::class);
     }
 
     /**
@@ -911,9 +927,29 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
      *
      * @return void
      */
+    protected function registerScheduleListCommand()
+    {
+        $this->app->singleton(ScheduleListCommand::class);
+    }
+
+    /**
+     * Register the command.
+     *
+     * @return void
+     */
     protected function registerScheduleRunCommand()
     {
         $this->app->singleton(ScheduleRunCommand::class);
+    }
+
+    /**
+     * Register the command.
+     *
+     * @return void
+     */
+    protected function registerScheduleTestCommand()
+    {
+        $this->app->singleton(ScheduleTestCommand::class);
     }
 
     /**
