@@ -54,7 +54,7 @@ $router->group(['prefix' => 'core'], function (Router $router) {
     $router->group(['prefix' => 'config'], function (Router $router) {
         $router->any('index', 'ConfigController@index')->name('core.config.index');
         $router->any('upload', 'ConfigController@upload')->name('core.config.upload')->middleware('allow:core.config.upload');
-        $router->post('watermark/test', 'ConfigController@watermarkTest')->name('core.config.watermarktest');
+        $router->any('watermark/test', 'ConfigController@watermarkTest')->name('core.config.watermarktest');
         $router->any('mail', 'ConfigController@mail')->name('core.config.mail')->middleware('allow:core.config.mail');
         $router->any('mail/test', 'ConfigController@mailTest')->name('core.config.mailtest')->middleware('allow:core.config.mail');
         $router->any('safe', 'ConfigController@safe')->name('core.config.safe')->middleware('allow:core.config.safe');

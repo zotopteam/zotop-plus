@@ -51,7 +51,7 @@ class Button extends Control
      */
     public function __construct(
         $value = null,
-        $icon = ''
+        $icon = true
     )
     {
         $this->value = $value;
@@ -90,9 +90,17 @@ class Button extends Control
      */
     public function getIcon()
     {
-        $icon = $this->icon ?: Arr::get(static::$defaultIcon, $this->type);
+        // 如果传入的值为 空、false或者null，不显示图标
+        if (empty($this->icon)) {
+            return '';
+        }
 
-        return '<i class="' . $icon . ' fa-fw"></i> ';
+        // 如果传入的值为真或者default，显示默认图标
+        if ($this->icon === true || $this->icon == 'default') {
+            $this->icon = Arr::get(static::$defaultIcon, $this->type);
+        }
+
+        return '<i class="' . $this->icon . ' fa-fw"></i> ';
     }
 
     /**

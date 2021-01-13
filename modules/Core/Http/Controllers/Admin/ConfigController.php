@@ -16,7 +16,6 @@ class ConfigController extends AdminController
     /**
      * 配置首页
      *
-     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      * @author Chen Lei
      * @date 2020-11-25

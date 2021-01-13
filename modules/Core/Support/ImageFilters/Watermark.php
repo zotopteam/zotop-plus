@@ -1,8 +1,8 @@
 <?php
+
 namespace Modules\Core\Support\ImageFilters;
 
 use App\Support\ImageFilter;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Intervention\Image\Exception\InvalidArgumentException;
@@ -13,50 +13,58 @@ class Watermark extends ImageFilter
 {
     /**
      * 是否开启
+     *
      * @var boolean
      */
     public $enabled = true;
 
     /**
      * 大于此宽度加水印
+     *
      * @var integer
      */
     public $width = 1920;
 
     /**
      * 大于此高度加水印
+     *
      * @var integer
      */
     public $height = 1200;
 
     /**
      * 图片品质
+     *
      * @var integer
      */
     public $quality = 100;
 
     /**
      * 水印透明度
+     *
      * @var integer
      */
     public $opacity = 60;
 
     /**
      * 水印位置
+     *
      * @var string
      */
     public $position = 'bottom-right';
 
     /**
      * 水印文字x轴偏移
+     *
      * @var integer
      */
     public $offset_x = 10;
 
     /**
      * 水印文字轴偏移
+     *
      * @var integer
-     */    
+     */
     public $offset_y = 10;
 
     /**
@@ -71,7 +79,7 @@ class Watermark extends ImageFilter
      *
      * @var string=
      */
-    public $text = '';   
+    public $text = '';
 
     /**
      * 文字水印字体，相对根目录路径
@@ -106,7 +114,7 @@ class Watermark extends ImageFilter
      *
      * @var string=
      */
-    public $image = '';      
+    public $image = '';
 
     /**
      * 初始化
@@ -114,94 +122,98 @@ class Watermark extends ImageFilter
     public function __construct($parameter = null)
     {
         // 读取核心设置
-        $this->enabled    = config('core.image.watermark.enabled', $this->enabled);
-        $this->width      = config('core.image.watermark.width', $this->width);
-        $this->height     = config('core.image.watermark.height', $this->height);
-        $this->quality    = config('core.image.watermark.quality', $this->quality);
-        
-        $this->opacity    = config('core.image.watermark.opacity', $this->opacity);
-        $this->position   = config('core.image.watermark.position', $this->position);
-        $this->offset_x   = config('core.image.watermark.offset_x', $this->offset_x);
-        $this->offset_y   = config('core.image.watermark.offset_y', $this->offset_y);
-        
-        $this->type       = config('core.image.watermark.type', $this->type);
-        $this->text       = config('core.image.watermark.text', $this->type);
-        $this->font_file  = config('core.image.watermark.font_file', $this->font_file);
-        $this->font_size  = config('core.image.watermark.font_size', $this->font_size);
+        $this->enabled = config('core.image.watermark.enabled', $this->enabled);
+        $this->width = config('core.image.watermark.width', $this->width);
+        $this->height = config('core.image.watermark.height', $this->height);
+        $this->quality = config('core.image.watermark.quality', $this->quality);
+
+        $this->opacity = config('core.image.watermark.opacity', $this->opacity);
+        $this->position = config('core.image.watermark.position', $this->position);
+        $this->offset_x = config('core.image.watermark.offset_x', $this->offset_x);
+        $this->offset_y = config('core.image.watermark.offset_y', $this->offset_y);
+
+        $this->type = config('core.image.watermark.type', $this->type);
+        $this->text = config('core.image.watermark.text', $this->type);
+        $this->font_file = config('core.image.watermark.font_file', $this->font_file);
+        $this->font_size = config('core.image.watermark.font_size', $this->font_size);
         $this->font_color = config('core.image.watermark.font_color', $this->font_color);
         $this->font_angle = config('core.image.watermark.font_angle', $this->font_angle);
-        $this->image      = config('core.image.watermark.image', $this->image);
+        $this->image = config('core.image.watermark.image', $this->image);
     }
 
     /**
      * 设置偏移尺寸
-     * @param  integer $x x轴偏移
-     * @param  integer $y y轴偏移
-     * @return this
+     *
+     * @param integer $x x轴偏移
+     * @param integer $y y轴偏移
+     * @return $this
      */
     public function offset($x, $y)
     {
-        $this->offset_x   = $x;
-        $this->offset_y   = $y;
+        $this->offset_x = $x;
+        $this->offset_y = $y;
 
-        return $this;    
+        return $this;
     }
 
     /**
      * 设置文字
-     * @param  string 水印文字
-     * @return this
+     *
+     * @param string 水印文字
+     * @return $this
      */
     public function text($text)
     {
-        if ($text) {        
-            $this->text    = $text;
-            $this->type    = 'text';
+        if ($text) {
+            $this->text = $text;
+            $this->type = 'text';
             $this->enabled = true;
         }
 
-        return $this;      
+        return $this;
     }
 
     /**
      * 设置水印图片
-     * @param  string 水印文字
-     * @return this
+     *
+     * @param string 水印文字
+     * @return $this
      */
     public function image($image)
     {
-        if ($image) {        
-            $this->image   = $image;
-            $this->type    = 'image';
+        if ($image) {
+            $this->image = $image;
+            $this->type = 'image';
             $this->enabled = true;
         }
 
-        return $this;      
+        return $this;
     }
 
     /**
      * position参数统一使用图片的position设置（key值） 文字的位置需要对应转换
-     * @param  Image image 图片对象
+     *
+     * @param Image image 图片对象
      * @return mixed
      */
     protected function getPosition($image)
     {
-         $positions = [
-                'top-left'     => 'top-left',
-                'top'          => 'top-center',
-                'top-right'    => 'top-right',
-                'left'         => 'middle-left',
-                'center'       => 'middle-center',
-                'right'        => 'middle-right',
-                'bottom-left'  => 'bottom-left',
-                'bottom'       => 'bottom-center',
-                'bottom-right' => 'bottom-right',
+        $positions = [
+            'top-left'     => 'top-left',
+            'top'          => 'top-center',
+            'top-right'    => 'top-right',
+            'left'         => 'middle-left',
+            'center'       => 'middle-center',
+            'right'        => 'middle-right',
+            'bottom-left'  => 'bottom-left',
+            'bottom'       => 'bottom-center',
+            'bottom-right' => 'bottom-right',
         ];
 
         $position = strtolower($this->position);
 
         // 如果postion设置错误，统一返回 bottom-right
-        if (! in_array($position, array_keys($positions))) {
+        if (!in_array($position, array_keys($positions))) {
             $position = 'bottom-right';
         }
 
@@ -212,9 +224,9 @@ class Watermark extends ImageFilter
 
         // 文字返回返回转换后的位置
         // 相对于给定基点(x/y)的垂直和水平文本对齐方式
-        [$x, $y]          = [$this->offset_x, $this->offset_y];
+        [$x, $y] = [$this->offset_x, $this->offset_y];
         [$valign, $align] = explode('-', $positions[$position]);
-        
+
         if ($align == 'center') {
             $x = $image->width() / 2;
         }
@@ -237,6 +249,7 @@ class Watermark extends ImageFilter
     /**
      * 获取文字字体文件路径
      * 路径设置为True Type字体文件或GD库内部字体之一的1到5之间的整数值
+     *
      * @return mixed
      */
     protected function getFontFile()
@@ -247,6 +260,7 @@ class Watermark extends ImageFilter
     /**
      * 获取文字字体大小
      * 最小12
+     *
      * @return mixed
      */
     protected function getFontSize()
@@ -257,6 +271,7 @@ class Watermark extends ImageFilter
     /**
      * 获取文字字体角度
      * 0=水平 90=垂直 范围值：0-360
+     *
      * @return mixed
      */
     protected function getFontAngle()
@@ -266,17 +281,18 @@ class Watermark extends ImageFilter
         $angle = min(360, $angle);
 
         return $angle;
-    }    
+    }
 
     /**
      * 获取文字字体颜色
      * 叠加透明度
+     *
      * @return mixed
      */
     protected function getFontColor()
     {
-        $color   = $this->font_color ?: '#ffffff';
-        $opacity = max(1, $this->opacity)/100;
+        $color = $this->font_color ?: '#ffffff';
+        $opacity = max(1, $this->opacity) / 100;
 
         // [255,255,255]
         if (is_array($color) && count($color) == 3) {
@@ -284,24 +300,24 @@ class Watermark extends ImageFilter
         }
 
         // #ff6600,ff66ff,f60
-        $hex  = str_replace('#', '', $color);
+        $hex = str_replace('#', '', $color);
 
-        if (strlen($hex)==3) {
+        if (strlen($hex) == 3) {
             return [
                 hexdec(substr($hex, 0, 1) . substr($hex, 0, 1)),
                 hexdec(substr($hex, 1, 1) . substr($hex, 1, 1)),
                 hexdec(substr($hex, 2, 1) . substr($hex, 2, 1)),
-                $opacity
+                $opacity,
             ];
         }
 
-        if (strlen($hex)==6) {
+        if (strlen($hex) == 6) {
             return [
                 hexdec(substr($hex, 0, 2)),
                 hexdec(substr($hex, 2, 2)),
                 hexdec(substr($hex, 4, 2)),
-                $opacity
-            ];                
+                $opacity,
+            ];
         }
 
         throw new InvalidArgumentException("Watermark config color [$color] not correct.");
@@ -309,6 +325,7 @@ class Watermark extends ImageFilter
 
     /**
      * 获取本地水印图片完整地址
+     *
      * @return string
      */
     protected function getImagePath()
@@ -324,30 +341,31 @@ class Watermark extends ImageFilter
 
     /**
      * 尝试将远程文件下载到本地，返回本地的图片完整地址
+     *
      * @return string
      */
     protected function getRemoteToLocalImagePath()
     {
         // 必须是http图片
-        if (! Str::startsWith($this->image, ['http://', 'https://'])) {
+        if (!Str::startsWith($this->image, ['http://', 'https://'])) {
             return null;
         }
 
         // 本地临时文件目录地址
-        $image = public_path('previews/watermarks/'.md5($this->image).'.png');
+        $image = public_path('previews/watermarks/' . md5($this->image) . '.png');
 
-        if (! file_exists($image)) {
+        if (!file_exists($image)) {
             try {
                 // 获取图片
                 $data = Http::timeout(1)->get($this->image)->body();
                 // 保存到本地
-                ImageFacade::make($data)->resize(200, 200, function($constraint) {
+                ImageFacade::make($data)->resize(200, 200, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })->save($image);
             } catch (\Exception $e) {
                 $image = null;
-            }                
+            }
         }
 
         return $image;
@@ -355,6 +373,7 @@ class Watermark extends ImageFilter
 
     /**
      * 获取水印
+     *
      * @return Image
      */
     protected function getImage()
@@ -374,58 +393,61 @@ class Watermark extends ImageFilter
 
     /**
      * 插入图片水印
+     *
      * @return Image
      */
     public function insertImage($image)
     {
         // 插入水印
         if ($watermark = $this->getImage()) {
-            $image->insert($watermark, $this->getPosition($image), $this->offset_x, $this->offset_y); 
+            $image->insert($watermark, $this->getPosition($image), $this->offset_x, $this->offset_y);
         }
 
         return $image;
-    }        
+    }
 
     /**
      * 插入文字水印
+     *
      * @return Image
      */
     public function insertText($image)
     {
-        if ($this->text && $file  = $this->getFontFile()) {
+        if ($this->text && $file = $this->getFontFile()) {
 
             $position = $this->getPosition($image);
-            $x        = $position['x'];
-            $y        = $position['y'];
-            $align    = $position['align'];
-            $valign   = $position['valign'];
-            $size     = $this->getFontSize();
-            $color    = $this->getFontColor();
-            $angle    = $this->getFontAngle();
+            $x = $position['x'];
+            $y = $position['y'];
+            $align = $position['align'];
+            $valign = $position['valign'];
+            $size = $this->getFontSize();
+            $color = $this->getFontColor();
+            $angle = $this->getFontAngle();
 
             $image->text($this->text, $x, $y, function ($font) use ($file, $size, $color, $angle, $align, $valign) {
                 $font->file($file);
                 $font->size($size);
                 $font->color($color);
-                $font->align($align);  //left, right or center. 
+                $font->align($align);  //left, right or center.
                 $font->valign($valign); //top, bottom or middle.
                 $font->angle($angle);
-            }); 
+            });
         }
         return $image;
     }
 
     /**
      * 应用滤器
-     * @param  Image  $image
+     *
+     * @param Image $image
      * @return Image
      */
     public function applyFilter(Image $image)
     {
         if ($this->enabled && $image->width() >= $this->width && $image->height() >= $this->height) {
-            return $this->{"insert".Str::studly($this->type)}($image);
+            return $this->{"insert" . Str::studly($this->type)}($image);
         }
 
         return $image;
-    }  
+    }
 }

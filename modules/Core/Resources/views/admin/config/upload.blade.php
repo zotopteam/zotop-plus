@@ -206,8 +206,8 @@
                                     <div class="input-group-prepend"><span
                                                 class="input-group-text">{{trans('core::image.watermark.font.size')}}</span>
                                     </div>
-                                    <z-field type="select" name="image[watermark][font_size]"
-                                             options="Module::data('core::watermark.font.size')"/>
+                                    <z-field type="number" name="image[watermark][font_size]"
+                                             min="12"/>
                                     <div class="input-group-append"><span class="input-group-text">px</span></div>
                                 </div>
                             </div>
