@@ -16,13 +16,15 @@ class Hook
      */
     public function start(array $start)
     {
-        $start = Arr::prepend($start, [
-            'text' => trans('site::config.title'),
-            'href' => route('site.config.base'),
-            'icon' => 'fa fa-cog bg-success text-white',
-            'tips' => trans('site::config.description'),
-        ], 'site_config');
-
+        if (allow('site.config.base')) {
+            $start = Arr::prepend($start, [
+                'text' => trans('site::config.title'),
+                'href' => route('site.config.base'),
+                'icon' => 'fa fa-cog bg-success text-white',
+                'tips' => trans('site::config.description'),
+            ], 'site_config');
+        }
+        
         return $start;
     }
 

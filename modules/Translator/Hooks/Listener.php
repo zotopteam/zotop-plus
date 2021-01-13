@@ -16,12 +16,14 @@ class Listener
      */
     public function start(array $start)
     {
-        $start['translator'] = [
-            'text' => trans('translator::translator.title'),
-            'href' => route('translator.config.index'),
-            'icon' => 'fa fa-language bg-info text-white',
-            'tips' => trans('translator::translator.description'),
-        ];
+        if (allow('translator.config')) {
+            $start['translator'] = [
+                'text' => trans('translator::translator.title'),
+                'href' => route('translator.config.index'),
+                'icon' => 'fa fa-language bg-info text-white',
+                'tips' => trans('translator::translator.description'),
+            ];
+        }
 
         return $start;
     }

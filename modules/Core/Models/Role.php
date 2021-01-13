@@ -11,7 +11,7 @@ class Role extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'description', 'permissions'];
+    protected $fillable = ['type', 'name', 'description', 'permissions'];
 
     /**
      * 属性转换
@@ -21,9 +21,13 @@ class Role extends Model
     protected $casts = [
         'permissions' => 'array',
     ];
-
+    
     /**
      * 拥有此角色的用户
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @author Chen Lei
+     * @date 2021-01-13
      */
     public function users()
     {

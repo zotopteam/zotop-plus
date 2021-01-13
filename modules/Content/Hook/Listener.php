@@ -2,15 +2,15 @@
 
 namespace Modules\Content\Hook;
 
-use Route;
 use Modules\Content\Models\Content;
+use Route;
 
 class Listener
 {
     /**
      * 后台开始菜单扩展
-     * 
-     * @param  array $start 已有开始菜单
+     *
+     * @param array $start 已有开始菜单
      * @return array
      */
     public function start($start)
@@ -18,10 +18,10 @@ class Listener
         //编辑我的资料
         if (allow('content.index')) {
             $start['content-index'] = [
-                'text'  => trans('content::content.title'),
-                'href'  => route('content.content.index'),
-                'icon'  => 'fa fa-newspaper bg-success text-white',
-                'tips'  => trans('content::content.description'),
+                'text' => trans('content::content.title'),
+                'href' => route('content.content.index'),
+                'icon' => 'fa fa-newspaper bg-success text-white',
+                'tips' => trans('content::content.description'),
             ];
         }
 
@@ -30,27 +30,28 @@ class Listener
 
     /**
      * 后台快捷导航扩展
-     * 
-     * @param  array $start 已有快捷导航
+     *
+     * @param array $start 已有快捷导航
      * @return array
      */
     public function navbar($navbar)
     {
-        // 主页
-        $navbar['content-index'] = [
-            'text'  => trans('content::content.title'),
-            'href'  => route('content.content.index'),
-            'active' => Route::is('content.*')
-        ];
+        if (allow('content.index')) {
+            $navbar['content-index'] = [
+                'text'   => trans('content::content.title'),
+                'href'   => route('content.content.index'),
+                'active' => Route::is('content.*'),
+            ];
+        }
 
         return $navbar;
     }
 
     /**
      * 字段类型滤器
-     * 
-     * @param  array $types 当前字段类型
-     * @param  array $args 参数
+     *
+     * @param array $types 当前字段类型
+     * @param array $args 参数
      * @return array
      */
     public function types($types, $args)
@@ -61,7 +62,7 @@ class Listener
             'view'     => '',
             'method'   => 'text',
             'cast'     => 'array',
-            'settings' => ['required' => 1]
+            'settings' => ['required' => 1],
         ];
 
         return $types;
@@ -69,9 +70,9 @@ class Listener
 
     /**
      * 单条内容管理菜单
-     * 
-     * @param  array $manage  菜单项
-     * @param  model $content 内容数据
+     *
+     * @param array $manage 菜单项
+     * @param model $content 内容数据
      * @return array
      */
     public function contentManage($manage, $content)
@@ -81,7 +82,7 @@ class Listener
             'text'  => $content->status == 'publish' ? trans('content::content.view') : trans('content::content.preview'),
             'href'  => $content->url,
             'icon'  => 'fas fa-eye',
-            'attrs' => ['target' => '_blank']
+            'attrs' => ['target' => '_blank'],
         ];
 
         // 修改
@@ -93,9 +94,9 @@ class Listener
 
         // 复制
         $manage['duplicate'] = [
-            'text'  => trans('master.duplicate'),
+            'text' => trans('master.duplicate'),
             'href' => route('content.content.duplicate', [$content->id]),
-            'icon'  => 'fas fa-copy',
+            'icon' => 'fas fa-copy',
         ];
 
         // 移动
@@ -103,7 +104,7 @@ class Listener
             'text'  => trans('master.move'),
             'icon'  => 'fas fa-arrows-alt',
             'class' => 'js-move',
-            'attrs' => ['data-id' => $content->id, 'data-parent_id' => $content->parent_id]
+            'attrs' => ['data-id' => $content->id, 'data-parent_id' => $content->parent_id],
         ];
 
         // 排序
@@ -112,16 +113,16 @@ class Listener
             'href'  => route('content.content.sort', ['parent_id' => $content->parent_id, 'id' => $content->id]),
             'icon'  => 'fa fa-sort-amount-up',
             'class' => 'js-open',
-            'attrs' => ['data-width' => '80%', 'data-height' => '70%']
+            'attrs' => ['data-width' => '80%', 'data-height' => '70%'],
         ];
 
         // 回收站中的数据可以永久删除
         if ($content->status == 'trash') {
             $manage['delete'] = [
-                'text'     => trans('content::content.destroy'),
-                'href' => route('content.content.destroy', [$content->id]),
-                'icon'     => 'fa fa-times',
-                'class'    => 'js-delete',
+                'text'  => trans('content::content.destroy'),
+                'href'  => route('content.content.destroy', [$content->id]),
+                'icon'  => 'fa fa-times',
+                'class' => 'js-delete',
             ];
         }
 

@@ -2,45 +2,57 @@
 
 namespace Modules\Media\Hook;
 
-use Modules\Media\Models\Media;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Media\Models\Media;
 
 class Listener
 {
     /**
      * 开始菜单扩展
-     * 
-     * @param  array $start 开始菜单数组
+     *
+     * @param array $start 开始菜单数组
      * @return array
      */
     public function start($start)
     {
-        $start['media'] = [
-            'text' => trans('media::media.title'),
-            'href' => route('media.index'),
-            'icon' => 'fa fa-images bg-info text-white',
-            'tips' => trans('media::media.description'),
-        ];
+        if (allow('media.index')) {
+            $start['media'] = [
+                'text' => trans('media::media.title'),
+                'href' => route('media.index'),
+                'icon' => 'fa fa-images bg-info text-white',
+                'tips' => trans('media::media.description'),
+            ];
+        }
 
         return $start;
     }
 
+    /**
+     * 后台全局导航
+     *
+     * @param array $navbar
+     * @return mixed
+     * @author Chen Lei
+     * @date 2021-01-13
+     */
     public function navbar($navbar)
     {
-        $navbar['media'] = [
-            'text'   => trans('media::media.title'),
-            'href'   => route('media.index'),
-            'active' => Route::is('media.*')
-        ];
-
+        if (allow('media.index')) {
+            $navbar['media'] = [
+                'text'   => trans('media::media.title'),
+                'href'   => route('media.index'),
+                'active' => Route::is('media.*'),
+            ];
+        }
         return $navbar;
     }
 
     /**
      * 监听上传
-     * @param  array $data  返回给前端的文件信息
-     * @param  object $upload 上传对象
+     *
+     * @param array $data 返回给前端的文件信息
+     * @param object $upload 上传对象
      * @return array
      */
     public function upload($data, $upload)
@@ -70,15 +82,15 @@ class Listener
 
     /**
      * 上传控件扩展工具
-     * 
-     * @param  array $tools 工具数据
-     * @param  array $params 传入参数
+     *
+     * @param array $tools 工具数据
+     * @param array $params 传入参数
      * @return array
      */
     public function uploadTools($tools, $params)
     {
         $select = [
-            'uploaded'   => [
+            'uploaded' => [
                 'text'   => trans('media::media.insert.from.uploaded'),
                 'icon'   => 'fa fa-cloud',
                 'href'   => route('media.select.uploaded', $params),
