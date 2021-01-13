@@ -51,7 +51,7 @@ class AdministratorController extends AdminController
         $user->password = \Hash::make($user->password);
         $user->save();
 
-        if ($request->model_id == 'super') {
+        if ($request->type == 'super') {
             $user->roles()->detach();
         } else {
             $user->roles()->attach($request->input('roles'));
@@ -75,7 +75,7 @@ class AdministratorController extends AdminController
         $this->id = $id;
         $this->user = User::findOrFail($id);
 
-        $this->super_count = User::where('model_id', 'super')->count();
+        $this->super_count = User::where('type', 'super')->count();
 
         return $this->view();
     }
@@ -93,7 +93,7 @@ class AdministratorController extends AdminController
     {
         $user = User::findOrFail($id);
 
-        if (User::where('model_id', 'super')->count() == 1 && $user->model_id == 'super' && $request->model_id != 'super') {
+        if (User::where('type', 'super')->count() == 1 && $user->type == 'super' && $request->type != 'super') {
             return $this->error(trans('core::administrator.model.super.required'));
         }
 
@@ -106,7 +106,7 @@ class AdministratorController extends AdminController
 
         $user->save();
 
-        if ($request->model_id == 'super') {
+        if ($request->type == 'super') {
             $user->roles()->detach();
         } else {
             $user->roles()->sync($request->input('roles'));

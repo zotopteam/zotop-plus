@@ -13,7 +13,7 @@ class CreateUsersTable1563784322 extends Migration
 	public function up()
 	{
 		Schema::dropIfExists('users');
-		
+
         Schema::create('users', function (Blueprint $table) {
 
         	$table->increments('id')->comment('编号');
@@ -21,7 +21,7 @@ class CreateUsersTable1563784322 extends Migration
 			$table->string('password', 255)->comment('密码');
 			$table->string('email', 200)->nullable()->comment('邮箱')->unique('email');
 			$table->string('mobile', 50)->nullable()->comment('手机号')->unique('mobile');
-			$table->string('model_id', 64)->comment('模型编号：如super,admin或者member');
+			$table->string('type', 64)->comment('用户类型：如super,admin或者member');
 			$table->string('nickname', 100)->nullable()->comment('昵称');
 			$table->boolean('gender')->comment('性别 0=保密 1=男 2=女')->default(0)->unsigned();
 			$table->string('avatar', 255)->nullable()->comment('头像');
@@ -36,7 +36,7 @@ class CreateUsersTable1563784322 extends Migration
 			$table->timestamp('created_at')->nullable()->comment('Created_at');
 			$table->timestamp('updated_at')->nullable()->comment('Updated_at');
 
-            $table->comment = '';             
+            $table->comment = '';
         });
 	}
 

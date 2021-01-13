@@ -7,7 +7,6 @@ use Closure;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Modules\Core\Models\Log;
 
 class AdminMiddleware
@@ -22,7 +21,7 @@ class AdminMiddleware
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param \Illuminate\Contracts\Foundation\Application $app
      * @return void
      */
     public function __construct(Application $app)
@@ -33,36 +32,38 @@ class AdminMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
         // 检查是否为管理员登录
-        if (Auth::check() && Auth::user()->isModel(['super','admin'])) {
+        if (Auth::check() && Auth::user()->isType(['super', 'admin'])) {
             return $next($request);
         }
 
-        // Ajax 禁止    
+        // Ajax 禁止
         if ($request->ajax()) {
             return response('Unauthorized.', 401);
         }
-        
+
         // 转向登录页面
         return redirect()->guest(route('admin.login'));
     }
 
     /**
      * 在响应之后记录操作日志
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
+     *
+     * @param $request
+     * @param $response
+     * @author Chen Lei
+     * @date 2021-01-13
      */
     public function terminate($request, $response)
     {
         if ($this->app['config']->get('core.log.enabled') && ($response instanceof JsonMessageResponse)) {
-            
+
             $data = $response->getData();
 
             Log::create([
@@ -77,5 +78,5 @@ class AdminMiddleware
 
         }
 
-    }    
+    }
 }

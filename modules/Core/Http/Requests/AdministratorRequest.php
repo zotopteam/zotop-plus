@@ -24,9 +24,9 @@ class AdministratorRequest extends FormRequest
 
             $rules = [
                 'username'         => 'required|unique:users',
-                'password'         => 'required|min:6', 
+                'password'         => 'required|min:6',
                 'password_confirm' => 'required|same:password',
-                'roles'            => $request->input('model_id') == 'super' ? '' : 'required',                
+                'roles'            => $request->input('type') == 'super' ? '' : 'required',
                 'nickname'         => 'required|max:100|unique:users',
                 'email'            => 'required|unique:users',
                 'mobile'           => 'required|unique:users',
@@ -35,22 +35,22 @@ class AdministratorRequest extends FormRequest
 
         // 修改时
         if ( $request->isMethod('PUT')  || $request->isMethod('PATCH') )  {
-            
+
             $id = $this->route('id');
 
             $rules = [
                 'username'         => 'required|unique:users,username,'.$id.',id',
-                'password_new'     => 'min:6|nullable', 
+                'password_new'     => 'min:6|nullable',
                 'password_confirm' => 'same:password_new',
-                'roles'            => $request->input('model_id') == 'super' ? '' : 'required',
+                'roles'            => $request->input('type') == 'super' ? '' : 'required',
                 'nickname'         => 'required|max:100|unique:users,nickname,'.$id.',id',
-                'email'            => 'required|unique:users,email,'.$id.',id', 
-                'mobile'           => 'required|unique:users,mobile,'.$id.',id',    
+                'email'            => 'required|unique:users,email,'.$id.',id',
+                'mobile'           => 'required|unique:users,mobile,'.$id.',id',
             ];
 
         }
 
-        return $rules;  
+        return $rules;
     }
 
     /**
@@ -65,7 +65,7 @@ class AdministratorRequest extends FormRequest
 
     /**
      * 自定义错误消息中的标签
-     * 
+     *
      * @return array
      */
     public function attributes()
@@ -77,7 +77,7 @@ class AdministratorRequest extends FormRequest
             'roles'            => trans('core::administrator.roles.label'),
             'nickname'         => trans('core::administrator.nickname.label'),
             'email'            => trans('core::administrator.email.label'),
-            'mobile'           => trans('core::administrator.mobile.label'), 
+            'mobile'           => trans('core::administrator.mobile.label'),
         ];
-    }      
+    }
 }

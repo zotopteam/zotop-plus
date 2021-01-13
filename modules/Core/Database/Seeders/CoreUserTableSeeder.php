@@ -17,13 +17,13 @@ class CoreUserTableSeeder extends Seeder
     public function run()
     {
         Model::unguard();
-        
+
         $faker = app(Faker::class);
 
         // 调用工厂
         $users = factory(User::class)->times(100)->make()->each(function($user, $index) use ($faker) {
             $user->gender  = $faker->randomElement([0,1,2]);
-            $user->model_id = 'admin';
+            $user->type = 'admin';
         });
 
         // 开启hidden字段
@@ -38,7 +38,7 @@ class CoreUserTableSeeder extends Seeder
             $user = User::where('email',$item->email)->first();
 
             //设置角色
-            $user->roles()->attach(1);           
+            $user->roles()->attach(1);
         });
 
     }

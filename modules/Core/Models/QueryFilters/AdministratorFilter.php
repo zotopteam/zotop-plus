@@ -11,7 +11,7 @@ class AdministratorFilter extends QueryFilter
      */
     public function boot()
     {
-        $this->query->whereIn('model_id', ['super', 'admin']);
+        $this->query->whereIn('type', ['super', 'admin']);
     }
 
     /**
@@ -55,13 +55,13 @@ class AdministratorFilter extends QueryFilter
     }
 
     /**
-     * 搜索模型编号：如super,admin或者member
+     * 搜索用户类型：如super,admin或者member
      *
-     * @param string $modelId
+     * @param string $type
      */
-    public function modelId(string $modelId)
+    public function type(string $type)
     {
-        $this->query->where('model_id', $modelId);
+        $this->query->where('type', $type);
     }
 
     /**

@@ -22,13 +22,13 @@ $factory->define(User::class, function (Faker $faker) {
         'password'       => $password ?: $password = \Hash::make('123456'),
         'email'          => $faker->unique()->safeEmail,
         'mobile'         => $faker->unique()->phoneNumber,
-        'model_id'        => 'admin',
+        'type'        => 'admin',
         'nickname'       => $faker->name,
         'gender'         => 1,
         'avatar'         => '',
         'sign'           => $faker->text,
         'remember_token' => str_random(10),
         'created_at'     => $created_at,
-        'updated_at'     => $updated_at,       
+        'updated_at'     => $updated_at,
     ];
 });

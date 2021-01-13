@@ -3,9 +3,8 @@
 namespace Modules\Core\Models;
 
 use App\Support\Eloquent\Traits\HasQueryFilter;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\Core\Models\Role;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -16,7 +15,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['username', 'password', 'email', 'mobile', 'model_id', 'nickname', 'gender', 'avatar', 'sign', 'login_times', 'login_at', 'login_ip', 'disabled', 'token', 'remember_token', 'created_at', 'updated_at'];
+    protected $fillable = ['username', 'password', 'email', 'mobile', 'type', 'nickname', 'gender', 'avatar', 'sign', 'login_times', 'login_at', 'login_ip', 'disabled', 'token', 'remember_token', 'created_at', 'updated_at'];
 
     /**
      * 禁止写入的字段
@@ -45,18 +44,18 @@ class User extends Authenticatable
     }
 
     /**
-     * 判定当前用户的model
+     * 判定当前用户的类型
      *
-     * @param mixed $model_id 模型编号
+     * @param mixed $type 类型 super,admin,member
      * @return boolean
      */
-    public function isModel($model_id)
+    public function isType($type)
     {
-        if (is_array($model_id)) {
-            return in_array($this->model_id, $model_id) ? true : false;
+        if (is_array($type)) {
+            return in_array($this->type, $type) ? true : false;
         }
 
-        return $this->model_id == $model_id ? true : false;
+        return $this->type == $type ? true : false;
     }
 
     /**
@@ -142,7 +141,7 @@ class User extends Authenticatable
     {
         // isAdmin,isSuper,isMember
         if (starts_with($method, 'is')) {
-            return $this->isModel(strtolower(substr($method, 2)));
+            return $this->isType(strtolower(substr($method, 2)));
         }
 
         return parent::__call($method, $parameters);

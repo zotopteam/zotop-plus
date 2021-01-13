@@ -13,7 +13,7 @@
             <z-field type="submit" form="administrator" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
-    
+
     <div class="main-body scrollable">
         <div class="container-fluid">
 
@@ -29,8 +29,8 @@
                     @if ($errors->has('username'))
                     <span class="form-help text-error">{{ $errors->first('username') }}</span>
                     @else
-                    <span class="form-help">{{trans('core::administrator.username.help')}}</span>                     
-                    @endif                       
+                    <span class="form-help">{{trans('core::administrator.username.help')}}</span>
+                    @endif
                 </div>
             </div>
 
@@ -42,8 +42,8 @@
                     @if ($errors->has('password'))
                     <span class="form-help text-error">{{ $errors->first('password') }}</span>
                     @else
-                    <span class="form-help">{{trans('core::administrator.password.help')}}</span>                    
-                    @endif                          
+                    <span class="form-help">{{trans('core::administrator.password.help')}}</span>
+                    @endif
                 </div>
             </div>
 
@@ -55,25 +55,25 @@
                     @if ($errors->has('password_confirm'))
                     <span class="form-help text-error">{{ $errors->first('password_confirm') }}</span>
                     @else
-                    <span class="form-help">{{trans('core::administrator.password_confirm.help')}}</span>                    
-                    @endif                          
+                    <span class="form-help">{{trans('core::administrator.password_confirm.help')}}</span>
+                    @endif
                 </div>
             </div>
-            
-                      
+
+
             <div class="form-group row">
-                <label for="model_id" class="col-2 col-form-label required">{{trans('core::administrator.roles.label')}}</label>
+                <label for="type" class="col-2 col-form-label required">{{trans('core::administrator.roles.label')}}</label>
                 <div class="col-6">
 
-                    <z-field type="select" name="model_id" options="Module::data('core::administrator.models')" required="required"/>
-                    
-                    <div class="mt-2 d-none" data-depend="[name=model_id]" data-when="value=super" data-then="show">
+                    <z-field type="select" name="type" options="Module::data('core::administrator.models')" required="required"/>
+
+                    <div class="mt-2 d-none" data-depend="[name=type]" data-when="value=super" data-then="show">
                         <span class="form-help">{{ trans('core::administrator.model.super.description') }}</span>
                     </div>
 
-                    <div class="mt-2 d-none" data-depend="[name=model_id]" data-when="value=admin" data-then="show">
+                    <div class="mt-2 d-none" data-depend="[name=type]" data-when="value=admin" data-then="show">
                     <span class="form-help mb-3">{{ trans('core::administrator.model.admin.description') }}</span>
-                    @if ($roles = Module::data('core::administrator.roles'))  
+                    @if ($roles = Module::data('core::administrator.roles'))
                     <z-field type="checkboxgroup" name="roles" options="$roles" required="required"/>
                     @else
                     <div class="form-control-plaintext">
@@ -88,13 +88,13 @@
                 </div>
             </div>
 
-            <div class="form-title row">{{trans('core::administrator.form.profile')}}</div>            
+            <div class="form-title row">{{trans('core::administrator.form.profile')}}</div>
 
             <div class="form-group row">
                 <label for="nickname" class="col-2 col-form-label required">{{trans('core::administrator.nickname.label')}}</label>
                 <div class="col-4">
                     <z-field type="text" name="nickname" required="required"/>
-                    
+
                     @if ($errors->has('nickname'))
                     <span class="form-help text-error">{{ $errors->first('nickname') }}</span>
                     @endif
@@ -108,20 +108,20 @@
 
                     @if ($errors->has('mobile'))
                     <span class="form-help text-error">{{ $errors->first('mobile') }}</span>
-                    @endif                          
+                    @endif
                 </div>
-            </div>           
+            </div>
 
             <div class="form-group row">
                 <label for="email" class="col-2 col-form-label required">{{trans('core::administrator.email.label')}}</label>
                 <div class="col-4">
                     <z-field type="email" name="email" required="required" data-msg-required="trans('core::administrator.email.required')"/>
-                    
+
                     @if ($errors->has('email'))
                     <span class="form-help text-error">{{ $errors->first('email') }}</span>
                     @else
-                    <span class="form-help">{{trans('core::administrator.email.help')}}</span>                          
-                    @endif                    
+                    <span class="form-help">{{trans('core::administrator.email.help')}}</span>
+                    @endif
                 </div>
             </div>
 
@@ -132,7 +132,7 @@
 
                     @if ($errors->has('sign'))
                     <span class="form-help text-error">{{ $errors->first('sign') }}</span>
-                    @endif                          
+                    @endif
                 </div>
             </div>
 

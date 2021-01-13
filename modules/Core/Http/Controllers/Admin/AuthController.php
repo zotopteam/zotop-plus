@@ -39,15 +39,15 @@ class AuthController extends AdminController
     /**
      * 尝试类型用户登录
      * @param  \Illuminate\Http\Request  $request
-     * @param  string $model_id 用户类型
+     * @param  string $type 用户类型
      * @return boolean
      */
-    protected function attemptLogin(Request $request, $model_id)
+    protected function attemptLogin(Request $request, $type)
     {
         return $this->guard()->attempt([
             'username' => $request->username,
             'password' => $request->password,
-            'model_id' => $model_id,
+            'type' => $type,
             'disabled' => 0,
         ], $request->filled('remember'));
     }
