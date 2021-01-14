@@ -1,0 +1,20 @@
+{
+    "name": "Navbar",
+    "title": "navbar::module.title",
+    "description": "navbar::module.description",
+    "keywords": [],
+    "version": "1.0.0",
+    "order": 100,
+    "author": "ZotopTeam",
+    "email": "cms@zotop.com",
+    "homepage": "http://www.zotop.com",
+    "seeders": [],
+    "providers": [
+        "Modules\\Navbar\\Providers\\NavbarServiceProvider",
+        "Modules\\Navbar\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ]
+}
