@@ -3,6 +3,9 @@
 namespace App\Modules\Commands;
 
 use App\Modules\Maker\GeneratorCommand;
+use App\Modules\Maker\Table;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class RequestMakeCommand extends GeneratorCommand
 {
@@ -13,7 +16,9 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected $signature = 'module:make-request
                 {module : The module to use}
-                {name : The name to use}
+                {name? : The name to use}
+                {--table= : The table name to use}
+                {--api : Create an API Request}
                 {--force : Force the operation to run when it already exists.}';
 
     /**
@@ -36,12 +41,25 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected $dirKey = 'request';
 
+
     /**
-     * stub 用于从stubs中获取stub
+     * Execute the console command.
      *
-     * @var string
+     * @return bool|null|void
+     * @throws \App\Modules\Exceptions\FileExistedException
+     * @author Chen Lei
+     * @date 2020-11-20
      */
-    protected $stub = 'request';
+    public function handle()
+    {
+        // name 为可选值，如果没有输入name，则必须输入--table
+        if (empty($this->argument('name')) && empty($this->option('table'))) {
+            $this->error('The name or --table required');
+            return false;
+        }
+
+        parent::handle();
+    }
 
     /**
      * 生成前准备
@@ -50,10 +68,241 @@ class RequestMakeCommand extends GeneratorCommand
      */
     public function prepare()
     {
-        $this->replace([
-            'lang_name' => $this->getLowerNameInput(),
-        ]);
+        if ($this->getTableName()) {
+            $this->prepareTable();
+        } else {
+            $this->preparePlain();
+        }
 
         return true;
+    }
+
+    /**
+     * 生成简单的验证
+     *
+     * @author Chen Lei
+     * @date 2021-01-14
+     */
+    protected function preparePlain()
+    {
+        $this->stub = 'request/plain.stub';
+
+        $this->replace([
+            'lang_name'    => $this->getLowerNameInput(),
+            'parent_class' => $this->getParentClass(),
+        ]);
+    }
+
+
+    /**
+     * 生成特定表的验证
+     *
+     * @author Chen Lei
+     * @date 2021-01-14
+     */
+    protected function prepareTable()
+    {
+        $this->stub = 'request/table.stub';
+
+        $this->replace([
+            'lang_name'    => $this->getLowerNameInput(),
+            'parent_class' => $this->getParentClass(),
+            'rules'        => $this->getRules(),
+            'attributes'   => $this->getAttributes(),
+            'messages'     => $this->getMessages(),
+        ]);
+    }
+
+    /**
+     * 获取输入的 name
+     *
+     * @return string|bool
+     */
+    protected function getNameInput()
+    {
+        // name 为可选值，如果没有输入name，则必须输入table
+        if (!empty($this->argument('name'))) {
+            return trim($this->argument('name'));
+        }
+
+        // 使用--table值作为name时，去掉前面的模块名称
+        $name = Str::after($this->getTableName(), $this->getModuleLowerName() . '_');
+
+        return $name;
+    }
+
+    /**
+     * 获取数据表名称
+     *
+     * @return string
+     */
+    protected function getTableName()
+    {
+        // 如果有table，则直接使用table值
+        if ($table = $this->option('table')) {
+            return strtolower(trim($table));
+        }
+
+        return '';
+    }
+
+    /**
+     * 获取父类
+     *
+     * @return string
+     * @author Chen Lei
+     * @date 2021-01-14
+     */
+    protected function getParentClass()
+    {
+        return $this->option('api') ? 'ApiRequest' : 'FormRequest';
+    }
+
+
+    /**
+     * 获取表的字段信息
+     *
+     * @return \Illuminate\Support\Collection
+     * @author Chen Lei
+     * @date 2021-01-14
+     */
+    protected function getTableColumns()
+    {
+        $table = $this->getTableName();
+
+        if (Schema::hasTable($table)) {
+            return Table::find($table)->columns()->reject(function ($column) {
+                return $column['increments'] == 1 || in_array($column['name'], ['created_at', 'updated_at', 'deleted_at']);
+            });
+        }
+
+        return collect([]);
+    }
+
+    /**
+     * 获取规则字符串
+     *
+     * @return string
+     * @author Chen Lei
+     * @date 2021-01-14
+     */
+    protected function getRules()
+    {
+        $columns = $this->getTableColumns();
+
+        if ($columns->isEmpty()) {
+            return '';
+        }
+
+        // 获取键名最大长度
+        $maxlength = $columns->keys()->map(function ($key) {
+            return strlen($key);
+        })->max();
+
+        return $columns->transform(function ($column) use ($maxlength) {
+            $name = $column['name'];
+            return "            " . str_pad("'" . $name . "'", $maxlength + 2, "  ") . " => '" . $this->getColumnRule($column) . "',";
+        })->implode(PHP_EOL);
+    }
+
+    /**
+     * 获取每行的规则
+     *
+     * @param array $column
+     * @return string
+     * @author Chen Lei
+     * @date 2021-01-14
+     */
+    protected function getColumnRule(array $column)
+    {
+        $rules = [];
+
+        if ($column['nullable'] == 0) {
+            $rules[] = 'required';
+        } else {
+            $rules[] = 'nullable';
+        }
+
+        if (Str::endsWith(strtolower($column['type']), ['int', 'integer', 'boolean'])) {
+            $rules[] = "integer";
+        }
+
+        if (Str::endsWith(strtolower($column['type']), ['string', 'char', 'text'])) {
+            $rules[] = "string";
+        }
+
+        if (in_array(strtolower($column['type']), ['decimal', 'float'])) {
+            $rules[] = "numeric";
+        }
+
+        if (in_array(strtolower($column['type']), ['date', 'datetime', 'timestamp'])) {
+            $rules[] = "date";
+        }
+
+        if (is_int($column['length'])) {
+            $rules[] = "max:{$column['length']}";
+        }
+
+        if ($column['unsigned']) {
+            $rules[] = "min:0";
+        }
+
+        return implode('|', $rules);
+    }
+
+    /**
+     * 获取标签
+     *
+     * @return string
+     * @author Chen Lei
+     * @date 2021-01-14
+     */
+    protected function getAttributes()
+    {
+        $columns = $this->getTableColumns();
+
+        if ($columns->isEmpty()) {
+            return '';
+        }
+
+        // 获取键名最大长度
+        $maxlength = $columns->keys()->map(function ($key) {
+            return strlen($key);
+        })->max();
+
+        return $columns->transform(function ($column) use ($maxlength) {
+            $name = $column['name'];
+            $module = $this->getModuleLowerName();
+            $filename = $this->getLowerNameInput();
+            return "            " . str_pad("'" . $name . "'", $maxlength + 2, "  ") . " => trans('" . $module . "::" . $filename . "." . $name . ".label'),";
+        })->implode(PHP_EOL);
+    }
+
+    /**
+     * 获取自定义错误消息
+     *
+     * @return string
+     * @author Chen Lei
+     * @date 2021-01-14
+     */
+    protected function getMessages()
+    {
+        $columns = $this->getTableColumns();
+
+        if ($columns->isEmpty()) {
+            return '';
+        }
+
+        // 获取键名最大长度
+        $maxlength = $columns->keys()->map(function ($key) {
+            return strlen($key);
+        })->max();
+
+        return $columns->transform(function ($column) use ($maxlength) {
+            $name = $column['name'];
+            $module = $this->getModuleLowerName();
+            $filename = $this->getLowerNameInput();
+            return "            " . str_pad("'" . $name . "'", $maxlength + 2, "  ") . " => trans('" . $module . "::" . $filename . "." . $name . ".help'),";
+        })->implode(PHP_EOL);
     }
 }

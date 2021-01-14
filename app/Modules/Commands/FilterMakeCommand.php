@@ -126,7 +126,6 @@ class FilterMakeCommand extends GeneratorCommand
      */
     protected function getTableColumns()
     {
-
         $table = $this->getTableName();
 
         if (Schema::hasTable($table)) {
