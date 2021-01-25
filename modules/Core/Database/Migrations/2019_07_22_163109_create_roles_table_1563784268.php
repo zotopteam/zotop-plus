@@ -19,7 +19,7 @@ class CreateRolesTable1563784268 extends Migration
 
             $table->increments('id')->comment('编号');
             $table->string('type', 128)->comment('角色类型：如admin或者member');
-            $table->string('name', 255)->comment('角色名称')->unique('name');
+            $table->string('name', 128)->comment('角色名称')->unique('name');
             $table->string('description', 255)->nullable()->comment('角色描述');
             $table->text('permissions')->nullable()->comment('角色权限');
             $table->boolean('disabled')->comment('禁用 0=否 1=禁用')->default(0)->unsigned();

@@ -18,8 +18,8 @@ class CreateUsersMetaTable extends Migration
         Schema::create('users_meta', function (Blueprint $table) {
 
             $table->integer('user_id')->comment('编号')->default(0);
-            $table->string('module', 128)->comment('模块名称');
-            $table->string('key', 128)->comment('键名');
+            $table->string('module', 64)->comment('模块名称');
+            $table->string('key', 64)->comment('键名');
             $table->longText('value')->nullable()->comment('键值');
             $table->string('type', 10)->comment('类型');
             $table->timestamp('created_at')->nullable()->comment('Created_at');

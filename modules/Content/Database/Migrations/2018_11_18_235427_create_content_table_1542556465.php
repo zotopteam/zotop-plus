@@ -21,7 +21,7 @@ class CreateContentTable1542556465 extends Migration
 			$table->char('model_id', 64)->comment('模型ID')->index('model_id');
 			$table->string('title', 255)->comment('标题');
 			$table->string('title_style', 50)->nullable()->comment('标题样式');
-			$table->string('slug', 255)->nullable()->comment('别名')->unique('slug');
+			$table->string('slug', 128)->nullable()->comment('别名')->unique('slug');
 			$table->string('image', 255)->nullable()->comment('缩略图');
 			$table->string('keywords', 100)->nullable()->comment('关键词');
 			$table->string('summary', 1000)->nullable()->comment('摘要');

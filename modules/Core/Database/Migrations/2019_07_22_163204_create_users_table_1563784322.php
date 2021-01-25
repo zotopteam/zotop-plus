@@ -21,7 +21,7 @@ class CreateUsersTable1563784322 extends Migration
             $table->string('type', 128)->comment('用户类型：如super,admin或者member');
             $table->string('username', 128)->comment('用户名')->unique('username');
             $table->string('password', 255)->comment('密码');
-            $table->string('email', 200)->nullable()->comment('邮箱')->unique('email');
+            $table->string('email', 128)->nullable()->comment('邮箱')->unique('email');
             $table->string('mobile', 50)->nullable()->comment('手机号')->unique('mobile');
             $table->string('nickname', 100)->nullable()->comment('昵称');
             $table->boolean('gender')->comment('性别 0=保密 1=男 2=女')->default(0)->unsigned();
