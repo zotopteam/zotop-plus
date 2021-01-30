@@ -2,22 +2,23 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Modules\Routing\AdminController;
 
 class RouteController extends AdminController
 {
+
     /**
-     * 首页
+     * 路由列表
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2021-01-16
      */
     public function index()
     {
         $this->title = trans('developer::route.title');
-        
-        $this->routes = collect(app('router')->getRoutes())->filter(function(){
+
+        $this->routes = collect(app('router')->getRoutes())->filter(function () {
             return true;
         })->all();
 

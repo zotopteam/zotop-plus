@@ -3,12 +3,16 @@
 namespace App\Modules\Commands;
 
 use App\Modules\Maker\GeneratorCommand;
+use App\Modules\Maker\OptionTableTrait;
+use App\Modules\Maker\OptionTypeTrait;
 use App\Modules\Maker\Table;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class RequestMakeCommand extends GeneratorCommand
 {
+    use OptionTableTrait, OptionTypeTrait;
+
     /**
      * The name and signature of the console command.
      *
@@ -18,7 +22,7 @@ class RequestMakeCommand extends GeneratorCommand
                 {module : The module to use}
                 {name? : The name to use}
                 {--table= : The table name to use}
-                {--api : Create an API Request}
+                {--type=frontend : The type of request, [backend|frontend|api].}
                 {--force : Force the operation to run when it already exists.}';
 
     /**
@@ -53,10 +57,7 @@ class RequestMakeCommand extends GeneratorCommand
     public function handle()
     {
         // name 为可选值，如果没有输入name，则必须输入--table
-        if (empty($this->argument('name')) && empty($this->option('table'))) {
-            $this->error('The name or --table required');
-            return false;
-        }
+        $this->requireTableOrName();
 
         parent::handle();
     }
@@ -114,40 +115,7 @@ class RequestMakeCommand extends GeneratorCommand
     }
 
     /**
-     * 获取输入的 name
-     *
-     * @return string|bool
-     */
-    protected function getNameInput()
-    {
-        // name 为可选值，如果没有输入name，则必须输入table
-        if (!empty($this->argument('name'))) {
-            return trim($this->argument('name'));
-        }
-
-        // 使用--table值作为name时，去掉前面的模块名称
-        $name = Str::after($this->getTableName(), $this->getModuleLowerName() . '_');
-
-        return $name;
-    }
-
-    /**
-     * 获取数据表名称
-     *
-     * @return string
-     */
-    protected function getTableName()
-    {
-        // 如果有table，则直接使用table值
-        if ($table = $this->option('table')) {
-            return strtolower(trim($table));
-        }
-
-        return '';
-    }
-
-    /**
-     * 获取父类
+     * 获取父类，如果使用了api中间件，则使用ApiRequest
      *
      * @return string
      * @author Chen Lei
@@ -155,9 +123,14 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function getParentClass()
     {
-        return $this->option('api') ? 'ApiRequest' : 'FormRequest';
-    }
+        $middlewares = $this->getTypeConfig('middleware');
 
+        if (in_array('api', $middlewares)) {
+            return 'ApiRequest';
+        }
+
+        return 'FormRequest';
+    }
 
     /**
      * 获取表的字段信息
@@ -177,6 +150,7 @@ class RequestMakeCommand extends GeneratorCommand
         }
 
         return collect([]);
+
     }
 
     /**

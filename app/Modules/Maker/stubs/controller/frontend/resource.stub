@@ -2,44 +2,41 @@
 
 namespace $CLASS_NAMESPACE$;
 
+use App\Modules\Routing\FrontController as Controller;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController as Controller;
-use $MODEL_FULLNAME$;
+use $FILTER_FULL_NAME$;
+use $MODEL_FULL_NAME$;
+use $REQUEST_FULL_NAME$;
 
 class $CLASS_NAME$ extends Controller
 {
     /**
      * 首页
      *
+     * @param \Illuminate\Http\Request $request
+     * @param \$FILTER_FULL_NAME$ $filter
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request, $FILTER_BASE_NAME$ $filter)
     {
         $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.title');
 
-        $this->$MODEL_LIST$ = $MODEL_BASENAME$::paginate(25);
-
-        // 全部获取
-        //$this->$MODEL_LIST$ = $MODEL_BASENAME$::all();
-        // 部分获取
-        //$this->$MODEL_LIST$ = $MODEL_BASENAME$::with('some')->where('key','value')->orderby('id','asc')->get();        
         // 分页获取
-        //$this->$MODEL_LIST$ = $MODEL_BASENAME$::with('some')->where('key','value')->orderby('id','asc')->paginate(25);
+        $this->$MODEL_LIST$ = $MODEL_BASE_NAME$::filter($filter)->paginate(25);
 
         return $this->view();
     }
 
     /**
      * 新建
-     * 
+     *
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function create()
     {
         $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.create');
 
-        $this->$MODEL_VAR$ = $MODEL_BASENAME$::findOrNew(0);
+        $this->$MODEL_VAR$ = $MODEL_BASE_NAME$::findOrNew(0);
 
         return $this->view();
     }
@@ -47,12 +44,12 @@ class $CLASS_NAME$ extends Controller
     /**
      * 保存
      *
-     * @param  Request $request
+     * @param  \$REQUEST_FULL_NAME$ $request
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
-    public function store(Request $request)
+    public function store($REQUEST_BASE_NAME$ $request)
     {
-        $$MODEL_VAR$ = new $MODEL_BASENAME$;
+        $$MODEL_VAR$ = new $MODEL_BASE_NAME$;
         $$MODEL_VAR$->fill($request->all());
         $$MODEL_VAR$->save();
 
@@ -69,10 +66,10 @@ class $CLASS_NAME$ extends Controller
     {
         $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.show');
 
-        $this->$MODEL_VAR$ = $MODEL_BASENAME$::findOrFail($id);
+        $this->$MODEL_VAR$ = $MODEL_BASE_NAME$::findOrFail($id);
 
         return $this->view();
-    }    
+    }
 
     /**
      * 编辑
@@ -82,7 +79,8 @@ class $CLASS_NAME$ extends Controller
     public function edit($id)
     {
         $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.edit');
-        $this->$MODEL_VAR$ = $MODEL_BASENAME$::findOrFail($id);
+
+        $this->$MODEL_VAR$ = $MODEL_BASE_NAME$::findOrFail($id);
 
         return $this->view();
     }
@@ -90,13 +88,13 @@ class $CLASS_NAME$ extends Controller
     /**
      * 更新
      *
-     * @param  Request $request
+     * @param  \$REQUEST_FULL_NAME$ $request
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
-    public function update(Request $request, $id)
+    public function update($REQUEST_BASE_NAME$ $request, $id)
     {
-        $$MODEL_VAR$ = $MODEL_BASENAME$::findOrFail($id);
-        $$MODEL_VAR$->fill($request->all());        
+        $$MODEL_VAR$ = $MODEL_BASE_NAME$::findOrFail($id);
+        $$MODEL_VAR$->fill($request->all());
         $$MODEL_VAR$->save();
 
         return $this->success(trans('master.updated'), route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.index'));
@@ -109,9 +107,9 @@ class $CLASS_NAME$ extends Controller
      */
     public function destroy($id)
     {
-        $$MODEL_VAR$ = $MODEL_BASENAME$::findOrFail($id);
+        $$MODEL_VAR$ = $MODEL_BASE_NAME$::findOrFail($id);
         $$MODEL_VAR$->delete();
 
-        return $this->success(trans('master.deleted'), route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.index'));        
+        return $this->success(trans('master.deleted'), route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.index'));
     }
 }

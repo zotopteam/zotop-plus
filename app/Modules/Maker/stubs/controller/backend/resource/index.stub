@@ -10,7 +10,7 @@
             <a href="{{route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.create')}}" class="btn btn-primary">
                 <i class="fa fa-plus"></i> {{trans('master.create')}}
             </a>
-        </div>        
+        </div>
     </div>
     <div class="main-body scrollable">
         @if($$MODEL_LIST$->count() == 0)
@@ -20,8 +20,8 @@
                 <thead>
                     <tr>
                         <th class="text-center" width="1%">{{trans('master.id')}}</th>
-                        <th>{{trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.title.label')}}</th>
-                        <th width="15%">{{trans('master.created_at')}}</th>
+                        $LIST_HEAD$
+                        <th width="15%">{{trans('master.operate')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,39 +30,31 @@
                         <td class="text-center">
                             {{$$MODEL_VAR$->id ?? '[ID]'}}
                         </td>
-                        <td>
-                            <div class="title">
-                                {{$$MODEL_VAR$->title ?? '[Title]'}}
-                            </div>
-                            <div class="manage">
+                        $LIST_COLUMNS$
+                        <td class="manage">
                                 <a class="manage-item" href="{{route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.show', $$MODEL_VAR$->id)}}">
                                     <i class="fa fa-eye"></i> {{trans('master.show')}}
-                                </a>                            
+                                </a>
                                 <a class="manage-item" href="{{route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.edit', $$MODEL_VAR$->id)}}">
                                     <i class="fa fa-edit"></i> {{trans('master.edit')}}
                                 </a>
                                 <a class="manage-item js-delete" href="javascript:;" data-url="{{route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.destroy', $$MODEL_VAR$->id)}}">
                                     <i class="fa fa-times"></i> {{trans('master.delete')}}
                                 </a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="text-sm"></div>
-                            <div class="text-sm">{{$$MODEL_VAR$->created_at ?? '[Created_at]'}}</div>
                         </td>
                     </tr>
                 @endforeach
 
                 </tbody>
             </table>
-        @endif                       
+        @endif
     </div><!-- main-body -->
     <div class="main-footer">
         <div class="footer-text mr-auto">
             {{trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.description')}}
         </div>
 
-        {{ $$MODEL_LIST$->links() }}
+        {{ $$MODEL_LIST$->withQueryString()->links() }}
     </div>
 </div>
 @endsection

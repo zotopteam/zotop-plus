@@ -15,10 +15,10 @@
             </a>
             <a class="btn btn-warning js-delete" href="javascript:;" data-url="{{route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.destroy', $$MODEL_VAR$->id)}}">
                 <i class="fa fa-times"></i> {{trans('master.delete')}}
-            </a>            
+            </a>
         </div>
     </div>
-    
+
     <div class="main-body scrollable">
 
         <table class="table table-hover">
@@ -28,16 +28,9 @@
                 </td>
                 <td>
                     {{$$MODEL_VAR$->id ?? '[ID]'}}
-                </td>                
-            </tr>
-            <tr>
-                <td width="15%">
-                    {{trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.title.label')}}
                 </td>
-                <td>
-                    {{$$MODEL_VAR$->title ?? '[Title]'}}
-                </td>                
             </tr>
+            $SHOW_COLUMNS$
         </table>
 
     </div><!-- main-body -->

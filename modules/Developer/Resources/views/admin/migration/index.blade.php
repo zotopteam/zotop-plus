@@ -53,7 +53,7 @@
                     <tr>
                         <td colspan="3">{{trans('developer::file.name')}}</td>
                         <td>{{trans('developer::file.mtime')}}</td>
-                        <td>{{trans('developer::migration.migrated')}}</td>
+                        <td class="text-center">{{trans('developer::migration.migrated')}}</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -85,7 +85,7 @@
                                 @endif
                             </td>
                             <td>{{date('Y-m-d H:i:s',$file->getMTime())}}</td>
-                            <td>
+                            <td class="text-center">
                                 @if(in_array(File::name($file), $migrations))
                                     <i class="fa fa-check-circle fa-2x text-success"></i>
                                 @else

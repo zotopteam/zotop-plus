@@ -33,4 +33,7 @@ return [
     'aliases.help'      => '请直接修改 :0 中的 aliases',
     'files.label'       => '全局加载文件',
     'files.help'        => '请直接修改 :0 中的 files',
+    'types.backend'     => 'Admin后端',
+    'types.frontend'    => 'Front前端',
+    'types.api'         => 'Api接口',
 ];

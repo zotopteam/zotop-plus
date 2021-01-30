@@ -41,6 +41,10 @@ return [
         'icon'    => 'fa fa-check-square',
         'command' => 'module:make-request',
         'name'    => ['label' => trans('developer::command.request.name.label'), 'help' => trans('developer::command.request.name.help')],
+        'options' => [
+            '--table' => 'developer::command.options.request_table',
+            '--type'  => 'developer::command.options.request_type',
+        ],
         'dir'     => config('modules.paths.dirs.request'),
     ],
 

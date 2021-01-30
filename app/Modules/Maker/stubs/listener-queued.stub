@@ -2,7 +2,7 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use $EVENT_FULLNAME$;
+use $EVENT_FULL_NAME$;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 

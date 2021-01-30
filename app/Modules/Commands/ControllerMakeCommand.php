@@ -3,11 +3,14 @@
 namespace App\Modules\Commands;
 
 use App\Modules\Maker\GeneratorCommand;
-use Illuminate\Support\Arr;
+use App\Modules\Maker\OptionTableTrait;
+use App\Modules\Maker\OptionTypeTrait;
 use Illuminate\Support\Str;
 
 class ControllerMakeCommand extends GeneratorCommand
 {
+    use OptionTableTrait, OptionTypeTrait;
+
     /**
      * The name and signature of the console command.
      *
@@ -15,9 +18,9 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected $signature = 'module:make-controller
                 {module : The module to use}
-                {name : The name to use}
+                {name? : The name to use}
+                {--table= : The table to use.}
                 {--type=frontend : The type of controller,[backend|frontend|api].}
-                {--model= : Create a resource controller from model.}
                 {--force : Force the operation to run when it already exists.}';
 
     /**
@@ -48,6 +51,22 @@ class ControllerMakeCommand extends GeneratorCommand
     protected $stub = 'controller';
 
     /**
+     * Execute the console command.
+     *
+     * @return bool|null|void
+     * @throws \App\Modules\Exceptions\FileExistedException
+     * @author Chen Lei
+     * @date 2020-11-20
+     */
+    public function handle()
+    {
+        // name 为可选值，如果没有输入name，则必须输入--table
+        $this->requireTableOrName();
+
+        parent::handle();
+    }
+
+    /**
      * 重载prepare
      *
      * @return boolean
@@ -56,19 +75,15 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         $this->stub = $this->stub . '/' . $this->getTypeInput();
 
-        if ($this->getModelInput()) {
+        // 替换变量
+        $this->replace([
+            'controller_lower_name' => $this->getControllerLowerName(),
+        ]);
 
-            $this->stub = $this->stub . '/model';
-
-            $this->replace([
-                'model_basename'        => $this->getModelBaseName(),
-                'model_fullname'        => $this->getModelFullName(),
-                'model_list'            => $this->getModelList(),
-                'model_var'             => $this->getModelInput(),
-                'controller_lower_name' => $this->getControllerLowerName(),
-            ]);
+        if ($this->isResource()) {
+            $this->prepareResource();
         } else {
-            $this->stub = $this->stub . '/plain';
+            $this->preparePlain();
         }
 
         return true;
@@ -82,49 +97,142 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function generated()
     {
-        $name = $this->getStudlyNameInput();
+        $this->generateLangFile();
 
-        // 资源view生成
-        if ($this->getModelInput()) {
-
-            $this->generateArrayLang($this->getLowerNameInput(), [
-                'title'       => "[{$name} title]",
-                'description' => "[{$name} description]",
-                'create'      => "[Create {$name}]",
-                'edit'        => "[Edit {$name}]",
-                'show'        => "[Show {$name}]",
-                'title.label' => "[Title label]",
-                'title.help'  => "[Title help]",
-            ], $this->option('force'));
-
-            foreach (['index', 'create', 'edit', 'show'] as $action) {
-                $this->generateView($action, $this->option('force'));
-            }
-
-            return;
+        if ($this->isResource()) {
+            $this->generatedResource();
+        } else {
+            $this->generatedPlain();
         }
+    }
 
-        $this->generateArrayLang($this->getLowerNameInput(), [
-            'title'       => "[{$name} title]",
-            'description' => "[{$name} description]",
-        ], $this->option('force'));
 
+    /**
+     * 是否为资源控制器
+     *
+     * @return bool
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function isResource()
+    {
+        // 如果附加了表则为资源控制器
+        return $this->getTableName() ? true : false;
+    }
+
+    /**
+     * 创建表依赖的资源控制器
+     *
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function prepareResource()
+    {
+        $this->stub = $this->stub . '/resource';
+
+        $this->replace([
+            'model_base_name'   => $this->getModelBaseName(),
+            'model_full_name'   => $this->getModelFullName(),
+            'model_list'        => $this->getModelList(),
+            'model_var'         => $this->getModelName(),
+            'filter_base_name'  => $this->getFilterBaseName(),
+            'filter_full_name'  => $this->getFilterFullName(),
+            'request_base_name' => $this->getRequestBaseName(),
+            'request_full_name' => $this->getRequestFullName(),
+        ]);
+    }
+
+    /**
+     * 资源控制器生成完成后执行
+     *
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function generatedResource()
+    {
+        // 创建请求验证
+        $this->call('module:make-model', [
+            'module'  => $this->getModuleName(),
+            '--table' => $this->getTableName(),
+            '--force' => $this->option('force'),
+        ]);
+
+        // 创建请求验证
+        $this->call('module:make-request', [
+            'module'  => $this->getModuleName(),
+            'name'    => $this->getLowerNameInput(),
+            '--table' => $this->getTableName(),
+            '--type'  => $this->getTypeInput(),
+            '--force' => $this->option('force'),
+        ]);
+
+        // 创建请求验证
+        $this->call('module:make-filter', [
+            'module'  => $this->getModuleName(),
+            'name'    => $this->getLowerNameInput(),
+            '--table' => $this->getTableName(),
+            '--force' => $this->option('force'),
+        ]);
+
+        foreach (['index', 'create', 'edit', 'show'] as $action) {
+            $this->generateView($action, $this->option('force'));
+        }
+    }
+
+    /**
+     * 创建简单控制器
+     *
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function preparePlain()
+    {
+        $this->stub = $this->stub . '/plain';
+    }
+
+    /**
+     * 简单控制器生成完成后执行
+     *
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function generatedPlain()
+    {
         $this->generateView('index', $this->option('force'));
     }
 
     /**
-     * 获取输入的 name
+     * 生成语言文件
      *
-     * @param string|null $key
-     * @return string
+     * @author Chen Lei
+     * @date 2021-01-29
      */
-    protected function getTypeInput($key = null)
+    protected function generateLangFile()
     {
-        $type = strtolower($this->option('type'));
+        // 获取首字母大写的名称
+        $name = $this->getStudlyNameInput();
 
-        $types = $this->getConfigTypes($type);
+        // 语言文件内容
+        $lang = [
+            'title'       => $name,
+            'description' => $name,
+        ];
 
-        return $key ? Arr::get($types, $key) : $type;
+        if ($this->isResource()) {
+            $lang = array_merge($lang, [
+                'create' => "Create {$name}",
+                'edit'   => "Edit {$name}",
+                'show'   => "Show {$name}",
+            ]);
+        }
+
+        // 如果存在表，自动创建表的语言字段
+        if ($this->getTableName()) {
+            $lang = array_merge($lang, $this->getTableColumnLang());
+        }
+
+        // 生成语言文件
+        $this->generateArrayLang($this->getLowerNameInput(), $lang, $this->option('force'));
     }
 
     /**
@@ -132,48 +240,9 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    protected function getModelInput()
+    protected function getModelName()
     {
-        return strtolower($this->option('model'));
-    }
-
-    /**
-     * 获取类的命名空间
-     *
-     * @param string|null $dirKey
-     * @return string
-     */
-    protected function getClassNamespace($dirKey = null)
-    {
-        $namespace = $this->getDirNamespace($this->dirKey);
-
-        // 获取当前类型的目录
-        $dir = $this->getTypeInput('dirs.controller');
-
-        if ($dir) {
-            return $namespace . '\\' . Str::studly($dir);
-        }
-
-        return $namespace;
-    }
-
-    /**
-     * 获取文件相对路径，不含模块路径，如：Http/Controllers/Admin/Controller.php
-     *
-     * @return string
-     */
-    protected function getFilePath()
-    {
-        $path = $this->getConfigDirs($this->dirKey);
-
-        // 获取当前类型的目录
-        $dir = $this->getTypeInput("dirs.controller");
-
-        if ($dir) {
-            $path = $path . DIRECTORY_SEPARATOR . Str::studly($dir);
-        }
-
-        return $path . DIRECTORY_SEPARATOR . $this->getFileName();
+        return $this->getTableShortName();
     }
 
     /**
@@ -183,7 +252,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getModelBaseName()
     {
-        return Str::studly($this->getModelInput());
+        return Str::studly($this->getModelName());
     }
 
     /**
@@ -203,7 +272,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getModelList()
     {
-        return Str::plural($this->getModelInput());
+        return Str::plural($this->getModelName());
     }
 
     /**
@@ -217,6 +286,143 @@ class ControllerMakeCommand extends GeneratorCommand
     }
 
     /**
+     * 获取滤器基本名称
+     *
+     * @return string
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function getFilterBaseName()
+    {
+        return $this->getStudlyNameInput() . 'Filter';
+    }
+
+    /**
+     * 获取滤器完整名称
+     *
+     * @return string
+     * @throws \Exception
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function getFilterFullName()
+    {
+        return $this->getDirNamespace('filter') . '\\' . $this->getFilterBaseName();
+    }
+
+    /**
+     * 获取验证基本名称
+     *
+     * @return string
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function getRequestBaseName()
+    {
+        return $this->getStudlyNameInput() . 'Request';
+    }
+
+    /**
+     * 获取滤器完整名称
+     *
+     * @return string
+     * @throws \Exception
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function getRequestFullName()
+    {
+        return $this->getClassNamespace('request') . '\\' . $this->getRequestBaseName();
+    }
+
+    /**
+     * 表的字段语言翻译
+     *
+     * @return array
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function getTableColumnLang()
+    {
+        $lang = [];
+
+        $this->getTableColumns()->reject(function ($column) {
+            return $column['increments'] == 1 || in_array($column['name'], ['created_at', 'updated_at', 'deleted_at']);
+        })->each(function ($column) use (&$lang) {
+            $name = $column['name'];
+            $comment = $column['comment'] ?: Str::studly($name);
+            $lang["{$name}.label"] = $comment;
+            $lang["{$name}.help"] = $comment;
+        });
+
+        return $lang;
+    }
+
+    /**
+     * 获取表的列视图
+     *
+     * @param $stub
+     * @return string
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function getTableColumnsView($stub)
+    {
+        $view = [];
+        $stub = $this->stub . '/' . $stub;
+
+        $this->getTableColumns()->reject(function ($column) {
+            return $column['increments'] == 1 || in_array($column['name'], ['created_at', 'updated_at', 'deleted_at']);
+        })->each(function ($column) use (&$view, $stub) {
+            $this->replace([
+                'column_name'     => $column['name'],
+                'column_required' => $column['nullable'] ? '' : 'required',
+                'column_field'    => $this->getTableColumnsField($column),
+            ]);
+            $view[] = $this->renderStub($stub);
+        });
+
+        return implode(PHP_EOL, $view);
+    }
+
+    /**
+     * 获取表单的字段标签
+     *
+     * @param array $column
+     * @author Chen Lei
+     * @date 2021-01-29
+     */
+    protected function getTableColumnsField(array $column)
+    {
+        $attributes = [
+            'type' => 'text',
+            'name' => $column['name'],
+        ];
+
+        if ($column['nullable'] == 0) {
+            $attributes['required'] = 'required';
+        }
+
+        if (Str::endsWith(strtolower($column['type']), ['int', 'integer', 'boolean', 'decimal', 'float'])) {
+            $attributes['type'] = 'number';
+        }
+
+        if (in_array(strtolower($column['type']), ['date', 'datetime', 'month', 'year'])) {
+            $attributes['type'] = $column['type'];
+        }
+
+        if (is_int($column['length'])) {
+            $attributes['maxlength'] = $column['length'];
+        }
+
+        if ($column['unsigned']) {
+            $attributes['min'] = 0;
+        }
+
+        return '<z-field ' . attribute($attributes) . '>';
+    }
+
+    /**
      * 生成控制器对应动作的模板
      *
      * @param string $action 控制器动作名称 index,create,edit,show
@@ -226,8 +432,15 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function generateView(string $action, $force = false)
     {
+        $this->replace([
+            'list_head'    => $this->getTableColumnsView('inner.list.head.stub'),
+            'list_columns' => $this->getTableColumnsView('inner.list.columns.stub'),
+            'show_columns' => $this->getTableColumnsView('inner.show.columns.stub'),
+            'form_columns' => $this->getTableColumnsView('inner.form.columns.stub'),
+        ]);
+
         $stub = $this->stub . '/' . $action;
-        $path = $this->getConfigDirs('views') . DIRECTORY_SEPARATOR . $this->getTypeInput("dirs.view");
+        $path = $this->getConfigDirs('views') . DIRECTORY_SEPARATOR . $this->getTypeConfig("dirs.view");
         $path = $path . DIRECTORY_SEPARATOR . $this->getLowerNameInput() . DIRECTORY_SEPARATOR . $action . '.blade.php';
 
         $this->generateStubFile($stub, $path, $force);

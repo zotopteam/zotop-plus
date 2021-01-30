@@ -28,7 +28,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
-     * 
+     *
      */
     protected $appendName = '';
 
@@ -58,7 +58,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
             $this->replace([
                 'event_name'     => $this->getEventName(),
-                'event_fullname' => $this->getEventFullName(),
+                'event_full_name' => $this->getEventFullName(),
             ]);
         }
 

@@ -3,13 +3,14 @@
 namespace App\Modules\Commands;
 
 use App\Modules\Maker\GeneratorCommand;
-use App\Modules\Maker\Table;
-use Illuminate\Support\Facades\Schema;
+use App\Modules\Maker\OptionTableTrait;
 use Illuminate\Support\Str;
 
 
 class FilterMakeCommand extends GeneratorCommand
 {
+    use OptionTableTrait;
+
     /**
      * The name and signature of the console command.
      *
@@ -52,10 +53,7 @@ class FilterMakeCommand extends GeneratorCommand
     public function handle()
     {
         // name 为可选值，如果没有输入name，则必须输入--table
-        if (empty($this->argument('name')) && empty($this->option('table'))) {
-            $this->error('The name or --table required');
-            return false;
-        }
+        $this->requireTableOrName();
 
         parent::handle();
     }
@@ -77,62 +75,6 @@ class FilterMakeCommand extends GeneratorCommand
         ]);
 
         return true;
-    }
-
-    /**
-     * 获取输入的 name
-     *
-     * @return string|bool
-     */
-    protected function getNameInput()
-    {
-        // name 为可选值，如果没有输入name，则必须输入table
-        if (!empty($this->argument('name'))) {
-            return trim($this->argument('name'));
-        }
-
-        // 使用--table值作为name时，去掉前面的模块名称
-        $name = Str::after($this->getTableName(), $this->getModuleLowerName() . '_');
-
-        return $name;
-    }
-
-
-    /**
-     * 获取数据表名称
-     *
-     * @return string
-     */
-    protected function getTableName()
-    {
-        // 如果有table，则直接使用table值
-        if ($table = $this->option('table')) {
-            return strtolower(trim($table));
-        }
-
-        // 没有传入table，使用name的小写的复数格式作为表名称
-        $table = $this->getLowerNameInput();
-        $table = Str::plural($table);
-
-        return $table;
-    }
-
-    /**
-     * 获取字段列表
-     *
-     * @return \Illuminate\Support\Collection
-     * @author Chen Lei
-     * @date 2020-11-24
-     */
-    protected function getTableColumns()
-    {
-        $table = $this->getTableName();
-
-        if (Schema::hasTable($table)) {
-            return $columns = Table::find($table)->columns();
-        }
-
-        return collect([]);
     }
 
     /**

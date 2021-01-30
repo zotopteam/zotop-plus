@@ -2,6 +2,7 @@
 
 namespace App\Modules\Maker;
 
+use App\Modules\Exceptions\InputException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
@@ -125,14 +126,12 @@ abstract class GeneratorCommand extends Command
     {
         // 检查模块是否存在
         if (!$this->hasModule()) {
-            $this->error('Module ' . $this->getModuleStudlyName() . ' does not exist!');
-            return false;
+            $this->inputError('Module ' . $this->getModuleStudlyName() . ' does not exist!');
         }
 
         // 验证名称是否为保留
         if ($this->hasArgument('name') && $this->isReservedName($this->getNameInput())) {
-            $this->error('The name "' . $this->getNameInput() . '" is reserved by PHP.');
-            return false;
+            $this->inputError('The name "' . $this->getNameInput() . '" is reserved by PHP.');
         }
 
         // 全局替换
@@ -184,11 +183,12 @@ abstract class GeneratorCommand extends Command
     /**
      * 获取类的命名空间
      *
+     * @param string|null $dirKey
      * @return string
      */
-    protected function getClassNamespace()
+    protected function getClassNamespace($dirKey = null)
     {
-        return $this->getDirNamespace($this->dirKey);
+        return $this->getDirNamespace($dirKey ?? $this->dirKey);
     }
 
     /**
@@ -261,11 +261,12 @@ abstract class GeneratorCommand extends Command
     /**
      * 获取文件相对路径，不含模块路径，如：Http/Controllers/Controller.php
      *
+     * @param string|null $dirKey
      * @return string
      */
-    protected function getFilePath()
+    protected function getFilePath($dirKey = null)
     {
-        return $this->getConfigDirs($this->dirKey) . DIRECTORY_SEPARATOR . $this->getFileName();
+        return $this->getConfigDirs($dirKey ?? $this->dirKey) . DIRECTORY_SEPARATOR . $this->getFileName();
     }
 
     /**
@@ -277,5 +278,25 @@ abstract class GeneratorCommand extends Command
     protected function isReservedName($name)
     {
         return in_array(strtolower($name), $this->reservedNames);
+    }
+
+    /**
+     * 输入参数异常
+     *
+     * @param $error
+     * @throws \App\Modules\Exceptions\InputException
+     * @author Chen Lei
+     * @date 2021-01-15
+     */
+    protected function inputError($error)
+    {
+        if ($this->laravel->runningInConsole()) {
+            $this->error('');
+            $this->error($error);
+            $this->error('');
+            exit();
+        }
+
+        throw new InputException($error, 1);
     }
 }

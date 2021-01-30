@@ -13,26 +13,13 @@
             <z-field type="submit" form="form-$CONTROLLER_LOWER_NAME$" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
-    
+
     <div class="main-body scrollable">
         <div class="container-fluid">
 
             <z-form bind="$$MODEL_VAR$" route="$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.store" method="post" id="form-$CONTROLLER_LOWER_NAME$" autocomplete="off">
 
-
-            <div class="form-group row">
-                <label for="title" class="col-2 col-form-label required">{{trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.title.label')}}</label>
-                <div class="col-4">
-                    <z-field type="text" name="title" required="required"/>
-
-                    @if ($errors->has('title'))
-                    <span class="form-help text-error">{{ $errors->first('title') }}</span>
-                    @else
-                    <span class="form-help">{{trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.title.help')}}</span>                     
-                    @endif                       
-                </div>
-            </div>
-
+$FORM_COLUMNS$
 
             </z-form>
 

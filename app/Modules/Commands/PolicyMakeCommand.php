@@ -27,7 +27,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
-     * 
+     *
      */
     protected $appendName = '';
 
@@ -53,15 +53,15 @@ class PolicyMakeCommand extends GeneratorCommand
             $this->stub = 'policy_model';
 
             $this->replace([
-                'model_fullname' => $this->getInputModelFullName(),
-                'model_basename' => $this->getInputModelBaseName(),
+                'model_full_name' => $this->getInputModelFullName(),
+                'model_base_name' => $this->getInputModelBaseName(),
                 'model_var'      => strtolower($this->getInputModelBaseName()),
             ]);
         }
 
         $this->replace([
-            'user_model_fullname' => $this->getUserModelFullName(),
-            'user_model_basename' => $this->getUserModelBaseName(),
+            'user_model_full_name' => $this->getUserModelFullName(),
+            'user_model_base_name' => $this->getUserModelBaseName(),
         ]);
 
         return true;
@@ -69,7 +69,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * 获取auth中配置的用户类全名，含命名空间
-     * 
+     *
      * @return string
      */
     public function getUserModelFullName()
@@ -82,7 +82,7 @@ class PolicyMakeCommand extends GeneratorCommand
 
     /**
      * 获取auth中配置的用户类名，不含命名空间
-     * 
+     *
      * @return string
      */
     public function getUserModelBaseName()

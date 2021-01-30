@@ -27,7 +27,7 @@ trait GeneratorTrait
         if ($key) {
             $value = $this->laravel['config']->get("modules.{$key}");
 
-            if (empty($value)) {
+            if (!isset($value)) {
                 throw new \Exception("config {$key} does not exist", 1);
             }
 
@@ -249,7 +249,7 @@ trait GeneratorTrait
     {
         if (empty($this->replaces)) {
 
-            //模块信息替换 
+            //模块信息替换
             $this->replaces = [
                 'namespace'          => $this->getNamespace(),
                 'module_studly_name' => $this->getModuleStudlyName(),

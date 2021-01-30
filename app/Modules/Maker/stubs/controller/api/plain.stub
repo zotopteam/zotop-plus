@@ -2,19 +2,19 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Modules\Routing\ApiController as Controller;
+use Illuminate\Http\Request;
 
 class $CLASS_NAME$ extends Controller
 {
     /**
-     * 首页
+     * Index
      *
+     * @param \Illuminate\Http\Request $request
      * @return \App\Modules\Routing\JsonMessageResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->success(null);
+        return $this->success();
     }
 }

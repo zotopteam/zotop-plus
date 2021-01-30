@@ -3,7 +3,7 @@
 namespace $CLASS_NAMESPACE$;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use $USER_MODEL_FULLNAME$;
+use $USER_MODEL_FULL_NAME$;
 
 class $CLASS_NAME$
 {

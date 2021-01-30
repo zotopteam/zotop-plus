@@ -1,0 +1,8 @@
+            <tr>
+                <td width="15%">
+                    {{trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.$COLUMN_NAME$.label')}}
+                </td>
+                <td>
+                    {{$$MODEL_VAR$->$COLUMN_NAME$}}
+                </td>
+            </tr>

@@ -97,9 +97,9 @@ class TestMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    public function getFilePath()
+    public function getFilePath($dirKey = null)
     {
-        $path = $this->getConfigDirs($this->dirKey);
+        $path = $this->getConfigDirs($dirKey ?? $this->dirKey);
 
         // 获取当前类型的目录
         $dir = $this->getTypeInput();

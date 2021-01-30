@@ -1,0 +1,1 @@
+                        <th>{{trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.$COLUMN_NAME$.label')}}</th>

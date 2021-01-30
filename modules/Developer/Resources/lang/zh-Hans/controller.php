@@ -9,6 +9,6 @@ return [
     'route'      => '路由参考',
     'name'       => '控制器名称',
     'name.help'  => '如：test，将创建TestController',
-    'model'      => '绑定模型',
-    'model.help' => '绑定模型后，将创建资源控制器，包含index/create/store/show/edit/update/destory等动作和对应模板，否则只含index动作和对应模板',
+    'table'      => '绑定数据表',
+    'table.help' => '绑定数据表，将创建资源控制器，包含index/create/store/show/edit/update/destory等动作和对应模板，否则只含index动作和对应模板',
 ];

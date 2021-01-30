@@ -14,7 +14,7 @@ class $CLASS_NAME$ extends $PARENT_CLASS$
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**

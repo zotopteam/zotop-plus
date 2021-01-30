@@ -235,7 +235,7 @@ class Lang
         $lang = is_array($lang) ? $lang : [];
 
         if ($key) {
-            return isset($lang[$key]) ? $lang[$key] : $default;
+            return isset($lang[$key]) ? $lang[$key] : value($default);
         }
 
         return $lang;
