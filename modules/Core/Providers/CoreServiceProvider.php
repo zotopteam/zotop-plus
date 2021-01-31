@@ -12,6 +12,7 @@ use Modules\Core\Support\ImageFilters\Resize;
 use Modules\Core\Support\ImageFilters\Watermark;
 use Modules\Core\View\Components\Search;
 use Modules\Core\View\Components\SideBar;
+use Modules\Core\View\Components\StatusIcon;
 use Modules\Core\View\Components\UploadChunk;
 use Modules\Core\View\Controls\BoolControl;
 use Modules\Core\View\Controls\CheckboxGroup;
@@ -151,6 +152,7 @@ class CoreServiceProvider extends ServiceProvider
         Blade::component(UploadChunk::class, 'upload-chunk');
         Blade::component(SideBar::class, 'sidebar');
         Blade::component(Search::class, 'search');
+        Blade::component(StatusIcon::class, 'status-icon');
     }
 
     /**

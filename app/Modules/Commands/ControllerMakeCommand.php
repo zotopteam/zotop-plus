@@ -173,12 +173,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function generatedResource()
     {
-        // 创建请求验证
-        $this->call('module:make-model', [
-            'module'  => $this->getModuleName(),
-            '--table' => $this->getTableName(),
-            '--force' => $this->option('force'),
-        ]);
+
 
         // 创建请求验证
         $this->call('module:make-request', [
@@ -193,6 +188,13 @@ class ControllerMakeCommand extends GeneratorCommand
         $this->call('module:make-filter', [
             'module'  => $this->getModuleName(),
             'name'    => $this->getLowerNameInput(),
+            '--table' => $this->getTableName(),
+            '--force' => $this->option('force'),
+        ]);
+
+        // 创建请求验证
+        $this->call('module:make-model', [
+            'module'  => $this->getModuleName(),
             '--table' => $this->getTableName(),
             '--force' => $this->option('force'),
         ]);

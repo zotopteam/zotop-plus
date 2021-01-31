@@ -2,8 +2,6 @@
 
 namespace Modules\Core\View\Components;
 
-use Illuminate\Support\Arr;
-use App\Support\Facades\Html;
 use Illuminate\View\Component;
 
 class Search extends Component
@@ -63,22 +61,23 @@ class Search extends Component
      * @return void
      */
     public function __construct(
-        $action      = true,
-        $params      = null,
-        $except      = [],
-        $cancel      = true,
-        $class       = null,
+        $action = true,
+        $params = null,
+        $except = [],
+        $cancel = true,
+        $class = null,
         $placeholder = null,
-        $search      = null,
-        $view        = 'core::components.search'
-    ) {
-        $this->action      = $this->getAction($action);
-        $this->params      = $this->getParameters($action, $params);
-        $this->cancel      = $this->getCancel($cancel);
-        $this->class       = $class ? 'form form-search ' . $class : 'form form-search form-inline d-inline-flex';
+        $search = null,
+        $view = 'core::components.search'
+    )
+    {
+        $this->action = $this->getAction($action);
+        $this->params = $this->getParameters($action, $params);
+        $this->cancel = $this->getCancel($cancel);
+        $this->class = $class ? 'form form-search ' . $class : 'form form-search form-inline d-inline-flex';
         $this->placeholder = $placeholder ?? trans('master.search.placeholder');
-        $this->search      = $search;
-        $this->view        = $view;
+        $this->search = $search;
+        $this->view = $view;
     }
 
     /**
@@ -86,7 +85,7 @@ class Search extends Component
      *
      * @param mixed $url
      * @param mixed $params
-     * @return void
+     * @return array
      */
     protected function getParameters($url, $params)
     {
@@ -101,7 +100,7 @@ class Search extends Component
         }
 
         // 剔除关键词和页码
-        $query = $request->except('keywords', 'page');
+        $query = $request->except(['keywords', 'page']);
 
         return array_merge($query, $params);
     }
@@ -110,7 +109,7 @@ class Search extends Component
      * 获取动作连接
      *
      * @param mixed $url
-     * @return void
+     * @return string
      */
     protected function getAction($url)
     {
