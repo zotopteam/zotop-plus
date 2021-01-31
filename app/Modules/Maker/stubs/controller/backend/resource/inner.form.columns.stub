@@ -2,6 +2,7 @@
                 <label for="$COLUMN_NAME$" class="col-2 col-form-label $COLUMN_REQUIRED$">{{trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.$COLUMN_NAME$.label')}}</label>
                 <div class="col-10">
                     $COLUMN_FIELD$
+
                     @if ($errors->has('$COLUMN_NAME$'))
                     <span class="form-help text-error">{{ $errors->first('$COLUMN_NAME$') }}</span>
                     @else

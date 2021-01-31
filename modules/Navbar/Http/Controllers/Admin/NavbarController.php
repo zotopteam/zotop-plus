@@ -2,37 +2,54 @@
 
 namespace Modules\Navbar\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Modules\Routing\AdminController as Controller;
+use App\Support\Enums\BoolEnum;
+use Illuminate\Http\Request;
+use Modules\Navbar\Http\Requests\Admin\NavbarRequest;
 use Modules\Navbar\Models\Navbar;
+use Modules\Navbar\Models\QueryFilters\NavbarFilter;
 
 class NavbarController extends Controller
 {
     /**
      * 首页
      *
+     * @param \Illuminate\Http\Request $request
+     * @param \Modules\Navbar\Models\QueryFilters\NavbarFilter $filter
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request, NavbarFilter $filter)
     {
         $this->title = trans('navbar::navbar.title');
 
-        $this->navbars = Navbar::paginate(25);
-
-        // 全部获取
-        //$this->navbars = Navbar::all();
-        // 部分获取
-        //$this->navbars = Navbar::with('some')->where('key','value')->orderby('id','asc')->get();        
         // 分页获取
-        //$this->navbars = Navbar::with('some')->where('key','value')->orderby('id','asc')->paginate(25);
+        $this->navbars = Navbar::filter($filter)->get();
 
         return $this->view();
     }
 
     /**
+     * 排序
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @author Chen Lei
+     * @date 2021-01-31
+     */
+    public function sort(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        foreach ($ids as $i => $id) {
+            Navbar::where('id', $id)->update(['sort' => $i]);
+        }
+
+        return $this->success(trans('master.operated'));
+    }
+
+    /**
      * 新建
-     * 
+     *
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function create()
@@ -40,6 +57,8 @@ class NavbarController extends Controller
         $this->title = trans('navbar::navbar.create');
 
         $this->navbar = Navbar::findOrNew(0);
+        $this->navbar->sort = Navbar::max('sort') + 1;
+        $this->navbar->disabled = BoolEnum::NO;
 
         return $this->view();
     }
@@ -47,10 +66,10 @@ class NavbarController extends Controller
     /**
      * 保存
      *
-     * @param  Request $request
+     * @param \Modules\Navbar\Http\Requests\Admin\NavbarRequest $request
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
-    public function store(Request $request)
+    public function store(NavbarRequest $request)
     {
         $navbar = new Navbar;
         $navbar->fill($request->all());
@@ -62,7 +81,7 @@ class NavbarController extends Controller
     /**
      * 显示
      *
-     * @param  int  $id
+     * @param int $id
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function show($id)
@@ -72,7 +91,7 @@ class NavbarController extends Controller
         $this->navbar = Navbar::findOrFail($id);
 
         return $this->view();
-    }    
+    }
 
     /**
      * 编辑
@@ -82,6 +101,7 @@ class NavbarController extends Controller
     public function edit($id)
     {
         $this->title = trans('navbar::navbar.edit');
+
         $this->navbar = Navbar::findOrFail($id);
 
         return $this->view();
@@ -90,13 +110,13 @@ class NavbarController extends Controller
     /**
      * 更新
      *
-     * @param  Request $request
+     * @param \Modules\Navbar\Http\Requests\Admin\NavbarRequest $request
      * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
-    public function update(Request $request, $id)
+    public function update(NavbarRequest $request, $id)
     {
         $navbar = Navbar::findOrFail($id);
-        $navbar->fill($request->all());        
+        $navbar->fill($request->all());
         $navbar->save();
 
         return $this->success(trans('master.updated'), route('navbar.navbar.index'));
@@ -112,6 +132,6 @@ class NavbarController extends Controller
         $navbar = Navbar::findOrFail($id);
         $navbar->delete();
 
-        return $this->success(trans('master.deleted'), route('navbar.navbar.index'));        
+        return $this->success(trans('master.deleted'), route('navbar.navbar.index'));
     }
 }

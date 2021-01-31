@@ -76,8 +76,7 @@ Request::macro('remember', function ($key, $default = null, $minutes = 365 * 24 
     }
 
     // 如果键值不存在，则返回上一次存储的键值
-    // TODO: $this->cookie($key, $default) bug laravel 8.0 无法返回default值
-    return $this->cookie($key) ?? $default;
+    return $this->cookie($key) ?? value($default);
 });
 
 

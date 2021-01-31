@@ -10,10 +10,10 @@
             {{$title}}
         </div>
         <div class="main-action">
-            <a class="btn btn-success" href="{{route('navbar.navbar.edit', $navbar->id)}}">
+            <a class="btn btn-success" href="{{route('navbar.item.edit', $item->id)}}">
                 <i class="fa fa-edit"></i> {{trans('master.edit')}}
             </a>
-            <a class="btn btn-warning js-delete" href="javascript:;" data-url="{{route('navbar.navbar.destroy', $navbar->id)}}">
+            <a class="btn btn-warning js-delete" href="javascript:;" data-url="{{route('navbar.item.destroy', $item->id)}}">
                 <i class="fa fa-times"></i> {{trans('master.delete')}}
             </a>
         </div>
@@ -27,42 +27,69 @@
                     {{trans('master.id')}}
                 </td>
                 <td>
-                    {{$navbar->id ?? '[ID]'}}
+                    {{$item->id ?? '[ID]'}}
                 </td>
             </tr>
                         <tr>
                 <td width="15%">
-                    {{trans('navbar::navbar.title.label')}}
+                    {{trans('navbar::item.navbar_id.label')}}
                 </td>
                 <td>
-                    {{$navbar->title}}
+                    {{$item->navbar_id}}
                 </td>
             </tr>
 
             <tr>
                 <td width="15%">
-                    {{trans('navbar::navbar.slug.label')}}
+                    {{trans('navbar::item.parent_id.label')}}
                 </td>
                 <td>
-                    {{$navbar->slug}}
+                    {{$item->parent_id}}
                 </td>
             </tr>
 
             <tr>
                 <td width="15%">
-                    {{trans('navbar::navbar.sort.label')}}
+                    {{trans('navbar::item.title.label')}}
                 </td>
                 <td>
-                    {{$navbar->sort}}
+                    {{$item->title}}
                 </td>
             </tr>
 
             <tr>
                 <td width="15%">
-                    {{trans('navbar::navbar.status.label')}}
+                    {{trans('navbar::item.link.label')}}
                 </td>
                 <td>
-                    {{$navbar->status}}
+                    {{$item->link}}
+                </td>
+            </tr>
+
+            <tr>
+                <td width="15%">
+                    {{trans('navbar::item.custom.label')}}
+                </td>
+                <td>
+                    {{$item->custom}}
+                </td>
+            </tr>
+
+            <tr>
+                <td width="15%">
+                    {{trans('navbar::item.sort.label')}}
+                </td>
+                <td>
+                    {{$item->sort}}
+                </td>
+            </tr>
+
+            <tr>
+                <td width="15%">
+                    {{trans('navbar::item.status.label')}}
+                </td>
+                <td>
+                    {{$item->status}}
                 </td>
             </tr>
 

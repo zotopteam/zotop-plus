@@ -449,7 +449,7 @@ class ControllerMakeCommand extends GeneratorCommand
             $attributes['min'] = 0;
         }
 
-        return '<z-field ' . attribute($attributes) . '>';
+        return '<z-field ' . attribute($attributes) . '/>';
     }
 
     /**

@@ -2,10 +2,9 @@
 
 namespace Modules\Core\View\Components;
 
-use Illuminate\Support\Arr;
 use App\Support\Facades\Html;
+use Illuminate\Support\Arr;
 use Illuminate\View\Component;
-use App\Modules\Facades\Module;
 
 class SideBar extends Component
 {
@@ -60,22 +59,23 @@ class SideBar extends Component
         $data,
         $header = null,
         $footer = null,
-        $class  = null,
+        $class = null,
         $active = null,
-        $view   = 'core::components.sidebar'
-    ) {
-        $this->data   = $data;
+        $view = 'core::components.sidebar'
+    )
+    {
+        $this->data = $data;
         $this->header = $header;
         $this->footer = $footer;
-        $this->view   = $view;
-        $this->class  = $class ? 'side ' . $class : 'side';
+        $this->view = $view;
+        $this->class = $class ? 'side ' . $class : 'side';
         $this->active = $active;
     }
 
     /**
      * 获取导航数组
      *
-     * @return void
+     * @return array
      */
     protected function getNavigations()
     {
@@ -85,10 +85,10 @@ class SideBar extends Component
 
         foreach ($data as $key => $attrs) {
 
-            $item    = [];
-            $item['text']  = Arr::pull($attrs, 'text');
-            $item['icon']  = Arr::pull($attrs, 'icon');
-            $item['href']  = Arr::pull($attrs, 'href');
+            $item = [];
+            $item['text'] = Arr::pull($attrs, 'text');
+            $item['icon'] = Arr::pull($attrs, 'icon');
+            $item['href'] = Arr::pull($attrs, 'href');
             $item['class'] = Arr::pull($attrs, 'class');
 
             if ($key == $this->active || Arr::pull($attrs, 'active')) {

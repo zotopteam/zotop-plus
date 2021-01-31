@@ -3,6 +3,9 @@
 namespace Modules\Navbar\Models;
 
 use App\Support\Eloquent\Model;
+use App\Support\Enums\BoolEnum;
+use App\Support\Enums\SortEnum;
+use Illuminate\Database\Eloquent\Builder;
 
 class Navbar extends Model
 {
@@ -18,7 +21,7 @@ class Navbar extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'title', 'slug', 'fields', 'sort', 'status', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'title', 'slug', 'fields', 'sort', 'disabled', 'created_at', 'updated_at'];
 
     /**
      * 不可被批量赋值的属性
@@ -43,4 +46,28 @@ class Navbar extends Model
      */
     public $timestamps = true;
 
+    /**
+     * 启动
+     *
+     * @author Chen Lei
+     * @date 2021-01-31
+     */
+    public static function booted()
+    {
+        // 默认排序
+        static::addGlobalScope('sort', function (Builder $builder) {
+            $builder->orderBy('sort', SortEnum::ASC)->orderBy('id', SortEnum::ASC);
+        });
+    }
+
+    /**
+     * 只查询 active 用户的作用域
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('disabled', BoolEnum::NO);
+    }
 }
