@@ -2,6 +2,7 @@
 
 namespace App\Modules\Commands;
 
+use App\Modules\Exceptions\FileExistedException;
 use App\Modules\Maker\GeneratorCommand;
 use App\Modules\Maker\OptionTableTrait;
 use App\Modules\Maker\OptionTypeTrait;
@@ -97,12 +98,16 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function generated()
     {
-        $this->generateLangFile();
+        try {
+            $this->generateLangFile();
 
-        if ($this->isResource()) {
-            $this->generatedResource();
-        } else {
-            $this->generatedPlain();
+            if ($this->isResource()) {
+                $this->generatedResource();
+            } else {
+                $this->generatedPlain();
+            }
+        } catch (FileExistedException $e) {
+            // 非命令行模式下，忽略文件已经存在异常
         }
     }
 
