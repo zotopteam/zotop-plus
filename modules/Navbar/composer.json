@@ -1,0 +1,25 @@
+{
+    "name": "zotop/navbar",
+    "description": "",
+    "authors": [
+        {
+            "name": "ZotopTeam",
+            "email": "cms@zotop.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Navbar\\Providers\\NavbarServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Navbar\\": ""
+        }
+    }
+}
