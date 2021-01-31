@@ -121,6 +121,24 @@ class ControllerMakeCommand extends GeneratorCommand
     }
 
     /**
+     * 判断是否为api
+     *
+     * @return bool
+     * @author Chen Lei
+     * @date 2021-01-31
+     */
+    protected function isApi()
+    {
+        $middlewares = $this->getTypeConfig('middleware');
+
+        if (in_array('api', $middlewares)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * 创建表依赖的资源控制器
      *
      * @author Chen Lei
@@ -174,8 +192,11 @@ class ControllerMakeCommand extends GeneratorCommand
             '--force' => $this->option('force'),
         ]);
 
-        foreach (['index', 'create', 'edit', 'show'] as $action) {
-            $this->generateView($action, $this->option('force'));
+        // 生成视图
+        if (!$this->isApi()) {
+            foreach (['index', 'create', 'edit', 'show'] as $action) {
+                $this->generateView($action, $this->option('force'));
+            }
         }
     }
 
@@ -198,7 +219,9 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function generatedPlain()
     {
-        $this->generateView('index', $this->option('force'));
+        if (!$this->isApi()) {
+            $this->generateView('index', $this->option('force'));
+        }
     }
 
     /**
