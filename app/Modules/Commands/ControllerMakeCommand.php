@@ -2,7 +2,6 @@
 
 namespace App\Modules\Commands;
 
-use App\Modules\Exceptions\FileExistedException;
 use App\Modules\Maker\GeneratorCommand;
 use App\Modules\Maker\OptionTableTrait;
 use App\Modules\Maker\OptionTypeTrait;
@@ -56,6 +55,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @return bool|null|void
      * @throws \App\Modules\Exceptions\FileExistedException
+     * @throws \App\Modules\Exceptions\InputException
      * @author Chen Lei
      * @date 2020-11-20
      */
@@ -71,6 +71,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * 重载prepare
      *
      * @return boolean
+     * @throws \Exception
      */
     protected function prepare()
     {
@@ -94,20 +95,16 @@ class ControllerMakeCommand extends GeneratorCommand
      * 生成完成后执行
      *
      * @return void
-     * @throws \App\Modules\Exceptions\FileExistedException
+     * @throws \Exception
      */
     protected function generated()
     {
-        try {
-            $this->generateLangFile();
+        $this->generateLangFile();
 
-            if ($this->isResource()) {
-                $this->generatedResource();
-            } else {
-                $this->generatedPlain();
-            }
-        } catch (FileExistedException $e) {
-            // 非命令行模式下，忽略文件已经存在异常
+        if ($this->isResource()) {
+            $this->generatedResource();
+        } else {
+            $this->generatedPlain();
         }
     }
 
@@ -146,6 +143,7 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * 创建表依赖的资源控制器
      *
+     * @throws \Exception
      * @author Chen Lei
      * @date 2021-01-29
      */
@@ -168,15 +166,14 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * 资源控制器生成完成后执行
      *
+     * @throws \Exception
      * @author Chen Lei
      * @date 2021-01-29
      */
     protected function generatedResource()
     {
-
-
         // 创建请求验证
-        $this->call('module:make-request', [
+        $this->tryToCall('module:make-request', [
             'module'  => $this->getModuleName(),
             'name'    => $this->getLowerNameInput(),
             '--table' => $this->getTableName(),
@@ -185,7 +182,7 @@ class ControllerMakeCommand extends GeneratorCommand
         ]);
 
         // 创建请求验证
-        $this->call('module:make-filter', [
+        $this->tryToCall('module:make-filter', [
             'module'  => $this->getModuleName(),
             'name'    => $this->getLowerNameInput(),
             '--table' => $this->getTableName(),
@@ -193,7 +190,7 @@ class ControllerMakeCommand extends GeneratorCommand
         ]);
 
         // 创建请求验证
-        $this->call('module:make-model', [
+        $this->tryToCall('module:make-model', [
             'module'  => $this->getModuleName(),
             '--table' => $this->getTableName(),
             '--force' => $this->option('force'),
@@ -221,6 +218,7 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * 简单控制器生成完成后执行
      *
+     * @throws \Exception
      * @author Chen Lei
      * @date 2021-01-29
      */
@@ -234,6 +232,7 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * 生成语言文件
      *
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
      * @author Chen Lei
      * @date 2021-01-29
      */
@@ -289,6 +288,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * 获取模型的完整类名
      *
      * @return string
+     * @throws \Exception
      */
     protected function getModelFullName()
     {
@@ -393,6 +393,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @param $stub
      * @return string
+     * @throws \Exception
      * @author Chen Lei
      * @date 2021-01-29
      */
@@ -419,6 +420,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * 获取表单的字段标签
      *
      * @param array $column
+     * @return string
      * @author Chen Lei
      * @date 2021-01-29
      */
@@ -458,7 +460,7 @@ class ControllerMakeCommand extends GeneratorCommand
      * @param string $action 控制器动作名称 index,create,edit,show
      * @param bool $force
      * @return void
-     * @throws \App\Modules\Exceptions\FileExistedException
+     * @throws \Exception
      */
     protected function generateView(string $action, $force = false)
     {
@@ -473,6 +475,10 @@ class ControllerMakeCommand extends GeneratorCommand
         $path = $this->getConfigDirs('views') . DIRECTORY_SEPARATOR . $this->getTypeConfig("dirs.view");
         $path = $path . DIRECTORY_SEPARATOR . $this->getLowerNameInput() . DIRECTORY_SEPARATOR . $action . '.blade.php';
 
-        $this->generateStubFile($stub, $path, $force);
+        try {
+            $this->generateStubFile($stub, $path, $force);
+        } catch (\Throwable $th) {
+            return;
+        }
     }
 }

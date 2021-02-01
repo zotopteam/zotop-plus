@@ -362,6 +362,7 @@ trait GeneratorTrait
      * @param array $data 数据
      * @param bool $force 是否覆盖
      * @return void
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
      */
     public function generateArrayLang(string $name, $data = [], $force = false)
     {
@@ -382,6 +383,7 @@ trait GeneratorTrait
      * @param array $data 数据
      * @param bool $force 是否覆盖
      * @return void
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
      */
     public function generateJsonLang($data = [], $force = false)
     {

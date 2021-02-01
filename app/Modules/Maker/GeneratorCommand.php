@@ -299,4 +299,21 @@ abstract class GeneratorCommand extends Command
 
         throw new InputException($error, 1);
     }
+
+    /**
+     * Try to call another console command.
+     *
+     * @param \Symfony\Component\Console\Command\Command|string $command
+     * @param array $arguments
+     * @author Chen Lei
+     * @date 2021-02-01
+     */
+    protected function tryToCall($command, array $arguments = [])
+    {
+        try {
+            return $this->call($command, $arguments);
+        } catch (\Throwable $th) {
+            return 0;
+        }
+    }
 }
