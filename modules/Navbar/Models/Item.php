@@ -3,10 +3,13 @@
 namespace Modules\Navbar\Models;
 
 use App\Support\Eloquent\Model;
+use App\Support\Eloquent\Traits\Nestable;
 use App\Support\Enums\BoolEnum;
 
 class Item extends Model
 {
+    use Nestable;
+
     /**
      * 与模型关联的数据表
      *
@@ -33,7 +36,9 @@ class Item extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'custom' => 'json',
+    ];
 
     /**
      * 执行模型是否自动维护时间戳
@@ -43,12 +48,12 @@ class Item extends Model
     public $timestamps = true;
 
     /**
-     * 只查询 active 用户的作用域
+     * 只查询可用数据作用域
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive($query)
+    public function scopeEnabled($query)
     {
         return $query->where('disabled', BoolEnum::NO);
     }

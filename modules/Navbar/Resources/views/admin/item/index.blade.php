@@ -10,9 +10,22 @@
     </x-sidebar>
     <div class="main">
         <div class="main-header">
-            <div class="main-title mr-auto">
+            <div class="main-title">
                 {{$navbar ? $navbar->title : trans('navbar::navbar.default')}}
             </div>
+            <nav class="breadcrumb mr-auto">
+                <a class="breadcrumb-item" href="{{route('navbar.item.index', $navbar_id)}}">
+                    <i class="fa fa-home"></i>
+                </a>
+                @if($parents)
+                    @foreach($parents as $p)
+                        <a class="breadcrumb-item"
+                           href="{{route('navbar.item.index', ['navbar_id'=>$navbar_id, 'parent_id'=>$p->id])}}">
+                            {{$p->title}}
+                        </a>
+                    @endforeach
+                @endif
+            </nav>
             <div class="main-action">
                 <a href="{{route('navbar.item.create',['navbar_id'=>$navbar_id, 'parent_id'=>$parent_id])}}"
                    class="btn btn-primary">
@@ -56,6 +69,7 @@
                                     <a class="manage-item"
                                        href="{{route('navbar.item.index', ['navbar_id'=>$navbar_id, 'parent_id'=>$item->id])}}">
                                         <i class="fa fa-list"></i> {{trans('navbar::item.children')}}
+                                        ({{$item->child_count}})
                                     </a>
                                     <a class="manage-item" href="{{route('navbar.item.edit', $item->id)}}">
                                         <i class="fa fa-edit"></i> {{trans('master.edit')}}

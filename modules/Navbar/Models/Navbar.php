@@ -61,13 +61,25 @@ class Navbar extends Model
     }
 
     /**
-     * 只查询 active 用户的作用域
+     * 只查询可用数据作用域
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive($query)
+    public function scopeEnabled($query)
     {
         return $query->where('disabled', BoolEnum::NO);
+    }
+
+    /**
+     * 关联导航项
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @author Chen Lei
+     * @date 2021-02-01
+     */
+    public function item()
+    {
+        return $this->hasMany(Item::class, 'navbar_id', 'id');
     }
 }

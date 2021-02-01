@@ -25,12 +25,14 @@ class ItemController extends Controller
     {
         $this->title = trans('navbar::item.title');
 
-        $this->navbar = Navbar::find($navbarId);
         $this->navbar_id = $navbarId;
         $this->parent_id = $parentId;
+        $this->navbar = Navbar::find($navbarId);
+        $this->parents = $parentId ? Item::find($parentId)->parents : [];
 
         // 分页获取
-        $this->items = Item::filter($filter)
+        $this->items = Item::withCount('child')
+            ->filter($filter)
             ->where('navbar_id', $navbarId)
             ->where('parent_id', $parentId)
             ->get();
@@ -69,6 +71,10 @@ class ItemController extends Controller
     public function create(int $navbarId = 0, int $parentId = 0)
     {
         $this->title = trans('navbar::item.create');
+
+        $this->navbar_id = $navbarId;
+        $this->parent_id = $parentId;
+        $this->parents = $parentId ? Item::find($parentId)->parents : [];
 
         $this->item = Item::findOrNew(0);
         $this->item->navbar_id = $navbarId;
@@ -122,6 +128,7 @@ class ItemController extends Controller
     {
         $this->title = trans('navbar::item.edit');
 
+        $this->id = $id;
         $this->item = Item::findOrFail($id);
 
         return $this->view();
@@ -155,6 +162,11 @@ class ItemController extends Controller
     public function destroy(int $id)
     {
         $item = Item::findOrFail($id);
+
+        if ($item->child->count()) {
+            return $this->error(trans('navbar::item.destroy.forbidden'));
+        }
+
         $item->delete();
 
         return $this->success(trans('master.deleted'), route('navbar.item.index', [

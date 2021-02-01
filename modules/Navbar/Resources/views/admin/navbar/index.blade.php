@@ -53,6 +53,7 @@
                                 <td class="manage">
                                     <a class="manage-item" href="{{route('navbar.item.index', $navbar->id)}}">
                                         <i class="fa fa-list"></i> {{trans('navbar::item.title')}}
+                                        （{{$navbar->item_count}}）
                                     </a>
                                     <a class="manage-item" href="{{route('navbar.navbar.edit', $navbar->id)}}">
                                         <i class="fa fa-edit"></i> {{trans('master.edit')}}

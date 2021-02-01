@@ -8,7 +8,7 @@ $sidebar[0] = [
     'icon' => 'fa fa-compass',
 ];
 
-foreach (\Modules\Navbar\Models\Navbar::active()->get() as $navbar) {
+foreach (\Modules\Navbar\Models\Navbar::enabled()->get() as $navbar) {
     $sidebar[$navbar->id] = [
         'text' => $navbar->title,
         'href' => route('navbar.item.index', $navbar->id),

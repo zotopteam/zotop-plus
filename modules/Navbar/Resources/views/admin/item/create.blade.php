@@ -4,11 +4,26 @@
     <div class="main">
         <div class="main-header">
             <div class="main-back">
-                <a href="{{Request::referer()}}"><i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b></a>
+                <a href="{{route('navbar.item.index', ['navbar_id'=>$navbar_id, 'parent_id'=>$parent_id])}}">
+                    <i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b>
+                </a>
             </div>
-            <div class="main-title mr-auto">
+            <div class="main-title">
                 {{$title}}
             </div>
+            <nav class="breadcrumb mr-auto">
+                <a class="breadcrumb-item" href="{{route('navbar.item.index', $navbar_id)}}">
+                    <i class="fa fa-home"></i>
+                </a>
+                @if($parents)
+                    @foreach($parents as $p)
+                        <a class="breadcrumb-item"
+                           href="{{route('navbar.item.index', ['navbar_id'=>$navbar_id, 'parent_id'=>$p->id])}}">
+                            {{$p->title}}
+                        </a>
+                    @endforeach
+                @endif
+            </nav>
             <div class="main-action">
                 <z-field type="submit" form="form-item" value="trans('master.save')" class="btn btn-primary"/>
             </div>

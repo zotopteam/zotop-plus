@@ -15,7 +15,7 @@ class Listener
         if (allow('navbar.index')) {
             $start['navbar'] = [
                 'text' => trans('navbar::module.title'),
-                'href' => route('navbar.navbar.index'),
+                'href' => route('navbar.item.index', 0),
                 'icon' => 'fa fa-compass bg-info text-white',
                 'tips' => trans('navbar::module.description'),
             ];

@@ -23,7 +23,7 @@ class NavbarController extends Controller
         $this->title = trans('navbar::navbar.title');
 
         // 分页获取
-        $this->navbars = Navbar::filter($filter)->get();
+        $this->navbars = Navbar::withCount('item')->filter($filter)->get();
 
         return $this->view();
     }
@@ -130,6 +130,11 @@ class NavbarController extends Controller
     public function destroy($id)
     {
         $navbar = Navbar::findOrFail($id);
+
+        if ($navbar->item->count()) {
+            return $this->error(trans('navbar::navbar.destroy.forbidden'));
+        }
+
         $navbar->delete();
 
         return $this->success(trans('master.deleted'), route('navbar.navbar.index'));
