@@ -15,7 +15,7 @@ class CreateModules extends Migration
     {
         Schema::create('modules', function (Blueprint $table) {
             $table->string('module')->comment('模块名称');
-            $table->string('version')->comment('模块名称');
+            $table->string('version')->comment('模块版本');
             $table->boolean('disabled')->default(0)->comment('启用=0 禁用=1');
             $table->longText('config')->comment('配置');
             $table->primary('module');            
