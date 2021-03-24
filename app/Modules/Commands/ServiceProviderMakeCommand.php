@@ -26,24 +26,27 @@ class ServiceProviderMakeCommand extends GeneratorCommand
 
     /**
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
-     * 
+     *
      */
     protected $appendName = 'ServiceProvider';
 
     /**
      * 目标路径键名
+     *
      * @var null
      */
     protected $dirKey = 'provider';
 
     /**
      * stub
+     *
      * @var string
      */
     protected $stub = 'provider';
 
     /**
      * 生成前准备
+     *
      * @return boolean
      */
     public function prepare()
@@ -55,6 +58,7 @@ class ServiceProviderMakeCommand extends GeneratorCommand
 
     /**
      * 获取输入的名称
+     *
      * @return string
      */
     public function getNameInput()
@@ -71,11 +75,12 @@ class ServiceProviderMakeCommand extends GeneratorCommand
             }
         }
 
-        return strtolower($name);
+        return trim($name);
     }
 
     /**
      * 获取输入的类型，支持：常规=plain, 事件=event, 路由=route
+     *
      * @return string
      */
     public function getTypeInput()

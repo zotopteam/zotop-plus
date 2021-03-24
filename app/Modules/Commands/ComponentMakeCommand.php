@@ -28,7 +28,7 @@ class ComponentMakeCommand extends GeneratorCommand
      * 追加的名称，比如名称后面追加 Request,ServiceProvider
      *
      */
-    protected $appendName = '';
+    protected $appendName = 'Component';
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)

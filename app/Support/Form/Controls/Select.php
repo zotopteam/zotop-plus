@@ -45,7 +45,7 @@ class Select extends Control
         $options = [];
 
         if ($this->placeholder) {
-            $options[] = $this->convertToSelectOption(null, $this->placeholder, $this->value, false);
+            $options[] = $this->convertToSelectOption('', $this->placeholder, $this->value, false);
         }
 
         foreach ($this->options as $value => $display) {
