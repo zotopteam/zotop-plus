@@ -24,7 +24,8 @@ class StatusIcon extends Component
     /**
      * Create a new component instance.
      *
-     * @return void
+     * @param $status
+     * @param null $class
      */
     public function __construct(
         $status,

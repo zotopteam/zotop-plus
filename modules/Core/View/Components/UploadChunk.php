@@ -66,7 +66,16 @@ class UploadChunk extends Component
     /**
      * Create a new component instance.
      *
-     * @return void
+     * @param null $id
+     * @param string $icon
+     * @param null $text
+     * @param null $title
+     * @param null $type
+     * @param null $extensions
+     * @param array $params
+     * @param null $url
+     * @param bool $mutiple
+     * @param int $maxsize
      */
     public function __construct(
         $id         = null,
@@ -98,12 +107,12 @@ class UploadChunk extends Component
      */
     protected function getOptions()
     {
-        // 如果没有扩展名，则获取对应type的扩展名，获取不到则返回 * 
+        // 如果没有扩展名，则获取对应type的扩展名，获取不到则返回 *
         if (empty($this->extensions)) {
             $this->extensions = config("core.upload.types.{$this->type}.extensions", '*');
         }
 
-        // 如果没有传入type 
+        // 如果没有传入type
         if (empty($this->maxsize)) {
             $this->maxsize = config("core.upload.types.{$this->type}.maxsize", 1024);
         }

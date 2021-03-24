@@ -53,7 +53,12 @@ class SideBar extends Component
     /**
      * Create a new component instance.
      *
-     * @return void
+     * @param $data
+     * @param null $header
+     * @param null $footer
+     * @param null $class
+     * @param null $active
+     * @param string $view
      */
     public function __construct(
         $data,

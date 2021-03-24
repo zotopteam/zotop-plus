@@ -15,6 +15,8 @@ $router->group(['prefix' => 'navbar'], function (Router $router) {
         $router->get('edit/{id}', 'NavbarController@edit')->name('navbar.navbar.edit')->middleware('allow:navbar.navbar');
         $router->put('update/{id}', 'NavbarController@update')->name('navbar.navbar.update')->middleware('allow:navbar.navbar');
         $router->delete('destroy/{id}', 'NavbarController@destroy')->name('navbar.navbar.destroy')->middleware('allow:navbar.navbar');
+        $router->post('enable/{id}', 'NavbarController@enable')->name('navbar.navbar.enable')->middleware('allow:navbar.navbar');
+        $router->post('disable/{id}', 'NavbarController@disable')->name('navbar.navbar.disable')->middleware('allow:navbar.navbar');
     });
 
     // item
@@ -27,5 +29,22 @@ $router->group(['prefix' => 'navbar'], function (Router $router) {
         $router->get('edit/{id}', 'ItemController@edit')->name('navbar.item.edit')->middleware('allow:navbar.item');
         $router->put('update/{id}', 'ItemController@update')->name('navbar.item.update')->middleware('allow:navbar.item');
         $router->delete('destroy/{id}', 'ItemController@destroy')->name('navbar.item.destroy')->middleware('allow:navbar.item');
+        $router->post('enable/{id}', 'ItemController@enable')->name('navbar.item.enable')->middleware('allow:navbar.item');
+        $router->post('disable/{id}', 'ItemController@disable')->name('navbar.item.disable')->middleware('allow:navbar.item');
+    });
+
+    // field
+    $router->group(['prefix' => 'field'], function (Router $router) {
+        $router->get('{navbar_id}/index/{parent_id?}', 'FieldController@index')->name('navbar.field.index')->middleware('allow:navbar.field');
+        $router->get('{navbar_id}/create/{parent_id?}', 'FieldController@create')->name('navbar.field.create')->middleware('allow:navbar.field');
+        $router->any('{navbar_id}/sort/{parent_id?}', 'FieldController@sort')->name('navbar.field.sort')->middleware('allow:navbar.field');
+        $router->post('store', 'FieldController@store')->name('navbar.field.store')->middleware('allow:navbar.field');
+        $router->get('show/{id}', 'FieldController@show')->name('navbar.field.show')->middleware('allow:navbar.field');
+        $router->get('edit/{id}', 'FieldController@edit')->name('navbar.field.edit')->middleware('allow:navbar.field');
+        $router->put('update/{id}', 'FieldController@update')->name('navbar.field.update')->middleware('allow:navbar.field');
+        $router->delete('destroy/{id}', 'FieldController@destroy')->name('navbar.field.destroy')->middleware('allow:navbar.field');
+        $router->any('settings', 'FieldController@settings')->name('navbar.field.settings')->middleware('allow:navbar.field');
+        $router->post('enable/{id}', 'FieldController@enable')->name('navbar.field.enable')->middleware('allow:navbar.field');
+        $router->post('disable/{id}', 'FieldController@disable')->name('navbar.field.disable')->middleware('allow:navbar.field');
     });
 });

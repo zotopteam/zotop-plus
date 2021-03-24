@@ -22,7 +22,6 @@ class NavbarController extends Controller
     {
         $this->title = trans('navbar::navbar.title');
 
-        // 分页获取
         $this->navbars = Navbar::withCount('item')->filter($filter)->get();
 
         return $this->view();
@@ -44,7 +43,37 @@ class NavbarController extends Controller
             Navbar::where('id', $id)->update(['sort' => $i]);
         }
 
-        return $this->success(trans('master.operated'));
+        return $this->success(trans('master.operated'), route('navbar.navbar.index'));
+    }
+
+    /**
+     * 禁用
+     *
+     * @param \Modules\Navbar\Http\Requests\Admin\NavbarRequest $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function disable(NavbarRequest $request, $id)
+    {
+        $navbar = Navbar::findOrFail($id);
+        $navbar->disabled = BoolEnum::YES;
+        $navbar->save();
+
+        return $this->success(trans('master.updated'), route('navbar.navbar.index'));
+    }
+
+    /**
+     * 启用
+     *
+     * @param \Modules\Navbar\Http\Requests\Admin\NavbarRequest $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function enable(NavbarRequest $request, $id)
+    {
+        $navbar = Navbar::findOrFail($id);
+        $navbar->disabled = BoolEnum::NO;
+        $navbar->save();
+
+        return $this->success(trans('master.updated'), route('navbar.navbar.index'));
     }
 
     /**

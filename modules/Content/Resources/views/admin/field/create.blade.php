@@ -13,7 +13,7 @@
             <z-field type="submit" form="field-form" value="trans('master.save')" class="btn btn-primary"/>
         </div>
     </div>
-    
+
     <div class="main-body scrollable">
         <div class="container-fluid">
 
@@ -32,8 +32,8 @@
                     @if ($errors->has('label'))
                     <span class="form-help text-error">{{ $errors->first('label') }}</span>
                     @else
-                    <span class="form-help">{{trans('content::field.label.help')}}</span>                     
-                    @endif                       
+                    <span class="form-help">{{trans('content::field.label.help')}}</span>
+                    @endif
                 </div>
             </div>
 
@@ -49,12 +49,10 @@
                     @if ($errors->has('name'))
                     <span class="form-help text-error">{{ $errors->first('name') }}</span>
                     @else
-                    <span class="form-help">{{trans('content::field.name.help')}}</span>                     
-                    @endif                       
+                    <span class="form-help">{{trans('content::field.name.help')}}</span>
+                    @endif
                 </div>
             </div>
-
-
 
             <div class="form-group row">
                 <label for="type" class="col-2 col-form-label">{{trans('content::field.type.label')}}</label>
@@ -65,10 +63,11 @@
                     @if ($errors->has('type'))
                     <span class="form-help text-error">{{ $errors->first('type') }}</span>
                     @else
-                    <span class="form-help">{{trans('content::field.type.help')}}</span>                     
-                    @endif                       
+                    <span class="form-help">{{trans('content::field.type.help')}}</span>
+                    @endif
                 </div>
             </div>
+
 
             <div class="form-group row">
                 <label for="help" class="col-2 col-form-label">{{trans('content::field.help.label')}}</label>
@@ -78,14 +77,14 @@
                     @if ($errors->has('help'))
                     <span class="form-help text-error">{{ $errors->first('help') }}</span>
                     @else
-                    <span class="form-help">{{trans('content::field.help.help')}}</span>                     
-                    @endif                       
+                    <span class="form-help">{{trans('content::field.help.help')}}</span>
+                    @endif
                 </div>
-            </div>                      
+            </div>
 
             <div id="field-settings">
                 <i class="fa fa-spinner fa-spin d-none"></i>
-            </div>            
+            </div>
 
             <div class="form-group row">
                 <label for="default" class="col-2 col-form-label">{{trans('content::field.default.label')}}</label>
@@ -95,8 +94,8 @@
                     @if ($errors->has('default'))
                     <span class="form-help text-error">{{ $errors->first('default') }}</span>
                     @else
-                    <span class="form-help">{{trans('content::field.default.help')}}</span>                     
-                    @endif                       
+                    <span class="form-help">{{trans('content::field.default.help')}}</span>
+                    @endif
                 </div>
             </div>
 
@@ -110,8 +109,8 @@
                     @if ($errors->has('post'))
                     <span class="form-help text-error">{{ $errors->first('post') }}</span>
                     @else
-                    <span class="form-help">{{trans('content::field.post.help')}}</span>                     
-                    @endif                       
+                    <span class="form-help">{{trans('content::field.post.help')}}</span>
+                    @endif
                 </div>
             </div>
 
@@ -123,10 +122,10 @@
                     @if ($errors->has('position'))
                     <span class="form-help text-error">{{ $errors->first('position') }}</span>
                     @else
-                    <span class="form-help">{{trans('content::field.position.help')}}</span>                     
-                    @endif                       
+                    <span class="form-help">{{trans('content::field.position.help')}}</span>
+                    @endif
                 </div>
-            </div>  
+            </div>
 
             </z-form>
 

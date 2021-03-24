@@ -4,9 +4,25 @@ namespace Modules\Navbar\Http\Requests\Admin;
 
 use App\Modules\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Factory as ValidationFactory;
+use Illuminate\Validation\Rule;
 
 class NavbarRequest extends FormRequest
 {
+    /**
+     * FieldRequest constructor.
+     *
+     * @param \Illuminate\Validation\Factory $validationFactory
+     */
+    public function __construct(ValidationFactory $validationFactory)
+    {
+        parent::__construct();
+
+        $validationFactory->extend('slug', function ($attribute, $value, $parameters) {
+            return preg_match('/^[a-z]+[a-z0-9_-]+[a-z0-9]+$/', $value);
+        }, trans('navbar::navbar.slug.help'));
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,20 +42,19 @@ class NavbarRequest extends FormRequest
     public function rules(Request $request)
     {
         $rules = [
-            'title'  => 'nullable|string|max:200',
-            'slug'   => 'nullable|string|max:200',
-            'sort'   => 'required|integer|min:0',
-            'status' => 'required|integer',
+            'title' => 'required|string|max:200',
+            'slug'  => ['required', 'string', 'max:200', 'slug'],
+            'sort'  => 'required|integer|min:0',
         ];
 
         //添加时
-        if ( $request->isMethod('POST') ) {
-            $rules = [];
+        if ($request->isMethod('POST')) {
+            $rules['slug'][] = Rule::unique('navbar');
         }
 
         // 修改时
-        if ( $request->isMethod('PUT')  || $request->isMethod('PATCH') )  {
-            $rules = [];
+        if ($request->isMethod('PUT') || $request->isMethod('PATCH')) {
+            $rules['slug'][] = Rule::unique('navbar')->ignore($this->route('id'));
         }
 
         return $rules;
@@ -53,10 +68,9 @@ class NavbarRequest extends FormRequest
     public function messages()
     {
         return [
-            'title'  => trans('navbar::navbar.title.help'),
-            'slug'   => trans('navbar::navbar.slug.help'),
-            'sort'   => trans('navbar::navbar.sort.help'),
-            'status' => trans('navbar::navbar.status.help'),
+            'title' => trans('navbar::navbar.title.help'),
+            'slug'  => trans('navbar::navbar.slug.help'),
+            'sort'  => trans('navbar::navbar.sort.help'),
         ];
     }
 
@@ -68,10 +82,9 @@ class NavbarRequest extends FormRequest
     public function attributes()
     {
         return [
-            'title'  => trans('navbar::navbar.title.label'),
-            'slug'   => trans('navbar::navbar.slug.label'),
-            'sort'   => trans('navbar::navbar.sort.label'),
-            'status' => trans('navbar::navbar.status.label'),
+            'title' => trans('navbar::navbar.title.label'),
+            'slug'  => trans('navbar::navbar.slug.label'),
+            'sort'  => trans('navbar::navbar.sort.label'),
         ];
     }
 }

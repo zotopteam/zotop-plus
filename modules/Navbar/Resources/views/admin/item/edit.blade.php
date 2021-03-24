@@ -1,6 +1,8 @@
 @extends('layouts.master')
 
 @section('content')
+    @include('navbar::sidebar', ['navbar_id'=>$item->navbar_id])
+
     <div class="main">
         <div class="main-header">
             <div class="main-back">
@@ -63,31 +65,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="custom"
-                               class="col-2 col-form-label ">{{trans('navbar::item.custom.label')}}</label>
-                        <div class="col-10">
-                            <z-field type="text" name="custom"/>
-                            @if ($errors->has('custom'))
-                                <span class="form-help text-error">{{ $errors->first('custom') }}</span>
-                            @else
-                                <span class="form-help">{{trans('navbar::item.custom.help')}}</span>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="sort"
-                               class="col-2 col-form-label required">{{trans('navbar::item.sort.label')}}</label>
-                        <div class="col-10">
-                            <z-field type="number" name="sort" required="required" min="0"/>
-                            @if ($errors->has('sort'))
-                                <span class="form-help text-error">{{ $errors->first('sort') }}</span>
-                            @else
-                                <span class="form-help">{{trans('navbar::item.sort.help')}}</span>
-                            @endif
-                        </div>
-                    </div>
+                    @foreach ($form->fields() as $item)
+                        @include('navbar::item.field')
+                    @endforeach
 
                     <div class="form-group row">
                         <label for="disabled"

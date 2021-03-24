@@ -2,29 +2,28 @@
 
 namespace Modules\Navbar\Models;
 
+use App\Modules\Facades\Module;
 use App\Support\Eloquent\Model;
-use App\Support\Eloquent\Traits\Nestable;
 use App\Support\Enums\BoolEnum;
 use App\Support\Enums\SortEnum;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 
-class Item extends Model
+class Field extends Model
 {
-    use Nestable;
-
     /**
      * 与模型关联的数据表
      *
      * @var string
      */
-    protected $table = 'navbar_item';
+    protected $table = 'navbar_field';
 
     /**
      * 可以被批量赋值的属性
      *
      * @var array
      */
-    protected $fillable = ['id', 'navbar_id', 'parent_id', 'title', 'link', 'custom', 'sort', 'disabled', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'navbar_id', 'parent_id', 'label', 'type', 'name', 'default', 'settings', 'help', 'sort', 'disabled', 'created_at', 'updated_at'];
 
     /**
      * 不可被批量赋值的属性
@@ -39,7 +38,7 @@ class Item extends Model
      * @var array
      */
     protected $casts = [
-        'custom' => 'json',
+        'settings' => 'json',
     ];
 
     /**
@@ -62,7 +61,7 @@ class Item extends Model
             $builder->orderBy('sort', SortEnum::ASC)->orderBy('id', SortEnum::ASC);
         });
     }
-    
+
     /**
      * 只查询可用数据作用域
      *
@@ -73,4 +72,34 @@ class Item extends Model
     {
         return $query->where('disabled', BoolEnum::NO);
     }
+
+    /**
+     * 获取模型支持的字段类型
+     *
+     * @param string|null $type
+     * @param string|null $key
+     * @param mixed $default
+     * @return mixed
+     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public static function types($type = null, $key = null, $default = null)
+    {
+        static $types = [];
+
+        if (empty($types)) {
+            $types = Module::data('navbar::field.types');
+        }
+
+        if (isset($type) && isset($key)) {
+            return Arr::get($types, $type . '.' . $key, $default);
+        }
+
+        if (isset($type)) {
+            return Arr::get($types, $type);
+        }
+
+        return collect($types);
+    }
+
 }

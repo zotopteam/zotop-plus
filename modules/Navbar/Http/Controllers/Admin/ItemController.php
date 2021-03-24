@@ -9,6 +9,7 @@ use Modules\Navbar\Http\Requests\Admin\ItemRequest;
 use Modules\Navbar\Models\Item;
 use Modules\Navbar\Models\Navbar;
 use Modules\Navbar\Models\QueryFilters\ItemFilter;
+use Modules\Navbar\Support\ItemForm;
 
 class ItemController extends Controller
 {
@@ -30,7 +31,6 @@ class ItemController extends Controller
         $this->navbar = Navbar::find($navbarId);
         $this->parents = $parentId ? Item::find($parentId)->parents : [];
 
-        // 分页获取
         $this->items = Item::withCount('child')
             ->filter($filter)
             ->where('navbar_id', $navbarId)
@@ -55,10 +55,46 @@ class ItemController extends Controller
         $ids = $request->input('ids');
 
         foreach ($ids as $i => $id) {
-            Navbar::where('id', $id)->update(['sort' => $i]);
+            Item::where('id', $id)->update(['sort' => $i]);
         }
 
         return $this->success(trans('master.operated'));
+    }
+
+    /**
+     * 禁用
+     *
+     * @param \Modules\Navbar\Http\Requests\Admin\NavbarRequest $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function disable(Request $request, $id)
+    {
+        $item = Item::findOrFail($id);
+        $item->disabled = BoolEnum::YES;
+        $item->save();
+
+        return $this->success(trans('master.updated'), route('navbar.item.index', [
+            'navbar_id' => $item->navbar_id,
+            'parent_id' => $item->parent_id,
+        ]));
+    }
+
+    /**
+     * 启用
+     *
+     * @param \Modules\Navbar\Http\Requests\Admin\NavbarRequest $request
+     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function enable(Request $request, $id)
+    {
+        $item = Item::findOrFail($id);
+        $item->disabled = BoolEnum::NO;
+        $item->save();
+
+        return $this->success(trans('master.updated'), route('navbar.item.index', [
+            'navbar_id' => $item->navbar_id,
+            'parent_id' => $item->parent_id,
+        ]));
     }
 
     /**
@@ -76,11 +112,14 @@ class ItemController extends Controller
         $this->parent_id = $parentId;
         $this->parents = $parentId ? Item::find($parentId)->parents : [];
 
+        $this->form = ItemForm::instance($navbarId, $parentId);
+
         $this->item = Item::findOrNew(0);
         $this->item->navbar_id = $navbarId;
         $this->item->parent_id = $parentId;
         $this->item->sort = Item::where('navbar_id', $navbarId)->where('parent_id', $parentId)->max('sort') + 1;
         $this->item->disabled = BoolEnum::NO;
+        $this->item->custom = $this->form->default();
 
         return $this->view();
     }
@@ -130,6 +169,8 @@ class ItemController extends Controller
 
         $this->id = $id;
         $this->item = Item::findOrFail($id);
+
+        $this->form = ItemForm::instance($this->item->navbar_id, $this->item->parent_id);
 
         return $this->view();
     }

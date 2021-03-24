@@ -1,13 +1,10 @@
 @extends('layouts.master')
 
 @section('content')
+    @include('navbar::sidebar')
+
     <div class="main">
         <div class="main-header">
-            <div class="main-back">
-                <a href="{{route('navbar.item.index', 0)}}">
-                    <i class="fa fa-angle-left"></i><b>{{trans('master.back')}}</b>
-                </a>
-            </div>
             <div class="main-title mr-auto">
                 {{$title}}
             </div>
@@ -58,6 +55,17 @@
                                     <a class="manage-item" href="{{route('navbar.navbar.edit', $navbar->id)}}">
                                         <i class="fa fa-edit"></i> {{trans('master.edit')}}
                                     </a>
+                                    @if($navbar->disabled)
+                                        <a class="manage-item js-post"
+                                           href="{{route('navbar.navbar.enable', $navbar->id)}}">
+                                            <i class="fa fa-check-circle"></i> {{trans('master.enable')}}
+                                        </a>
+                                    @else
+                                        <a class="manage-item js-post"
+                                           href="{{route('navbar.navbar.disable', $navbar->id)}}">
+                                            <i class="fa fa-times-circle"></i> {{trans('master.disable')}}
+                                        </a>
+                                    @endif
                                     <a class="manage-item js-delete" href="javascript:;"
                                        data-url="{{route('navbar.navbar.destroy', $navbar->id)}}">
                                         <i class="fa fa-times"></i> {{trans('master.delete')}}

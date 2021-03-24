@@ -1,6 +1,8 @@
 @extends('layouts.master')
 
 @section('content')
+    @include('navbar::sidebar', ['navbar_id'=>$navbar->id])
+
     <div class="main">
         <div class="main-header">
             <div class="main-back">
@@ -21,9 +23,10 @@
                         autocomplete="off">
 
                     <div class="form-group row">
-                        <label for="title" class="col-2 col-form-label ">{{trans('navbar::navbar.title.label')}}</label>
+                        <label for="title"
+                               class="col-2 col-form-label required">{{trans('navbar::navbar.title.label')}}</label>
                         <div class="col-10">
-                            <z-field type="text" name="title" maxlength="200">
+                            <z-field type="text" name="title" required="required" maxlength="200">
                                 @if ($errors->has('title'))
                                     <span class="form-help text-error">{{ $errors->first('title') }}</span>
                                 @else
@@ -33,9 +36,10 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="slug" class="col-2 col-form-label ">{{trans('navbar::navbar.slug.label')}}</label>
+                        <label for="slug"
+                               class="col-2 col-form-label required">{{trans('navbar::navbar.slug.label')}}</label>
                         <div class="col-10">
-                            <z-field type="slug" name="slug" maxlength="200">
+                            <z-field type="slug" name="slug" required="required" maxlength="200">
                                 @if ($errors->has('slug'))
                                     <span class="form-help text-error">{{ $errors->first('slug') }}</span>
                                 @else

@@ -58,7 +58,14 @@ class Search extends Component
     /**
      * Create a new component instance.
      *
-     * @return void
+     * @param bool $action
+     * @param null $params
+     * @param array $except
+     * @param bool $cancel
+     * @param null $class
+     * @param null $placeholder
+     * @param null $search
+     * @param string $view
      */
     public function __construct(
         $action = true,
