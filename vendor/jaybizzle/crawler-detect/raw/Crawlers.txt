@@ -428,6 +428,7 @@ Google-Podcast
 Google PP Default
 Google Search Console
 Google Web Preview
+Google-Ads-Creatives-Assistant
 Google-Ads-Overview
 Google-Adwords
 Google-Apps-Script
@@ -789,6 +790,7 @@ nWormFeedFinder
 nyawc\/
 Nymesis
 NYU
+Observatory\/
 Ocelli\/
 Octopus
 oegp
@@ -861,6 +863,7 @@ pinterest\.com
 Pixray
 Pizilla
 Plagger\/
+Pleroma 
 Ploetz \+ Zeller
 Plukkie
 plumanalytics
@@ -880,12 +883,14 @@ PostPost
 postrank
 PowerPoint\/
 Prebid
+Prerender
 Priceonomics Analysis Engine
 PrintFriendly
 PritTorrent
 Prlog
 probethenet
 Project ?25499
+Project-Resonance
 prospectb2b
 Protopage
 ProWebWalker
@@ -1094,6 +1099,7 @@ tAkeOut
 Tarantula\/
 Taringa UGC
 TarmotGezgin
+tchelebi\.io
 techiaith\.cymru
 Teleport
 Telesoft

@@ -47,14 +47,20 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
      * @param  string  $table
      * @param  string  $default
      * @param  int  $retryAfter
+     * @param  bool  $dispatchAfterCommit
      * @return void
      */
-    public function __construct(Connection $database, $table, $default = 'default', $retryAfter = 60)
+    public function __construct(Connection $database,
+                                $table,
+                                $default = 'default',
+                                $retryAfter = 60,
+                                $dispatchAfterCommit = false)
     {
         $this->table = $table;
         $this->default = $default;
         $this->database = $database;
         $this->retryAfter = $retryAfter;
+        $this->dispatchAfterCommit = $dispatchAfterCommit;
     }
 
     /**
@@ -247,8 +253,8 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
         $databaseEngine = $this->database->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME);
         $databaseVersion = $this->database->getConfig('version') ?? $this->database->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
 
-        if ($databaseEngine == 'mysql' && ! strpos($databaseVersion, 'MariaDB') && version_compare($databaseVersion, '8.0.1', '>=') ||
-            $databaseEngine == 'pgsql' && version_compare($databaseVersion, '9.5', '>=')) {
+        if ($databaseEngine === 'mysql' && ! strpos($databaseVersion, 'MariaDB') && version_compare($databaseVersion, '8.0.1', '>=') ||
+            $databaseEngine === 'pgsql' && version_compare($databaseVersion, '9.5', '>=')) {
             return 'FOR UPDATE SKIP LOCKED';
         }
 

@@ -63,7 +63,7 @@ class MailManager implements FactoryContract
      * Get a mailer instance by name.
      *
      * @param  string|null  $name
-     * @return \Illuminate\Mail\Mailer
+     * @return \Illuminate\Contracts\Mail\Mailer
      */
     public function mailer($name = null)
     {
@@ -327,10 +327,15 @@ class MailManager implements FactoryContract
      */
     protected function createPostmarkTransport(array $config)
     {
+        $headers = isset($config['message_stream_id']) ? [
+            'X-PM-Message-Stream' => $config['message_stream_id'],
+        ] : [];
+
         return tap(new PostmarkTransport(
-            $config['token'] ?? $this->app['config']->get('services.postmark.token')
+            $config['token'] ?? $this->app['config']->get('services.postmark.token'),
+            $headers
         ), function ($transport) {
-            $transport->registerPlugin(new ThrowExceptionOnFailurePlugin());
+            $transport->registerPlugin(new ThrowExceptionOnFailurePlugin);
         });
     }
 
