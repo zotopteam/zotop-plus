@@ -2,6 +2,8 @@
 
 namespace App\Modules\Maker;
 
+use Illuminate\Support\Arr;
+
 class Structure
 {
 
@@ -211,7 +213,7 @@ class Structure
         }
 
         // 复合索引字段排序键名重置
-        $index['columns'] = array_sort(array_unique($index['columns']));
+        $index['columns'] = Arr::sort(array_unique($index['columns']));
         $index['name'] = implode('_', $index['columns']);
 
         // 主键处理

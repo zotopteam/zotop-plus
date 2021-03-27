@@ -130,16 +130,47 @@ class MigrationMakeCreateCommand extends GeneratorCommand
      */
     public function generated()
     {
+        $table = Table::find($this->getTableName());
+
+        // migrate 将强制迁移
         if ($this->option('migrate')) {
+            if ($table->exists()) {
+                $table->drop();
+            }
+            $this->migrateThisFile();
+            return;
+        }
 
-            $path = $this->getFilePath();
-
-            $this->call('migrate:files', [
-                'files'   => $this->getModulePath($path),
-                '--force' => true,
-            ]);
+        if ($table->exists()) {
+            // 如果表已经存在，询问是否删除表并执行迁移
+            if ($this->confirm("The table [{$table}]  has existed, Do you want to drop the table and migrate it?", true)) {
+                $table->drop();
+                $this->migrateThisFile();
+            }
+        } else {
+            // 表不存在，询问是否迁移
+            if ($this->confirm("Do you want to migrate it?", true)) {
+                $this->migrateThisFile();
+            }
         }
     }
+
+    /**
+     * 迁移生成的文件
+     *
+     * @author Chen Lei
+     * @date 2021-03-27
+     */
+    protected function migrateThisFile()
+    {
+        $path = $this->getFilePath();
+
+        $this->call('migrate:files', [
+            'files'   => $this->getModulePath($path),
+            '--force' => true,
+        ]);
+    }
+
 
     /**
      * 获取表名称

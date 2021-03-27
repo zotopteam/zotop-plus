@@ -2,8 +2,8 @@
 
 namespace App\Modules\Commands;
 
-use Illuminate\Support\Str;
 use App\Modules\Maker\GeneratorCommand;
+use Illuminate\Support\Str;
 
 class ListenerMakeCommand extends GeneratorCommand
 {
@@ -34,18 +34,21 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * 目标路径键名，用于从config中获取对应路径 config(”modules.paths.dirs.{$dirKey}“)
+     *
      * @var null
      */
     protected $dirKey = 'listener';
 
     /**
      * stub 用于从stubs中获取stub
+     *
      * @var string
      */
     protected $stub = 'listener';
 
     /**
      * 重载prepare
+     *
      * @return boolean
      */
     public function prepare()
@@ -57,7 +60,7 @@ class ListenerMakeCommand extends GeneratorCommand
             $this->stub = $this->option('queued') ? 'listener-queued' : 'listener';
 
             $this->replace([
-                'event_name'     => $this->getEventName(),
+                'event_name'      => $this->getEventName(),
                 'event_full_name' => $this->getEventFullName(),
             ]);
         }
@@ -67,6 +70,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * 获取事件的类名称
+     *
      * @return string
      */
     protected function getEventName()
@@ -76,6 +80,7 @@ class ListenerMakeCommand extends GeneratorCommand
 
     /**
      * 获取事件的类名称，带命名空间
+     *
      * @return string
      */
     protected function getEventFullName()
