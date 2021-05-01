@@ -3,7 +3,7 @@
 namespace Modules\Content\View\Components;
 
 use Illuminate\View\Component;
-use App\Support\Facades\Filter;
+use Zotop\Support\Facades\Filter;
 
 class ContentList extends Component
 {

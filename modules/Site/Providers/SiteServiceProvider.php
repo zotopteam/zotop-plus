@@ -2,8 +2,8 @@
 
 namespace Modules\Site\Providers;
 
-use App\Modules\Support\ServiceProvider;
-use App\Support\Facades\Form;
+use Zotop\Modules\Support\ServiceProvider;
+use Zotop\Support\Facades\Form;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Facades\Agent;

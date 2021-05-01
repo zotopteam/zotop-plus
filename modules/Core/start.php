@@ -1,7 +1,7 @@
 <?php
 
-use App\Modules\Facades\Module;
-use App\Support\Facades\Filter;
+use Zotop\Modules\Facades\Module;
+use Zotop\Support\Facades\Filter;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;

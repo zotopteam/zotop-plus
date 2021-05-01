@@ -2,7 +2,7 @@
 
 namespace Modules\Content\Models;
 
-use App\Support\Eloquent\Model as BaseModel;
+use Zotop\Support\Eloquent\Model as BaseModel;
 use Module;
 use Modules\Content\Support\ModelTable;
 

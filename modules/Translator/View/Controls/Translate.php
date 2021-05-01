@@ -2,7 +2,7 @@
 
 namespace Modules\Translator\View\Controls;
 
-use App\Support\Form\Control;
+use Zotop\Support\Form\Control;
 use Illuminate\Support\Arr;
 
 class Translate extends Control

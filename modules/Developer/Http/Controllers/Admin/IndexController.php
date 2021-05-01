@@ -2,7 +2,7 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 
 

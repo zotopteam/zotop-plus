@@ -2,7 +2,7 @@
 
 namespace Modules\Content\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Content\Http\Requests\FieldRequest;
@@ -44,7 +44,7 @@ class FieldController extends AdminController
      *
      * @param \Illuminate\Http\Request $request
      * @param string $model_id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-17
      */
@@ -84,7 +84,7 @@ class FieldController extends AdminController
      * 保存
      *
      * @param \Modules\Content\Http\Requests\FieldRequest $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-17
      */
@@ -122,7 +122,7 @@ class FieldController extends AdminController
      *
      * @param \Modules\Content\Http\Requests\FieldRequest $request
      * @param int $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-17
      */
@@ -140,7 +140,7 @@ class FieldController extends AdminController
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-17
      */
@@ -158,7 +158,7 @@ class FieldController extends AdminController
      *
      * @param string $model_id
      * @param int $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-17
      */
@@ -180,7 +180,7 @@ class FieldController extends AdminController
      *
      * @param string $model_id
      * @param int $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-17
      */

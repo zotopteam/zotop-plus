@@ -2,8 +2,8 @@
 
 namespace Modules\Core\Http\Controllers\Api;
 
-use App\Modules\Routing\ApiController;
-use App\Support\ImageFilter;
+use Zotop\Modules\Routing\ApiController;
+use Zotop\Support\ImageFilter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
@@ -14,7 +14,7 @@ class ImageController extends ApiController
 {
     /**
      * 图片预览
-     * 
+     *
      * @return Response
      */
     public function preview(Request $request, $filter, $disk, $path)
@@ -46,7 +46,7 @@ class ImageController extends ApiController
             //     } else {
             //         $image->resize($width, $height, function($constraint){
             //             $constraint->aspectRatio();
-            //             $constraint->upsize();       
+            //             $constraint->upsize();
             //         });
             //     }
             // }

@@ -2,7 +2,7 @@
 
 namespace Modules\Navbar\Http\Requests\Admin;
 
-use App\Modules\Http\FormRequest;
+use Zotop\Modules\Http\FormRequest;
 use Illuminate\Http\Request;
 
 class ItemRequest extends FormRequest

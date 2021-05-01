@@ -3,10 +3,10 @@
 namespace Modules\Developer\Http\Controllers\Admin;
 
 
-use App\Modules\Facades\Module;
-use App\Modules\Maker\Structure;
-use App\Modules\Maker\Table;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Facades\Module;
+use Zotop\Modules\Maker\Structure;
+use Zotop\Modules\Maker\Table;
+use Zotop\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -45,7 +45,7 @@ class TableController extends AdminController
      *
      * @param \Illuminate\Http\Request $request
      * @param string $module
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function create(Request $request, string $module)
@@ -104,7 +104,7 @@ class TableController extends AdminController
      * @param string $module module name
      * @param string $table table name
      * @return \Illuminate\Contracts\View\View
-     * @throws \App\Modules\Exceptions\TableNotFoundException
+     * @throws \Zotop\Modules\Exceptions\TableNotFoundException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function manage(Request $request, $module, $table)
@@ -131,8 +131,8 @@ class TableController extends AdminController
      * @param \Illuminate\Http\Request $request
      * @param string $module
      * @param string $table
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
-     * @throws \App\Modules\Exceptions\TableNotFoundException
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @throws \Zotop\Modules\Exceptions\TableNotFoundException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function edit(Request $request, string $module, string $table)
@@ -173,8 +173,8 @@ class TableController extends AdminController
      * @param \Illuminate\Http\Request $request
      * @param string $module
      * @param string $table
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
-     * @throws \App\Modules\Exceptions\TableNotFoundException
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @throws \Zotop\Modules\Exceptions\TableNotFoundException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function drop(Request $request, string $module, string $table)
@@ -198,8 +198,8 @@ class TableController extends AdminController
      * @param string $module
      * @param string $table
      * @param string $action
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
-     * @throws \App\Modules\Exceptions\TableNotFoundException
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @throws \Zotop\Modules\Exceptions\TableNotFoundException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function migration(string $module, string $table, $action = 'create')
@@ -225,8 +225,8 @@ class TableController extends AdminController
      * @param string $module
      * @param string $table
      * @param null $force
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
-     * @throws \App\Modules\Exceptions\TableNotFoundException
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @throws \Zotop\Modules\Exceptions\TableNotFoundException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @author Chen Lei
      * @date 2020-11-16
@@ -302,13 +302,13 @@ class TableController extends AdminController
     /**
      * 获取表的模型名称，去掉表名称开始的模块名称+下划线，转换为变种驼峰
      *
-     * @param \App\Modules\Module $module
-     * @param \App\Modules\Maker\Table $table
+     * @param \Zotop\Modules\Module $module
+     * @param \Zotop\Modules\Maker\Table $table
      * @return string
      * @author Chen Lei
      * @date 2020-11-17
      */
-    private function getModelName(\App\Modules\Module $module, Table $table)
+    private function getModelName(\Zotop\Modules\Module $module, Table $table)
     {
         $name = Str::after($table->name(), $module->getLowerName() . '_');
 
@@ -318,11 +318,11 @@ class TableController extends AdminController
     /**
      * 检查表当前模块下对应的模型是否存在
      *
-     * @param \App\Modules\Module $module
-     * @param \App\Modules\Maker\Table $table
+     * @param \Zotop\Modules\Module $module
+     * @param \Zotop\Modules\Maker\Table $table
      * @return boolean
      */
-    private function isModelFile(\App\Modules\Module $module, $table)
+    private function isModelFile(\Zotop\Modules\Module $module, $table)
     {
         $path = $module->getPath('model', true) . DIRECTORY_SEPARATOR . $this->getModelName($module, $table) . '.php';
 
@@ -332,8 +332,8 @@ class TableController extends AdminController
     /**
      * 获取当前模块下和表相关的迁移文件
      *
-     * @param \App\Modules\Module $module
-     * @param \App\Modules\Maker\Table $table
+     * @param \Zotop\Modules\Module $module
+     * @param \Zotop\Modules\Maker\Table $table
      * @return array
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */

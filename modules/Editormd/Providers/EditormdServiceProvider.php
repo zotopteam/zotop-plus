@@ -2,9 +2,9 @@
 
 namespace Modules\Editormd\Providers;
 
-use App\Modules\Support\ServiceProvider;
-use App\Support\Facades\Filter;
-use App\Support\Facades\Form;
+use Zotop\Modules\Support\ServiceProvider;
+use Zotop\Support\Facades\Filter;
+use Zotop\Support\Facades\Form;
 use Modules\Editormd\View\Controls\Code;
 use Modules\Editormd\View\Controls\Markdown;
 

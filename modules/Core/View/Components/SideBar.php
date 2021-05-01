@@ -2,7 +2,7 @@
 
 namespace Modules\Core\View\Components;
 
-use App\Support\Facades\Html;
+use Zotop\Support\Facades\Html;
 use Illuminate\Support\Arr;
 use Illuminate\View\Component;
 

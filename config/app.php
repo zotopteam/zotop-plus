@@ -244,9 +244,9 @@ return [
          * Custom Service Providers...
          */
         App\Providers\InstallServiceProvider::class,
-        App\Modules\ModulesServiceProvider::class,
-        App\Themes\ThemesServiceProvider::class,
-        App\Support\SupportServiceProvider::class,
+        Zotop\Modules\ModulesServiceProvider::class,
+        Zotop\Themes\ThemesServiceProvider::class,
+        Zotop\Support\SupportServiceProvider::class,
     ],
 
     /*
@@ -298,12 +298,12 @@ return [
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
 
-        'Module' => App\Modules\Facades\Module::class,
-        'Theme'  => App\Themes\Facades\Theme::class,
-        'Form'   => App\Support\Facades\Form::class,
-        'Html'   => App\Support\Facades\Html::class,
-        'Filter' => App\Support\Facades\Filter::class,
-        'Action' => App\Support\Facades\Action::class,
+        'Module'       => Zotop\Modules\Facades\Module::class,
+        'Theme'        => Zotop\Themes\Facades\Theme::class,
+        'Form'         => Zotop\Support\Facades\Form::class,
+        'Html'         => Zotop\Support\Facades\Html::class,
+        'Filter'       => Zotop\Support\Facades\Filter::class,
+        'Action'       => Zotop\Support\Facades\Action::class,
     ],
 
 ];

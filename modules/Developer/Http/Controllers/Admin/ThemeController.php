@@ -2,8 +2,8 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController as Controller;
-use App\Themes\Facades\Theme;
+use Zotop\Modules\Routing\AdminController as Controller;
+use Zotop\Themes\Facades\Theme;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
@@ -77,6 +77,6 @@ class ThemeController extends Controller
             '--type' => $request->input('type'),
         ]);
 
-        return $this->success(trans('master.created'), route('developer.theme.index'));     
-    }   
+        return $this->success(trans('master.created'), route('developer.theme.index'));
+    }
 }

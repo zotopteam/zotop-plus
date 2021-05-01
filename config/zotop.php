@@ -7,7 +7,7 @@ return [
     | Name
     |--------------------------------------------------------------------------
     |
-    | This value is the name of zotop. 
+    | This value is the name of zotop.
     */
 
     'name' => 'zotop',
@@ -20,7 +20,7 @@ return [
     | This value is the version of zotop.
     */
 
-    'version' => '3.8.1109',
+    'version' => '8.0.0327',
 
 
     /*
@@ -28,10 +28,10 @@ return [
     | Release
     |--------------------------------------------------------------------------
     |
-    | This value is the release of zotop. 
+    | This value is the release of zotop.
     */
 
-    'release' => '20201109',
+    'release' => '20210327',
 
     /*
     |--------------------------------------------------------------------------

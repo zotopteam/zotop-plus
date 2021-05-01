@@ -2,8 +2,8 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use App\Modules\Facades\Module;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Facades\Module;
+use Zotop\Modules\Routing\AdminController;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,7 +14,7 @@ class PermissionController extends AdminController
 {
    /**
      * 权限
-     * 
+     *
      * @param  Request $request
      * @param  string $module 模块名称
      * @return mixed
@@ -22,12 +22,12 @@ class PermissionController extends AdminController
     public function index(Request $request, $module)
     {
         $this->title       = trans('developer::command.title');
-        
+
         $this->name        = $module;
         $this->module      = Module::findOrFail($module);
         $this->path        = $this->module->getPath('permission.php');
         $this->permissions = File::exists($this->path) ? include($this->path) : [];
-        
+
         // 从全局路由中获取模块所有的allows中的节点，用于和当前权限比对
         $this->allows      = $this->getRoutesPermissions($module);
 
@@ -36,12 +36,12 @@ class PermissionController extends AdminController
 
     /**
      * 扫描路由生成权限，原有权限将重命名为permission_bak.php
-     * 
-     * @param  string $module 模块名称 
+     *
+     * @param  string $module 模块名称
      * @return mixed
      */
     public function scan(Request $request, $module)
-    {        
+    {
         $this->module      = Module::findOrFail($module);
 
         if ($this->module->isDisabled()) {
@@ -54,7 +54,7 @@ class PermissionController extends AdminController
         if (File::exists($this->path)) {
             $bak = $this->module->getPath('permission_'.now()->format('YmdHis').'.php');
             File::move($this->path, $bak);
-        } 
+        }
 
         // 从路由中获取模块的全部权限设定
         if ($permissions = $this->getRoutesPermissions($module)) {
@@ -67,7 +67,7 @@ class PermissionController extends AdminController
 
     /**
      * 从路由中获取allow权限节点并组装成权限数组
-     * 
+     *
      * @param  string $module 模块名称
      * @return array
      */
@@ -94,12 +94,12 @@ class PermissionController extends AdminController
             }
         }
 
-        return  $permissions;      
+        return  $permissions;
     }
 
     /**
      * 获取模块所有的allow中间件权限节点
-     * 
+     *
      * @param  [type] $module [description]
      * @return [type]         [description]
      */

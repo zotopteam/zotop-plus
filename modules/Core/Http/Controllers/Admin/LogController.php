@@ -4,7 +4,7 @@ namespace Modules\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Routing\AdminController;
 use Modules\Core\Models\Log;
 use Modules\Core\Models\QueryFilters\LogFilter;
 
@@ -31,7 +31,7 @@ class LogController extends AdminController
      * 清理日志
      *
      * @param \Illuminate\Http\Request $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-23
      */

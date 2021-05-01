@@ -4,7 +4,7 @@ namespace Modules\Block\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\FrontController;
+use Zotop\Modules\Routing\FrontController;
 use Modules\Block\Models\Block;
 
 

@@ -2,7 +2,7 @@
 
 namespace Modules\Core\View\Controls;
 
-use App\Support\Form\Control;
+use Zotop\Support\Form\Control;
 
 class Editor extends Control
 {

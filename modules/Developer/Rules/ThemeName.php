@@ -2,7 +2,7 @@
 
 namespace Modules\Developer\Rules;
 
-use App\Themes\Facades\Theme;
+use Zotop\Themes\Facades\Theme;
 use Illuminate\Contracts\Validation\Rule;
 
 class ThemeName implements Rule

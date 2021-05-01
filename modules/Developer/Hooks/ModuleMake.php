@@ -2,7 +2,7 @@
 
 namespace Modules\Developer\Hooks;
 
-use App\Modules\Facades\Module;
+use Zotop\Modules\Facades\Module;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
@@ -32,7 +32,7 @@ class ModuleMake
             'module' => $module,
             'name'   => 'index',
             '--type' => 'api',
-        ]);        
+        ]);
     }
 
 

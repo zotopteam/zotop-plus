@@ -2,8 +2,8 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use App\Modules\Facades\Module;
-use App\Modules\Routing\AdminController as Controller;
+use Zotop\Modules\Facades\Module;
+use Zotop\Modules\Routing\AdminController as Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -12,7 +12,7 @@ class FormController extends Controller
     /**
      * 首页
      *
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function index(Request $request)
     {
@@ -38,7 +38,7 @@ class FormController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param string $control
      * @return \Illuminate\Contracts\View\View
-     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Zotop\Modules\Exceptions\ModuleNotFoundException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @author Chen Lei
      * @date 2020-12-26

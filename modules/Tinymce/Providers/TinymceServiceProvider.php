@@ -2,9 +2,9 @@
 
 namespace Modules\Tinymce\Providers;
 
-use App\Modules\Support\ServiceProvider;
-use App\Support\Facades\Filter;
-use App\Support\Facades\Form;
+use Zotop\Modules\Support\ServiceProvider;
+use Zotop\Support\Facades\Filter;
+use Zotop\Support\Facades\Form;
 use Modules\Tinymce\View\Controls\Editor;
 
 class TinymceServiceProvider extends ServiceProvider

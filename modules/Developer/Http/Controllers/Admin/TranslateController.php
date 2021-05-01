@@ -2,9 +2,9 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use App\Modules\Facades\Module;
-use App\Modules\Maker\Lang;
-use App\Modules\Routing\AdminController as Controller;
+use Zotop\Modules\Facades\Module;
+use Zotop\Modules\Maker\Lang;
+use Zotop\Modules\Routing\AdminController as Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
@@ -15,15 +15,15 @@ class TranslateController extends Controller
 {
     /**
      * 首页
-     * 
-     * @param  Request $request 
+     *
+     * @param  Request $request
      * @param  string  $module 模块名称
      * @return Response
      */
     public function index(Request $request, $module)
     {
         $this->title     = trans('developer::translate.title');
-        $this->locale    = config('app.locale');        
+        $this->locale    = config('app.locale');
         $this->module    = Module::findOrFail($module);
         $this->languages = Module::data('core::config.languages');
 
@@ -42,7 +42,7 @@ class TranslateController extends Controller
      * 新建翻译文件
      * @param  Request $request
      * @param  string  $module 模块名称
-     * @return json 
+     * @return json
      */
     public function newfile(Request $request, $module)
     {
@@ -61,10 +61,10 @@ class TranslateController extends Controller
 
     /**
      * 删除翻译文件
-     * 
+     *
      * @param  Request $request
      * @param  string  $module 模块名称
-     * @return json 
+     * @return json
      */
     public function deleteFile(Request $request, $module)
     {
@@ -82,7 +82,7 @@ class TranslateController extends Controller
 
     /**
      * 翻译详情
-     * @param  Request $request 
+     * @param  Request $request
      * @param  string  $module 模块名称
      * @return Response
      */
@@ -121,7 +121,7 @@ class TranslateController extends Controller
      * 保存翻译
      * @param  Request $request
      * @param  string  $module 模块名称
-     * @return json 
+     * @return json
      */
     public function save(Request $request, $module)
     {
@@ -140,7 +140,7 @@ class TranslateController extends Controller
      * 新建键名
      * @param  Request $request
      * @param  string  $module 模块名称
-     * @return json 
+     * @return json
      */
     public function newkey(Request $request, $module)
     {
@@ -162,7 +162,7 @@ class TranslateController extends Controller
      * 删除键名
      * @param  Request $request
      * @param  string  $module 模块名称
-     * @return json 
+     * @return json
      */
     public function deletekey(Request $request, $module)
     {
@@ -177,5 +177,5 @@ class TranslateController extends Controller
         }
 
         return $this->success(trans('master.deleted'), $request->referer());
-    }       
+    }
 }

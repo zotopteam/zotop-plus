@@ -2,7 +2,7 @@
 
 namespace Modules\Core\View\Controls;
 
-use App\Support\Form\Control;
+use Zotop\Support\Form\Control;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 

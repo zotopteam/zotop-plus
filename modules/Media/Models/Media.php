@@ -2,10 +2,10 @@
 
 namespace Modules\Media\Models;
 
-use App\Support\Eloquent\Model;
+use Zotop\Support\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use App\Support\Eloquent\Traits\Nestable;
-use App\Support\Eloquent\Traits\UserRelation;
+use Zotop\Support\Eloquent\Traits\Nestable;
+use Zotop\Support\Eloquent\Traits\UserRelation;
 
 
 class Media extends Model

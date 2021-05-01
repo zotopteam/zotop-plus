@@ -2,7 +2,7 @@
 
 namespace Modules\Region\Providers;
 
-use App\Modules\Support\ServiceProvider;
+use Zotop\Modules\Support\ServiceProvider;
 
 class RegionServiceProvider extends ServiceProvider
 {
@@ -21,7 +21,7 @@ class RegionServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-    }    
+    }
 
     /**
      * Register the service provider.

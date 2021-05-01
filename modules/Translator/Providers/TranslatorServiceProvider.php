@@ -2,9 +2,9 @@
 
 namespace Modules\Translator\Providers;
 
-use App\Modules\Support\ServiceProvider;
-use App\Support\Facades\Filter;
-use App\Support\Facades\Form;
+use Zotop\Modules\Support\ServiceProvider;
+use Zotop\Support\Facades\Filter;
+use Zotop\Support\Facades\Form;
 use Modules\Translator\View\Controls\Slug;
 use Modules\Translator\View\Controls\Translate;
 

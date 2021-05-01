@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\Facades\Filter;
+use Zotop\Support\Facades\Filter;
 
 /**
  * 开始菜单

@@ -2,7 +2,7 @@
 
 namespace Modules\Site\Hooks;
 
-use App\Modules\Module;
+use Zotop\Modules\Module;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 
@@ -71,7 +71,7 @@ class Hook
      * 站点模块禁止 禁用和卸载
      *
      * @param array $manage 按钮数组
-     * @param \App\Modules\Module $module 模块对象
+     * @param \Zotop\Modules\Module $module 模块对象
      * @return array
      */
     public function moduleManageSite(array $manage, Module $module)

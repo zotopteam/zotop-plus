@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\Facades\Filter;
+use Zotop\Support\Facades\Filter;
 
 /*
  * 编辑器模式

@@ -2,9 +2,9 @@
 
 namespace Modules\Core\Providers;
 
-use App\Modules\Support\ServiceProvider;
-use App\Support\Facades\Form;
-use App\Support\ImageFilter;
+use Zotop\Modules\Support\ServiceProvider;
+use Zotop\Support\Facades\Form;
+use Zotop\Support\ImageFilter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Blade;

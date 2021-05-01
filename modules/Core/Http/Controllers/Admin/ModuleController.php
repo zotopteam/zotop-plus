@@ -2,8 +2,8 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
-use App\Modules\Facades\Module;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Facades\Module;
+use Zotop\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;

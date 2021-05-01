@@ -2,10 +2,10 @@
 
 namespace Modules\Navbar\Models;
 
-use App\Modules\Facades\Module;
-use App\Support\Eloquent\Model;
-use App\Support\Enums\BoolEnum;
-use App\Support\Enums\SortEnum;
+use Zotop\Modules\Facades\Module;
+use Zotop\Support\Eloquent\Model;
+use Zotop\Support\Enums\BoolEnum;
+use Zotop\Support\Enums\SortEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
@@ -80,7 +80,7 @@ class Field extends Model
      * @param string|null $key
      * @param mixed $default
      * @return mixed
-     * @throws \App\Modules\Exceptions\ModuleNotFoundException
+     * @throws \Zotop\Modules\Exceptions\ModuleNotFoundException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public static function types($type = null, $key = null, $default = null)

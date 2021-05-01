@@ -9,7 +9,7 @@ use Modules\Content\Models\Field;
 use Modules\Content\Models\Model;
 use Modules\Content\Models\Content;
 use Modules\Content\Support\ModelForm;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Routing\AdminController;
 use Modules\Content\Http\Requests\ContentRequest;
 
 class ContentController extends AdminController
@@ -57,7 +57,7 @@ class ContentController extends AdminController
 
     /**
      * 新建
-     * 
+     *
      * @return Response
      */
     public function create($id, $model_id)

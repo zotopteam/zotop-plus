@@ -2,7 +2,7 @@
 
 namespace Modules\Media\Providers;
 
-use App\Modules\Routing\ServiceProvider;
+use Zotop\Modules\Routing\ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {

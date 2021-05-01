@@ -2,8 +2,8 @@
 
 namespace Modules\Navbar\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController as Controller;
-use App\Support\Enums\BoolEnum;
+use Zotop\Modules\Routing\AdminController as Controller;
+use Zotop\Support\Enums\BoolEnum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Modules\Navbar\Http\Requests\Admin\FieldRequest;
@@ -21,7 +21,7 @@ class FieldController extends Controller
      * @param \Modules\Navbar\Models\QueryFilters\FieldFilter $filter
      * @param int $navbarId
      * @param int $parentId
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function index(Request $request, FieldFilter $filter, int $navbarId = 0, int $parentId = 0)
     {
@@ -46,7 +46,7 @@ class FieldController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int $navbarId
      * @param int $parentId
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2021-01-31
      */
@@ -66,7 +66,7 @@ class FieldController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function disable(Request $request, $id)
     {
@@ -85,7 +85,7 @@ class FieldController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function enable(Request $request, $id)
     {
@@ -133,7 +133,7 @@ class FieldController extends Controller
      *
      * @param int $navbarId
      * @param int $parentId
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function create(int $navbarId = 0, int $parentId = 0)
     {
@@ -157,7 +157,7 @@ class FieldController extends Controller
      * 保存
      *
      * @param \Modules\Navbar\Http\Requests\Admin\FieldRequest $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function store(FieldRequest $request)
     {
@@ -175,7 +175,7 @@ class FieldController extends Controller
      * 显示
      *
      * @param int $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function show(int $id)
     {
@@ -190,7 +190,7 @@ class FieldController extends Controller
      * 编辑
      *
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
@@ -209,7 +209,7 @@ class FieldController extends Controller
      *
      * @param \Modules\Navbar\Http\Requests\Admin\FieldRequest $request
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function update(FieldRequest $request, $id)
     {
@@ -227,7 +227,7 @@ class FieldController extends Controller
      * 删除
      *
      * @param int $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function destroy(int $id)
     {

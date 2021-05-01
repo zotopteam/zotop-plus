@@ -2,8 +2,8 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
-use App\Modules\Facades\Module;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Facades\Module;
+use Zotop\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Modules\Core\Enums\RoleTypeEnum;
@@ -80,7 +80,7 @@ class RoleController extends AdminController
      * 保存管理员角色
      *
      * @param \Illuminate\Http\Request $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @throws \Illuminate\Validation\ValidationException
      * @author Chen Lei
      * @date 2021-01-13
@@ -127,7 +127,7 @@ class RoleController extends AdminController
      *
      * @param \Illuminate\Http\Request $request
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @throws \Illuminate\Validation\ValidationException
      * @author Chen Lei
      * @date 2021-01-13
@@ -155,7 +155,7 @@ class RoleController extends AdminController
      *
      * @param \Illuminate\Http\Request $request
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2021-01-13
      */
@@ -181,7 +181,7 @@ class RoleController extends AdminController
      * 删除管理员角色
      *
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2021-01-13
      */

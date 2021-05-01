@@ -2,7 +2,7 @@
 
 namespace Modules\Navbar\Providers;
 
-use App\Modules\Support\ServiceProvider;
+use Zotop\Modules\Support\ServiceProvider;
 
 class NavbarServiceProvider extends ServiceProvider
 {
@@ -29,5 +29,5 @@ class NavbarServiceProvider extends ServiceProvider
         //     $schedule->command('navbar:command-name')->everyMinute();
         // });
     }
-    
+
 }

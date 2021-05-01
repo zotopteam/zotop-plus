@@ -1,0 +1,115 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Zotop\Modules\Routing\FrontController as Controller;
+use Illuminate\Http\Request;
+use $FILTER_FULL_NAME$;
+use $MODEL_FULL_NAME$;
+use $REQUEST_FULL_NAME$;
+
+class $CLASS_NAME$ extends Controller
+{
+    /**
+     * 首页
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \$FILTER_FULL_NAME$ $filter
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function index(Request $request, $FILTER_BASE_NAME$ $filter)
+    {
+        $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.title');
+
+        // 分页获取
+        $this->$MODEL_LIST$ = $MODEL_BASE_NAME$::filter($filter)->paginate(25);
+
+        return $this->view();
+    }
+
+    /**
+     * 新建
+     *
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function create()
+    {
+        $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.create');
+
+        $this->$MODEL_VAR$ = $MODEL_BASE_NAME$::findOrNew(0);
+
+        return $this->view();
+    }
+
+    /**
+     * 保存
+     *
+     * @param  \$REQUEST_FULL_NAME$ $request
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function store($REQUEST_BASE_NAME$ $request)
+    {
+        $$MODEL_VAR$ = new $MODEL_BASE_NAME$;
+        $$MODEL_VAR$->fill($request->all());
+        $$MODEL_VAR$->save();
+
+        return $this->success(trans('master.created'), route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.index'));
+    }
+
+    /**
+     * 显示
+     *
+     * @param  int  $id
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function show($id)
+    {
+        $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.show');
+
+        $this->$MODEL_VAR$ = $MODEL_BASE_NAME$::findOrFail($id);
+
+        return $this->view();
+    }
+
+    /**
+     * 编辑
+     *
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function edit($id)
+    {
+        $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.edit');
+
+        $this->$MODEL_VAR$ = $MODEL_BASE_NAME$::findOrFail($id);
+
+        return $this->view();
+    }
+
+    /**
+     * 更新
+     *
+     * @param  \$REQUEST_FULL_NAME$ $request
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function update($REQUEST_BASE_NAME$ $request, $id)
+    {
+        $$MODEL_VAR$ = $MODEL_BASE_NAME$::findOrFail($id);
+        $$MODEL_VAR$->fill($request->all());
+        $$MODEL_VAR$->save();
+
+        return $this->success(trans('master.updated'), route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.index'));
+    }
+
+    /**
+     * 删除
+     *
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function destroy($id)
+    {
+        $$MODEL_VAR$ = $MODEL_BASE_NAME$::findOrFail($id);
+        $$MODEL_VAR$->delete();
+
+        return $this->success(trans('master.deleted'), route('$MODULE_LOWER_NAME$.$CONTROLLER_LOWER_NAME$.index'));
+    }
+}

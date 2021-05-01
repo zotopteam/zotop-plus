@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Support\ImageFilter;
+use Zotop\Support\ImageFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;

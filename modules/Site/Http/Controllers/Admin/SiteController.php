@@ -2,8 +2,8 @@
 
 namespace Modules\Site\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController as Controller;
-use App\Themes\Facades\Theme;
+use Zotop\Modules\Routing\AdminController as Controller;
+use Zotop\Themes\Facades\Theme;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Core\Support\FileBrowser;
@@ -12,7 +12,7 @@ class SiteController extends Controller
 {
     /**
      * 视图选择
-     * 
+     *
      * @param  Request $request
      * @param  string  $type  类型
      * @return array
@@ -40,7 +40,7 @@ class SiteController extends Controller
         $this->files    = $browser->files()->filter(function($item) use($request) {
             return $item->mime == 'text';
         })->each(function($item) use ($root, $module) {
-            
+
             // 获取视图
             $view = str_after($item->path, $root.'/');
             $view = str_before($view, '.blade.php');

@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\ImagePreview;
+use Zotop\Support\ImagePreview;
 use Illuminate\Support\Str;
 
 if (!function_exists('array_object')) {
@@ -244,13 +244,13 @@ if (!function_exists('attribute')) {
      * make a attribute
      *
      * @param array $attribute
-     * @return \App\Support\Attribute
+     * @return \Zotop\Support\Attribute
      * @author Chen Lei
      * @date 2020-12-05
      */
     function attribute($attribute = [])
     {
-        return new \App\Support\Attribute($attribute);
+        return new \Zotop\Support\Attribute($attribute);
     }
 }
 

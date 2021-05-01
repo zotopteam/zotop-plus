@@ -2,7 +2,7 @@
 
 namespace Modules\Translator\Hooks;
 
-use App\Modules\Module;
+use Zotop\Modules\Module;
 use Illuminate\Support\Arr;
 
 
@@ -32,7 +32,7 @@ class Listener
      * 扩展模块管理
      *
      * @param array $manage
-     * @param \App\Modules\Module $module
+     * @param \Zotop\Modules\Module $module
      * @return array
      * @author Chen Lei
      * @date 2020-12-31

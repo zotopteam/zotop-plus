@@ -2,9 +2,9 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
-use App\Modules\Facades\Module;
-use App\Modules\Routing\AdminController as Controller;
-use App\Support\ImagePreview;
+use Zotop\Modules\Facades\Module;
+use Zotop\Modules\Routing\AdminController as Controller;
+use Zotop\Support\ImagePreview;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
@@ -39,7 +39,7 @@ class StorageController extends Controller
 
     /**
      * 新建文件夹
-     * 
+     *
      * @param  Request $request
      * @param  string $disk 磁盘名称
      * @return mixed
@@ -76,7 +76,7 @@ class StorageController extends Controller
 
     /**
      * 重命名文件夹
-     * 
+     *
      * @param  Request $request
      * @param  string $disk 磁盘名称
      * @return mixed
@@ -112,7 +112,7 @@ class StorageController extends Controller
 
     /**
      * 删除文件夹
-     * 
+     *
      * @param  Request $request
      * @param  string $disk 磁盘名称
      * @return mixed
@@ -139,7 +139,7 @@ class StorageController extends Controller
 
     /**
      * 重命名文件
-     * 
+     *
      * @param  Request $request
      * @param  string $disk 磁盘名称
      * @return mixed
@@ -180,7 +180,7 @@ class StorageController extends Controller
 
     /**
      * 删除文件
-     * 
+     *
      * @param  Request $request
      * @param  string $disk 磁盘名称
      * @return mixed
@@ -203,7 +203,7 @@ class StorageController extends Controller
 
     /**
      * 下载文件
-     * 
+     *
      * @param  Request $request
      * @param  string $disk 磁盘名称
      * @return mixed

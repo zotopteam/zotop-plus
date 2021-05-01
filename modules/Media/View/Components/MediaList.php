@@ -4,7 +4,7 @@ namespace Modules\Media\View\Components;
 
 use Illuminate\Support\Arr;
 use Illuminate\View\Component;
-use App\Support\Facades\Filter;
+use Zotop\Support\Facades\Filter;
 
 class MediaList extends Component
 {

@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Models\QueryFilters;
 
-use App\Support\Eloquent\QueryFilter;
+use Zotop\Support\Eloquent\QueryFilter;
 
 class AdministratorFilter extends QueryFilter
 {

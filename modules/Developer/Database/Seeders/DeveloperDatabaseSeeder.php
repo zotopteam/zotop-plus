@@ -3,7 +3,7 @@
 namespace Modules\Developer\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Support\Eloquent\Model;
+use Zotop\Support\Eloquent\Model;
 
 class DeveloperDatabaseSeeder extends Seeder
 {

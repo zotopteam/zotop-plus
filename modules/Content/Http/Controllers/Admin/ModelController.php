@@ -4,7 +4,7 @@ namespace Modules\Content\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Routing\AdminController;
 use Modules\Content\Models\Model;
 use Modules\Content\Http\Requests\ModelRequest;
 use Modules\Content\Support\ModelHelper;

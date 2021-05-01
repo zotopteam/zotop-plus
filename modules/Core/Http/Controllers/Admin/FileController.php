@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Routing\AdminController;
 use Artisan;
 use Facades\Modules\Core\Support\Plupload;
 use File;
@@ -17,7 +17,7 @@ class FileController extends AdminController
 {
     /**
      * 文件编辑器
-     * 
+     *
      * @param  Request $request
      * @param  string  $name    模型名称
      * @return mixed
@@ -45,7 +45,7 @@ class FileController extends AdminController
 
     /**
      * 新建文件
-     * 
+     *
      * @param  Request $request
      * @return mixed
      */
@@ -83,7 +83,7 @@ class FileController extends AdminController
 
     /**
      * 文件重命名
-     * 
+     *
      * @param  Request $request
      * @return mixed
      */
@@ -120,7 +120,7 @@ class FileController extends AdminController
 
     /**
      * 文件删除
-     * 
+     *
      * @param  Request $request
      * @return mixed
      */
@@ -141,7 +141,7 @@ class FileController extends AdminController
 
     /**
      * 文件复制
-     * 
+     *
      * @param  Request $request
      * @return mixed
      */
@@ -190,7 +190,7 @@ class FileController extends AdminController
 
     /**
      * 文件选择
-     * 
+     *
      * @param  Request $request
      * @param  string  $type  类型
      * @return array

@@ -4,7 +4,7 @@ namespace Modules\Developer\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Routing\AdminController;
 
 class IndexController extends AdminController
 {

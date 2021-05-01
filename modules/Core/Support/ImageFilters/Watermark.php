@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Support\ImageFilters;
 
-use App\Support\ImageFilter;
+use Zotop\Support\ImageFilter;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Intervention\Image\Exception\InvalidArgumentException;

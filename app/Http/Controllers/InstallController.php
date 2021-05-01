@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Modules\Facades\Module;
+use Zotop\Modules\Facades\Module;
 use Exception;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Database\Connectors\ConnectionFactory;

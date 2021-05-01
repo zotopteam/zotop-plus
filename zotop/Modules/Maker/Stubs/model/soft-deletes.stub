@@ -1,0 +1,56 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Zotop\Support\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class $CLASS_NAME$ extends Model
+{
+    use SoftDeletes;
+
+    /**
+     * 与模型关联的数据表
+     *
+     * @var string
+     */
+    protected $table = '$TABLE$';
+
+    /**
+     * 可以被批量赋值的属性
+     *
+     * @var array
+     */
+    protected $fillable = $FILLABLE$;
+
+    /**
+     * 不可被批量赋值的属性
+     *
+     * @var array
+     */
+    protected $guarded = $GUARDED$;
+
+    /**
+     * 日期转换
+     *
+     * @var array
+     */
+    protected $dates = [
+        'deleted_at',
+    ];
+
+    /**
+     * 属性转换
+     *
+     * @var array
+     */
+    protected $casts = [];
+
+    /**
+     * 执行模型是否自动维护时间戳
+     *
+     * @var bool
+     */
+    public $timestamps = $TIMESTAMPS$;
+
+}

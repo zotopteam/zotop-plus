@@ -3,7 +3,7 @@
 namespace Modules\Media\Providers;
 
 use Illuminate\Support\Facades\Blade;
-use App\Modules\Support\ServiceProvider;
+use Zotop\Modules\Support\ServiceProvider;
 use Modules\Media\View\Components\MediaBreadcrumb;
 use Modules\Media\View\Components\MediaList;
 

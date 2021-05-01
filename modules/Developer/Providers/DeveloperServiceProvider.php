@@ -2,7 +2,7 @@
 
 namespace Modules\Developer\Providers;
 
-use App\Modules\Support\ServiceProvider;
+use Zotop\Modules\Support\ServiceProvider;
 
 class DeveloperServiceProvider extends ServiceProvider
 {
@@ -24,7 +24,7 @@ class DeveloperServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-    }    
+    }
 
     /**
      * Get the services provided by the provider.
@@ -35,5 +35,5 @@ class DeveloperServiceProvider extends ServiceProvider
     {
         return [];
     }
-    
+
 }

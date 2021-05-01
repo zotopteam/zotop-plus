@@ -2,8 +2,8 @@
 
 namespace Modules\Content\Http\Controllers;
 
-use App\Support\Facades\Filter;
-use App\Modules\Routing\FrontController;
+use Zotop\Support\Facades\Filter;
+use Zotop\Modules\Routing\FrontController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Content\Models\Content;
@@ -77,5 +77,5 @@ class IndexController extends FrontController
         $this->title = $this->content->title;
 
         return $this->view($this->content->view);
-    }           
+    }
 }

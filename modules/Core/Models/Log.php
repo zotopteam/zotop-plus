@@ -2,9 +2,9 @@
 
 namespace Modules\Core\Models;
 
-use App\Support\Eloquent\Model;
-use App\Support\Eloquent\Traits\UserIp;
-use App\Support\Eloquent\Traits\UserRelation;
+use Zotop\Support\Eloquent\Model;
+use Zotop\Support\Eloquent\Traits\UserIp;
+use Zotop\Support\Eloquent\Traits\UserRelation;
 
 class Log extends Model
 {

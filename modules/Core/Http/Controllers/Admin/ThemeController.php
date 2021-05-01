@@ -2,8 +2,8 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController as Controller;
-use App\Themes\Facades\Theme;
+use Zotop\Modules\Routing\AdminController as Controller;
+use Zotop\Themes\Facades\Theme;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
@@ -24,7 +24,7 @@ class ThemeController extends Controller
         $this->themes      = Theme::all();
 
         return $this->view();
-    } 
+    }
 
     /**
      * 资源发布
@@ -41,7 +41,7 @@ class ThemeController extends Controller
             Artisan::call('theme:publish');
         }
 
-        return $this->success(trans('core::theme.publish.success'));    
+        return $this->success(trans('core::theme.publish.success'));
     }
 
     /**
@@ -51,7 +51,7 @@ class ThemeController extends Controller
      */
     public function upload()
     {
-  
+
     }
 
     /**
@@ -65,5 +65,5 @@ class ThemeController extends Controller
         $theme->delete();
 
         return $this->success(trans('master.deleted'), $request->referer());
-    }           
+    }
 }

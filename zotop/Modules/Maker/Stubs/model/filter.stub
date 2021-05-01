@@ -1,0 +1,18 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Zotop\Support\Eloquent\QueryFilter;
+
+class $CLASS_NAME$ extends QueryFilter
+{
+    /**
+     * The global filter
+     */
+    public function boot()
+    {
+        // $this->query->where('id', '>', 1);
+    }
+
+$FILTERS$
+}

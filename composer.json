@@ -48,6 +48,7 @@
         ],
         "psr-4": {
             "App\\": "app/",
+            "Zotop\\": "zotop/",
             "Modules\\": "modules/",
             "Themes\\": "themes/"
         }

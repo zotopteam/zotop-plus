@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Routing\AdminController;
 use Auth;
 use Hash;
 use Modules\Core\Http\Requests\MinePasswordRequest;
@@ -40,7 +40,7 @@ class MineController extends AdminController
      * 更新信息
      *
      * @param \Modules\Core\Http\Requests\MineRequest $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2021-01-13
      */
@@ -72,7 +72,7 @@ class MineController extends AdminController
      * 修改我的密码
      *
      * @param \Modules\Core\Http\Requests\MinePasswordRequest $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2021-01-13
      */

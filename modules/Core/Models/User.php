@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Models;
 
-use App\Support\Eloquent\Traits\HasQueryFilter;
+use Zotop\Support\Eloquent\Traits\HasQueryFilter;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 

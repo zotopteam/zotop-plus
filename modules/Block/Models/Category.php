@@ -2,7 +2,7 @@
 
 namespace Modules\Block\Models;
 
-use App\Support\Eloquent\Model;
+use Zotop\Support\Eloquent\Model;
 
 class Category extends Model
 {

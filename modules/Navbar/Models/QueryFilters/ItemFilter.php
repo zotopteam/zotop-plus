@@ -2,7 +2,7 @@
 
 namespace Modules\Navbar\Models\QueryFilters;
 
-use App\Support\Eloquent\QueryFilter;
+use Zotop\Support\Eloquent\QueryFilter;
 
 class ItemFilter extends QueryFilter
 {

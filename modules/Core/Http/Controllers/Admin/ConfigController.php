@@ -2,9 +2,9 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController;
-use App\Modules\Traits\ModuleConfig;
-use App\Support\ImageFilter;
+use Zotop\Modules\Routing\AdminController;
+use Zotop\Modules\Traits\ModuleConfig;
+use Zotop\Support\ImageFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
@@ -29,7 +29,7 @@ class ConfigController extends AdminController
      * 文件上传
      *
      * @param \Illuminate\Http\Request $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-25
      */
@@ -86,7 +86,7 @@ class ConfigController extends AdminController
      * 邮件发送配置
      *
      * @param \Illuminate\Http\Request $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-25
      */
@@ -119,7 +119,7 @@ class ConfigController extends AdminController
      * 邮件发送测试
      *
      * @param \Illuminate\Http\Request $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Modules\Core\Mails\TestMail
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View|\Modules\Core\Mails\TestMail
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @author Chen Lei
      * @date 2020-12-06
@@ -151,7 +151,7 @@ class ConfigController extends AdminController
      * 本地时区和时间设置
      *
      * @param \Illuminate\Http\Request $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-25
      */
@@ -180,7 +180,7 @@ class ConfigController extends AdminController
      * 系统安全
      *
      * @param \Illuminate\Http\Request $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-25
      */

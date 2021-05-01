@@ -4,7 +4,7 @@ namespace Modules\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Routing\AdminController;
 use Auth;
 use Filter;
 
@@ -21,7 +21,7 @@ class NotificationsController extends AdminController
 
         // 获取当前用户的全部通知
         $this->notifications = Auth::user()->notifications()->paginate(25);
-        
+
         return $this->view();
     }
 
@@ -32,7 +32,7 @@ class NotificationsController extends AdminController
     public function check()
     {
         \Debugbar::disable();
-        
+
         // 获取全部未读通知
         $notification_count = Filter::fire('notification.count', Auth::user()->unreadNotifications->count());
 

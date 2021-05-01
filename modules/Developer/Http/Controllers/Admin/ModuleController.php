@@ -2,9 +2,9 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use App\Support\Facades\Action;
-use App\Modules\Facades\Module;
-use App\Modules\Routing\AdminController;
+use Zotop\Support\Facades\Action;
+use Zotop\Modules\Facades\Module;
+use Zotop\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;

@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Models;
 
-use App\Support\Eloquent\Model;
+use Zotop\Support\Eloquent\Model;
 
 class Role extends Model
 {

@@ -2,7 +2,7 @@
 
 namespace Modules\Region\Providers;
 
-use App\Modules\Routing\ServiceProvider;
+use Zotop\Modules\Routing\ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -18,7 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $module = 'region';   
+    protected $module = 'region';
 
     /**
      * 前台路由，无前台路由返回false

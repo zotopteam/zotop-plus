@@ -2,8 +2,8 @@
 
 namespace Modules\Core\View\Controls;
 
-use App\Support\Attribute;
-use App\Support\Form\Control;
+use Zotop\Support\Attribute;
+use Zotop\Support\Form\Control;
 use Illuminate\Support\Arr;
 
 class RadioCards extends Control
@@ -51,7 +51,7 @@ class RadioCards extends Control
      * 选项控件
      *
      * @param mixed $key
-     * @return \App\Support\Attribute
+     * @return \Zotop\Support\Attribute
      * @author Chen Lei
      * @date 2020-12-06
      */
@@ -71,7 +71,7 @@ class RadioCards extends Control
      *
      * @param $value $value=数组，高级模式，显示带图片、标题、描述和提示的卡片
      *               $value=字符，简单模式，显示为文字卡片模式
-     * @return false|\App\Support\Attribute
+     * @return false|\Zotop\Support\Attribute
      * @author Chen Lei
      * @date 2020-12-06
      */

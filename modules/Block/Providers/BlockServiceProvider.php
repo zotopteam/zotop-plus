@@ -3,7 +3,7 @@
 namespace Modules\Block\Providers;
 
 use Illuminate\Support\Facades\Blade;
-use App\Modules\Support\ServiceProvider;
+use Zotop\Modules\Support\ServiceProvider;
 use Modules\Block\Models\Block;
 use Modules\Block\View\Components\BlockComponent;
 

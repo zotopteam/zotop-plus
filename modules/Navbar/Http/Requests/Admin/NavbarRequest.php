@@ -2,7 +2,7 @@
 
 namespace Modules\Navbar\Http\Requests\Admin;
 
-use App\Modules\Http\FormRequest;
+use Zotop\Modules\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\Rule;

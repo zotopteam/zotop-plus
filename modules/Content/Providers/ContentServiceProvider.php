@@ -2,8 +2,8 @@
 
 namespace Modules\Content\Providers;
 
-use App\Modules\Support\ServiceProvider;
-use App\Support\Facades\Form;
+use Zotop\Modules\Support\ServiceProvider;
+use Zotop\Support\Facades\Form;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Modules\Content\Models\Content;
@@ -65,7 +65,7 @@ class ContentServiceProvider extends ServiceProvider
         //     foreach (['category','page','article','link','gallery'] as $model) {
         //         ModelHelper::import($module->getPath().'/Support/models/'.$model.'.model', true);
         //     }
-        // });        
+        // });
 
         // 监听卸载
         $this->app['events']->listen('modules.content.uninstalling', function ($module) {

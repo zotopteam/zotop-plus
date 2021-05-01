@@ -2,8 +2,8 @@
 
 namespace Modules\Block\Models;
 
-use App\Support\Eloquent\Model;
-use App\Support\Eloquent\Traits\UserRelation;
+use Zotop\Support\Eloquent\Model;
+use Zotop\Support\Eloquent\Traits\UserRelation;
 use Illuminate\Database\Eloquent\Builder;
 
 class Datalist extends Model

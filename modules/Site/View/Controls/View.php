@@ -2,7 +2,7 @@
 
 namespace Modules\Site\View\Controls;
 
-use App\Support\Form\Control;
+use Zotop\Support\Form\Control;
 
 class View extends Control
 {

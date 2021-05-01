@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Core\Support\ImageFilters;
 
-use App\Support\ImageFilter;
+use Zotop\Support\ImageFilter;
 use Illuminate\Support\Arr;
 use Intervention\Image\Image;
 

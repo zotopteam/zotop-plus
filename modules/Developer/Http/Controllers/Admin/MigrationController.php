@@ -5,11 +5,11 @@ namespace Modules\Developer\Http\Controllers\Admin;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Facades\Module;
+use Zotop\Modules\Facades\Module;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
-use App\Modules\Routing\AdminController;
-use App\Modules\Exceptions\ClassExistedException;
+use Zotop\Modules\Routing\AdminController;
+use Zotop\Modules\Exceptions\ClassExistedException;
 
 
 class MigrationController extends AdminController

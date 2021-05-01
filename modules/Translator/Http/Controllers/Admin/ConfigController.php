@@ -4,8 +4,8 @@ namespace Modules\Translator\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Modules\Routing\AdminController;
-use App\Modules\Traits\ModuleConfig;
+use Zotop\Modules\Routing\AdminController;
+use Zotop\Modules\Traits\ModuleConfig;
 
 class ConfigController extends AdminController
 {

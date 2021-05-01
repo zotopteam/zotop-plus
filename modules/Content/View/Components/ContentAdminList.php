@@ -4,7 +4,7 @@ namespace Modules\Content\View\Components;
 
 use Illuminate\Support\Arr;
 use Illuminate\View\Component;
-use App\Support\Facades\Filter;
+use Zotop\Support\Facades\Filter;
 use Modules\Content\Models\Content;
 
 class ContentAdminList extends Component

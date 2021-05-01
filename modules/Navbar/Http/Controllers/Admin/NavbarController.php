@@ -2,8 +2,8 @@
 
 namespace Modules\Navbar\Http\Controllers\Admin;
 
-use App\Modules\Routing\AdminController as Controller;
-use App\Support\Enums\BoolEnum;
+use Zotop\Modules\Routing\AdminController as Controller;
+use Zotop\Support\Enums\BoolEnum;
 use Illuminate\Http\Request;
 use Modules\Navbar\Http\Requests\Admin\NavbarRequest;
 use Modules\Navbar\Models\Navbar;
@@ -16,7 +16,7 @@ class NavbarController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \Modules\Navbar\Models\QueryFilters\NavbarFilter $filter
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function index(Request $request, NavbarFilter $filter)
     {
@@ -31,7 +31,7 @@ class NavbarController extends Controller
      * 排序
      *
      * @param \Illuminate\Http\Request $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2021-01-31
      */
@@ -50,7 +50,7 @@ class NavbarController extends Controller
      * 禁用
      *
      * @param \Modules\Navbar\Http\Requests\Admin\NavbarRequest $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function disable(NavbarRequest $request, $id)
     {
@@ -65,7 +65,7 @@ class NavbarController extends Controller
      * 启用
      *
      * @param \Modules\Navbar\Http\Requests\Admin\NavbarRequest $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function enable(NavbarRequest $request, $id)
     {
@@ -79,7 +79,7 @@ class NavbarController extends Controller
     /**
      * 新建
      *
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -96,7 +96,7 @@ class NavbarController extends Controller
      * 保存
      *
      * @param \Modules\Navbar\Http\Requests\Admin\NavbarRequest $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function store(NavbarRequest $request)
     {
@@ -111,7 +111,7 @@ class NavbarController extends Controller
      * 显示
      *
      * @param int $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
@@ -125,7 +125,7 @@ class NavbarController extends Controller
     /**
      * 编辑
      *
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
@@ -140,7 +140,7 @@ class NavbarController extends Controller
      * 更新
      *
      * @param \Modules\Navbar\Http\Requests\Admin\NavbarRequest $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function update(NavbarRequest $request, $id)
     {
@@ -154,7 +154,7 @@ class NavbarController extends Controller
     /**
      * 删除
      *
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      */
     public function destroy($id)
     {

@@ -3,7 +3,7 @@
 namespace Modules\Site\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Modules\Routing\FrontController;
+use Zotop\Modules\Routing\FrontController;
 
 class SiteController extends FrontController
 {

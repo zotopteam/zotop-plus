@@ -2,10 +2,10 @@
 
 namespace Modules\Navbar\Models;
 
-use App\Support\Eloquent\Model;
-use App\Support\Eloquent\Traits\Nestable;
-use App\Support\Enums\BoolEnum;
-use App\Support\Enums\SortEnum;
+use Zotop\Support\Eloquent\Model;
+use Zotop\Support\Eloquent\Traits\Nestable;
+use Zotop\Support\Enums\BoolEnum;
+use Zotop\Support\Enums\SortEnum;
 use Illuminate\Database\Eloquent\Builder;
 
 class Item extends Model

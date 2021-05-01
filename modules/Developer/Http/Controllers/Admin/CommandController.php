@@ -2,8 +2,8 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use App\Modules\Exceptions\FileExistedException;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Exceptions\FileExistedException;
+use Zotop\Modules\Routing\AdminController;
 use Artisan;
 use File;
 use Illuminate\Http\Request;

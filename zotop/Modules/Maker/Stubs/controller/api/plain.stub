@@ -1,0 +1,20 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Zotop\Modules\Routing\ApiController as Controller;
+use Illuminate\Http\Request;
+
+class $CLASS_NAME$ extends Controller
+{
+    /**
+     * Index
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Zotop\Modules\Routing\JsonMessageResponse
+     */
+    public function index(Request $request)
+    {
+        return $this->success();
+    }
+}

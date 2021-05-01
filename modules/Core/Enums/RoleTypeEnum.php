@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Enums;
 
-use App\Support\Enum;
+use Zotop\Support\Enum;
 
 class RoleTypeEnum extends Enum
 {

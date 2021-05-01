@@ -2,8 +2,8 @@
 
 namespace Modules\Tinymce\View\Controls;
 
-use App\Support\Facades\Filter;
-use App\Support\Form\Control;
+use Zotop\Support\Facades\Filter;
+use Zotop\Support\Form\Control;
 
 class Editor extends Control
 {

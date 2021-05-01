@@ -1,0 +1,22 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Zotop\Modules\Routing\AdminController as Controller;
+use Illuminate\Http\Request;
+
+class $CLASS_NAME$ extends Controller
+{
+    /**
+     * Index
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     */
+    public function index(Request $request)
+    {
+        $this->title = trans('$MODULE_LOWER_NAME$::$CONTROLLER_LOWER_NAME$.title');
+
+        return $this->view();
+    }
+}

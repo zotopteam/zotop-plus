@@ -3,8 +3,8 @@
 namespace Modules\Core\Support;
 
 use Illuminate\Support\Arr;
-use App\Support\ImageFilter;
-use App\Support\Facades\Filter;
+use Zotop\Support\ImageFilter;
+use Zotop\Support\Facades\Filter;
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;

@@ -2,8 +2,8 @@
 
 namespace Modules\Editormd\View\Controls;
 
-use App\Modules\Facades\Module;
-use App\Support\Form\Control;
+use Zotop\Modules\Facades\Module;
+use Zotop\Support\Form\Control;
 use Illuminate\Support\Arr;
 
 class Code extends Control

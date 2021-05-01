@@ -3,7 +3,7 @@
 namespace Modules\Core\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Modules\Routing\AdminController;
+use Zotop\Modules\Routing\AdminController;
 use Modules\Core\Models\QueryFilters\AdministratorFilter;
 use Modules\Core\Models\User;
 use Modules\Core\Http\Requests\AdministratorRequest;
@@ -40,7 +40,7 @@ class AdministratorController extends AdminController
      * 保存
      *
      * @param \Modules\Core\Http\Requests\AdministratorRequest $request
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-15
      */
@@ -85,7 +85,7 @@ class AdministratorController extends AdminController
      *
      * @param \Modules\Core\Http\Requests\AdministratorRequest $request
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-15
      */
@@ -120,7 +120,7 @@ class AdministratorController extends AdminController
      *
      * @param \Illuminate\Http\Request $request
      * @param $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-15
      */
@@ -152,7 +152,7 @@ class AdministratorController extends AdminController
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \App\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
+     * @return \Zotop\Modules\Routing\JsonMessageResponse|\Illuminate\Contracts\View\View
      * @author Chen Lei
      * @date 2020-11-15
      */
