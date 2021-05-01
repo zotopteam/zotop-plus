@@ -3,7 +3,7 @@
 namespace Modules\Navbar\Http\Controllers\Admin;
 
 use Zotop\Modules\Routing\AdminController as Controller;
-use Zotop\Support\Enums\BoolEnum;
+use Zotop\Enums\BoolEnum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Modules\Navbar\Http\Requests\Admin\FieldRequest;

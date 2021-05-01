@@ -44,9 +44,7 @@ class ModulesServiceProvider extends ServiceProvider
         $this->loadCommands(__DIR__ . '/Commands');
 
         // 别名
-        $this->aliases([
-            'Module' => Facades\Module::class,
-        ]);
+        $this->alias('Module', Facades\Module::class);
     }
 
     /**
@@ -57,23 +55,9 @@ class ModulesServiceProvider extends ServiceProvider
     public function boot()
     {
         //注册中间件
-        $this->registerMiddleware();
+        $this->middlewares($this->middlewares);
 
         // 启动全部模块
         $this->app->register(BootstrapServiceProvider::class);
     }
-
-    /**
-     * 注册中间件
-     *
-     * @author Chen Lei
-     * @date 2021-05-01
-     */
-    public function registerMiddleware()
-    {
-        foreach ($this->middlewares as $name => $class) {
-            $this->app['router']->aliasMiddleware($name, $class);
-        }
-    }
-
 }

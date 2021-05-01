@@ -298,10 +298,9 @@ return [
         'URL'          => Illuminate\Support\Facades\URL::class,
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
-
-        'Theme' => Zotop\Themes\Facades\Theme::class,
-        'Form'  => Zotop\Support\Facades\Form::class,
-        'Html'  => Zotop\Support\Facades\Html::class,
+        
+        'Form' => Zotop\Support\Facades\Form::class,
+        'Html' => Zotop\Support\Facades\Html::class,
     ],
 
 ];

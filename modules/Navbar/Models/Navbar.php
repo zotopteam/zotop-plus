@@ -3,8 +3,8 @@
 namespace Modules\Navbar\Models;
 
 use Zotop\Support\Eloquent\Model;
-use Zotop\Support\Enums\BoolEnum;
-use Zotop\Support\Enums\SortEnum;
+use Zotop\Enums\BoolEnum;
+use Zotop\Enums\SortEnum;
 use Illuminate\Database\Eloquent\Builder;
 
 class Navbar extends Model

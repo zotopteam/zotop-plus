@@ -32,23 +32,59 @@ class ServiceProvider extends LaravelServiceProvider
     }
 
     /**
+     * Register alias
+     *
+     * @param string $middleware
+     * @param string $class
+     * @return \Zotop\Modules\Support\ServiceProvider
+     * @author Chen Lei
+     * @date 2021-05-01
+     */
+    protected function middleware(string $middleware, string $class)
+    {
+        $this->app['router']->aliasMiddleware($middleware, $class);
+
+        return $this;
+    }
+
+    /**
      * Register middlewares
      *
      * @param array $middlewares
+     * @return \Zotop\Modules\Support\ServiceProvider
      * @author Chen Lei
      * @date 2021-05-01
      */
     protected function middlewares(array $middlewares)
     {
-        foreach ($middlewares as $name => $class) {
-            $this->app['router']->aliasMiddleware($name, $class);
+        foreach ($middlewares as $middleware => $class) {
+            $this->app['router']->aliasMiddleware($middleware, $class);
         }
+
+        return $this;
+    }
+
+    /**
+     * Register alias
+     *
+     * @param string $alias
+     * @param string $class
+     * @return \Zotop\Modules\Support\ServiceProvider
+     * @author Chen Lei
+     * @date 2021-05-01
+     */
+    public function alias(string $alias, string $class)
+    {
+        AliasLoader::getInstance()->alias($alias, $class);
+
+        return $this;
     }
 
     /**
      * Register aliases
      *
      * @param array $aliases
+     * @return \Zotop\Modules\Support\ServiceProvider
      * @author Chen Lei
      * @date 2021-05-01
      */
@@ -59,12 +95,15 @@ class ServiceProvider extends LaravelServiceProvider
         foreach ($aliases as $alias => $class) {
             $loader->alias($alias, $class);
         }
+
+        return $this;
     }
 
     /**
      * Register all of the commands in the given directory.
      *
      * @param array|string $paths
+     * @return \Zotop\Modules\Support\ServiceProvider
      * @author Chen Lei
      * @date 2020-12-01
      */
@@ -77,7 +116,7 @@ class ServiceProvider extends LaravelServiceProvider
         })->toArray();
 
         if (empty($paths)) {
-            return;
+            return $this;
         }
 
         collect((new Finder)->in($paths)->files())->transform(function ($file) {
@@ -96,5 +135,7 @@ class ServiceProvider extends LaravelServiceProvider
                 $artisan->resolve($command);
             });
         });
+
+        return $this;
     }
 }

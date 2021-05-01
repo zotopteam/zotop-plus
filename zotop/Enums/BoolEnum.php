@@ -1,8 +1,6 @@
 <?php
 
-namespace Zotop\Support\Enums;
-
-use Zotop\Support\Enum;
+namespace Zotop\Enums;
 
 class BoolEnum extends Enum
 {

@@ -24,7 +24,7 @@ class SupportServiceProvider extends ServiceProvider
         $this->app->singleton('form', function ($app) {
             return new Form($app);
         });
-        
+
     }
 
     /**
