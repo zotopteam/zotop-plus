@@ -3,7 +3,7 @@
 namespace Modules\Translator\Providers;
 
 use Zotop\Modules\Support\ServiceProvider;
-use Zotop\Support\Facades\Filter;
+use Zotop\Hook\Facades\Filter;
 use Zotop\Support\Facades\Form;
 use Modules\Translator\View\Controls\Slug;
 use Modules\Translator\View\Controls\Translate;

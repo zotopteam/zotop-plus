@@ -3,42 +3,42 @@
 namespace Modules\Content\View\Components;
 
 use Illuminate\View\Component;
-use Zotop\Support\Facades\Filter;
+use Zotop\Hook\Facades\Filter;
 
 class ContentList extends Component
 {
     /**
      * 媒体数据集合
      *
-     * @var 
+     * @var
      */
     public $list;
 
     /**
      * 媒体数据集合
      *
-     * @var 
+     * @var
      */
     public $class;
 
     /**
      * 是否可选择
      *
-     * @var 
+     * @var
      */
     public $checkable;
 
     /**
      * 是否可以多选
      *
-     * @var 
+     * @var
      */
     public $mutiple;
 
     /**
      * 是否可选择
      *
-     * @var 
+     * @var
      */
     public $moveable;
 

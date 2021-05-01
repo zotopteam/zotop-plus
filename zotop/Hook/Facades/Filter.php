@@ -1,9 +1,13 @@
 <?php
 
-namespace Zotop\Support\Facades;
+namespace Zotop\Hook\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @method static listen(string $hook, $callback, int $priority = 50)
+ * @method static fire(string $hook, $data, ...$args)
+ */
 class Filter extends Facade
 {
     /**
@@ -13,6 +17,6 @@ class Filter extends Facade
      */
     protected static function getFacadeAccessor()
     {
-    	return 'hook.filter';
+        return 'hook.filter';
     }
 }

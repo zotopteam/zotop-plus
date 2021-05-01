@@ -2,12 +2,11 @@
 
 namespace Zotop\Support;
 
+use Illuminate\Support\ServiceProvider;
 use Zotop\Support\Compilers\DotArrayCompiler;
 use Zotop\Support\Compilers\ZFormCompiler;
 use Zotop\Support\ImageFilters\Fit;
 use Zotop\Support\ImageFilters\Resize;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\ServiceProvider;
 
 class SupportServiceProvider extends ServiceProvider
 {
@@ -25,14 +24,7 @@ class SupportServiceProvider extends ServiceProvider
         $this->app->singleton('form', function ($app) {
             return new Form($app);
         });
-
-        $this->app->singleton('hook.action', function ($app) {
-            return new Action($app);
-        });
-
-        $this->app->singleton('hook.filter', function ($app) {
-            return new Filter($app);
-        });
+        
     }
 
     /**
@@ -65,19 +57,6 @@ class SupportServiceProvider extends ServiceProvider
             return $this->app[ZFormCompiler::class]->compile($view);
         });
 
-        /**
-         * Adds a directive in Blade for actions
-         */
-        Blade::directive('action', function ($expression) {
-            return "<?php Action::fire($expression); ?>";
-        });
-
-        /**
-         * Adds a directive in Blade for filters
-         */
-        Blade::directive('filter', function ($expression) {
-            return "<?php echo Filter::fire($expression); ?>";
-        });
     }
 
     /**

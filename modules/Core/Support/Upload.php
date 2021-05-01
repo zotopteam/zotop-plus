@@ -4,7 +4,7 @@ namespace Modules\Core\Support;
 
 use Illuminate\Support\Arr;
 use Zotop\Support\ImageFilter;
-use Zotop\Support\Facades\Filter;
+use Zotop\Hook\Facades\Filter;
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;

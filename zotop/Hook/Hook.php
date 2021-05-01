@@ -1,6 +1,6 @@
 <?php
 
-namespace Zotop\Support;
+namespace Zotop\Hook;
 
 use Exception;
 use Illuminate\Support\Traits\Macroable;
@@ -25,6 +25,8 @@ abstract class Hook
 
     /**
      * 初始化 listeners
+     *
+     * @param $app
      */
     public function __construct($app)
     {
@@ -93,10 +95,14 @@ abstract class Hook
      */
     protected function callback($callback)
     {
-        // 类方法：字符串且包含@符号
-        if (is_string($callback) && strpos($callback, '@')) {
+        // 字符串
+        if (is_string($callback)) {
             $callback = explode('@', $callback);
-            return [app('\\' . $callback[0]), $callback[1]];
+        }
+
+        // 数组 [class, method]
+        if (is_array($callback)) {
+            return [app('\\' . $callback[0]), $callback[1] ?? 'handle'];
         }
 
         // 闭包函数

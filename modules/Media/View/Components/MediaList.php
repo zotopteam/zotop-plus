@@ -4,7 +4,7 @@ namespace Modules\Media\View\Components;
 
 use Illuminate\Support\Arr;
 use Illuminate\View\Component;
-use Zotop\Support\Facades\Filter;
+use Zotop\Hook\Facades\Filter;
 
 class MediaList extends Component
 {
@@ -71,7 +71,7 @@ class MediaList extends Component
                 $this->checkable = explode(',', $this->checkable);
             }
         }
-        
+
         // 字符串转为数组
         if ($this->action && is_string($this->action)) {
             $this->action = explode(',', $this->action);

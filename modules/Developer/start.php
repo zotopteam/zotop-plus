@@ -1,7 +1,7 @@
 <?php
 
-use Zotop\Support\Facades\Action;
-use Zotop\Support\Facades\Filter;
+use Zotop\Hook\Facades\Action;
+use Zotop\Hook\Facades\Filter;
 
 /**
  * 扩展后台全局导航

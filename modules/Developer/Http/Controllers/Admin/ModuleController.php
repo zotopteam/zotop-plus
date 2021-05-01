@@ -2,7 +2,7 @@
 
 namespace Modules\Developer\Http\Controllers\Admin;
 
-use Zotop\Support\Facades\Action;
+use Zotop\Hook\Facades\Action;
 use Zotop\Modules\Facades\Module;
 use Zotop\Modules\Routing\AdminController;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\File;
 use Modules\Developer\Http\Requests\ModuleRequest;
 
 class ModuleController extends AdminController
-{  
+{
 
     /**
      * 首页
@@ -29,7 +29,7 @@ class ModuleController extends AdminController
 
     /**
      * 展示
-     * 
+     *
      * @return Response
      */
     public function show(Request $request, $module)
@@ -38,15 +38,15 @@ class ModuleController extends AdminController
             return redirect(route('developer.module.index'));
         }
 
-        $this->module = Module::find($module);                
+        $this->module = Module::find($module);
         $this->title  = trans('developer::module.show');
 
-        return $this->view();        
+        return $this->view();
     }
 
     /**
      * 新建
-     * 
+     *
      * @return Response
      */
     public function create()

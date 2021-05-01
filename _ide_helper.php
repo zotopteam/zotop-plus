@@ -20612,8 +20612,8 @@ namespace  {
             class Theme extends \Zotop\Themes\Facades\Theme {}
             class Form extends \Zotop\Support\Facades\Form {}
             class Html extends \Zotop\Support\Facades\Html {}
-            class Filter extends \Zotop\Support\Facades\Filter {}
-            class Action extends \Zotop\Support\Facades\Action {}
+            class Filter extends \Zotop\Hook\Facades\Filter {}
+            class Action extends \Zotop\Hook\Facades\Action {}
             class Debugbar extends \Barryvdh\Debugbar\Facade {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
             class Image extends \Intervention\Image\Facades\Image {}

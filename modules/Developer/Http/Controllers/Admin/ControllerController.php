@@ -5,7 +5,7 @@ namespace Modules\Developer\Http\Controllers\Admin;
 use Zotop\Modules\Exceptions\FileExistedException;
 use Zotop\Modules\Facades\Module;
 use Zotop\Modules\Routing\AdminController;
-use Zotop\Support\Facades\Filter;
+use Zotop\Hook\Facades\Filter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;

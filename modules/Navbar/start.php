@@ -1,6 +1,6 @@
 <?php
 // Navbar 全局预加载
-use Zotop\Support\Facades\Filter;
+use Zotop\Hook\Facades\Filter;
 
 /**
  * 扩展后台全局导航

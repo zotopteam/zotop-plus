@@ -2,7 +2,7 @@
 
 namespace Modules\Content\Http\Controllers;
 
-use Zotop\Support\Facades\Filter;
+use Zotop\Hook\Facades\Filter;
 use Zotop\Modules\Routing\FrontController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

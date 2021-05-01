@@ -4,7 +4,7 @@ namespace Modules\Content\View\Components;
 
 use Illuminate\Support\Arr;
 use Illuminate\View\Component;
-use Zotop\Support\Facades\Filter;
+use Zotop\Hook\Facades\Filter;
 use Modules\Content\Models\Content;
 
 class ContentAdminList extends Component
@@ -12,42 +12,42 @@ class ContentAdminList extends Component
     /**
      * 媒体数据集合
      *
-     * @var 
+     * @var
      */
     public $list;
 
     /**
      * 媒体数据集合
      *
-     * @var 
+     * @var
      */
     public $class;
 
     /**
      * 是否可选择
      *
-     * @var 
+     * @var
      */
     public $checkable;
 
     /**
      * 是否可以多选
      *
-     * @var 
+     * @var
      */
     public $mutiple;
 
     /**
      * 是否可排序
      *
-     * @var 
+     * @var
      */
     public $sortable;
 
     /**
      * 是否可以嵌套访问，禁止后，无法进入目录下级
      *
-     * @var 
+     * @var
      */
     public $nestable;
 

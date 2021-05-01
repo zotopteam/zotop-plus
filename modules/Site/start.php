@@ -1,6 +1,6 @@
 <?php
 
-use Zotop\Support\Facades\Filter;
+use Zotop\Hook\Facades\Filter;
 
 
 /**

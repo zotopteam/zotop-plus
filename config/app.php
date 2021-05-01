@@ -245,6 +245,7 @@ return [
          */
         App\Providers\InstallServiceProvider::class,
         Zotop\Modules\ModulesServiceProvider::class,
+        Zotop\Hook\HookServiceProvider::class,
         Zotop\Themes\ThemesServiceProvider::class,
         Zotop\Support\SupportServiceProvider::class,
     ],
@@ -298,12 +299,9 @@ return [
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
 
-        'Module'       => Zotop\Modules\Facades\Module::class,
-        'Theme'        => Zotop\Themes\Facades\Theme::class,
-        'Form'         => Zotop\Support\Facades\Form::class,
-        'Html'         => Zotop\Support\Facades\Html::class,
-        'Filter'       => Zotop\Support\Facades\Filter::class,
-        'Action'       => Zotop\Support\Facades\Action::class,
+        'Theme' => Zotop\Themes\Facades\Theme::class,
+        'Form'  => Zotop\Support\Facades\Form::class,
+        'Html'  => Zotop\Support\Facades\Html::class,
     ],
 
 ];

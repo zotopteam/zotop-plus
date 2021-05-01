@@ -2,8 +2,6 @@
 
 namespace Modules\Content\Providers;
 
-use Zotop\Modules\Support\ServiceProvider;
-use Zotop\Support\Facades\Form;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Modules\Content\Models\Content;
@@ -14,6 +12,8 @@ use Modules\Content\View\Components\ContentList;
 use Modules\Content\View\Controls\ContentModels;
 use Modules\Content\View\Controls\ContentSummary;
 use Modules\Content\View\Controls\ContentTitle;
+use Zotop\Modules\Support\ServiceProvider;
+use Zotop\Support\Facades\Form;
 
 
 class ContentServiceProvider extends ServiceProvider
@@ -33,7 +33,7 @@ class ContentServiceProvider extends ServiceProvider
     public function register()
     {
         // Load all commands in the directory
-        $this->loadCommands(realpath(__DIR__ . '/../Console'));
+        $this->loadCommands(__DIR__ . '/../Console');
 
         // 模板扩展
         Blade::component(ContentAdminList::class, 'content-admin-list');
