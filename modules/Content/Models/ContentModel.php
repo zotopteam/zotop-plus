@@ -2,7 +2,7 @@
 
 namespace Modules\Content\Models;
 
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 
 /**
  * 内容扩展模型基类，所有的扩展模型类均继承于此类

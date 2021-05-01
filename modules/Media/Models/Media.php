@@ -2,10 +2,10 @@
 
 namespace Modules\Media\Models;
 
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Zotop\Support\Eloquent\Traits\Nestable;
-use Zotop\Support\Eloquent\Traits\UserRelation;
+use Zotop\Database\Eloquent\Traits\Nestable;
+use Zotop\Database\Eloquent\Traits\UserRelation;
 
 
 class Media extends Model
@@ -38,7 +38,7 @@ class Media extends Model
 
     /**
      * booted
-     * 
+     *
      * @return void
      */
     protected static function booted()
@@ -59,7 +59,7 @@ class Media extends Model
 
     /**
      * 排序 ，查询结果is_folder(是否文件夹), sort(排序)和id(编号)倒序
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */

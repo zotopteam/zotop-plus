@@ -2,7 +2,7 @@
 
 namespace Modules\Navbar\Models;
 
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 use Zotop\Enums\BoolEnum;
 use Zotop\Enums\SortEnum;
 use Illuminate\Database\Eloquent\Builder;

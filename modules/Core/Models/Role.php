@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Models;
 
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 
 class Role extends Model
 {
@@ -21,7 +21,7 @@ class Role extends Model
     protected $casts = [
         'permissions' => 'array',
     ];
-    
+
     /**
      * 拥有此角色的用户
      *

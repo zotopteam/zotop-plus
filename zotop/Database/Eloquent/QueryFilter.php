@@ -1,6 +1,6 @@
 <?php
 
-namespace Zotop\Support\Eloquent;
+namespace Zotop\Database\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;

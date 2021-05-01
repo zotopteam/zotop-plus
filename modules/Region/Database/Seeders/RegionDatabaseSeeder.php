@@ -3,7 +3,7 @@
 namespace Modules\Region\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 
 class RegionDatabaseSeeder extends Seeder
 {

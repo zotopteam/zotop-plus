@@ -3,7 +3,7 @@
 namespace Modules\Core\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 use Modules\Core\Models\User;
 use Faker\Generator as Faker;
 

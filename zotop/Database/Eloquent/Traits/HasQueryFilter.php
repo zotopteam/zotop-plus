@@ -1,8 +1,8 @@
 <?php
 
-namespace Zotop\Support\Eloquent\Traits;
+namespace Zotop\Database\Eloquent\Traits;
 
-use Zotop\Support\Eloquent\QueryFilter;
+use Zotop\Database\Eloquent\QueryFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 trait HasQueryFilter
@@ -11,7 +11,7 @@ trait HasQueryFilter
      * 查询滤器
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param \Zotop\Support\Eloquent\QueryFilter $filter
+     * @param \Zotop\Database\Eloquent\QueryFilter $filter
      * @return \Illuminate\Database\Eloquent\Builder
      * @author Chen Lei
      * @date 2020-11-23

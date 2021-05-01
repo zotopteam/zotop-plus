@@ -3,8 +3,8 @@
 namespace Modules\Block\Models;
 
 use Action;
-use Zotop\Support\Eloquent\Model;
-use Zotop\Support\Eloquent\Traits\UserRelation;
+use Zotop\Database\Eloquent\Model;
+use Zotop\Database\Eloquent\Traits\UserRelation;
 use Module;
 
 class Block extends Model

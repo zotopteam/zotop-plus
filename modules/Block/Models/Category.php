@@ -2,7 +2,7 @@
 
 namespace Modules\Block\Models;
 
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 
 class Category extends Model
 {
@@ -35,7 +35,7 @@ class Category extends Model
             }
         });
     }
-    
+
     /**
      * 和block的关联
      *

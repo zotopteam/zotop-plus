@@ -1,6 +1,6 @@
 <?php
 
-namespace Zotop\Support\Eloquent\Traits;
+namespace Zotop\Database\Eloquent\Traits;
 
 use Illuminate\Support\Facades\Request;
 

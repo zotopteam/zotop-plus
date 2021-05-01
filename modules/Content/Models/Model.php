@@ -2,8 +2,8 @@
 
 namespace Modules\Content\Models;
 
-use Zotop\Support\Eloquent\Model as BaseModel;
-use Zotop\Support\Eloquent\Traits\UserRelation;
+use Zotop\Database\Eloquent\Model as BaseModel;
+use Zotop\Database\Eloquent\Traits\UserRelation;
 use Modules\Content\Support\ModelHelper;
 use Modules\Content\Support\ModelTable;
 

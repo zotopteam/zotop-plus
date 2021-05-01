@@ -3,7 +3,7 @@
 namespace Modules\Core\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 
 class CoreDatabaseSeeder extends Seeder
 {
@@ -15,7 +15,7 @@ class CoreDatabaseSeeder extends Seeder
     public function run()
     {
         Model::unguard();
-        
+
         //$this->call(CoreUserTableSeeder::class);
 
         // $this->call("OthersTableSeeder");

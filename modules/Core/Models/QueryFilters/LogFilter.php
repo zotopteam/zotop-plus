@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Models\QueryFilters;
 
-use Zotop\Support\Eloquent\QueryFilter;
+use Zotop\Database\Eloquent\QueryFilter;
 
 class LogFilter extends QueryFilter
 {

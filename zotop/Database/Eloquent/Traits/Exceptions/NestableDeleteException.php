@@ -1,6 +1,6 @@
 <?php
 
-namespace Zotop\Support\Eloquent\Traits\Exceptions;
+namespace Zotop\Database\Eloquent\Traits\Exceptions;
 
 use Exception;
 

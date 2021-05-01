@@ -2,8 +2,8 @@
 
 namespace Modules\Region\Models;
 
-use Zotop\Support\Eloquent\Traits\Nestable;
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Traits\Nestable;
+use Zotop\Database\Eloquent\Model;
 
 class Region extends Model
 {

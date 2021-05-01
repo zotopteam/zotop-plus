@@ -2,7 +2,7 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 
 class $CLASS_NAME$ extends Model
 {

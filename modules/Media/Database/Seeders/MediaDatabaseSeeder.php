@@ -3,7 +3,7 @@
 namespace Modules\Media\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 
 class MediaDatabaseSeeder extends Seeder
 {

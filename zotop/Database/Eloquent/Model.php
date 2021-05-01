@@ -1,8 +1,8 @@
 <?php
 
-namespace Zotop\Support\Eloquent;
+namespace Zotop\Database\Eloquent;
 
-use Zotop\Support\Eloquent\Traits\HasQueryFilter;
+use Zotop\Database\Eloquent\Traits\HasQueryFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 

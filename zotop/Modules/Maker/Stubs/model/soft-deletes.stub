@@ -2,7 +2,7 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use Zotop\Support\Eloquent\Model;
+use Zotop\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class $CLASS_NAME$ extends Model

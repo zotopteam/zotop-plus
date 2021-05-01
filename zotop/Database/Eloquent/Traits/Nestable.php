@@ -1,9 +1,9 @@
 <?php
 
-namespace Zotop\Support\Eloquent\Traits;
+namespace Zotop\Database\Eloquent\Traits;
 
-use Zotop\Support\Eloquent\Traits\Exceptions\NestableDeleteException;
-use Zotop\Support\Eloquent\Traits\Exceptions\NestableMoveException;
+use Zotop\Database\Eloquent\Traits\Exceptions\NestableDeleteException;
+use Zotop\Database\Eloquent\Traits\Exceptions\NestableMoveException;
 
 /**
  * 含有 id 和 parent_id 结构的表嵌套查询

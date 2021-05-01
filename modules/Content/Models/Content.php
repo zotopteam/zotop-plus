@@ -2,9 +2,9 @@
 
 namespace Modules\Content\Models;
 
-use Zotop\Support\Eloquent\Model;
-use Zotop\Support\Eloquent\Traits\Nestable;
-use Zotop\Support\Eloquent\Traits\UserRelation;
+use Zotop\Database\Eloquent\Model;
+use Zotop\Database\Eloquent\Traits\Nestable;
+use Zotop\Database\Eloquent\Traits\UserRelation;
 use Illuminate\Support\Arr;
 use Module;
 use Modules\Content\Extend\Extendable;
