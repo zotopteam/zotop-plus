@@ -1,11 +1,11 @@
 <?php
 
-namespace Zotop\Support\Compilers;
+namespace Zotop\View\Compilers;
 
 
 /**
  * 模板扩展，解析点格式的数组
- * 
+ *
  * @package Zotop\Support
  */
 class DotArrayCompiler
@@ -20,7 +20,7 @@ class DotArrayCompiler
      */
     public function compile($value)
     {
-        // 正则匹配所有 $a.b.c…… 或者 @$a.b.c…… 的字符 
+        // 正则匹配所有 $a.b.c…… 或者 @$a.b.c…… 的字符
         $pattern = '/(@)?\$[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+|(?R))+/s';
 
         // 替换回调

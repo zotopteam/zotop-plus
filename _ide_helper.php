@@ -14727,7 +14727,7 @@
          */
         public static function open($options = [])
         {
-                        /** @var \Zotop\Support\Form $instance */
+                        /** @var \Zotop\View\Form $instance */
                         return $instance->open($options);
         }
                     /**
@@ -14738,7 +14738,7 @@
          */
         public static function close()
         {
-                        /** @var \Zotop\Support\Form $instance */
+                        /** @var \Zotop\View\Form $instance */
                         return $instance->close();
         }
                     /**
@@ -14750,7 +14750,7 @@
          */
         public static function field($attributes = [])
         {
-                        /** @var \Zotop\Support\Form $instance */
+                        /** @var \Zotop\View\Form $instance */
                         return $instance->field($attributes);
         }
                     /**
@@ -14761,7 +14761,7 @@
          */
         public static function token()
         {
-                        /** @var \Zotop\Support\Form $instance */
+                        /** @var \Zotop\View\Form $instance */
                         return $instance->token();
         }
                     /**
@@ -14773,7 +14773,7 @@
          */
         public static function textarea($attributes)
         {
-                        /** @var \Zotop\Support\Form $instance */
+                        /** @var \Zotop\View\Form $instance */
                         return $instance->textarea($attributes);
         }
                     /**
@@ -14785,7 +14785,7 @@
          */
         public static function button($attributes)
         {
-                        /** @var \Zotop\Support\Form $instance */
+                        /** @var \Zotop\View\Form $instance */
                         return $instance->button($attributes);
         }
                     /**
@@ -14797,7 +14797,7 @@
          */
         public static function select($attributes)
         {
-                        /** @var \Zotop\Support\Form $instance */
+                        /** @var \Zotop\View\Form $instance */
                         return $instance->select($attributes);
         }
                     /**
@@ -14809,7 +14809,7 @@
          */
         public static function checkbox($attributes)
         {
-                        /** @var \Zotop\Support\Form $instance */
+                        /** @var \Zotop\View\Form $instance */
                         return $instance->checkbox($attributes);
         }
                     /**
@@ -14821,7 +14821,7 @@
          */
         public static function radio($attributes)
         {
-                        /** @var \Zotop\Support\Form $instance */
+                        /** @var \Zotop\View\Form $instance */
                         return $instance->radio($attributes);
         }
                     /**
@@ -14834,7 +14834,7 @@
          */
         public static function macro($name, $macro)
         {
-                        \Zotop\Support\Form::macro($name, $macro);
+                        \Zotop\View\Form::macro($name, $macro);
         }
                     /**
          * Mix another object into the class.
@@ -14847,7 +14847,7 @@
          */
         public static function mixin($mixin, $replace = true)
         {
-                        \Zotop\Support\Form::mixin($mixin, $replace);
+                        \Zotop\View\Form::mixin($mixin, $replace);
         }
                     /**
          * Checks if macro is registered.
@@ -14858,7 +14858,7 @@
          */
         public static function hasMacro($name)
         {
-                        return \Zotop\Support\Form::hasMacro($name);
+                        return \Zotop\View\Form::hasMacro($name);
         }
                     /**
          * Dynamically handle calls to the class.
@@ -14871,7 +14871,7 @@
          */
         public static function macroCall($method, $parameters)
         {
-                        /** @var \Zotop\Support\Form $instance */
+                        /** @var \Zotop\View\Form $instance */
                         return $instance->macroCall($method, $parameters);
         }
                     /**
@@ -14882,7 +14882,7 @@
          */
         public static function upload($attrs)
         {
-                        return \Zotop\Support\Form::upload($attrs);
+                        return \Zotop\View\Form::upload($attrs);
         }
                     /**
          *
@@ -14892,7 +14892,7 @@
          */
         public static function upload_image($attrs)
         {
-                        return \Zotop\Support\Form::upload_image($attrs);
+                        return \Zotop\View\Form::upload_image($attrs);
         }
                     /**
          *
@@ -14902,7 +14902,7 @@
          */
         public static function gallery($attrs)
         {
-                        return \Zotop\Support\Form::gallery($attrs);
+                        return \Zotop\View\Form::gallery($attrs);
         }
                     /**
          *
@@ -14912,7 +14912,7 @@
          */
         public static function date($attrs)
         {
-                        return \Zotop\Support\Form::date($attrs);
+                        return \Zotop\View\Form::date($attrs);
         }
                     /**
          *
@@ -14922,7 +14922,7 @@
          */
         public static function year($attrs)
         {
-                        return \Zotop\Support\Form::year($attrs);
+                        return \Zotop\View\Form::year($attrs);
         }
                     /**
          *
@@ -14932,7 +14932,7 @@
          */
         public static function month($attrs)
         {
-                        return \Zotop\Support\Form::month($attrs);
+                        return \Zotop\View\Form::month($attrs);
         }
                     /**
          *
@@ -14942,7 +14942,7 @@
          */
         public static function datetime($attrs)
         {
-                        return \Zotop\Support\Form::datetime($attrs);
+                        return \Zotop\View\Form::datetime($attrs);
         }
                     /**
          *
@@ -14952,7 +14952,7 @@
          */
         public static function time($attrs)
         {
-                        return \Zotop\Support\Form::time($attrs);
+                        return \Zotop\View\Form::time($attrs);
         }
                     /**
          *
@@ -14962,7 +14962,7 @@
          */
         public static function radiogroup($attrs)
         {
-                        return \Zotop\Support\Form::radiogroup($attrs);
+                        return \Zotop\View\Form::radiogroup($attrs);
         }
                     /**
          *
@@ -14972,7 +14972,7 @@
          */
         public static function radiocards($attrs)
         {
-                        return \Zotop\Support\Form::radiocards($attrs);
+                        return \Zotop\View\Form::radiocards($attrs);
         }
                     /**
          *
@@ -14982,7 +14982,7 @@
          */
         public static function toggle($attrs)
         {
-                        return \Zotop\Support\Form::toggle($attrs);
+                        return \Zotop\View\Form::toggle($attrs);
         }
                     /**
          *
@@ -14992,7 +14992,7 @@
          */
         public static function bool($attrs)
         {
-                        return \Zotop\Support\Form::bool($attrs);
+                        return \Zotop\View\Form::bool($attrs);
         }
                     /**
          *
@@ -15002,7 +15002,7 @@
          */
         public static function enable($attrs)
         {
-                        return \Zotop\Support\Form::enable($attrs);
+                        return \Zotop\View\Form::enable($attrs);
         }
                     /**
          *
@@ -15012,7 +15012,7 @@
          */
         public static function checkboxgroup($attrs)
         {
-                        return \Zotop\Support\Form::checkboxgroup($attrs);
+                        return \Zotop\View\Form::checkboxgroup($attrs);
         }
                     /**
          *
@@ -15022,7 +15022,7 @@
          */
         public static function code($attrs)
         {
-                        return \Zotop\Support\Form::code($attrs);
+                        return \Zotop\View\Form::code($attrs);
         }
                     /**
          *
@@ -15032,7 +15032,7 @@
          */
         public static function markdown($attrs)
         {
-                        return \Zotop\Support\Form::markdown($attrs);
+                        return \Zotop\View\Form::markdown($attrs);
         }
                     /**
          *
@@ -15042,7 +15042,7 @@
          */
         public static function editor($attrs)
         {
-                        return \Zotop\Support\Form::editor($attrs);
+                        return \Zotop\View\Form::editor($attrs);
         }
                     /**
          *
@@ -15052,7 +15052,7 @@
          */
         public static function icon($attrs)
         {
-                        return \Zotop\Support\Form::icon($attrs);
+                        return \Zotop\View\Form::icon($attrs);
         }
                     /**
          *
@@ -15062,7 +15062,7 @@
          */
         public static function view($attrs)
         {
-                        return \Zotop\Support\Form::view($attrs);
+                        return \Zotop\View\Form::view($attrs);
         }
                     /**
          *
@@ -15072,7 +15072,7 @@
          */
         public static function content_title($attrs)
         {
-                        return \Zotop\Support\Form::content_title($attrs);
+                        return \Zotop\View\Form::content_title($attrs);
         }
                     /**
          *
@@ -15082,7 +15082,7 @@
          */
         public static function content_slug($attrs)
         {
-                        return \Zotop\Support\Form::content_slug($attrs);
+                        return \Zotop\View\Form::content_slug($attrs);
         }
                     /**
          *
@@ -15092,7 +15092,7 @@
          */
         public static function content_keywords($attrs)
         {
-                        return \Zotop\Support\Form::content_keywords($attrs);
+                        return \Zotop\View\Form::content_keywords($attrs);
         }
                     /**
          *
@@ -15102,7 +15102,7 @@
          */
         public static function content_summary($attrs)
         {
-                        return \Zotop\Support\Form::content_summary($attrs);
+                        return \Zotop\View\Form::content_summary($attrs);
         }
                     /**
          *
@@ -15112,7 +15112,7 @@
          */
         public static function content_models($attrs)
         {
-                        return \Zotop\Support\Form::content_models($attrs);
+                        return \Zotop\View\Form::content_models($attrs);
         }
                     /**
          *
@@ -15122,7 +15122,7 @@
          */
         public static function translate($attrs)
         {
-                        return \Zotop\Support\Form::translate($attrs);
+                        return \Zotop\View\Form::translate($attrs);
         }
 
     }
@@ -15140,7 +15140,7 @@
          */
         public static function attributes($attributes)
         {
-                        /** @var \Zotop\Support\Html $instance */
+                        /** @var \Zotop\View\Html $instance */
                         return $instance->attributes($attributes);
         }
                     /**
@@ -15153,7 +15153,7 @@
          */
         public static function convertAttribute($key, $value)
         {
-                        /** @var \Zotop\Support\Html $instance */
+                        /** @var \Zotop\View\Html $instance */
                         return $instance->convertAttribute($key, $value);
         }
                     /**
@@ -15165,7 +15165,7 @@
          */
         public static function text($string)
         {
-                        /** @var \Zotop\Support\Html $instance */
+                        /** @var \Zotop\View\Html $instance */
                         return $instance->text($string);
         }
                     /**
@@ -15178,7 +15178,7 @@
          */
         public static function macro($name, $macro)
         {
-                        \Zotop\Support\Html::macro($name, $macro);
+                        \Zotop\View\Html::macro($name, $macro);
         }
                     /**
          * Mix another object into the class.
@@ -15191,7 +15191,7 @@
          */
         public static function mixin($mixin, $replace = true)
         {
-                        \Zotop\Support\Html::mixin($mixin, $replace);
+                        \Zotop\View\Html::mixin($mixin, $replace);
         }
                     /**
          * Checks if macro is registered.
@@ -15202,7 +15202,7 @@
          */
         public static function hasMacro($name)
         {
-                        return \Zotop\Support\Html::hasMacro($name);
+                        return \Zotop\View\Html::hasMacro($name);
         }
                     /**
          * Dynamically handle calls to the class.
@@ -15215,7 +15215,7 @@
          */
         public static function macroCall($method, $parameters)
         {
-                        /** @var \Zotop\Support\Html $instance */
+                        /** @var \Zotop\View\Html $instance */
                         return $instance->macroCall($method, $parameters);
         }
 
@@ -17224,7 +17224,7 @@
          */
         public static function upload($attrs)
         {
-                        return \Zotop\Support\Form::upload($attrs);
+                        return \Zotop\View\Form::upload($attrs);
         }
                     /**
          *
@@ -17234,7 +17234,7 @@
          */
         public static function upload_image($attrs)
         {
-                        return \Zotop\Support\Form::upload_image($attrs);
+                        return \Zotop\View\Form::upload_image($attrs);
         }
                     /**
          *
@@ -17244,7 +17244,7 @@
          */
         public static function gallery($attrs)
         {
-                        return \Zotop\Support\Form::gallery($attrs);
+                        return \Zotop\View\Form::gallery($attrs);
         }
                     /**
          *
@@ -17254,7 +17254,7 @@
          */
         public static function date($attrs)
         {
-                        return \Zotop\Support\Form::date($attrs);
+                        return \Zotop\View\Form::date($attrs);
         }
                     /**
          *
@@ -17264,7 +17264,7 @@
          */
         public static function year($attrs)
         {
-                        return \Zotop\Support\Form::year($attrs);
+                        return \Zotop\View\Form::year($attrs);
         }
                     /**
          *
@@ -17274,7 +17274,7 @@
          */
         public static function month($attrs)
         {
-                        return \Zotop\Support\Form::month($attrs);
+                        return \Zotop\View\Form::month($attrs);
         }
                     /**
          *
@@ -17284,7 +17284,7 @@
          */
         public static function datetime($attrs)
         {
-                        return \Zotop\Support\Form::datetime($attrs);
+                        return \Zotop\View\Form::datetime($attrs);
         }
                     /**
          *
@@ -17294,7 +17294,7 @@
          */
         public static function time($attrs)
         {
-                        return \Zotop\Support\Form::time($attrs);
+                        return \Zotop\View\Form::time($attrs);
         }
                     /**
          *
@@ -17304,7 +17304,7 @@
          */
         public static function radiogroup($attrs)
         {
-                        return \Zotop\Support\Form::radiogroup($attrs);
+                        return \Zotop\View\Form::radiogroup($attrs);
         }
                     /**
          *
@@ -17314,7 +17314,7 @@
          */
         public static function radiocards($attrs)
         {
-                        return \Zotop\Support\Form::radiocards($attrs);
+                        return \Zotop\View\Form::radiocards($attrs);
         }
                     /**
          *
@@ -17324,7 +17324,7 @@
          */
         public static function toggle($attrs)
         {
-                        return \Zotop\Support\Form::toggle($attrs);
+                        return \Zotop\View\Form::toggle($attrs);
         }
                     /**
          *
@@ -17334,7 +17334,7 @@
          */
         public static function bool($attrs)
         {
-                        return \Zotop\Support\Form::bool($attrs);
+                        return \Zotop\View\Form::bool($attrs);
         }
                     /**
          *
@@ -17344,7 +17344,7 @@
          */
         public static function enable($attrs)
         {
-                        return \Zotop\Support\Form::enable($attrs);
+                        return \Zotop\View\Form::enable($attrs);
         }
                     /**
          *
@@ -17354,7 +17354,7 @@
          */
         public static function checkboxgroup($attrs)
         {
-                        return \Zotop\Support\Form::checkboxgroup($attrs);
+                        return \Zotop\View\Form::checkboxgroup($attrs);
         }
                     /**
          *
@@ -17364,7 +17364,7 @@
          */
         public static function code($attrs)
         {
-                        return \Zotop\Support\Form::code($attrs);
+                        return \Zotop\View\Form::code($attrs);
         }
                     /**
          *
@@ -17374,7 +17374,7 @@
          */
         public static function markdown($attrs)
         {
-                        return \Zotop\Support\Form::markdown($attrs);
+                        return \Zotop\View\Form::markdown($attrs);
         }
                     /**
          *
@@ -17384,7 +17384,7 @@
          */
         public static function editor($attrs)
         {
-                        return \Zotop\Support\Form::editor($attrs);
+                        return \Zotop\View\Form::editor($attrs);
         }
                     /**
          *
@@ -17394,7 +17394,7 @@
          */
         public static function icon($attrs)
         {
-                        return \Zotop\Support\Form::icon($attrs);
+                        return \Zotop\View\Form::icon($attrs);
         }
                     /**
          *
@@ -17404,7 +17404,7 @@
          */
         public static function view($attrs)
         {
-                        return \Zotop\Support\Form::view($attrs);
+                        return \Zotop\View\Form::view($attrs);
         }
                     /**
          *
@@ -17414,7 +17414,7 @@
          */
         public static function content_title($attrs)
         {
-                        return \Zotop\Support\Form::content_title($attrs);
+                        return \Zotop\View\Form::content_title($attrs);
         }
                     /**
          *
@@ -17424,7 +17424,7 @@
          */
         public static function content_slug($attrs)
         {
-                        return \Zotop\Support\Form::content_slug($attrs);
+                        return \Zotop\View\Form::content_slug($attrs);
         }
                     /**
          *
@@ -17434,7 +17434,7 @@
          */
         public static function content_keywords($attrs)
         {
-                        return \Zotop\Support\Form::content_keywords($attrs);
+                        return \Zotop\View\Form::content_keywords($attrs);
         }
                     /**
          *
@@ -17444,7 +17444,7 @@
          */
         public static function content_summary($attrs)
         {
-                        return \Zotop\Support\Form::content_summary($attrs);
+                        return \Zotop\View\Form::content_summary($attrs);
         }
                     /**
          *
@@ -17454,7 +17454,7 @@
          */
         public static function content_models($attrs)
         {
-                        return \Zotop\Support\Form::content_models($attrs);
+                        return \Zotop\View\Form::content_models($attrs);
         }
                     /**
          *
@@ -17464,7 +17464,7 @@
          */
         public static function translate($attrs)
         {
-                        return \Zotop\Support\Form::translate($attrs);
+                        return \Zotop\View\Form::translate($attrs);
         }
 
     }
@@ -20610,8 +20610,8 @@ namespace  {
             class View extends \Illuminate\Support\Facades\View {}
             class Module extends \Zotop\Modules\Facades\Module {}
             class Theme extends \Zotop\Themes\Facades\Theme {}
-            class Form extends \Zotop\Support\Facades\Form {}
-            class Html extends \Zotop\Support\Facades\Html {}
+            class Form extends \Zotop\View\Facades\Form {}
+            class Html extends \Zotop\View\Facades\Html {}
             class Filter extends \Zotop\Hook\Facades\Filter {}
             class Action extends \Zotop\Hook\Facades\Action {}
             class Debugbar extends \Barryvdh\Debugbar\Facade {}

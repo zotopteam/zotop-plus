@@ -3,7 +3,7 @@
 namespace Modules\Core\View\Controls;
 
 use Zotop\Modules\Facades\Module;
-use Zotop\Support\Form\Control;
+use Zotop\View\Form\Control;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 

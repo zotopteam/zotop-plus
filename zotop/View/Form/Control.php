@@ -1,6 +1,6 @@
 <?php
 
-namespace Zotop\Support\Form;
+namespace Zotop\View\Form;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\HtmlString;

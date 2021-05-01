@@ -4,7 +4,7 @@ namespace Modules\Editormd\Providers;
 
 use Zotop\Modules\Support\ServiceProvider;
 use Zotop\Hook\Facades\Filter;
-use Zotop\Support\Facades\Form;
+use Zotop\View\Facades\Form;
 use Modules\Editormd\View\Controls\Code;
 use Modules\Editormd\View\Controls\Markdown;
 

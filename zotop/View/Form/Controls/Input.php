@@ -1,8 +1,8 @@
 <?php
 
-namespace Zotop\Support\Form\Controls;
+namespace Zotop\View\Form\Controls;
 
-use Zotop\Support\Form\Control;
+use Zotop\View\Form\Control;
 
 class Input extends Control
 {

@@ -3,7 +3,7 @@
 namespace Modules\Core\Providers;
 
 use Zotop\Modules\Support\ServiceProvider;
-use Zotop\Support\Facades\Form;
+use Zotop\View\Facades\Form;
 use Zotop\Support\ImageFilter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;

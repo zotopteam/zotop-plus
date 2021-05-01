@@ -1,6 +1,6 @@
 <?php
 
-namespace Zotop\Support;
+namespace Zotop\View;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Traits\ForwardsCalls;

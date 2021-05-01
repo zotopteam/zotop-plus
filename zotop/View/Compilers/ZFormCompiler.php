@@ -1,6 +1,6 @@
 <?php
 
-namespace Zotop\Support\Compilers;
+namespace Zotop\View\Compilers;
 
 use Illuminate\Support\Str;
 
@@ -34,7 +34,7 @@ class ZFormCompiler
      */
     private function compileFormOpeningTag($value)
     {
-        // 正则捕获 
+        // 正则捕获
         $pattern = "/(@)?
             <
                 \s*
@@ -69,7 +69,7 @@ class ZFormCompiler
 
             // 标签字符串转换为数组字符串
             // 转换前  bind="$config" route="site.config.seo" method="post" id="config" autocomplete="off"
-            // 转换后 'bind' => $config, 'route' => 'site.config.seo', 'method' => 'post', 'id' => 'config', 'autocomplete' => 'off'            
+            // 转换后 'bind' => $config, 'route' => 'site.config.seo', 'method' => 'post', 'id' => 'config', 'autocomplete' => 'off'
             $attributes = $this->convertAttributes($matches['attributes']);
 
             return "<?php echo Form::open(" . $attributes . "); ?>\r\n";
@@ -191,7 +191,7 @@ class ZFormCompiler
                 // 去除前后的双引号或者单引号
                 $value = Str::startsWith($value, ['"', '\'']) ? substr($value, 1, -1) : $value;
                 // 某些值无法被判断为动态值，需要在属性标签前面明确标注英文冒号
-                // 处理明确标记为动态值的标签 :bind="$config" 
+                // 处理明确标记为动态值的标签 :bind="$config"
                 if (strpos($attribute, ':') === 0) {
                     $attribute = ltrim($attribute, ':');
                 } else {
@@ -223,7 +223,7 @@ class ZFormCompiler
             return $value;
         }
 
-        // 'null','true','false' 直接返回  'key'=>null,  'key'=>false,  'key'=>true 
+        // 'null','true','false' 直接返回  'key'=>null,  'key'=>false,  'key'=>true
         if (in_array(strtolower($value), ['null', 'true', 'false'])) {
             return $value;
         }

@@ -3,7 +3,7 @@
 namespace Modules\Tinymce\View\Controls;
 
 use Zotop\Hook\Facades\Filter;
-use Zotop\Support\Form\Control;
+use Zotop\View\Form\Control;
 
 class Editor extends Control
 {

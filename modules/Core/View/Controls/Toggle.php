@@ -2,7 +2,7 @@
 
 namespace Modules\Core\View\Controls;
 
-use Zotop\Support\Form\Control;
+use Zotop\View\Form\Control;
 
 class Toggle extends Control
 {
@@ -30,7 +30,7 @@ class Toggle extends Control
     /**
      * toggle 标签
      *
-     * @return \Zotop\Support\Attribute
+     * @return \Zotop\View\Attribute
      * @author Chen Lei
      * @date 2020-12-06
      */

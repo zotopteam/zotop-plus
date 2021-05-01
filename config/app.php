@@ -247,6 +247,7 @@ return [
         Zotop\Modules\ModulesServiceProvider::class,
         Zotop\Hook\HookServiceProvider::class,
         Zotop\Themes\ThemesServiceProvider::class,
+        Zotop\View\ViewServiceProvider::class,
         Zotop\Support\SupportServiceProvider::class,
     ],
 
@@ -298,9 +299,6 @@ return [
         'URL'          => Illuminate\Support\Facades\URL::class,
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
-        
-        'Form' => Zotop\Support\Facades\Form::class,
-        'Html' => Zotop\Support\Facades\Html::class,
     ],
 
 ];

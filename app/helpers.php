@@ -244,13 +244,13 @@ if (!function_exists('attribute')) {
      * make a attribute
      *
      * @param array $attribute
-     * @return \Zotop\Support\Attribute
+     * @return \Zotop\View\Attribute
      * @author Chen Lei
      * @date 2020-12-05
      */
     function attribute($attribute = [])
     {
-        return new \Zotop\Support\Attribute($attribute);
+        return new \Zotop\View\Attribute($attribute);
     }
 }
 

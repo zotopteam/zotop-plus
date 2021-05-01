@@ -2,7 +2,7 @@
 
 namespace Modules\Content\View\Controls;
 
-use Zotop\Support\Form\Control;
+use Zotop\View\Form\Control;
 use Illuminate\Support\Arr;
 use Modules\Content\Models\Model;
 

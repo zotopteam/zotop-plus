@@ -13,7 +13,7 @@ use Modules\Content\View\Controls\ContentModels;
 use Modules\Content\View\Controls\ContentSummary;
 use Modules\Content\View\Controls\ContentTitle;
 use Zotop\Modules\Support\ServiceProvider;
-use Zotop\Support\Facades\Form;
+use Zotop\View\Facades\Form;
 
 
 class ContentServiceProvider extends ServiceProvider

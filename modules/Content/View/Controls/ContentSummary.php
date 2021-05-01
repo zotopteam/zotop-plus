@@ -2,7 +2,7 @@
 
 namespace Modules\Content\View\Controls;
 
-use Zotop\Support\Form\Controls\Textarea;
+use Zotop\View\Form\Controls\Textarea;
 
 class ContentSummary extends Textarea
 {

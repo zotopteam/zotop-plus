@@ -1,5 +1,6 @@
 <?php
-namespace Zotop\Support\Facades;
+
+namespace Zotop\View\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

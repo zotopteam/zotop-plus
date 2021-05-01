@@ -1,6 +1,6 @@
 <?php
 
-namespace Zotop\Support;
+namespace Zotop\View;
 
 use ArrayAccess;
 use ArrayIterator;

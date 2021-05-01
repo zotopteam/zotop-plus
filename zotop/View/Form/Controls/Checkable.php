@@ -1,9 +1,9 @@
 <?php
 
-namespace Zotop\Support\Form\Controls;
+namespace Zotop\View\Form\Controls;
 
-use Zotop\Support\Attribute;
-use Zotop\Support\Form\Control;
+use Zotop\View\Attribute;
+use Zotop\View\Form\Control;
 use Illuminate\Support\Arr;
 
 class Checkable extends Control

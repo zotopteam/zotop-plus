@@ -1,14 +1,14 @@
 <?php
 
-namespace Zotop\Support\Form\Traits;
+namespace Zotop\View\Form\Traits;
 
-use Zotop\Support\Attribute;
-use Zotop\Support\Form\Control;
-use Zotop\Support\Form\Controls\Button;
-use Zotop\Support\Form\Controls\Checkable;
-use Zotop\Support\Form\Controls\Input;
-use Zotop\Support\Form\Controls\Select;
-use Zotop\Support\Form\Controls\Textarea;
+use Zotop\View\Attribute;
+use Zotop\View\Form\Control;
+use Zotop\View\Form\Controls\Button;
+use Zotop\View\Form\Controls\Checkable;
+use Zotop\View\Form\Controls\Input;
+use Zotop\View\Form\Controls\Select;
+use Zotop\View\Form\Controls\Textarea;
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;

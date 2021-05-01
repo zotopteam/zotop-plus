@@ -2,7 +2,7 @@
 
 namespace Modules\Core\View\Controls;
 
-use Zotop\Support\Form\Control;
+use Zotop\View\Form\Control;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 
@@ -64,7 +64,7 @@ class Date extends Control
     public function render()
     {
         $this->options = $this->options($this->options);
-        
+
         return $this->view('core::controls.date');
     }
 }

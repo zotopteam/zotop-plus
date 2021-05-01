@@ -4,7 +4,7 @@ namespace Modules\Tinymce\Providers;
 
 use Zotop\Modules\Support\ServiceProvider;
 use Zotop\Hook\Facades\Filter;
-use Zotop\Support\Facades\Form;
+use Zotop\View\Facades\Form;
 use Modules\Tinymce\View\Controls\Editor;
 
 class TinymceServiceProvider extends ServiceProvider

@@ -1,8 +1,8 @@
 <?php
 
-namespace Zotop\Support;
+namespace Zotop\View;
 
-use Zotop\Support\Form\Traits\Controlable;
+use Zotop\View\Form\Traits\Controlable;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
