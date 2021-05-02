@@ -1,9 +1,9 @@
 <?php
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 // Developer 模块前台路由
-$router->group(['prefix' =>'developer'], function (Router $router) {
+Route::group(['prefix' =>'developer'], function () {
     
     // 首页
-    $router->get('/', 'IndexController@index');
+    Route::get('/', 'IndexController@index');
 });

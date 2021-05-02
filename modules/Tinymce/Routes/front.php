@@ -1,9 +1,9 @@
 <?php
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 // Tinymce 模块前台路由
-$router->group(['prefix' =>'tinymce'], function (Router $router) {
+Route::group(['prefix' =>'tinymce'], function () {
     
     // 首页
-    //$router->get('/', 'IndexController@index')->name('tinymce.index');
+    //Route::get('/', 'IndexController@index')->name('tinymce.index');
 });

@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 // Region 模块前台路由
-$router->group(['prefix' => 'region'], function (Router $router) {
+Route::group(['prefix' => 'region'], function () {
 
     // 首页
-    // $router->get('/', 'IndexController@index');
+    // Route::get('/', 'IndexController@index');
 });

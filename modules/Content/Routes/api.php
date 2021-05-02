@@ -1,6 +1,6 @@
 <?php
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
-$router->group(['prefix' =>'content'], function (Router $router) {
+Route::group(['prefix' =>'content'], function () {
     // append
 });

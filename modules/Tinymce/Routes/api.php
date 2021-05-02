@@ -1,6 +1,6 @@
 <?php
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
-$router->group(['prefix' =>'tinymce'], function (Router $router) {
+Route::group(['prefix' =>'tinymce'], function () {
     // append
 });

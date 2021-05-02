@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
-$router->group(['prefix' => 'core'], function (Router $router) {
+Route::group(['prefix' => 'core'], function () {
     // append
 });

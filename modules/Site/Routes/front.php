@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 // Site 模块前台路由
-$router->group(['prefix' => '/'], function (Router $router) {
+Route::group(['prefix' => '/'], function () {
 
     // 首页
-    $router->get('/', 'SiteController@index')->name('index');
+    Route::get('/', 'SiteController@index')->name('index');
 });
 

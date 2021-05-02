@@ -1,6 +1,6 @@
 <?php
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
-$router->group(['prefix' =>'translator'], function (Router $router) {
+Route::group(['prefix' =>'translator'], function () {
     // append
 });

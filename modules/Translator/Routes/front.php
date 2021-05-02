@@ -1,9 +1,9 @@
 <?php
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 // Translator 模块前台路由
-$router->group(['prefix' =>'translator'], function (Router $router) {
+Route::group(['prefix' =>'translator'], function () {
     
     // 首页
-    //$router->get('/', 'IndexController@index')->name('translator.index');
+    //Route::get('/', 'IndexController@index')->name('translator.index');
 });

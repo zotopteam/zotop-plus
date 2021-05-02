@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 // Core 模块前台路由
-$router->group(['prefix' => '/'], function (Router $router) {
-    $router->get('/', 'IndexController@index')->name('index');
-    $router->get('cms', 'IndexController@index')->name('cms');
+Route::group(['prefix' => '/'], function () {
+    Route::get('/', 'IndexController@index')->name('index');
+    Route::get('cms', 'IndexController@index')->name('cms');
 });

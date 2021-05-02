@@ -1,6 +1,6 @@
 <?php
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
-$router->group(['prefix' =>'block'], function (Router $router) {
+Route::group(['prefix' =>'block'], function () {
     // append
 });

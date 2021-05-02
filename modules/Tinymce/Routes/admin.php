@@ -1,7 +1,7 @@
 <?php
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 // Tinymce 模块后台路由
-$router->group(['prefix'=>'tinymce'], function (Router $router) {
+Route::group(['prefix'=>'tinymce'], function () {
     // append
 });
