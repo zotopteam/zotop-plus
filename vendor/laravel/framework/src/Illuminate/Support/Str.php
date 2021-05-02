@@ -217,7 +217,10 @@ class Str
     public static function endsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ($needle !== '' && substr($haystack, -strlen($needle)) === (string) $needle) {
+            if (
+                $needle !== '' && $needle !== null
+                && substr($haystack, -strlen($needle)) === (string) $needle
+            ) {
                 return true;
             }
         }
@@ -492,6 +495,18 @@ class Str
     }
 
     /**
+     * Repeat the given string.
+     *
+     * @param  string  $string
+     * @param  int  $times
+     * @return string
+     */
+    public static function repeat(string $string, int $times)
+    {
+        return str_repeat($string, $times);
+    }
+
+    /**
      * Replace a given value in the string sequentially with an array.
      *
      * @param  string  $search
@@ -561,18 +576,16 @@ class Str
     /**
      * Remove any occurrence of the given string in the subject.
      *
-     * @param string|array<string> $search
-     * @param string $subject
-     * @param bool $caseSensitive
+     * @param  string|array<string>  $search
+     * @param  string  $subject
+     * @param  bool  $caseSensitive
      * @return string
      */
     public static function remove($search, $subject, $caseSensitive = true)
     {
-        foreach (Arr::wrap($search) as $s) {
-            $subject = $caseSensitive
-                        ? str_replace($search, '', $subject)
-                        : str_ireplace($search, '', $subject);
-        }
+        $subject = $caseSensitive
+                    ? str_replace($search, '', $subject)
+                    : str_ireplace($search, '', $subject);
 
         return $subject;
     }
@@ -754,6 +767,17 @@ class Str
     public static function ucfirst($string)
     {
         return static::upper(static::substr($string, 0, 1)).static::substr($string, 1);
+    }
+
+    /**
+     * Get the number of words a string contains.
+     *
+     * @param  string  $string
+     * @return int
+     */
+    public static function wordCount($string)
+    {
+        return str_word_count($string);
     }
 
     /**

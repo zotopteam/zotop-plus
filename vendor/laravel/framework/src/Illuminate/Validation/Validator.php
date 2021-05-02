@@ -5,6 +5,7 @@ namespace Illuminate\Validation;
 use BadMethodCallException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Translation\Translator;
+use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ImplicitRule;
 use Illuminate\Contracts\Validation\Rule as RuleContract;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
@@ -13,6 +14,7 @@ use Illuminate\Support\Fluent;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
 use RuntimeException;
+use stdClass;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Validator implements ValidatorContract
@@ -503,7 +505,7 @@ class Validator implements ValidatorContract
 
         $results = [];
 
-        $missingValue = Str::random(10);
+        $missingValue = new stdClass;
 
         foreach (array_keys($this->getRules()) as $key) {
             $value = data_get($this->getData(), $key, $missingValue);
@@ -746,6 +748,10 @@ class Validator implements ValidatorContract
         $attribute = $this->replacePlaceholderInString($attribute);
 
         $value = is_array($value) ? $this->replacePlaceholders($value) : $value;
+
+        if ($rule instanceof DataAwareRule) {
+            $rule->setData($this->data);
+        }
 
         if (! $rule->passes($attribute, $value)) {
             $this->failedRules[$attribute][get_class($rule)] = [];

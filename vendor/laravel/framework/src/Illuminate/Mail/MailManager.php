@@ -168,7 +168,7 @@ class MailManager implements FactoryContract
             return call_user_func($this->customCreators[$transport], $config);
         }
 
-        if (trim($transport) === '' || ! method_exists($this, $method = 'create'.ucfirst($transport).'Transport')) {
+        if (trim($transport ?? '') === '' || ! method_exists($this, $method = 'create'.ucfirst($transport).'Transport')) {
             throw new InvalidArgumentException("Unsupported mail transport [{$transport}].");
         }
 
@@ -468,6 +468,41 @@ class MailManager implements FactoryContract
     public function extend($driver, Closure $callback)
     {
         $this->customCreators[$driver] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Get the application instance used by the manager.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application
+     */
+    public function getApplication()
+    {
+        return $this->app;
+    }
+
+    /**
+     * Set the application instance used by the manager.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return $this
+     */
+    public function setApplication($app)
+    {
+        $this->app = $app;
+
+        return $this;
+    }
+
+    /**
+     * Forget all of the resolved mailer instances.
+     *
+     * @return $this
+     */
+    public function forgetMailers()
+    {
+        $this->mailers = [];
 
         return $this;
     }
