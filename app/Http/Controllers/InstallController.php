@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Zotop\Modules\Facades\Module;
 use Exception;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Database\Connectors\ConnectionFactory;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Modules\Core\Models\User;
 use PDOException;
+use Zotop\Modules\Facades\Module;
 
 class InstallController extends Controller
 {
@@ -110,7 +111,7 @@ class InstallController extends Controller
     }
 
     /**
-     * TODO: Undocumented function
+     * 输出信息
      *
      * @param array $msg 消息内容
      * @return \Illuminate\Http\JsonResponse
@@ -383,7 +384,7 @@ class InstallController extends Controller
             User::updateOrCreate([
                 'username' => $this->admin['username'],
             ], [
-                'password'       => \Hash::make($this->admin['password']),
+                'password'       => Hash::make($this->admin['password']),
                 'type'           => 'super',
                 'email'          => $this->admin['email'],
                 'mobile'         => '',

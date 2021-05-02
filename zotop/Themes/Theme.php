@@ -125,9 +125,9 @@ class Theme
      *
      * @return string
      */
-    public function getType()
+    public function getChannel()
     {
-        return strtolower($this->type);
+        return strtolower($this->channel);
     }
 
     /**
@@ -234,7 +234,7 @@ class Theme
 
 
     /**
-     * 注册
+     * 激活
      *
      * @return void
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
@@ -289,10 +289,10 @@ class Theme
         // 找不到后寻找模块视图： modules/Core/Resources/views/front/mine/edit.blade.php
         foreach ($this->app['modules']->enabled() as $module) {
             $moduleViewPath = $module->getPath('views', true);
-            $moduleTypePath = $this->app['config']->get('modules.types.' . $this->getType() . '.dirs.view');
+            $moduleChannelPath = $this->app['config']->get('modules.channels.' . $this->app['current.channel'] . '.dirs.view');
             $this->app['view']->addNamespace($module->getLowerName(), [
                 $themeViewPath . DIRECTORY_SEPARATOR . $module->getLowerName(),
-                $moduleViewPath . DIRECTORY_SEPARATOR . $moduleTypePath,
+                $moduleViewPath . DIRECTORY_SEPARATOR . $moduleChannelPath,
             ]);
         }
     }

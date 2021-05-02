@@ -72,12 +72,12 @@ class Repository
      * @param string $type 主题类型：admin,front,api
      * @return array
      */
-    public function type(string $type)
+    public function channel(string $channel)
     {
         $themes = $this->all();
 
         foreach ($themes as $key => $theme) {
-            if (strtolower($type) != $theme->getType()) {
+            if (strtolower($channel) != $theme->getChannel()) {
                 unset($themes[$key]);
             }
         }

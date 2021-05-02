@@ -4,7 +4,9 @@ namespace Zotop\Themes;
 
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Zotop\Themes\Middleware\ThemeMiddleware;
 
 class ThemesServiceProvider extends ServiceProvider
 {
@@ -38,6 +40,9 @@ class ThemesServiceProvider extends ServiceProvider
 
         // 注册别名
         AliasLoader::getInstance()->alias('Theme', Facades\Theme::class);
+
+        // 注册中间件
+        $this->app['router']->aliasMiddleware('theme', ThemeMiddleware::class);
     }
 
     /**
@@ -47,11 +52,28 @@ class ThemesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // 注册主题
-        $this->app->register(BootstrapServiceProvider::class);
-
         //设置默认分页代码
         Paginator::defaultView('pagination.default');
         Paginator::defaultSimpleView('pagination.simple');
+
+        // 只执行一次 @once('……') @endonce
+        Blade::directive('once', function ($expression) {
+            $expression = strtoupper($expression);
+            return "<?php if (! isset(\$__env->once[{$expression}])) : \$__env->once[{$expression}] = true; ?>";
+        });
+
+        Blade::directive('endonce', function () {
+            return "<?php endif; ?>";
+        });
+
+        // 只加载一次js文件 @loadjs('……')
+        Blade::directive('loadjs', function ($expression) {
+            return "<?php \$loadjs = {$expression}; if (! isset(\$__env->loadjs[\$loadjs])) : \$__env->loadjs[\$loadjs] = true;?>\r\n<script src=\"<?php echo \$loadjs; ?>\"></script>\r\n<?php endif; ?>";
+        });
+
+        // 只加载一次css文件 @loadcss('……')
+        Blade::directive('loadcss', function ($expression) {
+            return "<?php \$loadcss = {$expression}; if (! isset(\$__env->loadcss[\$loadcss])) : \$__env->loadcss[\$loadcss] = true;?>\r\n<link rel=\"stylesheet\" href=\"<?php echo \$loadcss; ?>\" rel=\"stylesheet\">\r\n<?php endif; ?>";
+        });
     }
 }

@@ -80,6 +80,16 @@ class Module
     }
 
     /**
+     * 获取模块名称
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * 获取模块小写名称
      *
      * @return string
@@ -466,6 +476,32 @@ class Module
     }
 
     /**
+     * 启动
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerTranslation();
+
+        $this->dispatch('boot');
+    }
+
+    /**
+     * 激活
+     *
+     * @return void
+     */
+    public function active()
+    {
+        $this->dispatch('activing');
+
+        $this->registerView();
+
+        $this->dispatch('actived');
+    }
+
+    /**
      * 注册别名
      *
      * @return void
@@ -503,18 +539,6 @@ class Module
     }
 
     /**
-     * 启动
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->registerTranslation();
-
-        $this->dispatch('boot');
-    }
-
-    /**
      * 注册模块翻译文件
      *
      * @return void
@@ -525,6 +549,20 @@ class Module
             $this->app['translator']->addJsonPath($path);
             $this->app['translator']->addNamespace($this->getLowerName(), $path);
         }
+    }
+
+    /**
+     * 注册视图
+     *
+     * @return void
+     */
+    protected function registerView()
+    {
+        $path = $this->getPath('views', true)
+            . DIRECTORY_SEPARATOR
+            . $this->app['config']->get('modules.channels.' . $this->app['current.channel'] . '.dirs.view');
+
+        $this->app['view']->addNamespace($this->getLowerName(), $path);
     }
 
     /**

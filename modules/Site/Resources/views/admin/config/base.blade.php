@@ -83,7 +83,7 @@
                                class="col-2 col-form-label required">{{trans('site::config.theme.label')}}</label>
                         <div class="col-8">
 
-                            <z-field type="radiocards" name="theme" options="Module::data('site::theme.frontend')"
+                            <z-field type="radiocards" name="theme" options="Module::data('site::theme.front')"
                                      class="radiocards-lg" column="4"/>
 
                             @if ($errors->has('theme'))

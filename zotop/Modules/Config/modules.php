@@ -57,6 +57,7 @@ return [
             'views'         => 'Resources/views',
             'test'          => 'Tests',
             'repository'    => 'Repositories',
+            'service'       => 'Services',
             'events'        => 'Events',
             'hook'          => 'Hooks',
             'listener'      => 'Listeners',
@@ -95,14 +96,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | 前端、后端和api端定义
+    | 渠道
     |--------------------------------------------------------------------------
     */
 
-    'types' => [
-        'frontend' => [
+    'channels' => [
+        'front' => [
             'prefix'     => '',
-            'middleware' => ['web', 'module', 'front'],
+            'middleware' => ['web', 'module', 'theme', 'front'],
+            'route'      => 'front.php',
             'theme'      => 'default',
             'dirs'       => [
                 'controller' => '',
@@ -110,9 +112,10 @@ return [
                 'view'       => 'front',
             ],
         ],
-        'backend'  => [
+        'admin' => [
             'prefix'     => 'admin',
-            'middleware' => ['web', 'module', 'admin'],
+            'middleware' => ['web', 'module', 'theme', 'admin'],
+            'route'      => 'admin.php',
             'theme'      => 'admin',
             'dirs'       => [
                 'controller' => 'Admin',
@@ -120,10 +123,11 @@ return [
                 'view'       => 'admin',
             ],
         ],
-        'api'      => [
+        'api'   => [
             'prefix'     => 'api',
             'middleware' => ['api', 'module'],
-            'theme'      => 'api',
+            'route'      => 'api.php',
+            'theme'      => '',
             'dirs'       => [
                 'controller' => 'Api',
                 'request'    => 'Api',

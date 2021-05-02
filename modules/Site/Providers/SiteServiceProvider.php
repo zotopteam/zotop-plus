@@ -2,12 +2,12 @@
 
 namespace Modules\Site\Providers;
 
-use Zotop\Modules\Support\ServiceProvider;
-use Zotop\View\Facades\Form;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Facades\Agent;
 use Modules\Site\View\Controls\View;
+use Zotop\Modules\Support\ServiceProvider;
+use Zotop\View\Facades\Form;
 
 class SiteServiceProvider extends ServiceProvider
 {
@@ -59,7 +59,7 @@ class SiteServiceProvider extends ServiceProvider
         }
 
         // 注册前端主题
-        $this->app['config']->set('modules.types.frontend.theme', $theme);
+        $this->app['config']->set('modules.channels.front.theme', $theme);
 
         // 注册控件
         Form::control(View::class, 'view');

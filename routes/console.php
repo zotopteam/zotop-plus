@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +25,8 @@ Artisan::command('preview:clear', function () {
     $dir = public_path('previews');
 
     // 删除预览文件夹下面的全部目录
-    foreach ($this->laravel['files']->directories($dir) as $subdir) {
-        $this->laravel['files']->deleteDirectory($subdir);
+    foreach ($this->laravel['files']->directories($dir) as $subDir) {
+        $this->laravel['files']->deleteDirectory($subDir);
     }
 
     $this->info('Preview files cleared!');

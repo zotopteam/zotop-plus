@@ -1,13 +1,13 @@
 {
-    "name"        : "wap",
-    "title"       : "移动端默认主题",
-    "description" : "采用Bootstrap v4 开发的响应式主题，兼容主流浏览器，自适应手机和pc浏览器",
-    "version"     : "1.1.0",
-    "type"        : "frontend",
-    "author"      : "zotop",
-    "email"       : "it@zotop.com",
-    "homepage"    : "http://www.zotop.com",  
-    "files"       : [
+    "name": "wap",
+    "title": "移动端默认主题",
+    "description": "采用Bootstrap v4 开发的响应式主题，兼容主流浏览器，自适应手机和pc浏览器",
+    "version": "1.1.0",
+    "channel": "front",
+    "author": "zotop",
+    "email": "it@zotop.com",
+    "homepage": "http://www.zotop.com",
+    "files": [
         "start.php"
     ]
 }

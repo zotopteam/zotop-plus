@@ -94,7 +94,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function setLocale()
     {
-        $locale = $this->app['current.locale'];
+        $locale = $this->app->getLocale();
 
         // Carbon 语言转换
         $carbonLocale = Arr::get($this->app['hook.filter']->fire('carbon.locale.transform', [

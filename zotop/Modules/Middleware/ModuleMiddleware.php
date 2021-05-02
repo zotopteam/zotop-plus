@@ -3,8 +3,8 @@
 namespace Zotop\Modules\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
 
 class ModuleMiddleware
 {
@@ -18,7 +18,7 @@ class ModuleMiddleware
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param \Illuminate\Contracts\Foundation\Application $app
      * @return void
      */
     public function __construct(Application $app)
@@ -29,8 +29,8 @@ class ModuleMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -40,10 +40,15 @@ class ModuleMiddleware
 
         // 从路由信息中获取模块名称
         $this->app->singleton('current.module', function () use ($action) {
-            return is_array($action['module']) ? end($action['module']) : $action['module'];
+            return $action['module'];
         });
 
-        // 从路由中获取控制器    
+        // 从路由中获取渠道
+        $this->app->singleton('current.channel', function () use ($action) {
+            return $action['channel'];
+        });
+
+        // 从路由中获取控制器
         $this->app->singleton('current.controller', function () use ($action) {
             return strtolower(substr($action['controller'], strrpos($action['controller'], "\\") + 1, strrpos($action['controller'], "@") - strlen($action['controller']) - 10));
         });
@@ -52,6 +57,9 @@ class ModuleMiddleware
         $this->app->singleton('current.action', function () use ($action) {
             return strtolower(substr($action['controller'], strpos($action['controller'], "@") + 1));
         });
+
+        // 激活模块
+        $this->app['modules']->findOrFail($this->app['current.module'])->active();
 
         return $next($request);
     }
