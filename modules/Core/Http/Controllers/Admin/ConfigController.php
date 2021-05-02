@@ -2,12 +2,12 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
-use Zotop\Modules\Routing\AdminController;
-use Zotop\Modules\Traits\ModuleConfig;
-use Zotop\Support\ImageFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use Zotop\Image\Filter;
+use Zotop\Modules\Routing\AdminController;
+use Zotop\Modules\Traits\ModuleConfig;
 
 class ConfigController extends AdminController
 {
@@ -76,7 +76,7 @@ class ConfigController extends AdminController
 
         // 生成水印图片
         $image = Image::make($sourcePath);
-        $image = ImageFilter::apply($image, 'core-watermark', $config);
+        $image = Filter::apply($image, 'core-watermark', $config);
         $image->save($targetPath);
 
         return url($target) . '?token=' . str_random(20);

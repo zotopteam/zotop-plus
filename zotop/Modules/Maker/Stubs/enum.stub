@@ -2,7 +2,7 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use Zotop\Support\Enum;
+use Zotop\Enums\Enum;
 
 class $CLASS_NAME$ extends Enum
 {

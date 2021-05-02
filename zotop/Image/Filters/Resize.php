@@ -1,29 +1,32 @@
 <?php
 
-namespace Zotop\Support\ImageFilters;
+namespace Zotop\Image\Filters;
 
-use Zotop\Support\ImageFilter;
 use Intervention\Image\Image;
+use Zotop\Image\Filter;
 
-class Fit extends ImageFilter
+class Resize extends Filter
 {
     /**
      * 图片宽度
+     *
      * @var integer
      */
     public $with;
 
     /**
      * 图片宽度
+     *
      * @var integer
      */
     public $height;
 
     /**
-     * 裁剪位置
-     * @var string
+     * 是否限制图像的当前宽高比例
+     *
+     * @var bool
      */
-    public $position = 'center';
+    public $aspectRatio = true;
 
     /**
      * Determines whether keeping the image from being upsized.
@@ -48,20 +51,23 @@ class Fit extends ImageFilter
     /**
      * 应用滤器
      *
-     * @param  \Intervention\Image\Image $image
+     * @param \Intervention\Image\Image $image
      * @return \Intervention\Image\Image
      */
     public function applyFilter(Image $image)
     {
-        $this->width  = intval($this->width);
+        $this->width = intval($this->width);
         $this->height = intval($this->height) ? intval($this->height) : $this->width;
 
         if ($this->width && $this->height) {
-            return $image->fit($this->width, $this->height, function ($constraint) {
+            return $image->resize($this->width, $this->height, function ($constraint) {
+                if ($this->aspectRatio) {
+                    $constraint->aspectRatio();
+                }
                 if ($this->upsize) {
                     $constraint->upsize();
                 }
-            }, $this->position);
+            });
         }
 
         return $image;

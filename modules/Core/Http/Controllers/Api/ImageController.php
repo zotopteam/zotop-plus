@@ -2,20 +2,24 @@
 
 namespace Modules\Core\Http\Controllers\Api;
 
-use Zotop\Modules\Routing\ApiController;
-use Zotop\Support\ImageFilter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Zotop\Image\Filter;
+use Zotop\Modules\Routing\ApiController;
 
 class ImageController extends ApiController
 {
     /**
      * 图片预览
      *
+     * @param \Illuminate\Http\Request $request
+     * @param $filter
+     * @param $disk
+     * @param $path
      * @return Response
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function preview(Request $request, $filter, $disk, $path)
     {
@@ -28,13 +32,13 @@ class ImageController extends ApiController
         }
 
         // 缓存并处理图片预览
-        $preview = Image::cache(function($image) use ($data, $filter) {
+        $preview = Image::cache(function ($image) use ($data, $filter) {
 
             // 生成图片实例
             $image = $image->make($data);
 
             // 尺寸 resize:300-300 fit:300-200
-            if ($filter = ImageFilter::get($filter)) {
+            if ($filter = Filter::get($filter)) {
                 $image->filter($filter);
             }
 

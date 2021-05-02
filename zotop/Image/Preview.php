@@ -1,13 +1,17 @@
 <?php
 
-namespace Zotop\Support;
+namespace Zotop\Image;
 
-use Illuminate\Support\Str;
+use Exception;
 use Illuminate\Support\Facades\File;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
-class ImagePreview
+/**
+ * @method width(int $width)
+ */
+class Preview
 {
     /**
      * 存储磁盘
@@ -63,8 +67,10 @@ class ImagePreview
     /**
      * 静态初始化
      *
-     * @param string $path 文件路径
-     * @return $this
+     * @param string $path
+     * @return static
+     * @author Chen Lei
+     * @date 2021-05-02
      */
     public static function file(string $path)
     {
@@ -165,7 +171,7 @@ class ImagePreview
                 // 生成预览图
                 $image = $this->disk ? Storage::disk($this->disk)->get($this->path) : $this->path;
                 $image = Image::make($image);
-                $image = ImageFilter::apply($image, $this->filter, [
+                $image = Filter::apply($image, $this->filter, [
                     'width'  => $this->width,
                     'height' => $this->height,
                 ]);
@@ -235,6 +241,6 @@ class ImagePreview
             return $this;
         }
 
-        throw new \Exception('Call to undefined method ' . get_class($this) . "::{$method}()");
+        throw new Exception('Call to undefined method ' . get_class($this) . "::{$method}()");
     }
 }

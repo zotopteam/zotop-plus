@@ -15236,7 +15236,7 @@
          */
         public static function fire($hook, $args)
         {
-                        /** @var \Zotop\Support\Filter $instance */
+                        /** @var \Zotop\Hook\Filter $instance */
                         return $instance->fire($hook, $args);
         }
                     /**
@@ -15249,8 +15249,8 @@
          * @static
          */
         public static function listen($hook, $callback, $priority = 50)
-        {            //Method inherited from \Zotop\Support\Hook
-                        /** @var \Zotop\Support\Filter $instance */
+        {            //Method inherited from \Zotop\Hook\Hook
+                        /** @var \Zotop\Hook\Filter $instance */
                         return $instance->listen($hook, $callback, $priority);
         }
                     /**
@@ -15262,8 +15262,8 @@
          * @static
          */
         public static function forget($hook, $callback = null)
-        {            //Method inherited from \Zotop\Support\Hook
-                        /** @var \Zotop\Support\Filter $instance */
+        {            //Method inherited from \Zotop\Hook\Hook
+                        /** @var \Zotop\Hook\Filter $instance */
                         return $instance->forget($hook, $callback);
         }
                     /**
@@ -15274,8 +15274,8 @@
          * @static
          */
         public static function listeners($hook)
-        {            //Method inherited from \Zotop\Support\Hook
-                        /** @var \Zotop\Support\Filter $instance */
+        {            //Method inherited from \Zotop\Hook\Hook
+                        /** @var \Zotop\Hook\Filter $instance */
                         return $instance->listeners($hook);
         }
                     /**
@@ -15287,8 +15287,8 @@
          * @static
          */
         public static function macro($name, $macro)
-        {            //Method inherited from \Zotop\Support\Hook
-                        \Zotop\Support\Filter::macro($name, $macro);
+        {            //Method inherited from \Zotop\Hook\Hook
+                        \Zotop\Hook\Filter::macro($name, $macro);
         }
                     /**
          * Mix another object into the class.
@@ -15300,8 +15300,8 @@
          * @static
          */
         public static function mixin($mixin, $replace = true)
-        {            //Method inherited from \Zotop\Support\Hook
-                        \Zotop\Support\Filter::mixin($mixin, $replace);
+        {            //Method inherited from \Zotop\Hook\Hook
+                        \Zotop\Hook\Filter::mixin($mixin, $replace);
         }
                     /**
          * Checks if macro is registered.
@@ -15311,8 +15311,8 @@
          * @static
          */
         public static function hasMacro($name)
-        {            //Method inherited from \Zotop\Support\Hook
-                        return \Zotop\Support\Filter::hasMacro($name);
+        {            //Method inherited from \Zotop\Hook\Hook
+                        return \Zotop\Hook\Filter::hasMacro($name);
         }
 
     }
@@ -15332,7 +15332,7 @@
          */
         public static function fire($hook, $args = null)
         {
-                        /** @var \Zotop\Support\Action $instance */
+                        /** @var \Zotop\Hook\Action $instance */
                         $instance->fire($hook, $args);
         }
                     /**
@@ -15345,8 +15345,8 @@
          * @static
          */
         public static function listen($hook, $callback, $priority = 50)
-        {            //Method inherited from \Zotop\Support\Hook
-                        /** @var \Zotop\Support\Action $instance */
+        {            //Method inherited from \Zotop\Hook\Hook
+                        /** @var \Zotop\Hook\Action $instance */
                         return $instance->listen($hook, $callback, $priority);
         }
                     /**
@@ -15358,8 +15358,8 @@
          * @static
          */
         public static function forget($hook, $callback = null)
-        {            //Method inherited from \Zotop\Support\Hook
-                        /** @var \Zotop\Support\Action $instance */
+        {            //Method inherited from \Zotop\Hook\Hook
+                        /** @var \Zotop\Hook\Action $instance */
                         return $instance->forget($hook, $callback);
         }
                     /**
@@ -15370,8 +15370,8 @@
          * @static
          */
         public static function listeners($hook)
-        {            //Method inherited from \Zotop\Support\Hook
-                        /** @var \Zotop\Support\Action $instance */
+        {            //Method inherited from \Zotop\Hook\Hook
+                        /** @var \Zotop\Hook\Action $instance */
                         return $instance->listeners($hook);
         }
                     /**
@@ -15383,8 +15383,8 @@
          * @static
          */
         public static function macro($name, $macro)
-        {            //Method inherited from \Zotop\Support\Hook
-                        \Zotop\Support\Action::macro($name, $macro);
+        {            //Method inherited from \Zotop\Hook\Hook
+                        \Zotop\Hook\Action::macro($name, $macro);
         }
                     /**
          * Mix another object into the class.
@@ -15396,8 +15396,8 @@
          * @static
          */
         public static function mixin($mixin, $replace = true)
-        {            //Method inherited from \Zotop\Support\Hook
-                        \Zotop\Support\Action::mixin($mixin, $replace);
+        {            //Method inherited from \Zotop\Hook\Hook
+                        \Zotop\Hook\Action::mixin($mixin, $replace);
         }
                     /**
          * Checks if macro is registered.
@@ -15407,8 +15407,8 @@
          * @static
          */
         public static function hasMacro($name)
-        {            //Method inherited from \Zotop\Support\Hook
-                        return \Zotop\Support\Action::hasMacro($name);
+        {            //Method inherited from \Zotop\Hook\Hook
+                        return \Zotop\Hook\Action::hasMacro($name);
         }
 
     }

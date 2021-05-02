@@ -2,36 +2,35 @@
 
 namespace Modules\Core\Http\Controllers\Admin;
 
-use Zotop\Modules\Facades\Module;
-use Zotop\Modules\Routing\AdminController as Controller;
-use Zotop\Support\ImagePreview;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
 use Modules\Core\Support\StorageBrowser;
+use Zotop\Image\Preview;
+use Zotop\Modules\Facades\Module;
+use Zotop\Modules\Routing\AdminController as Controller;
 
 class StorageController extends Controller
 {
     /**
      * 列表
-     * @param  Request $request
-     * @param  string $disk 磁盘名称
+     *
+     * @param Request $request
+     * @param string $disk 磁盘名称
      * @return mixed
      * @return Response
      */
     public function index(Request $request, $disk)
     {
-        $this->disk    = $disk;
-        $this->disks   = Module::data('core::storage.disks');
-        $this->title   = Arr::get($this->disks, "{$disk}.text");
+        $this->disk = $disk;
+        $this->disks = Module::data('core::storage.disks');
+        $this->title = Arr::get($this->disks, "{$disk}.text");
         $this->browser = app(StorageBrowser::class, [
             'disk' => $disk,
             'root' => '',
-            'dir'  => $request->input('dir')
+            'dir'  => $request->input('dir'),
         ]);
 
         return $this->view();
@@ -40,17 +39,17 @@ class StorageController extends Controller
     /**
      * 新建文件夹
      *
-     * @param  Request $request
-     * @param  string $disk 磁盘名称
-     * @return mixed
+     * @param Request $request
+     * @param string $disk 磁盘名称
+     * @return mixed|void
      */
     public function folderCreate(Request $request, $disk)
     {
         // 保存数据
         if ($request->isMethod('POST')) {
 
-            $path    = $request->input('path');
-            $name    = $request->input('name');
+            $path = $request->input('path');
+            $name = $request->input('name');
 
             // 是否为空
             if (empty($name)) {
@@ -77,16 +76,16 @@ class StorageController extends Controller
     /**
      * 重命名文件夹
      *
-     * @param  Request $request
-     * @param  string $disk 磁盘名称
-     * @return mixed
+     * @param Request $request
+     * @param string $disk 磁盘名称
+     * @return mixed|void
      */
     public function folderRename(Request $request, $disk)
     {
         if ($request->isMethod('POST')) {
 
-            $path    = $request->input('path');
-            $name    = $request->input('name');
+            $path = $request->input('path');
+            $name = $request->input('name');
 
             // 是否为空
             if (empty($name)) {
@@ -94,15 +93,15 @@ class StorageController extends Controller
             }
 
             // 新路径
-            $newpath = File::dirname($path) . '/' . $name;
+            $newPath = File::dirname($path) . '/' . $name;
 
             // 是否存在
-            if (Storage::disk($disk)->exists($newpath)) {
+            if (Storage::disk($disk)->exists($newPath)) {
                 return $this->error(trans('core::folder.existed', [$name]));
             }
 
             // 移动
-            if (Storage::disk($disk)->move($path, $newpath)) {
+            if (Storage::disk($disk)->move($path, $newPath)) {
                 return $this->success(trans('master.operated'), $request->referer());
             }
 
@@ -113,15 +112,15 @@ class StorageController extends Controller
     /**
      * 删除文件夹
      *
-     * @param  Request $request
-     * @param  string $disk 磁盘名称
-     * @return mixed
+     * @param Request $request
+     * @param string $disk 磁盘名称
+     * @return mixed|void
      */
     public function folderDelete(Request $request, $disk)
     {
         if ($request->isMethod('DELETE')) {
 
-            $path    = $request->input('path');
+            $path = $request->input('path');
 
             // 为确保安全，禁止删除含有文件或者文件夹的目录
             if (Storage::disk($disk)->files($path) || Storage::disk($disk)->directories($path)) {
@@ -140,16 +139,16 @@ class StorageController extends Controller
     /**
      * 重命名文件
      *
-     * @param  Request $request
-     * @param  string $disk 磁盘名称
-     * @return mixed
+     * @param Request $request
+     * @param string $disk 磁盘名称
+     * @return mixed|void
      */
     public function fileRename(Request $request, $disk)
     {
         if ($request->isMethod('POST')) {
 
-            $path    = $request->input('path');
-            $name    = $request->input('name');
+            $path = $request->input('path');
+            $name = $request->input('name');
 
             // 名称不能为空
             if (empty($name)) {
@@ -162,15 +161,15 @@ class StorageController extends Controller
             }
 
             // 新的路径
-            $newpath = dirname($path) . '/' . $name;
+            $newPath = dirname($path) . '/' . $name;
 
             // 新路径是否存在
-            if (Storage::disk($disk)->exists($newpath)) {
+            if (Storage::disk($disk)->exists($newPath)) {
                 return $this->error(trans('core::file.existed', [$name]));
             }
 
             // 移动
-            if (Storage::disk($disk)->move($path, $newpath)) {
+            if (Storage::disk($disk)->move($path, $newPath)) {
                 return $this->success(trans('master.operated'), $request->referer());
             }
 
@@ -181,19 +180,19 @@ class StorageController extends Controller
     /**
      * 删除文件
      *
-     * @param  Request $request
-     * @param  string $disk 磁盘名称
-     * @return mixed
+     * @param Request $request
+     * @param string $disk 磁盘名称
+     * @return mixed|void
      */
     public function fileDelete(Request $request, $disk)
     {
         if ($request->isMethod('DELETE')) {
 
-            $path    = $request->input('path');
+            $path = $request->input('path');
 
             // 删除目录
             if (Storage::disk($disk)->delete($path)) {
-                ImagePreview::file($disk . ':' . $path)->staticDelete();
+                Preview::file($disk . ':' . $path)->staticDelete();
                 return $this->success(trans('master.operated'), $request->referer());
             }
 
@@ -204,8 +203,8 @@ class StorageController extends Controller
     /**
      * 下载文件
      *
-     * @param  Request $request
-     * @param  string $disk 磁盘名称
+     * @param Request $request
+     * @param string $disk 磁盘名称
      * @return mixed
      */
     public function fileDownload(Request $request, $disk)
@@ -223,20 +222,21 @@ class StorageController extends Controller
 
     /**
      * 列表
-     * @param  Request $request
-     * @param  string $disk 磁盘名称
+     *
+     * @param Request $request
+     * @param string $disk 磁盘名称
      * @return mixed
      * @return Response
      */
     public function fileSelect(Request $request, $disk)
     {
-        $this->disk    = $disk;
-        $this->disks   = Module::data('core::storage.disks');
-        $this->title   = Arr::get($this->disks, "{$disk}.text");
+        $this->disk = $disk;
+        $this->disks = Module::data('core::storage.disks');
+        $this->title = Arr::get($this->disks, "{$disk}.text");
         $this->browser = app(StorageBrowser::class, [
             'disk' => $disk,
             'root' => '',
-            'dir'  => $request->remember('dir')
+            'dir'  => $request->remember('dir'),
         ]);
 
         return $this->view();

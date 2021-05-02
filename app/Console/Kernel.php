@@ -26,7 +26,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('debugbar:clear')->cron(config('debugbar.storage.clear', '0 3 * * *'));
+        $schedule->command('debugbar:clear')
+            ->cron(config('debugbar.storage.clear', '0 3 * * *'));
     }
 
     /**
@@ -38,8 +39,6 @@ class Kernel extends ConsoleKernel
     {
         $this->load([
             realpath(__DIR__ . '/Commands'),
-            realpath(__DIR__ . '/../Modules/Commands'),
-            realpath(__DIR__ . '/../Themes/Commands'),
         ]);
 
         require base_path('routes/console.php');

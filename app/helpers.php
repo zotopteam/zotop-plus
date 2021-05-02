@@ -1,7 +1,7 @@
 <?php
 
-use Zotop\Support\ImagePreview;
 use Illuminate\Support\Str;
+use Zotop\Image\Preview;
 
 if (!function_exists('array_object')) {
 
@@ -289,7 +289,7 @@ if (!function_exists('preview')) {
     function preview(string $path, $width = null, $height = null, $filter = 'resize')
     {
         // 生成文件实例
-        $preview = ImagePreview::file($path);
+        $preview = Preview::file($path);
 
         // 如果是预览原图，因为原图一般都比较大，所以直接生成动态访问地址
         if (empty($width)) {

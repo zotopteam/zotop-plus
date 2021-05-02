@@ -2,17 +2,18 @@
 
 namespace Modules\Core\Support;
 
-use Illuminate\Support\Arr;
-use Zotop\Support\ImageFilter;
-use Zotop\Hook\Facades\Filter;
 use Illuminate\Http\UploadedFile;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use Zotop\Hook\Facades\Filter;
+use Zotop\Image\Filter as ImageFilter;
 
 class Upload
 {
     /**
      * 错误信息
+     *
      * @var string
      */
     protected $error;
@@ -24,107 +25,124 @@ class Upload
 
     /**
      * 默认上传磁盘为public
+     *
      * @var string
      */
     protected $disk;
 
     /**
      * 全部上传类型
+     *
      * @var array
      */
     protected $types;
 
+
     /**
      * 请求
-     * @var Illuminate\Http\Request
+     *
+     * @var \Illuminate\Http\Request
      */
     protected $request;
 
     /**
      * 上传文件对象
-     * @var Illuminate\Http\UploadedFile
+     *
+     * @var \Illuminate\Http\UploadedFile
      */
     public $file;
 
     /**
      * 文件路径
+     *
      * @var string
      */
     public $path;
 
     /**
      * 文件类型
+     *
      * @var string
      */
     public $type;
 
     /**
      * 扩展名
+     *
      * @var string
      */
     public $extension;
 
     /**
      * 文件资源类型
+     *
      * @var string
      */
     public $mimetype;
 
     /**
      * 文件名称
+     *
      * @var string
      */
     public $name;
 
     /**
      * 文件大小
+     *
      * @var integer
      */
     public $size;
 
     /**
      * 图片宽度
+     *
      * @var integer
      */
     public $width = 0;
 
     /**
      * 图片高度
+     *
      * @var integer
      */
     public $height = 0;
 
     /**
      * 图片滤镜
+     *
      * @var integer
      */
     public $filters;
 
     /**
      * 初始化
+     *
+     * @param \Illuminate\Http\UploadedFile $file
      */
     public function __construct(UploadedFile $file)
     {
-        $this->file    = $file;
+        $this->file = $file;
         $this->request = app('request');
-        $this->types   = config('core.upload.types');
+        $this->types = config('core.upload.types');
 
-        $this->realpath  = $this->file->getRealPath();
-        $this->type      = $this->file->getHumanType();
+        $this->realpath = $this->file->getRealPath();
+        $this->type = $this->file->getHumanType();
         $this->extension = $this->file->getClientOriginalExtension();
-        $this->size      = $this->file->getSize();
-        $this->mimetype  = $this->file->getMimeType();
-        $this->hash      = $this->file->getHash();
-        $this->name      = $this->request->input('filename', $this->file->getClientOriginalName());
+        $this->size = $this->file->getSize();
+        $this->mimetype = $this->file->getMimeType();
+        $this->hash = $this->file->getHash();
+        $this->name = $this->request->input('filename', $this->file->getClientOriginalName());
 
-        $this->disk      = $this->disk();
+        $this->disk = $this->disk();
         $this->directory = $this->directory();
-        $this->filters   = $this->filters();
+        $this->filters = $this->filters();
     }
 
     /**
      * 静态实例化
-     * @param  UploadedFile $file 上传对象
+     *
+     * @param UploadedFile $file 上传对象
      * @return object
      */
     public static function file(UploadedFile $file)
@@ -134,6 +152,7 @@ class Upload
 
     /**
      * 保存上传文件，返回上传文件详情数组
+     *
      * @return array
      */
     public function save()
@@ -144,8 +163,8 @@ class Upload
         }
 
         // 保存文件
-        $this->path     = $this->storageFile();
-        $this->url      = $this->storageUrl();
+        $this->path = $this->storageFile();
+        $this->url = $this->storageUrl();
 
         // 过滤并返回数据
         $data = [
@@ -185,14 +204,14 @@ class Upload
             }
 
             // 图片宽高
-            $this->width  = $image->width();
+            $this->width = $image->width();
             $this->height = $image->height();
-            $this->size   = $image->filesize();
+            $this->size = $image->filesize();
 
             // 存储图片
             $this->path = $this->directory . '/' . $this->storageName();
 
-            if (Storage::disk($this->disk)->put($this->path, (string) $image->encode())) {
+            if (Storage::disk($this->disk)->put($this->path, (string)$image->encode())) {
                 return $this->path;
             }
 
@@ -207,7 +226,7 @@ class Upload
     /**
      * 获取文件的存储url
      *
-     * @return void
+     * @return string|void
      */
     public function storageUrl()
     {
@@ -227,7 +246,8 @@ class Upload
 
     /**
      * 设置或获取存储的磁盘
-     * @param  string $disk
+     *
+     * @param string $disk
      * @return mixed
      */
     public function disk($disk = null)
@@ -242,7 +262,8 @@ class Upload
 
     /**
      * 设置或获取上传文件的存储目录
-     * @param  string $directory
+     *
+     * @param string $directory
      * @return mixed
      */
     public function directory($directory = null)
@@ -260,8 +281,9 @@ class Upload
 
     /**
      * 设置或获取图片滤镜
-     * @param  mixed $filters
-     * @return array
+     *
+     * @param mixed $filters
+     * @return array|\Modules\Core\Support\Upload
      */
     public function filters($filters = [])
     {
@@ -275,6 +297,7 @@ class Upload
 
     /**
      * 是否允许上传格式
+     *
      * @return boolean
      */
     public function hasError()
@@ -308,7 +331,8 @@ class Upload
 
     /**
      * 返回错误
-     * @param  string $error 错误类型
+     *
+     * @param string $error 错误类型
      * @return array
      */
     public function error($error)
@@ -317,7 +341,7 @@ class Upload
         Storage::disk($this->disk)->delete($this->path);
 
         return [
-            'state' => false,
+            'state'   => false,
             'content' => trans("core::file.upload.error.{$error}", [
                 'type'      => $this->type,
                 'name'      => $this->name,
@@ -329,13 +353,14 @@ class Upload
 
     /**
      * 返回成功
-     * @param  array $data 文件详细信息
+     *
+     * @param array $data 文件详细信息
      * @return array
      */
     public function success($data)
     {
         $data = array_merge([
-            'state' => true,
+            'state'   => true,
             'content' => trans('core::file.upload.success', [
                 'type'      => $this->type,
                 'name'      => $this->name,

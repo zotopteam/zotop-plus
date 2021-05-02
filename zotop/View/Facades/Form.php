@@ -4,6 +4,9 @@ namespace Zotop\View\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @method static control($control, $class)
+ */
 class Form extends Facade
 {
     /**

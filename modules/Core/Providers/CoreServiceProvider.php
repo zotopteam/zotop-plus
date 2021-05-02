@@ -2,12 +2,11 @@
 
 namespace Modules\Core\Providers;
 
-use Zotop\Modules\Support\ServiceProvider;
-use Zotop\View\Facades\Form;
-use Zotop\Support\ImageFilter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Blade;
+use Modules\Core\Http\Middleware\AdminMiddleware;
+use Modules\Core\Http\Middleware\AllowMiddleware;
 use Modules\Core\Support\ImageFilters\Resize;
 use Modules\Core\Support\ImageFilters\Watermark;
 use Modules\Core\View\Components\Search;
@@ -16,16 +15,17 @@ use Modules\Core\View\Components\StatusIcon;
 use Modules\Core\View\Components\UploadChunk;
 use Modules\Core\View\Controls\BoolControl;
 use Modules\Core\View\Controls\CheckboxGroup;
-use Modules\Core\View\Controls\Code;
 use Modules\Core\View\Controls\Date;
 use Modules\Core\View\Controls\Editor;
 use Modules\Core\View\Controls\Gallery;
 use Modules\Core\View\Controls\Icon;
-use Modules\Core\View\Controls\Markdown;
 use Modules\Core\View\Controls\RadioCards;
 use Modules\Core\View\Controls\RadioGroup;
 use Modules\Core\View\Controls\Toggle;
 use Modules\Core\View\Controls\Upload;
+use Zotop\Image\Filter;
+use Zotop\Modules\Support\ServiceProvider;
+use Zotop\View\Facades\Form;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -35,8 +35,8 @@ class CoreServiceProvider extends ServiceProvider
      * @var array
      */
     protected $middlewares = [
-        'admin' => 'AdminMiddleware',
-        'allow' => 'AllowMiddleware',
+        'admin' => AdminMiddleware::class,
+        'allow' => AllowMiddleware::class,
     ];
 
     /**
@@ -83,9 +83,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function registerMiddleware()
     {
-        foreach ($this->middlewares as $name => $middleware) {
-            $this->app['router']->aliasMiddleware($name, "Modules\\Core\\Http\\Middleware\\{$middleware}");
-        }
+        $this->middlewares($this->middlewares);
     }
 
 
@@ -99,21 +97,21 @@ class CoreServiceProvider extends ServiceProvider
         $locale = $this->app['current.locale'];
 
         // Carbon 语言转换
-        $carbon_locale = Arr::get($this->app['hook.filter']->fire('carbon.locale.transform', [
+        $carbonLocale = Arr::get($this->app['hook.filter']->fire('carbon.locale.transform', [
             'zh-Hans' => 'zh',
             'zh-Hant' => 'zh_TW',
         ]), $locale, $locale);
 
-        Carbon::setLocale($carbon_locale);
+        Carbon::setLocale($carbonLocale);
 
         // Faker 语言转换
-        $faker_locale = Arr::get($this->app['hook.filter']->fire('faker.locale.transform', [
+        $fakerLocale = Arr::get($this->app['hook.filter']->fire('faker.locale.transform', [
             'en'      => 'en_US',
             'zh-Hans' => 'zh_CN',
             'zh-Hant' => 'zh_TW',
         ]), $locale, $locale);
 
-        $this->app['config']->set('app.faker_locale', $faker_locale);
+        $this->app['config']->set('app.faker_locale', $fakerLocale);
     }
 
     /**
@@ -141,7 +139,12 @@ class CoreServiceProvider extends ServiceProvider
     }
 
 
-    // 模板扩展
+    /**
+     * 模板扩展
+     *
+     * @author Chen Lei
+     * @date 2021-05-02
+     */
     public function bladeExtend()
     {
         // 模板中的权限指令
@@ -181,11 +184,16 @@ class CoreServiceProvider extends ServiceProvider
         Form::control(Gallery::class, 'gallery');
     }
 
-    // 图片滤器
+    /**
+     * 图片滤器
+     *
+     * @author Chen Lei
+     * @date 2021-05-02
+     */
     public function imageFilter()
     {
-        ImageFilter::set('core-resize', Resize::class);
-        ImageFilter::set('core-watermark', Watermark::class);
+        Filter::set('core-resize', Resize::class);
+        Filter::set('core-watermark', Watermark::class);
     }
 
     /**

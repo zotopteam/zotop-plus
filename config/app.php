@@ -241,14 +241,14 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         /**
-         * Custom Service Providers...
+         * Install Service Provider
          */
         App\Providers\InstallServiceProvider::class,
-        Zotop\Modules\ModulesServiceProvider::class,
-        Zotop\Hook\HookServiceProvider::class,
-        Zotop\Themes\ThemesServiceProvider::class,
-        Zotop\View\ViewServiceProvider::class,
-        Zotop\Support\SupportServiceProvider::class,
+
+        /**
+         * Zotop Service Provider
+         */
+        Zotop\ZotopServiceProvider::class,
     ],
 
     /*

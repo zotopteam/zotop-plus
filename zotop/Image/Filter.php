@@ -1,11 +1,11 @@
 <?php
 
-namespace Zotop\Support;
+namespace Zotop\Image;
 
 use Intervention\Image\Filters\FilterInterface;
 use Intervention\Image\Image;
 
-abstract class ImageFilter implements FilterInterface
+abstract class Filter implements FilterInterface
 {
     /**
      * image filters 容器

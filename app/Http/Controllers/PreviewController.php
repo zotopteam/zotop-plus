@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Zotop\Support\ImageFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Zotop\Image\Filter;
 
 class PreviewController extends Controller
 {
@@ -29,7 +29,7 @@ class PreviewController extends Controller
             $image = $image->make($data);
 
             // 应用图片滤镜，比如尺寸 resize:300-300 fit:300-200
-            $image = ImageFilter::apply($image, $filter);
+            $image = Filter::apply($image, $filter);
 
             return $image;
         }, config('image.preview.dynamic.lifetime', 10), true);

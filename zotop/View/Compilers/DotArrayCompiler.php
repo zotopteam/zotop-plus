@@ -6,7 +6,7 @@ namespace Zotop\View\Compilers;
 /**
  * 模板扩展，解析点格式的数组
  *
- * @package Zotop\Support
+ * @package Zotop\View
  */
 class DotArrayCompiler
 {
@@ -15,7 +15,7 @@ class DotArrayCompiler
      * $a.b.c 转换为 $a['b']['c']
      * @$a.b.c 转换为 $a.b.c
      *
-     * @param  string  $value
+     * @param string $value
      * @return string
      */
     public function compile($value)
@@ -32,7 +32,7 @@ class DotArrayCompiler
             }
 
             // $matches[0] => $a.b.c => $a['b']['c']
-            $vars  = explode('.', $matches[0]);
+            $vars = explode('.', $matches[0]);
             $first = array_shift($vars);
             return $first . '[\'' . implode('\'][\'', $vars) . '\']';
         };

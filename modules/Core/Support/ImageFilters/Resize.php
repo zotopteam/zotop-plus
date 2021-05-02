@@ -1,32 +1,36 @@
 <?php
+
 namespace Modules\Core\Support\ImageFilters;
 
-use Zotop\Support\ImageFilter;
-use Illuminate\Support\Arr;
 use Intervention\Image\Image;
+use Zotop\Image\Filter;
 
-class Resize extends ImageFilter
+class Resize extends Filter
 {
     /**
      * 是否开启
+     *
      * @var boolean
      */
     public $enabled = true;
 
     /**
      * 图片最大宽度
+     *
      * @var integer
      */
     public $width = 1920;
 
     /**
      * 图片最大高度
+     *
      * @var integer
      */
     public $height = 1200;
 
     /**
      * 图片品质
+     *
      * @var integer
      */
     public $quality = 100;
@@ -52,25 +56,26 @@ class Resize extends ImageFilter
     {
         // 读取核心设置
         $this->enabled = config('core.image.resize.enabled', $this->enabled);
-        $this->width   = config('core.image.resize.width', $this->width);
-        $this->height  = config('core.image.resize.height', $this->height);
+        $this->width = config('core.image.resize.width', $this->width);
+        $this->height = config('core.image.resize.height', $this->height);
         $this->quality = config('core.image.resize.quality', $this->quality);
 
         // 300-300 或者 300
         if ($parameter) {
             [$this->width, $this->height] = array_pad(explode('-', $parameter), 2, null);
-        }               
+        }
     }
 
     /**
      * 应用滤器
-     * @param  Image  $image
+     *
+     * @param Image $image
      * @return Image
      */
     public function applyFilter(Image $image)
     {
         if ($this->enabled && ($image->width() > $this->width || $image->height() > $this->height)) {
-            return $image->resize($this->width, $this->height, function($constraint) {
+            return $image->resize($this->width, $this->height, function ($constraint) {
                 if ($this->aspectRatio) {
                     $constraint->aspectRatio();
                 }
@@ -81,5 +86,5 @@ class Resize extends ImageFilter
         }
 
         return $image;
-    }  
+    }
 }

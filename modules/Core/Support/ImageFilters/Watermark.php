@@ -2,14 +2,14 @@
 
 namespace Modules\Core\Support\ImageFilters;
 
-use Zotop\Support\ImageFilter;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Intervention\Image\Exception\InvalidArgumentException;
 use Intervention\Image\Facades\Image as ImageFacade;
 use Intervention\Image\Image;
+use Zotop\Image\Filter;
 
-class Watermark extends ImageFilter
+class Watermark extends Filter
 {
     /**
      * 是否开启

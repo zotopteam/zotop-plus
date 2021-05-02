@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
  * 模板扩展，解析表单标签
  * 如：<z-form></z-form> <z-field/> <z-text/> <z-textarea/>
  *
- * @package Zotop\Support
+ * @package Zotop\View
  */
 class ZFormCompiler
 {
