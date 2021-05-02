@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'dfb5938071b2c3c49697e36b9de4ddc953f5a491',
+    'reference' => '2d490d93fe1aa603d4b2934cb513418eee98ed58',
     'name' => 'zotop/zotop-plus',
   ),
   'versions' => 
@@ -922,8 +922,8 @@
     array (
       'provided' => 
       array (
-        0 => '1.0.0',
-        1 => '1.0',
+        0 => '1.0',
+        1 => '1.0.0',
       ),
     ),
     'psr/simple-cache' => 
@@ -1449,7 +1449,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'dfb5938071b2c3c49697e36b9de4ddc953f5a491',
+      'reference' => '2d490d93fe1aa603d4b2934cb513418eee98ed58',
     ),
   ),
 );
